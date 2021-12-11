@@ -17,33 +17,26 @@
 package com.b3dgs.lionengine;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Handle tick measure, in updated frames number.
  */
 public final class Tick implements Updatable
 {
-    /** One second to milli. */
-    private static final double ONE_SECOND_IN_MILLI = Constant.ONE_SECOND_IN_MILLI;
-    /** No update. */
-    private static final Updatable PAUSE = extrp ->
-    {
-        // Nothing to do
-    };
-
     /** Actions to add. */
-    private final Collection<TickActionDelayed> toAdd = new ArrayList<>();
-    /** Actions. */
-    private final Collection<TickActionDelayed> actions = new ArrayList<>();
-    /** Actions executed. */
-    private final Collection<TickActionDelayed> toRemove = new ArrayList<>();
+    private final List<TickActionDelayed> toAdd = new ArrayList<>();
+    /** Actions executed to remove. */
+    private final List<TickActionDelayed> toRemove = new ArrayList<>();
+    /** Actions to check. */
+    private final List<TickActionDelayed> actions = new ArrayList<>();
+    /** Update tick loop. */
+    private final Updatable updating;
+
+    /** Current update loop. */
+    private Updatable updater = UpdatableVoid.getInstance();
     /** Current tick. */
-    private long currentTicks;
-    /** Update. */
-    private final Updatable updating = extrp -> currentTicks++;
-    /** Update loop. */
-    private Updatable updater = PAUSE;
+    private double ticks;
     /** Started flag. */
     private boolean started;
 
@@ -53,6 +46,8 @@ public final class Tick implements Updatable
     public Tick()
     {
         super();
+
+        updating = extrp -> ticks += extrp;
     }
 
     /**
@@ -64,7 +59,21 @@ public final class Tick implements Updatable
      */
     public void addAction(TickAction action, long tickDelay)
     {
-        toAdd.add(new TickActionDelayed(action, currentTicks + tickDelay));
+        toAdd.add(new TickActionDelayed(action, ticks + tickDelay));
+    }
+
+    /**
+     * Add an action to execute once delay elapsed.
+     * 
+     * @param action The action to execute (must not be <code>null</code>).
+     * @param rate The rate reference.
+     * @param delayMs The delay in milli used as trigger.
+     * @throws LionEngineException If invalid argument.
+     */
+    public void addAction(TickAction action, int rate, long delayMs)
+    {
+        final double frameTime = Constant.ONE_SECOND_IN_MILLI / rate;
+        toAdd.add(new TickActionDelayed(action, ticks + delayMs / frameTime));
     }
 
     /**
@@ -84,9 +93,9 @@ public final class Tick implements Updatable
      */
     public void stop()
     {
-        currentTicks = 0L;
+        ticks = 0.0;
         started = false;
-        updater = PAUSE;
+        updater = UpdatableVoid.getInstance();
     }
 
     /**
@@ -94,21 +103,21 @@ public final class Tick implements Updatable
      */
     public void restart()
     {
-        currentTicks = 0L;
+        ticks = 0.0;
         started = true;
         updater = updating;
     }
 
     /**
-     * Pause tick.
+     * Pause tick. Does nothing if already paused.
      */
     public void pause()
     {
-        updater = PAUSE;
+        updater = UpdatableVoid.getInstance();
     }
 
     /**
-     * Continue tick from last pause.
+     * Continue tick from last pause. Does nothing if already running.
      */
     public void resume()
     {
@@ -116,16 +125,16 @@ public final class Tick implements Updatable
     }
 
     /**
-     * Check if specific ticks has been elapsed.
+     * Check if specific tick has been elapsed.
      * 
-     * @param tick The ticks to check.
-     * @return <code>true</code> if ticks elapsed, <code>false</code> else.
+     * @param tick The tick to check.
+     * @return <code>true</code> if tick elapsed, <code>false</code> else.
      */
-    public boolean elapsed(long tick)
+    public boolean elapsed(double tick)
     {
         if (started)
         {
-            return currentTicks >= tick;
+            return Double.compare(ticks, tick) >= 0;
         }
         return false;
     }
@@ -142,8 +151,8 @@ public final class Tick implements Updatable
     {
         if (started && rate > 0)
         {
-            final double frameTime = ONE_SECOND_IN_MILLI / rate;
-            return Double.compare(milli, StrictMath.floor(currentTicks * frameTime)) <= 0;
+            final double frameTime = Constant.ONE_SECOND_IN_MILLI / rate;
+            return Double.compare(milli, StrictMath.floor(ticks * frameTime)) <= 0;
         }
         return false;
     }
@@ -153,9 +162,21 @@ public final class Tick implements Updatable
      * 
      * @return The number of ticks elapsed since start call.
      */
-    public long elapsed()
+    public double elapsed()
     {
-        return currentTicks;
+        return ticks;
+    }
+
+    /**
+     * Get number of ticks elapsed since start call.
+     * 
+     * @param rate The rate reference.
+     * @return The number of ticks elapsed since start call.
+     */
+    public int elapsedTime(int rate)
+    {
+        final double frameTime = Constant.ONE_SECOND_IN_MILLI / rate;
+        return (int) StrictMath.floor(ticks * frameTime);
     }
 
     /**
@@ -163,9 +184,9 @@ public final class Tick implements Updatable
      * 
      * @param value The tick to set.
      */
-    public void set(long value)
+    public void set(double value)
     {
-        currentTicks = value;
+        ticks = value;
     }
 
     /**
@@ -193,11 +214,13 @@ public final class Tick implements Updatable
             toAdd.clear();
         }
 
-        for (final TickActionDelayed action : actions)
+        final int n = actions.size();
+        for (int i = 0; i < n; i++)
         {
+            final TickActionDelayed action = actions.get(i);
             if (elapsed(action.getDelay()))
             {
-                action.getAction().execute();
+                action.execute();
                 toRemove.add(action);
             }
         }
@@ -212,12 +235,12 @@ public final class Tick implements Updatable
     /**
      * Delayed tick action data.
      */
-    private static final class TickActionDelayed
+    private static final class TickActionDelayed implements TickAction
     {
         /** Action reference. */
         private final TickAction action;
         /** Tick delay trigger. */
-        private final long delay;
+        private final double delay;
 
         /**
          * Create delayed action data.
@@ -226,7 +249,7 @@ public final class Tick implements Updatable
          * @param delay The tick delay.
          * @throws LionEngineException If invalid argument.
          */
-        private TickActionDelayed(TickAction action, long delay)
+        private TickActionDelayed(TickAction action, double delay)
         {
             Check.notNull(action);
 
@@ -235,23 +258,23 @@ public final class Tick implements Updatable
         }
 
         /**
-         * Get action reference.
-         * 
-         * @return The action reference.
-         */
-        public TickAction getAction()
-        {
-            return action;
-        }
-
-        /**
          * Get the tick delay.
          * 
          * @return The tick delay.
          */
-        public long getDelay()
+        public double getDelay()
         {
             return delay;
+        }
+
+        /*
+         * TickAction
+         */
+
+        @Override
+        public void execute()
+        {
+            action.execute();
         }
     }
 }
