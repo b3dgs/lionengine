@@ -168,6 +168,8 @@ public abstract class SequenceGame<W extends WorldGame> extends Sequence
     @Override
     protected void onResolutionChanged(int width, int height)
     {
+        super.onResolutionChanged(width, height);
+
         world.onResolutionChanged(width, height);
     }
 

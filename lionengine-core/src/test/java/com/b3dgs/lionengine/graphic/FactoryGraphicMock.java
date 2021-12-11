@@ -88,6 +88,12 @@ public class FactoryGraphicMock implements FactoryGraphic
     }
 
     @Override
+    public ImageBuffer createImageBufferAlpha(int width, int height)
+    {
+        return new ImageBufferMock(width, height);
+    }
+
+    @Override
     public ImageBuffer getImageBuffer(Media media)
     {
         try

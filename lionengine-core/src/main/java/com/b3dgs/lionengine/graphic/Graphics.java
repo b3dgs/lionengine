@@ -128,6 +128,19 @@ public final class Graphics
     }
 
     /**
+     * Create an image buffer with alpha support.
+     * 
+     * @param width The image width (must be strictly positive).
+     * @param height The image height (must be strictly positive).
+     * @return The image buffer.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public static ImageBuffer createImageBufferAlpha(int width, int height)
+    {
+        return factoryGraphic.createImageBufferAlpha(width, height);
+    }
+
+    /**
      * Get an image buffer from an image file.
      * 
      * @param media The image media (must not be <code>null</code>).

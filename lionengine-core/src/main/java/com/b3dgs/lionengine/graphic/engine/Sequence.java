@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Scanline;
 import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.ScreenListener;
 
@@ -69,6 +70,10 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     private Screen screen;
     /** Loaded flag. */
     private boolean loaded;
+    /** Width. */
+    private int width;
+    /** Height. */
+    private int height;
 
     /**
      * Constructor base. Resolution will be based on {@link Config#getOutput()}.
@@ -115,6 +120,8 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         source = resolution;
         config = context.getConfig();
         renderer = new SequenceRenderer(context, resolution, this::render);
+        width = source.getWidth();
+        height = source.getHeight();
     }
 
     /**
@@ -130,6 +137,16 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     public final void setFilter(Filter filter)
     {
         renderer.setFilter(filter);
+    }
+
+    /**
+     * Set the scanline to use.
+     * 
+     * @param scanline The scanline to use (if <code>null</code> then {@link ScanlineNone#INSTANCE} is used).
+     */
+    public final void setScanline(Scanline scanline)
+    {
+        renderer.setScanline(scanline);
     }
 
     /**
@@ -164,14 +181,15 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     }
 
     /**
-     * Called when the resolution changed. Does nothing by default.
+     * Called when the resolution changed.
      * 
      * @param width The new screen width.
      * @param height The new screen height.
      */
     protected void onResolutionChanged(int width, int height)
     {
-        // Nothing by default
+        this.width = width;
+        this.height = height;
     }
 
     /**
@@ -360,13 +378,13 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     @Override
     public final int getWidth()
     {
-        return source.getWidth();
+        return width;
     }
 
     @Override
     public final int getHeight()
     {
-        return source.getHeight();
+        return height;
     }
 
     @Override

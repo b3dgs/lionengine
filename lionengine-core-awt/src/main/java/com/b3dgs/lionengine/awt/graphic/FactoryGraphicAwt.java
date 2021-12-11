@@ -125,6 +125,20 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     }
 
     @Override
+    public ImageBuffer createImageBufferAlpha(int width, int height)
+    {
+        final BufferedImage image = ToolsAwt.createImage(width, height, java.awt.Transparency.TRANSLUCENT);
+        final ImageBuffer buffer = new ImageBufferAwt(image);
+
+        final Graphic g = buffer.createGraphic();
+        g.setColor(ColorRgba.TRANSPARENT);
+        g.drawRect(0, 0, width, height, true);
+        g.dispose();
+
+        return buffer;
+    }
+
+    @Override
     public ImageBuffer getImageBuffer(Media media)
     {
         Check.notNull(media);

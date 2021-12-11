@@ -116,6 +116,19 @@ public final class FactoryGraphicHeadless implements FactoryGraphic
     }
 
     @Override
+    public ImageBuffer createImageBufferAlpha(int width, int height)
+    {
+        final ImageBuffer buffer = new ImageBufferHeadless(width, height, Transparency.TRANSLUCENT);
+
+        final Graphic g = buffer.createGraphic();
+        g.setColor(ColorRgba.TRANSPARENT);
+        g.drawRect(0, 0, width, height, true);
+        g.dispose();
+
+        return buffer;
+    }
+
+    @Override
     public ImageBuffer getImageBuffer(Media media)
     {
         Check.notNull(media);

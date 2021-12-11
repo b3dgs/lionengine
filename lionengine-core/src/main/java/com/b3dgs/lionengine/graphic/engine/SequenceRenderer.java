@@ -28,13 +28,14 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.Scanline;
 import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.Transform;
 
 /**
  * Sequence rendering.
  */
-final class SequenceRenderer
+public final class SequenceRenderer
 {
     /** Filter graphic. */
     private final Graphic graphic;
@@ -46,6 +47,8 @@ final class SequenceRenderer
     private Resolution source;
     /** Filter reference. */
     private Filter filter = FilterNone.INSTANCE;
+    /** Scanline reference. */
+    private Scanline scanline = ScanlineNone.INSTANCE;
     /** Image buffer (can be <code>null</code> for direct rendering). */
     private ImageBuffer buf;
     /** Filter used (can be <code>null</code> for direct rendering). */
@@ -98,6 +101,16 @@ final class SequenceRenderer
     }
 
     /**
+     * Set the scanline to use.
+     * 
+     * @param scanline The scanline to use (if <code>null</code> then {@link ScanlineNone#INSTANCE} is used).
+     */
+    void setScanline(Scanline scanline)
+    {
+        this.scanline = Optional.ofNullable(scanline).orElse(ScanlineNone.INSTANCE);
+    }
+
+    /**
      * Initialize resolution.
      * 
      * @param source The resolution source (must not be <code>null</code>).
@@ -110,24 +123,13 @@ final class SequenceRenderer
         setSystemCursorVisible(cursorVisibility.booleanValue());
         this.source = source;
         screen.onSourceChanged(source);
-        final int width = source.getWidth();
-        final int height = source.getHeight();
+        buf = Graphics.createImageBuffer(source.getWidth(), source.getHeight());
+        transform = getTransform();
 
-        // Standard rendering
-        final Resolution output = config.getOutput();
-        if (FilterNone.INSTANCE.equals(filter) && width == output.getWidth() && height == output.getHeight())
-        {
-            buf = null;
-            transform = null;
-        }
-        // Scaled rendering
-        else
-        {
-            buf = Graphics.createImageBuffer(width, height);
-            transform = getTransform();
-            final Graphic gbuf = buf.createGraphic();
-            graphic.setGraphic(gbuf.getGraphic());
-        }
+        final Graphic gbuf = buf.createGraphic();
+        graphic.setGraphic(gbuf.getGraphic());
+
+        scanline.prepare(config);
     }
 
     /**
@@ -176,17 +178,11 @@ final class SequenceRenderer
     {
         if (screen.isReady())
         {
+            target.render(graphic);
+
             final Graphic g = screen.getGraphic();
-            if (buf == null)
-            {
-                // Direct rendering
-                target.render(g);
-            }
-            else
-            {
-                target.render(graphic);
-                g.drawImage(filter.filter(buf), transform, 0, 0);
-            }
+            g.drawImage(filter.filter(buf), transform, 0, 0);
+            scanline.render(g);
         }
     }
 }

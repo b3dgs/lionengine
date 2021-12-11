@@ -81,6 +81,16 @@ public interface FactoryGraphic
     ImageBuffer createImageBuffer(int width, int height, ColorRgba transparency);
 
     /**
+     * Create an image buffer with alpha support.
+     * 
+     * @param width The image width (must be strictly positive).
+     * @param height The image height (must be strictly positive).
+     * @return The image buffer.
+     * @throws LionEngineException If invalid arguments.
+     */
+    ImageBuffer createImageBufferAlpha(int width, int height);
+
+    /**
      * Get an image buffer from an image file.
      * 
      * @param media The image media (must not be <code>null</code>).
