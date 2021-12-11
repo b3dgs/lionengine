@@ -39,6 +39,9 @@ import com.b3dgs.lionengine.graphic.Transform;
  */
 public final class SequenceRenderer implements Rasterbar
 {
+    /** Scaling precision. */
+    private static final double SCALE_PRECISION = 0.01;
+
     /** Filter graphic. */
     private final Graphic graphic;
     /** Config reference. */
@@ -208,9 +211,16 @@ public final class SequenceRenderer implements Rasterbar
     {
         final Resolution output = config.getOutput();
 
-        final double scaleX = output.getWidth() / (double) source.getWidth();
         final double scaleY = output.getHeight() / (double) source.getHeight();
 
+        if (UtilMath.equals(output.getWidth() / (double) output.getHeight(),
+                            source.getWidth() / (double) source.getHeight(),
+                            SCALE_PRECISION))
+        {
+            return filter.getTransform(scaleY, scaleY);
+        }
+
+        final double scaleX = output.getWidth() / (double) source.getWidth();
         return filter.getTransform(scaleX, scaleY);
     }
 

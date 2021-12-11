@@ -316,7 +316,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     public final void setZoom(double factor)
     {
         final double scale = UtilMath.clamp(factor, 0.1, 5.0);
-        final Resolution zoomed = resolution.getScaled(scale, scale);
+        final Resolution zoomed = resolution.getScaled(scale);
         renderer.initResolution(zoomed);
         onResolutionChanged(zoomed.getWidth(), zoomed.getHeight());
     }

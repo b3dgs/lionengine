@@ -80,6 +80,22 @@ final class UtilMathTest
     }
 
     /**
+     * Test the equals function.
+     */
+    @Test
+    void testEquals()
+    {
+        assertTrue(UtilMath.equals(0.0, 0.0, Double.MIN_VALUE));
+        assertTrue(UtilMath.equals(1.0, 1.0, Double.MIN_VALUE));
+        assertTrue(UtilMath.equals(1.0, 1.1, 0.2));
+        assertTrue(UtilMath.equals(1.1, 1.0, 0.2));
+
+        assertFalse(UtilMath.equals(0.0, 0.0, 0.0));
+        assertFalse(UtilMath.equals(1.0, 0.0, 0.0));
+        assertFalse(UtilMath.equals(1.0, 0.0, 0.05));
+    }
+
+    /**
      * Test the clamp function.
      */
     @Test

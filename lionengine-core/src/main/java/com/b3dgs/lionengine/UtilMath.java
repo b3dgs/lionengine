@@ -25,6 +25,24 @@ package com.b3dgs.lionengine;
 public final class UtilMath
 {
     /**
+     * Check if double equals with precision.
+     * 
+     * @param a The first value.
+     * @param b The second value.
+     * @param precision The precision tolerance (excluded).
+     * @return <code>true</code> if equals in precision, <code>false</code> else.
+     */
+    public static boolean equals(double a, double b, double precision)
+    {
+        final double v = a - b;
+        if (v < 0)
+        {
+            return -v < precision;
+        }
+        return v < precision;
+    }
+
+    /**
      * Get the rounded floor or ceil value depending of the speed.
      * 
      * @param speed The speed value.
