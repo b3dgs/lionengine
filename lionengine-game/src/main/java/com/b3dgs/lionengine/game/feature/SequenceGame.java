@@ -24,8 +24,10 @@ import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.engine.Loop;
 import com.b3dgs.lionengine.graphic.engine.LoopFrameSkipping;
+import com.b3dgs.lionengine.graphic.engine.Rasterbar;
 import com.b3dgs.lionengine.graphic.engine.Sequencable;
 import com.b3dgs.lionengine.graphic.engine.Sequence;
 import com.b3dgs.lionengine.graphic.engine.Sequencer;
@@ -120,6 +122,39 @@ public abstract class SequenceGame<W extends WorldGame> extends Sequence
             public void setSystemCursorVisible(boolean visible)
             {
                 SequenceGame.this.setSystemCursorVisible(visible);
+            }
+        });
+        // CHECKSTYLE IGNORE LINE: AnonInnerLength
+        services.add(new Rasterbar()
+        {
+            @Override
+            public void clearRasterbarColor()
+            {
+                SequenceGame.this.clearRasterbarColor();
+            }
+
+            @Override
+            public void addRasterbarColor(ImageBuffer buffer)
+            {
+                SequenceGame.this.addRasterbarColor(buffer);
+            }
+
+            @Override
+            public void setRasterbarOffset(int offsetY, int factorY)
+            {
+                SequenceGame.this.setRasterbarOffset(offsetY, factorY);
+            }
+
+            @Override
+            public void setRasterbarY(int y1, int y2)
+            {
+                SequenceGame.this.setRasterbarY(y1, y2);
+            }
+
+            @Override
+            public void renderRasterbar()
+            {
+                SequenceGame.this.renderRasterbar();
             }
         });
         services.add((Zooming) this::setZoom);

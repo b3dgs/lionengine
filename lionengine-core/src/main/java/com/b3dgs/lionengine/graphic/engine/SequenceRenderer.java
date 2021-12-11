@@ -23,11 +23,13 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.RenderableVoid;
 import com.b3dgs.lionengine.graphic.Scanline;
 import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.Transform;
@@ -35,7 +37,7 @@ import com.b3dgs.lionengine.graphic.Transform;
 /**
  * Sequence rendering.
  */
-public final class SequenceRenderer
+public final class SequenceRenderer implements Rasterbar
 {
     /** Filter graphic. */
     private final Graphic graphic;
@@ -57,6 +59,16 @@ public final class SequenceRenderer
     private Screen screen;
     /** Pending cursor visibility. */
     private Boolean cursorVisibility = Boolean.TRUE;
+
+    private final IntMap<Integer[]> raster = new IntMap<>();
+    private Renderable renderable = RenderableVoid.getInstance();
+    private int[] bu;
+    private int w;
+    private int h;
+    private int y1;
+    private int marginY;
+    private int offsetY;
+    private int factorY;
 
     /**
      * Constructor base.
@@ -123,7 +135,10 @@ public final class SequenceRenderer
         setSystemCursorVisible(cursorVisibility.booleanValue());
         this.source = source;
         screen.onSourceChanged(source);
-        buf = Graphics.createImageBuffer(source.getWidth(), source.getHeight());
+        w = source.getWidth();
+        h = source.getHeight();
+        buf = Graphics.createImageBuffer(w, h);
+        bu = new int[w * h];
         transform = getTransform();
 
         final Graphic gbuf = buf.createGraphic();
@@ -157,6 +172,34 @@ public final class SequenceRenderer
     }
 
     /**
+     * Render.
+     * 
+     * @param g The graphic output.
+     */
+    private void renderRasterbar(Graphic g)
+    {
+        buf.getRgb(0, 0, w, h, bu, 0, w);
+        for (int i = 0; i < bu.length; i++)
+        {
+            final int y = h - i / w;
+            final Integer[] k = raster.get(bu[i]);
+            if (k != null)
+            {
+                final int r = UtilMath.clamp((y1 + y + offsetY) / factorY, 1, k.length - 1);
+                if (y < marginY)
+                {
+                    bu[i] = k[0].intValue();
+                }
+                else if (k.length > 1 && k[r] != null)
+                {
+                    bu[i] = k[r].intValue();
+                }
+            }
+        }
+        buf.setRgb(0, 0, w, h, bu, 0, w);
+    }
+
+    /**
      * Get the transform associated to the filter keeping screen scale independent.
      * 
      * @return The associated transform instance.
@@ -184,5 +227,53 @@ public final class SequenceRenderer
             g.drawImage(filter.filter(buf), transform, 0, 0);
             scanline.render(g);
         }
+    }
+
+    @Override
+    public void clearRasterbarColor()
+    {
+        renderable = RenderableVoid.getInstance();
+        raster.clear();
+    }
+
+    @Override
+    public void addRasterbarColor(ImageBuffer buffer)
+    {
+        renderable = this::renderRasterbar;
+        for (int x = 0; x < buffer.getWidth(); x++)
+        {
+            final int p = buffer.getRgb(x, 0);
+            Integer[] v = raster.get(p);
+            if (v == null)
+            {
+                v = new Integer[buffer.getHeight() - 1];
+                raster.put(p, v);
+            }
+
+            for (int y = 0; y < buffer.getHeight() - 1; y++)
+            {
+                v[y] = Integer.valueOf(buffer.getRgb(x, y + 1));
+            }
+        }
+    }
+
+    @Override
+    public void setRasterbarOffset(int offsetY, int factorY)
+    {
+        this.offsetY = offsetY;
+        this.factorY = factorY;
+    }
+
+    @Override
+    public void setRasterbarY(int y1, int y2)
+    {
+        this.y1 = y1;
+        marginY = y2 - y1;
+    }
+
+    @Override
+    public void renderRasterbar()
+    {
+        renderable.render(graphic);
     }
 }

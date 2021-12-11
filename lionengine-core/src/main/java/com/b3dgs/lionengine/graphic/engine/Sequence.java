@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Scanline;
 import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.ScreenListener;
@@ -45,7 +46,7 @@ import com.b3dgs.lionengine.graphic.ScreenListener;
  * @see InputDevice
  */
 public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeControl, SourceResolutionProvider,
-                               ScreenListener
+                               ScreenListener, Rasterbar
 {
     /** Update fps delay in milli. */
     private static final int UPDATE_FPS_DELAY_MILLI = 500;
@@ -369,6 +370,40 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     public void onTerminated(boolean hasNextSequence)
     {
         // Nothing by default
+    }
+
+    /*
+     * Rasterbar
+     */
+
+    @Override
+    public void clearRasterbarColor()
+    {
+        renderer.clearRasterbarColor();
+    }
+
+    @Override
+    public void addRasterbarColor(ImageBuffer buffer)
+    {
+        renderer.addRasterbarColor(buffer);
+    }
+
+    @Override
+    public void setRasterbarOffset(int offsetY, int factorY)
+    {
+        renderer.setRasterbarOffset(offsetY, factorY);
+    }
+
+    @Override
+    public void setRasterbarY(int y1, int y2)
+    {
+        renderer.setRasterbarY(y1, y2);
+    }
+
+    @Override
+    public void renderRasterbar()
+    {
+        renderer.renderRasterbar();
     }
 
     /*

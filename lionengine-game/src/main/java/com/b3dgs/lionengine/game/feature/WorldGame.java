@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.engine.Rasterbar;
 import com.b3dgs.lionengine.graphic.engine.Sequencer;
 import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 import com.b3dgs.lionengine.io.FileReading;
@@ -80,6 +81,8 @@ public abstract class WorldGame implements Updatable, Renderable, Spawner
     protected final Sequencer sequencer;
     /** Spawner. */
     protected final Spawner spawner;
+    /** Rasterbar control. */
+    protected final Rasterbar rasterbar;
 
     /**
      * Create a new world. The sequence given by reference allows to retrieve essential data such as {@link Config},
@@ -93,6 +96,7 @@ public abstract class WorldGame implements Updatable, Renderable, Spawner
 
         this.services = services;
         context = services.get(Context.class);
+        rasterbar = services.get(Rasterbar.class);
         config = context.getConfig();
         output = config.getOutput();
 

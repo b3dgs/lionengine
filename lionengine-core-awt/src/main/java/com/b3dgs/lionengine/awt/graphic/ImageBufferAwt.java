@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.awt.graphic;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
@@ -81,7 +82,13 @@ final class ImageBufferAwt implements ImageBuffer
     @Override
     public void setRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
     {
-        bufferedImage.setRGB(startX, startY, w, h, rgbArray, offset, scansize);
+        // Slow, can be replaced without unexpected behavior
+        // bufferedImage.setRGB(startX, startY, w, h, rgbArray, offset, scansize);
+        System.arraycopy(rgbArray,
+                         0,
+                         ((DataBufferInt) bufferedImage.getRaster().getDataBuffer()).getData(),
+                         0,
+                         rgbArray.length);
     }
 
     @Override
@@ -96,8 +103,18 @@ final class ImageBufferAwt implements ImageBuffer
     }
 
     @Override
+    public int[] getRgbRef()
+    {
+        return ((DataBufferInt) bufferedImage.getRaster().getDataBuffer()).getData();
+    }
+
+    @Override
     public int[] getRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
     {
+        // Fast, but not working with flipped rendered images
+        // final int[] imgData = ((DataBufferInt) bufferedImage.getRaster().getDataBuffer()).getData();
+        // System.arraycopy(imgData, 0, rgbArray, 0, imgData.length);
+        // return rgbArray;
         return bufferedImage.getRGB(startX, startY, w, h, rgbArray, offset, scansize);
     }
 

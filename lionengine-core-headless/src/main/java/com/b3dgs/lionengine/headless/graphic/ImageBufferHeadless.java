@@ -157,6 +157,12 @@ final class ImageBufferHeadless implements ImageBuffer
     }
 
     @Override
+    public int[] getRgbRef()
+    {
+        return buffer;
+    }
+
+    @Override
     public int[] getRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
     {
         int yoff = offset;

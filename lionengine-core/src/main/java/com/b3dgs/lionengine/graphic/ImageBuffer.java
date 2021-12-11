@@ -76,6 +76,13 @@ public interface ImageBuffer extends ImageSurface
     int getRgb(int x, int y);
 
     /**
+     * Returns pixel data reference. Can cause unexpected rendering if called.
+     * 
+     * @return The pixels color.
+     */
+    int[] getRgbRef();
+
+    /**
      * Returns an array of integer pixels representing the image data.
      * 
      * @param startX the starting X coordinate

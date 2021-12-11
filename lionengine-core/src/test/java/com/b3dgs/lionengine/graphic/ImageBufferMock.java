@@ -91,6 +91,12 @@ public class ImageBufferMock implements ImageBuffer
     }
 
     @Override
+    public int[] getRgbRef()
+    {
+        return rgba;
+    }
+
+    @Override
     public int[] getRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
     {
         System.arraycopy(rgba, 0, rgbArray, 0, w * h);
