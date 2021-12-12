@@ -22,7 +22,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Version;
 
@@ -49,29 +48,6 @@ final class EngineAwtTest
         EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT);
 
         assertThrows(() -> EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT),
-                     "The engine has already been started !");
-    }
-
-    /**
-     * Test start without resources.
-     */
-    @Test
-    void testNullResources()
-    {
-        assertThrows(() -> EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, (String) null),
-                     "Unexpected null argument !");
-    }
-
-    /**
-     * Test start with resources already started.
-     */
-    @Test
-    void testResourcesAlready()
-    {
-        EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING);
-
-        assertTrue(Engine.isStarted());
-        assertThrows(() -> EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING),
                      "The engine has already been started !");
     }
 

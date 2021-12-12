@@ -34,10 +34,12 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.FactoryMediaDefault;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.UtilTests;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 
 /**
@@ -64,6 +66,15 @@ final class GraphicsTest
     @AfterAll
     static void afterAll()
     {
+        try
+        {
+            UtilFile.deleteFile(new File(System.getProperty("java.io.tmpdir"), GraphicsTest.class.getSimpleName()));
+        }
+        catch (final LionEngineException exception)
+        {
+            Verbose.exception(exception);
+        }
+
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
 

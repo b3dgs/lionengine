@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.graphic.raster;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.io.File;
 import java.util.Collections;
 
 import org.junit.jupiter.api.AfterAll;
@@ -29,9 +30,12 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.FactoryMediaDefault;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.UtilFolder;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -63,6 +67,15 @@ final class RasterImageTest
     @AfterAll
     static void afterAll()
     {
+        try
+        {
+            UtilFile.deleteFile(new File(System.getProperty("java.io.tmpdir"), RasterImageTest.class.getSimpleName()));
+        }
+        catch (final LionEngineException exception)
+        {
+            Verbose.exception(exception);
+        }
+
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
 

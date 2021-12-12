@@ -16,9 +16,6 @@
  */
 package com.b3dgs.lionengine.awt.graphic;
 
-import java.util.Optional;
-
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.LionEngineException;
@@ -30,7 +27,7 @@ import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.graphic.Graphics;
 
 /**
- * Engine AWT implementation.
+ * Engine Awt implementation.
  */
 public class EngineAwt extends Engine
 {
@@ -46,7 +43,7 @@ public class EngineAwt extends Engine
      */
     public static void start(String name, Version version)
     {
-        Engine.start(new EngineAwt(name, version, Constant.EMPTY_STRING));
+        Engine.start(new EngineAwt(name, version, null, null));
     }
 
     /**
@@ -54,12 +51,13 @@ public class EngineAwt extends Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param resourcesDir The main resources directory (must not be <code>null</code>).
+     * @param resourcesDir The main resources directory (can be <code>null</code>, {@link Medias#DEFAULT_RESOURCES_DIR}
+     *            used then).
      * @throws LionEngineException If arguments error.
      */
     public static void start(String name, Version version, String resourcesDir)
     {
-        Engine.start(new EngineAwt(name, version, resourcesDir));
+        Engine.start(new EngineAwt(name, version, resourcesDir, null));
     }
 
     /**
@@ -67,55 +65,45 @@ public class EngineAwt extends Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param classResource The class loader reference (resources entry point, non <code>null</code>).
+     * @param resourcesClass The class loader reference (resources entry point, can be <code>null</code>).
      * @throws LionEngineException If arguments error.
      */
-    public static void start(String name, Version version, Class<?> classResource)
+    public static void start(String name, Version version, Class<?> resourcesClass)
     {
-        Engine.start(new EngineAwt(name, version, classResource));
+        Engine.start(new EngineAwt(name, version, null, resourcesClass));
     }
 
-    /** String resources directory. */
-    private final Optional<String> resourcesDir;
-    /** Class resource. */
-    private final Optional<Class<?>> classResource;
+    /**
+     * Start engine. Has to be called before anything and only one time, in the main.
+     * 
+     * @param name The program name (must not be <code>null</code>).
+     * @param version The program version (must not be <code>null</code>).
+     * @param resourcesDir The main resources directory (can be <code>null</code>, {@link Medias#DEFAULT_RESOURCES_DIR}
+     *            used then).
+     * @param resourcesClass The class loader reference (resources entry point, can be <code>null</code>).
+     * @throws LionEngineException If arguments error.
+     */
+    public static void start(String name, Version version, String resourcesDir, Class<?> resourcesClass)
+    {
+        Engine.start(new EngineAwt(name, version, resourcesDir, resourcesClass));
+    }
 
     /**
      * Create engine.
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param resourcesDir The main resources directory (must not be <code>null</code>).
+     * @param resourcesDir The main resources directory (can be <code>null</code>, {@link Medias#DEFAULT_RESOURCES_DIR}
+     *            used then).
+     * @param resourcesClass The class loader reference (resources entry point, can be <code>null</code>).
      * @throws LionEngineException If arguments error.
      */
-    public EngineAwt(String name, Version version, String resourcesDir)
+    public EngineAwt(String name, Version version, String resourcesDir, Class<?> resourcesClass)
     {
         super(name, version);
 
-        Check.notNull(resourcesDir);
-
-        this.resourcesDir = Optional.of(resourcesDir);
-        classResource = Optional.empty();
         Medias.setResourcesDirectory(resourcesDir);
-    }
-
-    /**
-     * Create engine.
-     * 
-     * @param name The program name (must not be <code>null</code>).
-     * @param version The program version (must not be <code>null</code>).
-     * @param classResource The class loader reference (resources entry point, non <code>null</code>).
-     * @throws LionEngineException If arguments error.
-     */
-    public EngineAwt(String name, Version version, Class<?> classResource)
-    {
-        super(name, version);
-
-        Check.notNull(classResource);
-
-        this.classResource = Optional.of(classResource);
-        resourcesDir = Optional.empty();
-        Medias.setLoadFromJar(classResource);
+        Medias.setLoadFromJar(resourcesClass);
     }
 
     /*
@@ -126,15 +114,9 @@ public class EngineAwt extends Engine
     protected void open()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicAwt());
-        if (resourcesDir.isPresent())
-        {
-            final String workingDir = Constant.getSystemProperty(PROPERTY_USER_DIR, Constant.EMPTY_STRING);
-            Verbose.info("Resources directory = ", UtilFolder.getPath(workingDir, resourcesDir.get()));
-        }
-        else
-        {
-            Verbose.info("Class resources = ", classResource.get().getName());
-        }
+
+        final String workingDir = Constant.getSystemProperty(PROPERTY_USER_DIR, Constant.EMPTY_STRING);
+        Verbose.info("Resources dir = ", UtilFolder.getPath(workingDir, Medias.getResourcesDirectory()));
     }
 
     @Override

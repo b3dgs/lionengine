@@ -26,20 +26,10 @@ public interface FactoryMedia
      * 
      * @param separator The separator used (must not be <code>null</code>).
      * @param resourcesDir The resources directory path (must not be <code>null</code>).
+     * @param resourcesClass The class loader used (must not be <code>null</code>).
      * @param path The media path (must not be <code>null</code>).
      * @return The created media.
      * @throws LionEngineException If invalid arguments.
      */
-    Media create(String separator, String resourcesDir, String... path);
-
-    /**
-     * Create a media from an abstract path.
-     * 
-     * @param separator The separator used (must not be <code>null</code>).
-     * @param loader The class loader used (can be <code>null</code> if not used).
-     * @param path The media path (must not be <code>null</code>).
-     * @return The created media.
-     * @throws LionEngineException If invalid arguments.
-     */
-    Media create(String separator, Class<?> loader, String... path);
+    Media create(String separator, String resourcesDir, Class<?> resourcesClass, String... path);
 }

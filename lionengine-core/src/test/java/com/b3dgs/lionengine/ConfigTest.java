@@ -21,6 +21,8 @@ import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -28,6 +30,25 @@ import org.junit.jupiter.api.Test;
  */
 final class ConfigTest
 {
+    /**
+     * Prepare tests.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setFactoryMedia(new FactoryMediaDefault());
+        Medias.setLoadFromJar(ConfigTest.class);
+    }
+
+    /**
+     * Clean up tests.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        Medias.setLoadFromJar(null);
+    }
+
     /**
      * Test <code>null</code> resolution.
      */

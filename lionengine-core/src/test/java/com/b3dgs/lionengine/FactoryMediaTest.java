@@ -47,30 +47,21 @@ final class FactoryMediaTest
     }
 
     /**
-     * Test create media from resources directory.
+     * Test create media.
      */
     @Test
-    void testCreateMediaResources()
+    void testCreateMedia()
     {
         final FactoryMedia factory = new FactoryMediaDefault();
-        final Media media = factory.create(java.io.File.separator, "rsc", "test.txt");
+        final Media media = factory.create(java.io.File.separator, "rsc", FactoryMediaTest.class, "test.txt");
 
         assertEquals("", media.getParentPath());
         assertEquals("test.txt", media.getPath());
-        assertEquals("rsc" + java.io.File.separator + "test.txt", media.getFile().getPath());
-    }
-
-    /**
-     * Test create media from loader.
-     */
-    @Test
-    void testCreateMediaLoader()
-    {
-        final FactoryMedia factory = new FactoryMediaDefault();
-        final Media media = factory.create(java.io.File.separator, FactoryMediaTest.class, "test.txt");
-
-        assertEquals("", media.getParentPath());
-        assertEquals("test.txt", media.getPath());
+        assertEquals(System.getProperty("java.io.tmpdir")
+                     + FactoryMediaTest.class.getSimpleName()
+                     + java.io.File.separator
+                     + "test.txt",
+                     media.getFile().getPath());
         assertTrue(media.getFile().getPath().endsWith("test.txt"));
     }
 }

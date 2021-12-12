@@ -19,7 +19,6 @@ package com.b3dgs.lionengine;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertThrowsNpe;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
@@ -29,7 +28,6 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Optional;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -63,7 +61,7 @@ final class MediasTest
     /** Old resources directory. */
     private String oldDir;
     /** Old loader. */
-    private Optional<Class<?>> oldLoader;
+    private Class<?> oldLoader;
 
     /**
      * Prepare test.
@@ -83,7 +81,7 @@ final class MediasTest
     public void afterTest()
     {
         Medias.setResourcesDirectory(oldDir);
-        Medias.setLoadFromJar(oldLoader.orElse(null));
+        Medias.setLoadFromJar(oldLoader);
     }
 
     /**
@@ -120,13 +118,23 @@ final class MediasTest
 
         assertEquals("", media.getParentPath());
         assertEquals("test.txt", media.getPath());
-        assertEquals("rsc" + File.separator + "test.txt", media.getFile().getPath());
+        assertEquals(System.getProperty("java.io.tmpdir")
+                     + MediasTest.class.getSimpleName()
+                     + java.io.File.separator
+                     + "test.txt",
+                     media.getFile().getPath());
 
         final Media media2 = Medias.create("test", "toto.txt");
 
         assertEquals("test", media2.getParentPath());
         assertEquals("test" + Constant.SLASH + "toto.txt", media2.getPath());
-        assertEquals("rsc" + File.separator + "test" + File.separator + "toto.txt", media2.getFile().getPath());
+        assertEquals(System.getProperty("java.io.tmpdir")
+                     + MediasTest.class.getSimpleName()
+                     + java.io.File.separator
+                     + "test"
+                     + java.io.File.separator
+                     + "toto.txt",
+                     media2.getFile().getPath());
     }
 
     /**
@@ -137,7 +145,7 @@ final class MediasTest
     {
         Medias.setLoadFromJar(MediasTest.class);
 
-        assertEquals(MediasTest.class, Medias.getResourcesLoader().get());
+        assertEquals(MediasTest.class, Medias.getResourcesLoader());
 
         final Media media = Medias.create("test.txt");
 
@@ -176,7 +184,11 @@ final class MediasTest
         final File file = new File("rsc" + File.separator + "test.txt");
         final Media media = Medias.get(file);
 
-        assertEquals(file, media.getFile());
+        assertEquals(new File(System.getProperty("java.io.tmpdir")
+                              + MediasTest.class.getSimpleName()
+                              + java.io.File.separator
+                              + "test.txt"),
+                     media.getFile());
         assertEquals("test.txt", media.getPath());
     }
 
@@ -195,83 +207,6 @@ final class MediasTest
     }
 
     /**
-     * Test get JAR resources file.
-     */
-    @Test
-    void testGetJarResources()
-    {
-        Medias.setLoadFromJar(MediasTest.class);
-
-        final File folder = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING).getFile();
-        final String prefix = Medias.getResourcesLoader()
-                                    .get()
-                                    .getPackage()
-                                    .getName()
-                                    .replace(Constant.DOT, Constant.SLASH);
-        final String jarPath = folder.getPath().replace(File.separator, Constant.SLASH);
-        final int jarSeparatorIndex = jarPath.indexOf(prefix);
-        final File jar = Medias.getJarResources();
-
-        assertEquals(new File(jarPath.substring(0, jarSeparatorIndex)), jar);
-    }
-
-    /**
-     * Test get JAR resources file without loader enabled.
-     */
-    @Test
-    void testGetJarResourcesNoLoader()
-    {
-        Medias.setLoadFromJar(null);
-
-        assertThrows(Medias::getJarResources, Medias.JAR_LOADER_ERROR);
-    }
-
-    /**
-     * Test get JAR resources prefix.
-     */
-    @Test
-    void testGetJarResourcesPrefix()
-    {
-        Medias.setLoadFromJar(MediasTest.class);
-
-        final File folder = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING).getFile();
-        final String prefix = Medias.getResourcesLoader()
-                                    .get()
-                                    .getPackage()
-                                    .getName()
-                                    .replace(Constant.DOT, Constant.SLASH);
-        final String jarPath = folder.getPath().replace(File.separator, Constant.SLASH);
-        final int jarSeparatorIndex = jarPath.indexOf(prefix);
-        final String resourcesPrefix = Medias.getJarResourcesPrefix();
-
-        assertEquals(jarPath.substring(jarSeparatorIndex), resourcesPrefix);
-    }
-
-    /**
-     * Test get JAR resources prefix file without loader enabled.
-     */
-    @Test
-    void testGetJarResourcesPrefixNoLoader()
-    {
-        Medias.setLoadFromJar(null);
-
-        assertThrows(Medias::getJarResourcesPrefix, Medias.JAR_LOADER_ERROR);
-    }
-
-    /**
-     * Test get medias by extension.
-     */
-    @Test
-    void testGetByExtension()
-    {
-        Medias.setLoadFromJar(MediasTest.class);
-        final Collection<Media> medias = Medias.getByExtension("png", Medias.create("graphic", "engine"));
-
-        assertEquals(1, medias.size());
-        assertEquals(Medias.create("graphic", "engine", "image.png"), medias.iterator().next());
-    }
-
-    /**
      * Test get medias by extension.
      * 
      * @throws IOException If error.
@@ -282,12 +217,17 @@ final class MediasTest
         final Path temp = Files.createTempDirectory(MediasTest.class.getSimpleName());
         final Path file = Files.createTempFile(temp, "temp", ".png");
         Files.createTempFile(temp, "temp", ".txt");
-        Medias.setResourcesDirectory(temp.toFile().getAbsolutePath());
-        final Collection<Media> medias = Medias.getByExtension("png", Medias.create(""));
+        try
+        {
+            Medias.setResourcesDirectory(temp.toFile().getAbsolutePath());
+            final Collection<Media> medias = Medias.getByExtension("png", Medias.create(""));
 
-        assertEquals(file.toFile().getName(), medias.iterator().next().getPath());
-
-        UtilFolder.deleteDirectory(temp.toFile());
+            assertEquals(file.toFile().getName(), medias.iterator().next().getPath());
+        }
+        finally
+        {
+            UtilFolder.deleteDirectory(temp.toFile());
+        }
     }
 
     /**
@@ -303,17 +243,6 @@ final class MediasTest
                                                                "png");
 
         assertEquals("image.png", medias.iterator().next().getPath());
-    }
-
-    /**
-     * Test get medias from JAR.
-     */
-    @Test
-    void testGetMediasJar()
-    {
-        Medias.setLoadFromJar(MediasTest.class);
-
-        assertTrue(Medias.create("").getMedias().contains(Medias.create("image.png")));
     }
 
     /**

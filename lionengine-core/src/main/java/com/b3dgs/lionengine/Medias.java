@@ -20,7 +20,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 
@@ -32,16 +31,16 @@ import java.util.zip.ZipEntry;
  */
 public final class Medias
 {
-    /** Not in JAR resources. */
-    static final String JAR_LOADER_ERROR = "Load from JAR not enabled !";
+    /** Default resources directory. */
+    public static final String DEFAULT_RESOURCES_DIR = "assets";
     /** Path separator. */
     private static final String SEPARATOR = Constant.SLASH;
     /** Factory media implementation. */
     private static FactoryMedia factoryMedia = new FactoryMediaDefault();
     /** Resources directory. */
-    private static String resourcesDir = Constant.EMPTY_STRING;
+    private static String resourcesDir = DEFAULT_RESOURCES_DIR + getSeparator();
     /** Class loader. */
-    private static Optional<Class<?>> loader = Optional.empty();
+    private static Class<?> loader = Engine.class;
 
     /**
      * Create a media.
@@ -52,11 +51,7 @@ public final class Medias
      */
     public static synchronized Media create(String... path)
     {
-        if (loader.isPresent())
-        {
-            return factoryMedia.create(SEPARATOR, loader.get(), path);
-        }
-        return factoryMedia.create(SEPARATOR, resourcesDir, path);
+        return factoryMedia.create(SEPARATOR, resourcesDir, loader, path);
     }
 
     /**
@@ -81,23 +76,29 @@ public final class Medias
     {
         if (directory == null)
         {
-            resourcesDir = Constant.EMPTY_STRING + getSeparator();
+            resourcesDir = DEFAULT_RESOURCES_DIR + getSeparator();
         }
         else
         {
             resourcesDir = directory + getSeparator();
         }
-        loader = Optional.empty();
     }
 
     /**
-     * Activate or no the resources loading from *.jar. A <code>null</code> value will disable load from jar.
+     * Set class resources root loading from Jar.
      * 
-     * @param clazz The class loader reference resources entry point (may be <code>null</code>).
+     * @param clazz The class loader reference resources entry point (can be <code>null</code>).
      */
     public static synchronized void setLoadFromJar(Class<?> clazz)
     {
-        loader = Optional.ofNullable(clazz);
+        if (clazz == null)
+        {
+            loader = Engine.class;
+        }
+        else
+        {
+            loader = clazz;
+        }
     }
 
     /**
@@ -130,17 +131,17 @@ public final class Medias
         Check.notNull(extension);
         Check.notNull(folder);
 
-        if (!loader.isPresent())
+        if (folder.isJar())
         {
             return getFilesByExtension(folder, extension);
         }
 
-        final File jar = getJarResources();
-        final String prefix = getJarResourcesPrefix();
+        final Media media = Medias.create(Constant.EMPTY_STRING);
+        final String prefix = media.getFile().getPath();
         final String fullPath = Medias.create(prefix, folder.getPath()).getPath();
         final int prefixLength = prefix.length() + 1;
 
-        return getByExtension(jar, fullPath, prefixLength, extension);
+        return getByExtension(new File(prefix), fullPath, prefixLength, extension);
     }
 
     /**
@@ -157,10 +158,10 @@ public final class Medias
     {
         if (jar.isDirectory())
         {
-            return UtilFile.getFilesByExtension(new File(jar, fullPath), extension)
+            return UtilFile.getFilesByExtension(new File(fullPath), extension)
                            .stream()
                            .map(file -> Medias.create(file.getPath()
-                                                          .substring(jar.getPath().length() + prefixLength)
+                                                          .substring(prefixLength)
                                                           .split("\\" + File.separator)))
                            .collect(Collectors.toList());
         }
@@ -211,51 +212,9 @@ public final class Medias
      * 
      * @return The resources loader.
      */
-    public static synchronized Optional<Class<?>> getResourcesLoader()
+    public static synchronized Class<?> getResourcesLoader()
     {
         return loader;
-    }
-
-    /**
-     * Get the running JAR resources. Load from JAR must be enabled.
-     * 
-     * @return The JAR file.
-     * @throws LionEngineException If JAR not available.
-     */
-    public static synchronized File getJarResources()
-    {
-        if (!loader.isPresent())
-        {
-            throw new LionEngineException(JAR_LOADER_ERROR);
-        }
-
-        final Media media = Medias.create(Constant.EMPTY_STRING);
-        final String path = media.getFile().getPath().replace(File.separator, Constant.SLASH);
-        final String prefix = loader.get().getPackage().getName().replace(Constant.DOT, Constant.SLASH);
-        final int jarSeparatorIndex = path.indexOf(prefix);
-        final String jar = path.substring(0, jarSeparatorIndex);
-
-        return new File(jar);
-    }
-
-    /**
-     * Get the running JAR resources prefix folder. Load from JAR must be enabled.
-     * 
-     * @return The resources prefix folder.
-     * @throws LionEngineException If JAR not available.
-     */
-    public static synchronized String getJarResourcesPrefix()
-    {
-        if (!loader.isPresent())
-        {
-            throw new LionEngineException(JAR_LOADER_ERROR);
-        }
-        final Media media = Medias.create(Constant.EMPTY_STRING);
-        final String path = media.getFile().getPath().replace(File.separator, Constant.SLASH);
-        final String prefix = loader.get().getPackage().getName().replace(Constant.DOT, Constant.SLASH);
-        final int jarSeparatorIndex = path.indexOf(prefix);
-
-        return path.substring(jarSeparatorIndex).replace(File.separator, Constant.SLASH);
     }
 
     /**

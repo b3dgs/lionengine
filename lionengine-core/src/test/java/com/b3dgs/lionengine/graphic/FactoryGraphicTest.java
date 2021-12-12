@@ -22,6 +22,8 @@ import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.io.File;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -30,6 +32,7 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.FactoryMediaDefault;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.MediaMock;
 import com.b3dgs.lionengine.Medias;
@@ -62,6 +65,16 @@ public class FactoryGraphicTest
     @AfterAll
     static void afterAll()
     {
+        try
+        {
+            UtilFile.deleteFile(new File(System.getProperty("java.io.tmpdir"),
+                                         FactoryGraphicTest.class.getSimpleName()));
+        }
+        catch (final LionEngineException exception)
+        {
+            Verbose.exception(exception);
+        }
+
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
 

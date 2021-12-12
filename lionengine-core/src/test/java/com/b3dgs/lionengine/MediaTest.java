@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Optional;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -61,7 +60,7 @@ final class MediaTest
     /** Old resources directory. */
     private String oldDir;
     /** Old loader. */
-    private Optional<Class<?>> oldLoader;
+    private Class<?> oldLoader;
 
     /**
      * Prepare test.
@@ -80,7 +79,7 @@ final class MediaTest
     public void afterTest()
     {
         Medias.setResourcesDirectory(oldDir);
-        Medias.setLoadFromJar(oldLoader.orElse(null));
+        Medias.setLoadFromJar(oldLoader);
     }
 
     /**
@@ -89,6 +88,7 @@ final class MediaTest
     @Test
     void testPath()
     {
+        Medias.setLoadFromJar(MediaTest.class);
         final String path = "path";
 
         assertEquals(path, Medias.create(path).getPath());
@@ -125,7 +125,8 @@ final class MediaTest
     @Test
     void testParentPath()
     {
-        final String path = "path";
+        Medias.setLoadFromJar(MediaTest.class);
+        final String path = "image.png";
 
         assertEquals(Constant.EMPTY_STRING, Medias.create(path).getParentPath());
     }
@@ -210,6 +211,8 @@ final class MediaTest
             assertTrue(media.getFile().exists());
             assertTrue(media.getFile().delete());
             assertFalse(media.getFile().exists());
+            assertTrue(media.getFile().getParentFile().delete());
+            assertTrue(media.getFile().getParentFile().getParentFile().delete());
         }
     }
 
@@ -286,6 +289,7 @@ final class MediaTest
     @Test
     void testGetName()
     {
+        Medias.setLoadFromJar(MediaTest.class);
         final Media media = Medias.create("test", "media.ext");
 
         assertEquals("media.ext", media.getName());

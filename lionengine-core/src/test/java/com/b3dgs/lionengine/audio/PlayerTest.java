@@ -93,8 +93,6 @@ final class PlayerTest
                                                        mediaPath.lastIndexOf(Constant.DOT));
 
         assertTrue(playedPrefix.startsWith(mediaPrefix), playedPrefix + "!=" + mediaPrefix);
-
-        Files.delete(new File(player.played.get()).toPath());
     }
 
     /**
@@ -119,8 +117,6 @@ final class PlayerTest
                                                        mediaPath.lastIndexOf(Constant.DOT));
 
         assertTrue(playedPrefix.startsWith(mediaPrefix), playedPrefix + "!=" + mediaPrefix);
-
-        Files.delete(new File(player.played.get()).toPath());
     }
 
     /**

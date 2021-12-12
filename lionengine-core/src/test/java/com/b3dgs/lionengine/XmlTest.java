@@ -24,6 +24,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -80,6 +81,15 @@ final class XmlTest
     @AfterAll
     static void afterAll()
     {
+        try
+        {
+            UtilFile.deleteFile(new File(System.getProperty("java.io.tmpdir"), XmlTest.class.getSimpleName()));
+        }
+        catch (final LionEngineException exception)
+        {
+            Verbose.exception(exception);
+        }
+
         Engine.terminate();
     }
 
