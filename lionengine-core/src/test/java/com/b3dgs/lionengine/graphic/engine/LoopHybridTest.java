@@ -127,7 +127,7 @@ final class LoopHybridTest
 
         assertTimeout(1000L, thread::join);
         assertEquals(maxTick.get(), tick.get());
-        assertEquals(tick.get(), rendered.get());
+        assertTrue(rendered.get() <= tick.get(), rendered.get() + " " + tick.get());
         assertTrue(extrapolation.get().doubleValue() > 0.0, String.valueOf(extrapolation.get().doubleValue()));
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
@@ -223,7 +223,7 @@ final class LoopHybridTest
 
         assertTimeout(1000L, thread::join);
         assertEquals(maxTick.get(), tick.get());
-        assertEquals(tick.get(), rendered.get());
+        assertTrue(rendered.get() <= tick.get(), rendered.get() + " " + tick.get());
         assertTrue(extrapolation.get().doubleValue() < 1.0, String.valueOf(extrapolation.get()));
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
@@ -247,7 +247,7 @@ final class LoopHybridTest
 
         assertTimeout(1000L, thread::join);
         assertEquals(maxTick.get(), tick.get());
-        assertEquals(tick.get() - 1, rendered.get());
+        assertTrue(rendered.get() <= tick.get(), rendered.get() + " " + tick.get());
         assertTrue(extrapolation.get().doubleValue() > 0, String.valueOf(extrapolation.get()));
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
