@@ -39,6 +39,8 @@ import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.engine.Rasterbar;
 import com.b3dgs.lionengine.graphic.engine.Sequencable;
 import com.b3dgs.lionengine.graphic.engine.Sequencer;
 import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
@@ -162,6 +164,38 @@ final class WorldTest
 
             @Override
             public void setSystemCursorVisible(boolean visible)
+            {
+                // Mock
+            }
+        });
+        services.add(new Rasterbar()
+        {
+            @Override
+            public void setRasterbarY(int y1, int y2)
+            {
+                // Mock
+            }
+
+            @Override
+            public void setRasterbarOffset(int offsetY, int factorY)
+            {
+                // Mock
+            }
+
+            @Override
+            public void renderRasterbar()
+            {
+                // Mock
+            }
+
+            @Override
+            public void clearRasterbarColor()
+            {
+                // Mock
+            }
+
+            @Override
+            public void addRasterbarColor(ImageBuffer buffer)
             {
                 // Mock
             }
