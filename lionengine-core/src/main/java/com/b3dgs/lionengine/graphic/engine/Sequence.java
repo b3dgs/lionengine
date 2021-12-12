@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -206,16 +206,16 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     /**
      * Compute the frame rate depending of the game loop speed.
      * 
-     * @param updateFpsTimer The update timing
+     * @param updateFps The update timing
      * @param lastTime The last time value before game loop in nano.
      * @param currentTime The current time after game loop in nano (must be superior or equal to lastTime).
      */
-    private void computeFrameRate(Timing updateFpsTimer, long lastTime, long currentTime)
+    private void computeFrameRate(Tick updateFps, long lastTime, long currentTime)
     {
-        if (updateFpsTimer.elapsed(UPDATE_FPS_DELAY_MILLI))
+        if (updateFps.elapsedTime(getRate(), UPDATE_FPS_DELAY_MILLI))
         {
             currentFrameRate = (int) Math.round(Constant.ONE_SECOND_IN_NANO / (double) (currentTime - lastTime));
-            updateFpsTimer.restart();
+            updateFps.restart();
         }
     }
 
@@ -243,14 +243,14 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         onLoaded(Constant.EXTRP, screen.getGraphic());
 
         // Main loop
-        final Timing updateFpsTimer = new Timing();
-        updateFpsTimer.start();
-        loop.notifyRateChanged(resolution.getRate());
+        final Tick updateFps = new Tick();
+        updateFps.start();
         loop.start(screen, new Frame()
         {
             @Override
             public void update(double extrp)
             {
+                updateFps.update(extrp);
                 Sequence.this.update(extrp);
             }
 
@@ -263,7 +263,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
             @Override
             public void computeFrameRate(long lastTime, long currentTime)
             {
-                Sequence.this.computeFrameRate(updateFpsTimer, lastTime, currentTime);
+                Sequence.this.computeFrameRate(updateFps, lastTime, currentTime);
             }
         });
         screen.removeListener(this);
