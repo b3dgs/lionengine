@@ -140,7 +140,7 @@ public class XmlReader implements AttributesReader
     @Override
     public String getText(String... path)
     {
-        final XmlReader node = getNode(path);
+        final XmlReader node = getNodeReader(path);
         return node.getText();
     }
 
@@ -584,7 +584,7 @@ public class XmlReader implements AttributesReader
     {
         Check.notNull(name);
 
-        final XmlReader xml = getNode(path);
+        final XmlReader xml = getNodeReader(path);
 
         final NodeList list = xml.root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
@@ -601,7 +601,7 @@ public class XmlReader implements AttributesReader
     @Override
     public Optional<XmlReader> getChildOptional(String name, String... path)
     {
-        final XmlReader xml = getNode(path);
+        final XmlReader xml = getNodeReader(path);
 
         final NodeList list = xml.root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
@@ -621,7 +621,7 @@ public class XmlReader implements AttributesReader
         Check.notNull(name);
 
         final Collection<XmlReader> nodes = new ArrayList<>(1);
-        final XmlReader xml = getNode(path);
+        final XmlReader xml = getNodeReader(path);
 
         final NodeList list = xml.root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
@@ -672,7 +672,7 @@ public class XmlReader implements AttributesReader
      * @return The node found.
      * @throws LionEngineException If node not found.
      */
-    private XmlReader getNode(String... path)
+    private XmlReader getNodeReader(String... path)
     {
         XmlReader node = this;
         for (final String element : path)
@@ -719,7 +719,7 @@ public class XmlReader implements AttributesReader
      */
     private String getNodeString(String attribute, String... path)
     {
-        final XmlReader node = getNode(path);
+        final XmlReader node = getNodeReader(path);
         if (!node.root.hasAttribute(attribute))
         {
             throw new LionEngineException(ERROR_ATTRIBUTE + attribute);

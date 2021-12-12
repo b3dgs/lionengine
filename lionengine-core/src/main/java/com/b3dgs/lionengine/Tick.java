@@ -24,6 +24,9 @@ import java.util.List;
  */
 public final class Tick implements Updatable
 {
+    /** One second in milli. */
+    private static final double ONE_SECOND_IN_MILLI = 1_000;
+
     /** Actions to add. */
     private final List<TickActionDelayed> toAdd = new ArrayList<>();
     /** Actions executed to remove. */
@@ -72,7 +75,7 @@ public final class Tick implements Updatable
      */
     public void addAction(TickAction action, int rate, long delayMs)
     {
-        final double frameTime = Constant.ONE_SECOND_IN_MILLI / rate;
+        final double frameTime = ONE_SECOND_IN_MILLI / rate;
         toAdd.add(new TickActionDelayed(action, ticks + delayMs / frameTime));
     }
 
@@ -151,7 +154,7 @@ public final class Tick implements Updatable
     {
         if (started && rate > 0)
         {
-            final double frameTime = Constant.ONE_SECOND_IN_MILLI / rate;
+            final double frameTime = ONE_SECOND_IN_MILLI / rate;
             return Double.compare(milli, StrictMath.floor(ticks * frameTime)) <= 0;
         }
         return false;
@@ -175,7 +178,7 @@ public final class Tick implements Updatable
      */
     public int elapsedTime(int rate)
     {
-        final double frameTime = Constant.ONE_SECOND_IN_MILLI / rate;
+        final double frameTime = ONE_SECOND_IN_MILLI / rate;
         return (int) StrictMath.floor(ticks * frameTime);
     }
 

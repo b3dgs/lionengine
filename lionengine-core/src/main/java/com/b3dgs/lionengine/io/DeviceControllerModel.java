@@ -80,7 +80,7 @@ public class DeviceControllerModel implements DeviceController
         devices.add(device);
         actionToDevice.put(action, device.getName());
 
-        fire.computeIfAbsent(index, ArrayList::new).add(action);
+        fire.computeIfAbsent(index, i -> new ArrayList<>()).add(action);
         fired.put(action, Boolean.FALSE);
     }
 

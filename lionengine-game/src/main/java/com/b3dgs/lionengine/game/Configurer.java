@@ -99,245 +99,248 @@ public class Configurer implements AttributesReader
     }
 
     @Override
-    public String getText(String... path)
+    public final String getText(String... path)
     {
         return root.getText(path);
     }
 
     @Override
-    public String getTextDefault(String defaultValue, String... path)
+    public final String getTextDefault(String defaultValue, String... path)
     {
         return root.getTextDefault(defaultValue, path);
     }
 
     @Override
-    public boolean getBoolean(String attribute, String... path)
+    public final boolean getBoolean(String attribute, String... path)
     {
         return root.getBoolean(attribute, path);
     }
 
     @Override
-    public boolean getBoolean(boolean defaultValue, String attribute, String... path)
+    public final boolean getBoolean(boolean defaultValue, String attribute, String... path)
     {
         return root.getBoolean(defaultValue, attribute, path);
     }
 
     @Override
-    public Optional<Boolean> getBooleanOptional(String attribute, String... path)
+    public final Optional<Boolean> getBooleanOptional(String attribute, String... path)
     {
         return root.getBooleanOptional(attribute, path);
     }
 
     @Override
-    public byte getByte(String attribute, String... path)
+    public final byte getByte(String attribute, String... path)
     {
         return root.getByte(attribute, path);
     }
 
     @Override
-    public byte getByte(byte defaultValue, String attribute, String... path)
+    public final byte getByte(byte defaultValue, String attribute, String... path)
     {
         return root.getByte(defaultValue, attribute, path);
     }
 
     @Override
-    public char getChar(String attribute, String... path)
+    public final char getChar(String attribute, String... path)
     {
         return root.getChar(attribute, path);
     }
 
     @Override
-    public char getChar(byte defaultValue, String attribute, String... path)
+    public final char getChar(byte defaultValue, String attribute, String... path)
     {
         return root.getChar(defaultValue, attribute, path);
     }
 
     @Override
-    public short getShort(String attribute, String... path)
+    public final short getShort(String attribute, String... path)
     {
         return root.getShort(attribute, path);
     }
 
     @Override
-    public short getShort(short defaultValue, String attribute, String... path)
+    public final short getShort(short defaultValue, String attribute, String... path)
     {
         return root.getShort(defaultValue, attribute, path);
     }
 
     @Override
-    public int getInteger(String attribute, String... path)
+    public final int getInteger(String attribute, String... path)
     {
         return root.getInteger(attribute, path);
     }
 
     @Override
-    public int getInteger(int defaultValue, String attribute, String... path)
+    public final int getInteger(int defaultValue, String attribute, String... path)
     {
         return root.getInteger(defaultValue, attribute, path);
     }
 
     @Override
-    public OptionalInt getIntegerOptional(String attribute, String... path)
+    public final OptionalInt getIntegerOptional(String attribute, String... path)
     {
         return root.getIntegerOptional(attribute, path);
     }
 
     @Override
-    public long getLong(String attribute, String... path)
+    public final long getLong(String attribute, String... path)
     {
         return root.getLong(attribute, path);
     }
 
     @Override
-    public long getLong(long defaultValue, String attribute, String... path)
+    public final long getLong(long defaultValue, String attribute, String... path)
     {
         return root.getLong(defaultValue, attribute, path);
     }
 
     @Override
-    public OptionalLong getLongOptional(String attribute, String... path)
+    public final OptionalLong getLongOptional(String attribute, String... path)
     {
         return root.getLongOptional(attribute, path);
     }
 
     @Override
-    public float getFloat(String attribute, String... path)
+    public final float getFloat(String attribute, String... path)
     {
         return root.getFloat(attribute, path);
     }
 
     @Override
-    public float getFloat(float defaultValue, String attribute, String... path)
+    public final float getFloat(float defaultValue, String attribute, String... path)
     {
         return root.getFloat(defaultValue, attribute, path);
     }
 
     @Override
-    public double getDouble(String attribute, String... path)
+    public final double getDouble(String attribute, String... path)
     {
         return root.getDouble(attribute, path);
     }
 
     @Override
-    public double getDouble(double defaultValue, String attribute, String... path)
+    public final double getDouble(double defaultValue, String attribute, String... path)
     {
         return root.getDouble(defaultValue, attribute, path);
     }
 
     @Override
-    public OptionalDouble getDoubleOptional(String attribute, String... path)
+    public final OptionalDouble getDoubleOptional(String attribute, String... path)
     {
         return root.getDoubleOptional(attribute, path);
     }
 
     @Override
-    public String getString(String attribute, String... path)
+    public final String getString(String attribute, String... path)
     {
         return root.getString(attribute, path);
     }
 
     @Override
-    public String getStringDefault(String defaultValue, String attribute, String... path)
+    public final String getStringDefault(String defaultValue, String attribute, String... path)
     {
         return root.getStringDefault(defaultValue, attribute, path);
     }
 
     @Override
-    public Optional<String> getStringOptional(String attribute, String... path)
+    public final Optional<String> getStringOptional(String attribute, String... path)
     {
         return root.getStringOptional(attribute, path);
     }
 
     @Override
-    public Media getMedia(String attribute, String... path)
+    public final Media getMedia(String attribute, String... path)
     {
         return root.getMedia(attribute, path);
     }
 
     @Override
-    public Optional<Media> getMediaOptional(String attribute, String... path)
+    public final Optional<Media> getMediaOptional(String attribute, String... path)
     {
         return root.getMediaOptional(attribute, path);
     }
 
     @Override
-    public <E extends Enum<E>> E getEnum(Class<E> type, String attribute, String... path)
+    public final <E extends Enum<E>> E getEnum(Class<E> type, String attribute, String... path)
     {
         return root.getEnum(type, attribute, path);
     }
 
     @Override
-    public <E extends Enum<E>> E getEnum(Class<E> type, E defaultValue, String attribute, String... path)
+    public final <E extends Enum<E>> E getEnum(Class<E> type, E defaultValue, String attribute, String... path)
     {
         return root.getEnum(type, defaultValue, attribute, path);
     }
 
     @Override
-    public <E extends Enum<E>> Optional<E> getEnumOptional(Class<E> type, String attribute, String... path)
+    public final <E extends Enum<E>> Optional<E> getEnumOptional(Class<E> type, String attribute, String... path)
     {
         return root.getEnumOptional(type, attribute, path);
     }
 
     @Override
-    public <T> T getImplementation(Class<T> type, String... path)
+    public final <T> T getImplementation(Class<T> type, String... path)
     {
         return root.getImplementation(type, path);
     }
 
     @Override
-    public <T> T getImplementation(ClassLoader loader, Class<T> type, String... path)
+    public final <T> T getImplementation(ClassLoader loader, Class<T> type, String... path)
     {
         return root.getImplementation(loader, type, path);
     }
 
     @Override
-    public <T> T getImplementation(Class<T> type, Class<?> paramType, Object paramValue, String... path)
+    public final <T> T getImplementation(Class<T> type, Class<?> paramType, Object paramValue, String... path)
     {
         return root.getImplementation(type, paramType, paramValue, path);
     }
 
     @Override
-    public <T> T getImplementation(Class<T> type, Class<?>[] paramsType, Collection<?> paramsValue, String... path)
+    public final <T> T getImplementation(Class<T> type,
+                                         Class<?>[] paramsType,
+                                         Collection<?> paramsValue,
+                                         String... path)
     {
         return root.getImplementation(type, paramsType, paramsValue, path);
     }
 
     @Override
-    public <T> T getImplementation(ClassLoader loader,
-                                   Class<T> type,
-                                   Class<?>[] paramsType,
-                                   Collection<?> paramsValue,
-                                   String... path)
+    public final <T> T getImplementation(ClassLoader loader,
+                                         Class<T> type,
+                                         Class<?>[] paramsType,
+                                         Collection<?> paramsValue,
+                                         String... path)
     {
         return root.getImplementation(loader, type, paramsType, paramsValue, path);
     }
 
     @Override
-    public XmlReader getChild(String name, String... path)
+    public final XmlReader getChild(String name, String... path)
     {
         return root.getChild(name, path);
     }
 
     @Override
-    public Optional<XmlReader> getChildOptional(String name, String... path)
+    public final Optional<XmlReader> getChildOptional(String name, String... path)
     {
         return root.getChildOptional(name, path);
     }
 
     @Override
-    public Collection<XmlReader> getChildren(String name, String... path)
+    public final Collection<XmlReader> getChildren(String name, String... path)
     {
         return root.getChildren(name, path);
     }
 
     @Override
-    public boolean hasAttribute(String attribute, String... path)
+    public final boolean hasAttribute(String attribute, String... path)
     {
         return root.hasAttribute(attribute, path);
     }
 
     @Override
-    public boolean hasNode(String child, String... path)
+    public final boolean hasNode(String child, String... path)
     {
         return root.hasNode(child, path);
     }

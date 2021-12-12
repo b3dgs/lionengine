@@ -90,51 +90,6 @@ public class Xml extends XmlReader
     }
 
     /**
-     * Normalize document.
-     * 
-     * @param expression The expression to evaluate (must not be <code>null</code>).
-     */
-    void normalize(String expression)
-    {
-        final XPath xPath = XPathFactory.newInstance().newXPath();
-        try
-        {
-            final NodeList nodeList = (NodeList) xPath.evaluate(expression, document, XPathConstants.NODESET);
-            for (int i = 0; i < nodeList.getLength(); ++i)
-            {
-                final Node node = nodeList.item(i);
-                node.getParentNode().removeChild(node);
-            }
-        }
-        catch (final XPathExpressionException exception)
-        {
-            Verbose.exception(exception);
-        }
-    }
-
-    /**
-     * Write a data to the root.
-     * 
-     * @param attribute The attribute name (must not be <code>null</code>).
-     * @param content The content value (must not be <code>null</code>).
-     * @throws LionEngineException If error when setting the attribute.
-     */
-    private void write(String attribute, String content)
-    {
-        Check.notNull(attribute);
-        Check.notNull(content);
-
-        try
-        {
-            root.setAttribute(attribute, content);
-        }
-        catch (final DOMException exception)
-        {
-            throw new LionEngineException(exception, ERROR_WRITE_ATTRIBUTE + attribute + ERROR_WRITE_CONTENT + content);
-        }
-    }
-
-    /**
      * Save an XML tree to a file.
      * 
      * @param media The output media path (must not be <code>null</code>).
@@ -418,30 +373,6 @@ public class Xml extends XmlReader
     }
 
     /**
-     * Get the node at the following path.
-     * 
-     * @param path The node path.
-     * @return The node found.
-     * @throws LionEngineException If node not found.
-     */
-    private Xml getNode(String... path)
-    {
-        Xml node = this;
-        for (final String element : path)
-        {
-            try
-            {
-                node = node.getChildXml(element);
-            }
-            catch (final LionEngineException exception)
-            {
-                throw new LionEngineException(exception, Arrays.toString(path));
-            }
-        }
-        return node;
-    }
-
-    /**
      * Get a child node from its name.
      * 
      * @param name The child name (must not be <code>null</code>).
@@ -465,5 +396,74 @@ public class Xml extends XmlReader
             }
         }
         throw new LionEngineException(ERROR_NODE + name);
+    }
+
+    /**
+     * Normalize document.
+     * 
+     * @param expression The expression to evaluate (must not be <code>null</code>).
+     */
+    void normalize(String expression)
+    {
+        final XPath xPath = XPathFactory.newInstance().newXPath();
+        try
+        {
+            final NodeList nodeList = (NodeList) xPath.evaluate(expression, document, XPathConstants.NODESET);
+            for (int i = 0; i < nodeList.getLength(); ++i)
+            {
+                final Node node = nodeList.item(i);
+                node.getParentNode().removeChild(node);
+            }
+        }
+        catch (final XPathExpressionException exception)
+        {
+            Verbose.exception(exception);
+        }
+    }
+
+    /**
+     * Write a data to the root.
+     * 
+     * @param attribute The attribute name (must not be <code>null</code>).
+     * @param content The content value (must not be <code>null</code>).
+     * @throws LionEngineException If error when setting the attribute.
+     */
+    private void write(String attribute, String content)
+    {
+        Check.notNull(attribute);
+        Check.notNull(content);
+
+        try
+        {
+            root.setAttribute(attribute, content);
+        }
+        catch (final DOMException exception)
+        {
+            throw new LionEngineException(exception, ERROR_WRITE_ATTRIBUTE + attribute + ERROR_WRITE_CONTENT + content);
+        }
+    }
+
+    /**
+     * Get the node at the following path.
+     * 
+     * @param path The node path.
+     * @return The node found.
+     * @throws LionEngineException If node not found.
+     */
+    private Xml getNode(String... path)
+    {
+        Xml node = this;
+        for (final String element : path)
+        {
+            try
+            {
+                node = node.getChildXml(element);
+            }
+            catch (final LionEngineException exception)
+            {
+                throw new LionEngineException(exception, Arrays.toString(path));
+            }
+        }
+        return node;
     }
 }
