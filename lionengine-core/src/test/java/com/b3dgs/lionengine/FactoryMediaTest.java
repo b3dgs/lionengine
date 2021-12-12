@@ -19,6 +19,8 @@ package com.b3dgs.lionengine;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.io.File;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -57,7 +59,8 @@ final class FactoryMediaTest
 
         assertEquals("", media.getParentPath());
         assertEquals("test.txt", media.getPath());
-        assertEquals(System.getProperty("java.io.tmpdir")
+        assertEquals(new File(System.getProperty("java.io.tmpdir")).getPath()
+                     + File.separator
                      + FactoryMediaTest.class.getSimpleName()
                      + java.io.File.separator
                      + "test.txt",

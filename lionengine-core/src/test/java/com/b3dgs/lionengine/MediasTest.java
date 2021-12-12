@@ -118,7 +118,8 @@ final class MediasTest
 
         assertEquals("", media.getParentPath());
         assertEquals("test.txt", media.getPath());
-        assertEquals(System.getProperty("java.io.tmpdir")
+        assertEquals(new File(System.getProperty("java.io.tmpdir")).getPath()
+                     + File.separator
                      + MediasTest.class.getSimpleName()
                      + java.io.File.separator
                      + "test.txt",
@@ -128,7 +129,8 @@ final class MediasTest
 
         assertEquals("test", media2.getParentPath());
         assertEquals("test" + Constant.SLASH + "toto.txt", media2.getPath());
-        assertEquals(System.getProperty("java.io.tmpdir")
+        assertEquals(new File(System.getProperty("java.io.tmpdir")).getPath()
+                     + File.separator
                      + MediasTest.class.getSimpleName()
                      + java.io.File.separator
                      + "test"
@@ -184,7 +186,8 @@ final class MediasTest
         final File file = new File("rsc" + File.separator + "test.txt");
         final Media media = Medias.get(file);
 
-        assertEquals(new File(System.getProperty("java.io.tmpdir")
+        assertEquals(new File(new File(System.getProperty("java.io.tmpdir")).getPath()
+                              + File.separator
                               + MediasTest.class.getSimpleName()
                               + java.io.File.separator
                               + "test.txt"),
