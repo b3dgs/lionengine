@@ -23,11 +23,15 @@ final class RawScale2x
 {
     /** Scale factor. */
     public static final int SCALE = 2;
+    /** Scale square factor. */
+    public static final int SCALE_S = SCALE * SCALE;
 
     /** Width. */
     private final int width;
     /** Height. */
     private final int height;
+    /** Cache. */
+    private int[] dstImage = new int[0];
 
     /**
      * Internal constructor.
@@ -51,7 +55,11 @@ final class RawScale2x
      */
     int[] getScaledData(int[] srcImage)
     {
-        final int[] dstImage = new int[srcImage.length * SCALE * SCALE];
+        final int l = srcImage.length * SCALE_S;
+        if (dstImage.length != l)
+        {
+            dstImage = new int[l];
+        }
 
         for (int y = 0; y < height; y++)
         {

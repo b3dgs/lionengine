@@ -113,7 +113,7 @@ final class FilterBlurTest
     void testNoPixel()
     {
         final FilterBlur blur = new FilterBlur();
-        final ImageBuffer image = Graphics.createImageBuffer(1, 1);
+        final ImageBuffer image = Graphics.createImageBuffer(5, 5);
         final ImageBuffer filtered = blur.filter(image);
 
         assertNotNull(filtered);
@@ -133,7 +133,7 @@ final class FilterBlurTest
     @ParameterizedTest
     @CsvSource(
     {
-        "1,1", "1,3", "3,1"
+        "5,5", "5,8", "8,5"
     })
     void testParam(int width, int height)
     {
@@ -141,7 +141,7 @@ final class FilterBlurTest
         final ImageBuffer image = Graphics.createImageBuffer(width, height);
         final ImageBuffer filtered = blur.filter(image);
 
-        assertEquals(image, filtered);
+        assertNotEquals(image, filtered);
 
         image.dispose();
         filtered.dispose();

@@ -29,6 +29,17 @@ import com.b3dgs.lionengine.graphic.Transform;
  */
 public final class FilterHq2x implements Filter
 {
+    /** Cache width. */
+    private int width;
+    /** Cache height. */
+    private int height;
+    /** Cache data. */
+    private int[] srcData;
+    /** Cache image. */
+    private ImageBuffer image;
+    /** Cache scaler. */
+    private RawScale2x scaler;
+
     /**
      * Create an Hq2x filter.
      */
@@ -44,15 +55,17 @@ public final class FilterHq2x implements Filter
     @Override
     public ImageBuffer filter(ImageBuffer source)
     {
-        final int width = source.getWidth();
-        final int height = source.getHeight();
-        final int[] srcData = new int[width * height];
+        if (width != source.getWidth() || height != source.getHeight())
+        {
+            width = source.getWidth();
+            height = source.getHeight();
+            srcData = new int[width * height];
+            scaler = new RawScale2x(width, height);
+            image = Graphics.createImageBuffer(width * RawScale2x.SCALE,
+                                               height * RawScale2x.SCALE,
+                                               source.getTransparentColor());
+        }
         source.getRgb(0, 0, width, height, srcData, 0, width);
-
-        final RawScale2x scaler = new RawScale2x(width, height);
-        final ImageBuffer image = Graphics.createImageBuffer(width * RawScale2x.SCALE,
-                                                             height * RawScale2x.SCALE,
-                                                             source.getTransparentColor());
         image.setRgb(0,
                      0,
                      width * RawScale2x.SCALE,

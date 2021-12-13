@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.graphic;
 
+import java.util.Arrays;
+
 import com.b3dgs.lionengine.Check;
 
 /**
@@ -132,5 +134,26 @@ public class ImageBufferMock implements ImageBuffer
     public ColorRgba getTransparentColor()
     {
         return ColorRgba.TRANSPARENT;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object)
+        {
+            return true;
+        }
+        if (object == null || !(object.getClass() != getClass()))
+        {
+            return false;
+        }
+        final ImageBufferMock other = (ImageBufferMock) object;
+        return width == other.width && height == other.height && Arrays.equals(rgba, other.rgba);
     }
 }

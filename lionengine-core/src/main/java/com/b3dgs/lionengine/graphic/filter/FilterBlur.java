@@ -226,6 +226,19 @@ public class FilterBlur implements Filter
     /** Edge mode. */
     private volatile int edge = CLAMP_EDGES;
 
+    /** Cache width. */
+    private int width;
+    /** Cache height. */
+    private int height;
+    /** Cache in. */
+    private int[] inPixels;
+    /** Cache out. */
+    private int[] outPixels;
+    /** Cache kernel. */
+    private Kernel kernel;
+    /** Cache dest. */
+    private ImageBuffer dest;
+
     /**
      * Create the filter.
      */
@@ -273,23 +286,28 @@ public class FilterBlur implements Filter
     @Override
     public ImageBuffer filter(ImageBuffer source)
     {
-        final int width = source.getWidth();
-        final int height = source.getHeight();
+        if (width != source.getWidth() || height != source.getHeight())
+        {
+            width = source.getWidth();
+            height = source.getHeight();
+            inPixels = new int[width * height];
+            outPixels = new int[width * height];
+            kernel = createKernel(radius, width, height);
+            dest = Graphics.createImageBuffer(width, height, source.getTransparentColor());
+        }
+
         if (width < MIN_SIZE || height < MIN_SIZE)
         {
             return source;
         }
 
-        final int[] inPixels = new int[width * height];
-        final int[] outPixels = new int[width * height];
         source.getRgb(0, 0, width, height, inPixels, 0, width);
 
-        final Kernel kernel = createKernel(radius, width, height);
         compute(kernel, inPixels, outPixels, width, height, alpha, edge);
         compute(kernel, outPixels, inPixels, height, width, alpha, edge);
 
-        final ImageBuffer dest = Graphics.createImageBuffer(width, height, source.getTransparentColor());
         dest.setRgb(0, 0, width, height, inPixels, 0, width);
+
         return dest;
     }
 
