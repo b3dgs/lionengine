@@ -35,6 +35,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileAppenderModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.feature.tile.map.TileSheetsConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFormulaConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroupConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision;
@@ -90,9 +91,22 @@ public class MapTileHelper extends MapTileGame
      */
     public static void importAndSave(Media levelrip, Media out, MapTilePersister mapPersister)
     {
+        importAndSave(levelrip, Medias.create(levelrip.getParentPath(), TileSheetsConfig.FILENAME), out, mapPersister);
+    }
+
+    /**
+     * Import and save the level.
+     * 
+     * @param levelrip The level rip.
+     * @param sheetsConfig The file that define the sheets configuration.
+     * @param out The output media.
+     * @param mapPersister The persister reference.
+     */
+    public static void importAndSave(Media levelrip, Media sheetsConfig, Media out, MapTilePersister mapPersister)
+    {
         final Services services = new Services();
         final MapTileGame map = services.create(MapTileGame.class);
-        map.create(levelrip);
+        map.create(levelrip, sheetsConfig);
         map.addFeature(mapPersister);
 
         services.add(new Factory(services));
