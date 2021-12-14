@@ -1,26 +1,24 @@
-|[![Java CI](https://github.com/b3dgs/lionengine/actions/workflows/maven.yml/badge.svg?branch=master)](https://github.com/b3dgs/lionengine/actions/workflows/maven.yml)<br>[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.b3dgs.lionengine%3Alionengine-parent&metric=coverage)](https://sonarcloud.io/dashboard?id=com.b3dgs.lionengine%3Alionengine-parent)<br>[![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=com.b3dgs.lionengine%3Alionengine-parent&metric=ncloc)](https://sonarcloud.io/dashboard?id=com.b3dgs.lionengine%3Alionengine-parent)<br>[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.b3dgs.lionengine/lionengine-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.b3dgs.lionengine/lionengine-core)<br>[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) | <a href="https://www.b3dgs.com/v7/page.php?lang=en&section=lionengine"><img hspace="170" src="https://user-images.githubusercontent.com/34600369/41530953-b6f4554a-72e9-11e8-9ab1-e49d390a9117.png" width="200"/></a> | [Presentation](#presentation)<br>[General features](#general-features)<br>[Download](#download)<br>[Installation](#installation)<br>[Getting Started](#getting-started)<br>[Tutorials](#tutorials) |
+|[![Java CI](https://github.com/b3dgs/lionengine/actions/workflows/maven.yml/badge.svg?branch=master)](https://github.com/b3dgs/lionengine/actions/workflows/maven.yml)<br>[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.b3dgs.lionengine%3Alionengine-parent&metric=coverage)](https://sonarcloud.io/summary/new_code?id=com.b3dgs.lionengine%3Alionengine-parent)<br>[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=com.b3dgs.lionengine%3Alionengine-parent&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=com.b3dgs.lionengine%3Alionengine-parent)<br>[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.b3dgs.lionengine/lionengine-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.b3dgs.lionengine/lionengine-core)<br>[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) | <a href="https://www.b3dgs.com/v7/page.php?lang=en&section=lionengine"><img hspace="170" src="https://user-images.githubusercontent.com/34600369/41530953-b6f4554a-72e9-11e8-9ab1-e49d390a9117.png" width="200"/></a> | [Presentation](#presentation)<br>[General features](#general-features)<br>[Download](#download)<br>[Installation](#installation)<br>[Getting Started](#getting-started)<br>[Tutorials](#tutorials) |
 |:---|:---:|---:|
 
 ## Presentation
 
-The __LionEngine__ is a game engine especially developed during the project [Lionheart Remake](http://www.b3dgs.com/v7/page.php?lang=en&section=lionheart_remake) for an easy Java use.
+The __LionEngine__ is a game engine especially developed during the project [Lionheart Remake](https://lionheart.b3dgs.com) for an easy Java use.
 The engine is as a library, in Jar format (_including its javadoc_), which can be included in any project;
 for utility class uses, or to directly implement and inherit a game skeleton (_including management of frame rate, extrapolation, input output..._).
 
-Using Java 8 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resources management (_images_, _sprites_, _animations_, _tiles_...).
+Using Java 8 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resources management (_images_, _sprites_, _animations_, _tiles_, _font_...).
 Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available (_Wav_, _Midi_, and more using plug-ins, such as _Sc68_, _AdPlug_ and _AdlMidi_).
 Windowed, full-screen and applet formats are fully supported, with a complete frame rate control.
 
-In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __Network__ layer.
-
-[![Overview](http://lionengine.b3dgs.com/v9-0/img/home/overview_en.png)](http://lionengine.b3dgs.com/v9-0/page.php?lang=en&section=home)
+[![Overview](https://lionengine.b3dgs.com/v9-0/img/home/overview_en.png)](https://lionengine.b3dgs.com/v9-0/page.php?lang=en&section=home)
 
 ## General Features
 
 * #### __lionengine-core__
->  * Simple initialization, with version control, screen configuration and resource directory
->  * Extrapolation control (_machine speed independent_)
->  * Advanced filtering capability (_Bilinear, HQ2X, HQ3X_)
+>  * Simple initialization and screen configuration (_windowed, fullscreen_)
+>  * Advanced game loop (_machine speed independent, frame skipping_)
+>  * Filtering capability (_Bilinear, Blur, HQ2X, HQ3X, Scanline, CRT_)
 >  * Sequence control (_intro, menu, game part, credits..._)
 >  * Easy resource management (_relative to resource directory_)
 >  * Advanced image usage (_sprite, animation, tile, font, parallax_)
@@ -43,10 +41,11 @@ In its current version, the engine greatly simplifies the development of __Platf
 >    * A Star pathfinding implementation
 >    * Tile extractor (_generate tilesheet from a level rip image_)
 >    * Level rip converter (_generate a level data file from a tile sheet and a level rip image_)
->  * Object base (_support external XML configuration, trait system_)
->  * General object factory system (_create instance of object_)
->  * Objects handling system (_updating them, rendering, and retrieving_)
->  * Extensible _Trait_ system to compose object characteristics without code complexity
+>  * Object package
+>    * Setup (_external XML configuration_)
+>    * Factory (_reusable cached object instances_)
+>    * Handling (_updating, rendering, and retrieving_)
+>  * Extensible _Feature_ system to compose object characteristics without code complexity
 >    * Transformable (size and translation)
 >    * Body (gravity handling)
 >    * Launchable (launcher and projectile system)
@@ -84,16 +83,16 @@ In its current version, the engine greatly simplifies the development of __Platf
 
 ## Download
 
-|[Go to website](http://www.b3dgs.com/v7/page.php?lang=en&section=lionengine)|[Last version](https://lionengine.b3dgs.com/v9-0/page.php?lang=en&section=downloads)|
+|[Go to website](https://www.b3dgs.com/v7/page.php?lang=en&section=lionengine)|[Last version](https://lionengine.b3dgs.com/v9-0/page.php?lang=en&section=downloads)|
 |---|---|
 
 ## Installation
 
 Steps to include the __LionEngine__ in your project:
 
-1. Install at least the [Java JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-2. Choose your favourite IDE ([Eclipse](http://www.eclipse.org/downloads/), [Netbeans](https://netbeans.org/downloads/)...)
-3. Download the latest [LionEngine](http://lionengine.b3dgs.com/page.php?lang=en&section=downloads)
+1. Install at least the [Java JDK 8](https://adoptium.net/)
+2. Choose your favourite IDE ([Eclipse](https://www.eclipse.org/downloads/), [Netbeans](https://netbeans.apache.org/download/)...)
+3. Download the latest [LionEngine](https://search.maven.org/search?q=com.b3dgs.lionengine)
 4. Include all __LionEngine__ libraries you need for your project, following the tree dependency:
    * __lionengine-core__ _(minimum requirement)_
      * __lionengine-core-awt__ _(uses_ __AWT__ _as graphic renderer, target for computer)_
@@ -156,4 +155,4 @@ public class Scene extends Sequence
 
 ## Tutorials
 
-* [LionEngine WebSite](http://lionengine.b3dgs.com)
+* [LionEngine WebSite](https://lionengine.b3dgs.com)
