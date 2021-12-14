@@ -116,7 +116,7 @@ final class UtilLaunchable
         launcher.prepare(featurable);
         launcher.recycle();
         launcher.setOffset(1, 2);
-        launcher.setRate(10);
+        launcher.setDelay(100);
 
         return launcher;
     }

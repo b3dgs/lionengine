@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
  * Represents a delayed launch.
@@ -28,6 +29,8 @@ final class DelayedLaunch implements Updatable
 {
     /** Delay tick. */
     private final Tick tick = new Tick();
+    /** Source reference. */
+    private final SourceResolutionProvider source;
     /** Launchable configuration reference. */
     private final LaunchableConfig config;
     /** Initial direction for launch. */
@@ -40,15 +43,21 @@ final class DelayedLaunch implements Updatable
     /**
      * Create a delayed launch.
      * 
+     * @param source The source reference.
      * @param config The launch configuration.
      * @param initial The launch initial direction.
      * @param featurable The featurable to launch.
      * @param launchable The launchable to launch.
      */
-    DelayedLaunch(LaunchableConfig config, Direction initial, Featurable featurable, Launchable launchable)
+    DelayedLaunch(SourceResolutionProvider source,
+                  LaunchableConfig config,
+                  Direction initial,
+                  Featurable featurable,
+                  Launchable launchable)
     {
         super();
 
+        this.source = source;
         this.config = config;
         this.initial = initial;
         this.featurable = featurable;
@@ -63,7 +72,7 @@ final class DelayedLaunch implements Updatable
      */
     public boolean isReady()
     {
-        return tick.elapsed(config.getDelay());
+        return tick.elapsedTime(source.getRate(), config.getDelay());
     }
 
     /**

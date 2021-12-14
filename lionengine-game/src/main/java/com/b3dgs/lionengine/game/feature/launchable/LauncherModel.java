@@ -49,6 +49,7 @@ import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
  * Launcher model implementation.
@@ -73,6 +74,8 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     private final Factory factory;
     /** Handler reference. */
     private final Handler handler;
+    /** Source reference. */
+    private final SourceResolutionProvider source;
     /** Launchable configuration. */
     private Iterable<LaunchableConfig> launchables;
     /** Localizable model. */
@@ -83,8 +86,8 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     private Mirrorable mirrorable;
     /** Current level. */
     private int level;
-    /** Fire rate in tick. */
-    private long rate;
+    /** Fire delay in milli seconds. */
+    private int delay;
     /** Mirrorable flag. */
     private boolean mirror;
     /** Horizontal offset. */
@@ -100,6 +103,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
      * <ul>
      * <li>{@link Factory}</li>
      * <li>{@link Handler}</li>
+     * <li>{@link SourceResolutionProvider}</li>
      * </ul>
      * <p>
      * The {@link Featurable} must have:
@@ -125,17 +129,18 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
 
         factory = services.get(Factory.class);
         handler = services.get(Handler.class);
+        source = services.get(SourceResolutionProvider.class);
 
         config = LauncherConfig.imports(setup);
         if (config.isEmpty())
         {
             launchables = Collections.emptyList();
-            rate = 0;
+            delay = 0;
         }
         else
         {
             launchables = config.get(0).getLaunchables();
-            rate = config.get(0).getRate();
+            delay = config.get(0).getDelay();
             mirror = config.get(0).hasMirrorable();
         }
     }
@@ -161,7 +166,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
                 final Launchable launchable = featurable.getFeature(Launchable.class);
                 if (launchableConfig.getDelay() > 0)
                 {
-                    delayed.add(new DelayedLaunch(launchableConfig, initial, featurable, launchable));
+                    delayed.add(new DelayedLaunch(source, launchableConfig, initial, featurable, launchable));
                 }
                 else
                 {
@@ -386,7 +391,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     public boolean fire(Direction initial, Localizable target)
     {
         this.target = target;
-        if (fire.elapsed(rate))
+        if (fire.elapsedTime(source.getRate(), delay))
         {
             fired(initial);
             fire.restart();
@@ -426,13 +431,13 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
 
         this.level = level;
         launchables = config.get(level).getLaunchables();
-        rate = config.get(level).getRate();
+        delay = config.get(level).getDelay();
     }
 
     @Override
-    public void setRate(long rate)
+    public void setDelay(int delay)
     {
-        this.rate = rate;
+        this.delay = delay;
     }
 
     @Override
@@ -456,7 +461,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     @Override
     public long getRate()
     {
-        return rate;
+        return delay;
     }
 
     @Override

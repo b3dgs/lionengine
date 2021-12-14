@@ -76,7 +76,7 @@ final class LauncherConfigTest
         assertEquals(new Force(1.0, 2.0), launchable.getVector());
 
         assertEquals(1, launcher.getLevel());
-        assertEquals(2, launcher.getRate());
+        assertEquals(2, launcher.getDelay());
         assertTrue(launcher.hasMirrorable());
     }
 
@@ -152,7 +152,7 @@ final class LauncherConfigTest
         final LaunchableConfig launchable = new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(0, 1, true, Arrays.asList(launchable, launchable));
 
-        assertEquals("LauncherConfig [level=0, rate=1, mirrorable=true, launchables="
+        assertEquals("LauncherConfig [level=0, delay=1, mirrorable=true, launchables="
                      + System.lineSeparator()
                      + Constant.TAB
                      + "LaunchableConfig [media=media, sfx=sfx, delay=10, ox=1, oy=2, vector="

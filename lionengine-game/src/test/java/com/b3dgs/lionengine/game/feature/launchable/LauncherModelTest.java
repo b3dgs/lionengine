@@ -30,11 +30,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -45,6 +47,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionDelegate;
 
 /**
  * Test {@link LauncherModel}.
@@ -74,7 +77,17 @@ final class LauncherModelTest
     private final Services services = new Services();
     private final Setup setup = new Setup(launcherMedia);
     private final Featurable featurable = new FeaturableModel(services, setup);
-    private final Launcher launcher = UtilLaunchable.createLauncher(services, setup, featurable);
+    private Launcher launcher;
+
+    /**
+     * Clean test.
+     */
+    @BeforeEach
+    public void prepare()
+    {
+        services.add(new SourceResolutionDelegate(new Resolution(320, 240, 60)));
+        launcher = UtilLaunchable.createLauncher(services, setup, featurable);
+    }
 
     /**
      * Clean test.
@@ -93,7 +106,7 @@ final class LauncherModelTest
     void testConfig()
     {
         assertEquals(0, launcher.getLevel());
-        assertEquals(10, launcher.getRate());
+        assertEquals(100, launcher.getRate());
         assertEquals(1.0, launcher.getOffsetX());
         assertEquals(2.0, launcher.getOffsetY());
     }
@@ -218,7 +231,7 @@ final class LauncherModelTest
     @Test
     void testLauncherDelay() throws InterruptedException
     {
-        final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia, 2);
+        final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia, 100);
         final Setup setup = new Setup(launcherMedia);
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, featurable);
 
@@ -243,11 +256,14 @@ final class LauncherModelTest
         assertTrue(fired.get());
         assertNull(firedLaunchable.get());
 
-        launcher.update(1.0);
-        launcher.update(1.0);
-        handler.update(1.0);
-
-        assertNotNull(firedLaunchable.get());
+        assertTimeout(1000L, () ->
+        {
+            while (firedLaunchable.get() == null)
+            {
+                launcher.update(1.0);
+                handler.update(1.0);
+            }
+        });
         assertEquals(1, handler.size());
 
         firedLaunchable.set(null);

@@ -103,9 +103,9 @@ public interface Launcher extends Feature, Updatable, Listenable<LauncherListene
     /**
      * Set the fire rate.
      * 
-     * @param rate The fire rate in millisecond.
+     * @param delay The fire delay in millisecond.
      */
-    void setRate(long rate);
+    void setDelay(int delay);
 
     /**
      * Get the horizontal offset.
