@@ -21,6 +21,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertThrowsIo;
+import static com.b3dgs.lionengine.UtilAssert.assertThrowsPrefix;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.io.IOException;
@@ -108,7 +109,7 @@ final class ImageInfoTest
     void testImageFailure()
     {
         assertThrows(() -> ImageInfo.get(null), "Unexpected null argument !");
-        assertThrows(() -> ImageInfo.get(Medias.create(Constant.EMPTY_STRING)), "[] " + ImageInfo.ERROR_READ);
+        assertThrowsPrefix(() -> ImageInfo.get(Medias.create(Constant.EMPTY_STRING)), "[] ");
         assertThrows(() -> ImageInfo.get(Medias.create("image_error")), "[image_error] " + ImageInfo.ERROR_READ);
         assertThrows(() -> ImageInfo.get(Medias.create("image.tga")), "[image.tga] " + ImageInfo.ERROR_READ);
         assertThrows(() -> ImageInfo.get(Medias.create("image_error1.gif")),
