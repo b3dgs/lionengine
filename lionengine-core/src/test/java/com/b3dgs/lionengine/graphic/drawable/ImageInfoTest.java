@@ -108,7 +108,7 @@ final class ImageInfoTest
     void testImageFailure()
     {
         assertThrows(() -> ImageInfo.get(null), "Unexpected null argument !");
-        assertThrows(() -> ImageInfo.get(Medias.create(Constant.EMPTY_STRING)), "[] Cannot open the media !");
+        assertThrows(() -> ImageInfo.get(Medias.create(Constant.EMPTY_STRING)), "[] " + ImageInfo.ERROR_READ);
         assertThrows(() -> ImageInfo.get(Medias.create("image_error")), "[image_error] " + ImageInfo.ERROR_READ);
         assertThrows(() -> ImageInfo.get(Medias.create("image.tga")), "[image.tga] " + ImageInfo.ERROR_READ);
         assertThrows(() -> ImageInfo.get(Medias.create("image_error1.gif")),
