@@ -464,7 +464,7 @@ final class LoaderTest
 
         SequenceEngineTerminateMock.CLOSE.set(true);
 
-        assertTimeout(10_000L, () -> thread.join(50L));
+        assertTimeout(10_000L, () -> thread.join(5_000L));
         assertTimeout(10_000L, () -> assertFalse(thread.isAlive()));
     }
 
