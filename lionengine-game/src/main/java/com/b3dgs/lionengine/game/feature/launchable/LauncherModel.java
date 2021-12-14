@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -33,6 +34,7 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.game.Direction;
@@ -54,6 +56,7 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 /**
  * Launcher model implementation.
  */
+// CHECKSTYLE IGNORE LINE: FanOutComplexity
 public class LauncherModel extends FeatureModel implements Launcher, Recyclable
 {
     /** Launcher listeners. */
@@ -74,12 +77,16 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     private final Factory factory;
     /** Handler reference. */
     private final Handler handler;
+    /** Viewer reference. */
+    private final Viewer viewer;
     /** Source reference. */
     private final SourceResolutionProvider source;
+    /** Audio player routine. */
+    private final Consumer<String> audioPlayer;
     /** Launchable configuration. */
     private Iterable<LaunchableConfig> launchables;
-    /** Localizable model. */
-    private Localizable localizable;
+    /** Transformable model. */
+    private Transformable transformable;
     /** Target reference. */
     private Localizable target;
     /** Mirrorable reference. */
@@ -129,7 +136,17 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
 
         factory = services.get(Factory.class);
         handler = services.get(Handler.class);
+        viewer = services.getOptional(Viewer.class).orElse(null);
         source = services.get(SourceResolutionProvider.class);
+
+        if (viewer == null)
+        {
+            audioPlayer = this::audioCacheAndPlay;
+        }
+        else
+        {
+            audioPlayer = this::audioCacheAndPlayIfViewable;
+        }
 
         config = LauncherConfig.imports(setup);
         if (config.isEmpty())
@@ -205,8 +222,8 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
             }
             launchable.getFeature(Mirrorable.class).mirror(mirrorable.getMirror());
         }
-        final double x = localizable.getX() + (config.getOffsetX() + offsetX) * sideX;
-        final double y = localizable.getY() + (config.getOffsetY() + offsetY) * sideY;
+        final double x = transformable.getX() + (config.getOffsetX() + offsetX) * sideX;
+        final double y = transformable.getY() + (config.getOffsetY() + offsetY) * sideY;
         launchable.setLocation(x, y);
 
         final Force vector = new Force(config.getVector());
@@ -219,7 +236,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         }
         launchable.launch();
 
-        config.getSfx().ifPresent(this::audioCacheAndPlay);
+        config.getSfx().ifPresent(audioPlayer);
 
         for (final LaunchableListener listener : listenersLaunchable)
         {
@@ -267,21 +284,21 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
      */
     private Force computeVector(Force vector, Localizable target, boolean extrapolate)
     {
-        final double sx = localizable.getX();
-        final double sy = localizable.getY();
+        final double sx = transformable.getX();
+        final double sy = transformable.getY();
 
         double dx = target.getX();
         double dy = target.getY();
 
         if (extrapolate && target instanceof Transformable)
         {
-            final Transformable transformable = (Transformable) target;
-            final double ray = UtilMath.getDistance(localizable.getX(),
-                                                    localizable.getY(),
+            final Transformable targetTransformable = (Transformable) target;
+            final double ray = UtilMath.getDistance(transformable.getX(),
+                                                    transformable.getY(),
                                                     target.getX(),
                                                     target.getY());
-            dx += (int) ((target.getX() - transformable.getOldX()) / vector.getDirectionHorizontal() * ray);
-            dy += (int) ((target.getY() - transformable.getOldY()) / vector.getDirectionVertical() * ray);
+            dx += (int) ((target.getX() - targetTransformable.getOldX()) / vector.getDirectionHorizontal() * ray);
+            dy += (int) ((target.getY() - targetTransformable.getOldY()) / vector.getDirectionVertical() * ray);
         }
 
         final double dist = Math.max(Math.abs(sx - dx), Math.abs(sy - dy));
@@ -311,6 +328,19 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         sound.play();
     }
 
+    /**
+     * Cache audio if new and play it if viewable.
+     * 
+     * @param sfx The audio to play.
+     */
+    private void audioCacheAndPlayIfViewable(String sfx)
+    {
+        if (viewer.isViewable(transformable, transformable.getWidth() / 2, transformable.getHeight()))
+        {
+            audioCacheAndPlay(sfx);
+        }
+    }
+
     /*
      * Launcher
      */
@@ -320,7 +350,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     {
         super.prepare(provider);
 
-        localizable = provider.getFeature(Transformable.class);
+        transformable = provider.getFeature(Transformable.class);
         if (mirror && provider.hasFeature(Mirrorable.class))
         {
             mirrorable = provider.getFeature(Mirrorable.class);
