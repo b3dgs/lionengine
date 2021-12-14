@@ -256,7 +256,7 @@ final class GraphicAwt implements Graphic
         }
         if (alpha < 255)
         {
-            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER).derive(alpha / 255.0f));
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER).derive(alpha / 255.0F));
         }
         else
         {
