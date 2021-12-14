@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidableListen
  */
 final class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableListener
 {
-    private static final double GRAVITY = 10.0;
+    private static final double GRAVITY = 3.5;
 
     private final Force movement = new Force();
     private final Force jump = new Force();
@@ -71,7 +71,6 @@ final class MarioUpdater extends FeatureModel implements Refreshable, TileCollid
 
         body.setGravity(GRAVITY);
         body.setGravityMax(GRAVITY);
-        body.setDesiredFps(Scene.NATIVE.getRate());
     }
 
     @Override

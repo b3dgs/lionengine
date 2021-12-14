@@ -33,13 +33,6 @@ public interface Body extends Feature, Updatable, Direction
     void resetGravity();
 
     /**
-     * Set the desired fps.
-     * 
-     * @param desiredFps The desired fps.
-     */
-    void setDesiredFps(int desiredFps);
-
-    /**
      * Set the gravity to use.
      * 
      * @param gravity The gravity to use.

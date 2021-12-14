@@ -30,9 +30,6 @@ import com.b3dgs.lionengine.game.feature.Setup;
  */
 public class BodyModel extends FeatureModel implements Body, Recyclable
 {
-    /** Default rate. */
-    private static final int DEFAULT_FPS = 60;
-
     /** Body force. */
     private final Force force = new Force();
     /** Maximum gravity value. */
@@ -41,8 +38,6 @@ public class BodyModel extends FeatureModel implements Body, Recyclable
     private double gravity = Constant.GRAVITY_EARTH;
     /** Body mass. */
     private double mass;
-    /** Desired rate. */
-    private int desiredFps = DEFAULT_FPS;
 
     /**
      * Create feature.
@@ -69,19 +64,13 @@ public class BodyModel extends FeatureModel implements Body, Recyclable
     @Override
     public void update(double extrp)
     {
-        force.addDirection(extrp, 0.0, -gravity * (desiredFps / (double) Constant.ONE_SECOND_IN_MILLI) * extrp);
+        force.addDirection(extrp, 0.0, -gravity);
     }
 
     @Override
     public void resetGravity()
     {
         force.setDirection(DirectionNone.INSTANCE);
-    }
-
-    @Override
-    public void setDesiredFps(int desiredFps)
-    {
-        this.desiredFps = desiredFps;
     }
 
     @Override
