@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Check;
@@ -89,8 +89,8 @@ public final class DeviceControllerConfig
             if (device instanceof DevicePush)
             {
                 final DevicePush push = (DevicePush) device;
-                config.getHorizontal().ifPresent(h -> controller.addHorizontal(push, new DeviceActionModel(h, push)));
-                config.getVertical().ifPresent(v -> controller.addVertical(push, new DeviceActionModel(v, push)));
+                config.getHorizontal().forEach(h -> controller.addHorizontal(push, new DeviceActionModel(h, push)));
+                config.getVertical().forEach(v -> controller.addVertical(push, new DeviceActionModel(v, push)));
 
                 config.getFire()
                       .entrySet()
@@ -141,8 +141,8 @@ public final class DeviceControllerConfig
             {
                 final Class<DevicePush> device = (Class<DevicePush>) loader.loadClass(deviceNode.getString(ATT_CLASS));
                 final boolean disabled = deviceNode.getBoolean(false, ATT_DISABLED);
-                final Optional<DeviceAxis> horizontal = readAxis(deviceNode, NODE_HORIZONTAL);
-                final Optional<DeviceAxis> vertical = readAxis(deviceNode, NODE_VERTICAL);
+                final List<DeviceAxis> horizontal = readAxis(deviceNode, NODE_HORIZONTAL);
+                final List<DeviceAxis> vertical = readAxis(deviceNode, NODE_VERTICAL);
                 final Map<Integer, Set<Integer>> fire = readFire(mapping, deviceNode);
 
                 configs.add(new DeviceControllerConfig(device, disabled, horizontal, vertical, fire));
@@ -208,16 +208,17 @@ public final class DeviceControllerConfig
      * @param nodeAxis The axis node name.
      * @return The axis data.
      */
-    private static Optional<DeviceAxis> readAxis(XmlReader node, String nodeAxis)
+    private static List<DeviceAxis> readAxis(XmlReader node, String nodeAxis)
     {
-        if (node.hasNode(nodeAxis))
+        final List<DeviceAxis> axis = new ArrayList<>();
+        final Collection<XmlReader> children = node.getChildren(nodeAxis);
+        for (final XmlReader child : children)
         {
-            final XmlReader horizontal = node.getChild(nodeAxis);
-            final Integer positive = Integer.valueOf(horizontal.getInteger(ATT_POSITIVE));
-            final Integer negative = Integer.valueOf(horizontal.getInteger(ATT_NEGATIVE));
-            return Optional.of(new DeviceAxis(positive, negative));
+            final Integer positive = Integer.valueOf(child.getInteger(ATT_POSITIVE));
+            final Integer negative = Integer.valueOf(child.getInteger(ATT_NEGATIVE));
+            axis.add(new DeviceAxis(positive, negative));
         }
-        return Optional.empty();
+        return axis;
     }
 
     /** Device class. */
@@ -225,9 +226,9 @@ public final class DeviceControllerConfig
     /** Disabled. */
     private final boolean disabled;
     /** Horizontal axis. */
-    private final Optional<DeviceAxis> horizontal;
+    private final List<DeviceAxis> horizontal;
     /** Vertical axis. */
-    private final Optional<DeviceAxis> vertical;
+    private final List<DeviceAxis> vertical;
     /** Fire index mapping. */
     private final Map<Integer, Set<Integer>> fire;
 
@@ -242,8 +243,8 @@ public final class DeviceControllerConfig
      */
     private DeviceControllerConfig(Class<? extends DevicePush> device,
                                    boolean disabled,
-                                   Optional<DeviceAxis> horizontal,
-                                   Optional<DeviceAxis> vertical,
+                                   List<DeviceAxis> horizontal,
+                                   List<DeviceAxis> vertical,
                                    Map<Integer, Set<Integer>> fire)
     {
         super();
@@ -280,7 +281,7 @@ public final class DeviceControllerConfig
      * 
      * @return The horizontal positive.
      */
-    public Optional<DeviceAxis> getHorizontal()
+    public List<DeviceAxis> getHorizontal()
     {
         return horizontal;
     }
@@ -290,7 +291,7 @@ public final class DeviceControllerConfig
      * 
      * @return The vertical positive.
      */
-    public Optional<DeviceAxis> getVertical()
+    public List<DeviceAxis> getVertical()
     {
         return vertical;
     }
