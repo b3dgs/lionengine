@@ -64,7 +64,7 @@ public final class SequenceRenderer implements Rasterbar
     private Boolean cursorVisibility = Boolean.TRUE;
 
     private final IntMap<Integer[]> raster = new IntMap<>();
-    private Renderable renderable = RenderableVoid.getInstance();
+    private Renderable rasterRenderer = RenderableVoid.getInstance();
     private int[] bu;
     private int w;
     private int h;
@@ -72,6 +72,8 @@ public final class SequenceRenderer implements Rasterbar
     private int marginY;
     private int offsetY;
     private int factorY;
+
+    private Renderable renderer = this::renderBuffer;
 
     /**
      * Constructor base.
@@ -92,6 +94,46 @@ public final class SequenceRenderer implements Rasterbar
         config = context.getConfig();
         graphic = Graphics.createGraphic();
         this.target = target;
+    }
+
+    /**
+     * Initialize resolution.
+     * 
+     * @param source The resolution source (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
+     */
+    void initResolution(Resolution source)
+    {
+        Check.notNull(source);
+
+        setSystemCursorVisible(cursorVisibility.booleanValue());
+        this.source = source;
+        screen.onSourceChanged(source);
+        w = source.getWidth();
+        h = source.getHeight();
+        buf = Graphics.createImageBuffer(w, h);
+        bu = new int[w * h];
+        transform = getTransform();
+
+        final Graphic gbuf = buf.createGraphic();
+        graphic.setGraphic(gbuf.getGraphic());
+
+        scanline.prepare(config);
+
+        setDirect(h == config.getOutput().getHeight());
+    }
+
+    /**
+     * Local render routine.
+     */
+    void render()
+    {
+        if (screen.isReady())
+        {
+            final Graphic g = screen.getGraphic();
+            renderer.render(g);
+            scanline.render(g);
+        }
     }
 
     /**
@@ -126,28 +168,20 @@ public final class SequenceRenderer implements Rasterbar
     }
 
     /**
-     * Initialize resolution.
+     * Set the direct rendering.
      * 
-     * @param source The resolution source (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
+     * @param direct <code>true</code> for direct rendering, <code>false</code> with buffer.
      */
-    void initResolution(Resolution source)
+    void setDirect(boolean direct)
     {
-        Check.notNull(source);
-
-        setSystemCursorVisible(cursorVisibility.booleanValue());
-        this.source = source;
-        screen.onSourceChanged(source);
-        w = source.getWidth();
-        h = source.getHeight();
-        buf = Graphics.createImageBuffer(w, h);
-        bu = new int[w * h];
-        transform = getTransform();
-
-        final Graphic gbuf = buf.createGraphic();
-        graphic.setGraphic(gbuf.getGraphic());
-
-        scanline.prepare(config);
+        if (direct)
+        {
+            renderer = this::renderDirect;
+        }
+        else
+        {
+            renderer = this::renderBuffer;
+        }
     }
 
     /**
@@ -172,6 +206,28 @@ public final class SequenceRenderer implements Rasterbar
                 screen.hideCursor();
             }
         }
+    }
+
+    /**
+     * Get the transform associated to the filter keeping screen scale independent.
+     * 
+     * @return The associated transform instance.
+     */
+    private Transform getTransform()
+    {
+        final Resolution output = config.getOutput();
+
+        final double scaleY = output.getHeight() / (double) source.getHeight();
+
+        if (UtilMath.equals(output.getWidth() / (double) output.getHeight(),
+                            source.getWidth() / (double) source.getHeight(),
+                            SCALE_PRECISION))
+        {
+            return filter.getTransform(scaleY, scaleY);
+        }
+
+        final double scaleX = output.getWidth() / (double) source.getWidth();
+        return filter.getTransform(scaleX, scaleY);
     }
 
     /**
@@ -203,53 +259,39 @@ public final class SequenceRenderer implements Rasterbar
     }
 
     /**
-     * Get the transform associated to the filter keeping screen scale independent.
+     * Direct rendering.
      * 
-     * @return The associated transform instance.
+     * @param g The graphic output.
      */
-    private Transform getTransform()
+    private void renderDirect(Graphic g)
     {
-        final Resolution output = config.getOutput();
-
-        final double scaleY = output.getHeight() / (double) source.getHeight();
-
-        if (UtilMath.equals(output.getWidth() / (double) output.getHeight(),
-                            source.getWidth() / (double) source.getHeight(),
-                            SCALE_PRECISION))
-        {
-            return filter.getTransform(scaleY, scaleY);
-        }
-
-        final double scaleX = output.getWidth() / (double) source.getWidth();
-        return filter.getTransform(scaleX, scaleY);
+        target.render(g);
     }
 
     /**
-     * Local render routine.
+     * Buffered rendering.
+     * 
+     * @param g The graphic output.
      */
-    void render()
+    private void renderBuffer(Graphic g)
     {
-        if (screen.isReady())
-        {
-            target.render(graphic);
+        target.render(graphic);
 
-            final Graphic g = screen.getGraphic();
-            g.drawImage(filter.filter(buf), transform, 0, 0);
-            scanline.render(g);
-        }
+        g.drawImage(filter.filter(buf), transform, 0, 0);
+
     }
 
     @Override
     public void clearRasterbarColor()
     {
-        renderable = RenderableVoid.getInstance();
+        rasterRenderer = RenderableVoid.getInstance();
         raster.clear();
     }
 
     @Override
     public void addRasterbarColor(ImageBuffer buffer)
     {
-        renderable = this::renderRasterbar;
+        rasterRenderer = this::renderRasterbar;
         for (int x = 0; x < buffer.getWidth(); x++)
         {
             final int p = buffer.getRgb(x, 0);
@@ -284,6 +326,6 @@ public final class SequenceRenderer implements Rasterbar
     @Override
     public void renderRasterbar()
     {
-        renderable.render(graphic);
+        rasterRenderer.render(graphic);
     }
 }

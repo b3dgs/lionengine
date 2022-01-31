@@ -151,6 +151,16 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     }
 
     /**
+     * Set the direct rendering.
+     * 
+     * @param direct <code>true</code> for direct rendering, <code>false</code> with buffer.
+     */
+    public final void setDirect(boolean direct)
+    {
+        renderer.setDirect(direct);
+    }
+
+    /**
      * Get main frame location x.
      * 
      * @return The main frame location x.
