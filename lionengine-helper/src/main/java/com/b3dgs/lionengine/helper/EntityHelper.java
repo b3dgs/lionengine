@@ -201,13 +201,13 @@ public class EntityHelper extends FeaturableModel
         updating = extrp ->
         {
             state.update(extrp);
-            routines.update(extrp);
-            body.update(extrp);
             attacker.update(extrp);
             extractor.update(extrp);
             producer.update(extrp);
             launchable.update(extrp);
             launcher.update(extrp);
+            routines.update(extrp);
+            body.update(extrp);
             pathfindable.update(extrp);
             tileCollidable.update(extrp);
             state.postUpdate();
