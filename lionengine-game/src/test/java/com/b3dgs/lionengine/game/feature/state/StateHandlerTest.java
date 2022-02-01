@@ -139,27 +139,20 @@ final class StateHandlerTest
     @Test
     void testHandlerConverter()
     {
-        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         Medias.setLoadFromJar(StateHandlerTest.class);
-        final Media config = UtilTransformable.createMedia(StateHandlerTest.class);
-
         try
         {
-            final Setup setup = new Setup(config);
+            final Setup setup = new Setup(Medias.create("Object.xml"));
             final Featurable featurable = new FeaturableModel(services, setup);
             final StateHandler handler;
-            handler = featurable.addFeatureAndGet(new StateHandler(services,
-                                                                   new Setup(Medias.create("Object.xml")),
-                                                                   Class::getName));
+            handler = featurable.addFeatureAndGet(new StateHandler(services, setup, Class::getName));
             handler.prepare(featurable);
             handler.changeState(StateIdle.class);
 
             assertCause(() -> handler.postUpdate(), "Animation not found: " + StateIdle.class.getName());
-            assertTrue(config.getFile().delete());
         }
         finally
         {
-            Medias.setResourcesDirectory(null);
             Medias.setLoadFromJar(null);
         }
     }
@@ -199,16 +192,13 @@ final class StateHandlerTest
     @Test
     void testWithConfig()
     {
-        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         Medias.setLoadFromJar(StateHandlerTest.class);
-        final Media config = UtilTransformable.createMedia(StateHandlerTest.class);
-
         try
         {
-            final Setup setup = new Setup(config);
+            final Setup setup = new Setup(Medias.create("Object.xml"));
             final Featurable featurable = new FeaturableModel(services, setup);
             final StateHandler handler;
-            handler = featurable.addFeatureAndGet(new StateHandler(services, new Setup(Medias.create("Object.xml"))));
+            handler = featurable.addFeatureAndGet(new StateHandler(services, setup));
             handler.prepare(featurable);
             handler.changeState(StateIdle.class);
             handler.postUpdate();
@@ -232,11 +222,9 @@ final class StateHandlerTest
             handler.postUpdate();
 
             assertTrue(handler.isState(StateIdle.class));
-            assertTrue(config.getFile().delete());
         }
         finally
         {
-            Medias.setResourcesDirectory(null);
             Medias.setLoadFromJar(null);
         }
     }
@@ -355,16 +343,13 @@ final class StateHandlerTest
         final AtomicReference<Class<? extends State>> old = new AtomicReference<>();
         final AtomicReference<Class<? extends State>> next = new AtomicReference<>();
 
-        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         Medias.setLoadFromJar(StateHandlerTest.class);
-        final Media config = UtilTransformable.createMedia(StateHandlerTest.class);
-
         try
         {
-            final Setup setup = new Setup(config);
+            final Setup setup = new Setup(Medias.create("Object.xml"));
             final Featurable featurable = new FeaturableModel(services, setup);
             final StateHandler handler;
-            handler = featurable.addFeatureAndGet(new StateHandler(services, new Setup(Medias.create("Object.xml"))));
+            handler = featurable.addFeatureAndGet(new StateHandler(services, setup));
             handler.prepare(featurable);
             final StateTransitionListener listener = (o, n) ->
             {
@@ -393,11 +378,9 @@ final class StateHandlerTest
 
             assertNull(old.get());
             assertNull(next.get());
-            assertTrue(config.getFile().delete());
         }
         finally
         {
-            Medias.setResourcesDirectory(null);
             Medias.setLoadFromJar(null);
         }
     }
