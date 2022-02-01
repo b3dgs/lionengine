@@ -25,18 +25,13 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.Engine;
-import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilReflection;
-import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -48,37 +43,7 @@ import com.b3dgs.lionengine.game.feature.UtilTransformable;
  */
 final class StateHandlerTest
 {
-    /** Object config test. */
-    private static Media config;
-
-    /**
-     * Start engine.
-     */
-    @BeforeAll
-    static void beforeAll()
-    {
-        Engine.start(new EngineMock(StateHandlerTest.class.getSimpleName(), Version.DEFAULT));
-
-        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        Medias.setLoadFromJar(StateHandlerTest.class);
-        config = UtilTransformable.createMedia(StateHandlerTest.class);
-    }
-
-    /**
-     * Terminate engine.
-     */
-    @AfterAll
-    static void afterAll()
-    {
-        assertTrue(config.getFile().delete());
-        Medias.setResourcesDirectory(null);
-        Medias.setLoadFromJar(null);
-
-        Engine.terminate();
-    }
-
     private final Services services = new Services();
-    private final Setup setup = new Setup(config);
 
     /**
      * Prepare test.
@@ -95,64 +60,77 @@ final class StateHandlerTest
     @Test
     void testHandler()
     {
-        final StateHandler handler = new StateHandler(services, setup);
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        final Media config = UtilTransformable.createMedia(StateHandlerTest.class);
 
-        assertFalse(handler.isState(StateBase.class));
-        assertFalse(StateBase.entered);
-        assertFalse(StateBase.updated);
-        assertFalse(StateBase.exited);
+        try
+        {
+            final Setup setup = new Setup(config);
+            final StateHandler handler = new StateHandler(services, setup);
 
-        handler.update(1.0);
-        handler.postUpdate();
+            assertFalse(handler.isState(StateBase.class));
+            assertFalse(StateBase.entered);
+            assertFalse(StateBase.updated);
+            assertFalse(StateBase.exited);
 
-        assertFalse(handler.isState(StateBase.class));
-        assertFalse(StateBase.entered);
-        assertFalse(StateBase.updated);
-        assertFalse(StateBase.exited);
+            handler.update(1.0);
+            handler.postUpdate();
 
-        handler.changeState(StateBase.class);
-        handler.postUpdate();
+            assertFalse(handler.isState(StateBase.class));
+            assertFalse(StateBase.entered);
+            assertFalse(StateBase.updated);
+            assertFalse(StateBase.exited);
 
-        assertTrue(handler.isState(StateBase.class));
-        assertTrue(StateBase.entered);
-        assertFalse(StateBase.updated);
-        assertFalse(StateBase.exited);
+            handler.changeState(StateBase.class);
+            handler.postUpdate();
 
-        StateBase.reset();
-        handler.update(1.0);
-        handler.postUpdate();
+            assertTrue(handler.isState(StateBase.class));
+            assertTrue(StateBase.entered);
+            assertFalse(StateBase.updated);
+            assertFalse(StateBase.exited);
 
-        assertFalse(StateBase.entered);
-        assertTrue(StateBase.updated);
-        assertFalse(StateBase.exited);
+            StateBase.reset();
+            handler.update(1.0);
+            handler.postUpdate();
 
-        assertFalse(StateNext.entered);
-        assertFalse(StateNext.updated);
-        assertFalse(StateNext.exited);
+            assertFalse(StateBase.entered);
+            assertTrue(StateBase.updated);
+            assertFalse(StateBase.exited);
 
-        StateBase.reset();
-        StateBase.check = true;
-        handler.update(1.0);
-        handler.postUpdate();
+            assertFalse(StateNext.entered);
+            assertFalse(StateNext.updated);
+            assertFalse(StateNext.exited);
 
-        assertFalse(StateBase.entered);
-        assertTrue(StateBase.updated);
-        assertTrue(StateBase.exited);
+            StateBase.reset();
+            StateBase.check = true;
+            handler.update(1.0);
+            handler.postUpdate();
 
-        assertTrue(StateNext.entered);
-        assertFalse(StateNext.updated);
-        assertFalse(StateNext.exited);
+            assertFalse(StateBase.entered);
+            assertTrue(StateBase.updated);
+            assertTrue(StateBase.exited);
 
-        StateBase.reset();
-        handler.update(1.0);
-        handler.postUpdate();
+            assertTrue(StateNext.entered);
+            assertFalse(StateNext.updated);
+            assertFalse(StateNext.exited);
 
-        assertFalse(StateBase.entered);
-        assertFalse(StateBase.updated);
-        assertFalse(StateBase.exited);
+            StateBase.reset();
+            handler.update(1.0);
+            handler.postUpdate();
 
-        assertTrue(StateNext.updated);
-        assertFalse(StateNext.exited);
+            assertFalse(StateBase.entered);
+            assertFalse(StateBase.updated);
+            assertFalse(StateBase.exited);
+
+            assertTrue(StateNext.updated);
+            assertFalse(StateNext.exited);
+
+            assertTrue(config.getFile().delete());
+        }
+        finally
+        {
+            Medias.setResourcesDirectory(null);
+        }
     }
 
     /**
@@ -161,15 +139,29 @@ final class StateHandlerTest
     @Test
     void testHandlerConverter()
     {
-        final Featurable featurable = new FeaturableModel(services, setup);
-        final StateHandler handler;
-        handler = featurable.addFeatureAndGet(new StateHandler(services,
-                                                               new Setup(Medias.create("Object.xml")),
-                                                               Class::getName));
-        handler.prepare(featurable);
-        handler.changeState(StateIdle.class);
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        Medias.setLoadFromJar(StateHandlerTest.class);
+        final Media config = UtilTransformable.createMedia(StateHandlerTest.class);
 
-        assertCause(() -> handler.postUpdate(), "Animation not found: " + StateIdle.class.getName());
+        try
+        {
+            final Setup setup = new Setup(config);
+            final Featurable featurable = new FeaturableModel(services, setup);
+            final StateHandler handler;
+            handler = featurable.addFeatureAndGet(new StateHandler(services,
+                                                                   new Setup(Medias.create("Object.xml")),
+                                                                   Class::getName));
+            handler.prepare(featurable);
+            handler.changeState(StateIdle.class);
+
+            assertCause(() -> handler.postUpdate(), "Animation not found: " + StateIdle.class.getName());
+            assertTrue(config.getFile().delete());
+        }
+        finally
+        {
+            Medias.setResourcesDirectory(null);
+            Medias.setLoadFromJar(null);
+        }
     }
 
     /**
@@ -178,15 +170,27 @@ final class StateHandlerTest
     @Test
     void testClear()
     {
-        final StateHandler handler = new StateHandler(services, setup);
-        handler.changeState(StateClear.class);
-        handler.update(1.0);
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        final Media config = UtilTransformable.createMedia(StateHandlerTest.class);
 
-        assertFalse(handler.isState(StateClear.class));
+        try
+        {
+            final Setup setup = new Setup(config);
+            final StateHandler handler = new StateHandler(services, setup);
+            handler.changeState(StateClear.class);
+            handler.update(1.0);
 
-        handler.postUpdate();
+            assertFalse(handler.isState(StateClear.class));
 
-        assertTrue(handler.isState(StateClear.class));
+            handler.postUpdate();
+
+            assertTrue(handler.isState(StateClear.class));
+            assertTrue(config.getFile().delete());
+        }
+        finally
+        {
+            Medias.setResourcesDirectory(null);
+        }
     }
 
     /**
@@ -195,30 +199,46 @@ final class StateHandlerTest
     @Test
     void testWithConfig()
     {
-        final Featurable featurable = new FeaturableModel(services, setup);
-        final StateHandler handler;
-        handler = featurable.addFeatureAndGet(new StateHandler(services, new Setup(Medias.create("Object.xml"))));
-        handler.prepare(featurable);
-        handler.changeState(StateIdle.class);
-        handler.postUpdate();
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        Medias.setLoadFromJar(StateHandlerTest.class);
+        final Media config = UtilTransformable.createMedia(StateHandlerTest.class);
 
-        assertEquals(new Animation(StateIdle.class.getSimpleName(), 1, 1, 0.125, false, false), StateIdle.animation);
-        assertNull(StateWalk.animation);
-        assertTrue(handler.isState(StateIdle.class));
+        try
+        {
+            final Setup setup = new Setup(config);
+            final Featurable featurable = new FeaturableModel(services, setup);
+            final StateHandler handler;
+            handler = featurable.addFeatureAndGet(new StateHandler(services, new Setup(Medias.create("Object.xml"))));
+            handler.prepare(featurable);
+            handler.changeState(StateIdle.class);
+            handler.postUpdate();
 
-        handler.update(1.0);
+            assertEquals(new Animation(StateIdle.class.getSimpleName(), 1, 1, 0.125, false, false),
+                         StateIdle.animation);
+            assertNull(StateWalk.animation);
+            assertTrue(handler.isState(StateIdle.class));
 
-        assertNull(StateWalk.animation);
+            handler.update(1.0);
 
-        handler.postUpdate();
+            assertNull(StateWalk.animation);
 
-        assertEquals(new Animation(StateWalk.class.getSimpleName(), 2, 2, 0.125, false, false), StateWalk.animation);
-        assertTrue(handler.isState(StateWalk.class));
+            handler.postUpdate();
 
-        handler.update(1.0);
-        handler.postUpdate();
+            assertEquals(new Animation(StateWalk.class.getSimpleName(), 2, 2, 0.125, false, false),
+                         StateWalk.animation);
+            assertTrue(handler.isState(StateWalk.class));
 
-        assertTrue(handler.isState(StateIdle.class));
+            handler.update(1.0);
+            handler.postUpdate();
+
+            assertTrue(handler.isState(StateIdle.class));
+            assertTrue(config.getFile().delete());
+        }
+        finally
+        {
+            Medias.setResourcesDirectory(null);
+            Medias.setLoadFromJar(null);
+        }
     }
 
     /**
@@ -227,9 +247,21 @@ final class StateHandlerTest
     @Test
     void testNullArgument()
     {
-        final StateHandler handler = new StateHandler(services, setup);
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        final Media config = UtilTransformable.createMedia(StateHandlerTest.class);
 
-        assertThrows(() -> handler.changeState(null), "Unexpected null argument !");
+        try
+        {
+            final Setup setup = new Setup(config);
+            final StateHandler handler = new StateHandler(services, setup);
+
+            assertThrows(() -> handler.changeState(null), "Unexpected null argument !");
+            assertTrue(config.getFile().delete());
+        }
+        finally
+        {
+            Medias.setResourcesDirectory(null);
+        }
     }
 
     /**
@@ -238,10 +270,22 @@ final class StateHandlerTest
     @Test
     void testUnknownState()
     {
-        final StateHandler handler = new StateHandler(services, setup);
-        handler.changeState(State.class);
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        final Media config = UtilTransformable.createMedia(StateHandlerTest.class);
 
-        assertCause(() -> handler.postUpdate(), NoSuchMethodException.class);
+        try
+        {
+            final Setup setup = new Setup(config);
+            final StateHandler handler = new StateHandler(services, setup);
+            handler.changeState(State.class);
+
+            assertCause(() -> handler.postUpdate(), NoSuchMethodException.class);
+            assertTrue(config.getFile().delete());
+        }
+        finally
+        {
+            Medias.setResourcesDirectory(null);
+        }
     }
 
     /**
@@ -253,28 +297,40 @@ final class StateHandlerTest
         final AtomicReference<Class<? extends State>> old = new AtomicReference<>();
         final AtomicReference<Class<? extends State>> next = new AtomicReference<>();
 
-        final StateHandler handler = new StateHandler(services, setup);
-        handler.addListener((o, n) ->
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        final Media config = UtilTransformable.createMedia(StateHandlerTest.class);
+
+        try
         {
-            old.set(o);
-            next.set(n);
-        });
+            final Setup setup = new Setup(config);
+            final StateHandler handler = new StateHandler(services, setup);
+            handler.addListener((o, n) ->
+            {
+                old.set(o);
+                next.set(n);
+            });
 
-        handler.changeState(StateMock.class);
-        handler.postUpdate();
-        handler.postUpdate();
+            handler.changeState(StateMock.class);
+            handler.postUpdate();
+            handler.postUpdate();
 
-        assertNull(old.get());
-        assertEquals(StateMock.class, next.get());
+            assertNull(old.get());
+            assertEquals(StateMock.class, next.get());
 
-        old.set(null);
-        next.set(null);
+            old.set(null);
+            next.set(null);
 
-        handler.changeState(StateMock.class);
-        handler.postUpdate();
+            handler.changeState(StateMock.class);
+            handler.postUpdate();
 
-        assertEquals(StateMock.class, old.get());
-        assertEquals(StateMock.class, next.get());
+            assertEquals(StateMock.class, old.get());
+            assertEquals(StateMock.class, next.get());
+            assertTrue(config.getFile().delete());
+        }
+        finally
+        {
+            Medias.setResourcesDirectory(null);
+        }
     }
 
     /**
@@ -299,37 +355,51 @@ final class StateHandlerTest
         final AtomicReference<Class<? extends State>> old = new AtomicReference<>();
         final AtomicReference<Class<? extends State>> next = new AtomicReference<>();
 
-        final Featurable featurable = new FeaturableModel(services, setup);
-        final StateHandler handler;
-        handler = featurable.addFeatureAndGet(new StateHandler(services, new Setup(Medias.create("Object.xml"))));
-        handler.prepare(featurable);
-        final StateTransitionListener listener = (o, n) ->
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        Medias.setLoadFromJar(StateHandlerTest.class);
+        final Media config = UtilTransformable.createMedia(StateHandlerTest.class);
+
+        try
         {
-            old.set(o);
-            next.set(n);
-        };
-        handler.addListener(listener);
+            final Setup setup = new Setup(config);
+            final Featurable featurable = new FeaturableModel(services, setup);
+            final StateHandler handler;
+            handler = featurable.addFeatureAndGet(new StateHandler(services, new Setup(Medias.create("Object.xml"))));
+            handler.prepare(featurable);
+            final StateTransitionListener listener = (o, n) ->
+            {
+                old.set(o);
+                next.set(n);
+            };
+            handler.addListener(listener);
 
-        handler.changeState(StateIdle.class);
-        handler.postUpdate();
+            handler.changeState(StateIdle.class);
+            handler.postUpdate();
 
-        assertNull(old.get());
-        assertEquals(StateIdle.class, next.get());
+            assertNull(old.get());
+            assertEquals(StateIdle.class, next.get());
 
-        handler.changeState(StateWalk.class);
-        handler.postUpdate();
+            handler.changeState(StateWalk.class);
+            handler.postUpdate();
 
-        assertEquals(StateIdle.class, old.get());
-        assertEquals(StateWalk.class, next.get());
+            assertEquals(StateIdle.class, old.get());
+            assertEquals(StateWalk.class, next.get());
 
-        handler.removeListener(listener);
-        old.set(null);
-        next.set(null);
-        handler.changeState(StateIdle.class);
-        handler.postUpdate();
+            handler.removeListener(listener);
+            old.set(null);
+            next.set(null);
+            handler.changeState(StateIdle.class);
+            handler.postUpdate();
 
-        assertNull(old.get());
-        assertNull(next.get());
+            assertNull(old.get());
+            assertNull(next.get());
+            assertTrue(config.getFile().delete());
+        }
+        finally
+        {
+            Medias.setResourcesDirectory(null);
+            Medias.setLoadFromJar(null);
+        }
     }
 
     /**
