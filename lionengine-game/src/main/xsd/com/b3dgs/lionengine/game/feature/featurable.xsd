@@ -10,9 +10,9 @@
         <xsd:attribute name="height" type="xsd:int" use="required"></xsd:attribute>
     </xsd:complexType>
     <xsd:complexType name="rasterable">
-        <xsd:attribute name="height" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="height" type="xsd:int" use="optional"></xsd:attribute>
         <xsd:attribute name="file" type="xsd:string" use="optional"></xsd:attribute>
-        <xsd:attribute name="extern" type="xsd:boolean" use="optional"</xsd:attribute>
+        <xsd:attribute name="extern" type="xsd:boolean" use="optional"></xsd:attribute>
     </xsd:complexType>
     <xsd:complexType name="layerable">
         <xsd:attribute name="layerRefresh" type="xsd:int" use="required"></xsd:attribute>
