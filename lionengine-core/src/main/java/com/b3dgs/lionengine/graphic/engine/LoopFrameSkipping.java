@@ -41,6 +41,20 @@ public final class LoopFrameSkipping implements Loop
     /** Maximum expected frame rate. */
     private static final int MAX_FRAME_RATE = 1000;
 
+    private static double computeFrameTime(int rate)
+    {
+        final double expectedRate;
+        if (rate == 0)
+        {
+            expectedRate = MAX_FRAME_RATE;
+        }
+        else
+        {
+            expectedRate = rate;
+        }
+        return Constant.ONE_SECOND_IN_MILLI / expectedRate * Constant.NANO_TO_MILLI;
+    }
+
     /**
      * Check if screen has sync locked.
      * 
@@ -54,6 +68,8 @@ public final class LoopFrameSkipping implements Loop
         return config.isWindowed() && output.getRate() > 0;
     }
 
+    /** Extrapolation base. */
+    private final double extrp;
     /** Running flag. */
     private boolean isRunning;
     /** Max frame time in nano. */
@@ -65,6 +81,29 @@ public final class LoopFrameSkipping implements Loop
     public LoopFrameSkipping()
     {
         super();
+
+        extrp = Constant.EXTRP;
+    }
+
+    /**
+     * Create loop.
+     * 
+     * @param rateOriginal The original rate.
+     * @param rateDesired The desired rate.
+     */
+    public LoopFrameSkipping(int rateOriginal, int rateDesired)
+    {
+        super();
+
+        if (rateOriginal == rateDesired)
+        {
+            extrp = Constant.EXTRP;
+        }
+        else
+        {
+            extrp = rateOriginal / (double) rateDesired;
+        }
+        maxFrameTimeNano = computeFrameTime(rateDesired);
     }
 
     /*
@@ -97,7 +136,7 @@ public final class LoopFrameSkipping implements Loop
 
                 do
                 {
-                    frame.update(Constant.EXTRP);
+                    frame.update(extrp);
                     acc -= maxFrameTimeNano;
                 }
                 while (acc > maxFrameTimeNano);
@@ -130,15 +169,6 @@ public final class LoopFrameSkipping implements Loop
     @Override
     public void notifyRateChanged(int rate)
     {
-        final double expectedRate;
-        if (rate == 0)
-        {
-            expectedRate = MAX_FRAME_RATE;
-        }
-        else
-        {
-            expectedRate = rate;
-        }
-        maxFrameTimeNano = Constant.ONE_SECOND_IN_MILLI / expectedRate * Constant.NANO_TO_MILLI;
+        maxFrameTimeNano = computeFrameTime(rate);
     }
 }

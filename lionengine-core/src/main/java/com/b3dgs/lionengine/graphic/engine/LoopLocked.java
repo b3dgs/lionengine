@@ -30,6 +30,15 @@ import com.b3dgs.lionengine.graphic.Screen;
  */
 public final class LoopLocked implements Loop
 {
+    private static double computeFrameTime(int rate)
+    {
+        if (rate == 0)
+        {
+            return 0.0;
+        }
+        return Constant.ONE_SECOND_IN_MILLI / (double) rate * Constant.NANO_TO_MILLI;
+    }
+
     /** Running flag. */
     private boolean isRunning;
     /** Max frame time in nano. */
@@ -41,6 +50,18 @@ public final class LoopLocked implements Loop
     public LoopLocked()
     {
         super();
+    }
+
+    /**
+     * Create loop.
+     * 
+     * @param rate The original rate.
+     */
+    public LoopLocked(int rate)
+    {
+        super();
+
+        maxFrameTimeNano = computeFrameTime(rate);
     }
 
     /*
@@ -97,13 +118,6 @@ public final class LoopLocked implements Loop
     @Override
     public void notifyRateChanged(int rate)
     {
-        if (rate == 0)
-        {
-            maxFrameTimeNano = 0.0;
-        }
-        else
-        {
-            maxFrameTimeNano = Constant.ONE_SECOND_IN_MILLI / (double) rate * Constant.NANO_TO_MILLI;
-        }
+        maxFrameTimeNano = computeFrameTime(rate);
     }
 }

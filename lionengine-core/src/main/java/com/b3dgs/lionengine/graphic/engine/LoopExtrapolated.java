@@ -48,6 +48,18 @@ public final class LoopExtrapolated implements Loop
         super();
     }
 
+    /**
+     * Create loop.
+     * 
+     * @param rate The original rate.
+     */
+    public LoopExtrapolated(int rate)
+    {
+        super();
+
+        notifyRateChanged(rate);
+    }
+
     /*
      * Loop
      */

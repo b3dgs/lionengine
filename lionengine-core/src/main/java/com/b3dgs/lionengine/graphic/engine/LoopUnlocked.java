@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.graphic.Screen;
  */
 public final class LoopUnlocked implements Loop
 {
+    /** Extrapolation base. */
+    private final double extrp;
     /** Running flag. */
     private boolean isRunning;
 
@@ -37,6 +39,28 @@ public final class LoopUnlocked implements Loop
     public LoopUnlocked()
     {
         super();
+
+        extrp = Constant.EXTRP;
+    }
+
+    /**
+     * Create loop.
+     * 
+     * @param rateOriginal The original rate.
+     * @param rateDesired The desired rate.
+     */
+    public LoopUnlocked(int rateOriginal, int rateDesired)
+    {
+        super();
+
+        if (rateOriginal == rateDesired)
+        {
+            extrp = Constant.EXTRP;
+        }
+        else
+        {
+            extrp = rateOriginal / (double) rateDesired;
+        }
     }
 
     /*
@@ -56,12 +80,12 @@ public final class LoopUnlocked implements Loop
             {
                 final long lastTime = System.nanoTime();
 
-                frame.update(Constant.EXTRP);
+                frame.update(extrp);
                 screen.preUpdate();
                 frame.render();
                 screen.update();
 
-                frame.computeFrameRate(lastTime, Math.max(lastTime + 1, System.nanoTime()));
+                frame.computeFrameRate(lastTime, System.nanoTime());
             }
             else
             {
