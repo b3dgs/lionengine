@@ -177,12 +177,12 @@ public abstract class BackgroundAbstract implements Background
         int py;
         if (maxY == 0)
         {
-            py = (int) y;
+            py = (int) Math.round(y);
         }
         else
         {
             final double currentY = UtilMath.clamp(y, minY, maxY);
-            py = (int) (currentY / maxY * lowest) - lowest + offsetY;
+            py = (int) Math.round(currentY / maxY * lowest) - lowest + offsetY;
             if (py > 0)
             {
                 py = 0;
@@ -191,7 +191,7 @@ public abstract class BackgroundAbstract implements Background
 
         for (final BackgroundComponent component : components)
         {
-            component.update(extrp, (int) x, py, speed);
+            component.update(extrp, (int) Math.round(x), py, speed);
         }
     }
 
