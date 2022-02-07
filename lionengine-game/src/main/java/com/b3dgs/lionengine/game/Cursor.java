@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.lionengine.io.DeviceController;
+import com.b3dgs.lionengine.io.DeviceMapper;
 import com.b3dgs.lionengine.io.DevicePointer;
 
 /**
@@ -82,6 +83,8 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     private double y;
     /** Synchronization mode. */
     private DevicePointer sync;
+    /** Synchronization mode. */
+    private DevicePointer lock;
     /** Horizontal sensibility. */
     private double sensibilityHorizontal = 1.0;
     /** Vertical sensibility. */
@@ -158,6 +161,16 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     public void setSync(DevicePointer sync)
     {
         this.sync = sync;
+    }
+
+    /**
+     * Set the cursor synchronization to the pointer.
+     * 
+     * @param lock The lock mode (<code>true</code> = sync to system pointer; <code>false</code> = internal movement).
+     */
+    public void setLock(DevicePointer lock)
+    {
+        this.lock = lock;
     }
 
     /**
@@ -287,6 +300,28 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
         return screenY;
     }
 
+    /**
+     * Check if mapper is currently pushed.
+     * 
+     * @param mapper The mapper to check.
+     * @return <code>true</code> if pushed, <code>false</code> else.
+     */
+    public boolean isPushed(DeviceMapper mapper)
+    {
+        return isPushed(mapper.getIndex());
+    }
+
+    /**
+     * Check if mapper is pushed only one time (will ignore continuous push).
+     * 
+     * @param mapper The mapper to check.
+     * @return <code>true</code> if pushed, <code>false</code> else.
+     */
+    public boolean isPushedOnce(DeviceMapper mapper)
+    {
+        return isPushedOnce(mapper.getIndex());
+    }
+
     /*
      * Resource
      */
@@ -313,13 +348,13 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     public Integer getPushed()
     {
         final Integer pushed;
-        if (device != null)
-        {
-            pushed = device.getFired();
-        }
-        else if (sync != null)
+        if (sync != null)
         {
             pushed = sync.getPushed();
+        }
+        else if (device != null)
+        {
+            pushed = device.getFired();
         }
         else
         {
@@ -332,13 +367,13 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     public boolean isPushed()
     {
         final boolean pushed;
-        if (device != null)
-        {
-            pushed = device.isFired();
-        }
-        else if (sync != null)
+        if (sync != null)
         {
             pushed = sync.isPushed();
+        }
+        else if (device != null)
+        {
+            pushed = device.isFired();
         }
         else
         {
@@ -388,18 +423,18 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     @Override
     public void lock(int x, int y)
     {
-        if (sync != null)
+        if (lock != null)
         {
-            sync.lock(x, y);
+            lock.lock(x, y);
         }
     }
 
     @Override
     public void unlock()
     {
-        if (sync != null)
+        if (lock != null)
         {
-            sync.unlock();
+            lock.unlock();
         }
     }
 
@@ -416,17 +451,17 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     @Override
     public void update(double extrp)
     {
-        if (device != null)
-        {
-            screenX += device.getHorizontalDirection() * sensibilityHorizontal * extrp;
-            screenY -= device.getVerticalDirection() * sensibilityVertical * extrp;
-            lock(context.getX() + context.getWidth() / 2, context.getY() + context.getHeight() / 2);
-        }
-        else if (sync != null)
+        if (sync != null)
         {
             screenX = sync.getX();
             screenY = sync.getY();
             unlock();
+        }
+        else if (device != null)
+        {
+            screenX += device.getHorizontalDirection() * sensibilityHorizontal * extrp;
+            screenY -= device.getVerticalDirection() * sensibilityVertical * extrp;
+            lock(context.getX() + context.getWidth() / 2, context.getY() + context.getHeight() / 2);
         }
         if (viewer != null)
         {
@@ -478,13 +513,13 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     public double getMoveX()
     {
         final double mx;
-        if (device != null)
-        {
-            mx = device.getHorizontalDirection();
-        }
-        else if (sync != null)
+        if (sync != null)
         {
             mx = sync.getMoveX();
+        }
+        else if (device != null)
+        {
+            mx = device.getHorizontalDirection();
         }
         else
         {
@@ -497,13 +532,13 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     public double getMoveY()
     {
         final double my;
-        if (device != null)
-        {
-            my = device.getVerticalDirection();
-        }
-        else if (sync != null)
+        if (sync != null)
         {
             my = sync.getMoveY();
+        }
+        else if (device != null)
+        {
+            my = device.getVerticalDirection();
         }
         else
         {
