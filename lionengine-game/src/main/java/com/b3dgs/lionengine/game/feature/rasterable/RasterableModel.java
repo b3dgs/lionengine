@@ -228,11 +228,6 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     public void update(double extrp)
     {
         updater.update(extrp);
-
-        if (visible)
-        {
-            updateRaster();
-        }
     }
 
     @Override
@@ -240,6 +235,7 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     {
         if (visible)
         {
+            updateRaster();
             raster.setLocation(viewer, transformable);
             raster.render(g);
         }
