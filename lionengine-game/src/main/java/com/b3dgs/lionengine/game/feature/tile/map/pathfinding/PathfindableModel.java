@@ -336,7 +336,11 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         moveX = sx;
         moveY = sy;
         transformable.moveLocation(extrp, force);
-        moving = true;
+        moving = Double.compare(moveX, 0.0) != 0 || Double.compare(moveY, 0.0) != 0;
+        if (moving)
+        {
+            updateOrientation();
+        }
 
         // Object arrived, next step
         if (isStepReached(sx, sy, dx, dy))
