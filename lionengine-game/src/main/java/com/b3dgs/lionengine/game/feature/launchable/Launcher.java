@@ -108,6 +108,13 @@ public interface Launcher extends Feature, Updatable, Listenable<LauncherListene
     void setDelay(int delay);
 
     /**
+     * Set fire extrapolation.
+     * 
+     * @param extrapolate <code>true</code> to extrapolate future location, <code>false</code> else.
+     */
+    void setExtrapolate(boolean extrapolate);
+
+    /**
      * Get the horizontal offset.
      * 
      * @return The horizontal offset.

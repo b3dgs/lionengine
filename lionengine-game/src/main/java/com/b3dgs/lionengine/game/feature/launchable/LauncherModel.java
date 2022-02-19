@@ -91,6 +91,8 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     private Localizable target;
     /** Mirrorable reference. */
     private Mirrorable mirrorable;
+    /** Extrapolate flag. */
+    private boolean extrapolate;
     /** Current level. */
     private int level;
     /** Fire delay in milli seconds. */
@@ -255,7 +257,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     {
         if (target != null)
         {
-            return computeVector(vector, target, false);
+            return computeVector(vector, target);
         }
         int sideX = 1;
         int sideY = 1;
@@ -279,10 +281,9 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
      * 
      * @param vector The initial vector used for launch.
      * @param target The target reference.
-     * @param extrapolate <code>true</code> to extrapolate future location, <code>false</code> else.
      * @return The computed force to reach target.
      */
-    private Force computeVector(Force vector, Localizable target, boolean extrapolate)
+    private Force computeVector(Force vector, Localizable target)
     {
         final double sx = transformable.getX();
         final double sy = transformable.getY();
@@ -471,6 +472,12 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     }
 
     @Override
+    public void setExtrapolate(boolean extrapolate)
+    {
+        this.extrapolate = extrapolate;
+    }
+
+    @Override
     public int getOffsetX()
     {
         return offsetX;
@@ -498,5 +505,6 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     public void recycle()
     {
         fire.restart();
+        extrapolate = false;
     }
 }
