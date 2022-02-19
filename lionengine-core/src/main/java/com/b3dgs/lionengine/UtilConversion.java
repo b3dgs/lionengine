@@ -102,6 +102,17 @@ public final class UtilConversion
     }
 
     /**
+     * Return the java byte value [-128|127] from an unsigned byte [0|255].
+     * 
+     * @param value The unsigned byte value [0|255].
+     * @return The java byte value [-128|127].
+     */
+    public static byte fromUnsignedByte(int value)
+    {
+        return (byte) (value - (Byte.MAX_VALUE + 1));
+    }
+
+    /**
      * Return the unsigned byte value [0|255] from the java byte value [-128|127].
      * 
      * @param value The java byte value [-128|127].

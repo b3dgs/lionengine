@@ -19,7 +19,6 @@
         <module>../lionengine-core-awt</module>
         <module>../lionengine-game</module>
         <module>../lionengine-helper</module>
-        <module>../lionengine-network</module>
         <module>../lionengine-audio-wav</module>
         <module>../lionengine-audio-adlmidi</module>
         <module>../lionengine-audio-adplug</module>

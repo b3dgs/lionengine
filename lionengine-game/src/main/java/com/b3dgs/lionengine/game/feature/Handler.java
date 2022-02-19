@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Updatable;
@@ -230,11 +229,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
         {
             featurable = toAdd.get(id);
         }
-        if (featurable != null)
-        {
-            return featurable;
-        }
-        throw new LionEngineException(ERROR_FEATURABLE_NOT_FOUND + String.valueOf(id));
+        return featurable;
     }
 
     @Override

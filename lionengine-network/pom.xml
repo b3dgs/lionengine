@@ -5,14 +5,13 @@
         <groupId>com.b3dgs.lionengine</groupId>
         <artifactId>lionengine-parent</artifactId>
         <version>10.0.0-SNAPSHOT</version>
-        <relativePath>../lionengine-parent</relativePath>
+        <relativePath>../lionengine-parent/pom.xml</relativePath>
     </parent>
     <artifactId>lionengine-network</artifactId>
     <packaging>jar</packaging>
     <name>LionEngine Network</name>
     <properties>
         <radial.base-package>com.b3dgs.lionengine.network</radial.base-package>
-        <sonar.skip>true</sonar.skip>
     </properties>
     <dependencies>
         <dependency>
@@ -35,13 +34,6 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.network</Bundle-SymbolicName>
                     </instructions>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.b3dgs.radialencapsulation</groupId>
-                <artifactId>radial-encapsulation-maven-plugin</artifactId>
-                <configuration>
-                    <maxViolations>100</maxViolations>
                 </configuration>
             </plugin>
         </plugins>
