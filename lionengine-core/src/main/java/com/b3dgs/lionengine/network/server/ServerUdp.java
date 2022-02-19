@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.network.Alive;
 import com.b3dgs.lionengine.network.Channel;
 import com.b3dgs.lionengine.network.Data;
 import com.b3dgs.lionengine.network.Direct;
@@ -46,7 +47,6 @@ import com.b3dgs.lionengine.network.MessageType;
 import com.b3dgs.lionengine.network.Packet;
 import com.b3dgs.lionengine.network.Ping;
 import com.b3dgs.lionengine.network.UtilNetwork;
-import com.b3dgs.lionengine.network.client.Alive;
 
 /**
  * UDP server based implementation.

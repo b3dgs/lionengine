@@ -20,7 +20,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -109,7 +108,7 @@ final class HandlerTest
     @Test
     void testObjectIdNotFound()
     {
-        assertThrows(() -> handler.get(Integer.valueOf(0)), Handler.ERROR_FEATURABLE_NOT_FOUND + 0);
+        assertNull(handler.get(Integer.valueOf(0)));
     }
 
     /**

@@ -35,6 +35,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.network.Alive;
 import com.b3dgs.lionengine.network.Channel;
 import com.b3dgs.lionengine.network.Data;
 import com.b3dgs.lionengine.network.Direct;
