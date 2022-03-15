@@ -25,6 +25,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import com.b3dgs.lionengine.InputDeviceListener;
+import com.b3dgs.lionengine.ListenableModel;
+
 /**
  * Keyboard AWT implementation.
  */
@@ -59,6 +62,8 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     /** Empty key name. */
     private static final char EMPTY_KEY_NAME = ' ';
 
+    /** Push listener. */
+    private final ListenableModel<InputDeviceListener> listeners = new ListenableModel<>();
     /** Actions pressed listeners. */
     private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<>();
     /** Actions released listeners. */
@@ -68,7 +73,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     /** Pressed states. */
     private final Collection<Integer> pressed = new HashSet<>();
     /** Last key code. */
-    private Integer lastCode;
+    private Integer lastKey;
     /** Last key name. */
     private char lastKeyName = EMPTY_KEY_NAME;
 
@@ -83,6 +88,18 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     /*
      * Keyboard
      */
+
+    @Override
+    public void addListener(InputDeviceListener listener)
+    {
+        listeners.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(InputDeviceListener listener)
+    {
+        listeners.removeListener(listener);
+    }
 
     @Override
     public void addActionPressed(Integer key, EventAction action)
@@ -131,7 +148,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     @Override
     public Integer getPushed()
     {
-        return lastCode;
+        return lastKey;
     }
 
     @Override
@@ -171,16 +188,26 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     public void keyPressed(KeyEvent event)
     {
         lastKeyName = event.getKeyChar();
-        lastCode = Integer.valueOf(event.getKeyCode() + (event.getKeyLocation() == 2 ? LOCATION_LEFT : 0));
-        keys.add(lastCode);
+        final Integer key = Integer.valueOf(event.getKeyCode() + (event.getKeyLocation() == 2 ? LOCATION_LEFT : 0));
+        keys.add(key);
 
-        if (actionsPressed.containsKey(lastCode))
+        if (actionsPressed.containsKey(key))
         {
-            final List<EventAction> actions = actionsPressed.get(lastCode);
+            final List<EventAction> actions = actionsPressed.get(key);
             for (final EventAction current : actions)
             {
                 current.action();
             }
+        }
+
+        if (!key.equals(lastKey))
+        {
+            final int n = listeners.size();
+            for (int i = 0; i < n; i++)
+            {
+                listeners.get(i).onDeviceChanged(key, true);
+            }
+            lastKey = key;
         }
     }
 
@@ -188,7 +215,6 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     public void keyReleased(KeyEvent event)
     {
         lastKeyName = EMPTY_KEY_NAME;
-        lastCode = null;
 
         final Integer key = Integer.valueOf(event.getKeyCode() + (event.getKeyLocation() == 2 ? LOCATION_LEFT : 0));
         keys.remove(key);
@@ -202,6 +228,13 @@ public final class KeyboardAwt implements Keyboard, KeyListener
                 current.action();
             }
         }
+
+        final int n = listeners.size();
+        for (int i = 0; i < n; i++)
+        {
+            listeners.get(i).onDeviceChanged(key, false);
+        }
+        lastKey = null;
     }
 
     @Override
