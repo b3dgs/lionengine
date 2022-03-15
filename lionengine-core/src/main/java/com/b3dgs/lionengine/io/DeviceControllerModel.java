@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.b3dgs.lionengine.InputDevice;
+import com.b3dgs.lionengine.InputDeviceListener;
 
 /**
  * Represents the device used to control.
@@ -51,6 +52,18 @@ public class DeviceControllerModel implements DeviceController
     public DeviceControllerModel()
     {
         super();
+    }
+
+    @Override
+    public void addListener(InputDeviceListener listener)
+    {
+        devices.forEach(d -> d.addListener(listener));
+    }
+
+    @Override
+    public void removeListener(InputDeviceListener listener)
+    {
+        devices.forEach(d -> d.removeListener(listener));
     }
 
     @Override

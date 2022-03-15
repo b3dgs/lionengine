@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.io;
 
 import com.b3dgs.lionengine.InputDevice;
+import com.b3dgs.lionengine.InputDeviceListener;
 
 /**
  * Represents void device.
@@ -41,6 +42,18 @@ public class DeviceControllerVoid implements DeviceController
     public DeviceControllerVoid()
     {
         super();
+    }
+
+    @Override
+    public void addListener(InputDeviceListener listener)
+    {
+        // Mock
+    }
+
+    @Override
+    public void removeListener(InputDeviceListener listener)
+    {
+        // Mock
     }
 
     @Override

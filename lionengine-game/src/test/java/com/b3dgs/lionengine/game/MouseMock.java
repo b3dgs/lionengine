@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.InputDeviceListener;
 import com.b3dgs.lionengine.io.DevicePointer;
 
 /**
@@ -129,5 +130,17 @@ public class MouseMock implements DevicePointer
     public String getName()
     {
         return MouseMock.class.getSimpleName();
+    }
+
+    @Override
+    public void addListener(InputDeviceListener listener)
+    {
+        // Mock
+    }
+
+    @Override
+    public void removeListener(InputDeviceListener listener)
+    {
+        // Mock
     }
 }

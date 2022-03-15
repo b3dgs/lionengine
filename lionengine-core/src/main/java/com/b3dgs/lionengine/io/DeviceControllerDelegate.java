@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.io;
 import java.util.function.Supplier;
 
 import com.b3dgs.lionengine.InputDevice;
+import com.b3dgs.lionengine.InputDeviceListener;
 
 /**
  * Represents the device used to control.
@@ -48,6 +49,18 @@ public class DeviceControllerDelegate implements DeviceController
     private DeviceController get()
     {
         return provider.get();
+    }
+
+    @Override
+    public void addListener(InputDeviceListener listener)
+    {
+        get().addListener(listener);
+    }
+
+    @Override
+    public void removeListener(InputDeviceListener listener)
+    {
+        get().removeListener(listener);
     }
 
     @Override

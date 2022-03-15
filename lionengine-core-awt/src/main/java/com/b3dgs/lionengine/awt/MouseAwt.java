@@ -21,7 +21,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.InputDeviceListener;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Resolution;
 
 /**
@@ -36,8 +38,10 @@ public final class MouseAwt implements Mouse
     /** Right click. */
     public static final Integer RIGHT = Integer.valueOf(MouseEvent.BUTTON3);
 
+    /** Push listener. */
+    private final ListenableModel<InputDeviceListener> listeners = new ListenableModel<>();
     /** Move click. */
-    private final MouseClickAwt clicker = new MouseClickAwt();
+    private final MouseClickAwt clicker = new MouseClickAwt(listeners);
     /** Mouse move. */
     private final MouseMoveAwt mover = new MouseMoveAwt();
     /** Screen horizontal ratio. */
@@ -96,6 +100,18 @@ public final class MouseAwt implements Mouse
     /*
      * Mouse
      */
+
+    @Override
+    public void addListener(InputDeviceListener listener)
+    {
+        listeners.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(InputDeviceListener listener)
+    {
+        listeners.removeListener(listener);
+    }
 
     @Override
     public void addActionPressed(Integer click, EventAction action)

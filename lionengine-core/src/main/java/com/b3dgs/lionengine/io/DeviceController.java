@@ -17,12 +17,14 @@
 package com.b3dgs.lionengine.io;
 
 import com.b3dgs.lionengine.InputDevice;
+import com.b3dgs.lionengine.InputDeviceListener;
+import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Updatable;
 
 /**
  * Represents the device used to control.
  */
-public interface DeviceController extends Updatable
+public interface DeviceController extends Updatable, Listenable<InputDeviceListener>
 {
     /**
      * Add horizontal control from action.

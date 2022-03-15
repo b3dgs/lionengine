@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.io;
 
+import com.b3dgs.lionengine.InputDeviceListener;
+
 /**
  * Mock.
  */
@@ -68,6 +70,18 @@ public class DevicePushMock implements DevicePush
     @Override
     public String getName()
     {
-        return "mock";
+        return DevicePushMock.class.getSimpleName();
+    }
+
+    @Override
+    public void addListener(InputDeviceListener listener)
+    {
+        // Mock
+    }
+
+    @Override
+    public void removeListener(InputDeviceListener listener)
+    {
+        // Mock
     }
 }

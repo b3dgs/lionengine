@@ -25,6 +25,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import com.b3dgs.lionengine.InputDeviceListener;
+import com.b3dgs.lionengine.ListenableModel;
+
 /**
  * Mouse implementation.
  */
@@ -38,15 +41,21 @@ final class MouseClickAwt implements MouseListener
     private final Collection<Integer> clicks = new HashSet<>();
     /** Clicked flags. */
     private final Collection<Integer> clicked = new HashSet<>();
+    /** Push listener. */
+    private final ListenableModel<InputDeviceListener> listeners;
     /** Last click number. */
     private Integer lastClick;
 
     /**
      * Internal constructor.
+     * 
+     * @param listeners The listeners reference.
      */
-    MouseClickAwt()
+    MouseClickAwt(ListenableModel<InputDeviceListener> listeners)
     {
         super();
+
+        this.listeners = listeners;
     }
 
     /**
@@ -168,24 +177,32 @@ final class MouseClickAwt implements MouseListener
     @Override
     public void mousePressed(MouseEvent event)
     {
-        lastClick = Integer.valueOf(event.getButton());
-        clicks.add(lastClick);
+        final Integer click = Integer.valueOf(event.getButton());
+        clicks.add(click);
 
-        if (actionsPressed.containsKey(lastClick))
+        if (actionsPressed.containsKey(click))
         {
-            final List<EventAction> actions = actionsPressed.get(lastClick);
+            final List<EventAction> actions = actionsPressed.get(click);
             for (final EventAction current : actions)
             {
                 current.action();
             }
+        }
+
+        if (!click.equals(lastClick))
+        {
+            final int n = listeners.size();
+            for (int i = 0; i < n; i++)
+            {
+                listeners.get(i).onDeviceChanged(click, true);
+            }
+            lastClick = click;
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent event)
     {
-        lastClick = null;
-
         final Integer click = Integer.valueOf(event.getButton());
         clicks.remove(click);
         clicked.remove(click);
@@ -197,6 +214,16 @@ final class MouseClickAwt implements MouseListener
             {
                 current.action();
             }
+        }
+
+        if (lastClick != null)
+        {
+            final int n = listeners.size();
+            for (int i = 0; i < n; i++)
+            {
+                listeners.get(i).onDeviceChanged(click, false);
+            }
+            lastClick = null;
         }
     }
 

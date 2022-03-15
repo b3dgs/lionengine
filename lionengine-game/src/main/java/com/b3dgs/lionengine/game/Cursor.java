@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Context;
+import com.b3dgs.lionengine.InputDeviceListener;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resource;
@@ -325,6 +326,24 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     /*
      * Resource
      */
+
+    @Override
+    public void addListener(InputDeviceListener listener)
+    {
+        if (device != null)
+        {
+            device.addListener(listener);
+        }
+    }
+
+    @Override
+    public void removeListener(InputDeviceListener listener)
+    {
+        if (device != null)
+        {
+            device.removeListener(listener);
+        }
+    }
 
     @Override
     public void load()
