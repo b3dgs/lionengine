@@ -45,6 +45,7 @@ import com.b3dgs.lionengine.game.feature.launchable.Launchable;
 import com.b3dgs.lionengine.game.feature.launchable.LaunchableModel;
 import com.b3dgs.lionengine.game.feature.launchable.Launcher;
 import com.b3dgs.lionengine.game.feature.launchable.LauncherModel;
+import com.b3dgs.lionengine.game.feature.networkable.NetworkableModel;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.ProducerModel;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleModel;
@@ -114,6 +115,7 @@ public class EntityHelper extends FeaturableModel
     {
         super(services, setup);
 
+        addFeature(new NetworkableModel(services, setup));
         addFeature(new LayerableModel(services, setup));
         addFeature(new TransformableModel(services, setup));
         addFeature(new FovableModel(services, setup));

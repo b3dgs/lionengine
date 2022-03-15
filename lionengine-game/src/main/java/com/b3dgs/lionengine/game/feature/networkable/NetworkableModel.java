@@ -18,10 +18,12 @@ package com.b3dgs.lionengine.game.feature.networkable;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.function.Supplier;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
@@ -30,6 +32,7 @@ import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.network.Data;
+import com.b3dgs.lionengine.network.Packet;
 import com.b3dgs.lionengine.network.UtilNetwork;
 import com.b3dgs.lionengine.network.client.Client;
 import com.b3dgs.lionengine.network.server.Server;
@@ -38,16 +41,20 @@ import com.b3dgs.lionengine.network.server.Server;
  * Abstract networkable implementation.
  */
 @FeatureInterface
-public abstract class NetworkableAbstract extends FeatureModel implements Networkable
+public class NetworkableModel extends FeatureModel implements Networkable
 {
     /** Server reference (<code>null</code> if unavailable). */
     protected final Server server = services.getOptional(Server.class).orElse(null);
     /** Client reference (<code>null</code> if unavailable). */
     protected final Client client = services.getOptional(Client.class).orElse(null);
+    /** Feature mapping. */
+    private final Map<Integer, Syncable> syncables = new HashMap<>();
     /** Client id (0 = default for server). */
     private Integer clientId;
-    /** Client id (0 = default for server). */
+    /** Data id. */
     private int dataId = -1;
+    /** Synced on server flag. */
+    private boolean synced;
 
     @FeatureGet private Identifiable identifiable;
 
@@ -71,47 +78,16 @@ public abstract class NetworkableAbstract extends FeatureModel implements Networ
      * @param setup The setup reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public NetworkableAbstract(Services services, Setup setup)
+    public NetworkableModel(Services services, Setup setup)
     {
         super(services, setup);
     }
 
-    /**
-     * Check if owned by server.
-     * 
-     * @return <code>true</code> if owned by server, <code>false</code> else.
+    /*
+     * Networkable
      */
-    public boolean isServer()
-    {
-        return server != null && UtilNetwork.SERVER_ID.equals(getClientId());
-    }
 
-    /**
-     * Check if owned by client.
-     * 
-     * @return <code>true</code> if owned by client, <code>false</code> else.
-     */
-    public boolean isClient()
-    {
-        return client != null && client.getClientId() != null && client.getClientId().equals(getClientId());
-    }
-
-    /**
-     * Check if can be managed by owner.
-     * 
-     * @return <code>true</code> if network owner, <code>false</code> else.
-     */
-    public boolean isOwner()
-    {
-        return isServer() || isClient() || server == null && client == null;
-    }
-
-    /**
-     * Send data over owned client.
-     * 
-     * @param buffer The buffer to send.
-     * @throws LionEngineException If unable to send data.
-     */
+    @Override
     public void send(ByteBuffer buffer)
     {
         try
@@ -122,7 +98,7 @@ public abstract class NetworkableAbstract extends FeatureModel implements Networ
             }
             else if (isClient())
             {
-                client.send(new Data(getClientId(), getDataId(), buffer));
+                client.send(new Data(getClientId(), getDataId(), buffer, isSynced()));
             }
         }
         catch (final IOException exception)
@@ -132,41 +108,58 @@ public abstract class NetworkableAbstract extends FeatureModel implements Networ
     }
 
     /**
-     * Send data over owned client.
-     * 
-     * @param buffer The buffer to send.
+     * Called on connected. Does nothing by default.
      */
-    public void send(Supplier<ByteBuffer> buffer)
+    @Override
+    public void onConnected()
     {
-        send(buffer.get());
+        for (final Feature feature : getFeatures())
+        {
+            if (feature != this && feature instanceof Syncable)
+            {
+                final Syncable syncable = (Syncable) feature;
+                syncables.put(Integer.valueOf(syncable.getSyncId()), syncable);
+                syncable.onConnected();
+            }
+        }
     }
 
-    /*
-     * Networkable
-     */
+    @Override
+    public void onReceived(Packet packet)
+    {
+        final Integer id = Integer.valueOf(packet.readInt());
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Destroy {@link Identifiable} by default.
-     * </p>
-     */
+        syncables.get(id).onReceived(packet);
+    }
+
     @Override
     public void onDisconnected()
     {
         getFeature(Identifiable.class).destroy();
+        syncables.values().forEach(Syncable::onDisconnected);
+        syncables.clear();
     }
 
     @Override
     public void setClientId(Integer clientId)
     {
         this.clientId = clientId;
+        if (clientId != null)
+        {
+            onConnected();
+        }
     }
 
     @Override
     public final void setDataId(int dataId)
     {
         this.dataId = dataId;
+    }
+
+    @Override
+    public void setSynced(boolean synced)
+    {
+        this.synced = synced;
     }
 
     @Override
@@ -179,5 +172,35 @@ public abstract class NetworkableAbstract extends FeatureModel implements Networ
     public final int getDataId()
     {
         return dataId;
+    }
+
+    @Override
+    public boolean isSynced()
+    {
+        return synced;
+    }
+
+    @Override
+    public boolean isServer()
+    {
+        return server != null && UtilNetwork.SERVER_ID.equals(getClientId());
+    }
+
+    @Override
+    public boolean isClient()
+    {
+        return client != null && client.getClientId() != null && client.getClientId().equals(getClientId());
+    }
+
+    @Override
+    public boolean isOwner()
+    {
+        return isServer() || isClient() || server == null && client == null;
+    }
+
+    @Override
+    public boolean isServerHandled()
+    {
+        return server != null && !UtilNetwork.SERVER_ID.equals(getClientId());
     }
 }

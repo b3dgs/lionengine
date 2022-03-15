@@ -156,7 +156,7 @@ public class Packet
         final int size = buffer.getInt(index);
         final byte[] data = new byte[size];
         buffer.get(data, index + Integer.BYTES, size);
-        return Medias.create(new String(data, StandardCharsets.UTF_8));
+        return Medias.create(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(data)).toString());
     }
 
     /**
@@ -169,7 +169,27 @@ public class Packet
         final int size = buffer.getInt();
         final byte[] data = new byte[size];
         buffer.get(data);
-        return Medias.create(new String(data, StandardCharsets.UTF_8));
+        return Medias.create(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(data)).toString());
+    }
+
+    /**
+     * Read next boolean.
+     * 
+     * @return The value read.
+     */
+    public boolean readBool()
+    {
+        return UtilConversion.toUnsignedByte(buffer.get()) == 1 ? true : false;
+    }
+
+    /**
+     * Read next byte.
+     * 
+     * @return The value read.
+     */
+    public byte readByte()
+    {
+        return buffer.get();
     }
 
     /**
@@ -180,5 +200,15 @@ public class Packet
     public int readInt()
     {
         return buffer.getInt();
+    }
+
+    /**
+     * Read next double.
+     * 
+     * @return The value read.
+     */
+    public double readDouble()
+    {
+        return buffer.getDouble();
     }
 }

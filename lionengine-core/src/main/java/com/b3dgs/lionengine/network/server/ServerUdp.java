@@ -365,6 +365,7 @@ public class ServerUdp implements Server
                 if (!client.isAlive(TIMEOUT))
                 {
                     toRemove.add(client.getClientId());
+                    notifyClientDisconnected(client);
                     Verbose.info(UtilNetwork.toString(client.getIp().toString(), client.getPort()) + ERROR_TIMEOUT);
                 }
             }

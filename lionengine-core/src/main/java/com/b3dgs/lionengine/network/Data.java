@@ -55,7 +55,20 @@ public class Data extends MessageAbstract
      */
     public Data(Integer clientId, int dataId, ByteBuffer data)
     {
-        super(MessageType.DATA, clientId);
+        this(clientId, dataId, data, false);
+    }
+
+    /**
+     * Create message.
+     * 
+     * @param clientId The client id.
+     * @param dataId The data id.
+     * @param data The data.
+     * @param forward <code>true</code> to forward, <code>false</code> for direct.
+     */
+    public Data(Integer clientId, int dataId, ByteBuffer data, boolean forward)
+    {
+        super(forward ? MessageType.DATA : MessageType.DIRECT, clientId);
 
         this.dataId = dataId;
         this.data = data;

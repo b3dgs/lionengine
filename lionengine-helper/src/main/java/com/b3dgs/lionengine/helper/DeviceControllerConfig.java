@@ -79,13 +79,12 @@ public final class DeviceControllerConfig
      */
     public static DeviceController create(Services services, Media media)
     {
-        final Context context = services.get(Context.class);
         final DeviceController controller = new DeviceControllerModel();
         final Collection<DeviceControllerConfig> configs = DeviceControllerConfig.imports(services, media);
 
         for (final DeviceControllerConfig config : configs)
         {
-            final InputDevice device = context.getInputDevice(config.getDevice());
+            final InputDevice device = getDevice(services, config.getDevice());
             if (device instanceof DevicePush)
             {
                 final DevicePush push = (DevicePush) device;
@@ -153,6 +152,24 @@ public final class DeviceControllerConfig
             throw new LionEngineException(exception);
         }
         return configs;
+    }
+
+    /**
+     * Get device from available source.
+     * 
+     * @param services The services reference.
+     * @param clazz The device type.
+     * @return The device reference.
+     */
+    private static InputDevice getDevice(Services services, Class<? extends InputDevice> clazz)
+    {
+        final Context context = services.getOptional(Context.class).orElse(null);
+        if (context != null)
+        {
+            final InputDevice device = context.getInputDevice(clazz);
+            return device;
+        }
+        return services.get(clazz);
     }
 
     /**

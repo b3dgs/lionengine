@@ -17,38 +17,35 @@
 package com.b3dgs.lionengine.game.feature.networkable;
 
 import java.nio.ByteBuffer;
+import java.util.function.Supplier;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
-import com.b3dgs.lionengine.network.Packet;
 
 /**
  * Represents network layer ability.
  */
 @FeatureInterface
-public interface Networkable extends Feature
+public interface Networkable extends Feature, Syncable
 {
     /**
-     * Called on init.
+     * Send data over owned client.
      * 
-     * @return The init buffer.
+     * @param buffer The buffer to send.
+     * @throws LionEngineException If unable to send data.
      */
-    default ByteBuffer init()
+    void send(ByteBuffer buffer);
+
+    /**
+     * Send data over owned client.
+     * 
+     * @param buffer The buffer to send.
+     */
+    default void send(Supplier<ByteBuffer> buffer)
     {
-        return ByteBuffer.allocate(0);
+        send(buffer.get());
     }
-
-    /**
-     * Called on disconnected from network.
-     */
-    void onDisconnected();
-
-    /**
-     * Called on packet received.
-     * 
-     * @param packet The packet received.
-     */
-    void onReceived(Packet packet);
 
     /**
      * Set the network id (0 is server).
@@ -65,6 +62,13 @@ public interface Networkable extends Feature
     void setDataId(int dataId);
 
     /**
+     * Set synced on server.
+     * 
+     * @param synced <code>true</code> if synced, <code>false</code> else.
+     */
+    void setSynced(boolean synced);
+
+    /**
      * Get get the network id (0 is server).
      * 
      * @return The network id.
@@ -77,4 +81,39 @@ public interface Networkable extends Feature
      * @return The network id.
      */
     int getDataId();
+
+    /**
+     * Check if synced on server.
+     * 
+     * @return <code>true</code> if synced, <code>false</code> else.
+     */
+    boolean isSynced();
+
+    /**
+     * Check if owned by server.
+     * 
+     * @return <code>true</code> if owned by server, <code>false</code> else.
+     */
+    boolean isServer();
+
+    /**
+     * Check if owned by client.
+     * 
+     * @return <code>true</code> if owned by client, <code>false</code> else.
+     */
+    boolean isClient();
+
+    /**
+     * Check if can be managed by owner.
+     * 
+     * @return <code>true</code> if network owner, <code>false</code> else.
+     */
+    boolean isOwner();
+
+    /**
+     * Check if handled by server but owned by client.
+     * 
+     * @return <code>true</code> if owned by server, <code>false</code> else.
+     */
+    boolean isServerHandled();
 }
