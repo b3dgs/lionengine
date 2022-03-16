@@ -40,7 +40,7 @@ final class DeviceControllerVoidTest
     {
         assertEquals(0.0, device.getHorizontalDirection());
 
-        device.addHorizontal(() -> null, () -> 1.0);
+        device.addHorizontal((InputMock) () -> null, () -> 1.0);
 
         assertEquals(0.0, device.getHorizontalDirection());
 
@@ -57,7 +57,7 @@ final class DeviceControllerVoidTest
     {
         assertEquals(0.0, device.getVerticalDirection());
 
-        device.addVertical(() -> null, () -> 1.0);
+        device.addVertical((InputMock) () -> null, () -> 1.0);
 
         assertEquals(0.0, device.getVerticalDirection());
 
@@ -78,7 +78,7 @@ final class DeviceControllerVoidTest
 
         assertFalse(device.isFired(index));
 
-        device.addFire(() -> null, index, () -> val.get().doubleValue());
+        device.addFire((InputMock) () -> null, index, () -> val.get().doubleValue());
 
         assertFalse(device.isFired(index));
         assertFalse(device.isFiredOnce(index));
@@ -104,9 +104,9 @@ final class DeviceControllerVoidTest
     {
         final Integer index = Integer.valueOf(1);
         device.setDisabled(Constant.EMPTY_STRING, true, true);
-        device.addHorizontal(() -> Constant.EMPTY_STRING, () -> 1.0);
-        device.addVertical(() -> Constant.EMPTY_STRING, () -> 1.0);
-        device.addFire(() -> Constant.EMPTY_STRING, index, () -> 1.0);
+        device.addHorizontal((InputMock) () -> Constant.EMPTY_STRING, () -> 1.0);
+        device.addVertical((InputMock) () -> Constant.EMPTY_STRING, () -> 1.0);
+        device.addFire((InputMock) () -> Constant.EMPTY_STRING, index, () -> 1.0);
         device.update(1.0);
 
         assertEquals(0.0, device.getHorizontalDirection());
