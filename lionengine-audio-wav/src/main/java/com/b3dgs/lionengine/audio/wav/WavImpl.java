@@ -53,7 +53,7 @@ import com.b3dgs.lionengine.audio.PlayerAbstract;
 final class WavImpl implements Wav
 {
     /** Sound buffer size. */
-    private static final int BUFFER = 128_000;
+    private static final int BUFFER = 4400;
     /** Minimum delay between same. */
     private static final long MIN_DELAY_NANO = 10_000_000L;
     /** Play sound error. */
@@ -176,7 +176,7 @@ final class WavImpl implements Wav
         {
             try
             {
-                dataLine.open(input.getFormat());
+                dataLine.open(input.getFormat(), BUFFER);
             }
             catch (final IllegalStateException | LineUnavailableException exception)
             {
@@ -299,7 +299,17 @@ final class WavImpl implements Wav
             updateVolume(dataLine, AudioFactory.getVolume() * volume / Constant.HUNDRED);
             dataLine.start();
 
-            readSound(input, dataLine);
+            try
+            {
+                readSound(input, dataLine);
+            }
+            catch (final IOException exception)
+            {
+                if (exception.getMessage() == null || !exception.getMessage().contains("closed"))
+                {
+                    throw exception;
+                }
+            }
             close(input, dataLine);
         }
         catch (final IOException | LineUnavailableException exception)
