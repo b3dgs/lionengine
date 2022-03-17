@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.IdentifiableListener;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
@@ -49,7 +50,8 @@ import com.b3dgs.lionengine.game.feature.Setup;
  * </ul>
  */
 @FeatureInterface
-public class StateHandler extends FeatureModel implements Updatable, Recyclable, Listenable<StateTransitionListener>
+public class StateHandler extends FeatureModel
+                          implements Updatable, Recyclable, IdentifiableListener, Listenable<StateTransitionListener>
 {
     /** Feature parameter constructor index. */
     private static final int PARAM_FEATURE_INDEX = 0;
@@ -263,6 +265,15 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
         if (current != null)
         {
             current.update(extrp);
+        }
+    }
+
+    @Override
+    public void notifyDestroyed(Integer id)
+    {
+        if (current != null)
+        {
+            current.exit();
         }
     }
 
