@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
+import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.network.Alive;
 import com.b3dgs.lionengine.network.Channel;
@@ -116,6 +117,10 @@ public class ClientUdp implements Client
                 else if (MessageType.PING == type)
                 {
                     handlePing(buffer);
+                }
+                else if (MessageType.NAME_SET == type)
+                {
+                    handleNameSet(buffer);
                 }
             }
             catch (final IOException exception)
@@ -207,6 +212,18 @@ public class ClientUdp implements Client
         finally
         {
             pingLock.release();
+        }
+    }
+
+    private void handleNameSet(ByteBuffer buffer) throws IOException
+    {
+        final String name = NameSet.decode(buffer, clientId);
+        final Integer cid = Integer.valueOf(UtilConversion.toUnsignedByte(buffer.get(UtilNetwork.INDEX_MODE)));
+
+        final int n = listenable.size();
+        for (int i = 0; i < n; i++)
+        {
+            listenable.get(i).notifyClientNamed(cid, name);
         }
     }
 
@@ -379,6 +396,13 @@ public class ClientUdp implements Client
             final ByteBuffer send = UtilNetwork.createPacket(message.create());
             send(send, address, port);
         }
+    }
+
+    @Override
+    public void setName(String name) throws IOException
+    {
+        final ByteBuffer send = NameSet.encode(clientId, name);
+        send(send, address, port);
     }
 
     @Override

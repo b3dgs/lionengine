@@ -29,6 +29,11 @@ public class Network
     /** No network. */
     public static final Network NONE = new Network(NetworkType.NONE);
 
+    private static final int ARG_TYPE = 0;
+    private static final int ARG_IP = 1;
+    private static final int ARG_PORT = 2;
+    private static final int ARG_NAME = 3;
+
     /**
      * Create network from arguments.
      * 
@@ -38,17 +43,25 @@ public class Network
     public static Network from(String[] args)
     {
         final Network network;
-        if (args.length == 1)
+        final int length = args.length - 1;
+        if (length == ARG_TYPE)
         {
-            network = new Network(NetworkType.from(args[0]));
+            network = new Network(NetworkType.from(args[ARG_TYPE]));
         }
-        else if (args.length == 2)
+        else if (length == ARG_IP)
         {
-            network = new Network(NetworkType.from(args[0]), args[1]);
+            network = new Network(NetworkType.from(args[ARG_TYPE]), args[ARG_IP]);
         }
-        else if (args.length > 2)
+        else if (length == ARG_PORT)
         {
-            network = new Network(NetworkType.from(args[0]), args[1], Integer.parseInt(args[2]));
+            network = new Network(NetworkType.from(args[ARG_TYPE]), args[ARG_IP], Integer.parseInt(args[ARG_PORT]));
+        }
+        else if (length >= ARG_NAME)
+        {
+            network = new Network(NetworkType.from(args[ARG_TYPE]),
+                                  args[ARG_IP],
+                                  Integer.parseInt(args[ARG_PORT]),
+                                  args[ARG_NAME]);
         }
         else
         {
@@ -60,6 +73,7 @@ public class Network
     private final NetworkType type;
     private final Optional<String> ip;
     private final OptionalInt port;
+    private final Optional<String> name;
 
     /**
      * Create network.
@@ -73,6 +87,7 @@ public class Network
         this.type = type;
         ip = Optional.empty();
         port = OptionalInt.empty();
+        name = Optional.empty();
     }
 
     /**
@@ -88,6 +103,7 @@ public class Network
         this.type = type;
         this.ip = Optional.ofNullable(ip);
         port = OptionalInt.empty();
+        name = Optional.empty();
     }
 
     /**
@@ -104,6 +120,25 @@ public class Network
         this.type = type;
         this.ip = Optional.ofNullable(ip);
         this.port = OptionalInt.of(port);
+        name = Optional.empty();
+    }
+
+    /**
+     * Create network.
+     * 
+     * @param type The type.
+     * @param ip The ip.
+     * @param port The port.
+     * @param name The name.
+     */
+    public Network(NetworkType type, String ip, int port, String name)
+    {
+        super();
+
+        this.type = type;
+        this.ip = Optional.ofNullable(ip);
+        this.port = OptionalInt.of(port);
+        this.name = Optional.ofNullable(name);
     }
 
     /**
@@ -145,5 +180,15 @@ public class Network
     public OptionalInt getPort()
     {
         return port;
+    }
+
+    /**
+     * Get the name.
+     * 
+     * @return The name.
+     */
+    public Optional<String> getName()
+    {
+        return name;
     }
 }

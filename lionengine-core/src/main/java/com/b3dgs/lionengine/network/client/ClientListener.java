@@ -70,4 +70,18 @@ public interface ClientListener
     {
         // Nothing
     }
+
+    /**
+     * Called on client set name.
+     * <p>
+     * Does nothing by default.
+     * </p>
+     * 
+     * @param id The client id.
+     * @param name The client name.
+     */
+    default void notifyClientNamed(Integer id, String name)
+    {
+        // Nothing
+    }
 }

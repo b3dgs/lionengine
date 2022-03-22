@@ -150,6 +150,19 @@ public class ServerUdp implements Server
                 }
             }
 
+            for (final ClientData c : clients.values())
+            {
+                if (c.getName() != null && !c.getClientId().equals(client.getClientId()))
+                {
+                    final ByteBuffer send = UtilNetwork.createPacket(new NameSet(c.getClientId(),
+                                                                                 c.getName()).create());
+                    send.put(UtilNetwork.HEADER_BYTES_NUMBER + UtilNetwork.INDEX_CLIENT_ID,
+                             UtilConversion.fromUnsignedByte(client.getClientId().intValue()));
+
+                    socket.send(new DatagramPacket(send.array(), send.capacity(), client.getIp(), client.getPort()));
+                }
+            }
+
             Verbose.info(client + INFO_CONNECTED);
         }
     }
@@ -159,10 +172,7 @@ public class ServerUdp implements Server
         final int n = listenable.size();
         for (int i = 0; i < n; i++)
         {
-            listenable.get(i)
-                      .notifyClientConnected(client.getIp().toString(),
-                                             client.getPort(),
-                                             client.getClientId().intValue());
+            listenable.get(i).notifyClientConnected(client.getIp().toString(), client.getPort(), client.getClientId());
         }
     }
 
@@ -221,9 +231,7 @@ public class ServerUdp implements Server
         for (int i = 0; i < n; i++)
         {
             listenable.get(i)
-                      .notifyClientDisconnected(client.getIp().toString(),
-                                                client.getPort(),
-                                                client.getClientId().intValue());
+                      .notifyClientDisconnected(client.getIp().toString(), client.getPort(), client.getClientId());
         }
     }
 
@@ -292,6 +300,44 @@ public class ServerUdp implements Server
         }
     }
 
+    private void nameSet(DatagramPacket packet, ByteBuffer buffer) throws IOException
+    {
+        final Integer id = getId(packet);
+        if (clients.containsKey(id))
+        {
+            final ClientData client = clients.get(id);
+            final String name = NameSet.decode(buffer, client.getClientId());
+            client.setName(name);
+
+            for (final ClientData c : clients.values())
+            {
+                if (!c.getClientId().equals(client.getClientId()))
+                {
+                    final ByteBuffer send = UtilNetwork.createPacket(new NameSet(client.getClientId(), name).create());
+                    send.put(UtilNetwork.HEADER_BYTES_NUMBER + UtilNetwork.INDEX_CLIENT_ID,
+                             UtilConversion.fromUnsignedByte(c.getClientId().intValue()));
+
+                    socket.send(new DatagramPacket(send.array(), send.capacity(), c.getIp(), c.getPort()));
+                }
+            }
+
+            notifyClientNamed(client);
+        }
+        else
+        {
+            Verbose.warning(ServerUdp.class, UtilNetwork.toString(packet) + ERROR_NOT_CONNECTED);
+        }
+    }
+
+    private void notifyClientNamed(ClientData client)
+    {
+        final int n = listenable.size();
+        for (int i = 0; i < n; i++)
+        {
+            listenable.get(i).notifyClientNamed(client.getClientId(), client.getName());
+        }
+    }
+
     private void taskListen()
     {
         while (running)
@@ -311,6 +357,7 @@ public class ServerUdp implements Server
         }
     }
 
+    // CHECKSTYLE IGNORE LINE: CyclomaticComplexity
     private void handleType(DatagramPacket packet) throws IOException
     {
         final ByteBuffer buffer = UtilNetwork.getBuffer(packet);
@@ -339,6 +386,9 @@ public class ServerUdp implements Server
                 break;
             case CLIENTS_LIST:
             case UNKNOWN:
+                break;
+            case NAME_SET:
+                nameSet(packet, buffer);
                 break;
             default:
                 throw new LionEngineException(type);

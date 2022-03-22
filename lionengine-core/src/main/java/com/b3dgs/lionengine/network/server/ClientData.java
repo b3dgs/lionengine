@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.network.server;
 
 import java.net.InetAddress;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Timing;
 
 /**
@@ -29,6 +30,8 @@ public class ClientData
     private final Integer clientId;
     private final InetAddress ip;
     private final int port;
+
+    private String name;
 
     /**
      * Create data.
@@ -44,6 +47,7 @@ public class ClientData
         clientId = id;
         this.ip = ip;
         this.port = port;
+        name = ip.toString();
     }
 
     /**
@@ -93,6 +97,28 @@ public class ClientData
     public Integer getClientId()
     {
         return clientId;
+    }
+
+    /**
+     * Set the name.
+     * 
+     * @param name The name.
+     */
+    public void setName(String name)
+    {
+        Check.notNull(name);
+
+        this.name = name;
+    }
+
+    /**
+     * Get the name.
+     * 
+     * @return The name.
+     */
+    public String getName()
+    {
+        return name;
     }
 
     @Override

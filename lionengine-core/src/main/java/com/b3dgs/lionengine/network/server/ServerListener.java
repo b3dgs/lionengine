@@ -47,7 +47,7 @@ public interface ServerListener
      * @param port The server port.
      * @param id The client id.
      */
-    default void notifyClientConnected(String ip, int port, int id)
+    default void notifyClientConnected(String ip, int port, Integer id)
     {
         // Nothing
     }
@@ -62,7 +62,21 @@ public interface ServerListener
      * @param port The server port.
      * @param id The client id.
      */
-    default void notifyClientDisconnected(String ip, int port, int id)
+    default void notifyClientDisconnected(String ip, int port, Integer id)
+    {
+        // Nothing
+    }
+
+    /**
+     * Called on client set name.
+     * <p>
+     * Does nothing by default.
+     * </p>
+     * 
+     * @param id The client id.
+     * @param name The client name.
+     */
+    default void notifyClientNamed(Integer id, String name)
     {
         // Nothing
     }

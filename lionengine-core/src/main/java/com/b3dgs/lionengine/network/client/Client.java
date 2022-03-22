@@ -57,6 +57,14 @@ public interface Client extends Listenable<ClientListener>
     long ping();
 
     /**
+     * Set network name.
+     * 
+     * @param name The name to use.
+     * @throws IOException If error.
+     */
+    void setName(String name) throws IOException;
+
+    /**
      * Get unique network id number, obtained after {@link #connect(String, int)}.
      * 
      * @return The network id number, -1 if not connected.

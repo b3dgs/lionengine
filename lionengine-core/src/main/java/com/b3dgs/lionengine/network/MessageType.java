@@ -35,6 +35,8 @@ public enum MessageType
     PING,
     /** List of connected clients. */
     CLIENTS_LIST,
+    /** Client set name. */
+    NAME_SET,
     /** Direct message exchange without forwarding. */
     DIRECT,
     /** Custom user data pre message. */
