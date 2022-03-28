@@ -214,8 +214,6 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     @Override
     public void keyReleased(KeyEvent event)
     {
-        lastKeyName = EMPTY_KEY_NAME;
-
         final Integer key = Integer.valueOf(event.getKeyCode() + (event.getKeyLocation() == 2 ? LOCATION_LEFT : 0));
         keys.remove(key);
         pressed.remove(key);
@@ -234,6 +232,8 @@ public final class KeyboardAwt implements Keyboard, KeyListener
         {
             listeners.get(i).onDeviceChanged(key, lastKeyName, false);
         }
+
+        lastKeyName = EMPTY_KEY_NAME;
         lastKey = null;
     }
 
