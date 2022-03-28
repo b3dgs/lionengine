@@ -205,7 +205,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
             final int n = listeners.size();
             for (int i = 0; i < n; i++)
             {
-                listeners.get(i).onDeviceChanged(key, true);
+                listeners.get(i).onDeviceChanged(key, lastKeyName, true);
             }
             lastKey = key;
         }
@@ -232,7 +232,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
         final int n = listeners.size();
         for (int i = 0; i < n; i++)
         {
-            listeners.get(i).onDeviceChanged(key, false);
+            listeners.get(i).onDeviceChanged(key, lastKeyName, false);
         }
         lastKey = null;
     }

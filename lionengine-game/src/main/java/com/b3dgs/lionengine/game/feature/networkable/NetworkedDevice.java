@@ -68,7 +68,7 @@ public class NetworkedDevice extends FeatureModel implements Syncable, DevicePus
      */
     public void set(DeviceController device)
     {
-        device.addListener((e, s) ->
+        device.addListener((e, c, s) ->
         {
             if (networkable.isClient())
             {

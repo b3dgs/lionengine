@@ -194,7 +194,7 @@ final class MouseClickAwt implements MouseListener
             final int n = listeners.size();
             for (int i = 0; i < n; i++)
             {
-                listeners.get(i).onDeviceChanged(click, true);
+                listeners.get(i).onDeviceChanged(click, (char) click.intValue(), true);
             }
             lastClick = click;
         }
@@ -221,7 +221,7 @@ final class MouseClickAwt implements MouseListener
             final int n = listeners.size();
             for (int i = 0; i < n; i++)
             {
-                listeners.get(i).onDeviceChanged(click, false);
+                listeners.get(i).onDeviceChanged(click, (char) click.intValue(), false);
             }
             lastClick = null;
         }

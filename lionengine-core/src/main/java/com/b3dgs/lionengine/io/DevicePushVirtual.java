@@ -58,7 +58,7 @@ public class DevicePushVirtual implements DevicePush
             final int n = listeners.size();
             for (int i = 0; i < n; i++)
             {
-                listeners.get(i).onDeviceChanged(key, true);
+                listeners.get(i).onDeviceChanged(key, ' ', true);
             }
             lastKey = key;
         }
@@ -79,7 +79,7 @@ public class DevicePushVirtual implements DevicePush
             final int n = listeners.size();
             for (int i = 0; i < n; i++)
             {
-                listeners.get(i).onDeviceChanged(key, false);
+                listeners.get(i).onDeviceChanged(key, ' ', false);
             }
             lastKey = null;
         }
