@@ -56,12 +56,12 @@ public class IdentifiableCreate extends MessageAbstract
         final String path = media.getPath();
         final int length = path.length();
         final ByteBuffer file = StandardCharsets.UTF_8.encode(path);
-        final ByteBuffer buffer = ByteBuffer.allocate(2 + Integer.BYTES * 2 + length);
+        final ByteBuffer buffer = ByteBuffer.allocate(3 + Integer.BYTES + length);
 
         buffer.put(UtilConversion.fromUnsignedByte(ComponentNetwork.MODE_IDENTIFIABLE_CREATE));
         buffer.put(UtilConversion.fromUnsignedByte(clientSourceId));
         buffer.putInt(dataId);
-        buffer.putInt(length);
+        buffer.put(UtilConversion.fromUnsignedByte(length));
         buffer.put(file);
 
         return buffer;

@@ -72,7 +72,7 @@ public class NetworkedDevice extends FeatureModel implements Syncable, DevicePus
         {
             if (networkable.isClient())
             {
-                final ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES + Integer.BYTES + 1);
+                final ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES * 2 + 1);
                 buffer.putInt(getSyncId());
                 buffer.putInt(e.intValue());
                 buffer.put(s ? UtilConversion.fromUnsignedByte(1) : UtilConversion.fromUnsignedByte(0));

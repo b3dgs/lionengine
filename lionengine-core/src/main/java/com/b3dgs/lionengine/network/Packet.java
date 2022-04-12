@@ -153,10 +153,23 @@ public class Packet
      */
     public Media getMedia(int index)
     {
-        final int size = buffer.getInt(index);
+        final int size = UtilConversion.toUnsignedByte(buffer.get());
         final byte[] data = new byte[size];
-        buffer.get(data, index + Integer.BYTES, size);
+        buffer.get(data, index + 1, size);
         return Medias.create(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(data)).toString());
+    }
+
+    /**
+     * Read next string.
+     * 
+     * @return The string.
+     */
+    public String readString()
+    {
+        final int size = UtilConversion.toUnsignedByte(buffer.get());
+        final byte[] data = new byte[size];
+        buffer.get(data);
+        return StandardCharsets.UTF_8.decode(ByteBuffer.wrap(data)).toString();
     }
 
     /**
@@ -166,10 +179,7 @@ public class Packet
      */
     public Media readMedia()
     {
-        final int size = buffer.getInt();
-        final byte[] data = new byte[size];
-        buffer.get(data);
-        return Medias.create(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(data)).toString());
+        return Medias.create(readString());
     }
 
     /**
@@ -200,6 +210,16 @@ public class Packet
     public int readInt()
     {
         return buffer.getInt();
+    }
+
+    /**
+     * Read next float.
+     * 
+     * @return The value read.
+     */
+    public float readFloat()
+    {
+        return buffer.getFloat();
     }
 
     /**
