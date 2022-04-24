@@ -21,33 +21,68 @@ import java.nio.charset.StandardCharsets;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilConversion;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.Identifiable;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.network.MessageAbstract;
 import com.b3dgs.lionengine.network.MessageType;
+import com.b3dgs.lionengine.network.UtilNetwork;
 
 /**
  * Identifiable create message.
  */
 public class IdentifiableCreate extends MessageAbstract
 {
-    private final int clientSourceId;
-    private final Media media;
+    private final int sourceId;
     private final int dataId;
+    private final Media media;
+    private final float x;
+    private final float y;
 
     /**
      * Create message.
      * 
-     * @param clientId The client id.
-     * @param clientSourceId The client source id.
+     * @param sourceId The source id.
+     * @param featurable The featurable reference.
+     */
+    public IdentifiableCreate(Integer sourceId, Featurable featurable)
+    {
+        super(MessageType.DIRECT, UtilNetwork.SERVER_ID);
+
+        this.sourceId = sourceId.intValue();
+        dataId = featurable.getFeature(Identifiable.class).getId().intValue();
+        media = featurable.getMedia();
+        if (featurable.hasFeature(Transformable.class))
+        {
+            final Transformable transformable = featurable.getFeature(Transformable.class);
+            x = (float) transformable.getX();
+            y = (float) transformable.getY();
+        }
+        else
+        {
+            x = 0.0f;
+            y = 0.0f;
+        }
+    }
+
+    /**
+     * Create message.
+     * 
+     * @param sourceId The source id.
      * @param dataId The data id.
      * @param media The media reference.
+     * @param x The horizontal location.
+     * @param y The vertical location.
      */
-    public IdentifiableCreate(Integer clientId, Integer clientSourceId, int dataId, Media media)
+    public IdentifiableCreate(Integer sourceId, int dataId, Media media, float x, float y)
     {
-        super(MessageType.DIRECT, clientId);
+        super(MessageType.DIRECT, UtilNetwork.SERVER_ID);
 
-        this.clientSourceId = clientSourceId.intValue();
+        this.sourceId = sourceId.intValue();
         this.dataId = dataId;
         this.media = media;
+        this.x = x;
+        this.y = y;
     }
 
     @Override
@@ -56,11 +91,13 @@ public class IdentifiableCreate extends MessageAbstract
         final String path = media.getPath();
         final int length = path.length();
         final ByteBuffer file = StandardCharsets.UTF_8.encode(path);
-        final ByteBuffer buffer = ByteBuffer.allocate(3 + Integer.BYTES + length);
+        final ByteBuffer buffer = ByteBuffer.allocate(3 + Integer.BYTES * 3 + Float.BYTES * 2 + length);
 
         buffer.put(UtilConversion.fromUnsignedByte(ComponentNetwork.MODE_IDENTIFIABLE_CREATE));
-        buffer.put(UtilConversion.fromUnsignedByte(clientSourceId));
+        buffer.put(UtilConversion.fromUnsignedByte(sourceId));
         buffer.putInt(dataId);
+        buffer.putFloat(x);
+        buffer.putFloat(y);
         buffer.put(UtilConversion.fromUnsignedByte(length));
         buffer.put(file);
 

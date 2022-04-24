@@ -75,6 +75,8 @@ public class Network
     private final OptionalInt port;
     private final Optional<String> name;
 
+    private Integer clientId;
+
     /**
      * Create network.
      * 
@@ -190,5 +192,25 @@ public class Network
     public Optional<String> getName()
     {
         return name;
+    }
+
+    /**
+     * Get the client id.
+     * 
+     * @return The client id.
+     */
+    public Integer getClientId()
+    {
+        return clientId;
+    }
+
+    /**
+     * Set the client id.
+     * 
+     * @param clientId The client id.
+     */
+    public void setClientId(Integer clientId)
+    {
+        this.clientId = clientId;
     }
 }

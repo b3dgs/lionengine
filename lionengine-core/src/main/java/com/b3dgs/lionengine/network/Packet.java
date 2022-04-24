@@ -153,7 +153,7 @@ public class Packet
      */
     public Media getMedia(int index)
     {
-        final int size = UtilConversion.toUnsignedByte(buffer.get());
+        final int size = readByteUnsigned();
         final byte[] data = new byte[size];
         buffer.get(data, index + 1, size);
         return Medias.create(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(data)).toString());
@@ -166,7 +166,7 @@ public class Packet
      */
     public String readString()
     {
-        final int size = UtilConversion.toUnsignedByte(buffer.get());
+        final int size = readByteUnsigned();
         final byte[] data = new byte[size];
         buffer.get(data);
         return StandardCharsets.UTF_8.decode(ByteBuffer.wrap(data)).toString();
@@ -189,7 +189,7 @@ public class Packet
      */
     public boolean readBool()
     {
-        return UtilConversion.toUnsignedByte(buffer.get()) == 1 ? true : false;
+        return readByteUnsigned() == 1 ? true : false;
     }
 
     /**
@@ -200,6 +200,16 @@ public class Packet
     public byte readByte()
     {
         return buffer.get();
+    }
+
+    /**
+     * Read next byte.
+     * 
+     * @return The value read.
+     */
+    public int readByteUnsigned()
+    {
+        return UtilConversion.toUnsignedByte(buffer.get());
     }
 
     /**

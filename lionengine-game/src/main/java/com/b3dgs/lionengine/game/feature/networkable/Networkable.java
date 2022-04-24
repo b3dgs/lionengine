@@ -111,9 +111,9 @@ public interface Networkable extends Feature, Syncable
     boolean isOwner();
 
     /**
-     * Check if handled by server but owned by client.
+     * Check if handled by server and owned by client.
      * 
-     * @return <code>true</code> if owned by server, <code>false</code> else.
+     * @return <code>true</code> if managed by server, <code>false</code> else.
      */
-    boolean isServerHandled();
+    boolean isServerHandleClient();
 }

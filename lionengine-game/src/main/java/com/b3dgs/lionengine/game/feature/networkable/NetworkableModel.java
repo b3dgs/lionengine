@@ -71,6 +71,7 @@ public class NetworkableModel extends FeatureModel implements Networkable
      * The {@link Services} must provide the following services:
      * </p>
      * <ul>
+     * <li>{@link Server}</li>
      * <li>{@link Client}</li>
      * </ul>
      * 
@@ -92,13 +93,13 @@ public class NetworkableModel extends FeatureModel implements Networkable
     {
         try
         {
-            if (isServer())
+            if (server != null)
             {
                 server.send(new Data(UtilNetwork.SERVER_ID, getDataId(), buffer));
             }
             else if (isClient())
             {
-                client.send(new Data(getClientId(), getDataId(), buffer, isSynced()));
+                client.send(new Data(getClientId(), getDataId(), buffer, true));
             }
         }
         catch (final IOException exception)
@@ -199,7 +200,7 @@ public class NetworkableModel extends FeatureModel implements Networkable
     }
 
     @Override
-    public boolean isServerHandled()
+    public boolean isServerHandleClient()
     {
         return server != null && !UtilNetwork.SERVER_ID.equals(getClientId());
     }

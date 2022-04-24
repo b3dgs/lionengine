@@ -17,8 +17,10 @@
 package com.b3dgs.lionengine.game.feature.networkable;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,6 +33,7 @@ import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.HandlerListener;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.network.Channel;
 import com.b3dgs.lionengine.network.Message;
 import com.b3dgs.lionengine.network.MessageAbstract;
@@ -50,13 +53,11 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
     public static final int MODE_IDENTIFIABLE_GET = UtilNetwork.MODE_DISCONNECT + 1;
     /** Mode identifiable create. */
     public static final int MODE_IDENTIFIABLE_CREATE = MODE_IDENTIFIABLE_GET + 1;
-    /** Mode identifiable set. */
-    public static final int MODE_IDENTIFIABLE_SET = MODE_IDENTIFIABLE_CREATE + 1;
 
-    /** Client by data. */
-    private final Map<Integer, Map<Integer, Networkable>> networkables = new HashMap<>();
+    /** Networkable by dataId. */
+    private final Map<Integer, Networkable> networkables = new HashMap<>();
     /** Client by pending id. */
-    private final Map<Integer, Set<Integer>> synced = new HashMap<>();
+    private final Set<Integer> synced = new HashSet<>();
     /** Server reference (<code>null</code> if unavailable). */
     private final Server server;
     /** Client reference (<code>null</code> if unavailable). */
@@ -107,6 +108,7 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
         {
             client.addListener(new ClientListener()
             {
+
                 @Override
                 public void notifyConnected(String ip, int port, Integer id)
                 {
@@ -118,6 +120,7 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
                 {
                     clearAll();
                 }
+
             });
         }
     }
@@ -127,9 +130,9 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
      */
     private void clearAll()
     {
-        for (final Map<Integer, Networkable> networkable : networkables.values())
+        for (final Networkable networkable : networkables.values())
         {
-            networkable.values().forEach(Networkable::onDisconnected);
+            networkable.onDisconnected();
         }
         networkables.clear();
     }
@@ -158,156 +161,92 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
         }
     }
 
-    private void setNetworkable(Integer clientId, Integer dataId, Networkable networkable)
+    private void setNetworkable(Integer dataId, Networkable networkable)
     {
-        Map<Integer, Networkable> map = networkables.get(clientId);
-        if (map == null)
-        {
-            map = new HashMap<>();
-            networkables.put(clientId, map);
-        }
-        map.put(dataId, networkable);
+        networkables.put(dataId, networkable);
     }
 
-    private Networkable getNetworkable(Integer clientId, Integer dataId)
+    private Networkable getNetworkable(Integer dataId)
     {
-        Map<Integer, Networkable> map = networkables.get(clientId);
-        if (map == null)
-        {
-            map = new HashMap<>();
-            networkables.put(clientId, map);
-        }
-        return map.get(dataId);
-    }
-
-    private boolean containsSynced(Integer clientId, Integer dataId)
-    {
-        final Set<Integer> pending = synced.get(clientId);
-        if (pending != null)
-        {
-            return pending.contains(dataId);
-        }
-        return false;
-    }
-
-    private void addSynced(Integer clientId, Integer dataId)
-    {
-        Set<Integer> pending = synced.get(clientId);
-        if (pending == null)
-        {
-            pending = new HashSet<>();
-            synced.put(clientId, pending);
-        }
-        pending.add(dataId);
+        return networkables.get(dataId);
     }
 
     private void handleDisconnect(Packet packet)
     {
         final Integer clientId = Integer.valueOf(packet.getDataId());
-        final Map<Integer, Networkable> map = networkables.get(clientId);
-        if (map != null)
+        final List<Integer> toRemove = new ArrayList<>();
+        for (final Networkable networkable : networkables.values())
         {
-            for (final Networkable networkable : map.values())
+            if (clientId.equals(networkable.getClientId()))
             {
+                toRemove.add(Integer.valueOf(networkable.getDataId()));
                 networkable.onDisconnected();
             }
-            networkables.remove(clientId);
+        }
+        for (final Integer id : toRemove)
+        {
+            networkables.remove(id);
         }
     }
 
     private void handleIdentifiableGet(Packet packet)
     {
         final int dataId = packet.getDataId();
-        final Integer dataIdKey = Integer.valueOf(dataId);
-        final Featurable featurable = handler.get(dataIdKey);
-        if (featurable != null)
+        final Featurable featurable = handler.get(Integer.valueOf(dataId));
+        if (featurable != null && server != null && featurable.getFeature(Networkable.class).isSynced())
         {
-            if (server != null && featurable.getFeature(Networkable.class).isSynced())
-            {
-                send(new IdentifiableCreate(UtilNetwork.SERVER_ID,
-                                            packet.getClientSourceId(),
-                                            dataId,
-                                            featurable.getMedia()),
-                     packet.getClientId());
-            }
-            else if (client != null && !featurable.getFeature(Networkable.class).isSynced())
-            {
-                send(new IdentifiableCreate(client.getClientId(),
-                                            packet.getClientSourceId(),
-                                            dataId,
-                                            featurable.getMedia()));
-            }
+            send(new IdentifiableCreate(featurable.getFeature(Networkable.class).getClientId(), featurable),
+                 packet.getClientId());
         }
     }
 
     private void handleIdentifiableCreate(Packet packet)
     {
         packet.buffer().position(MessageAbstract.SIZE_MIN + UtilNetwork.INDEX_MODE);
-        int dataId = packet.readInt();
+        final Integer clientSourceId = packet.getClientSourceId();
+        final int dataId = packet.readInt();
         final Integer dataIdKey = Integer.valueOf(dataId);
-        if (!containsSynced(packet.getClientSourceId(), dataIdKey))
+        if (!synced.contains(dataIdKey))
         {
-            addSynced(packet.getClientSourceId(), dataIdKey);
+            synced.add(dataIdKey);
 
+            final float x = packet.readFloat();
+            final float y = packet.readFloat();
             final Featurable featurable = factory.create(packet.readMedia());
             final Networkable networkable = featurable.getFeature(Networkable.class);
-            if (server != null)
+
+            if (client != null)
             {
-                dataId = featurable.getFeature(Identifiable.class).getId().intValue();
-                send(new IdentifiableSet(UtilNetwork.SERVER_ID, packet.getClientSourceId(), packet.getDataId(), dataId),
-                     packet.getClientId());
+                setNetworkable(Integer.valueOf(dataId), networkable);
+                networkable.setDataId(dataId);
+                networkable.setClientId(clientSourceId);
                 networkable.setSynced(true);
+                networkable.ifIs(Transformable.class, t -> t.teleport(x, y));
+                handler.add(featurable);
             }
-            else if (client != null && !packet.getClientId().equals(packet.getClientSourceId()))
-            {
-                networkable.setSynced(true);
-            }
-
-            setNetworkable(packet.getClientSourceId(), Integer.valueOf(dataId), networkable);
-            networkable.setClientId(packet.getClientSourceId());
-            networkable.setDataId(dataId);
-            handler.add(featurable);
-        }
-    }
-
-    private void handleIdentifiableSet(Packet packet)
-    {
-        if (client != null)
-        {
-            packet.buffer().position(MessageAbstract.SIZE_MIN + UtilNetwork.INDEX_MODE);
-            final Integer clientDataId = Integer.valueOf(packet.readInt());
-            final Networkable networkable = handler.get(clientDataId).getFeature(Networkable.class);
-            final int serverDataId = packet.readInt();
-            networkable.setDataId(serverDataId);
-            networkable.setSynced(true);
-
-            networkables.get(packet.getClientSourceId()).remove(clientDataId);
-            setNetworkable(packet.getClientSourceId(), Integer.valueOf(serverDataId), networkable);
         }
     }
 
     private void handleData(Packet packet)
     {
         packet.buffer().position(MessageAbstract.SIZE_MIN + UtilNetwork.INDEX_DATA_ID + 2);
-        final Integer clientId = packet.getClientSourceId();
-        final Integer dataId = Integer.valueOf(packet.getDataId());
 
-        final Networkable networkable = getNetworkable(clientId, dataId);
+        final Integer dataId = Integer.valueOf(packet.getDataId());
+        final Networkable networkable = getNetworkable(dataId);
+
         if (networkable != null)
         {
             networkable.onReceived(packet);
         }
-        else
+        else if (client != null)
         {
-            if (server != null)
-            {
-                send(new IdentifiableGet(UtilNetwork.SERVER_ID, packet.getClientSourceId(), packet.getDataId()),
-                     packet.getClientId());
-            }
-            else if (client != null)
-            {
-                send(new IdentifiableGet(client.getClientId(), packet.getClientSourceId(), packet.getDataId()));
-            }
+            send(new IdentifiableGet(client.getClientId(), packet.getDataId()));
+        }
+        else if (server != null)
+        {
+            Verbose.critical(getClass(),
+                             "handleData",
+                             "Unknown id: " + client.getClientId() + " " + packet.getDataId());
         }
     }
 
@@ -325,10 +264,6 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
             else if (mode == MODE_IDENTIFIABLE_GET)
             {
                 handleIdentifiableGet(packet);
-            }
-            else if (mode == MODE_IDENTIFIABLE_SET)
-            {
-                handleIdentifiableSet(packet);
             }
             else if (mode == MODE_IDENTIFIABLE_CREATE)
             {
@@ -352,19 +287,10 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
                 if (n.getClientId() == null)
                 {
                     n.setClientId(UtilNetwork.SERVER_ID);
-                    n.setDataId(id.intValue());
-                    n.setSynced(true);
-                    setNetworkable(UtilNetwork.SERVER_ID, id, n);
                 }
-            }
-            else if (client != null)
-            {
-                if (n.getClientId() == null)
-                {
-                    n.setClientId(client.getClientId());
-                    n.setDataId(id.intValue());
-                    setNetworkable(client.getClientId(), id, n);
-                }
+                n.setDataId(id.intValue());
+                n.setSynced(true);
+                setNetworkable(id, n);
             }
         });
     }
@@ -376,12 +302,9 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
         {
             n.setDataId(-1);
             final Integer id = featurable.getFeature(Identifiable.class).getId();
-            final Map<Integer, Networkable> map = networkables.get(n.getClientId());
-            if (map != null)
-            {
-                map.remove(id);
-            }
+            networkables.remove(id);
             n.setClientId(null);
+            n.setSynced(false);
         });
     }
 }

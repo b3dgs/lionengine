@@ -70,14 +70,11 @@ public class NetworkedDevice extends FeatureModel implements Syncable, DevicePus
     {
         device.addListener((e, c, s) ->
         {
-            if (networkable.isClient())
-            {
-                final ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES * 2 + 1);
-                buffer.putInt(getSyncId());
-                buffer.putInt(e.intValue());
-                buffer.put(s ? UtilConversion.fromUnsignedByte(1) : UtilConversion.fromUnsignedByte(0));
-                networkable.send(buffer);
-            }
+            final ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES * 2 + 1);
+            buffer.putInt(getSyncId());
+            buffer.putInt(e.intValue());
+            buffer.put(s ? UtilConversion.fromUnsignedByte(1) : UtilConversion.fromUnsignedByte(0));
+            networkable.send(buffer);
         });
     }
 

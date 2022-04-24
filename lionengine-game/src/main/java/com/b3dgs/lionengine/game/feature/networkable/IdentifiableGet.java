@@ -34,14 +34,13 @@ public class IdentifiableGet extends MessageAbstract
      * Create message.
      * 
      * @param clientId The client id.
-     * @param clientSourceId The client source id.
      * @param dataId The data id.
      */
-    public IdentifiableGet(Integer clientId, Integer clientSourceId, int dataId)
+    public IdentifiableGet(Integer clientId, int dataId)
     {
         super(MessageType.DIRECT, clientId);
 
-        this.clientSourceId = clientSourceId.intValue();
+        clientSourceId = clientId.intValue();
         this.dataId = dataId;
     }
 
