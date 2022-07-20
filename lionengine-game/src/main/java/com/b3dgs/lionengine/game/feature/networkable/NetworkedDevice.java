@@ -40,6 +40,15 @@ public class NetworkedDevice extends FeatureModel implements Syncable, DevicePus
 
     @FeatureGet private Networkable networkable;
 
+    private final InputDeviceListener listener = (e, c, s) ->
+    {
+        final ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES * 2 + 1);
+        buffer.putInt(getSyncId());
+        buffer.putInt(e.intValue());
+        buffer.put(s ? UtilConversion.fromUnsignedByte(1) : UtilConversion.fromUnsignedByte(0));
+        networkable.send(buffer);
+    };
+
     /**
      * Create device.
      * 
@@ -68,14 +77,17 @@ public class NetworkedDevice extends FeatureModel implements Syncable, DevicePus
      */
     public void set(DeviceController device)
     {
-        device.addListener((e, c, s) ->
-        {
-            final ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES * 2 + 1);
-            buffer.putInt(getSyncId());
-            buffer.putInt(e.intValue());
-            buffer.put(s ? UtilConversion.fromUnsignedByte(1) : UtilConversion.fromUnsignedByte(0));
-            networkable.send(buffer);
-        });
+        device.addListener(listener);
+    }
+
+    /**
+     * Remove device controller.
+     * 
+     * @param device The device reference.
+     */
+    public void remove(DeviceController device)
+    {
+        device.removeListener(listener);
     }
 
     @Override

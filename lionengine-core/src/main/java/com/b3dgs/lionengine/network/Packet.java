@@ -223,6 +223,16 @@ public class Packet
     }
 
     /**
+     * Read next long.
+     * 
+     * @return The value read.
+     */
+    public double readLong()
+    {
+        return buffer.getLong();
+    }
+
+    /**
      * Read next float.
      * 
      * @return The value read.

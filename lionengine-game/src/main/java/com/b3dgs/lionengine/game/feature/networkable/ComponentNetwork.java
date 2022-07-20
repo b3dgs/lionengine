@@ -108,7 +108,6 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
         {
             client.addListener(new ClientListener()
             {
-
                 @Override
                 public void notifyConnected(String ip, int port, Integer id)
                 {
@@ -120,7 +119,6 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
                 {
                     clearAll();
                 }
-
             });
         }
     }

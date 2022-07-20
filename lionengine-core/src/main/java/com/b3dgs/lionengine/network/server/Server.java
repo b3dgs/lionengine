@@ -17,6 +17,8 @@
 package com.b3dgs.lionengine.network.server;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.function.Supplier;
 
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.network.Message;
@@ -56,6 +58,13 @@ public interface Server extends Listenable<ServerListener>
      * @throws IOException If error.
      */
     void send(Message message, Integer clientId) throws IOException;
+
+    /**
+     * Set info supplier.
+     * 
+     * @param info The supplier.
+     */
+    void setInfoSupplier(Supplier<ByteBuffer> info);
 
     /**
      * Get the clients number.

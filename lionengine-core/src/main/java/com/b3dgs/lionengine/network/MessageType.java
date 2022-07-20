@@ -25,6 +25,8 @@ import com.b3dgs.lionengine.UtilConversion;
  */
 public enum MessageType
 {
+    /** Server info. */
+    INFO,
     /** Connection order. */
     CONNECT,
     /** Disconnect order. */

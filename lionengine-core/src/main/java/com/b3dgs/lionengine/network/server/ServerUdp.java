@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
@@ -86,11 +87,13 @@ public class ServerUdp implements Server
     private Thread threadAlive;
     private Thread threadBandwidth;
     private DatagramSocket socket;
+
     private boolean running;
     private final AtomicInteger bandwidthUpSum = new AtomicInteger();
     private final AtomicInteger bandwidthDownSum = new AtomicInteger();
     private volatile float bandwidthUp = -1;
     private volatile float bandwidthDown = -1;
+    private volatile Supplier<ByteBuffer> info = () -> ByteBuffer.allocate(0);
 
     private Integer getNextClientId()
     {
@@ -118,6 +121,20 @@ public class ServerUdp implements Server
         Check.notNull(channel);
 
         this.channel = channel;
+    }
+
+    private void info(DatagramPacket packet, ByteBuffer buffer) throws IOException
+    {
+        Info.decode(buffer);
+
+        final ByteBuffer infoBuffer = info.get();
+
+        final ByteBuffer answer = ByteBuffer.allocate(1 + infoBuffer.capacity());
+        answer.put(UtilNetwork.toByte(MessageType.INFO));
+        answer.put(infoBuffer.array());
+
+        final ByteBuffer send = UtilNetwork.createPacket(answer);
+        socket.send(new DatagramPacket(send.array(), send.capacity(), packet.getAddress(), packet.getPort()));
     }
 
     private void connect(DatagramPacket packet, ByteBuffer buffer) throws IOException
@@ -366,6 +383,9 @@ public class ServerUdp implements Server
         final MessageType type = MessageType.from(buffer);
         switch (type)
         {
+            case INFO:
+                info(packet, buffer);
+                break;
             case CONNECT:
                 connect(packet, buffer);
                 break;
@@ -562,6 +582,14 @@ public class ServerUdp implements Server
         socket.send(new DatagramPacket(buffer.array(), buffer.capacity(), client.getIp(), client.getPort()));
 
         bandwidthUpSum.addAndGet(buffer.capacity());
+    }
+
+    @Override
+    public void setInfoSupplier(Supplier<ByteBuffer> info)
+    {
+        Check.notNull(info);
+
+        this.info = info;
     }
 
     @Override
