@@ -97,6 +97,7 @@ public final class SequenceRenderer implements Rasterbar
         Check.notNull(context);
         Check.notNull(resolution);
 
+        source = resolution;
         scaleDivX = dx;
         scaleDivY = dy;
 
