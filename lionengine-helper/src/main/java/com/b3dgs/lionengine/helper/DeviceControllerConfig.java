@@ -94,33 +94,42 @@ public final class DeviceControllerConfig
         {
             if (isAllowed(indexes, config.getIndex()))
             {
-                final InputDevice device = getDevice(services, config.getDevice()).getCurrent(config.getId());
-                if (device instanceof DevicePush)
+                final InputDevice device = getDevice(services, config.getDevice());
+                if (device != null)
                 {
-                    final DevicePush push = (DevicePush) device;
-                    config.getHorizontal().forEach(h -> controller.addHorizontal(push, new DeviceActionModel(h, push)));
-                    config.getVertical().forEach(v -> controller.addVertical(push, new DeviceActionModel(v, push)));
-
-                    config.getFire()
-                          .entrySet()
-                          .forEach(e -> e.getValue()
-                                         .forEach(c -> controller.addFire(device,
-                                                                          e.getKey(),
-                                                                          new DeviceActionModel(c, push))));
-                }
-                if (device instanceof DevicePointer)
-                {
-                    final DevicePointer pointer = (DevicePointer) device;
-                    controller.addHorizontal(pointer, () -> pointer.getMoveX());
-                    controller.addVertical(pointer, () -> -pointer.getMoveY());
-                }
-                if (config.isDisabled())
-                {
-                    controller.setDisabled(device.getName(), true, true);
+                    create(config, device, controller);
                 }
             }
         }
         return controller;
+    }
+
+    private static void create(DeviceControllerConfig config, InputDevice device, DeviceController controller)
+    {
+        final InputDevice current = device.getCurrent(config.getId());
+        if (current instanceof DevicePush)
+        {
+            final DevicePush push = (DevicePush) current;
+            config.getHorizontal().forEach(h -> controller.addHorizontal(push, new DeviceActionModel(h, push)));
+            config.getVertical().forEach(v -> controller.addVertical(push, new DeviceActionModel(v, push)));
+
+            config.getFire()
+                  .entrySet()
+                  .forEach(e -> e.getValue()
+                                 .forEach(c -> controller.addFire(current,
+                                                                  e.getKey(),
+                                                                  new DeviceActionModel(c, push))));
+        }
+        if (current instanceof DevicePointer)
+        {
+            final DevicePointer pointer = (DevicePointer) current;
+            controller.addHorizontal(pointer, () -> pointer.getMoveX());
+            controller.addVertical(pointer, () -> -pointer.getMoveY());
+        }
+        if (config.isDisabled())
+        {
+            controller.setDisabled(current.getName(), true, true);
+        }
     }
 
     // CHECKSTYLE IGNORE LINE: ReturnCount
