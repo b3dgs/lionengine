@@ -66,12 +66,17 @@ public final class SequenceRenderer implements Rasterbar
     private final IntMap<Integer[]> raster = new IntMap<>();
     private Renderable rasterRenderer = RenderableVoid.getInstance();
     private int[] bu;
+    private int id;
+    private int x;
+    private int y;
     private int w;
     private int h;
     private int y1;
     private int marginY;
     private int offsetY;
     private int factorY;
+    private final int scaleDivX;
+    private final int scaleDivY;
 
     private Renderable renderer = this::renderBuffer;
 
@@ -80,17 +85,21 @@ public final class SequenceRenderer implements Rasterbar
      * 
      * @param context The context reference (must not be <code>null</code>).
      * @param resolution The resolution source reference (must not be <code>null</code>).
+     * @param dx The horizontal scale.
+     * @param dy The vertical scale.
      * @param target The renderer target.
      * @throws LionEngineException If invalid arguments.
      */
-    protected SequenceRenderer(Context context, Resolution resolution, Renderable target)
+    public SequenceRenderer(Context context, Resolution resolution, int dx, int dy, Renderable target)
     {
         super();
 
         Check.notNull(context);
         Check.notNull(resolution);
 
-        source = resolution;
+        scaleDivX = dx;
+        scaleDivY = dy;
+
         config = context.getConfig();
         graphic = Graphics.createGraphic();
         this.target = target;
@@ -107,20 +116,61 @@ public final class SequenceRenderer implements Rasterbar
         Check.notNull(source);
 
         setSystemCursorVisible(cursorVisibility.booleanValue());
-        this.source = source;
-        screen.onSourceChanged(source);
-        w = source.getWidth();
-        h = source.getHeight();
+
+        if (scaleDivX > 0 && scaleDivY > 0)
+        {
+            this.source = new Resolution(source.getWidth() * scaleDivY,
+                                         source.getHeight() * scaleDivX,
+                                         source.getRate());
+        }
+        else
+        {
+            this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
+        }
+
+        final double fw = config.getOutput().getWidth() / (double) this.source.getWidth();
+        final double fh = config.getOutput().getHeight() / (double) this.source.getHeight();
+
+        screen.onSourceChanged(this.source);
+        w = this.source.getWidth();
+        h = this.source.getHeight();
+
         buf = Graphics.createImageBuffer(w, h);
         bu = new int[w * h];
         transform = getTransform();
+
+        if (id == 1)
+        {
+            if (scaleDivX > 1)
+            {
+                x = (int) (w * fh);
+            }
+            else if (scaleDivY > 1)
+            {
+                y = (int) (h * fw);
+            }
+            else if (scaleDivX == 1 && scaleDivY == 1)
+            {
+                x = (int) (w * fh / 2);
+            }
+        }
+        if (id == 2)
+        {
+            y = (int) (h * fw / 2);
+        }
+        // CHECKSTYLE IGNORE LINE: MagicNumber
+        if (id == 3)
+        {
+            x = (int) (w * fh / 2);
+            y = (int) (h * fw / 2);
+        }
 
         final Graphic gbuf = buf.createGraphic();
         graphic.setGraphic(gbuf.getGraphic());
 
         scanline.prepare(config);
 
-        setDirect(h == config.getOutput().getHeight());
+        setDirect(false);
     }
 
     /**
@@ -134,6 +184,16 @@ public final class SequenceRenderer implements Rasterbar
             renderer.render(g);
             scanline.render(g);
         }
+    }
+
+    /**
+     * Set rendering location.
+     * 
+     * @param id The rendering id.
+     */
+    void setLocation(int id)
+    {
+        this.id = id;
     }
 
     /**
@@ -209,6 +269,26 @@ public final class SequenceRenderer implements Rasterbar
     }
 
     /**
+     * Get width.
+     * 
+     * @return The width.
+     */
+    int getWidth()
+    {
+        return w;
+    }
+
+    /**
+     * Get height.
+     * 
+     * @return The height.
+     */
+    int getHeight()
+    {
+        return h;
+    }
+
+    /**
      * Get the transform associated to the filter keeping screen scale independent.
      * 
      * @return The associated transform instance.
@@ -217,16 +297,33 @@ public final class SequenceRenderer implements Rasterbar
     {
         final Resolution output = config.getOutput();
 
-        final double scaleY = output.getHeight() / (double) source.getHeight();
+        double scaleY = output.getHeight() / (double) source.getHeight();
 
-        if (UtilMath.equals(output.getWidth() / (double) output.getHeight(),
-                            source.getWidth() / (double) source.getHeight(),
-                            SCALE_PRECISION))
+        if (scaleDivX == 0
+            && scaleDivY == 0
+            && UtilMath.equals(output.getWidth() / (double) output.getHeight(),
+                               source.getWidth() / (double) source.getHeight(),
+                               SCALE_PRECISION))
         {
             return filter.getTransform(scaleY, scaleY);
         }
 
-        final double scaleX = output.getWidth() / (double) source.getWidth();
+        final double scaleX;
+        if (scaleDivX == 0 && scaleDivY == 0)
+        {
+            scaleX = output.getWidth() / (double) source.getWidth();
+        }
+        else if (scaleDivX == 1 && scaleDivY == 1)
+        {
+            scaleX = output.getWidth() / (double) source.getWidth() / 2;
+            scaleY = output.getHeight() / (double) source.getHeight() / 2;
+        }
+        else
+        {
+            scaleX = output.getWidth() / (double) source.getWidth() / scaleDivX;
+            scaleY = output.getHeight() / (double) source.getHeight() / scaleDivY;
+        }
+
         return filter.getTransform(scaleX, scaleY);
     }
 
@@ -277,7 +374,7 @@ public final class SequenceRenderer implements Rasterbar
     {
         target.render(graphic);
 
-        g.drawImage(filter.filter(buf), transform, 0, 0);
+        g.drawImage(filter.filter(buf), transform, x, y);
 
     }
 

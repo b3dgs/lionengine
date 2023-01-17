@@ -52,4 +52,12 @@ public interface Sequencer
      * @param visible <code>true</code> if visible, <code>false</code> else.
      */
     void setSystemCursorVisible(boolean visible);
+
+    /**
+     * Set active split.
+     * 
+     * @param split The active split (must be positive).
+     * @throws LionEngineException If invalid argument.
+     */
+    void setSplit(int split);
 }

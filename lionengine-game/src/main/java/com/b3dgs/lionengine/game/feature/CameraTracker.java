@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
  * Camera tracking implementation.
@@ -57,11 +58,28 @@ public class CameraTracker extends FeaturableAbstract
      */
     public CameraTracker(Services services)
     {
+        this(services.get(Camera.class));
+    }
+
+    /**
+     * Create tracker.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link Camera}</li>
+     * </ul>
+     * 
+     * @param camera The camera reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
+     */
+    public CameraTracker(Camera camera)
+    {
         super();
 
-        Check.notNull(services);
+        Check.notNull(camera);
 
-        camera = services.get(Camera.class);
+        this.camera = camera;
 
         addFeature(new RefreshableModel(extrp ->
         {
@@ -172,20 +190,11 @@ public class CameraTracker extends FeaturableAbstract
     /**
      * Track the specified localizable.
      * 
-     * @param localizable The localizable to track.
-     * @param smooth <code>true</code> to enable smooth, <code>false</code> else.
+     * @param transformable The transformable to track.
      */
-    public void track(Localizable localizable, boolean smooth)
+    public void track(Transformable transformable)
     {
-        tracked = localizable;
-        smoothX = smooth;
-        smoothY = smooth;
-
-        if (!smooth && tracked != null)
-        {
-            camera.teleport(tracked.getX() - camera.getWidth() / 2.0 + h,
-                            tracked.getY() - camera.getHeight() / 2.0 + v);
-        }
+        track(transformable, false);
     }
 
     /**
@@ -200,10 +209,29 @@ public class CameraTracker extends FeaturableAbstract
      * @param featurable The featurable to follow.
      * @throws LionEngineException If missing feature.
      */
-    public void track(Featurable featurable)
+    public void track(FeatureProvider featurable)
     {
         final Transformable transformable = featurable.getFeature(Transformable.class);
-        track(transformable);
+        track(transformable, false);
+    }
+
+    /**
+     * Track the specified localizable.
+     * 
+     * @param localizable The localizable to track.
+     * @param smooth <code>true</code> to enable smooth, <code>false</code> else.
+     */
+    public void track(Localizable localizable, boolean smooth)
+    {
+        tracked = localizable;
+        smoothX = smooth;
+        smoothY = smooth;
+
+        if (!smooth && tracked != null)
+        {
+            camera.teleport(tracked.getX() - camera.getWidth() / 2.0 + h,
+                            tracked.getY() - camera.getHeight() / 2.0 + v);
+        }
     }
 
     /**

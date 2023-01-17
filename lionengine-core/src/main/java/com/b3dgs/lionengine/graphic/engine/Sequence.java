@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Scanline;
 import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.ScreenListener;
@@ -59,10 +60,10 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     private final Config config;
     /** Loop mode. */
     private final Loop loop;
-    /** Sequence renderer. */
-    private final SequenceRenderer renderer;
     /** Source resolution. */
     private final Resolution source;
+    /** Sequence renderer. */
+    private SequenceRenderer[] renderer;
     /** Next sequence pointer. */
     private Sequencable nextSequence;
     /** Current frame rate. */
@@ -75,6 +76,8 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     private int width;
     /** Height. */
     private int height;
+    /** Active split. */
+    private int split;
 
     /**
      * Constructor base. Resolution will be based on {@link Config#getOutput()}.
@@ -120,9 +123,83 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         this.loop = loop;
         source = resolution;
         config = context.getConfig();
-        renderer = new SequenceRenderer(context, resolution, this::render);
         width = source.getWidth();
         height = source.getHeight();
+
+        setSplit0();
+    }
+
+    @Override
+    public final void setSplit(int split)
+    {
+        Check.superiorOrEqual(split, 0);
+        Check.inferiorStrict(split, renderer.length);
+
+        this.split = split;
+    }
+
+    /**
+     * Configure with single screen.
+     */
+    public final void setSplit0()
+    {
+        renderer = new SequenceRenderer[1];
+        renderer[0] = new SequenceRenderer(context, resolution, 0, 0, this::render);
+    }
+
+    /**
+     * Configure with 2 split screens.
+     * 
+     * @param screen1 The screen rendering 1.
+     * @param screen2 The screen rendering 2.
+     * @param horizontal <code>true</code> for horizontal split, <code>false</code> for vertical split.
+     */
+    public final void setSplit(Renderable screen1, Renderable screen2, boolean horizontal)
+    {
+        final int dx;
+        final int dy;
+        if (horizontal)
+        {
+            dx = 1;
+            dy = 2;
+        }
+        else
+        {
+            dx = 2;
+            dy = 1;
+        }
+
+        renderer = new SequenceRenderer[2];
+        renderer[0] = new SequenceRenderer(context, resolution, dx, dy, screen1);
+        renderer[1] = new SequenceRenderer(context, resolution, dx, dy, screen2);
+
+        renderer[0].setLocation(0);
+        renderer[1].setLocation(1);
+    }
+
+    /**
+     * Configure with 4 split screens.
+     * 
+     * @param screen1 The screen rendering 1.
+     * @param screen2 The screen rendering 2.
+     * @param screen3 The screen rendering 3.
+     * @param screen4 The screen rendering 4.
+     */
+    public final void setSplit(Renderable screen1, Renderable screen2, Renderable screen3, Renderable screen4)
+    {
+        // CHECKSTYLE IGNORE LINE: Magic
+        renderer = new SequenceRenderer[4];
+        renderer[0] = new SequenceRenderer(context, resolution, 1, 1, screen1);
+        renderer[1] = new SequenceRenderer(context, resolution, 1, 1, screen2);
+        renderer[2] = new SequenceRenderer(context, resolution, 1, 1, screen3);
+        // CHECKSTYLE IGNORE LINE: Magic
+        renderer[3] = new SequenceRenderer(context, resolution, 1, 1, screen4);
+
+        renderer[0].setLocation(0);
+        renderer[1].setLocation(1);
+        renderer[2].setLocation(2);
+        // CHECKSTYLE IGNORE LINE: Magic
+        renderer[3].setLocation(3);
     }
 
     /**
@@ -137,7 +214,10 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
      */
     public final void setFilter(Filter filter)
     {
-        renderer.setFilter(filter);
+        for (int i = 0; i < renderer.length; i++)
+        {
+            renderer[i].setFilter(filter);
+        }
     }
 
     /**
@@ -147,7 +227,10 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
      */
     public final void setScanline(Scanline scanline)
     {
-        renderer.setScanline(scanline);
+        for (int i = 0; i < renderer.length; i++)
+        {
+            renderer[i].setScanline(scanline);
+        }
     }
 
     /**
@@ -157,7 +240,10 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
      */
     public final void setDirect(boolean direct)
     {
-        renderer.setDirect(direct);
+        for (int i = 0; i < renderer.length; i++)
+        {
+            renderer[i].setDirect(direct);
+        }
     }
 
     /**
@@ -241,8 +327,11 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         this.screen = screen;
         screen.addListener(this);
 
-        renderer.setScreen(screen);
-        renderer.initResolution(resolution);
+        for (int i = 0; i < renderer.length; i++)
+        {
+            renderer[i].setScreen(screen);
+            renderer[i].initResolution(resolution);
+        }
         currentFrameRate = config.getOutput().getRate();
         screen.requestFocus();
 
@@ -255,6 +344,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         // Main loop
         final Tick updateFps = new Tick();
         updateFps.start();
+        // CHECKSTYLE IGNORE LINE: AnonIn
         loop.start(screen, new Frame()
         {
             @Override
@@ -267,7 +357,10 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
             @Override
             public void render()
             {
-                renderer.render();
+                for (int i = 0; i < renderer.length; i++)
+                {
+                    renderer[i].render();
+                }
             }
 
             @Override
@@ -327,8 +420,11 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     {
         final double scale = UtilMath.clamp(factor, 0.1, 5.0);
         final Resolution zoomed = resolution.getScaled(scale);
-        renderer.initResolution(zoomed);
-        onResolutionChanged(zoomed.getWidth(), zoomed.getHeight());
+        for (int i = 0; i < renderer.length; i++)
+        {
+            renderer[i].initResolution(zoomed);
+        }
+        onResolutionChanged(renderer[0].getWidth(), renderer[0].getHeight());
     }
 
     @Override
@@ -345,7 +441,10 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     @Override
     public final void setSystemCursorVisible(boolean visible)
     {
-        renderer.setSystemCursorVisible(visible);
+        for (int i = 0; i < renderer.length; i++)
+        {
+            renderer[i].setSystemCursorVisible(visible);
+        }
     }
 
     @Override
@@ -389,31 +488,40 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     @Override
     public void clearRasterbarColor()
     {
-        renderer.clearRasterbarColor();
+        for (int i = 0; i < renderer.length; i++)
+        {
+            renderer[i].clearRasterbarColor();
+        }
     }
 
     @Override
     public void addRasterbarColor(ImageBuffer buffer)
     {
-        renderer.addRasterbarColor(buffer);
+        for (int i = 0; i < renderer.length; i++)
+        {
+            renderer[i].addRasterbarColor(buffer);
+        }
     }
 
     @Override
     public void setRasterbarOffset(int offsetY, int factorY)
     {
-        renderer.setRasterbarOffset(offsetY, factorY);
+        for (int i = 0; i < renderer.length; i++)
+        {
+            renderer[i].setRasterbarOffset(offsetY, factorY);
+        }
     }
 
     @Override
     public void setRasterbarY(int y1, int y2)
     {
-        renderer.setRasterbarY(y1, y2);
+        renderer[split].setRasterbarY(y1, y2);
     }
 
     @Override
     public void renderRasterbar()
     {
-        renderer.renderRasterbar();
+        renderer[split].renderRasterbar();
     }
 
     /*

@@ -47,10 +47,16 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
  */
 public class Camera extends FeaturableAbstract implements Viewer
 {
+    private static final int SPLIT_MAX = 4;
+
+    /** Internal split. */
+    private final Camera[] internal = new Camera[SPLIT_MAX];
     /** Current location. */
     private final Mover mover = new MoverModel();
     /** Current offset location. */
     private final Mover offset = new MoverModel();
+    /** Internal split index. */
+    private Camera split;
     /** Intervals horizontal value. */
     private int intervalHorizontal;
     /** Intervals vertical value. */
@@ -88,6 +94,41 @@ public class Camera extends FeaturableAbstract implements Viewer
     public Camera()
     {
         super();
+
+        split = this;
+        internal[0] = this;
+    }
+
+    /**
+     * Set active split.
+     * 
+     * @param split The active split (0 default).
+     */
+    public void setSplit(int split)
+    {
+        if (split < 0 || split > internal.length || internal[split] == null)
+        {
+            this.split = this;
+        }
+        else
+        {
+            this.split = internal[split];
+        }
+    }
+
+    /**
+     * Define internal camera for split.
+     * 
+     * @param split The split index (between 1 and 4 included).
+     * @param camera The camera reference.
+     * @throws LionEngineException If invalid argument.
+     */
+    public void setInternal(int split, Camera camera)
+    {
+        Check.superiorStrict(split, 0);
+        Check.inferiorOrEqual(split, internal.length);
+
+        internal[split] = camera;
     }
 
     /**
@@ -95,7 +136,7 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public void backup()
     {
-        mover.backup();
+        split.mover.backup();
     }
 
     /**
@@ -106,13 +147,13 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public void resetInterval(Localizable localizable)
     {
-        final int intervalHorizontalOld = intervalHorizontal;
-        final int intervalVerticalOld = intervalVertical;
+        final int intervalHorizontalOld = split.intervalHorizontal;
+        final int intervalVerticalOld = split.intervalVertical;
         final double oldX = getX();
         final double oldY = getY();
 
         setIntervals(0, 0);
-        offset.setLocation(0.0, 0.0);
+        split.offset.setLocation(0.0, 0.0);
         setLocation(localizable.getX(), localizable.getY());
 
         final double newX = getX();
@@ -122,8 +163,8 @@ public class Camera extends FeaturableAbstract implements Viewer
         moveLocation(1.0, newX - oldX, newY - oldY);
 
         setIntervals(intervalHorizontalOld, intervalVerticalOld);
-        offset.setLocation(0.0, 0.0);
-        mover.backup();
+        split.offset.setLocation(0.0, 0.0);
+        split.mover.backup();
     }
 
     /**
@@ -147,8 +188,8 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public void setLocation(double x, double y)
     {
-        final double dx = x - (mover.getX() + offset.getX());
-        final double dy = y - (mover.getY() + offset.getY());
+        final double dx = x - (split.mover.getX() + split.offset.getX());
+        final double dy = y - (split.mover.getY() + split.offset.getY());
         moveLocation(1.0, dx, dy);
     }
 
@@ -159,7 +200,7 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public void setLocationX(double x)
     {
-        final double dx = x - (mover.getX() + offset.getX());
+        final double dx = x - (split.mover.getX() + split.offset.getX());
         checkHorizontalLimit(1.0, dx);
     }
 
@@ -170,7 +211,7 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public void setLocationY(double y)
     {
-        final double dy = y - (mover.getY() + offset.getY());
+        final double dy = y - (split.mover.getY() + split.offset.getY());
         checkVerticalLimit(1.0, dy);
     }
 
@@ -182,8 +223,8 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public void teleport(double x, double y)
     {
-        offset.teleport(0.0, 0.0);
-        mover.teleport(x, y);
+        split.offset.teleport(0.0, 0.0);
+        split.mover.teleport(x, y);
     }
 
     /**
@@ -205,8 +246,8 @@ public class Camera extends FeaturableAbstract implements Viewer
     public void round(SurfaceTile round)
     {
         final int th = round.getTileHeight();
-        teleport(UtilMath.getRounded(mover.getX(), round.getTileWidth()),
-                 UtilMath.getRounded(mover.getY(), th) + (double) th);
+        teleport(UtilMath.getRounded(split.mover.getX(), round.getTileWidth()),
+                 UtilMath.getRounded(split.mover.getY(), th) + (double) th);
     }
 
     /**
@@ -245,8 +286,8 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public void setIntervals(int intervalHorizontal, int intervalVertical)
     {
-        this.intervalHorizontal = intervalHorizontal;
-        this.intervalVertical = intervalVertical;
+        split.intervalHorizontal = intervalHorizontal;
+        split.intervalVertical = intervalVertical;
     }
 
     /**
@@ -279,11 +320,11 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public void setView(int x, int y, int width, int height, int screenHeight)
     {
-        this.x = x;
-        this.y = y;
-        this.width = UtilMath.clamp(width, 0, Integer.MAX_VALUE);
-        this.height = UtilMath.clamp(height, 0, Integer.MAX_VALUE);
-        this.screenHeight = screenHeight;
+        split.x = x;
+        split.y = y;
+        split.width = UtilMath.clamp(width, 0, Integer.MAX_VALUE);
+        split.height = UtilMath.clamp(height, 0, Integer.MAX_VALUE);
+        split.screenHeight = screenHeight;
     }
 
     /**
@@ -318,8 +359,8 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public void setShake(int shakeX, int shakeY)
     {
-        this.shakeX = shakeX;
-        this.shakeY = shakeY;
+        split.shakeX = shakeX;
+        split.shakeY = shakeY;
     }
 
     /**
@@ -330,8 +371,8 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public void setShake2(int shake2X, int shake2Y)
     {
-        this.shake2X = shake2X;
-        this.shake2Y = shake2Y;
+        split.shake2X = shake2X;
+        split.shake2Y = shake2Y;
     }
 
     /**
@@ -371,7 +412,7 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public void setLimitLeft(int limitLeft)
     {
-        this.limitLeft = limitLeft;
+        split.limitLeft = limitLeft;
     }
 
     /**
@@ -381,7 +422,7 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public void setLimitRight(int limitRight)
     {
-        this.limitRight = limitRight;
+        split.limitRight = limitRight;
     }
 
     /**
@@ -391,7 +432,7 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public void setLimitTop(int limitTop)
     {
-        this.limitTop = limitTop;
+        split.limitTop = limitTop;
     }
 
     /**
@@ -401,7 +442,7 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public void setLimitBottom(int limitBottom)
     {
-        this.limitBottom = limitBottom;
+        split.limitBottom = limitBottom;
     }
 
     /**
@@ -418,22 +459,22 @@ public class Camera extends FeaturableAbstract implements Viewer
 
         if (gridH == 0)
         {
-            limitRight = 0;
+            split.limitRight = 0;
         }
         else
         {
-            limitRight = Math.max(0, surface.getWidth() - UtilMath.getRoundedC(width, gridH));
+            split.limitRight = Math.max(0, surface.getWidth() - UtilMath.getRoundedC(split.width, gridH));
         }
         if (gridV == 0)
         {
-            limitTop = 0;
+            split.limitTop = 0;
         }
         else
         {
-            limitTop = Math.max(0, surface.getHeight() - UtilMath.getRoundedC(height, gridV));
+            split.limitTop = Math.max(0, surface.getHeight() - UtilMath.getRoundedC(split.height, gridV));
         }
-        limitLeft = 0;
-        limitBottom = 0;
+        split.limitLeft = 0;
+        split.limitBottom = 0;
 
         moveLocation(1.0, 0.0, 0.0);
     }
@@ -445,7 +486,7 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public double getMovementHorizontal()
     {
-        return mover.getX() - mover.getOldX();
+        return split.mover.getX() - split.mover.getOldX();
     }
 
     /**
@@ -455,7 +496,7 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     public double getMovementVertical()
     {
-        return mover.getY() - mover.getOldY();
+        return split.mover.getY() - split.mover.getOldY();
     }
 
     /**
@@ -467,27 +508,28 @@ public class Camera extends FeaturableAbstract implements Viewer
     private void checkHorizontalLimit(double extrp, double vx)
     {
         // Inside interval
-        if (mover.getX() >= limitLeft
-            && mover.getX() <= limitRight
-            && limitLeft != Integer.MIN_VALUE
-            && limitRight != Integer.MAX_VALUE)
+        if (split.mover.getX() >= split.limitLeft
+            && split.mover.getX() <= split.limitRight
+            && split.limitLeft != Integer.MIN_VALUE
+            && split.limitRight != Integer.MAX_VALUE)
         {
-            offset.moveLocation(extrp, vx, 0);
+            split.offset.moveLocation(extrp, vx, 0);
 
             // Block offset on its limits
-            if (offset.getX() < -intervalHorizontal)
+            if (split.offset.getX() < -split.intervalHorizontal)
             {
-                offset.teleportX(-intervalHorizontal);
+                split.offset.teleportX(-split.intervalHorizontal);
             }
-            else if (offset.getX() > intervalHorizontal)
+            else if (split.offset.getX() > split.intervalHorizontal)
             {
-                offset.teleportX(intervalHorizontal);
+                split.offset.teleportX(split.intervalHorizontal);
             }
         }
         // Outside interval
-        if ((int) offset.getX() == -intervalHorizontal || (int) offset.getX() == intervalHorizontal)
+        if ((int) split.offset.getX() == -split.intervalHorizontal
+            || (int) split.offset.getX() == split.intervalHorizontal)
         {
-            mover.moveLocationX(extrp, vx);
+            split.mover.moveLocationX(extrp, vx);
         }
         applyHorizontalLimit();
     }
@@ -501,27 +543,27 @@ public class Camera extends FeaturableAbstract implements Viewer
     private void checkVerticalLimit(double extrp, double vy)
     {
         // Inside interval
-        if (mover.getY() >= limitBottom
-            && mover.getY() <= limitTop
-            && limitBottom != Integer.MIN_VALUE
-            && limitTop != Integer.MAX_VALUE)
+        if (split.mover.getY() >= split.limitBottom
+            && split.mover.getY() <= split.limitTop
+            && split.limitBottom != Integer.MIN_VALUE
+            && split.limitTop != Integer.MAX_VALUE)
         {
-            offset.moveLocation(extrp, 0, vy);
+            split.offset.moveLocation(extrp, 0, vy);
 
             // Block offset on its limits
-            if (offset.getY() < -intervalVertical)
+            if (split.offset.getY() < -split.intervalVertical)
             {
-                offset.teleportY(-intervalVertical);
+                split.offset.teleportY(-split.intervalVertical);
             }
-            else if (offset.getY() > intervalVertical)
+            else if (split.offset.getY() > split.intervalVertical)
             {
-                offset.teleportY(intervalVertical);
+                split.offset.teleportY(split.intervalVertical);
             }
         }
         // Outside interval
-        if ((int) offset.getY() == -intervalVertical || (int) offset.getY() == intervalVertical)
+        if ((int) offset.getY() == -split.intervalVertical || (int) split.offset.getY() == split.intervalVertical)
         {
-            mover.moveLocationY(extrp, vy);
+            split.mover.moveLocationY(extrp, vy);
         }
         applyVerticalLimit();
     }
@@ -531,13 +573,13 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     private void applyHorizontalLimit()
     {
-        if (mover.getX() < limitLeft && limitLeft != Integer.MIN_VALUE)
+        if (split.mover.getX() < split.limitLeft && split.limitLeft != Integer.MIN_VALUE)
         {
-            mover.teleportX(limitLeft);
+            split.mover.teleportX(limitLeft);
         }
-        else if (mover.getX() > limitRight && limitRight != Integer.MAX_VALUE)
+        else if (split.mover.getX() > split.limitRight && split.limitRight != Integer.MAX_VALUE)
         {
-            mover.teleportX(limitRight);
+            split.mover.teleportX(split.limitRight);
         }
     }
 
@@ -546,13 +588,13 @@ public class Camera extends FeaturableAbstract implements Viewer
      */
     private void applyVerticalLimit()
     {
-        if (mover.getY() < limitBottom && limitBottom != Integer.MIN_VALUE)
+        if (split.mover.getY() < split.limitBottom && split.limitBottom != Integer.MIN_VALUE)
         {
-            mover.teleportY(limitBottom);
+            split.mover.teleportY(split.limitBottom);
         }
-        else if (mover.getY() > limitTop && limitTop != Integer.MAX_VALUE)
+        else if (split.mover.getY() > split.limitTop && split.limitTop != Integer.MAX_VALUE)
         {
-            mover.teleportY(limitTop);
+            split.mover.teleportY(split.limitTop);
         }
     }
 
@@ -569,69 +611,94 @@ public class Camera extends FeaturableAbstract implements Viewer
     @Override
     public double getViewpointY(double y)
     {
-        return getY() + height - y;
+        return getY() + split.height - y;
     }
 
     @Override
     public double getX()
     {
-        return mover.getX() - getViewX() + shakeX + shake2X;
+        return split.mover.getX() - getViewX() + split.shakeX + split.shake2X;
     }
 
     @Override
     public double getY()
     {
-        return mover.getY() + getViewY() + shakeY + shake2Y;
+        return split.mover.getY() + getViewY() + split.shakeY + split.shake2Y;
     }
 
     @Override
     public int getViewX()
     {
-        return x;
+        return split.x;
     }
 
     @Override
     public int getViewY()
     {
-        return y;
+        return split.y;
     }
 
     @Override
     public int getWidth()
     {
-        return width;
+        return split.width;
     }
 
     @Override
     public int getHeight()
     {
-        return height;
+        return split.height;
     }
 
     @Override
     public int getScreenHeight()
     {
-        return screenHeight;
+        return split.screenHeight;
     }
 
     @Override
     public boolean isViewable(Localizable localizable, int radiusX, int radiusY)
     {
-        final boolean outside = getViewpointX(localizable.getX() + radiusX) < getViewX()
-                                || getViewpointX(localizable.getX() - radiusX) > getViewX() + width
-                                || getViewpointY(localizable.getY() - radiusY) < getViewY()
-                                || getViewpointY(localizable.getY() + radiusY) > getViewY() + height;
-        return !outside;
+        for (int i = 0; i < internal.length; i++)
+        {
+            if (internal[i] != null)
+            {
+                final boolean outside = getViewpointX(localizable.getX() + radiusX) < getViewX()
+                                        || getViewpointX(localizable.getX() - radiusX) > getViewX() + internal[i].width
+                                        || getViewpointY(localizable.getY() - radiusY) < getViewY()
+                                        || getViewpointY(localizable.getY() + radiusY) > getViewY()
+                                                                                         + internal[i].height;
+                if (!outside)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean isViewable(Shape shape, int radiusX, int radiusY)
     {
-        final boolean outside = getViewpointX(shape.getX() + shape.getWidth() + radiusX) < getViewX()
-                                || getViewpointX(shape.getX() - shape.getWidth() - radiusX) > getViewX() + width
-                                || getViewpointY(shape.getY() - shape.getHeight() - radiusY) < getViewY()
-                                || getViewpointY(shape.getY() + shape.getHeight() + radiusY) > getViewY() + height;
-        return !outside;
+        for (int i = 0; i < internal.length; i++)
+        {
+            if (internal[i] != null)
+            {
+                final boolean outside = getViewpointX(shape.getX() + shape.getWidth() + radiusX) < getViewX()
+                                        || getViewpointX(shape.getX()
+                                                         - shape.getWidth()
+                                                         - radiusX) > getViewX() + internal[i].width
+                                        || getViewpointY(shape.getY() - shape.getHeight() - radiusY) < getViewY()
+                                        || getViewpointY(shape.getY()
+                                                         + shape.getHeight()
+                                                         + radiusY) > getViewY() + internal[i].height;
+                if (!outside)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

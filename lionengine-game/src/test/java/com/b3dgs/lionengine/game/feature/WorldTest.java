@@ -167,6 +167,12 @@ final class WorldTest
             {
                 // Mock
             }
+
+            @Override
+            public void setSplit(int split)
+            {
+                // Mock
+            }
         });
         services.add(new Rasterbar()
         {

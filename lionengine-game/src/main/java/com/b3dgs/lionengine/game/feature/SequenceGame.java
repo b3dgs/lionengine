@@ -123,6 +123,12 @@ public abstract class SequenceGame<W extends WorldGame> extends Sequence
             {
                 SequenceGame.this.setSystemCursorVisible(visible);
             }
+
+            @Override
+            public void setSplit(int split)
+            {
+                SequenceGame.this.setSplit(split);
+            }
         });
         // CHECKSTYLE IGNORE LINE: AnonInnerLength
         services.add(new Rasterbar()
