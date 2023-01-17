@@ -32,6 +32,17 @@ public interface InputDevice extends Updatable, Nameable, Listenable<InputDevice
     }
 
     /**
+     * Set current id to use in case of multiple internal instance.
+     * 
+     * @param id The id used (self by default).
+     * @return The sub device.
+     */
+    default InputDevice getCurrent(int id)
+    {
+        return this;
+    }
+
+    /**
      * Close device resources.
      */
     default void close()

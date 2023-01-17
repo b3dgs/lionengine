@@ -18,10 +18,8 @@ package com.b3dgs.lionengine.helper;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.FeatureProvider;
-import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.Routine;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.io.DeviceController;
@@ -31,12 +29,8 @@ import com.b3dgs.lionengine.io.DeviceControllerVoid;
  * Entity input control implementation.
  */
 @FeatureInterface
-public final class EntityInputController extends FeatureModel implements Routine
+public final class EntityInputController extends FeatureModel
 {
-    private final DeviceController controller;
-
-    @FeatureGet private EntityModelHelper model;
-
     /**
      * Create controller.
      * 
@@ -47,8 +41,6 @@ public final class EntityInputController extends FeatureModel implements Routine
     public EntityInputController(Services services, Setup setup)
     {
         super(services, setup);
-
-        controller = services.getOptional(DeviceController.class).orElse(DeviceControllerVoid.getInstance());
     }
 
     @Override
@@ -56,12 +48,7 @@ public final class EntityInputController extends FeatureModel implements Routine
     {
         super.prepare(provider);
 
-        model.setInput(controller);
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        controller.update(extrp);
+        getFeature(EntityModelHelper.class).setInput(services.getOptional(DeviceController.class)
+                                                             .orElse(DeviceControllerVoid.getInstance()));
     }
 }
