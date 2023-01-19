@@ -97,14 +97,6 @@ public class Force implements Direction, Updatable
     private double fhDest;
     /** Vertical destination force vector. */
     private double fvDest;
-    /** Last horizontal force. */
-    private double fhLast;
-    /** Last vertical force. */
-    private double fvLast;
-    /** Reached horizontal force. */
-    private boolean arrivedH;
-    /** Reached vertical force. */
-    private boolean arrivedV;
     /** Maximum direction. */
     private Direction directionMax;
     /** Minimum direction. */
@@ -180,7 +172,6 @@ public class Force implements Direction, Updatable
     {
         fhOld = 0.0;
         fhDest = 0.0;
-        fhLast = 0.0;
         fh = 0.0;
     }
 
@@ -191,7 +182,6 @@ public class Force implements Direction, Updatable
     {
         fvOld = 0.0;
         fvDest = 0.0;
-        fvLast = 0.0;
         fv = 0.0;
     }
 
@@ -248,8 +238,6 @@ public class Force implements Direction, Updatable
      */
     public void addDirection(double extrp, double fh, double fv)
     {
-        fhLast = fh;
-        fvLast = fv;
         this.fh += fh * extrp;
         this.fv += fv * extrp;
         fixForce();
@@ -273,8 +261,6 @@ public class Force implements Direction, Updatable
      */
     public void setDirection(double fh, double fv)
     {
-        fhLast = fh;
-        fvLast = fv;
         this.fh = fh;
         this.fv = fv;
         fixForce();
@@ -353,28 +339,11 @@ public class Force implements Direction, Updatable
     }
 
     /**
-     * Update the last direction.
-     */
-    private void updateLastForce()
-    {
-        if (Double.compare(fhLast, fhDest) != 0)
-        {
-            fhLast = fhDest;
-            arrivedH = false;
-        }
-        if (Double.compare(fvLast, fvDest) != 0)
-        {
-            fvLast = fvDest;
-            arrivedV = false;
-        }
-    }
-
-    /**
      * Update the force if still not reached on horizontal axis.
      * 
      * @param extrp The extrapolation value.
      */
-    private void updateNotArrivedH(double extrp)
+    private void updateH(double extrp)
     {
         if (fh < fhDest)
         {
@@ -382,7 +351,6 @@ public class Force implements Direction, Updatable
             if (fh > fhDest - sensibility)
             {
                 fh = fhDest;
-                arrivedH = true;
             }
         }
         else if (fh > fhDest)
@@ -391,7 +359,6 @@ public class Force implements Direction, Updatable
             if (fh < fhDest + sensibility)
             {
                 fh = fhDest;
-                arrivedH = true;
             }
         }
     }
@@ -401,7 +368,7 @@ public class Force implements Direction, Updatable
      * 
      * @param extrp The extrapolation value.
      */
-    private void updateNotArrivedV(double extrp)
+    private void updateV(double extrp)
     {
         if (fv < fvDest)
         {
@@ -409,7 +376,6 @@ public class Force implements Direction, Updatable
             if (fv > fvDest - sensibility)
             {
                 fv = fvDest;
-                arrivedV = true;
             }
         }
         else if (fv > fvDest)
@@ -418,7 +384,6 @@ public class Force implements Direction, Updatable
             if (fv < fvDest + sensibility)
             {
                 fv = fvDest;
-                arrivedV = true;
             }
         }
     }
@@ -466,25 +431,10 @@ public class Force implements Direction, Updatable
     {
         fhOld = fh;
         fvOld = fv;
-        updateLastForce();
 
-        // Not arrived
-        if (!arrivedH)
-        {
-            updateNotArrivedH(extrp);
-        }
-        else
-        {
-            fh = fhDest;
-        }
-        if (!arrivedV)
-        {
-            updateNotArrivedV(extrp);
-        }
-        else
-        {
-            fv = fvDest;
-        }
+        updateH(extrp);
+        updateV(extrp);
+
         fixForce();
     }
 
