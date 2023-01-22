@@ -189,7 +189,7 @@ public class Packet
      */
     public boolean readBool()
     {
-        return readByteUnsigned() == 1 ? true : false;
+        return readByteUnsigned() == 1;
     }
 
     /**

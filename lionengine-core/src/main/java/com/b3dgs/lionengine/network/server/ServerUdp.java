@@ -52,7 +52,7 @@ import com.b3dgs.lionengine.network.UtilNetwork;
 /**
  * UDP server based implementation.
  */
-// CHECKSTYLE IGNORE LINE: DataAbstractionCoupling
+// CHECKSTYLE IGNORE LINE: DataAbstractionCoupling|FanOutComplexity
 public class ServerUdp implements Server
 {
     private static final int TIMEOUT = 12_000;
