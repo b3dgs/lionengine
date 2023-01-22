@@ -55,6 +55,22 @@ final class MediaDefault implements Media
     /** Jar file suffix. */
     private static final String JAR_FILE_SUFFIX = ".jar!";
 
+    /**
+     * Check if path exists.
+     * 
+     * @param path The path to check.
+     * @return The file descriptor if exists, <code>null</code> if not found.
+     */
+    private static File exists(String path)
+    {
+        final File file = new File(path);
+        if (file.exists())
+        {
+            return file;
+        }
+        return null;
+    }
+
     /** Separator. */
     private final String separator;
     /** Resources directory. */
@@ -128,7 +144,7 @@ final class MediaDefault implements Media
     private String getPrefix()
     {
         final String prefix;
-        final File file = new File(getPathAbsolute());
+        final File file = new File(getPathFromResourcesDir());
         if (file.exists())
         {
             prefix = resourcesDir;
@@ -202,32 +218,11 @@ final class MediaDefault implements Media
     }
 
     /**
-     * Get input stream from JAR by default, try in temporary folder if not found in JAR.
-     * 
-     * @return The input stream found.
-     * @throws FileNotFoundException If no stream found.
-     */
-    // CHECKSTYLE IGNORE LINE: ReturnCount
-    private InputStream getInputFromJarOrTemp() throws FileNotFoundException
-    {
-        final InputStream input = resourcesClass.getResourceAsStream(UtilFolder.getPathSeparator(separator, getPath()));
-        if (input == null)
-        {
-            if (new File(getPathUser()).exists())
-            {
-                return new FileInputStream(getPathUser());
-            }
-            return new FileInputStream(getPathTemp());
-        }
-        return input;
-    }
-
-    /**
      * Get the absolute media path.
      * 
      * @return The absolute media path.
      */
-    private String getPathAbsolute()
+    private String getPathFromResourcesDir()
     {
         return UtilFolder.getPathSeparator(separator, resourcesDir, path);
     }
@@ -237,7 +232,7 @@ final class MediaDefault implements Media
      * 
      * @return The temporary path.
      */
-    private String getPathTemp()
+    private String getPathFromTemp()
     {
         return UtilFolder.getPathSeparator(separator,
                                            TEMP,
@@ -251,7 +246,7 @@ final class MediaDefault implements Media
      * 
      * @return The user path.
      */
-    private String getPathUser()
+    private String getPathFromUser()
     {
         return UtilFolder.getPathSeparator(separator, USER, path);
     }
@@ -278,33 +273,38 @@ final class MediaDefault implements Media
         return parent;
     }
 
+    /**
+     * Get the first file descriptor found.
+     * <p>
+     * Here the following order:
+     * </p>
+     * <ul>
+     * <li>Resources directory</li>
+     * <li>User directory</li>
+     * <li>Temp directory</li>
+     * <li>JAR resources</li>
+     * <li>Temp directory</li>
+     * </ul>
+     */
     @Override
     public File getFile()
     {
-        final File current = new File(getPathAbsolute());
-        if (current.exists())
-        {
-            return current;
-        }
-
         final File file;
-        final URL url = resourcesClass.getResource(path);
-        if (url == null)
+        File current = null;
+        URL url = null;
+        if ((current = exists(getPathFromResourcesDir())) != null // CHECKSTYLE IGNORE LINE: Assign|Comment
+            || (current = exists(getPathFromUser())) != null // CHECKSTYLE IGNORE LINE: Assign|Comment
+            || (current = exists(getPathFromTemp())) != null) // CHECKSTYLE IGNORE LINE: Assign|Comment
         {
-            final File fileUser = new File(getPathUser());
-            // CHECKSTYLE IGNORE LINE: NestedIfDepth
-            if (fileUser.exists())
-            {
-                file = fileUser;
-            }
-            else
-            {
-                file = new File(getPathTemp());
-            }
+            file = current;
+        }
+        else if ((url = resourcesClass.getResource(path)) != null) // CHECKSTYLE IGNORE LINE: Assign|Comment
+        {
+            file = new File(url.getFile());
         }
         else
         {
-            file = new File(url.getFile());
+            file = new File(getPathFromTemp());
         }
         return file;
     }
@@ -337,17 +337,80 @@ final class MediaDefault implements Media
         return medias;
     }
 
+    /**
+     * Get the first input stream found.
+     * <p>
+     * Here the following order:
+     * </p>
+     * <ul>
+     * <li>Resources directory</li>
+     * <li>User directory</li>
+     * <li>Temp directory</li>
+     * <li>JAR resources</li>
+     * </ul>
+     */
     @Override
     public InputStream getInputStream()
     {
+        final File file;
+        File current = null;
+        if ((current = exists(getPathFromResourcesDir())) != null // CHECKSTYLE IGNORE LINE: Assign|Comment
+            || (current = exists(getPathFromUser())) != null // CHECKSTYLE IGNORE LINE: Assign|Comment
+            || (current = exists(getPathFromTemp())) != null) // CHECKSTYLE IGNORE LINE: Assign|Comment
+        {
+            file = current;
+        }
+        else
+        {
+            final InputStream i = resourcesClass.getResourceAsStream(UtilFolder.getPathSeparator(separator, getPath()));
+            if (i != null)
+            {
+                return i;
+            }
+            throw new LionEngineException(this, ERROR_OPEN_MEDIA);
+        }
         try
         {
-            final File file = new File(getPathAbsolute());
-            if (file.exists())
+            return new FileInputStream(file);
+        }
+        catch (final FileNotFoundException exception)
+        {
+            throw new LionEngineException(exception, this, ERROR_OPEN_MEDIA);
+        }
+    }
+
+    /**
+     * Get the first output stream available.
+     * <p>
+     * Here the following order:
+     * </p>
+     * <ul>
+     * <li>Resources directory if already exists</li>
+     * <li>User directory if already exists</li>
+     * <li>Temp directory</li>
+     * </ul>
+     */
+    @Override
+    public OutputStream getOutputStream()
+    {
+        final File file;
+        File current = null;
+        // CHECKSTYLE IGNORE LINE: Assign
+        if ((current = exists(getPathFromResourcesDir())) != null || (current = exists(getPathFromUser())) != null)
+        {
+            file = current;
+        }
+        else
+        {
+            file = new File(getPathFromTemp());
+            if (file.getParentFile().mkdirs())
             {
-                return new FileInputStream(file);
+                Verbose.info("Temp path created: ", file.getPath());
             }
-            return getInputFromJarOrTemp();
+        }
+        try
+        {
+            return new FileOutputStream(file);
         }
         catch (final FileNotFoundException exception)
         {
@@ -356,46 +419,18 @@ final class MediaDefault implements Media
     }
 
     @Override
-    public OutputStream getOutputStream()
-    {
-        try
-        {
-            return new FileOutputStream(getPathAbsolute());
-        }
-        catch (@SuppressWarnings("unused") final FileNotFoundException exception)
-        {
-            final String outputPath = getPathTemp();
-            final File folder = new File(outputPath).getParentFile();
-            if (folder.mkdirs())
-            {
-                Verbose.info("Temp path created: ", folder.getPath());
-            }
-            try
-            {
-                return new FileOutputStream(outputPath);
-            }
-            catch (final FileNotFoundException exception2)
-            {
-                throw new LionEngineException(exception2, this, ERROR_OPEN_MEDIA);
-            }
-        }
-    }
-
-    @Override
     public boolean exists()
     {
-        final String jarPath = UtilFolder.getPathSeparator(separator, getPath());
-        return getFile().exists()
-               || resourcesClass.getResource(jarPath) != null
-               || UtilFile.exists(getPathTemp())
-               || UtilFile.exists(getPathUser());
+        return getFile().exists();
     }
 
     @Override
     public boolean isJar()
     {
-        return !getFile().exists()
-               && resourcesClass.getResource(UtilFolder.getPathSeparator(separator, getPath())) != null;
+        return exists(getPathFromResourcesDir()) == null
+               && exists(getPathFromUser()) == null
+               && exists(getPathFromTemp()) == null
+               && resourcesClass.getResource(path) != null;
     }
 
     /*

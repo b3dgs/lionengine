@@ -316,7 +316,6 @@ final class Sc68Test
             {
                 UtilStream.copy(input, output);
             }
-
             final Audio sc68 = createSc68(media);
             try
             {
@@ -332,15 +331,14 @@ final class Sc68Test
             {
                 sc68.stop();
             }
-
-            if (media.getFile().exists())
-            {
-                UtilFile.deleteFile(media.getFile());
-            }
         }
         finally
         {
             Medias.setResourcesDirectory(null);
+        }
+        if (music.getFile().exists())
+        {
+            UtilFile.deleteFile(music.getFile());
         }
     }
 }

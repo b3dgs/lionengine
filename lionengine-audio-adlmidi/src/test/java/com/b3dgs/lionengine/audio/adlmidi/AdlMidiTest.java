@@ -361,14 +361,14 @@ final class AdlMidiTest
             {
                 adlmidi.stop();
             }
-            if (media.getFile().exists())
-            {
-                UtilFile.deleteFile(media.getFile());
-            }
         }
         finally
         {
             Medias.setResourcesDirectory(null);
+        }
+        if (music.getFile().exists())
+        {
+            UtilFile.deleteFile(music.getFile());
         }
     }
 }

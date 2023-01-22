@@ -340,7 +340,6 @@ final class AdPlugTest
             {
                 UtilStream.copy(input, output);
             }
-
             final Audio adplug = createAdPlug(media);
             try
             {
@@ -356,15 +355,14 @@ final class AdPlugTest
             {
                 adplug.stop();
             }
-
-            if (media.getFile().exists())
-            {
-                UtilFile.deleteFile(media.getFile());
-            }
         }
         finally
         {
             Medias.setResourcesDirectory(null);
+        }
+        if (music.getFile().exists())
+        {
+            UtilFile.deleteFile(music.getFile());
         }
     }
 }
