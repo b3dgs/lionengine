@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.graphic.engine.Sequence;
 /**
  * Integration test for map tile rastered model.
  */
-final class SceneMapTileRastered extends Sequence
+public final class SceneMapTileRastered extends Sequence
 {
     private final Services services = new Services();
     private final Camera camera = services.create(Camera.class);
@@ -51,7 +51,7 @@ final class SceneMapTileRastered extends Sequence
      * 
      * @param context The context reference.
      */
-    SceneMapTileRastered(Context context)
+    public SceneMapTileRastered(Context context)
     {
         super(context, new Resolution(640, 480, 60));
     }

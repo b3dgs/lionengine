@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.UtilTests;
 
 /**
  * Test {@link IdentifiableModel}.
@@ -76,7 +77,7 @@ final class IdentifiableModelTest
     @Test
     void testId() throws ReflectiveOperationException
     {
-        final Collection<Integer> ids = UtilReflection.getField(IdentifiableModel.class, "IDS");
+        final Collection<Integer> ids = UtilTests.getField(IdentifiableModel.class, "IDS");
         ids.clear();
 
         final Field field = IdentifiableModel.class.getDeclaredField("lastId");

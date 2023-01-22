@@ -397,7 +397,7 @@ final class StateHandlerTest
 
     private static class StateMock extends StateAbstract
     {
-        private StateMock()
+        public StateMock()
         {
             super();
 

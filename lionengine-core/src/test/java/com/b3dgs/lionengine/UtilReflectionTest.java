@@ -103,8 +103,12 @@ final class UtilReflectionTest
     @Test
     void testCreateConstructorNotAccessible()
     {
-        assertThrows(() -> UtilReflection.create(UtilMath.class, new Class[0]),
-                     UtilReflection.ERROR_CONSTRUCTOR + UtilMath.class);
+        assertThrows(NoSuchMethodException.class,
+                     () -> UtilReflection.create(UtilMath.class, new Class[0]),
+                     UtilReflection.ERROR_NO_CONSTRUCTOR_COMPATIBLE
+                                                                                + UtilMath.class.getName()
+                                                                                + UtilReflection.ERROR_WITH
+                                                                                + "[]");
     }
 
     /**
@@ -113,11 +117,15 @@ final class UtilReflectionTest
     @Test
     void testCreateAbstractClass()
     {
-        assertThrows(() -> UtilReflection.create(Engine.class,
+        assertThrows(NoSuchMethodException.class,
+                     () -> UtilReflection.create(Engine.class,
                                                  UtilReflection.getParamTypes("", Version.DEFAULT),
                                                  "",
                                                  Version.DEFAULT),
-                     UtilReflection.ERROR_CONSTRUCTOR + Engine.class);
+                     UtilReflection.ERROR_NO_CONSTRUCTOR_COMPATIBLE
+                                                                   + Engine.class.getName()
+                                                                   + UtilReflection.ERROR_WITH
+                                                                   + Arrays.asList(String.class, Version.class));
     }
 
     /**
@@ -149,13 +157,17 @@ final class UtilReflectionTest
 
     /**
      * Create create reduce with no constructor found.
-     * 
-     * @throws NoSuchMethodException If error.
      */
     @Test
-    void testCreateReduceMoreParameters() throws NoSuchMethodException
+    void testCreateReduceMoreParameters()
     {
-        UtilReflection.createReduce(Reduce.class, Integer.valueOf(1), "test", Integer.valueOf(3));
+        final String expected = UtilReflection.ERROR_NO_CONSTRUCTOR_COMPATIBLE
+                                + Reduce.class.getName()
+                                + UtilReflection.ERROR_WITH
+                                + Arrays.asList(Integer.class, String.class, Integer.class);
+        assertThrows(NoSuchMethodException.class,
+                     () -> UtilReflection.createReduce(Reduce.class, Integer.valueOf(1), "test", Integer.valueOf(3)),
+                     expected);
     }
 
     /**
@@ -206,7 +218,7 @@ final class UtilReflectionTest
     @Test
     void testGetMethod()
     {
-        assertNotNull(UtilReflection.getMethod(new Object(), "toString"));
+        assertNotNull(UtilTests.getMethod(new Object(), "toString"));
     }
 
     /**
@@ -215,7 +227,7 @@ final class UtilReflectionTest
     @Test
     void testGetMethodNotAccessible()
     {
-        assertThrows(() -> UtilReflection.getMethod(Verbose.class, "getMessage", "test"),
+        assertThrows(() -> UtilTests.getMethod(Verbose.class, "getMessage", "test"),
                      UtilReflection.ERROR_METHOD + "getMessage");
     }
 
@@ -225,7 +237,7 @@ final class UtilReflectionTest
     @Test
     void testGetMethodNotExists()
     {
-        assertThrows(() -> UtilReflection.getMethod(new Object(), "123"), UtilReflection.ERROR_METHOD + "123");
+        assertThrows(() -> UtilTests.getMethod(new Object(), "123"), UtilReflection.ERROR_METHOD + "123");
     }
 
     /**
@@ -234,8 +246,7 @@ final class UtilReflectionTest
     @Test
     void testGetMethodCallError()
     {
-        assertThrows(() -> UtilReflection.getMethod(Integer.class, "valueOf", ""),
-                     UtilReflection.ERROR_METHOD + "valueOf");
+        assertThrows(() -> UtilTests.getMethod(Integer.class, "valueOf", ""), UtilReflection.ERROR_METHOD + "valueOf");
     }
 
     /**
@@ -244,7 +255,7 @@ final class UtilReflectionTest
     @Test
     void testGetMethodThrowsLionEngineException()
     {
-        assertThrows(() -> UtilReflection.getMethod(Reduce.class, "throwsLion"), "Lion");
+        assertThrows(() -> UtilTests.getMethod(Reduce.class, "throwsLion"), "Lion");
     }
 
     /**
@@ -253,8 +264,7 @@ final class UtilReflectionTest
     @Test
     void testGetMethodInvalidParameter()
     {
-        assertThrows(() -> UtilReflection.getMethod(Integer.class, "valueOf", ""),
-                     UtilReflection.ERROR_METHOD + "valueOf");
+        assertThrows(() -> UtilTests.getMethod(Integer.class, "valueOf", ""), UtilReflection.ERROR_METHOD + "valueOf");
     }
 
     /**
@@ -263,7 +273,7 @@ final class UtilReflectionTest
     @Test
     void testGetField()
     {
-        assertNotNull(UtilReflection.getField(new Config(new Resolution(320, 240, 32), 16, false), "output"));
+        assertNotNull(UtilTests.getField(new Config(new Resolution(320, 240, 32), 16, false), "output"));
     }
 
     /**
@@ -272,7 +282,7 @@ final class UtilReflectionTest
     @Test
     void testGetFieldAccessible()
     {
-        assertNotNull(UtilReflection.getField(LionEngineException.class, "ERROR_PRIVATE_CONSTRUCTOR"));
+        assertNotNull(UtilTests.getField(LionEngineException.class, "ERROR_PRIVATE_CONSTRUCTOR"));
     }
 
     /**
@@ -281,7 +291,7 @@ final class UtilReflectionTest
     @Test
     void testGetFieldNotAccessible()
     {
-        assertNotNull(UtilReflection.getField(Verbose.class, "LOGGER"));
+        assertNotNull(UtilTests.getField(Verbose.class, "LOGGER"));
     }
 
     /**
@@ -290,7 +300,7 @@ final class UtilReflectionTest
     @Test
     void testGetFieldSuperClass()
     {
-        final String accessible = UtilReflection.getField(FieldTest2.class, "test");
+        final String accessible = UtilTests.getField(FieldTest2.class, "test");
         assertNotNull(accessible);
     }
 
@@ -300,7 +310,7 @@ final class UtilReflectionTest
     @Test
     void testGetFieldUnknown()
     {
-        assertThrows(() -> UtilReflection.getField(new Object(), "0"), UtilReflection.ERROR_FIELD + "0");
+        assertThrows(() -> UtilTests.getField(new Object(), "0"), UtilReflection.ERROR_FIELD + "0");
     }
 
     /**

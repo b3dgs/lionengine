@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.Animation;
 /**
  * State idle test implementation.
  */
-final class StateIdle extends StateAbstract
+public final class StateIdle extends StateAbstract
 {
     /** Loaded animation. */
     static Animation animation;
@@ -32,7 +32,7 @@ final class StateIdle extends StateAbstract
      * @param featurable The featurable reference.
      * @param animation The associated animation.
      */
-    StateIdle(StateHandler featurable, Animation animation)
+    public StateIdle(StateHandler featurable, Animation animation)
     {
         super();
 

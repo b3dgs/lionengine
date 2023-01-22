@@ -87,7 +87,7 @@ final class UtilChecksumTest
     @Test
     void testUnknownAlgorithm()
     {
-        assertThrows(() -> UtilReflection.getMethod(UtilChecksum.class, "create", "void"),
+        assertThrows(() -> UtilTests.getMethod(UtilChecksum.class, "create", "void"),
                      UtilChecksum.ERROR_ALGORITHM + "void");
     }
 }

@@ -24,14 +24,14 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * Mock sequence.
  */
-final class SequenceFailMock extends Sequence
+public final class SequenceFailMock extends Sequence
 {
     /**
      * Constructor.
      * 
      * @param context The context reference.
      */
-    SequenceFailMock(Context context)
+    public SequenceFailMock(Context context)
     {
         super(context, new Resolution(320, 200, 60));
     }

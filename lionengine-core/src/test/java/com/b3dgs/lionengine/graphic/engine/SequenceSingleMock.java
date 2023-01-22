@@ -26,14 +26,14 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * Single sequence mock.
  */
-final class SequenceSingleMock extends Sequence
+public final class SequenceSingleMock extends Sequence
 {
     /**
      * Constructor.
      * 
      * @param context The context reference.
      */
-    SequenceSingleMock(Context context)
+    public SequenceSingleMock(Context context)
     {
         super(context, UtilTests.RESOLUTION_320_240, new LoopUnlocked());
     }

@@ -26,12 +26,19 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * Sequence with screen not ready on rendering.
  */
-final class SequenceScreenNotReady extends Sequence
+public final class SequenceScreenNotReady extends Sequence
 {
     private final CountDownLatch waitUpdate;
     private final CountDownLatch waitScreenUnready;
 
-    private SequenceScreenNotReady(Context context, CountDownLatch waitUpdate, CountDownLatch waitScreenUnready)
+    /**
+     * Create sequence.
+     * 
+     * @param context The context reference.
+     * @param waitUpdate The wait.
+     * @param waitScreenUnready The wait.
+     */
+    public SequenceScreenNotReady(Context context, CountDownLatch waitUpdate, CountDownLatch waitScreenUnready)
     {
         super(context, UtilTests.RESOLUTION_320_240, new LoopUnlocked());
 

@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * Single sequence mock.
  */
-final class SequenceEngineTerminateMock extends Sequence
+public final class SequenceEngineTerminateMock extends Sequence
 {
     /** Force termination. */
     public static final AtomicBoolean CLOSE = new AtomicBoolean();
@@ -35,7 +35,7 @@ final class SequenceEngineTerminateMock extends Sequence
      * 
      * @param context The context reference.
      */
-    SequenceEngineTerminateMock(Context context)
+    public SequenceEngineTerminateMock(Context context)
     {
         super(context);
     }

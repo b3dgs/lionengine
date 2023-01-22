@@ -21,12 +21,12 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * Mock sequence with malformed constructor.
  */
-final class SequenceMalformedMock extends Sequence
+public final class SequenceMalformedMock extends Sequence
 {
     /**
      * Constructor.
      */
-    SequenceMalformedMock()
+    public SequenceMalformedMock()
     {
         super(null, null);
     }

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.feature.state;
 /**
  * State base test implementation.
  */
-class StateBase extends StateAbstract
+public class StateBase extends StateAbstract
 {
     /** Entered flag. */
     static boolean entered;
@@ -43,7 +43,7 @@ class StateBase extends StateAbstract
     /**
      * Create state.
      */
-    StateBase()
+    public StateBase()
     {
         super();
 

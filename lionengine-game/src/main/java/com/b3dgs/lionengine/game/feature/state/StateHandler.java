@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature.state;
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -218,10 +219,10 @@ public class StateHandler extends FeatureModel
                 final String name = converter.apply(state);
                 final Animation animation = configAnimations.getAnimation(name);
                 final Class<? extends Feature> feature;
-                feature = (Class<? extends Feature>) UtilReflection.getCompatibleConstructor(state,
-                                                                                             FeatureProvider.class,
-                                                                                             Animation.class)
-                                                                   .getParameters()[PARAM_FEATURE_INDEX].getType();
+                final Constructor<? extends State> c = UtilReflection.getCompatibleConstructor(state,
+                                                                                               FeatureProvider.class,
+                                                                                               Animation.class);
+                feature = (Class<? extends Feature>) c.getParameterTypes()[PARAM_FEATURE_INDEX];
                 return UtilReflection.create(state,
                                              UtilReflection.getParamTypes(feature, animation),
                                              getFeature(feature),

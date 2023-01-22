@@ -109,7 +109,7 @@ final class DocumentFactoryTest
     @Test
     void testMissingFeature() throws Exception
     {
-        final Object old = UtilReflection.getField(DocumentFactory.class, "documentBuilder");
+        final Object old = UtilTests.getField(DocumentFactory.class, "documentBuilder");
         final Field field = DocumentFactory.class.getDeclaredField("documentBuilder");
         UtilReflection.setAccessible(field, true);
         field.set(DocumentFactory.class, null);

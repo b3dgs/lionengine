@@ -19,12 +19,12 @@ package com.b3dgs.lionengine.game.feature.state;
 /**
  * State clear test implementation.
  */
-final class StateClear extends StateAbstract
+public final class StateClear extends StateAbstract
 {
     /**
      * Create the state.
      */
-    StateClear()
+    public StateClear()
     {
         super();
 

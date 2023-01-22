@@ -24,7 +24,7 @@ public final class StateLast extends StateAbstract
     /**
      * Private constructor.
      */
-    private StateLast()
+    public StateLast()
     {
         super();
     }

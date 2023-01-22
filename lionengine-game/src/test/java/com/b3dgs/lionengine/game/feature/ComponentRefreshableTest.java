@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
@@ -143,7 +143,7 @@ final class ComponentRefreshableTest
         component.notifyLayerChanged(featurable, null, null, null, null);
         component.notifyLayerChanged(featurable2, null, null, null, null);
 
-        assertTrue(((TreeSet<?>) UtilReflection.getField(component, "indexs")).isEmpty());
+        assertTrue(((TreeSet<?>) UtilTests.getField(component, "indexs")).isEmpty());
 
         component.notifyHandlableRemoved(featurable);
 
@@ -159,15 +159,15 @@ final class ComponentRefreshableTest
         component.notifyHandlableAdded(featurable);
         component.notifyHandlableAdded(featurable2);
 
-        assertFalse(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
+        assertFalse(((HashSet<?>) UtilTests.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
 
         component.notifyHandlableRemoved(featurable);
 
-        assertFalse(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
+        assertFalse(((HashSet<?>) UtilTests.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
 
         component.notifyHandlableRemoved(featurable2);
 
-        assertTrue(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
+        assertTrue(((HashSet<?>) UtilTests.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
     }
 
     /**

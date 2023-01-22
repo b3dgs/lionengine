@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * Interrupt sequence mock.
  */
-final class SequenceInterruptMock extends Sequence
+public final class SequenceInterruptMock extends Sequence
 {
     /** Pause time. */
     public static final long PAUSE_MILLI = 100L;
@@ -33,7 +33,7 @@ final class SequenceInterruptMock extends Sequence
      * 
      * @param context The context reference.
      */
-    SequenceInterruptMock(Context context)
+    public SequenceInterruptMock(Context context)
     {
         super(context, UtilTests.RESOLUTION_320_240);
     }

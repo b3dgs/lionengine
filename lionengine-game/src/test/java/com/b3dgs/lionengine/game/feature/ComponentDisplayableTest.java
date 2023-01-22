@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
@@ -142,7 +142,7 @@ final class ComponentDisplayableTest
         component.notifyLayerChanged(featurable, null, null, null, null);
         component.notifyLayerChanged(featurable2, null, null, null, null);
 
-        assertTrue(((List<?>) UtilReflection.getField(component, "indexs")).isEmpty());
+        assertTrue(((List<?>) UtilTests.getField(component, "indexs")).isEmpty());
 
         component.notifyHandlableRemoved(featurable);
 
@@ -157,15 +157,15 @@ final class ComponentDisplayableTest
         component.notifyHandlableAdded(featurable);
         component.notifyHandlableAdded(featurable2);
 
-        assertFalse(((List<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
+        assertFalse(((List<?>) UtilTests.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
 
         component.notifyHandlableRemoved(featurable);
 
-        assertFalse(((List<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
+        assertFalse(((List<?>) UtilTests.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
 
         component.notifyHandlableRemoved(featurable2);
 
-        assertTrue(((List<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
+        assertTrue(((List<?>) UtilTests.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
     }
 
     /**

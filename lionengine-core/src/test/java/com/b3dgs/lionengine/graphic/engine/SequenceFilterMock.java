@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * Filter sequence mock.
  */
-final class SequenceFilterMock extends Sequence
+public final class SequenceFilterMock extends Sequence
 {
     private final AtomicInteger rate = new AtomicInteger();
 
@@ -40,7 +40,7 @@ final class SequenceFilterMock extends Sequence
      * @param context The context reference.
      * @param filter The filter used.
      */
-    SequenceFilterMock(Context context, Filter filter)
+    public SequenceFilterMock(Context context, Filter filter)
     {
         super(context, UtilTests.RESOLUTION_320_240);
 

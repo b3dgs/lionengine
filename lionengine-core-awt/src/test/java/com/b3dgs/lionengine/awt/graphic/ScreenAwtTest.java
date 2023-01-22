@@ -39,7 +39,6 @@ import com.b3dgs.lionengine.InputDeviceKeyListener;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
@@ -216,7 +215,7 @@ final class ScreenAwtTest
         assertThrows(() -> screen.setIcons(Arrays.asList(Medias.create("void"))), "[void] Cannot open the media !");
         screen.setIcons(Arrays.asList(Medias.create("image.png")));
 
-        final javax.swing.JFrame frame = (javax.swing.JFrame) UtilReflection.getField(screen, "frame");
+        final javax.swing.JFrame frame = (javax.swing.JFrame) UtilTests.getField(screen, "frame");
         frame.dispatchEvent(new java.awt.event.WindowEvent(frame, java.awt.event.WindowEvent.WINDOW_CLOSING));
 
         assertTimeout(10_000L, () ->

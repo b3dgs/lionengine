@@ -18,9 +18,7 @@ package com.b3dgs.lionengine;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.security.PrivilegedAction;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -95,7 +93,7 @@ public final class UtilReflection
         {
             final int typesLength = typesQueue.size();
             final Class<?>[] typesArray = typesQueue.toArray(new Class<?>[typesLength]);
-            for (final Constructor<?> constructor : type.getDeclaredConstructors())
+            for (final Constructor<?> constructor : type.getConstructors())
             {
                 final Class<?>[] constructorTypes = constructor.getParameterTypes();
                 if (constructorTypes.length == typesLength
@@ -159,7 +157,7 @@ public final class UtilReflection
         Check.notNull(type);
         Check.notNull(paramTypes);
 
-        for (final Constructor<?> current : type.getDeclaredConstructors())
+        for (final Constructor<?> current : type.getConstructors())
         {
             final Class<?>[] constructorTypes = current.getParameterTypes();
             if (constructorTypes.length == paramTypes.length
@@ -191,7 +189,7 @@ public final class UtilReflection
         Check.notNull(type);
         Check.notNull(paramTypes);
 
-        for (final Constructor<?> current : type.getDeclaredConstructors())
+        for (final Constructor<?> current : type.getConstructors())
         {
             final Class<?>[] constructorTypes = current.getParameterTypes();
             if (constructorTypes.length == paramTypes.length
@@ -204,70 +202,6 @@ public final class UtilReflection
                                         + type.getName()
                                         + ERROR_WITH
                                         + Arrays.asList(paramTypes));
-    }
-
-    /**
-     * Get method and call its return value with parameters.
-     * 
-     * @param <T> The object type.
-     * @param object The object caller (must not be <code>null</code>).
-     * @param name The method name (must not be <code>null</code>).
-     * @param params The method parameters (must not be <code>null</code>).
-     * @return The value returned.
-     * @throws LionEngineException If invalid parameters.
-     */
-    public static <T> T getMethod(Object object, String name, Object... params)
-    {
-        Check.notNull(object);
-        Check.notNull(name);
-        Check.notNull(params);
-
-        try
-        {
-            final Class<?> clazz = getClass(object);
-            final Method method = clazz.getDeclaredMethod(name, getParamTypes(params));
-            setAccessible(method, true);
-            @SuppressWarnings("unchecked")
-            final T value = (T) method.invoke(object, params);
-            return value;
-        }
-        catch (final NoSuchMethodException | InvocationTargetException | IllegalAccessException exception)
-        {
-            if (exception.getCause() instanceof LionEngineException)
-            {
-                throw (LionEngineException) exception.getCause();
-            }
-            throw new LionEngineException(exception, ERROR_METHOD + name);
-        }
-    }
-
-    /**
-     * Get the field by reflection.
-     * 
-     * @param <T> The field type.
-     * @param object The object to use (must not be <code>null</code>).
-     * @param name The field name (must not be <code>null</code>).
-     * @return The field found.
-     * @throws LionEngineException If invalid parameters or field not found.
-     */
-    public static <T> T getField(Object object, String name)
-    {
-        Check.notNull(object);
-        Check.notNull(name);
-
-        try
-        {
-            final Class<?> clazz = getClass(object);
-            final Field field = getDeclaredFieldSuper(clazz, name);
-            setAccessible(field, true);
-            @SuppressWarnings("unchecked")
-            final T value = (T) field.get(object);
-            return value;
-        }
-        catch (final NoSuchFieldException | IllegalAccessException exception)
-        {
-            throw new LionEngineException(exception, ERROR_FIELD + name);
-        }
     }
 
     /**
@@ -359,30 +293,6 @@ public final class UtilReflection
     }
 
     /**
-     * Get the field by reflection searching in super class if needed.
-     * 
-     * @param clazz The class to use.
-     * @param name The field name.
-     * @return The field found.
-     * @throws NoSuchFieldException If field not found.
-     */
-    private static Field getDeclaredFieldSuper(Class<?> clazz, String name) throws NoSuchFieldException
-    {
-        try
-        {
-            return clazz.getDeclaredField(name);
-        }
-        catch (final NoSuchFieldException exception)
-        {
-            if (clazz.getSuperclass() == null)
-            {
-                throw exception;
-            }
-            return getDeclaredFieldSuper(clazz.getSuperclass(), name);
-        }
-    }
-
-    /**
      * Store all declared valid interfaces into next.
      * 
      * @param base The minimum base interface.
@@ -420,7 +330,7 @@ public final class UtilReflection
      * @param object The object reference.
      * @return The object class (or object itself if already a class).
      */
-    private static Class<?> getClass(Object object)
+    static Class<?> getClass(Object object)
     {
         if (object instanceof Class)
         {

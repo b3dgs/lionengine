@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.Animation;
 /**
  * State walk test implementation.
  */
-final class StateWalk extends StateAbstract
+public final class StateWalk extends StateAbstract
 {
     /** Loaded animation. */
     static Animation animation;
@@ -32,7 +32,7 @@ final class StateWalk extends StateAbstract
      * @param featurable The featurable reference.
      * @param animation The associated animation.
      */
-    StateWalk(StateHandler featurable, Animation animation)
+    public StateWalk(StateHandler featurable, Animation animation)
     {
         super();
 

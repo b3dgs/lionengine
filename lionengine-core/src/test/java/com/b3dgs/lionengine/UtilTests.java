@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -37,6 +38,94 @@ public final class UtilTests
     public static final Resolution RESOLUTION_640_480 = new Resolution(640, 480, 60);
     /** Enum.valueOf method. */
     private static final String ENUM_VALUEOF = "valueOf";
+
+    /**
+     * Get method and call its return value with parameters.
+     * 
+     * @param <T> The object type.
+     * @param object The object caller (must not be <code>null</code>).
+     * @param name The method name (must not be <code>null</code>).
+     * @param params The method parameters (must not be <code>null</code>).
+     * @return The value returned.
+     * @throws LionEngineException If invalid parameters.
+     */
+    public static <T> T getMethod(Object object, String name, Object... params)
+    {
+        Check.notNull(object);
+        Check.notNull(name);
+        Check.notNull(params);
+
+        try
+        {
+            final Class<?> clazz = UtilReflection.getClass(object);
+            final Method method = clazz.getDeclaredMethod(name, UtilReflection.getParamTypes(params));
+            UtilReflection.setAccessible(method, true);
+            @SuppressWarnings("unchecked")
+            final T value = (T) method.invoke(object, params);
+            return value;
+        }
+        catch (final NoSuchMethodException | InvocationTargetException | IllegalAccessException exception)
+        {
+            if (exception.getCause() instanceof LionEngineException)
+            {
+                throw (LionEngineException) exception.getCause();
+            }
+            throw new LionEngineException(exception, UtilReflection.ERROR_METHOD + name);
+        }
+    }
+
+    /**
+     * Get the field by reflection.
+     * 
+     * @param <T> The field type.
+     * @param object The object to use (must not be <code>null</code>).
+     * @param name The field name (must not be <code>null</code>).
+     * @return The field found.
+     * @throws LionEngineException If invalid parameters or field not found.
+     */
+    public static <T> T getField(Object object, String name)
+    {
+        Check.notNull(object);
+        Check.notNull(name);
+
+        try
+        {
+            final Class<?> clazz = UtilReflection.getClass(object);
+            final Field field = getDeclaredFieldSuper(clazz, name);
+            UtilReflection.setAccessible(field, true);
+            @SuppressWarnings("unchecked")
+            final T value = (T) field.get(object);
+            return value;
+        }
+        catch (final NoSuchFieldException | IllegalAccessException exception)
+        {
+            throw new LionEngineException(exception, UtilReflection.ERROR_FIELD + name);
+        }
+    }
+
+    /**
+     * Get the field by reflection searching in super class if needed.
+     * 
+     * @param clazz The class to use.
+     * @param name The field name.
+     * @return The field found.
+     * @throws NoSuchFieldException If field not found.
+     */
+    private static Field getDeclaredFieldSuper(Class<?> clazz, String name) throws NoSuchFieldException
+    {
+        try
+        {
+            return clazz.getDeclaredField(name);
+        }
+        catch (final NoSuchFieldException exception)
+        {
+            if (clazz.getSuperclass() == null)
+            {
+                throw exception;
+            }
+            return getDeclaredFieldSuper(clazz.getSuperclass(), name);
+        }
+    }
 
     /**
      * Test private constructor.

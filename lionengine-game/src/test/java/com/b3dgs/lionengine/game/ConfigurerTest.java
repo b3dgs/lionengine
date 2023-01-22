@@ -309,9 +309,8 @@ final class ConfigurerTest
     @Test
     void testGetImplementationNotAccessible()
     {
-        final NotAccessible impl = configurer.getImplementation(NotAccessible.class,
-                                                                NotAccessible.class.getSimpleName());
-        assertTrue(impl.created);
+        assertThrows(() -> configurer.getImplementation(NotAccessible.class, NotAccessible.class.getSimpleName()),
+                     "Class constructor error: " + NotAccessible.class.getName());
     }
 
     /**
@@ -433,11 +432,9 @@ final class ConfigurerTest
      */
     static final class NotAccessible
     {
-        private final boolean created;
-
         private NotAccessible()
         {
-            created = true;
+            super();
         }
     }
 

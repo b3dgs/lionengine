@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.feature.state;
 /**
  * State next test implementation.
  */
-class StateNext extends StateAbstract
+public class StateNext extends StateAbstract
 {
     /** Entered flag. */
     static boolean entered;

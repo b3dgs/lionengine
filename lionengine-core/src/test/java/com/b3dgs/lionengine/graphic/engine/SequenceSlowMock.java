@@ -25,14 +25,14 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * Single sequence mock.
  */
-final class SequenceSlowMock extends Sequence
+public final class SequenceSlowMock extends Sequence
 {
     /**
      * Constructor.
      * 
      * @param context The context reference.
      */
-    SequenceSlowMock(Context context)
+    public SequenceSlowMock(Context context)
     {
         super(context, UtilTests.RESOLUTION_320_240);
     }

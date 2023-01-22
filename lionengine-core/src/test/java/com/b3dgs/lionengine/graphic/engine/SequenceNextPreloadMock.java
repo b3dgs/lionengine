@@ -23,14 +23,14 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * Mock sequence.
  */
-final class SequenceNextPreloadMock extends Sequence
+public final class SequenceNextPreloadMock extends Sequence
 {
     /**
      * Constructor.
      * 
      * @param context The context reference.
      */
-    SequenceNextPreloadMock(Context context)
+    public SequenceNextPreloadMock(Context context)
     {
         super(context, new Resolution(640, 240, 60));
     }
