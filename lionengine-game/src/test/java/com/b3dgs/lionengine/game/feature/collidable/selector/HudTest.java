@@ -29,8 +29,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.ContextMock;
+import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Actionable;
@@ -48,8 +51,8 @@ import com.b3dgs.lionengine.graphic.Graphics;
  */
 final class HudTest
 {
-    /** Object config test. */
-    private static Media config;
+    /** Object configuration file name. */
+    private static final String OBJECT_XML = "Object.xml";
 
     /**
      * Prepare test.
@@ -57,9 +60,10 @@ final class HudTest
     @BeforeAll
     public static void beforeTests()
     {
+        Engine.start(new EngineMock(HudTest.class.getSimpleName(), Version.DEFAULT));
+
         Medias.setLoadFromJar(HudTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
-        config = Medias.create("Object.xml");
     }
 
     /**
@@ -68,12 +72,13 @@ final class HudTest
     @AfterAll
     public static void afterTests()
     {
-        Graphics.setFactoryGraphic(null);
         Medias.setLoadFromJar(null);
+        Graphics.setFactoryGraphic(null);
+
+        Engine.terminate();
     }
 
     private final Services services = new Services();
-    private final Setup setup = new Setup(config);
 
     /**
      * Prepare test.
@@ -110,7 +115,8 @@ final class HudTest
                 canceled.set(true);
             }
         };
-        final Hud hud = new Hud(services, setup);
+        final Media config = Medias.create(OBJECT_XML);
+        final Hud hud = new Hud(services, new Setup(config));
         hud.addListener(listener);
 
         final AtomicBoolean cancel = new AtomicBoolean();
