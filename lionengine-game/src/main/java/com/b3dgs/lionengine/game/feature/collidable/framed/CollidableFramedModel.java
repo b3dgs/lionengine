@@ -22,6 +22,7 @@ import java.util.Collections;
 import com.b3dgs.lionengine.AnimatorFrameListener;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
@@ -39,6 +40,8 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
 {
     /** Loaded collisions framed. */
     private final CollidableFramedConfig config;
+    /** Frame listener. */
+    private final AnimatorFrameListener listener;
     /** Last collision found. */
     private Collection<Collision> last = Collections.emptyList();
 
@@ -67,22 +70,8 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
         super(services, setup);
 
         config = CollidableFramedConfig.imports(setup);
-    }
 
-    /*
-     * CollidableFramed
-     */
-
-    @Override
-    public void recycle()
-    {
-        for (final Collision collision : config.getCollisions())
-        {
-            collidable.addCollision(collision);
-            collidable.setEnabled(false, collision);
-        }
-
-        animatable.addListener((AnimatorFrameListener) frame ->
+        listener = (AnimatorFrameListener) frame ->
         {
             for (final Collision collision : last)
             {
@@ -94,6 +83,28 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
                 collidable.setEnabled(true, collision);
                 collidable.forceUpdate();
             }
-        });
+        };
+    }
+
+    /*
+     * CollidableFramed
+     */
+
+    @Override
+    public void prepare(FeatureProvider provider)
+    {
+        super.prepare(provider);
+
+        animatable.addListener(listener);
+    }
+
+    @Override
+    public void recycle()
+    {
+        for (final Collision collision : config.getCollisions())
+        {
+            collidable.addCollision(collision);
+            collidable.setEnabled(false, collision);
+        }
     }
 }
