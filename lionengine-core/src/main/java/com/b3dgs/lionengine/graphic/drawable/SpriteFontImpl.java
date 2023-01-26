@@ -230,10 +230,13 @@ final class SpriteFontImpl implements SpriteFont
             for (int j = 0; j < length; j++)
             {
                 final FontCharData d = fontData.get(Character.valueOf(word.charAt(j)));
-                surface.setLocation(x + lx - width, y + ly + d.getHeight());
-                surface.setTile(d.getId());
-                surface.render(g);
-                lx += d.getWidth() + 1;
+                if (d != null)
+                {
+                    surface.setLocation(x + lx - width, y + ly + d.getHeight());
+                    surface.setTile(d.getId());
+                    surface.render(g);
+                    lx += d.getWidth() + 1;
+                }
             }
 
             lx = 0;
