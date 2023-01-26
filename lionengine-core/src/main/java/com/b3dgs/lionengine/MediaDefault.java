@@ -421,7 +421,7 @@ final class MediaDefault implements Media
     @Override
     public boolean exists()
     {
-        return getFile().exists();
+        return resourcesClass.getResource(path) != null || getFile().exists();
     }
 
     @Override
