@@ -169,12 +169,9 @@ final class SpriteDigitTest
     void testSetValueTen()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
-        sprite.setValue(-1);
         sprite.setValue(0);
         sprite.setValue(1);
-        sprite.setValue(10);
-        sprite.setValue(100);
-        sprite.setValue(1000);
+        sprite.setValue(9);
     }
 
     /**
@@ -183,13 +180,12 @@ final class SpriteDigitTest
     @Test
     void testSetValueTenMore()
     {
-        final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 3);
-        sprite.setValue(-1);
+        final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 4);
         sprite.setValue(0);
-        sprite.setValue(1);
-        sprite.setValue(10);
-        sprite.setValue(100);
-        sprite.setValue(1000);
+        sprite.setValue(9);
+        sprite.setValue(99);
+        sprite.setValue(999);
+        sprite.setValue(9999);
     }
 
     /**

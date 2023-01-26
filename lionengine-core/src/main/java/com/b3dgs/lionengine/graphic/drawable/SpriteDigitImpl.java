@@ -94,16 +94,18 @@ public class SpriteDigitImpl implements SpriteDigit
     @Override
     public void setValue(int value)
     {
-        for (int i = 0; i < digitNumber; i++)
+        final String str = String.valueOf(value);
+        final int n = str.length() - 1;
+        for (int i = digitNumber - 1; i > -1; i--)
         {
-            final int index = digitNumber - i - 1;
-            if (i > 0)
+            if (i > n)
             {
-                digits[index].setTile(1 + value / (com.b3dgs.lionengine.Constant.DECADE * i));
+                digits[i].setTile(0);
             }
             else
             {
-                digits[index].setTile(1 + value % com.b3dgs.lionengine.Constant.DECADE);
+                final int v = Integer.parseInt(String.valueOf(str.charAt(i)));
+                digits[digitNumber - (n - i) - 1].setTile(1 + v);
             }
         }
     }
