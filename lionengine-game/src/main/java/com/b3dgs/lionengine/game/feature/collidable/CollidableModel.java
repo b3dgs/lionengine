@@ -25,6 +25,7 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
+import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Configurer;
@@ -33,19 +34,21 @@ import com.b3dgs.lionengine.game.OriginConfig;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.IdentifiableListener;
+import com.b3dgs.lionengine.game.feature.MirrorableListener;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableListener;
 import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Box ray cast collidable model implementation.
  */
-public class CollidableModel extends FeatureModel
-                             implements Collidable, Recyclable, TransformableListener, IdentifiableListener
+public class CollidableModel extends FeatureModel implements Collidable, Recyclable, TransformableListener,
+                             MirrorableListener, IdentifiableListener
 {
     /** Collision updater. */
     private final CollidableUpdater updater = new CollidableUpdater();
@@ -70,6 +73,16 @@ public class CollidableModel extends FeatureModel
     private Transformable transformable;
     /** Origin used. */
     private Origin origin;
+    /** Min offset X. */
+    private int minWidth;
+    /** Min width. */
+    private int minHeight;
+    /** Max offset X. */
+    private int maxWidth;
+    /** Max width. */
+    private int maxHeight;
+    /** Show collision flag. */
+    private boolean showCollision;
 
     /**
      * Create feature.
@@ -106,7 +119,22 @@ public class CollidableModel extends FeatureModel
         accepted.addAll(config.getAccepted());
         acceptedList.addAll(accepted);
         collisions.addAll(CollisionConfig.imports(setup).getCollisions());
+        updater.setEnabled(!collisions.isEmpty());
         origin = OriginConfig.imports(setup);
+
+        final int n = collisions.size();
+        for (int i = 0; i < n; i++)
+        {
+            computeMinMax(collisions.get(i));
+        }
+    }
+
+    private void computeMinMax(Collision collision)
+    {
+        maxWidth = Math.max(maxWidth, collision.getWidth());
+        minWidth = maxWidth;
+        minHeight = Math.min(minHeight, collision.getOffsetY());
+        maxHeight = Math.max(maxHeight, collision.getOffsetY() + collision.getHeight());
     }
 
     /*
@@ -159,7 +187,11 @@ public class CollidableModel extends FeatureModel
     @Override
     public void addCollision(Collision collision)
     {
-        collisions.add(collision);
+        if (!collisions.contains(collision))
+        {
+            collisions.add(collision);
+            computeMinMax(collision);
+        }
     }
 
     @Override
@@ -186,7 +218,7 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
-    public List<CollisionCouple> collide(Collidable other)
+    public boolean collide(Collidable other)
     {
         return updater.collide(origin, this, transformable, other, accepted);
     }
@@ -194,9 +226,13 @@ public class CollidableModel extends FeatureModel
     @Override
     public void render(Graphic g)
     {
-        if (isEnabled())
+        if (showCollision && isEnabled())
         {
+            g.setColor(ColorRgba.RED);
             renderer.render(g, viewer, origin, transformable, updater.getCache(), cacheRectRender, updater::isEnabled);
+
+            g.setColor(ColorRgba.GREEN);
+            renderer.renderMax(g, viewer, origin, transformable, maxWidth, minHeight, maxHeight);
         }
     }
 
@@ -227,7 +263,7 @@ public class CollidableModel extends FeatureModel
     @Override
     public void setCollisionVisibility(boolean visible)
     {
-        renderer.setCollisionVisibility(visible);
+        showCollision = visible;
     }
 
     @Override
@@ -251,7 +287,8 @@ public class CollidableModel extends FeatureModel
     @Override
     public void notifyCollided(Collidable collidable, Collision with, Collision by)
     {
-        for (int i = 0; i < listenable.size(); i++)
+        final int n = listenable.size();
+        for (int i = 0; i < n; i++)
         {
             listenable.get(i).notifyCollided(collidable, with, by);
         }
@@ -270,15 +307,27 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
+    public int getMinWidth()
+    {
+        return minWidth;
+    }
+
+    @Override
+    public int getMinHeight()
+    {
+        return minHeight;
+    }
+
+    @Override
     public int getMaxWidth()
     {
-        return updater.getMaxWidth();
+        return maxWidth;
     }
 
     @Override
     public int getMaxHeight()
     {
-        return updater.getMaxHeight();
+        return maxHeight;
     }
 
     @Override
@@ -288,13 +337,41 @@ public class CollidableModel extends FeatureModel
     }
 
     /*
+     * Shape
+     */
+
+    @Override
+    public double getX()
+    {
+        return transformable.getX();
+    }
+
+    @Override
+    public double getY()
+    {
+        return transformable.getY();
+    }
+
+    @Override
+    public int getWidth()
+    {
+        return transformable.getWidth();
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return transformable.getHeight();
+    }
+
+    /*
      * Recyclable
      */
 
     @Override
     public void recycle()
     {
-        updater.setEnabled(true);
+        setEnabled(!collisions.isEmpty());
     }
 
     /*
@@ -303,6 +380,16 @@ public class CollidableModel extends FeatureModel
 
     @Override
     public void notifyTransformed(Transformable transformable)
+    {
+        updater.notifyTransformed(origin, this, transformable, collisions, cacheRectRender);
+    }
+
+    /*
+     * MirrorableListener
+     */
+
+    @Override
+    public void notifyMirrored(Mirror old, Mirror next)
     {
         updater.notifyTransformed(origin, this, transformable, collisions, cacheRectRender);
     }

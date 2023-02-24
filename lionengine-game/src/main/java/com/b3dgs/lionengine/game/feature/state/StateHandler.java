@@ -153,6 +153,16 @@ public class StateHandler extends FeatureModel
     }
 
     /**
+     * Get current state.
+     * 
+     * @return The current state, <code>null</code> if none.
+     */
+    public State getCurrent()
+    {
+        return current;
+    }
+
+    /**
      * Post update checking next transition if has.
      */
     public void postUpdate()

@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
@@ -105,7 +106,7 @@ public final class CollisionCategoryConfig
      * @return The category collisions data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Collection<CollisionCategory> imports(Configurer configurer, MapTileCollision map)
+    public static List<CollisionCategory> imports(Configurer configurer, MapTileCollision map)
     {
         Check.notNull(configurer);
         Check.notNull(map);
@@ -113,7 +114,7 @@ public final class CollisionCategoryConfig
         final Collection<XmlReader> children = configurer.getRoot()
                                                          .getChild(NODE_CATEGORIES)
                                                          .getChildren(NODE_CATEGORY);
-        final Collection<CollisionCategory> categories = new ArrayList<>(children.size());
+        final List<CollisionCategory> categories = new ArrayList<>(children.size());
 
         for (final XmlReader node : children)
         {

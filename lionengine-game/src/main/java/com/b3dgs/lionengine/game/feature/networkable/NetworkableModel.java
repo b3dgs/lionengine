@@ -196,7 +196,13 @@ public class NetworkableModel extends FeatureModel implements Networkable
     @Override
     public boolean isOwner()
     {
-        return isServer() || isClient() || server == null && client == null;
+        return isServer() || isClient();
+    }
+
+    @Override
+    public boolean isConnected()
+    {
+        return server != null || client != null;
     }
 
     @Override

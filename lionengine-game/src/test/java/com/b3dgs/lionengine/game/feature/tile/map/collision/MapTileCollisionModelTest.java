@@ -130,8 +130,8 @@ final class MapTileCollisionModelTest
         transformable.moveLocation(1.0, 0.0, -2.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryY);
 
-        assertNull(result.getX());
-        assertEquals(Double.valueOf(2.0), result.getY());
+        assertTrue(Double.isNaN(result.getX()));
+        assertEquals(2.0, result.getY());
     }
 
     /**
@@ -144,8 +144,8 @@ final class MapTileCollisionModelTest
         transformable.moveLocation(1.0, 0.0, -20.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryY);
 
-        assertNull(result.getX());
-        assertEquals(Double.valueOf(2.0), result.getY());
+        assertTrue(Double.isNaN(result.getX()));
+        assertEquals(2.0, result.getY());
     }
 
     /**
@@ -158,8 +158,8 @@ final class MapTileCollisionModelTest
         transformable.moveLocation(1.0, 0.0, 3.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryY);
 
-        assertNull(result.getX());
-        assertEquals(Double.valueOf(0.0), result.getY());
+        assertTrue(Double.isNaN(result.getX()));
+        assertEquals(0.0, result.getY());
     }
 
     /**
@@ -172,8 +172,8 @@ final class MapTileCollisionModelTest
         transformable.moveLocation(1.0, 0.0, 20.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryY);
 
-        assertNull(result.getX());
-        assertEquals(Double.valueOf(0.0), result.getY());
+        assertTrue(Double.isNaN(result.getX()));
+        assertEquals(0.0, result.getY());
     }
 
     /**
@@ -186,8 +186,8 @@ final class MapTileCollisionModelTest
         transformable.moveLocation(1.0, 2.0, 0.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
 
-        assertNull(result.getY());
-        assertEquals(Double.valueOf(0.0), result.getX());
+        assertTrue(Double.isNaN(result.getY()));
+        assertEquals(0.0, result.getX());
     }
 
     /**
@@ -200,8 +200,8 @@ final class MapTileCollisionModelTest
         transformable.moveLocation(1.0, 20.0, 0.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
 
-        assertNull(result.getY());
-        assertEquals(Double.valueOf(0.0), result.getX());
+        assertTrue(Double.isNaN(result.getY()));
+        assertEquals(0.0, result.getX());
     }
 
     /**
@@ -214,8 +214,8 @@ final class MapTileCollisionModelTest
         transformable.moveLocation(1.0, -1.0, 0.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
 
-        assertNull(result.getY());
-        assertEquals(Double.valueOf(2.0), result.getX());
+        assertTrue(Double.isNaN(result.getY()));
+        assertEquals(2.0, result.getX());
     }
 
     /**
@@ -228,8 +228,8 @@ final class MapTileCollisionModelTest
         transformable.moveLocation(1.0, -20.0, 0.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
 
-        assertNull(result.getY());
-        assertEquals(Double.valueOf(2.0), result.getX());
+        assertTrue(Double.isNaN(result.getY()));
+        assertEquals(2.0, result.getX());
     }
 
     /**

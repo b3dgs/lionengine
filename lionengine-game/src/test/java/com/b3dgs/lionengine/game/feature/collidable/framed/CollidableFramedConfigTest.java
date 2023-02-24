@@ -24,8 +24,8 @@ import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.AfterAll;
@@ -80,7 +80,7 @@ final class CollidableFramedConfigTest
     @Test
     void testExportsImports()
     {
-        final Map<Integer, Collection<Collision>> collisions = new HashMap<>();
+        final Map<Integer, List<Collision>> collisions = new HashMap<>();
         collisions.put(Integer.valueOf(1), Arrays.asList(new Collision("anim%1", 0, 1, 2, 3, true)));
 
         final CollidableFramedConfig config = new CollidableFramedConfig(collisions);
@@ -109,7 +109,7 @@ final class CollidableFramedConfigTest
     @Test
     void testExportsImportsNumber()
     {
-        final Map<Integer, Collection<Collision>> collisions = new HashMap<>();
+        final Map<Integer, List<Collision>> collisions = new HashMap<>();
         collisions.put(Integer.valueOf(1), Arrays.asList(new Collision("coll%anim%1", 0, 1, 2, 3, true)));
 
         final Xml root = new Xml("test");
@@ -140,7 +140,7 @@ final class CollidableFramedConfigTest
     @Test
     void testEquals()
     {
-        final Map<Integer, Collection<Collision>> collisions = new HashMap<>();
+        final Map<Integer, List<Collision>> collisions = new HashMap<>();
         collisions.put(Integer.valueOf(1), Arrays.asList(new Collision("anim%1", 0, 1, 2, 3, true)));
         collisions.put(Integer.valueOf(2), Arrays.asList(new Collision("anim%2", 3, 2, 1, 0, false)));
 
@@ -160,7 +160,7 @@ final class CollidableFramedConfigTest
     @Test
     void testHashCode()
     {
-        final Map<Integer, Collection<Collision>> collisions = new HashMap<>();
+        final Map<Integer, List<Collision>> collisions = new HashMap<>();
         collisions.put(Integer.valueOf(1), Arrays.asList(new Collision("anim%1", 0, 1, 2, 3, true)));
         collisions.put(Integer.valueOf(2), Arrays.asList(new Collision("anim%2", 3, 2, 1, 0, false)));
 
@@ -179,7 +179,7 @@ final class CollidableFramedConfigTest
     @Test
     void testToString()
     {
-        final Map<Integer, Collection<Collision>> collisions = new HashMap<>();
+        final Map<Integer, List<Collision>> collisions = new HashMap<>();
         collisions.put(Integer.valueOf(1), Arrays.asList(new Collision("anim%1", 0, 1, 2, 3, true)));
 
         final CollidableFramedConfig config = new CollidableFramedConfig(collisions);

@@ -180,8 +180,13 @@ public class Selector extends FeaturableAbstract implements SelectorConfigurer, 
      */
     private void checkSelection(ComponentCollision componentCollision, Area selection)
     {
-        for (final Collidable collidable : componentCollision.getInside(selection))
+        final List<Collidable> inside = componentCollision.getInside(selection);
+        final int n = inside.size();
+
+        for (int i = 0; i < n; i++)
         {
+            final Collidable collidable = inside.get(i);
+
             if (collidable.hasFeature(Selectable.class))
             {
                 final Selectable selectable = collidable.getFeature(Selectable.class);

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -92,7 +93,7 @@ public final class CollidableFramedConfig
     {
         Check.notNull(root);
 
-        final Map<Integer, Collection<Collision>> collisions = new HashMap<>(0);
+        final Map<Integer, List<Collision>> collisions = new HashMap<>(0);
 
         if (root.hasNode(AnimationConfig.NODE_ANIMATIONS))
         {
@@ -118,12 +119,12 @@ public final class CollidableFramedConfig
      * @param root The node root (must not be <code>null</code>).
      * @param collisions The collisions reference (must not be <code>null</code>).
      */
-    public static void exports(Xml root, Map<Integer, Collection<Collision>> collisions)
+    public static void exports(Xml root, Map<Integer, List<Collision>> collisions)
     {
         Check.notNull(root);
         Check.notNull(collisions);
 
-        for (final Entry<Integer, Collection<Collision>> entry : collisions.entrySet())
+        for (final Entry<Integer, List<Collision>> entry : collisions.entrySet())
         {
             for (final Collision collision : entry.getValue())
             {
@@ -149,7 +150,7 @@ public final class CollidableFramedConfig
     private static void importFrame(XmlReader node,
                                     XmlReader framed,
                                     int start,
-                                    Map<Integer, Collection<Collision>> collisions)
+                                    Map<Integer, List<Collision>> collisions)
     {
         final String name = getFrameName(node, framed);
         if (framed.hasAttribute(ATT_NUMBER))
@@ -212,7 +213,7 @@ public final class CollidableFramedConfig
     }
 
     /** Collisions map. */
-    private final Map<Integer, Collection<Collision>> collisions;
+    private final Map<Integer, List<Collision>> collisions;
 
     /**
      * Load collisions from configuration media.
@@ -220,7 +221,7 @@ public final class CollidableFramedConfig
      * @param collisions The collisions mapping (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public CollidableFramedConfig(Map<Integer, Collection<Collision>> collisions)
+    public CollidableFramedConfig(Map<Integer, List<Collision>> collisions)
     {
         super();
 
@@ -235,9 +236,9 @@ public final class CollidableFramedConfig
      * @param frame The collision frame.
      * @return The collisions reference.
      */
-    public Collection<Collision> getCollision(Integer frame)
+    public List<Collision> getCollision(Integer frame)
     {
-        final Collection<Collision> found = collisions.get(frame);
+        final List<Collision> found = collisions.get(frame);
         if (found != null)
         {
             return found;

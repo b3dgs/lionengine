@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Feature;
@@ -27,7 +28,7 @@ import com.b3dgs.lionengine.game.Feature;
  * @see Mirror
  */
 @FeatureInterface
-public interface Mirrorable extends Feature, Updatable
+public interface Mirrorable extends Feature, Updatable, Listenable<MirrorableListener>
 {
     /**
      * Set the next mirror state and apply it on next {@link Updatable#update(double)} call.

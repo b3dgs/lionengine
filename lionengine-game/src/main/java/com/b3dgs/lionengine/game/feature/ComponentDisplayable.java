@@ -130,13 +130,17 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
         }
         if (updateRequested)
         {
-            final int count = toUpdate.size();
-            for (int i = 0; i < count; i++)
+            final int n = toUpdate.size();
+            for (int i = 0; i < n; i++)
             {
                 final LayerUpdate update = toUpdate.get(i);
-
                 getLayer(update.layerOld).remove(update.displayable);
                 getLayer(update.layerNew).add(update.displayable);
+
+                if (indexsSet.remove(update.layerOld))
+                {
+                    indexs.remove(update.layerOld);
+                }
                 indexs.add(update.layerNew);
                 indexsSet.add(update.layerNew);
             }
@@ -159,10 +163,9 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
             final Integer layer = getLayer(featurable);
             final Collection<Displayable> displayables = getLayer(layer);
             displayables.add(displayable);
-            if (!indexsSet.contains(layer))
+            if (indexsSet.add(layer))
             {
                 indexs.add(layer);
-                indexsSet.add(layer);
                 Collections.sort(indexs);
             }
         }
@@ -198,7 +201,7 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
                                    Integer layerDisplayOld,
                                    Integer layerDisplayNew)
     {
-        if (provider.hasFeature(Displayable.class))
+        if (!layerDisplayNew.equals(layerDisplayOld) && provider.hasFeature(Displayable.class))
         {
             final Displayable displayable = provider.getFeature(Displayable.class);
             toUpdate.add(new LayerUpdate(displayable, layerDisplayOld, layerDisplayNew));

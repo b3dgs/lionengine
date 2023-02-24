@@ -91,7 +91,7 @@ final class HudTest
         services.add(new Factory(services));
         services.add(new ViewerMock());
         services.add(new Cursor(services));
-        services.add(new ComponentCollision());
+        services.add(new ComponentCollision(new ViewerMock()));
     }
 
     /**

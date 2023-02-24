@@ -20,8 +20,8 @@ import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.AfterAll;
@@ -70,7 +70,7 @@ final class CollidableFramedModelTest
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         config = UtilSetup.createConfig(CollidableFramedModelTest.class);
 
-        final Map<Integer, Collection<Collision>> collisions = new HashMap<>();
+        final Map<Integer, List<Collision>> collisions = new HashMap<>();
         collisions.put(Integer.valueOf(1), Arrays.asList(new Collision("anim%1", 0, 0, 2, 2, false)));
 
         final Xml root = new Xml(config);
@@ -156,23 +156,25 @@ final class CollidableFramedModelTest
     @Test
     void testFramed()
     {
-        assertTrue(collidable1.collide(collidable1).isEmpty());
-        assertTrue(collidable2.collide(collidable1).isEmpty());
+        assertFalse(collidable1.collide(collidable1));
+        assertFalse(collidable2.collide(collidable1));
 
         transformable1.moveLocation(1.0, 0.5, 1.0);
         transformable2.moveLocation(1.0, 0.0, 1.0);
+        transformable1.check(false);
+        transformable2.check(false);
 
         collidable1.getFeature(Animatable.class).setFrame(1);
         collidable2.getFeature(Animatable.class).setFrame(1);
 
-        assertFalse(collidable1.collide(collidable2).isEmpty());
+        assertTrue(collidable1.collide(collidable2));
 
         collidable1.getFeature(Animatable.class).setFrame(3);
 
-        assertTrue(collidable1.collide(collidable2).isEmpty());
+        assertFalse(collidable1.collide(collidable2));
 
         collidable1.getFeature(Animatable.class).setFrame(1);
 
-        assertFalse(collidable1.collide(collidable2).isEmpty());
+        assertTrue(collidable1.collide(collidable2));
     }
 }

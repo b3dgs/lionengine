@@ -227,7 +227,7 @@ final class MapTileCollisionModelComplexTest
     {
         final CollisionResult res = test(1, 1, TILE_SLOPE_LEFT_0, 0, 0, TILE_SLOPE_LEFT_1, 16.0, 16.0, -1, speedX);
 
-        UtilAssert.assertEquals(Math.floor(16.5 - speedX / 2.0), res.getY().doubleValue());
+        UtilAssert.assertEquals(Math.floor(16.5 - speedX / 2.0), res.getY());
     }
 
     /**
@@ -247,7 +247,7 @@ final class MapTileCollisionModelComplexTest
     {
         final CollisionResult res = test(0, 0, TILE_SLOPE_LEFT_1, 1, 1, TILE_SLOPE_LEFT_0, 15.5, 15.5, 1, speedX);
 
-        UtilAssert.assertEquals(Math.floor(15.5 + speedX / 2.0), res.getY().doubleValue());
+        UtilAssert.assertEquals(Math.floor(15.5 + speedX / 2.0), res.getY());
     }
 
     /**
@@ -267,7 +267,7 @@ final class MapTileCollisionModelComplexTest
     {
         final CollisionResult res = test(1, 0, TILE_SLOPE_LEFT_1, 0, 0, TILE_SLOPE_LEFT_0, 16.0, 8.0, -1, speedX);
 
-        UtilAssert.assertEquals(Math.floor(8.5 - speedX / 2.0), res.getY().doubleValue());
+        UtilAssert.assertEquals(Math.floor(8.5 - speedX / 2.0), res.getY());
     }
 
     /**
@@ -287,7 +287,7 @@ final class MapTileCollisionModelComplexTest
     {
         final CollisionResult res = test(0, 0, TILE_SLOPE_LEFT_0, 1, 0, TILE_SLOPE_LEFT_1, 15.5, 7.9, 1, speedX);
 
-        UtilAssert.assertEquals(Math.floor(7.5 + speedX / 2), res.getY().doubleValue());
+        UtilAssert.assertEquals(Math.floor(7.5 + speedX / 2), res.getY());
     }
 
     /**
@@ -307,7 +307,7 @@ final class MapTileCollisionModelComplexTest
     {
         final CollisionResult res = test(1, 0, TILE_SLOPE_RIGHT_0, 0, 1, TILE_SLOPE_RIGHT_1, 16.0, 15.9, -1, speedX);
 
-        UtilAssert.assertEquals(Math.floor(16.0 + speedX / 2.0), res.getY().doubleValue());
+        UtilAssert.assertEquals(Math.floor(16.0 + speedX / 2.0), res.getY());
     }
 
     /**
@@ -327,6 +327,6 @@ final class MapTileCollisionModelComplexTest
     {
         final CollisionResult res = test(0, 1, TILE_SLOPE_RIGHT_1, 1, 0, TILE_SLOPE_RIGHT_0, 15.5, 16.0, 1, speedX);
 
-        UtilAssert.assertEquals(Math.round(16.5 - speedX / 2.0), res.getY().doubleValue());
+        UtilAssert.assertEquals(Math.round(16.5 - speedX / 2.0), res.getY());
     }
 }

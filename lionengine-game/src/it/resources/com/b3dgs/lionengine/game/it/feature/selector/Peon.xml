@@ -7,6 +7,9 @@
     <lionengine:animations>
         <lionengine:animation name="idle" start="1" end="1" speed="0.125" reversed="false" repeat="false"/>
     </lionengine:animations>
+    <lionengine:collisions>
+        <lionengine:collision name="body" offsetX="0" offsetY="0" width="16" height="16" mirror="false"/>
+    </lionengine:collisions>
     <lionengine:actions>
         <lionengine:actionRef path="MoveOrc.xml"/>
         <lionengine:actionRef path="BuildingStandardOrc.xml">

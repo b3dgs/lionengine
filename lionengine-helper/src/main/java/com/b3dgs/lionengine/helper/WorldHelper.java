@@ -21,6 +21,8 @@ import java.util.Optional;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.CameraTracker;
+import com.b3dgs.lionengine.game.feature.ComponentRenderer;
+import com.b3dgs.lionengine.game.feature.ComponentUpdater;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.HandlerPersister;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -47,6 +49,8 @@ public class WorldHelper extends WorldGame
     protected final HandlerPersister persister = services.create(HandlerPersister.class);
     /** Source provider. */
     protected final SourceResolutionProvider source = services.get(SourceResolutionProvider.class);
+    /** Component collisions. */
+    protected final ComponentCollision componentCollision = new ComponentCollision(camera);
 
     /**
      * Create world.
@@ -57,7 +61,8 @@ public class WorldHelper extends WorldGame
     {
         super(services);
 
-        handler.addComponent(new ComponentCollision());
+        handler.addComponent((ComponentUpdater) componentCollision);
+        handler.addComponent((ComponentRenderer) componentCollision);
         handler.add(map);
         handler.add(tracker);
     }

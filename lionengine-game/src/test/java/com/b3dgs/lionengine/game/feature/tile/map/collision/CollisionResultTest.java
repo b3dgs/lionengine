@@ -20,6 +20,8 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.util.Collections;
+
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -40,6 +42,13 @@ final class CollisionResultTest
     private final CollisionFormula formulaX = new CollisionFormula("formulaX", range, function, constaint);
     /** Formula test. */
     private final CollisionFormula formulaY = new CollisionFormula("formulaY", range, function, constaint);
+    /** Category test. */
+    private final CollisionCategory category = new CollisionCategory("category",
+                                                                     Axis.X,
+                                                                     0,
+                                                                     1,
+                                                                     false,
+                                                                     Collections.emptyList());
 
     /**
      * Test the collision result.
@@ -47,10 +56,10 @@ final class CollisionResultTest
     @Test
     void testResult()
     {
-        final Double x = Double.valueOf(1.0);
-        final Double y = Double.valueOf(2.0);
+        final double x = 1.0;
+        final double y = 2.0;
         final Tile tile = new TileGame(1, 3, 4, 1, 1);
-        final CollisionResult result = new CollisionResult(x, y, tile, formulaX, formulaY);
+        final CollisionResult result = new CollisionResult(category, x, y, tile, formulaX, formulaY);
 
         assertEquals(x, result.getX());
         assertEquals(y, result.getY());
@@ -72,14 +81,14 @@ final class CollisionResultTest
     void testNoResult()
     {
         final Tile tile = new TileGame(1, 3, 4, 1, 1);
-        CollisionResult result = new CollisionResult(null, null, tile, null, null);
+        CollisionResult result = new CollisionResult(category, Double.NaN, Double.NaN, tile, null, null);
 
         assertFalse(result.startWithX("formula"));
         assertFalse(result.startWithY("formulaZ"));
 
         assertFalse(result.contains("formula"));
 
-        result = new CollisionResult(null, null, tile, formulaX, null);
+        result = new CollisionResult(category, Double.NaN, Double.NaN, tile, formulaX, null);
 
         assertTrue(result.startWithX("formula"));
         assertFalse(result.startWithX("formulaZ"));
@@ -89,7 +98,7 @@ final class CollisionResultTest
         assertTrue(result.contains("formula"));
         assertFalse(result.contains("formulaZ"));
 
-        result = new CollisionResult(null, null, tile, null, formulaY);
+        result = new CollisionResult(category, Double.NaN, Double.NaN, tile, null, formulaY);
 
         assertFalse(result.startWithX("formula"));
         assertFalse(result.startWithX("formulaZ"));
@@ -107,8 +116,9 @@ final class CollisionResultTest
     void testToString()
     {
         assertEquals("CollisionResult [x=1.0, y=2.0, fx=formulaX, fy=formulaY]",
-                     new CollisionResult(Double.valueOf(1.0),
-                                         Double.valueOf(2.0),
+                     new CollisionResult(category,
+                                         1.0,
+                                         2.0,
                                          new TileGame(1, 3, 4, 1, 1),
                                          formulaX,
                                          formulaY).toString());

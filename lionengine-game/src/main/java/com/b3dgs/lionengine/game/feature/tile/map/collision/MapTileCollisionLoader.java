@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -60,7 +61,9 @@ final class MapTileCollisionLoader
     /** Collisions groups list. */
     private final Map<String, CollisionGroup> groups = new HashMap<>();
     /** Formulas per tiles. */
-    private final Map<Tile, List<CollisionFormula>> tilesFormulas = new HashMap<>();
+    private final Map<Tile, List<CollisionFormula>> tilesFormulasList = new HashMap<>();
+    /** Formulas per tiles. */
+    private final Map<Tile, Set<CollisionFormula>> tilesFormulas = new HashMap<>();
     /** Formulas configuration media. */
     private Media formulasConfig;
     /** Groups configuration media. */
@@ -132,18 +135,7 @@ final class MapTileCollisionLoader
     public void update(MapTile map, MapTileGroup mapGroup, Tile tile)
     {
         loadTileCollisions(mapGroup, tile);
-
-        for (final CollisionFormula formula : checkConstraints(map,
-                                                               mapGroup,
-                                                               tile,
-                                                               tile.getInTileX(),
-                                                               tile.getInTileY()))
-        {
-            if (tilesFormulas.containsKey(tile))
-            {
-                tilesFormulas.get(tile).remove(formula);
-            }
-        }
+        applyConstraints(map, mapGroup, tile);
     }
 
     /**
@@ -183,14 +175,30 @@ final class MapTileCollisionLoader
      * @param tile The tile reference.
      * @return The associated formulas.
      */
-    public List<CollisionFormula> getCollisionFormulas(Tile tile)
+    public List<CollisionFormula> getCollisionFormulasList(Tile tile)
     {
-        final List<CollisionFormula> collisionFormulas = tilesFormulas.get(tile);
+        final List<CollisionFormula> collisionFormulas = tilesFormulasList.get(tile);
         if (collisionFormulas != null)
         {
             return collisionFormulas;
         }
         return Collections.emptyList();
+    }
+
+    /**
+     * Get tile formulas.
+     * 
+     * @param tile The tile reference.
+     * @return The associated formulas.
+     */
+    public Set<CollisionFormula> getCollisionFormulas(Tile tile)
+    {
+        final Set<CollisionFormula> collisionFormulas = tilesFormulas.get(tile);
+        if (collisionFormulas != null)
+        {
+            return collisionFormulas;
+        }
+        return Collections.emptySet();
     }
 
     /**
@@ -310,14 +318,25 @@ final class MapTileCollisionLoader
      */
     private void loadTileCollisions(MapTileGroup mapGroup, Tile tile)
     {
+        final List<CollisionFormula> list = tilesFormulasList.get(tile);
+        if (list != null)
+        {
+            list.clear();
+        }
+        else
+        {
+            tilesFormulasList.put(tile, new ArrayList<>());
+        }
+
         if (tilesFormulas.containsKey(tile))
         {
             tilesFormulas.get(tile).clear();
         }
         else
         {
-            tilesFormulas.put(tile, new ArrayList<>());
+            tilesFormulas.put(tile, new HashSet<>());
         }
+
         addTileCollisions(mapGroup, tile);
     }
 
@@ -334,10 +353,14 @@ final class MapTileCollisionLoader
             final Set<Integer> group = mapGroup.getGroup(collision.getName());
             if (group.contains(tile.getKey()))
             {
-                final List<CollisionFormula> current = tilesFormulas.get(tile);
+                final List<CollisionFormula> currentList = tilesFormulasList.get(tile);
+                final Set<CollisionFormula> current = tilesFormulas.get(tile);
                 for (final CollisionFormula formula : collision.getFormulas())
                 {
-                    current.add(formula);
+                    if (current.add(formula))
+                    {
+                        currentList.add(formula);
+                    }
                 }
             }
         }
@@ -351,7 +374,7 @@ final class MapTileCollisionLoader
      */
     private void applyConstraints(MapTile map, MapTileGroup mapGroup)
     {
-        final Map<Tile, Collection<CollisionFormula>> toRemove = new HashMap<>();
+        final Map<Tile, List<CollisionFormula>> toRemove = new HashMap<>();
         for (int v = 0; v < map.getInTileHeight(); v++)
         {
             for (int h = 0; h < map.getInTileWidth(); h++)
@@ -363,15 +386,58 @@ final class MapTileCollisionLoader
                 }
             }
         }
-        for (final Entry<Tile, Collection<CollisionFormula>> current : toRemove.entrySet())
+        for (final Entry<Tile, List<CollisionFormula>> current : toRemove.entrySet())
         {
             final Tile tile = current.getKey();
-            for (final CollisionFormula formula : current.getValue())
+            final List<CollisionFormula> listRemove = current.getValue();
+            final int n = listRemove.size();
+            for (int i = 0; i < n; i++)
             {
+                final CollisionFormula formula = listRemove.get(i);
+
+                final List<CollisionFormula> list = tilesFormulasList.get(tile);
+                if (list != null)
+                {
+                    list.remove(formula);
+                }
+
                 if (tilesFormulas.containsKey(tile))
                 {
                     tilesFormulas.get(tile).remove(formula);
                 }
+            }
+        }
+    }
+
+    /**
+     * Apply tile constraints depending of their adjacent collisions.
+     * 
+     * @param map The map surface reference.
+     * @param mapGroup The map group reference.
+     * @param tile The tile reference.
+     */
+    private void applyConstraints(MapTile map, MapTileGroup mapGroup, Tile tile)
+    {
+        final List<CollisionFormula> listRemove = checkConstraints(map,
+                                                                   mapGroup,
+                                                                   tile,
+                                                                   tile.getInTileWidth(),
+                                                                   tile.getInTileHeight());
+
+        final int n = listRemove.size();
+        for (int i = 0; i < n; i++)
+        {
+            final CollisionFormula formula = listRemove.get(i);
+
+            final List<CollisionFormula> list = tilesFormulasList.get(tile);
+            if (list != null)
+            {
+                list.remove(formula);
+            }
+
+            if (tilesFormulas.containsKey(tile))
+            {
+                tilesFormulas.get(tile).remove(formula);
             }
         }
     }
@@ -386,7 +452,7 @@ final class MapTileCollisionLoader
      * @param v The vertical location.
      * @return The formula to remove.
      */
-    private Collection<CollisionFormula> checkConstraints(MapTile map, MapTileGroup mapGroup, Tile tile, int h, int v)
+    private List<CollisionFormula> checkConstraints(MapTile map, MapTileGroup mapGroup, Tile tile, int h, int v)
     {
         final Tile top = map.getTile(h, v + 1);
         final Tile bottom = map.getTile(h, v - 1);
@@ -394,8 +460,12 @@ final class MapTileCollisionLoader
         final Tile right = map.getTile(h + 1, v);
 
         final List<CollisionFormula> toRemove = new ArrayList<>();
-        for (final CollisionFormula formula : tilesFormulas.computeIfAbsent(tile, t -> Collections.emptyList()))
+        final List<CollisionFormula> list = tilesFormulasList.computeIfAbsent(tile, t -> Collections.emptyList());
+        final int n = list.size();
+        for (int i = 0; i < n; i++)
         {
+            final CollisionFormula formula = list.get(i);
+
             final CollisionConstraint constraint = formula.getConstraint();
             if (checkConstraint(mapGroup, constraint.getConstraints(Orientation.NORTH), top)
                 || checkConstraint(mapGroup, constraint.getConstraints(Orientation.SOUTH), bottom)

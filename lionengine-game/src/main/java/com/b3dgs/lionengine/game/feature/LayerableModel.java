@@ -103,7 +103,8 @@ public class LayerableModel extends FeatureAbstract implements Layerable
     @Override
     public void setLayer(Integer layerRefresh, Integer layerDisplay)
     {
-        for (int i = 0; i < listenable.size(); i++)
+        final int n = listenable.size();
+        for (int i = 0; i < n; i++)
         {
             listenable.get(i)
                       .notifyLayerChanged(this, this.layerRefresh, layerRefresh, this.layerDisplay, layerDisplay);

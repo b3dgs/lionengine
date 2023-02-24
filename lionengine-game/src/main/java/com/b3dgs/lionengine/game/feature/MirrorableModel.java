@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UpdatableVoid;
@@ -27,6 +28,8 @@ import com.b3dgs.lionengine.UpdatableVoid;
  */
 public class MirrorableModel extends FeatureModel implements Mirrorable, Recyclable
 {
+    /** Listeners. */
+    private final ListenableModel<MirrorableListener> listenable = new ListenableModel<>();
     /** Update mirror. */
     private Updatable updater = UpdatableVoid.getInstance();
     /** Current mirror. */
@@ -53,13 +56,46 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
      */
     private void updateMirror(double extrp)
     {
+        final Mirror old = mirror;
         mirror = nextState;
+
+        if (mirror != old)
+        {
+            final int n = listenable.size();
+            for (int i = 0; i < n; i++)
+            {
+                listenable.get(i).notifyMirrored(old, mirror);
+            }
+        }
         updater = UpdatableVoid.getInstance();
     }
 
     /*
      * Mirrorable
      */
+
+    @Override
+    public void checkListener(Object listener)
+    {
+        super.checkListener(listener);
+
+        if (listener instanceof MirrorableListener)
+        {
+            addListener((MirrorableListener) listener);
+        }
+    }
+
+    @Override
+    public void addListener(MirrorableListener listener)
+    {
+        listenable.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(MirrorableListener listener)
+    {
+        listenable.removeListener(listener);
+    }
 
     @Override
     public void mirror(Mirror state)

@@ -18,7 +18,10 @@ package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -65,36 +68,57 @@ final class MirrorableModelTest
     @Test
     void testMirror()
     {
+        final AtomicReference<Mirror> o = new AtomicReference<>();
+        final AtomicReference<Mirror> n = new AtomicReference<>();
         final MirrorableModel mirrorable = new MirrorableModel(services, setup);
+        mirrorable.addListener((om, nm) ->
+        {
+            o.set(om);
+            n.set(nm);
+        });
 
         assertEquals(Mirror.NONE, mirrorable.getMirror());
+        assertNull(o.get());
+        assertNull(n.get());
 
         mirrorable.recycle();
 
         assertEquals(Mirror.NONE, mirrorable.getMirror());
         assertTrue(mirrorable.is(Mirror.NONE));
+        assertNull(o.get());
+        assertNull(n.get());
 
         mirrorable.update(1.0);
 
         assertEquals(Mirror.NONE, mirrorable.getMirror());
+        assertNull(o.get());
+        assertNull(n.get());
 
         mirrorable.mirror(Mirror.HORIZONTAL);
 
         assertEquals(Mirror.NONE, mirrorable.getMirror());
+        assertNull(o.get());
+        assertNull(n.get());
 
         mirrorable.update(1.0);
 
         assertEquals(Mirror.HORIZONTAL, mirrorable.getMirror());
         assertTrue(mirrorable.is(Mirror.HORIZONTAL));
+        assertEquals(Mirror.NONE, o.get());
+        assertEquals(Mirror.HORIZONTAL, n.get());
 
         mirrorable.mirror(Mirror.VERTICAL);
 
         assertEquals(Mirror.HORIZONTAL, mirrorable.getMirror());
+        assertEquals(Mirror.NONE, o.get());
+        assertEquals(Mirror.HORIZONTAL, n.get());
 
         mirrorable.update(1.0);
 
         assertEquals(Mirror.VERTICAL, mirrorable.getMirror());
         assertTrue(mirrorable.is(Mirror.VERTICAL));
         assertFalse(mirrorable.is(Mirror.HORIZONTAL));
+        assertEquals(Mirror.HORIZONTAL, o.get());
+        assertEquals(Mirror.VERTICAL, n.get());
     }
 }

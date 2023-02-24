@@ -18,12 +18,12 @@ package com.b3dgs.lionengine.game.feature;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import com.b3dgs.lionengine.game.FeatureProvider;
 
@@ -54,13 +54,15 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
     }
 
     /** Sorted layers index. */
-    private final Set<Integer> indexs = new TreeSet<>();
+    private final List<Integer> indexs = new ArrayList<>();
+    /** Sorted layers index. */
+    private final Set<Integer> indexsSet = new HashSet<>();
     /** Layers to render. */
-    private final Map<Integer, Collection<Refreshable>> layers = new HashMap<>();
+    private final Map<Integer, List<Refreshable>> layers = new HashMap<>();
     /** Layer to backup. */
     private final List<Transformable> toBackup = new ArrayList<>();
     /** Layer to update. */
-    private final Collection<LayerUpdate> toUpdate = new ArrayList<>();
+    private final List<LayerUpdate> toUpdate = new ArrayList<>();
     /** Update flag. */
     private boolean updateRequested;
     /** To backup size. */
@@ -80,12 +82,12 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
      * @param layer The layer index.
      * @return The layer set reference.
      */
-    private Collection<Refreshable> getLayer(Integer layer)
+    private List<Refreshable> getLayer(Integer layer)
     {
-        final Collection<Refreshable> refreshables;
+        final List<Refreshable> refreshables;
         if (!layers.containsKey(layer))
         {
-            refreshables = new HashSet<>();
+            refreshables = new ArrayList<>();
             layers.put(layer, refreshables);
         }
         else
@@ -103,11 +105,13 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
      */
     private void remove(Integer layer, Refreshable refreshable)
     {
-        final Collection<Refreshable> refreshables = getLayer(layer);
+        final List<Refreshable> refreshables = getLayer(layer);
         refreshables.remove(refreshable);
         if (refreshables.isEmpty())
         {
             indexs.remove(layer);
+            indexsSet.remove(layer);
+            Collections.sort(indexs);
         }
     }
 
@@ -123,21 +127,32 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
             toBackup.get(i).backup();
         }
 
-        for (final Integer layer : indexs)
+        for (int l = 0; l < indexs.size(); l++)
         {
-            for (final Refreshable refreshable : layers.get(layer))
+            final List<Refreshable> refreshable = layers.get(indexs.get(l));
+            final int count = refreshable.size();
+            for (int i = 0; i < count; i++)
             {
-                refreshable.update(extrp);
+                refreshable.get(i).update(extrp);
             }
         }
         if (updateRequested)
         {
-            for (final LayerUpdate update : toUpdate)
+            final int n = toUpdate.size();
+            for (int i = 0; i < n; i++)
             {
+                final LayerUpdate update = toUpdate.get(i);
                 getLayer(update.layerOld).remove(update.refreshable);
                 getLayer(update.layerNew).add(update.refreshable);
+
+                if (indexsSet.remove(update.layerOld))
+                {
+                    indexs.remove(update.layerOld);
+                }
                 indexs.add(update.layerNew);
+                indexsSet.add(update.layerNew);
             }
+            Collections.sort(indexs);
             toUpdate.clear();
             updateRequested = false;
         }
@@ -156,7 +171,11 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
             final Integer layer = getLayer(featurable);
             final Collection<Refreshable> refreshables = getLayer(layer);
             refreshables.add(refreshable);
-            indexs.add(layer);
+            if (indexsSet.add(layer))
+            {
+                indexs.add(layer);
+                Collections.sort(indexs);
+            }
         }
         if (featurable.hasFeature(Layerable.class))
         {
@@ -200,7 +219,7 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
                                    Integer layerDisplayOld,
                                    Integer layerDisplayNew)
     {
-        if (provider.hasFeature(Refreshable.class))
+        if (!layerRefreshNew.equals(layerRefreshOld) && provider.hasFeature(Refreshable.class))
         {
             final Refreshable refreshable = provider.getFeature(Refreshable.class);
             toUpdate.add(new LayerUpdate(refreshable, layerRefreshOld, layerRefreshNew));

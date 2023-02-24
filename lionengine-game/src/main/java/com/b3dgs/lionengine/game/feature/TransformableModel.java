@@ -66,27 +66,6 @@ public class TransformableModel extends FeatureModel implements Transformable, R
         }
     }
 
-    /**
-     * Notify transformable modification.
-     * 
-     * @param teleport <code>true</code> if teleport, <code>false</code> else.
-     */
-    private void notifyTransformed(boolean teleport)
-    {
-        // CHECKSTYLE IGNORE LINE: BooleanExpressionComplexity
-        if (teleport
-            || Double.compare(getX(), getOldX()) != 0
-            || Double.compare(getY(), getOldY()) != 0
-            || Double.compare(getWidth(), getOldWidth()) != 0
-            || Double.compare(getHeight(), getOldHeight()) != 0)
-        {
-            for (int i = 0; i < listenable.size(); i++)
-            {
-                listenable.get(i).notifyTransformed(this);
-            }
-        }
-    }
-
     /*
      * Transformable
      */
@@ -113,70 +92,60 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     public void moveLocation(double extrp, Direction direction, Direction... directions)
     {
         mover.moveLocation(extrp, direction, directions);
-        notifyTransformed(false);
     }
 
     @Override
     public void moveLocationX(double extrp, double vx)
     {
         mover.moveLocationX(extrp, vx);
-        notifyTransformed(false);
     }
 
     @Override
     public void moveLocationY(double extrp, double vy)
     {
         mover.moveLocationY(extrp, vy);
-        notifyTransformed(false);
     }
 
     @Override
     public void moveLocation(double extrp, double vx, double vy)
     {
         mover.moveLocation(extrp, vx, vy);
-        notifyTransformed(false);
     }
 
     @Override
     public void teleport(double x, double y)
     {
         mover.teleport(x, y);
-        notifyTransformed(true);
     }
 
     @Override
     public void teleportX(double x)
     {
         mover.teleportX(x);
-        notifyTransformed(true);
     }
 
     @Override
     public void teleportY(double y)
     {
         mover.teleportY(y);
-        notifyTransformed(true);
     }
 
     @Override
     public void setLocation(double x, double y)
     {
         mover.setLocation(x, y);
-        notifyTransformed(false);
     }
 
     @Override
     public void setLocationX(double x)
     {
         mover.setLocationX(x);
-        notifyTransformed(false);
     }
 
     @Override
     public void setLocationY(double y)
     {
         mover.setLocationY(y);
-        notifyTransformed(false);
     }
 
     @Override
@@ -187,7 +156,6 @@ public class TransformableModel extends FeatureModel implements Transformable, R
         oldHeight = this.height;
         this.width = width;
         this.height = height;
-        notifyTransformed(true);
     }
 
     @Override
@@ -197,7 +165,24 @@ public class TransformableModel extends FeatureModel implements Transformable, R
         oldHeight = this.height;
         this.width = width;
         this.height = height;
-        notifyTransformed(false);
+    }
+
+    @Override
+    public void check(boolean force)
+    {
+        // CHECKSTYLE IGNORE LINE: BooleanExpressionComplexity
+        if (force
+            || mover.getOldX() != mover.getX()
+            || mover.getOldY() != mover.getY()
+            || oldWidth != width
+            || oldHeight != height)
+        {
+            final int n = listenable.size();
+            for (int i = 0; i < n; i++)
+            {
+                listenable.get(i).notifyTransformed(this);
+            }
+        }
     }
 
     @Override

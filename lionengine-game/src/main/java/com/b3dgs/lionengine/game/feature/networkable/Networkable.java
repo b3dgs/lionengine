@@ -111,6 +111,13 @@ public interface Networkable extends Feature, Syncable
     boolean isOwner();
 
     /**
+     * Check if is connected.
+     * 
+     * @return <code>true</code> if connected, <code>false</code> else.
+     */
+    boolean isConnected();
+
+    /**
      * Check if handled by server and owned by client.
      * 
      * @return <code>true</code> if managed by server, <code>false</code> else.

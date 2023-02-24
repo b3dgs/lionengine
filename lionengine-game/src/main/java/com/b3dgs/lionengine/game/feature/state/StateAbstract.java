@@ -16,9 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature.state;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.b3dgs.lionengine.LionEngineException;
 
@@ -33,7 +32,9 @@ public abstract class StateAbstract implements State
     static final String ERROR_ADD_ITSELF = "Add transition to itself not allowed !";
 
     /** Transitions list. */
-    private final Map<Class<? extends State>, StateChecker> transitions = new HashMap<>();
+    private final List<Class<? extends State>> transitions = new ArrayList<>();
+    /** Checkers list. */
+    private final List<StateChecker> checkers = new ArrayList<>();
 
     /**
      * Create the state.
@@ -62,7 +63,8 @@ public abstract class StateAbstract implements State
         {
             throw new LionEngineException(ERROR_ADD_ITSELF);
         }
-        transitions.put(next, checker);
+        transitions.add(next);
+        checkers.add(checker);
     }
 
     @Override
@@ -86,20 +88,21 @@ public abstract class StateAbstract implements State
     @Override
     public Class<? extends State> checkTransitions(Class<? extends State> last)
     {
-        for (final Entry<Class<? extends State>, StateChecker> entry : transitions.entrySet())
+        final int n = transitions.size();
+        for (int i = 0; i < n; i++)
         {
-            final StateChecker checker = entry.getValue();
+            final StateChecker checker = checkers.get(i);
             if (checker.getAsBoolean())
             {
                 checker.exit();
                 final Class<? extends State> next;
-                if (entry.getKey() == StateLast.class)
+                if (transitions.get(i) == StateLast.class)
                 {
                     next = last;
                 }
                 else
                 {
-                    next = entry.getKey();
+                    next = transitions.get(i);
                 }
                 return next;
             }

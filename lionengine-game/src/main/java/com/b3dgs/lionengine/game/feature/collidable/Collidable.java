@@ -20,6 +20,7 @@ import java.util.List;
 
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -29,7 +30,7 @@ import com.b3dgs.lionengine.graphic.Renderable;
  * Represents something which can enter in collision with another.
  */
 @FeatureInterface
-public interface Collidable extends Feature, Renderable, CollidableListener, CollisionChecker,
+public interface Collidable extends Feature, Renderable, Shape, CollidableListener, CollisionChecker,
                             Listenable<CollidableListener>
 {
     /**
@@ -67,9 +68,9 @@ public interface Collidable extends Feature, Renderable, CollidableListener, Col
      * Check if the collidable entered in collision with another one.
      * 
      * @param collidable The collidable reference.
-     * @return The collisions found if collide.
+     * @return <code>true</code> if collided, <code>false</code> else.
      */
-    List<CollisionCouple> collide(Collidable collidable);
+    boolean collide(Collidable collidable);
 
     /**
      * Set the associated group.
@@ -141,6 +142,20 @@ public interface Collidable extends Feature, Renderable, CollidableListener, Col
      * @return The accepted groups.
      */
     List<Integer> getAccepted();
+
+    /**
+     * Get the current max width.
+     * 
+     * @return The max width.
+     */
+    int getMinWidth();
+
+    /**
+     * Get the current max height.
+     * 
+     * @return The max height.
+     */
+    int getMinHeight();
 
     /**
      * Get the current max width.

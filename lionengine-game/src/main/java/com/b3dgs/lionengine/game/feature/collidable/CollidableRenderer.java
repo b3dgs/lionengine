@@ -31,9 +31,6 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 final class CollidableRenderer
 {
-    /** Show collision flag. */
-    private boolean showCollision;
-
     /**
      * Create a collidable renderer.
      */
@@ -61,38 +58,50 @@ final class CollidableRenderer
                        Map<Collision, Rectangle> cacheRect,
                        CollisionChecker checker)
     {
-        if (showCollision)
+        final int size = cacheColls.size();
+        for (int i = 0; i < size; i++)
         {
-            final int size = cacheColls.size();
-            for (int i = 0; i < size; i++)
+            final Collision collision = cacheColls.get(i);
+            if (Collision.AUTOMATIC == collision)
             {
-                final Collision collision = cacheColls.get(i);
-                if (Collision.AUTOMATIC == collision)
-                {
-                    final int x = (int) Math.round(origin.getX(viewer.getViewpointX(transformable.getX()),
-                                                               transformable.getWidth()));
-                    final int y = (int) Math.round(origin.getY(viewer.getViewpointY(transformable.getY()),
-                                                               transformable.getHeight()));
-                    g.drawRect(x, y, transformable.getWidth(), transformable.getHeight(), false);
-                }
-                else if (checker.isEnabled(collision))
-                {
-                    final Area area = cacheRect.get(collision);
-                    final int x = (int) Math.round(viewer.getViewpointX(area.getX()));
-                    final int y = (int) Math.round(viewer.getViewpointY(area.getY())) - area.getHeight();
-                    g.drawRect(x, y, area.getWidth(), area.getHeight(), false);
-                }
+                final int x = (int) Math.round(origin.getX(viewer.getViewpointX(transformable.getX()),
+                                                           transformable.getWidth()));
+                final int y = (int) Math.round(origin.getY(viewer.getViewpointY(transformable.getY()),
+                                                           transformable.getHeight()));
+                g.drawRect(x, y, transformable.getWidth(), transformable.getHeight(), false);
+            }
+            else if (checker.isEnabled(collision))
+            {
+                final Area area = cacheRect.get(collision);
+                final int x = (int) Math.round(viewer.getViewpointX(area.getX()));
+                final int y = (int) Math.round(viewer.getViewpointY(area.getY())) - area.getHeight();
+                g.drawRect(x, y, area.getWidth(), area.getHeight(), false);
             }
         }
     }
 
     /**
-     * Set the collision visibility.
+     * Render collisions.
      * 
-     * @param visible <code>true</code> if visible, <code>false</code> else.
+     * @param g The graphic output.
+     * @param viewer The viewer reference.
+     * @param origin The origin used.
+     * @param transformable The transformable owner.
+     * @param maxWidth The max width.
+     * @param minHeight The min height.
+     * @param maxHeight The max height.
      */
-    public void setCollisionVisibility(boolean visible)
+    public void renderMax(Graphic g,
+                          Viewer viewer,
+                          Origin origin,
+                          Shape transformable,
+                          int maxWidth,
+                          int minHeight,
+                          int maxHeight)
     {
-        showCollision = visible;
+        g.drawRect(viewer, origin, transformable.getX() - maxWidth / 2, transformable.getY() + minHeight, 1, 1, false);
+        g.drawRect(viewer, origin, transformable.getX() + maxWidth / 2, transformable.getY() + minHeight, 1, 1, false);
+        g.drawRect(viewer, origin, transformable.getX() - maxWidth / 2, transformable.getY() + maxHeight, 1, 1, false);
+        g.drawRect(viewer, origin, transformable.getX() + maxWidth / 2, transformable.getY() + maxHeight, 1, 1, false);
     }
 }

@@ -46,6 +46,13 @@ public interface Transformable extends Feature, Mover, Shape, Listenable<Transfo
     void transform(double x, double y, int width, int height);
 
     /**
+     * Check transformed.
+     * 
+     * @param force <code>true</code> to force.
+     */
+    void check(boolean force);
+
+    /**
      * Get the old width.
      * 
      * @return The old width.

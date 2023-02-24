@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.game.feature.collidable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -44,22 +43,21 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
      * Check if other collides with collision and its rectangle area.
      * 
      * @param origin The origin used.
-     * @param provider The provider owner.
+     * @param collidable The collidable owner.
      * @param transformable The transformable owner.
      * @param with The collision to check with.
      * @param other The other collidable to check.
      * @param rectangle The collision rectangle.
-     * @param collisions The collisions couple.
+     * @return <code>true</code> if collided, <code>false</code> else.
      */
-    private static void collide(Origin origin,
-                                FeatureProvider provider,
-                                Transformable transformable,
-                                Collision with,
-                                Collidable other,
-                                Rectangle rectangle,
-                                List<CollisionCouple> collisions)
+    private static boolean collide(Origin origin,
+                                   Collidable collidable,
+                                   Transformable transformable,
+                                   Collision with,
+                                   Collidable other,
+                                   Rectangle rectangle)
     {
-        final Mirror mirror = getMirror(provider, with);
+        final Mirror mirror = getMirror(collidable, with);
         final int offsetX = getOffsetX(with, mirror);
         final int offsetY = getOffsetY(with, mirror);
 
@@ -90,25 +88,26 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
         final double oldY = rectangle.getY();
         for (int count = 0; count < max + 1; count++)
         {
-            if (checkCollide(with, rectangle, other, collisions))
+            if (checkCollide(collidable, with, rectangle, other))
             {
-                return;
+                return true;
             }
             rectangle.translate(sx, sy);
         }
         rectangle.set(oldX, oldY, rectangle.getWidth(), rectangle.getHeight());
+        return false;
     }
 
     /**
      * Check if current area collides other collidable area.
      * 
+     * @param collidable The collidable.
      * @param with The collision to check with.
      * @param area The current area.
      * @param other The other collidable.
-     * @param collisions The collisions couple.
      * @return <code>true</code> if collided, <code>false</code> else.
      */
-    private static boolean checkCollide(Collision with, Area area, Collidable other, List<CollisionCouple> collisions)
+    private static boolean checkCollide(Collidable collidable, Collision with, Area area, Collidable other)
     {
         final List<Rectangle> others = other.getCollisionBounds();
         final List<Collision> othersColl = other.getCollisions();
@@ -119,9 +118,14 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
             final Area current = others.get(i);
             final Collision by = othersColl.get(i);
 
-            if (other.isEnabled(by) && (area.intersects(current) || area.contains(current)))
+            if ((area.contains(current) || area.intersects(current)) && other.isEnabled(by))
             {
-                collisions.add(new CollisionCouple(with, by));
+                collidable.notifyCollided(other, with, by);
+
+                if (other.getAccepted().contains(collidable.getGroup()))
+                {
+                    other.notifyCollided(collidable, by, with);
+                }
                 collided = true;
             }
         }
@@ -184,12 +188,10 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
     private final List<Collision> cacheColls = new ArrayList<>();
     /** Bounding box cache. */
     private final List<Rectangle> cacheRect = new ArrayList<>();
-    /** Max width. */
-    private int maxWidth;
-    /** Max height. */
-    private int maxHeight;
     /** Enabled flag. */
     private boolean enabled;
+    /** Disabled existence. */
+    private boolean nonDisabledFlag = true;
 
     /**
      * Create a collidable updater.
@@ -236,33 +238,36 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
      * Check if the collidable entered in collision with another one.
      * 
      * @param origin The origin used.
-     * @param provider The provider owner.
+     * @param collidable The collidable owner.
      * @param transformable The transformable owner.
      * @param other The collidable reference.
      * @param accepted The accepted groups.
-     * @return The collisions found if collide.
+     * @return <code>true</code> if collided, <code>false</code> else.
      */
-    public List<CollisionCouple> collide(Origin origin,
-                                         FeatureProvider provider,
-                                         Transformable transformable,
-                                         Collidable other,
-                                         Collection<Integer> accepted)
+    public boolean collide(Origin origin,
+                           Collidable collidable,
+                           Transformable transformable,
+                           Collidable other,
+                           Collection<Integer> accepted)
     {
+        boolean collide = false;
         if (enabled && other.isEnabled() && accepted.contains(other.getGroup()))
         {
-            final List<CollisionCouple> collisions = new ArrayList<>();
             final int size = cacheColls.size();
             for (int i = 0; i < size; i++)
             {
                 final Collision with = cacheColls.get(i);
-                if (!disabled.contains(with))
+                if (nonDisabledFlag || !disabled.contains(with))
                 {
-                    collide(origin, provider, transformable, with, other, cacheRect.get(i), collisions);
+                    // CHECKSTYLE IGNORE LINE: NestedIfDepth
+                    if (collide(origin, collidable, transformable, with, other, cacheRect.get(i)))
+                    {
+                        collide = true;
+                    }
                 }
             }
-            return collisions;
         }
-        return Collections.EMPTY_LIST;
+        return collide;
     }
 
     /**
@@ -281,6 +286,7 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
         {
             disabled.add(collision);
         }
+        nonDisabledFlag = disabled.isEmpty();
     }
 
     /**
@@ -314,26 +320,6 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
     }
 
     /**
-     * Get the current max width.
-     * 
-     * @return The max width.
-     */
-    public int getMaxWidth()
-    {
-        return maxWidth;
-    }
-
-    /**
-     * Get the current max height.
-     * 
-     * @return The max height.
-     */
-    public int getMaxHeight()
-    {
-        return maxHeight;
-    }
-
-    /**
      * Get current collision cache.
      * 
      * @return The collision cache.
@@ -358,8 +344,8 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
                                   List<Collision> collisions,
                                   Map<Collision, Rectangle> cacheRectRender)
     {
-        final int length = collisions.size();
-        for (int i = 0; i < length; i++)
+        final int n = collisions.size();
+        for (int i = 0; i < n; i++)
         {
             final Collision collision = collisions.get(i);
 
@@ -378,14 +364,7 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
                 width = collision.getWidth();
                 height = collision.getHeight();
             }
-            if (width > maxWidth)
-            {
-                maxWidth = width;
-            }
-            if (height > maxHeight)
-            {
-                maxHeight = height;
-            }
+
             final double x = origin.getX(transformable.getX() + offsetX, width);
             final double y = origin.getY(transformable.getY() + offsetY, height) + height;
             update(collision, x, y, width, height, cacheRectRender);
@@ -404,6 +383,7 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
         cacheColls.clear();
         cacheRect.clear();
         disabled.clear();
+        nonDisabledFlag = true;
     }
 
     /*
@@ -413,6 +393,6 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
     @Override
     public boolean isEnabled(Collision collision)
     {
-        return !disabled.contains(collision);
+        return nonDisabledFlag || !disabled.contains(collision);
     }
 }

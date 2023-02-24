@@ -17,8 +17,8 @@
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
@@ -124,7 +124,11 @@ public class MapTileCollisionModel extends FeatureAbstract implements MapTileCol
     @Override
     public CollisionResult computeCollision(Transformable transformable, CollisionCategory category)
     {
-        return computer.computeCollision(map, this::getCollisionFormulas, transformable, category);
+        return computer.computeCollision(map,
+                                         loader::getCollisionFormulasList,
+                                         loader::getCollisionFormulas,
+                                         transformable,
+                                         category);
     }
 
     @Override
@@ -140,7 +144,7 @@ public class MapTileCollisionModel extends FeatureAbstract implements MapTileCol
     }
 
     @Override
-    public List<CollisionFormula> getCollisionFormulas(Tile tile)
+    public Set<CollisionFormula> getCollisionFormulas(Tile tile)
     {
         return loader.getCollisionFormulas(tile);
     }

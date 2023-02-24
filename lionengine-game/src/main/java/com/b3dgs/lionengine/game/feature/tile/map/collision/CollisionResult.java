@@ -16,6 +16,10 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import java.util.ArrayDeque;
+import java.util.List;
+import java.util.Queue;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 
@@ -27,32 +31,95 @@ public class CollisionResult
     /** Min to string size. */
     private static final int MIN_LENGHT = 30;
 
+    private static final Queue<CollisionResult> CACHE = new ArrayDeque<>();
+
+    /**
+     * Get cached result data to fill, or create new one.
+     * 
+     * @param category The category.
+     * @param x The horizontal collision location ({@link Double#NaN} if none).
+     * @param y The vertical collision location ({@link Double#NaN} if none).
+     * @param tile The collided tile.
+     * @param formulaX The formula used on horizontal.
+     * @param formulaY The formula used on vertical.
+     * @return The result data.
+     */
+    public static CollisionResult get(CollisionCategory category,
+                                      double x,
+                                      double y,
+                                      Tile tile,
+                                      CollisionFormula formulaX,
+                                      CollisionFormula formulaY)
+    {
+        final CollisionResult result = CACHE.poll();
+        if (result != null)
+        {
+            result.category = category;
+            result.x = x;
+            result.y = y;
+            result.tile = tile;
+            result.formulaX = formulaX;
+            result.formulaY = formulaY;
+            return result;
+        }
+        return new CollisionResult(category, x, y, tile, formulaX, formulaY);
+    }
+
+    /**
+     * Cache results.
+     * 
+     * @param results The results to cache.
+     */
+    public static void cache(List<CollisionResult> results)
+    {
+        CACHE.addAll(results);
+    }
+
+    /**
+     * Cache result.
+     * 
+     * @param result The result to cache.
+     */
+    public static void cache(CollisionResult result)
+    {
+        CACHE.add(result);
+    }
+
+    /** Category. */
+    private CollisionCategory category;
     /** Horizontal collision location (<code>null</code> if none). */
-    private final Double x;
+    private double x;
     /** Vertical collision location (<code>null</code> if none). */
-    private final Double y;
+    private double y;
     /** Collided tile. */
-    private final Tile tile;
+    private Tile tile;
     /** Formula used on horizontal. */
-    private final CollisionFormula formulaX;
+    private CollisionFormula formulaX;
     /** Formula used on vertical. */
-    private final CollisionFormula formulaY;
+    private CollisionFormula formulaY;
 
     /**
      * Create a collision result.
      * 
-     * @param x The horizontal collision location (<code>null</code> if none).
-     * @param y The vertical collision location (<code>null</code> if none).
+     * @param category The category.
+     * @param x The horizontal collision location ({@link Double#NaN} if none).
+     * @param y The vertical collision location ({@link Double#NaN} if none).
      * @param tile The collided tile.
      * @param formulaX The formula used on horizontal.
      * @param formulaY The formula used on vertical.
      */
-    public CollisionResult(Double x, Double y, Tile tile, CollisionFormula formulaX, CollisionFormula formulaY)
+    public CollisionResult(CollisionCategory category,
+                           double x,
+                           double y,
+                           Tile tile,
+                           CollisionFormula formulaX,
+                           CollisionFormula formulaY)
     {
         super();
 
         Check.notNull(tile);
 
+        this.category = category;
         this.x = x;
         this.y = y;
         this.tile = tile;
@@ -61,11 +128,21 @@ public class CollisionResult
     }
 
     /**
+     * Get the category.
+     * 
+     * @return The category.
+     */
+    public CollisionCategory getCategory()
+    {
+        return category;
+    }
+
+    /**
      * Get the horizontal collision location.
      * 
      * @return The horizontal collision location (<code>null</code> if none).
      */
-    public Double getX()
+    public double getX()
     {
         return x;
     }
@@ -75,7 +152,7 @@ public class CollisionResult
      * 
      * @return The vertical collision location (<code>null</code> if none).
      */
-    public Double getY()
+    public double getY()
     {
         return y;
     }

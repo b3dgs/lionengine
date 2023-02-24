@@ -217,23 +217,27 @@ final class TransformableModelTest
     void testNotify()
     {
         final AtomicBoolean transformed = new AtomicBoolean();
-        final TransformableListener listener = t -> transformed.set(true);
+        final TransformableListener listener = (t) -> transformed.set(true);
         transformable.addListener(listener);
         transformable.setSize(transformable.getWidth(), transformable.getHeight());
+        transformable.check(false);
 
         assertFalse(transformed.get());
 
         transformable.setSize(1, transformable.getHeight());
+        transformable.check(false);
 
         assertTrue(transformed.get());
 
         transformed.set(false);
         transformable.setSize(transformable.getWidth(), 1);
+        transformable.check(false);
 
         assertTrue(transformed.get());
 
         transformed.set(false);
         transformable.setSize(2, 2);
+        transformable.check(false);
 
         assertTrue(transformed.get());
 
@@ -241,6 +245,7 @@ final class TransformableModelTest
                                 transformable.getY(),
                                 transformable.getWidth(),
                                 transformable.getHeight());
+        transformable.check(false);
 
         assertTrue(transformed.get());
 
@@ -248,10 +253,12 @@ final class TransformableModelTest
         transformable.setSize(2, 2);
 
         transformable.moveLocation(1.0, 0.0, 0.0);
+        transformable.check(false);
 
         assertFalse(transformed.get());
 
         transformable.moveLocationX(1.0, 1.0);
+        transformable.check(false);
 
         assertTrue(transformed.get());
 
@@ -259,6 +266,7 @@ final class TransformableModelTest
 
         transformable.moveLocation(1.0, 0.0, 0.0);
         transformable.moveLocationY(1.0, 1.0);
+        transformable.check(false);
 
         assertTrue(transformed.get());
 
@@ -266,12 +274,14 @@ final class TransformableModelTest
 
         transformable.moveLocation(1.0, 0.0, 0.0);
         transformable.moveLocation(1.0, 1.0, 1.0);
+        transformable.check(false);
 
         assertTrue(transformed.get());
 
         transformed.set(false);
         transformable.removeListener(listener);
         transformable.transform(1.0, 2.0, 3, 4);
+        transformable.check(false);
 
         assertFalse(transformed.get());
     }

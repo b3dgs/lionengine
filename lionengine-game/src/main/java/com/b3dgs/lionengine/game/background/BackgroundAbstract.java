@@ -88,6 +88,8 @@ public abstract class BackgroundAbstract implements Background
     protected int totalHeight;
     /** Offset y. */
     private int offsetY;
+    /** Internal length. */
+    private int n;
 
     /**
      * Constructor base.
@@ -132,7 +134,7 @@ public abstract class BackgroundAbstract implements Background
      */
     public int getComponentsNumber()
     {
-        return components.size();
+        return n;
     }
 
     /**
@@ -143,6 +145,7 @@ public abstract class BackgroundAbstract implements Background
     protected void add(BackgroundComponent component)
     {
         components.add(component);
+        n = components.size();
     }
 
     /**
@@ -189,18 +192,18 @@ public abstract class BackgroundAbstract implements Background
             }
         }
 
-        for (final BackgroundComponent component : components)
+        for (int i = 0; i < n; i++)
         {
-            component.update(extrp, (int) Math.round(x), py, speed);
+            components.get(i).update(extrp, (int) Math.round(x), py, speed);
         }
     }
 
     @Override
     public final void render(Graphic g)
     {
-        for (final BackgroundComponent component : components)
+        for (int i = 0; i < n; i++)
         {
-            component.render(g);
+            components.get(i).render(g);
         }
     }
 }

@@ -16,9 +16,10 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable.framed;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
+import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.AnimatorFrameListener;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
@@ -41,9 +42,7 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
     /** Loaded collisions framed. */
     private final CollidableFramedConfig config;
     /** Frame listener. */
-    private final AnimatorFrameListener listener;
-    /** Last collision found. */
-    private Collection<Collision> last = Collections.emptyList();
+    private final AnimatorFrameListener listener = new AnimListener();
 
     @FeatureGet private Collidable collidable;
     @FeatureGet private Animatable animatable;
@@ -70,20 +69,6 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
         super(services, setup);
 
         config = CollidableFramedConfig.imports(setup);
-
-        listener = (AnimatorFrameListener) frame ->
-        {
-            for (final Collision collision : last)
-            {
-                collidable.setEnabled(false, collision);
-            }
-            last = config.getCollision(Integer.valueOf(frame));
-            for (final Collision collision : last)
-            {
-                collidable.setEnabled(true, collision);
-                collidable.forceUpdate();
-            }
-        };
     }
 
     /*
@@ -95,7 +80,11 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
     {
         super.prepare(provider);
 
-        animatable.addListener(listener);
+        if (!config.getCollisions().isEmpty())
+        {
+            collidable.setEnabled(true);
+            animatable.addListener(listener);
+        }
     }
 
     @Override
@@ -105,6 +94,50 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
         {
             collidable.addCollision(collision);
             collidable.setEnabled(false, collision);
+        }
+        if (!config.getCollisions().isEmpty())
+        {
+            collidable.setEnabled(true);
+        }
+    }
+
+    /**
+     * Animation listener.
+     */
+    private final class AnimListener implements AnimatorFrameListener
+    {
+        /** Last collisions found. */
+        private List<Collision> last = Collections.emptyList();
+
+        /**
+         * Create.
+         */
+        private AnimListener()
+        {
+            super();
+        }
+
+        @Override
+        public void notifyAnimFrame(int frame)
+        {
+            setEnabled(false);
+            last = config.getCollision(Integer.valueOf(frame));
+            setEnabled(true);
+        }
+
+        @Override
+        public void notifyAnimPlayed(Animation anim)
+        {
+            collidable.forceUpdate();
+        }
+
+        private void setEnabled(boolean enabled)
+        {
+            final int n = last.size();
+            for (int i = 0; i < n; i++)
+            {
+                collidable.setEnabled(enabled, last.get(i));
+            }
         }
     }
 }

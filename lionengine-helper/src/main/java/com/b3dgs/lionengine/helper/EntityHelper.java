@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Routines;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerModel;
@@ -90,6 +91,7 @@ public class EntityHelper extends FeaturableModel
     private final Mirrorable mirrorable;
     private final Animatable animatable;
     private final Rasterable rasterable;
+    private final Transformable transformable;
     private final Collidable collidable;
     private final TileCollidable tileCollidable;
     private final Pathfindable pathfindable;
@@ -117,7 +119,7 @@ public class EntityHelper extends FeaturableModel
 
         addFeature(new NetworkableModel(services, setup));
         addFeature(new LayerableModel(services, setup));
-        addFeature(new TransformableModel(services, setup));
+        transformable = addFeatureAndGet(new TransformableModel(services, setup));
         addFeature(new FovableModel(services, setup));
         addFeature(new ActionerModel(services, setup));
 
@@ -153,6 +155,23 @@ public class EntityHelper extends FeaturableModel
             public void notifyCheckedRender(boolean checked)
             {
                 onCheckedRender(checked);
+            }
+        });
+
+        tileCollidable.addListener((r, c) ->
+        {
+            final State current = state.getCurrent();
+            if (current instanceof StateHelper<?>)
+            {
+                ((StateHelper<?>) current).notifyTileCollided(r, c);
+            }
+        });
+        collidable.addListener((c, w, b) ->
+        {
+            final State current = state.getCurrent();
+            if (current instanceof StateHelper<?>)
+            {
+                ((StateHelper<?>) current).notifyCollided(c, w, b);
             }
         });
     }
@@ -216,6 +235,7 @@ public class EntityHelper extends FeaturableModel
             mirrorable.update(extrp);
             animatable.update(extrp);
             rasterable.update(extrp);
+            transformable.check(false);
         };
 
         rendering = g ->

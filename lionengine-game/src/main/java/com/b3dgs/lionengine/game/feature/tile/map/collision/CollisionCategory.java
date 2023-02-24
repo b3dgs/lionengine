@@ -18,7 +18,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.NameableAbstract;
@@ -73,7 +73,7 @@ public class CollisionCategory extends NameableAbstract
      * Collision formula used list (each must be available in
      * {@link com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision#getCollisionFormula(String)}.
      */
-    private final Collection<CollisionFormula> formulas = new HashSet<>();
+    private final List<CollisionFormula> formulas = new ArrayList<>();
 
     /**
      * Constructor.
@@ -115,7 +115,7 @@ public class CollisionCategory extends NameableAbstract
      * 
      * @return The collision formulas list.
      */
-    public Collection<CollisionFormula> getFormulas()
+    public List<CollisionFormula> getFormulas()
     {
         return formulas;
     }

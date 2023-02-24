@@ -30,7 +30,9 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.game.feature.Camera;
+import com.b3dgs.lionengine.game.feature.ComponentUpdater;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Handler;
@@ -79,7 +81,7 @@ final class ComponentCollisionTest
     private final Setup setup = new Setup(config);
     private final AtomicReference<Collidable> collide = new AtomicReference<>();
     private final Featurable nonCollidable = new FeaturableModel(services, setup);
-    private final ComponentCollision component = new ComponentCollision();
+    private final ComponentCollision component = new ComponentCollision(new ViewerMock());
 
     private ObjectSelf featurable1;
     private Transformable transformable1;
@@ -102,6 +104,7 @@ final class ComponentCollisionTest
         collidable1 = featurable1.addFeatureAndGet(new CollidableModel(services, setup));
         collidable1.setGroup(Integer.valueOf(1));
         collidable1.addAccept(Integer.valueOf(0));
+        collidable1.setEnabled(true);
 
         final Collision collision1 = new Collision("test1", 0, 0, 3, 3, false);
         collidable1.addCollision(collision1);
@@ -111,6 +114,7 @@ final class ComponentCollisionTest
         collidable2 = featurable2.getFeature(Collidable.class);
         collidable2.addAccept(Integer.valueOf(1));
         collidable2.setGroup(Integer.valueOf(0));
+        collidable2.setEnabled(true);
 
         featurable1.addFeature(new MirrorableModel(services, setup));
         featurable2.addFeature(new MirrorableModel(services, setup));
@@ -118,7 +122,7 @@ final class ComponentCollisionTest
         final Collision collision2 = new Collision("test2", 0, 0, 3, 3, true);
         collidable2.addCollision(collision2);
 
-        handler.addComponent(component);
+        handler.addComponent((ComponentUpdater) component);
         handler.add(featurable1);
         handler.add(featurable2);
         handler.add(nonCollidable);
@@ -140,15 +144,6 @@ final class ComponentCollisionTest
 
         assertEquals(collidable1, collide.get());
         assertEquals(collidable2, featurable1.called.get());
-
-        collide.set(null);
-        featurable1.called.set(null);
-        transformable1.teleport(ComponentCollision.REDUCE_FACTOR, ComponentCollision.REDUCE_FACTOR);
-
-        handler.update(1.0);
-
-        assertNull(collide.get());
-        assertNull(featurable1.called.get());
     }
 
     /**
@@ -157,15 +152,15 @@ final class ComponentCollisionTest
     @Test
     void testCollidableTwoPoints()
     {
-        transformable1.teleport(ComponentCollision.REDUCE_FACTOR - 3.0, 0.0);
-        transformable2.teleport(ComponentCollision.REDUCE_FACTOR - 1.0, 0.0);
+        transformable1.teleport(256 - 3.0, 0.0);
+        transformable2.teleport(256 - 1.0, 0.0);
 
         final AtomicInteger count = new AtomicInteger();
         collidable2.addListener((c, w, b) -> count.incrementAndGet());
 
         handler.update(1.0);
 
-        assertEquals(1, count.get());
+        assertEquals(2, count.get());
     }
 
     /**
@@ -198,8 +193,8 @@ final class ComponentCollisionTest
         collide.set(null);
         featurable1.called.set(null);
 
-        transformable1.teleport(ComponentCollision.REDUCE_FACTOR + ox, ComponentCollision.REDUCE_FACTOR + oy);
-        transformable2.teleport(ComponentCollision.REDUCE_FACTOR, ComponentCollision.REDUCE_FACTOR);
+        transformable1.teleport(256 + ox, 256 + oy);
+        transformable2.teleport(256, 256);
 
         handler.update(1.0);
 
@@ -224,14 +219,16 @@ final class ComponentCollisionTest
         collide.set(null);
         featurable1.called.set(null);
 
-        transformable1.teleport(ComponentCollision.REDUCE_FACTOR, ComponentCollision.REDUCE_FACTOR);
+        transformable1.teleport(256, 256);
+        transformable1.check(true);
 
         handler.update(1.0);
 
         assertNull(collide.get());
         assertNull(featurable1.called.get());
 
-        transformable2.teleport(ComponentCollision.REDUCE_FACTOR, ComponentCollision.REDUCE_FACTOR);
+        transformable2.teleport(256, 256);
+        transformable2.check(true);
 
         handler.update(1.0);
 

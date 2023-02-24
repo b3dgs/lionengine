@@ -16,10 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -42,13 +43,13 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     /** Launcher listeners. */
     private final ListenableModel<TileCollidableListener> listenable = new ListenableModel<>();
     /** Computed results. */
-    private final Map<String, CollisionResult> results = new HashMap<>();
+    private final List<CollisionResult> results = new ArrayList<>();
     /** Map tile reference. */
     private final MapTileCollision map;
     /** Enabled flags. */
     private final Map<Axis, Boolean> enabledAxis = new EnumMap<>(Axis.class);
     /** The collisions used. */
-    private final Collection<CollisionCategory> categories;
+    private final List<CollisionCategory> categories;
     /** Collision enabled. */
     private boolean enabled;
 
@@ -101,14 +102,12 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     /**
      * Update the tile collision computation.
      * 
-     * @param category The collision category reference.
+     * @param result The collision result.
      */
-    private void update(CollisionCategory category)
+    private void update(CollisionResult result)
     {
-        final CollisionResult result = results.get(category.getName());
-
-        if (result != null
-            && (result.getX() != null || result.getY() != null)
+        final CollisionCategory category = result.getCategory();
+        if ((!Double.isNaN(result.getX()) || !Double.isNaN(result.getY()))
             && Boolean.TRUE.equals(enabledAxis.get(category.getAxis())))
         {
             onCollided(result, category);
@@ -123,7 +122,8 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
      */
     private void onCollided(CollisionResult result, CollisionCategory category)
     {
-        for (int i = 0; i < listenable.size(); i++)
+        final int n = listenable.size();
+        for (int i = 0; i < n; i++)
         {
             listenable.get(i).notifyTileCollided(result, category);
         }
@@ -172,29 +172,37 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     {
         if (enabled)
         {
-            results.clear();
-            for (final CollisionCategory category : categories)
+            final int n = categories.size();
+            for (int i = 0; i < n; i++)
             {
+                final CollisionCategory category = categories.get(i);
                 final CollisionResult result = map.computeCollision(transformable, category);
-                results.put(category.getName(), result);
+                if (result != null)
+                {
+                    results.add(result);
+                }
             }
-            for (final CollisionCategory category : categories)
+            final int k = results.size();
+            for (int i = 0; i < k; i++)
             {
-                update(category);
+                final CollisionResult result = results.get(i);
+                update(result);
             }
+            CollisionResult.cache(results);
+            results.clear();
         }
     }
 
     @Override
     public void apply(CollisionResult result)
     {
-        if (result.getX() != null)
+        if (!Double.isNaN(result.getX()))
         {
-            transformable.teleportX(result.getX().doubleValue());
+            transformable.teleportX(result.getX());
         }
-        if (result.getY() != null)
+        if (!Double.isNaN(result.getY()))
         {
-            transformable.teleportY(result.getY().doubleValue());
+            transformable.teleportY(result.getY());
         }
     }
 

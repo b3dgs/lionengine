@@ -64,9 +64,9 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     /** Launchable listeners. */
     private final Collection<LaunchableListener> listenersLaunchable = new HashSet<>();
     /** Delayed launches. */
-    private final Collection<DelayedLaunch> delayed = new ArrayList<>();
+    private final List<DelayedLaunch> delayed = new ArrayList<>();
     /** Delayed launches launched. */
-    private final Collection<DelayedLaunch> launched = new ArrayList<>();
+    private final List<DelayedLaunch> launched = new ArrayList<>();
     /** Cached audio. */
     private final Map<String, Audio> audio = new HashMap<>();
     /** Fire tick. */
@@ -435,8 +435,11 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     public void update(double extrp)
     {
         fire.update(extrp);
-        for (final DelayedLaunch launch : delayed)
+        final int n = delayed.size();
+        for (int i = 0; i < n; i++)
         {
+            final DelayedLaunch launch = delayed.get(i);
+
             launch.update(extrp);
             if (launch.isReady())
             {
@@ -444,8 +447,11 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
                 launched.add(launch);
             }
         }
-        delayed.removeAll(launched);
-        launched.clear();
+        if (!launched.isEmpty())
+        {
+            delayed.removeAll(launched);
+            launched.clear();
+        }
     }
 
     @Override

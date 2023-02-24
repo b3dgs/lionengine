@@ -25,6 +25,9 @@ import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.body.Body;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
+import com.b3dgs.lionengine.game.feature.collidable.CollidableListener;
+import com.b3dgs.lionengine.game.feature.collidable.Collision;
+import com.b3dgs.lionengine.game.feature.networkable.Networkable;
 import com.b3dgs.lionengine.game.feature.rasterable.Rasterable;
 import com.b3dgs.lionengine.game.feature.state.StateAbstract;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.Axis;
@@ -41,7 +44,8 @@ import com.b3dgs.lionengine.io.DeviceMapper;
  * 
  * @param <M> The model feature.
  */
-public class StateHelper<M extends EntityModelHelper> extends StateAbstract implements TileCollidableListener
+public class StateHelper<M extends EntityModelHelper> extends StateAbstract
+                        implements TileCollidableListener, CollidableListener
 {
     /**
      * Check if collide on the good side depending of movement side.
@@ -79,6 +83,8 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
     protected final TileCollidable tileCollidable;
     /** Collidable reference. */
     protected final Collidable collidable;
+    /** Networkable reference. */
+    protected final Networkable networkable;
     /** Collide horizontal flag. */
     private boolean collideX;
     /** Collide vertical flag. */
@@ -104,6 +110,7 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
         tileCollidable = model.getFeature(TileCollidable.class);
         collidable = model.getFeature(Collidable.class);
         rasterable = model.getFeature(Rasterable.class);
+        networkable = model.getFeature(Networkable.class);
     }
 
     /**
@@ -378,7 +385,6 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
     public void enter()
     {
         animatable.play(animation);
-        tileCollidable.addListener(this);
     }
 
     @Override
@@ -386,12 +392,6 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
     {
         collideX = false;
         collideY = false;
-    }
-
-    @Override
-    public void exit()
-    {
-        tileCollidable.removeListener(this);
     }
 
     @Override
@@ -417,5 +417,11 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
                 onCollided(result, category);
             }
         }
+    }
+
+    @Override
+    public void notifyCollided(Collidable collidable, Collision with, Collision by)
+    {
+        // Nothing by default
     }
 }

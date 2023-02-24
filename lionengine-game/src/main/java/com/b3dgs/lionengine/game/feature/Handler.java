@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
@@ -173,6 +174,11 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
             {
                 final Transformable transformable = featurable.getFeature(Transformable.class);
                 transformable.teleport(transformable.getX(), transformable.getY());
+                transformable.check(true);
+            }
+            if (featurable.hasFeature(Collidable.class))
+            {
+                featurable.getFeature(Collidable.class).forceUpdate();
             }
         }
         toAdd.clear();
@@ -194,6 +200,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
                     listenable.get(i).notifyHandlableRemoved(featurable);
                 }
                 featurable.getFeature(Identifiable.class).notifyDestroyed();
+                featurable.getFeature(Identifiable.class).removeListener(this);
                 featurables.remove(featurable, id);
             }
         }

@@ -139,8 +139,6 @@ final class ComponentDisplayableTest
         final Featurable featurable2 = new FeaturableModel(services, setup);
         component.notifyHandlableAdded(featurable);
         component.notifyHandlableAdded(featurable2);
-        component.notifyLayerChanged(featurable, null, null, null, null);
-        component.notifyLayerChanged(featurable2, null, null, null, null);
 
         assertTrue(((List<?>) UtilTests.getField(component, "indexs")).isEmpty());
 
