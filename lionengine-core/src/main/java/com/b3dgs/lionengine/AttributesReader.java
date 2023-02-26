@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
@@ -431,7 +432,7 @@ public interface AttributesReader
      * @return The children list.
      * @throws LionEngineException If invalid argument.
      */
-    Collection<XmlReader> getChildren(String name, String... path);
+    List<XmlReader> getChildren(String name, String... path);
 
     /**
      * Check if node has the following attribute.

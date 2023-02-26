@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
@@ -328,7 +329,7 @@ public class Configurer implements AttributesReader
     }
 
     @Override
-    public final Collection<XmlReader> getChildren(String name, String... path)
+    public final List<XmlReader> getChildren(String name, String... path)
     {
         return root.getChildren(name, path);
     }

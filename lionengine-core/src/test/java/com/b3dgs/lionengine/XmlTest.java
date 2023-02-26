@@ -460,15 +460,31 @@ final class XmlTest
     void testNodeHas()
     {
         final Xml node = new Xml("test");
-        final Xml child = new Xml("child");
+        final Xml child = node.createChild("child");
+        child.createChild("child2");
         node.writeString("attribute", "none");
-        node.add(child);
 
         assertTrue(node.hasAttribute("attribute"));
         assertTrue(node.hasNode("child"));
+        assertTrue(node.hasNode("child2", "child"));
         assertFalse(node.hasAttribute(null));
         assertFalse(node.hasAttribute("test"));
         assertFalse(node.hasNode("attribute"));
+    }
+
+    /**
+     * Test get children.
+     */
+    @Test
+    void testGetChildren()
+    {
+        final Xml node = new Xml("test");
+        final Xml child = node.createChild("child");
+        child.createChild("child2");
+
+        assertFalse(node.getChildren("child").isEmpty());
+        assertFalse(node.getChildren("child2", "child").isEmpty());
+        assertFalse(child.getChildren("child2").isEmpty());
     }
 
     /**

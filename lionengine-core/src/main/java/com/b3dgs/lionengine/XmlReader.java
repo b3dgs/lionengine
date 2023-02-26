@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalDouble;
@@ -528,7 +529,7 @@ public class XmlReader implements AttributesReader
         final XmlReader node = getNodeDefault(path);
         if (node != null)
         {
-            final NodeList list = root.getChildNodes();
+            final NodeList list = node.root.getChildNodes();
             for (int i = 0; i < list.getLength(); i++)
             {
                 final Node current = list.item(i);
@@ -616,20 +617,23 @@ public class XmlReader implements AttributesReader
     }
 
     @Override
-    public Collection<XmlReader> getChildren(String name, String... path)
+    public List<XmlReader> getChildren(String name, String... path)
     {
         Check.notNull(name);
 
-        final Collection<XmlReader> nodes = new ArrayList<>(1);
-        final XmlReader xml = getNodeReader(path);
-
-        final NodeList list = xml.root.getChildNodes();
-        for (int i = 0; i < list.getLength(); i++)
+        final List<XmlReader> nodes = new ArrayList<>(1);
+        if (hasNode(name, path))
         {
-            final Node node = list.item(i);
-            if (name.equals(node.getNodeName()))
+            final XmlReader xml = getNodeReader(path);
+
+            final NodeList list = xml.root.getChildNodes();
+            for (int i = 0; i < list.getLength(); i++)
             {
-                nodes.add(new XmlReader(document, (Element) node));
+                final Node node = list.item(i);
+                if (name.equals(node.getNodeName()))
+                {
+                    nodes.add(new XmlReader(document, (Element) node));
+                }
             }
         }
         return nodes;
@@ -640,9 +644,9 @@ public class XmlReader implements AttributesReader
      * 
      * @return The children list.
      */
-    public Collection<XmlReader> getChildren()
+    public List<XmlReader> getChildren()
     {
-        final Collection<XmlReader> nodes = new ArrayList<>(1);
+        final List<XmlReader> nodes = new ArrayList<>(1);
         final NodeList list = root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
         {
