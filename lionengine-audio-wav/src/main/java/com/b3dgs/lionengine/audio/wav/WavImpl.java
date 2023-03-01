@@ -339,7 +339,7 @@ final class WavImpl implements Wav
     @Override
     public void play(Align alignment)
     {
-        if (System.nanoTime() - time > MIN_DELAY_NANO)
+        if (volume > 0 && AudioFactory.getVolume() > 0 && System.nanoTime() - time > MIN_DELAY_NANO)
         {
             executor.execute(() -> play(media, alignment));
             time = System.nanoTime();
