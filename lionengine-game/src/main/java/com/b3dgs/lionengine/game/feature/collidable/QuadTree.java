@@ -136,9 +136,9 @@ public class QuadTree implements Renderable
 
             if (children != null)
             {
-                final int minX = getIndexX(transformable.getOldX() - ref.getMaxWidth());
+                final int minX = getIndexX(transformable.getOldX() - ref.getMaxWidth() * 2);
                 final int minY = getIndexY(transformable.getOldY() + ref.getMinHeight() * 2);
-                final int maxX = getIndexX(transformable.getOldX() + ref.getMaxWidth());
+                final int maxX = getIndexX(transformable.getOldX() + ref.getMaxWidth() * 2);
                 final int maxY = getIndexY(transformable.getOldY() + ref.getMaxHeight() * 2);
 
                 for (int iy = minY; iy <= maxY; iy++)

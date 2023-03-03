@@ -124,11 +124,7 @@ public class MapTileCollisionModel extends FeatureAbstract implements MapTileCol
     @Override
     public CollisionResult computeCollision(Transformable transformable, CollisionCategory category)
     {
-        return computer.computeCollision(map,
-                                         loader::getCollisionFormulasList,
-                                         loader::getCollisionFormulas,
-                                         transformable,
-                                         category);
+        return computer.computeCollision(map, loader::getCollisionFormulasList, transformable, category);
     }
 
     @Override

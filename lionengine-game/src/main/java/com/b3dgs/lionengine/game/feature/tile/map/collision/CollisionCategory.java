@@ -68,7 +68,7 @@ public class CollisionCategory extends NameableAbstract
     /** Glue flag (keep collision locked on ground even on fast movement over slopes). */
     private final boolean glue;
     /** Defined groups. */
-    private final Collection<CollisionGroup> groups;
+    private final List<CollisionGroup> groups;
     /**
      * Collision formula used list (each must be available in
      * {@link com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision#getCollisionFormula(String)}.
@@ -105,7 +105,7 @@ public class CollisionCategory extends NameableAbstract
      * 
      * @return The defined groups.
      */
-    public Collection<CollisionGroup> getGroups()
+    public List<CollisionGroup> getGroups()
     {
         return groups;
     }

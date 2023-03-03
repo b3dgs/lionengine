@@ -131,7 +131,7 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
 
     private void computeMinMax(Collision collision)
     {
-        maxWidth = Math.max(maxWidth, collision.getWidth());
+        maxWidth = Math.max(maxWidth, collision.getWidth() + collision.getOffsetX() * 2);
         minWidth = maxWidth;
         minHeight = Math.min(minHeight, collision.getOffsetY());
         maxHeight = Math.max(maxHeight, collision.getOffsetY() + collision.getHeight());
