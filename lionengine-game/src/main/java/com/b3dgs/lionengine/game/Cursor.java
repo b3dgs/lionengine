@@ -330,19 +330,13 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     @Override
     public void addListener(InputDeviceListener listener)
     {
-        if (device != null)
-        {
-            device.addListener(listener);
-        }
+        // Void
     }
 
     @Override
     public void removeListener(InputDeviceListener listener)
     {
-        if (device != null)
-        {
-            device.removeListener(listener);
-        }
+        // Void
     }
 
     @Override

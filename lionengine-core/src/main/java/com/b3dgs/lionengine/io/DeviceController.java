@@ -17,14 +17,13 @@
 package com.b3dgs.lionengine.io;
 
 import com.b3dgs.lionengine.InputDevice;
-import com.b3dgs.lionengine.InputDeviceListener;
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Updatable;
 
 /**
  * Represents the device used to control.
  */
-public interface DeviceController extends Updatable, Listenable<InputDeviceListener>
+public interface DeviceController extends Updatable, Listenable<DeviceControllerListener>
 {
     /**
      * Add horizontal control from action.
@@ -45,11 +44,13 @@ public interface DeviceController extends Updatable, Listenable<InputDeviceListe
     /**
      * Add fire control from action.
      * 
+     * @param name The device name.
      * @param device The device reference.
      * @param index The fire index.
+     * @param code The device code.
      * @param action The action reference.
      */
-    void addFire(InputDevice device, Integer index, DeviceAction action);
+    void addFire(String name, InputDevice device, Integer index, Integer code, DeviceAction action);
 
     /**
      * Set visibility.

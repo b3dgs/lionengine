@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.io.DeviceController;
+import com.b3dgs.lionengine.io.DeviceControllerListener;
 import com.b3dgs.lionengine.io.DevicePush;
 import com.b3dgs.lionengine.io.DevicePushVirtual;
 import com.b3dgs.lionengine.network.Packet;
@@ -40,7 +41,7 @@ public class NetworkedDevice extends FeatureModel implements Syncable, DevicePus
 
     @FeatureGet private Networkable networkable;
 
-    private final InputDeviceListener listener = (e, c, s) ->
+    private final DeviceControllerListener listener = (n, e, c, s) ->
     {
         final ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES * 2 + 1);
         buffer.putInt(getSyncId());

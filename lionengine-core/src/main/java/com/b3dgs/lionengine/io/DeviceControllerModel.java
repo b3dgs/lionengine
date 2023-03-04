@@ -21,26 +21,47 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.InputDeviceListener;
+import com.b3dgs.lionengine.ListenableModel;
 
 /**
  * Represents the device used to control.
  */
 public class DeviceControllerModel implements DeviceController
 {
-    private final Set<InputDevice> devices = new HashSet<>();
+    private final ListenableModel<DeviceControllerListener> listeners = new ListenableModel<>();
+    private final List<InputDevice> devices = new ArrayList<>();
+    private final Set<InputDevice> devicesSet = new HashSet<>();
     private final Map<DeviceAction, String> actionToDevice = new HashMap<>();
     private final List<DeviceAction> horizontal = new ArrayList<>();
     private final List<DeviceAction> vertical = new ArrayList<>();
     private final List<Integer> indexes = new ArrayList<>();
     private final Map<Integer, List<DeviceAction>> fire = new HashMap<>();
-    private final Map<DeviceAction, Boolean> fired = new HashMap<>();
+    private final Map<Integer, Boolean> fired = new HashMap<>();
     private final Map<String, Boolean> disabledHorizontal = new HashMap<>();
     private final Map<String, Boolean> disabledVertical = new HashMap<>();
+    private final Map<Integer, List<String>> codeToDevices = new HashMap<>();
 
+    private final InputDeviceListener listener = (push, c, flag) ->
+    {
+        final int n = listeners.size();
+        for (int i = 0; i < n; i++)
+        {
+            final List<String> names = codeToDevices.get(push);
+            if (names != null)
+            {
+                final int k = names.size();
+                for (int j = 0; j < k; j++)
+                {
+                    listeners.get(i).onDeviceChanged(names.get(j), push, c, flag);
+                }
+            }
+        }
+    };
     private int horizontalCount;
     private int verticalCount;
     private double axisHorizontal;
@@ -54,22 +75,88 @@ public class DeviceControllerModel implements DeviceController
         super();
     }
 
-    @Override
-    public void addListener(InputDeviceListener listener)
+    /**
+     * Update horizontal axis.
+     */
+    private void updateHorizontal()
     {
-        devices.forEach(d -> d.addListener(listener));
+        axisHorizontal = 0.0;
+        for (int i = 0; i < horizontalCount; i++)
+        {
+            final DeviceAction action = horizontal.get(i);
+            if (!Boolean.TRUE.equals(disabledHorizontal.get(actionToDevice.get(action))))
+            {
+                axisHorizontal += action.getAction();
+            }
+        }
+    }
+
+    /**
+     * Update vertical axis.
+     */
+    private void updateVertical()
+    {
+        axisVertical = 0.0;
+        for (int i = 0; i < verticalCount; i++)
+        {
+            final DeviceAction action = vertical.get(i);
+            if (!Boolean.TRUE.equals(disabledVertical.get(actionToDevice.get(action))))
+            {
+                axisVertical += vertical.get(i).getAction();
+            }
+        }
+    }
+
+    /**
+     * Update fired restore flag.
+     */
+    private void updateFired()
+    {
+        for (final Entry<Integer, List<DeviceAction>> entry : fire.entrySet())
+        {
+            if (fired.get(entry.getKey()) == Boolean.TRUE)
+            {
+                boolean state = false;
+
+                final List<DeviceAction> actions = entry.getValue();
+                final int k = actions.size();
+                for (int i = 0; i < k; i++)
+                {
+                    final DeviceAction action = actions.get(i);
+                    if (Double.compare(action.getAction(), 0) > 0)
+                    {
+                        state = true;
+                        break;
+                    }
+                }
+                if (!state)
+                {
+                    fired.put(entry.getKey(), Boolean.FALSE);
+                }
+            }
+        }
     }
 
     @Override
-    public void removeListener(InputDeviceListener listener)
+    public void addListener(DeviceControllerListener listener)
     {
-        devices.forEach(d -> d.removeListener(listener));
+        listeners.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(DeviceControllerListener listener)
+    {
+        listeners.removeListener(listener);
     }
 
     @Override
     public void addHorizontal(InputDevice device, DeviceAction action)
     {
-        devices.add(device);
+        if (devicesSet.add(device))
+        {
+            devices.add(device);
+            device.addListener(listener);
+        }
         actionToDevice.put(action, device.getName());
 
         horizontal.add(action);
@@ -79,7 +166,11 @@ public class DeviceControllerModel implements DeviceController
     @Override
     public void addVertical(InputDevice device, DeviceAction action)
     {
-        devices.add(device);
+        if (devicesSet.add(device))
+        {
+            devices.add(device);
+            device.addListener(listener);
+        }
         actionToDevice.put(action, device.getName());
 
         vertical.add(action);
@@ -87,21 +178,28 @@ public class DeviceControllerModel implements DeviceController
     }
 
     @Override
-    public void addFire(InputDevice device, Integer index, DeviceAction action)
+    public void addFire(String name, InputDevice device, Integer index, Integer code, DeviceAction action)
     {
+        if (devicesSet.add(device))
+        {
+            devices.add(device);
+            device.addListener(listener);
+        }
         indexes.add(index);
-        devices.add(device);
         actionToDevice.put(action, device.getName());
+        codeToDevices.computeIfAbsent(code, ArrayList::new).add(name);
 
         fire.computeIfAbsent(index, i -> new ArrayList<>()).add(action);
-        fired.put(action, Boolean.FALSE);
+        fired.put(index, Boolean.FALSE);
     }
 
     @Override
     public void setVisible(boolean visible)
     {
-        for (final InputDevice device : devices)
+        final int n = devices.size();
+        for (int i = 0; i < n; i++)
         {
+            final InputDevice device = devices.get(i);
             device.setVisible(visible);
         }
     }
@@ -183,9 +281,9 @@ public class DeviceControllerModel implements DeviceController
             for (int i = 0; i < n; i++)
             {
                 final DeviceAction action = actions.get(i);
-                if (!fired.get(action).booleanValue() && action.getAction() > 0)
+                if (fired.get(index) == Boolean.FALSE && action.getAction() > 0)
                 {
-                    fired.put(action, Boolean.TRUE);
+                    fired.put(index, Boolean.TRUE);
                     return true;
                 }
             }
@@ -196,42 +294,15 @@ public class DeviceControllerModel implements DeviceController
     @Override
     public void update(double extrp)
     {
-        for (final InputDevice device : devices)
+        final int n = devices.size();
+        for (int i = 0; i < n; i++)
         {
+            final InputDevice device = devices.get(i);
             device.update(extrp);
         }
 
-        axisHorizontal = 0.0;
-        for (int i = 0; i < horizontalCount; i++)
-        {
-            final DeviceAction action = horizontal.get(i);
-            if (!Boolean.TRUE.equals(disabledHorizontal.get(actionToDevice.get(action))))
-            {
-                axisHorizontal += action.getAction();
-            }
-        }
-
-        axisVertical = 0.0;
-        for (int i = 0; i < verticalCount; i++)
-        {
-            final DeviceAction action = vertical.get(i);
-            if (!Boolean.TRUE.equals(disabledVertical.get(actionToDevice.get(action))))
-            {
-                axisVertical += vertical.get(i).getAction();
-            }
-        }
-
-        for (final List<DeviceAction> actions : fire.values())
-        {
-            final int n = actions.size();
-            for (int i = 0; i < n; i++)
-            {
-                final DeviceAction action = actions.get(i);
-                if (Double.compare(action.getAction(), 0) <= 0)
-                {
-                    fired.put(action, Boolean.FALSE);
-                }
-            }
-        }
+        updateHorizontal();
+        updateVertical();
+        updateFired();
     }
 }

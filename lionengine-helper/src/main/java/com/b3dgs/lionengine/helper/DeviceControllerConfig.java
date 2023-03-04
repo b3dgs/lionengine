@@ -116,8 +116,10 @@ public final class DeviceControllerConfig
             config.getFire()
                   .entrySet()
                   .forEach(e -> e.getValue()
-                                 .forEach(c -> controller.addFire(current,
+                                 .forEach(c -> controller.addFire(config.getName(),
+                                                                  current,
                                                                   e.getKey(),
+                                                                  c,
                                                                   new DeviceActionModel(c, push))));
         }
         if (current instanceof DevicePointer)

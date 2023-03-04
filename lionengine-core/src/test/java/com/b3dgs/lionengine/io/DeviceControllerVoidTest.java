@@ -78,7 +78,7 @@ final class DeviceControllerVoidTest
 
         assertFalse(device.isFired(index));
 
-        device.addFire((InputMock) () -> null, index, () -> val.get().doubleValue());
+        device.addFire(null, (InputMock) () -> null, index, index, () -> val.get().doubleValue());
 
         assertFalse(device.isFired(index));
         assertFalse(device.isFiredOnce(index));
@@ -106,7 +106,7 @@ final class DeviceControllerVoidTest
         device.setDisabled(Constant.EMPTY_STRING, true, true);
         device.addHorizontal((InputMock) () -> Constant.EMPTY_STRING, () -> 1.0);
         device.addVertical((InputMock) () -> Constant.EMPTY_STRING, () -> 1.0);
-        device.addFire((InputMock) () -> Constant.EMPTY_STRING, index, () -> 1.0);
+        device.addFire(null, (InputMock) () -> Constant.EMPTY_STRING, index, index, () -> 1.0);
         device.update(1.0);
 
         assertEquals(0.0, device.getHorizontalDirection());
