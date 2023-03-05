@@ -41,6 +41,8 @@ public final class SequenceRenderer implements Rasterbar
 {
     /** Scaling precision. */
     private static final double SCALE_PRECISION = 0.01;
+    /** No alpha clamp. */
+    private static final int NO_ALPHA = 0x00FFFFFF;
 
     /** Filter graphic. */
     private final Graphic graphic;
@@ -63,7 +65,7 @@ public final class SequenceRenderer implements Rasterbar
     /** Pending cursor visibility. */
     private Boolean cursorVisibility = Boolean.TRUE;
 
-    private final IntMap<Integer[]> raster = new IntMap<>();
+    private final IntMap<int[]> raster = new IntMap<>();
     private Renderable rasterRenderer = RenderableVoid.getInstance();
     private int[] bu;
     private int id;
@@ -336,23 +338,26 @@ public final class SequenceRenderer implements Rasterbar
     private void renderRasterbar(Graphic g)
     {
         buf.getRgb(0, 0, w, h, bu, 0, w);
-        for (int i = 0; i < bu.length; i++)
+
+        final int n = bu.length;
+        for (int i = 0; i < n; i++)
         {
             final int y = h - i / w;
-            final Integer[] k = raster.get(bu[i]);
+            final int[] k = raster.get(bu[i] & NO_ALPHA);
             if (k != null)
             {
                 final int r = UtilMath.clamp((y1 + y + offsetY) / factorY, 1, k.length - 1);
                 if (y < marginY)
                 {
-                    bu[i] = k[0].intValue();
+                    bu[i] = k[0];
                 }
-                else if (k.length > 1 && k[r] != null)
+                else if (k.length > 1 && k[r] != Integer.MIN_VALUE)
                 {
-                    bu[i] = k[r].intValue();
+                    bu[i] = k[r];
                 }
             }
         }
+
         buf.setRgb(0, 0, w, h, bu, 0, w);
     }
 
@@ -390,19 +395,22 @@ public final class SequenceRenderer implements Rasterbar
     public void addRasterbarColor(ImageBuffer buffer)
     {
         rasterRenderer = this::renderRasterbar;
-        for (int x = 0; x < buffer.getWidth(); x++)
+        final int w = buffer.getWidth();
+        final int h = buffer.getHeight();
+
+        for (int x = 0; x < w; x++)
         {
-            final int p = buffer.getRgb(x, 0);
-            Integer[] v = raster.get(p);
+            final int p = buffer.getRgb(x, 0) & NO_ALPHA;
+            int[] v = raster.get(p);
             if (v == null)
             {
-                v = new Integer[buffer.getHeight() - 1];
+                v = new int[h - 1];
                 raster.put(p, v);
             }
 
-            for (int y = 0; y < buffer.getHeight() - 1; y++)
+            for (int y = 0; y < h - 1; y++)
             {
-                v[y] = Integer.valueOf(buffer.getRgb(x, y + 1));
+                v[y] = buffer.getRgb(x, y + 1);
             }
         }
     }
