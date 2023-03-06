@@ -158,7 +158,14 @@ public final class CollidableFramedConfig
             final int number = start + framed.getInteger(ATT_NUMBER);
             final Collision collision = createCollision(name, framed, number - start);
             final Integer key = Integer.valueOf(number - 1);
-            collisions.computeIfAbsent(key, k -> new ArrayList<>()).add(collision);
+
+            List<Collision> list = collisions.get(key);
+            if (list == null)
+            {
+                list = new ArrayList<>();
+                collisions.put(key, list);
+            }
+            list.add(collision);
         }
         else
         {
@@ -167,7 +174,14 @@ public final class CollidableFramedConfig
             {
                 final Collision collision = createCollision(name, framed, number - start + 1);
                 final Integer key = Integer.valueOf(number);
-                collisions.computeIfAbsent(key, k -> new ArrayList<>()).add(collision);
+
+                List<Collision> list = collisions.get(key);
+                if (list == null)
+                {
+                    list = new ArrayList<>();
+                    collisions.put(key, list);
+                }
+                list.add(collision);
             }
         }
     }
