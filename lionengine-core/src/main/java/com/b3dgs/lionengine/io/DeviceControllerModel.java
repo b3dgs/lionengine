@@ -187,9 +187,23 @@ public class DeviceControllerModel implements DeviceController
         }
         indexes.add(index);
         actionToDevice.put(action, device.getName());
-        codeToDevices.computeIfAbsent(code, ArrayList::new).add(name);
 
-        fire.computeIfAbsent(index, i -> new ArrayList<>()).add(action);
+        List<String> list = codeToDevices.get(code);
+        if (list == null)
+        {
+            list = new ArrayList<>();
+            codeToDevices.put(code, list);
+        }
+        list.add(name);
+
+        List<DeviceAction> list2 = fire.get(index);
+        if (list2 == null)
+        {
+            list2 = new ArrayList<>();
+            fire.put(index, list2);
+        }
+        list2.add(action);
+
         fired.put(index, Boolean.FALSE);
     }
 
