@@ -35,6 +35,9 @@ public final class Rectangle implements Area
     /** Height. */
     private double height;
 
+    private double maxX;
+    private double maxY;
+
     /**
      * Create a blank rectangle.
      */
@@ -59,6 +62,8 @@ public final class Rectangle implements Area
         this.y = y;
         this.width = width;
         this.height = height;
+        maxX = x + width;
+        maxY = y + height;
     }
 
     /**
@@ -71,6 +76,9 @@ public final class Rectangle implements Area
     {
         x += vx;
         y += vy;
+
+        maxX = x + width;
+        maxY = y + height;
     }
 
     /**
@@ -119,6 +127,8 @@ public final class Rectangle implements Area
         y = ny3;
         width = nx2 - nx1;
         height = ny1 - ny3;
+        maxX = x + width;
+        maxY = y + height;
     }
 
     /**
@@ -135,6 +145,9 @@ public final class Rectangle implements Area
         this.y = y;
         width = w;
         height = h;
+
+        maxX = x + width;
+        maxY = y + height;
     }
 
     /**
@@ -188,10 +201,10 @@ public final class Rectangle implements Area
         {
             return false;
         }
-        return area.getX() + area.getWidthReal() > x
-               && area.getY() + area.getHeightReal() > y
-               && area.getX() < x + width
-               && area.getY() < y + height;
+        final double ax = area.getX();
+        final double ay = area.getY();
+
+        return ax + area.getWidthReal() > x && ay + area.getHeightReal() > y && ax < maxX && ay < maxY;
     }
 
     @Override
@@ -203,15 +216,15 @@ public final class Rectangle implements Area
         }
         final boolean outside = area.getX() < x
                                 || area.getY() < y
-                                || area.getX() + area.getWidthReal() > x + width
-                                || area.getY() + area.getHeightReal() > y + height;
+                                || area.getX() + area.getWidthReal() > maxX
+                                || area.getY() + area.getHeightReal() > maxY;
         return !outside;
     }
 
     @Override
     public boolean contains(double x, double y)
     {
-        final boolean outside = x < this.x || y < this.y || x > this.x + width || y > this.y + height;
+        final boolean outside = x < this.x || y < this.y || x > maxX || y > maxY;
         return !outside;
     }
 

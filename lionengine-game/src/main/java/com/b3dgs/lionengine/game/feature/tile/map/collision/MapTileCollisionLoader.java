@@ -460,7 +460,12 @@ final class MapTileCollisionLoader
         final Tile right = map.getTile(h + 1, v);
 
         final List<CollisionFormula> toRemove = new ArrayList<>();
-        final List<CollisionFormula> list = tilesFormulasList.computeIfAbsent(tile, t -> Collections.emptyList());
+        List<CollisionFormula> list = tilesFormulasList.get(tile);
+        if (list == null)
+        {
+            list = Collections.emptyList();
+        }
+
         final int n = list.size();
         for (int i = 0; i < n; i++)
         {
