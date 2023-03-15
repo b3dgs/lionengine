@@ -203,7 +203,7 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
         }
         else
         {
-            raster.setFrame(animatable.getFrame() + animOffset + animOffset2);
+            raster.setFrame(animatable.getFrame() + animOffset + animOffset2 * animatable.getFrames());
         }
         raster.setMirror(mirrorable.getMirror());
         raster.setOrigin(origin);

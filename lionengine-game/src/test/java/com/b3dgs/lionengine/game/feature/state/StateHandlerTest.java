@@ -142,7 +142,7 @@ final class StateHandlerTest
         Medias.setLoadFromJar(StateHandlerTest.class);
         try
         {
-            final Setup setup = new Setup(Medias.create("Object.xml"));
+            final Setup setup = new Setup(Medias.create("ObjectState.xml"));
             final Featurable featurable = new FeaturableModel(services, setup);
             final StateHandler handler;
             handler = featurable.addFeatureAndGet(new StateHandler(services, setup, Class::getName));
@@ -195,7 +195,7 @@ final class StateHandlerTest
         Medias.setLoadFromJar(StateHandlerTest.class);
         try
         {
-            final Setup setup = new Setup(Medias.create("Object.xml"));
+            final Setup setup = new Setup(Medias.create("ObjectState.xml"));
             final Featurable featurable = new FeaturableModel(services, setup);
             final StateHandler handler;
             handler = featurable.addFeatureAndGet(new StateHandler(services, setup));
@@ -346,7 +346,7 @@ final class StateHandlerTest
         Medias.setLoadFromJar(StateHandlerTest.class);
         try
         {
-            final Setup setup = new Setup(Medias.create("Object.xml"));
+            final Setup setup = new Setup(Medias.create("ObjectState.xml"));
             final Featurable featurable = new FeaturableModel(services, setup);
             final StateHandler handler;
             handler = featurable.addFeatureAndGet(new StateHandler(services, setup));
