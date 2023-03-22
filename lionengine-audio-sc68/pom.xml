@@ -11,7 +11,6 @@
     <packaging>jar</packaging>
     <name>LionEngine Audio Sc68</name>
     <properties>
-        <jna.version>5.8.0</jna.version>
         <radial.base-package>com.b3dgs.lionengine.audio</radial.base-package>
     </properties>
     <dependencies>
@@ -43,8 +42,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.audio.sc68</Bundle-SymbolicName>
-                        <Import-Package> *, org.junit.jupiter.api;resolution:=optional, com.b3dgs.lionengine.util;resolution:=optional 
-                        </Import-Package>
+                        <Import-Package>*, org.junit.jupiter.api;resolution:=optional, com.b3dgs.lionengine.util;resolution:=optional</Import-Package>
                         <Export-Package>com.b3dgs.lionengine.audio.sc68</Export-Package>
                         <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
                         <Require-Bundle>${project.groupId}.core, org.junit.jupiter.api;resolution:=optional</Require-Bundle>

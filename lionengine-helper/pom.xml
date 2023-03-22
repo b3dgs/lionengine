@@ -35,8 +35,7 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.helper</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
-                        <Export-Package> com.b3dgs.lionengine.helper.* 
-                        </Export-Package>
+                        <Export-Package>com.b3dgs.lionengine.helper.*</Export-Package>
                         <Require-Bundle>${project.groupId}.core, org.junit.jupiter.api;resolution:=optional</Require-Bundle>
                     </instructions>
                 </configuration>

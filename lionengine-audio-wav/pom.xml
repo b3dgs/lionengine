@@ -12,7 +12,6 @@
     <name>LionEngine Audio Wav</name>
     <properties>
         <radial.base-package>com.b3dgs.lionengine.audio</radial.base-package>
-        <sonar.skip>true</sonar.skip>
     </properties>
     <dependencies>
         <dependency>
@@ -37,8 +36,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.audio.wav</Bundle-SymbolicName>
-                        <Import-Package> *, org.junit.jupiter.api;resolution:=optional, com.b3dgs.lionengine.util;resolution:=optional 
-                        </Import-Package>
+                        <Import-Package>*, org.junit.jupiter.api;resolution:=optional, com.b3dgs.lionengine.util;resolution:=optional </Import-Package>
                         <Export-Package>com.b3dgs.lionengine.audio.wav</Export-Package>
                         <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
                         <Require-Bundle>${project.groupId}.core, org.junit.jupiter.api;resolution:=optional</Require-Bundle>

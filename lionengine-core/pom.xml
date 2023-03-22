@@ -29,10 +29,8 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.core</Bundle-SymbolicName>
-                        <Export-Package> com.b3dgs.lionengine.* 
-                        </Export-Package>
-                        <Import-Package> javax.xml.namespace, javax.xml.parsers, javax.xml.transform, javax.xml.transform.dom, javax.xml.transform.stream, javax.xml.xpath, org.w3c.dom, org.xml.sax, org.junit.jupiter.api;resolution:=optional 
-                        </Import-Package>
+                        <Export-Package>com.b3dgs.lionengine.*</Export-Package>
+                        <Import-Package>javax.xml.namespace, javax.xml.parsers, javax.xml.transform, javax.xml.transform.dom, javax.xml.transform.stream, javax.xml.xpath, org.w3c.dom, org.xml.sax, org.junit.jupiter.api;resolution:=optional</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
