@@ -227,17 +227,23 @@ public final class DeviceControllerConfig
             {
                 nodeDevice.writeBoolean(ATT_DISABLED, config.isDisabled());
             }
-            final Xml horizontal = nodeDevice.createChild(NODE_HORIZONTAL);
-            for (final DeviceAxis axis : config.getHorizontal())
+            if (!config.getHorizontal().isEmpty())
             {
-                horizontal.writeInteger(ATT_POSITIVE, axis.getPositive().intValue());
-                horizontal.writeInteger(ATT_NEGATIVE, axis.getNegative().intValue());
+                final Xml horizontal = nodeDevice.createChild(NODE_HORIZONTAL);
+                for (final DeviceAxis axis : config.getHorizontal())
+                {
+                    horizontal.writeInteger(ATT_POSITIVE, axis.getPositive().intValue());
+                    horizontal.writeInteger(ATT_NEGATIVE, axis.getNegative().intValue());
+                }
             }
-            final Xml vertical = nodeDevice.createChild(NODE_VERTICAL);
-            for (final DeviceAxis axis : config.getVertical())
+            if (!config.getVertical().isEmpty())
             {
-                vertical.writeInteger(ATT_POSITIVE, axis.getPositive().intValue());
-                vertical.writeInteger(ATT_NEGATIVE, axis.getNegative().intValue());
+                final Xml vertical = nodeDevice.createChild(NODE_VERTICAL);
+                for (final DeviceAxis axis : config.getVertical())
+                {
+                    vertical.writeInteger(ATT_POSITIVE, axis.getPositive().intValue());
+                    vertical.writeInteger(ATT_NEGATIVE, axis.getNegative().intValue());
+                }
             }
             for (final Entry<Integer, Set<Integer>> axis : config.getFire().entrySet())
             {
