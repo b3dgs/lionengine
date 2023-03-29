@@ -235,6 +235,8 @@ public abstract class SequenceGame<W extends WorldGame> extends Sequence
     @Override
     public void onTerminated(boolean hasNextSequence)
     {
+        super.onTerminated(hasNextSequence);
+
         if (!hasNextSequence)
         {
             Engine.terminate();

@@ -58,6 +58,12 @@ public final class SequenceRenderer implements Rasterbar
     private Scanline scanline = ScanlineNone.INSTANCE;
     /** Image buffer (can be <code>null</code> for direct rendering). */
     private ImageBuffer buf;
+    /** Image buffer (can be <code>null</code> for direct rendering). */
+    private ImageBuffer buf2;
+    /** Buffer 2. */
+    private Graphic buf2g;
+    /** Filter used (can be <code>null</code> for direct rendering). */
+    private Transform transformbuf;
     /** Filter used (can be <code>null</code> for direct rendering). */
     private Transform transform;
     /** Current screen used (<code>null</code> if not started). */
@@ -174,6 +180,7 @@ public final class SequenceRenderer implements Rasterbar
         scanline.prepare(config);
 
         setDirect(false);
+        initFilter();
     }
 
     /**
@@ -186,6 +193,17 @@ public final class SequenceRenderer implements Rasterbar
             final Graphic g = screen.getGraphic();
             renderer.render(g);
             scanline.render(g);
+        }
+    }
+
+    /**
+     * Close resources.
+     */
+    void close()
+    {
+        if (filter != null)
+        {
+            filter.close();
         }
     }
 
@@ -216,8 +234,17 @@ public final class SequenceRenderer implements Rasterbar
      */
     void setFilter(Filter filter)
     {
+        if (this.filter != null)
+        {
+            this.filter.close();
+        }
         this.filter = Optional.ofNullable(filter).orElse(FilterNone.INSTANCE);
         transform = getTransform();
+
+        if (w > 0 && h > 0)
+        {
+            initFilter();
+        }
     }
 
     /**
@@ -292,6 +319,26 @@ public final class SequenceRenderer implements Rasterbar
     }
 
     /**
+     * Init filter.
+     */
+    private void initFilter()
+    {
+        final int scale = filter.getScale();
+        if (scale > 1)
+        {
+            buf2 = Graphics.createImageBuffer(w * scale, h * scale);
+            buf2g = buf2.createGraphic();
+            transformbuf = new TransformNone(scale, scale);
+            renderer = this::renderBufferScaled;
+        }
+        else
+        {
+            transform = getTransform();
+            renderer = this::renderBuffer;
+        }
+    }
+
+    /**
      * Get the transform associated to the filter keeping screen scale independent.
      * 
      * @return The associated transform instance.
@@ -299,13 +346,14 @@ public final class SequenceRenderer implements Rasterbar
     private Transform getTransform()
     {
         final Resolution output = config.getOutput();
+        final int scale = filter.getScale();
 
-        double scaleY = output.getHeight() / (double) source.getHeight();
+        double scaleY = output.getHeight() / ((double) source.getHeight() * scale);
 
         if (scaleDivX == 0
             && scaleDivY == 0
             && UtilMath.equals(output.getWidth() / (double) output.getHeight(),
-                               source.getWidth() / (double) source.getHeight(),
+                               source.getWidth() * 2 / ((double) source.getHeight() * scale),
                                SCALE_PRECISION))
         {
             return filter.getTransform(scaleY, scaleY);
@@ -314,17 +362,17 @@ public final class SequenceRenderer implements Rasterbar
         final double scaleX;
         if (scaleDivX == 0 && scaleDivY == 0)
         {
-            scaleX = output.getWidth() / (double) source.getWidth();
+            scaleX = output.getWidth() / ((double) source.getWidth() * scale);
         }
         else if (scaleDivX == 1 && scaleDivY == 1)
         {
-            scaleX = output.getWidth() / (double) source.getWidth() / 2;
-            scaleY = output.getHeight() / (double) source.getHeight() / 2;
+            scaleX = output.getWidth() / ((double) source.getWidth() / 2 * scale);
+            scaleY = output.getHeight() / ((double) source.getHeight() / 2 * scale);
         }
         else
         {
-            scaleX = output.getWidth() / (double) source.getWidth() / scaleDivX;
-            scaleY = output.getHeight() / (double) source.getHeight() / scaleDivY;
+            scaleX = output.getWidth() / ((double) source.getWidth() * scale) / scaleDivX;
+            scaleY = output.getHeight() / ((double) source.getHeight() * scale) / scaleDivY;
         }
 
         return filter.getTransform(scaleX, scaleY);
@@ -381,7 +429,20 @@ public final class SequenceRenderer implements Rasterbar
         target.render(graphic);
 
         g.drawImage(filter.filter(buf), transform, x, y);
+    }
 
+    /**
+     * Buffered rendering with scaled.
+     * 
+     * @param g The graphic output.
+     */
+    private void renderBufferScaled(Graphic g)
+    {
+        target.render(graphic);
+
+        buf2g.drawImage(buf, transformbuf, x, y);
+
+        g.drawImage(filter.filter(buf2), transform, x, y);
     }
 
     @Override

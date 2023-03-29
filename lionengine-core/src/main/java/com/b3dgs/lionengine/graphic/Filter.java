@@ -40,4 +40,22 @@ public interface Filter
      * @return The associated transform.
      */
     Transform getTransform(double scaleX, double scaleY);
+
+    /**
+     * Get the internal buffer scaling.
+     * 
+     * @return 1 by default, more for better quality.
+     */
+    default int getScale()
+    {
+        return 1;
+    }
+
+    /**
+     * Close filter. Does nothing by default.
+     */
+    default void close()
+    {
+        // Nothing by default
+    }
 }

@@ -16,6 +16,12 @@
  */
 package com.b3dgs.lionengine.graphic.filter;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+
 /**
  * The raw scale implementation.
  */
@@ -23,6 +29,11 @@ final class RawScale3x
 {
     /** Scale factor. */
     public static final int SCALE = 3;
+    /** Scale square factor. */
+    public static final int SCALE_S = SCALE * SCALE;
+
+    private static final int MAX_PARALLEL = 4;
+    private static final int COUNT = Runtime.getRuntime().availableProcessors() > MAX_PARALLEL ? MAX_PARALLEL : 1;
 
     /**
      * Compute E0 pixel.
@@ -172,10 +183,15 @@ final class RawScale3x
         return e;
     }
 
+    private final ExecutorService exec = COUNT > 1 ? Executors.newFixedThreadPool(COUNT) : null;
+    private final Function<int[], int[]> get = COUNT > 1 ? this::getScaledDataParallel : this::getScaledDataSingle;
+    /** Cache. */
+    private int[] dstImage = new int[0];
     /** Width. */
     private final int width;
     /** Height. */
     private final int height;
+    private final int th;
 
     /**
      * Internal constructor.
@@ -189,6 +205,26 @@ final class RawScale3x
 
         width = dataWidth;
         height = dataHeight;
+        th = height / COUNT;
+    }
+
+    /**
+     * Close tasks.
+     */
+    void close()
+    {
+        if (exec != null)
+        {
+            exec.shutdown();
+            try
+            {
+                exec.awaitTermination(1, TimeUnit.SECONDS);
+            }
+            catch (@SuppressWarnings("unused") final InterruptedException exception)
+            {
+                // Skip
+            }
+        }
     }
 
     /**
@@ -199,14 +235,68 @@ final class RawScale3x
      */
     int[] getScaledData(int[] srcImage)
     {
-        final int[] dstImage = new int[srcImage.length * SCALE * SCALE];
+        return get.apply(srcImage);
+    }
 
-        for (int y = 0; y < height; y++)
+    /**
+     * Get the scaled data.
+     * 
+     * @param srcImage The image source
+     * @return The data array.
+     */
+    private int[] getScaledDataSingle(int[] srcImage)
+    {
+        final int l = srcImage.length * SCALE_S;
+        if (dstImage.length != l)
         {
-            for (int x = 0; x < width; x++)
+            dstImage = new int[l];
+        }
+        process(srcImage, 0, height);
+
+        return dstImage;
+    }
+
+    /**
+     * Get the scaled data.
+     * 
+     * @param srcImage The image source
+     * @return The data array.
+     */
+    private int[] getScaledDataParallel(int[] srcImage)
+    {
+        final int l = srcImage.length * SCALE_S;
+        if (dstImage.length != l)
+        {
+            dstImage = new int[l];
+        }
+
+        final CountDownLatch latch = new CountDownLatch(COUNT);
+        for (int i = 0; i < COUNT; i++)
+        {
+            final int start = th * i;
+            final int end;
+            if (i == COUNT - 1)
             {
-                process(srcImage, dstImage, x, y);
+                end = height;
             }
+            else
+            {
+                end = Math.min(start + th, height);
+            }
+
+            exec.execute(() ->
+            {
+                process(srcImage, start, end);
+                latch.countDown();
+            });
+        }
+        try
+        {
+            latch.await(1, TimeUnit.SECONDS);
+        }
+        catch (@SuppressWarnings("unused") final InterruptedException exception)
+        {
+            Thread.currentThread().interrupt();
         }
 
         return dstImage;
@@ -243,57 +333,57 @@ final class RawScale3x
         return srcImage[x1 + y1 * width];
     }
 
-    /**
-     * Process filter.
-     * 
-     * @param srcImage The image source.
-     * @param dstImage The image destination.
-     * @param x The location x.
-     * @param y The location y.
-     */
-    // CHECKSTYLE IGNORE LINE: ExecutableStatementCount
-    private void process(int[] srcImage, int[] dstImage, int x, int y)
+    // CHECKSTYLE OFF: MagicNumber
+    // CHECKSTYLE IGNORE LINE: Count
+    private void process(int[] srcImage, int start, int end)
     {
-        final int a = getSourcePixel(srcImage, x - 1, y - 1);
-        final int b = getSourcePixel(srcImage, x, y - 1);
-        final int c = getSourcePixel(srcImage, x + 1, y - 1);
-        final int d = getSourcePixel(srcImage, x - 1, y);
-        final int e = getSourcePixel(srcImage, x, y);
-        final int f = getSourcePixel(srcImage, x + 1, y);
-        final int g = getSourcePixel(srcImage, x - 1, y + 1);
-        final int h = getSourcePixel(srcImage, x, y + 1);
-        final int i = getSourcePixel(srcImage, x + 1, y + 1);
-        int e0 = e;
-        int e1 = e;
-        int e2 = e;
-        int e3 = e;
-        int e4 = e;
-        int e5 = e;
-        int e6 = e;
-        int e7 = e;
-        int e8 = e;
-
-        if (b != h && d != f)
+        for (int y = start; y < end; y++)
         {
-            e0 = computeE0(b, d, e);
-            e1 = computeE1(a, b, c, d, e, f);
-            e2 = computeE2(b, e, f);
-            e3 = computeE3(a, b, d, e, g, h);
-            e4 = e;
-            e5 = computeE5(b, c, e, f, h, i);
-            e6 = computeE6(d, e, h);
-            e7 = computeE7(d, e, f, g, h, i);
-            e8 = computeE8(e, f, h);
-        }
+            for (int x = 0; x < width; x++)
+            {
+                final int a = getSourcePixel(srcImage, x - 1, y - 1);
+                final int b = getSourcePixel(srcImage, x, y - 1);
+                final int c = getSourcePixel(srcImage, x + 1, y - 1);
+                final int d = getSourcePixel(srcImage, x - 1, y);
+                final int e = getSourcePixel(srcImage, x, y);
+                final int f = getSourcePixel(srcImage, x + 1, y);
+                final int g = getSourcePixel(srcImage, x - 1, y + 1);
+                final int h = getSourcePixel(srcImage, x, y + 1);
+                final int i = getSourcePixel(srcImage, x + 1, y + 1);
+                int e0 = e;
+                int e1 = e;
+                int e2 = e;
+                int e3 = e;
+                int e4 = e;
+                int e5 = e;
+                int e6 = e;
+                int e7 = e;
+                int e8 = e;
 
-        setDestPixel(dstImage, x * SCALE, y * SCALE, e0);
-        setDestPixel(dstImage, x * SCALE + 1, y * SCALE, e1);
-        setDestPixel(dstImage, x * SCALE + 2, y * SCALE, e2);
-        setDestPixel(dstImage, x * SCALE, y * SCALE + 1, e3);
-        setDestPixel(dstImage, x * SCALE + 1, y * SCALE + 1, e4);
-        setDestPixel(dstImage, x * SCALE + 2, y * SCALE + 1, e5);
-        setDestPixel(dstImage, x * SCALE, y * SCALE + 2, e6);
-        setDestPixel(dstImage, x * SCALE + 1, y * SCALE + 2, e7);
-        setDestPixel(dstImage, x * SCALE + 2, y * SCALE + 2, e8);
+                if (b != h && d != f)
+                {
+                    e0 = computeE0(b, d, e);
+                    e1 = computeE1(a, b, c, d, e, f);
+                    e2 = computeE2(b, e, f);
+                    e3 = computeE3(a, b, d, e, g, h);
+                    e4 = e;
+                    e5 = computeE5(b, c, e, f, h, i);
+                    e6 = computeE6(d, e, h);
+                    e7 = computeE7(d, e, f, g, h, i);
+                    e8 = computeE8(e, f, h);
+                }
+
+                setDestPixel(dstImage, x * SCALE, y * SCALE, e0);
+                setDestPixel(dstImage, x * SCALE + 1, y * SCALE, e1);
+                setDestPixel(dstImage, x * SCALE + 2, y * SCALE, e2);
+                setDestPixel(dstImage, x * SCALE, y * SCALE + 1, e3);
+                setDestPixel(dstImage, x * SCALE + 1, y * SCALE + 1, e4);
+                setDestPixel(dstImage, x * SCALE + 2, y * SCALE + 1, e5);
+                setDestPixel(dstImage, x * SCALE, y * SCALE + 2, e6);
+                setDestPixel(dstImage, x * SCALE + 1, y * SCALE + 2, e7);
+                setDestPixel(dstImage, x * SCALE + 2, y * SCALE + 2, e8);
+            }
+        }
+        // CHECKSTYLE ON: MagicNumber
     }
 }

@@ -29,6 +29,17 @@ import com.b3dgs.lionengine.graphic.Transform;
  */
 public final class FilterHq3x implements Filter
 {
+    /** Cache width. */
+    private int width;
+    /** Cache height. */
+    private int height;
+    /** Cache data. */
+    private int[] srcData;
+    /** Cache image. */
+    private ImageBuffer image;
+    /** Cache scaler. */
+    private RawScale3x scaler;
+
     /**
      * Create an Hq3x filter.
      */
@@ -44,15 +55,21 @@ public final class FilterHq3x implements Filter
     @Override
     public ImageBuffer filter(ImageBuffer source)
     {
-        final int width = source.getWidth();
-        final int height = source.getHeight();
-        final int[] srcData = new int[width * height];
+        if (width != source.getWidth() || height != source.getHeight())
+        {
+            width = source.getWidth();
+            height = source.getHeight();
+            srcData = new int[width * height];
+            if (scaler != null)
+            {
+                scaler.close();
+            }
+            scaler = new RawScale3x(width, height);
+            image = Graphics.createImageBuffer(width * RawScale3x.SCALE,
+                                               height * RawScale3x.SCALE,
+                                               source.getTransparentColor());
+        }
         source.getRgb(0, 0, width, height, srcData, 0, width);
-
-        final RawScale3x scaler = new RawScale3x(width, height);
-        final ImageBuffer image = Graphics.createImageBuffer(width * RawScale3x.SCALE,
-                                                             height * RawScale3x.SCALE,
-                                                             source.getTransparentColor());
         image.setRgb(0,
                      0,
                      width * RawScale3x.SCALE,
@@ -60,6 +77,7 @@ public final class FilterHq3x implements Filter
                      scaler.getScaledData(srcData),
                      0,
                      width * RawScale3x.SCALE);
+
         return image;
     }
 

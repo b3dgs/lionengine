@@ -22,13 +22,16 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Transform;
 
 /**
- * HQ2X implementation.
+ * CRT implementation.
  * <p>
  * This class is Thread-Safe.
  * </p>
  */
-public final class FilterHq2x implements Filter
+public final class FilterCrt implements Filter
 {
+    /** Scale value. */
+    private final int scale;
+
     /** Cache width. */
     private int width;
     /** Cache height. */
@@ -38,14 +41,18 @@ public final class FilterHq2x implements Filter
     /** Cache image. */
     private ImageBuffer image;
     /** Cache scaler. */
-    private RawScale2x scaler;
+    private CrtScale scaler;
 
     /**
-     * Create an Hq2x filter.
+     * Create a CRT filter.
+     * 
+     * @param scale The scale value.
      */
-    public FilterHq2x()
+    public FilterCrt(int scale)
     {
         super();
+
+        this.scale = scale;
     }
 
     /*
@@ -64,19 +71,11 @@ public final class FilterHq2x implements Filter
             {
                 scaler.close();
             }
-            scaler = new RawScale2x(width, height);
-            image = Graphics.createImageBuffer(width * RawScale2x.SCALE,
-                                               height * RawScale2x.SCALE,
-                                               source.getTransparentColor());
+            scaler = new CrtScale(width, height, scale);
+            image = Graphics.createImageBuffer(width * scale, height * scale, source.getTransparentColor());
         }
-        source.getRgb(0, 0, width, height, srcData, 0, width);
-        image.setRgb(0,
-                     0,
-                     width * RawScale2x.SCALE,
-                     height * RawScale2x.SCALE,
-                     scaler.getScaledData(srcData),
-                     0,
-                     width * RawScale2x.SCALE);
+        srcData = source.getRgbRef();
+        image.setRgb(0, 0, width * scale, height * scale, scaler.getScaled(srcData), 0, width * scale);
 
         return image;
     }
@@ -85,8 +84,14 @@ public final class FilterHq2x implements Filter
     public Transform getTransform(double scaleX, double scaleY)
     {
         final Transform transform = Graphics.createTransform();
-        transform.scale(scaleX / RawScale2x.SCALE, scaleY / RawScale2x.SCALE);
+        transform.scale(scaleX / scale, scaleY / scale);
         return transform;
+    }
+
+    @Override
+    public int getScale()
+    {
+        return scale;
     }
 
     @Override

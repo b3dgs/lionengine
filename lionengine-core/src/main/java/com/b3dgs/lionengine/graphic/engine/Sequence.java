@@ -227,6 +227,10 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
      */
     public final void setScanline(Scanline scanline)
     {
+        if (scanline != null)
+        {
+            scanline.prepare(config);
+        }
         for (int i = 0; i < renderer.length; i++)
         {
             renderer[i].setScanline(scanline);
@@ -473,12 +477,14 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
 
     /**
      * {@inheritDoc}
-     * Does nothing by default.
      */
     @Override
     public void onTerminated(boolean hasNextSequence)
     {
-        // Nothing by default
+        for (int i = 0; i < renderer.length; i++)
+        {
+            renderer[i].close();
+        }
     }
 
     /*

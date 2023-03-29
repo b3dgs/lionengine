@@ -16,6 +16,12 @@
  */
 package com.b3dgs.lionengine.graphic.filter;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+
 /**
  * The raw scale implementation.
  */
@@ -26,12 +32,18 @@ final class RawScale2x
     /** Scale square factor. */
     public static final int SCALE_S = SCALE * SCALE;
 
+    private static final int MAX_PARALLEL = 4;
+    private static final int COUNT = Runtime.getRuntime().availableProcessors() > MAX_PARALLEL ? MAX_PARALLEL : 1;
+
+    private final ExecutorService exec = COUNT > 1 ? Executors.newFixedThreadPool(COUNT) : null;
+    private final Function<int[], int[]> get = COUNT > 1 ? this::getScaledDataParallel : this::getScaledDataSingle;
     /** Width. */
     private final int width;
     /** Height. */
     private final int height;
     /** Cache. */
     private int[] dstImage = new int[0];
+    private final int th;
 
     /**
      * Internal constructor.
@@ -45,6 +57,55 @@ final class RawScale2x
 
         width = dataWidth;
         height = dataHeight;
+        th = height / COUNT;
+    }
+
+    /**
+     * Close tasks.
+     */
+    void close()
+    {
+        if (exec != null)
+        {
+            exec.shutdown();
+            try
+            {
+                exec.awaitTermination(1, TimeUnit.SECONDS);
+            }
+            catch (@SuppressWarnings("unused") final InterruptedException exception)
+            {
+                // Skip
+            }
+        }
+    }
+
+    /**
+     * Get the scaled data.
+     * 
+     * @param srcImage The image source
+     * @return The data array.
+     */
+    int[] getScaledData(int[] srcImage)
+    {
+        return get.apply(srcImage);
+    }
+
+    /**
+     * Get the scaled data.
+     * 
+     * @param srcImage The image source
+     * @return The data array.
+     */
+    private int[] getScaledDataSingle(int[] srcImage)
+    {
+        final int l = srcImage.length * SCALE_S;
+        if (dstImage.length != l)
+        {
+            dstImage = new int[l];
+        }
+        process(srcImage, 0, height);
+
+        return dstImage;
     }
 
     /**
@@ -53,7 +114,7 @@ final class RawScale2x
      * @param srcImage The image source.
      * @return The data array.
      */
-    int[] getScaledData(int[] srcImage)
+    private int[] getScaledDataParallel(int[] srcImage)
     {
         final int l = srcImage.length * SCALE_S;
         if (dstImage.length != l)
@@ -61,28 +122,36 @@ final class RawScale2x
             dstImage = new int[l];
         }
 
-        for (int y = 0; y < height; y++)
+        final CountDownLatch latch = new CountDownLatch(COUNT);
+        for (int i = 0; i < COUNT; i++)
         {
-            for (int x = 0; x < width; x++)
+            final int start = th * i;
+            final int end;
+            if (i == COUNT - 1)
             {
-                process(srcImage, dstImage, x, y);
+                end = height;
             }
+            else
+            {
+                end = Math.min(start + th, height);
+            }
+
+            exec.execute(() ->
+            {
+                process(srcImage, start, end);
+                latch.countDown();
+            });
+        }
+        try
+        {
+            latch.await(1, TimeUnit.SECONDS);
+        }
+        catch (@SuppressWarnings("unused") final InterruptedException exception)
+        {
+            Thread.currentThread().interrupt();
         }
 
         return dstImage;
-    }
-
-    /**
-     * Set destination pixel.
-     * 
-     * @param dstImage The image destination.
-     * @param x The location x.
-     * @param y The location y.
-     * @param p The pixel destination value.
-     */
-    private void setDestPixel(int[] dstImage, int x, int y, int p)
-    {
-        dstImage[x + y * width * SCALE] = p;
     }
 
     /**
@@ -103,36 +172,36 @@ final class RawScale2x
         return srcImage[x1 + y1 * width];
     }
 
-    /**
-     * Process filter.
-     * 
-     * @param srcImage The image source.
-     * @param dstImage The image destination.
-     * @param x The location x.
-     * @param y The location y.
-     */
-    private void process(int[] srcImage, int[] dstImage, int x, int y)
+    // CHECKSTYLE OFF: MagicNumber
+    private void process(int[] srcImage, int start, int end)
     {
-        final int b = getSourcePixel(srcImage, x, y - 1);
-        final int d = getSourcePixel(srcImage, x - 1, y);
-        final int e = getSourcePixel(srcImage, x, y);
-        final int f = getSourcePixel(srcImage, x + 1, y);
-        final int h = getSourcePixel(srcImage, x, y + 1);
-        int e0 = e;
-        int e1 = e;
-        int e2 = e;
-        int e3 = e;
-        if (b != h && d != f)
+        for (int y = start; y < end; y++)
         {
-            e0 = d == b ? d : e;
-            e1 = b == f ? f : e;
-            e2 = d == h ? d : e;
-            e3 = h == f ? f : e;
-        }
+            for (int x = 0; x < width; x++)
+            {
+                final int b = getSourcePixel(srcImage, x, y - 1);
+                final int d = getSourcePixel(srcImage, x - 1, y);
+                final int e = getSourcePixel(srcImage, x, y);
+                final int f = getSourcePixel(srcImage, x + 1, y);
+                final int h = getSourcePixel(srcImage, x, y + 1);
+                int e0 = e;
+                int e1 = e;
+                int e2 = e;
+                int e3 = e;
+                if (b != h && d != f)
+                {
+                    e0 = d == b ? d : e;
+                    e1 = b == f ? f : e;
+                    e2 = d == h ? d : e;
+                    e3 = h == f ? f : e;
+                }
 
-        setDestPixel(dstImage, x * SCALE, y * SCALE, e0);
-        setDestPixel(dstImage, x * SCALE + 1, y * SCALE, e1);
-        setDestPixel(dstImage, x * SCALE, y * SCALE + 1, e2);
-        setDestPixel(dstImage, x * SCALE + 1, y * SCALE + 1, e3);
+                dstImage[x * SCALE + y * SCALE * width * SCALE] = e0;
+                dstImage[x * SCALE + 1 + y * SCALE * width * SCALE] = e1;
+                dstImage[x * SCALE + (y * SCALE + 1) * width * SCALE] = e2;
+                dstImage[x * SCALE + 1 + (y * SCALE + 1) * width * SCALE] = e3;
+            }
+        }
     }
+    // CHECKSTYLE ON: MagicNumber
 }
