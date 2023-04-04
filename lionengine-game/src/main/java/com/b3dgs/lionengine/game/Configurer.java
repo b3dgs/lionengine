@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.XmlReader;
 
 /**
- * Allows to retrieve informations from an external XML configuration file.
+ * Allows to retrieve information from an external XML configuration file.
  */
 public class Configurer implements AttributesReader
 {
