@@ -43,16 +43,17 @@ public class Bar implements Renderable
     private int hBorder;
     /** Vertical border. */
     private int vBorder;
-    /** Background color. */
-    private ColorRgba background;
-    /** Foreground color. */
-    private ColorRgba foreground;
-    /** Gradient color. */
-    private ColorGradient gradientColor;
     /** Left-Right referential. */
     private boolean leftRight = true;
     /** Up-Down referential. */
     private boolean upDown;
+
+    /** Implemented Extract class refactoring method
+     *  As Bar class was responsible to set the color
+     *  Created new class BackgroundColor and
+     *  moved all the methods and logic into that new class
+     **/
+    private final BackgroundColor backgroundColor = new BackgroundColor();
 
     /**
      * Create a bar.
@@ -68,9 +69,17 @@ public class Bar implements Renderable
         maxHeight = height;
     }
 
+    /**
+     * Performed Decompose conditional refactoring.
+     * Refactor the code by removing multiple if else conditions.
+     * And directly checking the condition for leftRight and upDown.
+     */
     @Override
     public void render(Graphic g)
     {
+        ColorRgba background = backgroundColor.getBackground();
+        ColorRgba foreground = backgroundColor.getForeground();
+        ColorGradient gradientColor = backgroundColor.getGradientColor();
         if (background != null)
         {
             g.setColor(background);
@@ -81,30 +90,18 @@ public class Bar implements Renderable
         final int ry = maxHeight - vBorder * 2;
         if (!(pWidth == 0 || pHeight == 0))
         {
-            final int x1;
-            final int x2;
-            if (leftRight)
+            int x1 = x + hBorder;
+            final int x2 = calculateCeiling(rx, pWidth);;
+            if (!leftRight)
             {
-                x1 = x + hBorder;
-                x2 = (int) Math.ceil(rx * (pWidth / 100.0));
-            }
-            else
-            {
-                x1 = x + hBorder + (int) Math.ceil(rx - pWidth / 100.0 * rx);
-                x2 = (int) Math.ceil(rx * (pWidth / 100.0));
+                x1 = x1 + (int) Math.ceil(rx - pWidth / 100.0 * rx);
             }
 
-            final int y1;
-            final int y2;
-            if (upDown)
+            int y1 = y + vBorder;
+            final int y2 = calculateCeiling(ry, pHeight);
+            if (!upDown)
             {
-                y1 = y + vBorder;
-                y2 = (int) Math.ceil(ry * (pHeight / 100.0));
-            }
-            else
-            {
-                y1 = y + vBorder + (int) Math.floor(ry - pHeight / 100.0 * ry);
-                y2 = (int) Math.ceil(ry * (pHeight / 100.0));
+                y1 = y1 + (int) Math.floor(ry - pHeight / 100.0 * ry);
             }
 
             if (foreground != null)
@@ -112,6 +109,7 @@ public class Bar implements Renderable
                 g.setColor(foreground);
                 g.drawRect(x1, y1, x2, y2, true);
             }
+
             if (gradientColor != null)
             {
                 g.setColorGradient(gradientColor);
@@ -119,6 +117,19 @@ public class Bar implements Renderable
             }
         }
     }
+
+    /**
+     * Performed Extract method refactoring.
+     * Refactor the code by creating new method to find the ceiling of two values.
+     * And used this method in the render method
+     *
+     * @param xValue refers to the first value for ceiling
+     * @param yValue refers to the second value for ceiling
+     */
+    private int calculateCeiling(int xValue, int yValue) {
+        return (int) Math.ceil(xValue * (yValue / 100));
+    }
+
 
     /**
      * Set the horizontal rendering referential.
@@ -160,8 +171,7 @@ public class Bar implements Renderable
      */
     public void setColor(ColorRgba background, ColorRgba foreground)
     {
-        setColorBackground(background);
-        setColorForeground(foreground);
+        backgroundColor.setColor(background, foreground);
     }
 
     /**
@@ -171,7 +181,7 @@ public class Bar implements Renderable
      */
     public void setColorBackground(ColorRgba color)
     {
-        background = color;
+        backgroundColor.setColorBackground(color);
     }
 
     /**
@@ -181,12 +191,12 @@ public class Bar implements Renderable
      */
     public void setColorForeground(ColorRgba color)
     {
-        foreground = color;
+        backgroundColor.setColorForeground(color);
     }
 
     /**
      * Set a gradient color from point 1 with color 1 to point2 with color 2.
-     * 
+     *
      * @param color1 The first color.
      * @param color2 The last color.
      */
@@ -197,7 +207,7 @@ public class Bar implements Renderable
 
     /**
      * Set a gradient color from point 1 with color 1 to point2 with color 2.
-     * 
+     *
      * @param x1 The first horizontal location.
      * @param y1 The first vertical location.
      * @param color1 The first color.
@@ -207,7 +217,7 @@ public class Bar implements Renderable
      */
     public void setColorGradient(int x1, int y1, ColorRgba color1, int x2, int y2, ColorRgba color2)
     {
-        gradientColor = new ColorGradient(x1, y1, color1, x2, y2, color2);
+        backgroundColor.setColorGradient(x1, y1, color1, x2, y2, color2);
     }
 
     /**

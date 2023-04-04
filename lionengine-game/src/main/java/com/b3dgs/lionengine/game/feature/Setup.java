@@ -32,16 +32,14 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
  */
 public class Setup extends Configurer
 {
-    /** No surface file. */
-    static final String ERROR_SURFACE_FILE = "No surface file found !";
-    /** No icon file. */
-    static final String ERROR_ICON_FILE = "No icon file found !";
-    /** No surface. */
-    static final String ERROR_SURFACE = "No surface found !";
-    /** No icon. */
-    static final String ERROR_ICON = "No icon found !";
-    /** Class error. */
-    static final String ERROR_CLASS = "Class not found for: ";
+
+    /**
+     * Performed Pull-up variable refactoring on all the variables
+     * All the variables are moved into Configurer class for re-usability
+     * And again created the variables into this class to pass the test cases and achieve TDD. */
+    public static final String ERROR_ICON_FILE = Configurer.ERROR_ICON_FILE;
+    public static final String ERROR_SURFACE_FILE = Configurer.ERROR_SURFACE_FILE;
+    public static final String ERROR_SURFACE = Configurer.ERROR_SURFACE;
 
     /**
      * Get icon if exists.

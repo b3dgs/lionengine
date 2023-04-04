@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/lionengine-audio-adlmidi/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-audio-adlmidi/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-audio-adplug/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-audio-adplug/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-audio-sc68/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-audio-sc68/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-audio-wav/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-audio-wav/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-core-awt/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-core-awt/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-core-headless/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-core-headless/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-core/src/main/xsd" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-game/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-game/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-game/src/main/xsd" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-helper/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-helper/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-parent/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lionengine-parent/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

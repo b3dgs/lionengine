@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/lionengine.iml" filepath="$PROJECT_DIR$/.idea/lionengine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lionengine-audio-adlmidi/lionengine-audio-adlmidi.iml" filepath="$PROJECT_DIR$/lionengine-audio-adlmidi/lionengine-audio-adlmidi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lionengine-audio-adplug/lionengine-audio-adplug.iml" filepath="$PROJECT_DIR$/lionengine-audio-adplug/lionengine-audio-adplug.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lionengine-audio-sc68/lionengine-audio-sc68.iml" filepath="$PROJECT_DIR$/lionengine-audio-sc68/lionengine-audio-sc68.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lionengine-audio-wav/lionengine-audio-wav.iml" filepath="$PROJECT_DIR$/lionengine-audio-wav/lionengine-audio-wav.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lionengine-core/lionengine-core.iml" filepath="$PROJECT_DIR$/lionengine-core/lionengine-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lionengine-core-awt/lionengine-core-awt.iml" filepath="$PROJECT_DIR$/lionengine-core-awt/lionengine-core-awt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lionengine-core-headless/lionengine-core-headless.iml" filepath="$PROJECT_DIR$/lionengine-core-headless/lionengine-core-headless.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lionengine-game/lionengine-game.iml" filepath="$PROJECT_DIR$/lionengine-game/lionengine-game.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lionengine-helper/lionengine-helper.iml" filepath="$PROJECT_DIR$/lionengine-helper/lionengine-helper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lionengine-parent/lionengine-parent.iml" filepath="$PROJECT_DIR$/lionengine-parent/lionengine-parent.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/lionengine-core/pom.xml" />
+        <option value="$PROJECT_DIR$/lionengine-game/pom.xml" />
+        <option value="$PROJECT_DIR$/lionengine-helper/pom.xml" />
+        <option value="$PROJECT_DIR$/lionengine-parent/pom.xml" />
+        <option value="$PROJECT_DIR$/lionengine-core-awt/pom.xml" />
+        <option value="$PROJECT_DIR$/lionengine-audio-wav/pom.xml" />
+        <option value="$PROJECT_DIR$/lionengine-audio-sc68/pom.xml" />
+        <option value="$PROJECT_DIR$/lionengine-audio-adplug/pom.xml" />
+        <option value="$PROJECT_DIR$/lionengine-audio-adlmidi/pom.xml" />
+        <option value="$PROJECT_DIR$/lionengine-core-headless/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" default="true" project-jdk-name="openjdk-19" project-jdk-type="JavaSDK" />
+</project>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="lionengine-audio-sc68" />
+        <module name="lionengine-audio-adplug" />
+        <module name="lionengine-core" />
+        <module name="lionengine-audio-adlmidi" />
+        <module name="lionengine-helper" />
+        <module name="lionengine-audio-wav" />
+        <module name="lionengine-core-awt" />
+        <module name="lionengine-game" />
+        <module name="lionengine-core-headless" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="lionengine-audio-adlmidi" target="1.8" />
+      <module name="lionengine-audio-adplug" target="1.8" />
+      <module name="lionengine-audio-sc68" target="1.8" />
+      <module name="lionengine-audio-wav" target="1.8" />
+      <module name="lionengine-core" target="1.8" />
+      <module name="lionengine-core-awt" target="1.8" />
+      <module name="lionengine-core-headless" target="1.8" />
+      <module name="lionengine-game" target="1.8" />
+      <module name="lionengine-helper" target="1.8" />
+      <module name="lionengine-parent" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

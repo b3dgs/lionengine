@@ -42,6 +42,16 @@ public class Configurer implements AttributesReader
     /** Root node. */
     private final Xml root;
 
+    protected static final String ERROR_SURFACE_FILE = "No surface file found !";
+    /** No icon file. */
+    protected static final String ERROR_ICON_FILE = "No icon file found !";
+    /** No surface. */
+    protected static final String ERROR_SURFACE = "No surface found !";
+    /** No icon. */
+    protected static final String ERROR_ICON = "No icon found !";
+    /** Class error. */
+    protected static final String ERROR_CLASS = "Class not found for: ";
+
     /**
      * Load data from configuration media.
      * 
