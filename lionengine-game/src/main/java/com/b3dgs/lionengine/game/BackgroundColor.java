@@ -3,6 +3,8 @@ package com.b3dgs.lionengine.game;
 import com.b3dgs.lionengine.graphic.ColorGradient;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 
+/**
+ * Performed Extract class refactoring as Bar.java was responsible for background color as well*/
 public class BackgroundColor {
 
 
