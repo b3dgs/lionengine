@@ -38,6 +38,8 @@ public class SpriteDigitImpl implements SpriteDigit
     private final SpriteTiled[] digits;
     /** Number of digits. */
     private final int digitNumber;
+    /** Old value. */
+    private int old = Integer.MIN_VALUE;
 
     /**
      * Create sprite digit.
@@ -94,19 +96,23 @@ public class SpriteDigitImpl implements SpriteDigit
     @Override
     public void setValue(int value)
     {
-        final String str = String.valueOf(value);
-        final int n = str.length() - 1;
-        for (int i = digitNumber - 1; i > -1; i--)
+        if (value != old)
         {
-            if (i > n)
+            final String str = String.valueOf(value);
+            final int n = str.length() - 1;
+            for (int i = digitNumber - 1; i > -1; i--)
             {
-                digits[i].setTile(0);
+                if (i > n)
+                {
+                    digits[i].setTile(0);
+                }
+                else
+                {
+                    final int v = Integer.parseInt(String.valueOf(str.charAt(i)));
+                    digits[digitNumber - (n - i) - 1].setTile(1 + v);
+                }
             }
-            else
-            {
-                final int v = Integer.parseInt(String.valueOf(str.charAt(i)));
-                digits[digitNumber - (n - i) - 1].setTile(1 + v);
-            }
+            old = value;
         }
     }
 
