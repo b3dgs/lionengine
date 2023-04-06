@@ -207,8 +207,10 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
     @Override
     public void removeAccept(Integer group)
     {
-        accepted.remove(group);
-        acceptedList.remove(group);
+        if (accepted.remove(group))
+        {
+            acceptedList.remove(group);
+        }
     }
 
     @Override
