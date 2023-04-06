@@ -231,9 +231,9 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         {
             scanline.prepare(config);
         }
-        for (int i = 0; i < renderer.length; i++)
+        if (renderer.length - 1 > -1)
         {
-            renderer[i].setScanline(scanline);
+            renderer[renderer.length - 1].setScanline(scanline);
         }
     }
 

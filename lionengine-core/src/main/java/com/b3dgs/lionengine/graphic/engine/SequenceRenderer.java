@@ -366,8 +366,8 @@ public final class SequenceRenderer implements Rasterbar
         }
         else if (scaleDivX == 1 && scaleDivY == 1)
         {
-            scaleX = output.getWidth() / ((double) source.getWidth() / 2 * scale);
-            scaleY = output.getHeight() / ((double) source.getHeight() / 2 * scale);
+            scaleX = output.getWidth() / ((double) source.getWidth() * scale) / 2;
+            scaleY = output.getHeight() / ((double) source.getHeight() * scale) / 2;
         }
         else
         {
