@@ -325,7 +325,7 @@ final class UtilReflectionTest
                                 + Arrays.asList(Integer.class);
         assertThrows(NoSuchMethodException.class,
                      () -> UtilReflection.getCompatibleConstructor(String.class,
-                                                                   UtilReflection.getParamTypes(new Integer(1))),
+                                                                   UtilReflection.getParamTypes(Integer.valueOf(1))),
                      expected);
     }
 
@@ -353,7 +353,7 @@ final class UtilReflectionTest
                                 + Arrays.asList(Integer.class);
         assertThrows(NoSuchMethodException.class,
                      () -> UtilReflection.getCompatibleConstructorParent(String.class,
-                                                                         UtilReflection.getParamTypes(new Integer(1))),
+                                                                         UtilReflection.getParamTypes(Integer.valueOf(1))),
                      expected);
     }
 
