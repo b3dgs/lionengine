@@ -16,11 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature.body;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Represents the body data.
@@ -46,7 +46,7 @@ public final class BodyConfig
      * @return The config loaded.
      * @throws LionEngineException If unable to read node.
      */
-    public static BodyConfig imports(Configurer configurer)
+    public static BodyConfig imports(AttributesReader configurer)
     {
         Check.notNull(configurer);
 
