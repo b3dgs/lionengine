@@ -10,11 +10,11 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  deploy:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest]
+        os: [windows-latest]
         jdk: [8]
     runs-on: ${{ matrix.os }}
     env:
@@ -60,6 +60,39 @@ jobs:
        env:
          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+  
+  sonar:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        jdk: [17]
+    runs-on: ${{ matrix.os }}
+    env:
+      JDK_VERSION: ${{ matrix.jdk }}
+      AUDIODEV: "null"
+
+    steps:
+     - name: Checkout
+       uses: actions/checkout@v3.5.0
+
+     - name: Cache
+       uses: actions/cache@v3.3.1
+       with:
+          path: ~/.m2/repository
+          key: maven-${{ matrix.os }}-java${{ matrix.jdk }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            maven-${{ matrix.os }}-java${{ matrix.jdk }}-
+            maven-${{ matrix.os }}-
+
+     - name: Set JDK
+       uses: actions/setup-java@v3.11.0
+       with:
+         java-version: |
+           ${{ matrix.jdk }}
+         distribution: 'temurin'
+         mvn-toolchain-id: |
+           JavaSE-17
 
      - name: Run sonar
        uses: coactions/setup-xvfb@v1
@@ -69,3 +102,4 @@ jobs:
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
