@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature;
 import java.lang.reflect.Constructor;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -178,21 +177,47 @@ public class Factory implements HandlerListener
     {
         for (final Media media : folder.getMedias())
         {
-            if (media.getName().endsWith(FILE_DATA_DOT_EXTENSION))
-            {
-                final Collection<Featurable> cached = new ArrayList<>();
-                for (int i = 0; i < count; i++)
-                {
-                    cached.add(spawner.spawn(media, 0, 0));
-                }
-                for (final Featurable featurable : cached)
-                {
-                    featurable.getFeature(Identifiable.class).destroy();
-                    notifyHandlableRemoved(featurable);
-                }
-                cached.clear();
-            }
+            createCacheMedia(spawner, media, count);
         }
+    }
+
+    /**
+     * Create cached media from.
+     * 
+     * @param spawner The spawner reference.
+     * @param media The media reference.
+     * @param count The caches number.
+     */
+    public void createCacheMedia(Spawner spawner, Media media, int count)
+    {
+        if (media.getName().endsWith(FILE_DATA_DOT_EXTENSION) && media.exists())
+        {
+            final List<Featurable> cached = new ArrayList<>();
+            for (int i = 0; i < count; i++)
+            {
+                cached.add(spawner.spawn(media, 0, 0));
+            }
+            final int n = cached.size();
+            for (int i = 0; i < n; i++)
+            {
+                final Featurable featurable = cached.get(i);
+                featurable.getFeature(Identifiable.class).destroy();
+                notifyHandlableRemoved(featurable);
+            }
+            cached.clear();
+        }
+    }
+
+    /**
+     * Clear cache.
+     */
+    public void clearCache()
+    {
+        for (final Deque<Featurable> featurables : cache.values())
+        {
+            featurables.clear();
+        }
+        cache.clear();
     }
 
     /**
