@@ -46,7 +46,7 @@ public class DeviceControllerModel implements DeviceController
     private final Map<String, Boolean> disabledVertical = new HashMap<>();
     private final Map<Integer, List<String>> codeToDevices = new HashMap<>();
 
-    private final InputDeviceListener listener = (push, c, flag) ->
+    private final InputDeviceListener listener = (index, push, c, flag) ->
     {
         final int n = listeners.size();
         for (int i = 0; i < n; i++)
@@ -54,11 +54,7 @@ public class DeviceControllerModel implements DeviceController
             final List<String> names = codeToDevices.get(push);
             if (names != null)
             {
-                final int k = names.size();
-                for (int j = 0; j < k; j++)
-                {
-                    listeners.get(i).onDeviceChanged(names.get(j), push, c, flag);
-                }
+                listeners.get(i).onDeviceChanged(names.get(index.intValue()), push, c, flag);
             }
         }
     };

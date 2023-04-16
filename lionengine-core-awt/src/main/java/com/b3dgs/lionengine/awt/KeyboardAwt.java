@@ -72,6 +72,8 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     private final Collection<Integer> keys = new HashSet<>();
     /** Pressed states. */
     private final Collection<Integer> pressed = new HashSet<>();
+    /** Index value. */
+    private final Integer index = Integer.valueOf(0);
     /** Last key code. */
     private Integer lastKey;
     /** Last key name. */
@@ -205,7 +207,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
             final int n = listeners.size();
             for (int i = 0; i < n; i++)
             {
-                listeners.get(i).onDeviceChanged(key, lastKeyName, true);
+                listeners.get(i).onDeviceChanged(index, key, lastKeyName, true);
             }
             lastKey = key;
         }
@@ -230,7 +232,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
         final int n = listeners.size();
         for (int i = 0; i < n; i++)
         {
-            listeners.get(i).onDeviceChanged(key, lastKeyName, false);
+            listeners.get(i).onDeviceChanged(index, key, lastKeyName, false);
         }
 
         lastKeyName = EMPTY_KEY_NAME;

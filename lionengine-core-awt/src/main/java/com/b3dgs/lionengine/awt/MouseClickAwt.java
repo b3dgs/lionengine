@@ -43,6 +43,8 @@ final class MouseClickAwt implements MouseListener
     private final Collection<Integer> clicked = new HashSet<>();
     /** Push listener. */
     private final ListenableModel<InputDeviceListener> listeners;
+    /** Index value. */
+    private final Integer index = Integer.valueOf(0);
     /** Last click number. */
     private Integer lastClick;
 
@@ -194,7 +196,7 @@ final class MouseClickAwt implements MouseListener
             final int n = listeners.size();
             for (int i = 0; i < n; i++)
             {
-                listeners.get(i).onDeviceChanged(click, (char) click.intValue(), true);
+                listeners.get(i).onDeviceChanged(index, click, (char) click.intValue(), true);
             }
             lastClick = click;
         }
@@ -221,7 +223,7 @@ final class MouseClickAwt implements MouseListener
             final int n = listeners.size();
             for (int i = 0; i < n; i++)
             {
-                listeners.get(i).onDeviceChanged(click, (char) click.intValue(), false);
+                listeners.get(i).onDeviceChanged(index, click, (char) click.intValue(), false);
             }
             lastClick = null;
         }

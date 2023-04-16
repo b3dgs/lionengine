@@ -33,6 +33,8 @@ public class DevicePushVirtual implements DevicePush
     private final Collection<Integer> keys = new HashSet<>();
     /** Pressed states. */
     private final Collection<Integer> pressed = new HashSet<>();
+    /** Index value. */
+    private final Integer index = Integer.valueOf(0);
     /** Last key code. */
     private Integer lastKey;
 
@@ -58,7 +60,7 @@ public class DevicePushVirtual implements DevicePush
             final int n = listeners.size();
             for (int i = 0; i < n; i++)
             {
-                listeners.get(i).onDeviceChanged(key, ' ', true);
+                listeners.get(i).onDeviceChanged(index, key, ' ', true);
             }
             lastKey = key;
         }
@@ -79,7 +81,7 @@ public class DevicePushVirtual implements DevicePush
             final int n = listeners.size();
             for (int i = 0; i < n; i++)
             {
-                listeners.get(i).onDeviceChanged(key, ' ', false);
+                listeners.get(i).onDeviceChanged(index, key, ' ', false);
             }
             lastKey = null;
         }

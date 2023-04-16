@@ -24,9 +24,10 @@ public interface InputDeviceListener
     /**
      * Called on device changed.
      * 
+     * @param index The device index.
      * @param push The push value.
      * @param c The char representation.
      * @param flag <code>true</code> if enabled, <code>false</code> if disabled.
      */
-    void onDeviceChanged(Integer push, char c, boolean flag);
+    void onDeviceChanged(Integer index, Integer push, char c, boolean flag);
 }
