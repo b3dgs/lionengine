@@ -61,6 +61,8 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     public static final Integer UP = Integer.valueOf(KeyEvent.VK_UP);
     /** Empty key name. */
     private static final char EMPTY_KEY_NAME = ' ';
+    /** Index value. */
+    private static final Integer INDEX = Integer.valueOf(0);
 
     /** Push listener. */
     private final ListenableModel<InputDeviceListener> listeners = new ListenableModel<>();
@@ -72,8 +74,6 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     private final Collection<Integer> keys = new HashSet<>();
     /** Pressed states. */
     private final Collection<Integer> pressed = new HashSet<>();
-    /** Index value. */
-    private final Integer index = Integer.valueOf(0);
     /** Last key code. */
     private Integer lastKey;
     /** Last key name. */
@@ -207,7 +207,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
             final int n = listeners.size();
             for (int i = 0; i < n; i++)
             {
-                listeners.get(i).onDeviceChanged(index, key, lastKeyName, true);
+                listeners.get(i).onDeviceChanged(INDEX, key, lastKeyName, true);
             }
             lastKey = key;
         }
@@ -232,7 +232,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
         final int n = listeners.size();
         for (int i = 0; i < n; i++)
         {
-            listeners.get(i).onDeviceChanged(index, key, lastKeyName, false);
+            listeners.get(i).onDeviceChanged(INDEX, key, lastKeyName, false);
         }
 
         lastKeyName = EMPTY_KEY_NAME;

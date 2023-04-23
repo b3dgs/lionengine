@@ -32,7 +32,6 @@
     </scm>
     <properties>
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
-        <sonar-branch>lionengine-10.0.0</sonar-branch>
     </properties>
     <repositories>
         <repository>
