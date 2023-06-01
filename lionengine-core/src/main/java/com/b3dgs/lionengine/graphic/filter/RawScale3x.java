@@ -183,7 +183,7 @@ final class RawScale3x
         return e;
     }
 
-    private final ExecutorService exec = COUNT > 1 ? Executors.newFixedThreadPool(COUNT) : null;
+    private final ExecutorService exec;
     private final Function<int[], int[]> get = COUNT > 1 ? this::getScaledDataParallel : this::getScaledDataSingle;
     /** Cache. */
     private int[] dstImage = new int[0];
@@ -202,6 +202,8 @@ final class RawScale3x
     RawScale3x(int dataWidth, int dataHeight)
     {
         super();
+
+        exec = COUNT > 1 ? Executors.newFixedThreadPool(COUNT, r -> new Thread(r, getClass().getSimpleName())) : null;
 
         width = dataWidth;
         height = dataHeight;

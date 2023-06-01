@@ -63,7 +63,7 @@ final class CrtScale
     }
     // CHECKSTYLE ON: BooleanExpressionComplexity|MagicNumber
 
-    private final ExecutorService exec = COUNT > 1 ? Executors.newFixedThreadPool(COUNT) : null;
+    private final ExecutorService exec;
     private final Function<int[], int[]> get = COUNT > 1 ? this::getScaledParallel : this::getScaledSingle;
     private final int width;
     private final int height;
@@ -83,6 +83,8 @@ final class CrtScale
     CrtScale(int dataWidth, int dataHeight, int scale)
     {
         super();
+
+        exec = COUNT > 1 ? Executors.newFixedThreadPool(COUNT, r -> new Thread(r, getClass().getSimpleName())) : null;
 
         this.scale = scale;
         scale2 = scale * scale;

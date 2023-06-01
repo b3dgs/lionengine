@@ -88,4 +88,13 @@ public final class FilterHq3x implements Filter
         transform.scale(scaleX / RawScale3x.SCALE, scaleY / RawScale3x.SCALE);
         return transform;
     }
+
+    @Override
+    public void close()
+    {
+        if (scaler != null)
+        {
+            scaler.close();
+        }
+    }
 }

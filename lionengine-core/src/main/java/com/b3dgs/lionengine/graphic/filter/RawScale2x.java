@@ -35,7 +35,7 @@ final class RawScale2x
     private static final int MAX_PARALLEL = 4;
     private static final int COUNT = Runtime.getRuntime().availableProcessors() > MAX_PARALLEL ? MAX_PARALLEL : 1;
 
-    private final ExecutorService exec = COUNT > 1 ? Executors.newFixedThreadPool(COUNT) : null;
+    private final ExecutorService exec;
     private final Function<int[], int[]> get = COUNT > 1 ? this::getScaledDataParallel : this::getScaledDataSingle;
     /** Width. */
     private final int width;
@@ -54,6 +54,8 @@ final class RawScale2x
     RawScale2x(int dataWidth, int dataHeight)
     {
         super();
+
+        exec = COUNT > 1 ? Executors.newFixedThreadPool(COUNT, r -> new Thread(r, getClass().getSimpleName())) : null;
 
         width = dataWidth;
         height = dataHeight;
