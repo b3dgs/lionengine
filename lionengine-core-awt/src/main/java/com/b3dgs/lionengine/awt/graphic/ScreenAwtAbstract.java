@@ -182,8 +182,11 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     @Override
     public void dispose()
     {
-        graphics.clear(0, 0, width, height);
-        update();
+        if (graphics.getGraphic() != null)
+        {
+            graphics.clear(0, 0, width, height);
+            update();
+        }
     }
 
     @Override
