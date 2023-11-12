@@ -32,21 +32,14 @@ import com.b3dgs.lionengine.audio.AudioFormat;
  */
 public final class WavFormat implements AudioFormat
 {
-    /** Channels handler. */
-    private static final ExecutorService EXECUTOR;
     /** Audio extensions. */
     private static final Collection<String> FORMATS = Collections.unmodifiableCollection(Arrays.asList("wav", "wave"));
 
     /** Custom mixer, <code>null</code> for default. */
     static volatile Mixer.Info mixer;
 
-    /**
-     * Init.
-     */
-    static
-    {
-        EXECUTOR = Executors.newCachedThreadPool(runnable -> new Thread(runnable, WavFormat.class.getSimpleName()));
-    }
+    /** Channels handler. */
+    private final ExecutorService executor;
 
     /**
      * Set the mixer to use.
@@ -64,6 +57,8 @@ public final class WavFormat implements AudioFormat
     public WavFormat()
     {
         super();
+
+        executor = Executors.newCachedThreadPool(runnable -> new Thread(runnable, getClass().getSimpleName()));
     }
 
     /*
@@ -73,7 +68,7 @@ public final class WavFormat implements AudioFormat
     @Override
     public Wav loadAudio(Media media)
     {
-        return new WavImpl(EXECUTOR, media);
+        return new WavImpl(executor, media);
     }
 
     @Override
@@ -85,6 +80,6 @@ public final class WavFormat implements AudioFormat
     @Override
     public void close()
     {
-        EXECUTOR.shutdownNow();
+        executor.shutdownNow();
     }
 }
