@@ -97,8 +97,10 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     private int level;
     /** Fire delay in milli seconds. */
     private int delay;
-    /** Mirrorable flag. */
+    /** Mirror flag. */
     private boolean mirror;
+    /** Centered flag. */
+    private boolean centered;
     /** Horizontal offset. */
     private int offsetX;
     /** Vertical offset. */
@@ -161,6 +163,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
             launchables = config.get(0).getLaunchables();
             delay = config.get(0).getDelay();
             mirror = config.get(0).hasMirrorable();
+            centered = config.get(0).isCentered();
         }
     }
 
@@ -224,8 +227,12 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
             }
             launchable.getFeature(Mirrorable.class).mirror(mirrorable.getMirror());
         }
-        final double x = transformable.getX() + (config.getOffsetX() + offsetX) * sideX;
-        final double y = transformable.getY() + (config.getOffsetY() + offsetY) * sideY;
+        final double x = transformable.getX()
+                         + (centered ? transformable.getWidth() / 2.0 : 0.0)
+                         + (config.getOffsetX() + offsetX) * sideX;
+        final double y = transformable.getY()
+                         + (centered ? transformable.getHeight() / 2.0 : 0.0)
+                         + (config.getOffsetY() + offsetY) * sideY;
         launchable.setLocation(x, y);
 
         final Force vector = new Force(config.getVector());
@@ -285,21 +292,26 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
      */
     private Force computeVector(Force vector, Localizable target)
     {
-        final double sx = transformable.getX();
-        final double sy = transformable.getY();
+        final double sx = transformable.getX() + transformable.getWidth() / 2.0;
+        final double sy = transformable.getY() + transformable.getHeight() / 2.0;
 
         double dx = target.getX();
         double dy = target.getY();
 
-        if (extrapolate && target instanceof Transformable)
+        if (target instanceof Transformable)
         {
             final Transformable targetTransformable = (Transformable) target;
-            final double ray = UtilMath.getDistance(transformable.getX(),
-                                                    transformable.getY(),
-                                                    target.getX(),
-                                                    target.getY());
-            dx += (int) ((target.getX() - targetTransformable.getOldX()) / vector.getDirectionHorizontal() * ray);
-            dy += (int) ((target.getY() - targetTransformable.getOldY()) / vector.getDirectionVertical() * ray);
+            if (extrapolate)
+            {
+                final double ray = UtilMath.getDistance(transformable.getX(),
+                                                        transformable.getY(),
+                                                        target.getX(),
+                                                        target.getY());
+                dx += (int) ((target.getX() - targetTransformable.getOldX()) / vector.getDirectionHorizontal() * ray);
+                dy += (int) ((target.getY() - targetTransformable.getOldY()) / vector.getDirectionVertical() * ray);
+            }
+            dx += targetTransformable.getWidth() / 2.0;
+            dy += targetTransformable.getHeight() / 2.0;
         }
 
         final double dist = Math.max(Math.abs(sx - dx), Math.abs(sy - dy));
@@ -469,6 +481,8 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         this.level = level;
         launchables = config.get(level).getLaunchables();
         delay = config.get(level).getDelay();
+        mirror = config.get(level).hasMirrorable();
+        centered = config.get(level).isCentered();
     }
 
     @Override

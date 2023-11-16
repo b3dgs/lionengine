@@ -45,6 +45,8 @@ public final class LauncherConfig
     public static final String ATT_DELAY = "delay";
     /** Mirrorable attribute name. */
     public static final String ATT_MIRRORABLE = "mirrorable";
+    /** Centered attribute name. */
+    public static final String ATT_CENTERED = "centered";
     /** Minimum to string length. */
     private static final int MIN_LENGTH = 66;
 
@@ -94,8 +96,9 @@ public final class LauncherConfig
         final int level = node.getInteger(0, ATT_LEVEL);
         final int delay = node.getInteger(0, ATT_DELAY);
         final boolean mirrorable = node.getBoolean(true, ATT_MIRRORABLE);
+        final boolean centered = node.getBoolean(false, ATT_CENTERED);
 
-        return new LauncherConfig(level, delay, mirrorable, launchables);
+        return new LauncherConfig(level, delay, mirrorable, centered, launchables);
     }
 
     /**
@@ -128,6 +131,8 @@ public final class LauncherConfig
     private final int delay;
     /** The mirrorable flag. */
     private final boolean mirrorable;
+    /** The centered flag. */
+    private final boolean centered;
     /** The launchable configurations. */
     private final Collection<LaunchableConfig> launchables;
 
@@ -137,16 +142,22 @@ public final class LauncherConfig
      * @param level The associated level.
      * @param delay The delay value.
      * @param mirrorable The mirrorable flag.
+     * @param centered The centered flag.
      * @param launchables The launchables reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public LauncherConfig(int level, int delay, boolean mirrorable, Collection<LaunchableConfig> launchables)
+    public LauncherConfig(int level,
+                          int delay,
+                          boolean mirrorable,
+                          boolean centered,
+                          Collection<LaunchableConfig> launchables)
     {
         super();
 
         this.level = level;
         this.delay = delay;
         this.mirrorable = mirrorable;
+        this.centered = centered;
         this.launchables = new ArrayList<>(launchables);
     }
 
@@ -181,6 +192,16 @@ public final class LauncherConfig
     }
 
     /**
+     * Get the centered flag.
+     * 
+     * @return <code>true</code> if center on fire if present, <code>false</code> else.
+     */
+    public boolean isCentered()
+    {
+        return centered;
+    }
+
+    /**
      * Get the launchables configuration as read only.
      * 
      * @return The launchables configuration.
@@ -202,6 +223,7 @@ public final class LauncherConfig
         result = prime * result + level;
         result = prime * result + delay;
         result = prime * result + (mirrorable ? 1 : 0);
+        result = prime * result + (centered ? 1 : 0);
         result = prime * result + launchables.hashCode();
         return result;
     }
@@ -221,6 +243,7 @@ public final class LauncherConfig
         return level == other.level
                && delay == other.delay
                && mirrorable == other.mirrorable
+               && centered == other.centered
                && Arrays.equals(launchables.toArray(), other.launchables.toArray());
     }
 
@@ -246,6 +269,8 @@ public final class LauncherConfig
                                             .append(delay)
                                             .append(", mirrorable=")
                                             .append(mirrorable)
+                                            .append(", centered=")
+                                            .append(centered)
                                             .append(", launchables=")
                                             .append(System.lineSeparator())
                                             .append(Constant.TAB)
