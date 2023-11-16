@@ -16,34 +16,15 @@
  */
 package com.b3dgs.lionengine.graphic.filter;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-
 /**
  * The raw scale implementation.
  */
-final class RawScale2x
+final class RawScale2x extends RawScale
 {
     /** Scale factor. */
     public static final int SCALE = 2;
     /** Scale square factor. */
     public static final int SCALE_S = SCALE * SCALE;
-
-    private static final int MAX_PARALLEL = 4;
-    private static final int COUNT = Runtime.getRuntime().availableProcessors() > MAX_PARALLEL ? MAX_PARALLEL : 1;
-
-    private final ExecutorService exec;
-    private final Function<int[], int[]> get = COUNT > 1 ? this::getScaledDataParallel : this::getScaledDataSingle;
-    /** Width. */
-    private final int width;
-    /** Height. */
-    private final int height;
-    /** Cache. */
-    private int[] dstImage = new int[0];
-    private final int th;
 
     /**
      * Internal constructor.
@@ -53,129 +34,12 @@ final class RawScale2x
      */
     RawScale2x(int dataWidth, int dataHeight)
     {
-        super();
-
-        exec = COUNT > 1 ? Executors.newFixedThreadPool(COUNT, r -> new Thread(r, getClass().getSimpleName())) : null;
-
-        width = dataWidth;
-        height = dataHeight;
-        th = height / COUNT;
-    }
-
-    /**
-     * Close tasks.
-     */
-    void close()
-    {
-        if (exec != null)
-        {
-            exec.shutdown();
-            try
-            {
-                exec.awaitTermination(1, TimeUnit.SECONDS);
-            }
-            catch (@SuppressWarnings("unused") final InterruptedException exception)
-            {
-                // Skip
-            }
-        }
-    }
-
-    /**
-     * Get the scaled data.
-     * 
-     * @param srcImage The image source
-     * @return The data array.
-     */
-    int[] getScaledData(int[] srcImage)
-    {
-        return get.apply(srcImage);
-    }
-
-    /**
-     * Get the scaled data.
-     * 
-     * @param srcImage The image source
-     * @return The data array.
-     */
-    private int[] getScaledDataSingle(int[] srcImage)
-    {
-        final int l = srcImage.length * SCALE_S;
-        if (dstImage.length != l)
-        {
-            dstImage = new int[l];
-        }
-        process(srcImage, 0, height);
-
-        return dstImage;
-    }
-
-    /**
-     * Get the scaled data.
-     * 
-     * @param srcImage The image source.
-     * @return The data array.
-     */
-    private int[] getScaledDataParallel(int[] srcImage)
-    {
-        final int l = srcImage.length * SCALE_S;
-        if (dstImage.length != l)
-        {
-            dstImage = new int[l];
-        }
-
-        final CountDownLatch latch = new CountDownLatch(COUNT);
-        for (int i = 0; i < COUNT; i++)
-        {
-            final int start = th * i;
-            final int end;
-            if (i == COUNT - 1)
-            {
-                end = height;
-            }
-            else
-            {
-                end = Math.min(start + th, height);
-            }
-
-            exec.execute(() ->
-            {
-                process(srcImage, start, end);
-                latch.countDown();
-            });
-        }
-        try
-        {
-            latch.await(1, TimeUnit.SECONDS);
-        }
-        catch (@SuppressWarnings("unused") final InterruptedException exception)
-        {
-            Thread.currentThread().interrupt();
-        }
-
-        return dstImage;
-    }
-
-    /**
-     * Get pixel source.
-     * 
-     * @param srcImage The image source.
-     * @param x The location x.
-     * @param y The location y.
-     * @return The pixel value found.
-     */
-    private int getSourcePixel(int[] srcImage, int x, int y)
-    {
-        int x1 = Math.max(0, x);
-        x1 = Math.min(width - 1, x1);
-        int y1 = Math.max(0, y);
-        y1 = Math.min(height - 1, y1);
-
-        return srcImage[x1 + y1 * width];
+        super(SCALE_S, dataWidth, dataHeight);
     }
 
     // CHECKSTYLE OFF: MagicNumber
-    private void process(int[] srcImage, int start, int end)
+    @Override
+    protected void process(int[] srcImage, int start, int end)
     {
         for (int y = start; y < end; y++)
         {
