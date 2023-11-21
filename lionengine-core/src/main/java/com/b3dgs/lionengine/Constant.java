@@ -92,6 +92,8 @@ public final class Constant
     public static final double EXTRP = 1.0;
     /** Half value. */
     public static final double HALF = 0.5;
+    /** Quarter value. */
+    public static final double QUART = 0.25;
     /** One second in milli. */
     public static final long ONE_SECOND_IN_MILLI = 1_000L;
     /** One second in nano. */

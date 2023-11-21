@@ -122,10 +122,7 @@ abstract class ImageHeaderReaderAbstract implements ImageHeaderReader
      */
     protected ImageHeaderReaderAbstract(int... headers)
     {
-        this(new HeaderProvider[]
-        {
-            () -> headers
-        });
+        this(() -> headers);
     }
 
     /**

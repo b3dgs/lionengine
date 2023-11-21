@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
  */
 final class CrtScale
 {
+    private static final double QUART = com.b3dgs.lionengine.Constant.QUART;
     private static final int COUNT = Math.max(1, Runtime.getRuntime().availableProcessors() / 2 - 1);
 
     private static final ColorRgba C = new ColorRgba(100, 100, 100, 255);
@@ -107,7 +108,7 @@ final class CrtScale
             }
             catch (@SuppressWarnings("unused") final InterruptedException exception)
             {
-                // Skip
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -210,7 +211,7 @@ final class CrtScale
                 if (evenX && evenY || y == 0 || y == height - 1)
                 {
                     final int rgb = src[x + y * width];
-                    final int avr = rgb(rgb, rgb, rgb, rgb, C, 0.25);
+                    final int avr = rgb(rgb, rgb, rgb, rgb, C, QUART);
 
                     dst[dx + dy * scale] = avr;
                     dst[dx + 1 + dy * scale] = avr;
@@ -224,25 +225,25 @@ final class CrtScale
                                                src[x + (y - 1) * width],
                                                src[x + (y + 1) * width],
                                                C1,
-                                               0.25);
+                                               QUART);
                     dst[dx + 1 + dy * scale] = rgb(src[x - 1 + y * width],
                                                    src[x + 1 + y * width],
                                                    src[x + (y - 1) * width],
                                                    src[x + (y + 1) * width],
                                                    C1,
-                                                   0.25);
+                                                   QUART);
                     dst[dx + (dy + width) * scale] = rgb(src[x - 1 + y * width],
                                                          src[x + 1 + y * width],
                                                          src[x + (y - 1) * width],
                                                          src[x + (y + 1) * width],
                                                          C1,
-                                                         0.25);
+                                                         QUART);
                     dst[dx + 1 + (dy + width) * scale] = rgb(src[x - 1 + y * width],
                                                              src[x + 1 + y * width],
                                                              src[x + (y - 1) * width],
                                                              src[x + (y + 1) * width],
                                                              C1,
-                                                             0.25);
+                                                             QUART);
                 }
                 else if (evenX && !evenY)
                 {
@@ -251,25 +252,25 @@ final class CrtScale
                                                src[x + (y - 1) * width],
                                                src[x + (y + 1) * width],
                                                C2,
-                                               0.25);
+                                               QUART);
                     dst[dx + 1 + dy * scale] = rgb(src[x - 1 + y * width],
                                                    src[x + 1 + y * width],
                                                    src[x + (y - 1) * width],
                                                    src[x + (y + 1) * width],
                                                    C2,
-                                                   0.25);
+                                                   QUART);
                     dst[dx + (dy + width) * scale] = rgb(src[x - 1 + y * width],
                                                          src[x + 1 + y * width],
                                                          src[x + (y - 1) * width],
                                                          src[x + (y + 1) * width],
                                                          C2,
-                                                         0.25);
+                                                         QUART);
                     dst[dx + 1 + (dy + width) * scale] = rgb(src[x - 1 + y * width],
                                                              src[x + 1 + y * width],
                                                              src[x + (y - 1) * width],
                                                              src[x + (y + 1) * width],
                                                              C2,
-                                                             0.25);
+                                                             QUART);
                 }
                 else if (!evenX && !evenY)
                 {
@@ -278,25 +279,25 @@ final class CrtScale
                                                src[x + (y - 1) * width],
                                                src[x + (y + 1) * width],
                                                C3,
-                                               0.25);
+                                               QUART);
                     dst[dx + 1 + dy * scale] = rgb(src[x - 1 + y * width],
                                                    src[x + 1 + y * width],
                                                    src[x + (y - 1) * width],
                                                    src[x + (y + 1) * width],
                                                    C3,
-                                                   0.25);
+                                                   QUART);
                     dst[dx + (dy + width) * scale] = rgb(src[x - 1 + y * width],
                                                          src[x + 1 + y * width],
                                                          src[x + (y - 1) * width],
                                                          src[x + (y + 1) * width],
                                                          C3,
-                                                         0.25);
+                                                         QUART);
                     dst[dx + 1 + (dy + width) * scale] = rgb(src[x - 1 + y * width],
                                                              src[x + 1 + y * width],
                                                              src[x + (y - 1) * width],
                                                              src[x + (y + 1) * width],
                                                              C3,
-                                                             0.25);
+                                                             QUART);
                 }
             }
         }

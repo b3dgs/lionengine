@@ -60,8 +60,8 @@ public class IdentifiableCreate extends MessageAbstract
         }
         else
         {
-            x = 0.0f;
-            y = 0.0f;
+            x = 0.0F;
+            y = 0.0F;
         }
     }
 

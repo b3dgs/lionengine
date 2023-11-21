@@ -68,7 +68,7 @@ public class ServerUdp implements Server
     private static final String ERROR_NOT_CONNECTED = " not connected!";
     private static final String ERROR_TIMEOUT = " timeout!";
 
-    private Integer getId(DatagramPacket packet)
+    private static Integer getId(DatagramPacket packet)
     {
         final int prime = 31;
         int result = 1;
@@ -601,13 +601,13 @@ public class ServerUdp implements Server
     @Override
     public float getBandwidthUp()
     {
-        return bandwidthDown;
+        return bandwidthUp;
     }
 
     @Override
     public float getBandwidthDown()
     {
-        return bandwidthUp;
+        return bandwidthDown;
     }
 
     /*

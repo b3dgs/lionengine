@@ -102,7 +102,7 @@ abstract class RawScale
             }
             catch (@SuppressWarnings("unused") final InterruptedException exception)
             {
-                // Skip
+                Thread.currentThread().interrupt();
             }
         }
     }

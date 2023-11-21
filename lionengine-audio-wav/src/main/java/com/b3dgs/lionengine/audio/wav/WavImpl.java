@@ -385,7 +385,12 @@ final class WavImpl implements Wav
                 }
             }).get(Constant.DECADE, TimeUnit.SECONDS);
         }
-        catch (final InterruptedException | ExecutionException | TimeoutException exception)
+        catch (final InterruptedException exception)
+        {
+            Thread.currentThread().interrupt();
+            Verbose.exception(exception);
+        }
+        catch (final ExecutionException | TimeoutException exception)
         {
             Verbose.exception(exception);
         }
