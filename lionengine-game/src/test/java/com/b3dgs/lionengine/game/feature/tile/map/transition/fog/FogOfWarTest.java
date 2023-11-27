@@ -109,7 +109,7 @@ final class FogOfWarTest
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel(services, setup));
         final FovableModel fovable = object.addFeatureAndGet(new FovableModel(services, setup));
         fovable.prepare(object);
-        fovable.setFov(1);
+        fovable.setFov(0);
 
         Medias.setLoadFromJar(MapTileFog.class);
         fog.setEnabled(true, true);
@@ -139,7 +139,7 @@ final class FogOfWarTest
         assertFalse(fog.isVisited(Geom.createArea(3, 3, 1, 1)));
 
         transformable.teleport(3, 3);
-        fog.update(fovable);
+        fog.update(fovable, 3, 3, 3, 3);
 
         assertTrue(fog.isFogged(2, 3));
         assertFalse(fog.isFogged(3, 3));
@@ -156,10 +156,10 @@ final class FogOfWarTest
         assertEquals(3, rtx.get());
         assertEquals(3, rty.get());
 
-        transformable.setLocation(6, 6);
+        transformable.setLocation(4, 4);
         fog.removeListener(listener);
         count.set(0);
-        fog.update(fovable);
+        fog.update(fovable, 3, 3, 4, 4);
 
         assertFalse(fog.isFogged(2, 3));
         assertTrue(fog.isFogged(3, 3));

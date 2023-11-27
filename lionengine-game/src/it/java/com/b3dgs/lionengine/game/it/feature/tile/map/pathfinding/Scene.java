@@ -75,7 +75,7 @@ public final class Scene extends Sequence
         }
 
         @Override
-        public void notifyMoving(Pathfindable pathfindable)
+        public void notifyMoving(Pathfindable pathfindable, int ox, int oy, int nx, int ny)
         {
             listenerMove.set(true);
         }

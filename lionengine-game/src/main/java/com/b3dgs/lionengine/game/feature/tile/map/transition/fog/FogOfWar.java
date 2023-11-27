@@ -88,14 +88,18 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
      * Update fog of war.
      * 
      * @param fovable The fovable to update with.
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
+     * @param nx The new horizontal location.
+     * @param ny The new vertical location.
      */
-    public void update(Fovable fovable)
+    public void update(Fovable fovable, int ox, int oy, int nx, int ny)
     {
         if (fovable.canUpdate())
         {
-            mapHidden.updateFov(fovable);
-            mapFogged.reset(fovable);
-            mapFogged.updateFov(fovable);
+            mapHidden.updateFov(fovable, nx, ny);
+            mapFogged.reset(fovable, ox, oy);
+            mapFogged.updateFov(fovable, nx, ny);
         }
     }
 
@@ -121,6 +125,17 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
     {
         hideMap = hide;
         fogMap = fog;
+    }
+
+    /**
+     * Set allow angle flag.
+     * 
+     * @param allow <code>true</code> to allow angle, <code>false</code> else.
+     */
+    public void setAllowAngle(boolean allow)
+    {
+        mapHidden.setAllowAngle(allow);
+        mapFogged.setAllowAngle(allow);
     }
 
     /**

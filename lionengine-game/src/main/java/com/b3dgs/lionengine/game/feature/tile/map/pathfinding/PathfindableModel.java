@@ -349,6 +349,16 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
             // (to be sure object location is correct)
             setLocationInternal(path.getX(currentStep), path.getY(currentStep));
 
+            for (int i = 0; i < listenable.size(); i++)
+            {
+                listenable.get(i)
+                          .notifyMoving(this,
+                                        path.getX(Math.max(0, currentStep - 1)),
+                                        path.getY(Math.max(0, currentStep - 1)),
+                                        path.getX(Math.min(currentStep, getMaxStep() - 1)),
+                                        path.getY(Math.min(currentStep, getMaxStep() - 1)));
+            }
+
             // Go to next step
             final int next = currentStep + 1;
             if (currentStep < getMaxStep() - 1)
@@ -363,11 +373,6 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
             if (currentStep > 0 && !skip)
             {
                 checkPathfinderChanges();
-            }
-
-            for (int i = 0; i < listenable.size(); i++)
-            {
-                listenable.get(i).notifyMoving(this);
             }
         }
     }
@@ -745,10 +750,25 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     @Override
     public void setLocation(int tx, int ty)
     {
+        final int ox = getInTileX();
+        final int oy = getInTileY();
+
         setLocationInternal(tx, ty);
         for (int i = 0; i < listenable.size(); i++)
         {
-            listenable.get(i).notifyMoving(this);
+            if (path != null)
+            {
+                listenable.get(i)
+                          .notifyMoving(this,
+                                        path.getX(currentStep - 1),
+                                        path.getY(currentStep - 1),
+                                        path.getX(currentStep),
+                                        path.getY(currentStep));
+            }
+            else
+            {
+                listenable.get(i).notifyMoving(this, ox, oy, tx, ty);
+            }
         }
     }
 

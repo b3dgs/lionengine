@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.feature.Camera;
@@ -29,6 +30,7 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.HandlerListener;
 import com.b3dgs.lionengine.game.feature.HandlerPersister;
+import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileAppenderModel;
@@ -148,13 +150,15 @@ public class MapTileHelper extends MapTileGame
     private final MapTileRastered mapRaster;
     private final MapTileViewer mapViewer;
     private final FogOfWar fogOfWar;
-    // TODO Notify tiled moved
+    private final Handler handler;
     private final PathfindableListener listener = new PathfindableListenerVoid()
     {
         @Override
-        public void notifyMoving(Pathfindable pathfindable)
+        public void notifyMoving(Pathfindable pathfindable, int ox, int oy, int nx, int ny)
         {
-            fogOfWar.update(pathfindable.getFeature(Fovable.class));
+            final Fovable fovable = pathfindable.getFeature(Fovable.class);
+            fogOfWar.update(fovable, ox, oy, nx, ny);
+            updateOthers(fovable, nx, ny);
         }
     };
 
@@ -165,6 +169,7 @@ public class MapTileHelper extends MapTileGame
      * </p>
      * <ul>
      * <li>{@link Viewer}</li>
+     * <li>{@link Handler}</li>
      * </ul>
      * 
      * @param services The services reference.
@@ -173,6 +178,7 @@ public class MapTileHelper extends MapTileGame
     {
         super();
 
+        handler = services.get(Handler.class);
         mapGroup = addFeatureAndGet(new MapTileGroupModel());
         mapCollision = addFeatureAndGet(new MapTileCollisionModel());
         mapPath = addFeatureAndGet(new MapTilePathModel());
@@ -274,6 +280,55 @@ public class MapTileHelper extends MapTileGame
     }
 
     /**
+     * Update others fovable around current fov.
+     * 
+     * @param fovable The fovable reference.
+     * @param nx The current horizontal location.
+     * @param ny The current vertical location.
+     */
+    private void updateOthers(Fovable fovable, int nx, int ny)
+    {
+        final Integer cur = fovable.getFeature(Identifiable.class).getId();
+        final int tw = fovable.getInTileWidth() / 2;
+        final int th = fovable.getInTileHeight() / 2;
+        final int ray = fovable.getInTileFov() * 2 - 1;
+        final int sx = UtilMath.clamp(nx - ray - tw, 0, getInTileWidth());
+        final int ex = UtilMath.clamp(nx + ray + tw + 1, 0, getInTileWidth());
+        final int sy = UtilMath.clamp(ny - ray - th, 0, getInTileHeight());
+        final int ey = UtilMath.clamp(ny + ray + th + 1, 0, getInTileHeight());
+
+        for (int x = sx; x < ex; x++)
+        {
+            for (int y = sy; y < ey; y++)
+            {
+                updateOthers(x, y, cur);
+            }
+        }
+    }
+
+    /**
+     * Update others in current location.
+     * 
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     * @param cur The id reference.
+     */
+    private void updateOthers(int x, int y, Integer cur)
+    {
+        for (final Integer id : mapPath.getObjectsId(x, y))
+        {
+            if (!id.equals(cur))
+            {
+                final Featurable featurable = handler.get(id);
+                final Pathfindable p = featurable.getFeature(Pathfindable.class);
+                final int tx = p.getInTileX();
+                final int ty = p.getInTileY();
+                fogOfWar.update(featurable.getFeature(Fovable.class), tx, ty, tx, ty);
+            }
+        }
+    }
+
+    /**
      * Handle added featurable.
      * 
      * @param featurable The added featurable.
@@ -282,8 +337,13 @@ public class MapTileHelper extends MapTileGame
     {
         if (fogOfWar.hasFogOfWar() && featurable.hasFeature(Fovable.class) && featurable.hasFeature(Pathfindable.class))
         {
-            featurable.getFeature(Pathfindable.class).addListener(listener);
-            fogOfWar.update(featurable.getFeature(Fovable.class));
+            final Pathfindable pathfindable = featurable.getFeature(Pathfindable.class);
+            pathfindable.addListener(listener);
+            fogOfWar.update(featurable.getFeature(Fovable.class),
+                            pathfindable.getInTileX(),
+                            pathfindable.getInTileY(),
+                            pathfindable.getInTileX(),
+                            pathfindable.getInTileY());
         }
     }
 
@@ -296,8 +356,13 @@ public class MapTileHelper extends MapTileGame
     {
         if (fogOfWar.hasFogOfWar() && featurable.hasFeature(Fovable.class) && featurable.hasFeature(Pathfindable.class))
         {
-            featurable.getFeature(Pathfindable.class).removeListener(listener);
-            fogOfWar.update(featurable.getFeature(Fovable.class));
+            final Pathfindable pathfindable = featurable.getFeature(Pathfindable.class);
+            pathfindable.removeListener(listener);
+            fogOfWar.update(featurable.getFeature(Fovable.class),
+                            pathfindable.getInTileX(),
+                            pathfindable.getInTileY(),
+                            pathfindable.getInTileX(),
+                            pathfindable.getInTileY());
         }
     }
 

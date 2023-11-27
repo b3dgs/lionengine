@@ -32,8 +32,12 @@ public interface PathfindableListener
      * Notify listener while mover is moving.
      * 
      * @param pathfindable The pathfindable reference.
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
+     * @param nx The new horizontal location.
+     * @param ny The new vertical location.
      */
-    void notifyMoving(Pathfindable pathfindable);
+    void notifyMoving(Pathfindable pathfindable, int ox, int oy, int nx, int ny);
 
     /**
      * Notify listener when mover has arrived.

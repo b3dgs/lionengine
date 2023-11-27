@@ -16,13 +16,16 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -47,6 +50,23 @@ public class MapTileFog implements Listenable<RevealedListener>
     /** Transition group. */
     private static final String TRANSITION_GROUP = "transition";
 
+    /**
+     * Check if is in angle.
+     * 
+     * @param x The current x.
+     * @param y The current y.
+     * @param sx The starting x.
+     * @param sy The starting y.
+     * @param ex The ending y.
+     * @param ey The ending y.
+     * @return <code>true</code> if angle, <code>false</code> else.
+     */
+    private static boolean isAngle(int x, int y, int sx, int sy, int ex, int ey)
+    {
+        // CHECKSTYLE IGNORE LINE: BooleanExpressionComplexity
+        return x == sx && y == sy || x == ex - 1 && y == ey - 1 || x == sx && y == ey - 1 || x == ey - 1 && y == sy;
+    }
+
     /** Listener. */
     private final ListenableModel<RevealedListener> listenable = new ListenableModel<>();
     /** Hidden map. */
@@ -55,6 +75,9 @@ public class MapTileFog implements Listenable<RevealedListener>
     private final MapTileGroup mapGroup;
     /** Transitions. */
     private final MapTileTransition transition;
+    private final List<Set<Fovable>> fog = new ArrayList<>();
+    /** Angle flag. */
+    private boolean allowAngle = true;
 
     /**
      * Create a fog of war.
@@ -115,6 +138,7 @@ public class MapTileFog implements Listenable<RevealedListener>
             for (int ty = 0; ty < map.getInTileHeight(); ty++)
             {
                 this.map.setTile(tx, ty, FOG);
+                fog.add(new HashSet<>());
             }
         }
     }
@@ -123,28 +147,39 @@ public class MapTileFog implements Listenable<RevealedListener>
      * Update fovable field of view (fog of war).
      * 
      * @param fovable The fovable reference.
+     * @param nx The new horizontal location.
+     * @param ny The new vertical location.
      */
-    public void updateFov(Fovable fovable)
+    public void updateFov(Fovable fovable, int nx, int ny)
     {
-        final int tx = fovable.getInTileX();
-        final int ty = fovable.getInTileY();
-        final int tw = fovable.getInTileWidth() / 2;
-        final int th = fovable.getInTileHeight() / 2;
-        final int ray = fovable.getInTileFov() - 1;
-
-        final int sx = UtilMath.clamp(tx - ray - tw, 0, map.getInTileWidth() - 1);
-        final int ex = UtilMath.clamp(tx + ray + tw, 0, map.getInTileWidth() - 1);
-        final int sy = UtilMath.clamp(ty - ray - th, 0, map.getInTileHeight() - 1);
-        final int ey = UtilMath.clamp(ty + ray + th, 0, map.getInTileHeight() - 1);
-
-        for (int x = sx; x < ex + 1; x++)
+        final int ray = fovable.getInTileFov();
+        final int sx = UtilMath.clamp(nx - ray, 0, map.getInTileWidth());
+        int ex = UtilMath.clamp(nx + ray + fovable.getInTileWidth(), 0, map.getInTileWidth());
+        if (ex == sx)
         {
-            for (int y = sy; y < ey + 1; y++)
+            ex++;
+        }
+        final int sy = UtilMath.clamp(ny - ray, 0, map.getInTileHeight());
+        int ey = UtilMath.clamp(ny + ray + fovable.getInTileHeight(), 0, map.getInTileHeight());
+        if (ey == sy)
+        {
+            ey++;
+        }
+
+        for (int x = sx; x < ex; x++)
+        {
+            for (int y = sy; y < ey; y++)
             {
-                if (map.getTile(x, y).getNumber() != NO_FOG)
+                if (allowAngle || !isAngle(x, y, sx, sy, ex, ey))
                 {
-                    map.setTile(x, y, NO_FOG);
-                    transition.resolve(map.getTile(x, y));
+                    if (map.getTile(x, y).getNumber() != NO_FOG)
+                    {
+                        map.setTile(x, y, NO_FOG);
+                        transition.resolve(map.getTile(x, y));
+                    }
+
+                    final Set<Fovable> set = fog.get(y * map.getInTileWidth() + x);
+                    set.add(fovable);
                 }
             }
         }
@@ -154,32 +189,52 @@ public class MapTileFog implements Listenable<RevealedListener>
      * Reset the revealed tiles to fogged.
      * 
      * @param fovable The fovable reference.
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
      */
-    void reset(Fovable fovable)
+    public void reset(Fovable fovable, int ox, int oy)
     {
-        final Transformable transformable = fovable.getFeature(Transformable.class);
-        final int tx = (int) Math.floor(transformable.getOldX() / map.getTileWidth());
-        final int ty = (int) Math.floor(transformable.getOldY() / map.getTileHeight());
-        final int tw = map.getInTileHeight(transformable) / 2;
-        final int th = map.getInTileHeight(transformable) / 2;
-        final int ray = fovable.getInTileFov() - 1;
-
-        final int sx = UtilMath.clamp(tx - ray - tw, 0, map.getInTileWidth() - 1);
-        final int ex = UtilMath.clamp(tx + ray + tw, 0, map.getInTileWidth() - 1);
-        final int sy = UtilMath.clamp(ty - ray - th, 0, map.getInTileHeight() - 1);
-        final int ey = UtilMath.clamp(ty + ray + th, 0, map.getInTileHeight() - 1);
-
-        for (int x = sx; x < ex + 1; x++)
+        final int ray = fovable.getInTileFov();
+        final int sx = UtilMath.clamp(ox - ray, 0, map.getInTileWidth());
+        int ex = UtilMath.clamp(ox + ray + fovable.getInTileWidth(), 0, map.getInTileWidth());
+        if (ex == sx)
         {
-            for (int y = sy; y < ey + 1; y++)
+            ex++;
+        }
+        final int sy = UtilMath.clamp(oy - ray, 0, map.getInTileHeight());
+        int ey = UtilMath.clamp(oy + ray + fovable.getInTileHeight(), 0, map.getInTileHeight());
+        if (ey == sy)
+        {
+            ey++;
+        }
+
+        for (int x = sx; x < ex; x++)
+        {
+            for (int y = sy; y < ey; y++)
             {
-                if (map.getTile(x, y).getNumber() != FOG)
+                if (allowAngle || !isAngle(x, y, sx, sy, ex, ey))
                 {
-                    map.setTile(x, y, FOG);
-                    transition.resolve(map.getTile(x, y));
+                    final Set<Fovable> set = fog.get(y * map.getInTileWidth() + x);
+                    set.remove(fovable);
+
+                    if (set.isEmpty())
+                    {
+                        map.setTile(x, y, FOG);
+                        transition.resolve(map.getTile(x, y));
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * Set allow angle flag.
+     * 
+     * @param allow <code>true</code> to allow angle, <code>false</code> else.
+     */
+    public void setAllowAngle(boolean allow)
+    {
+        allowAngle = allow;
     }
 
     /**

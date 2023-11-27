@@ -88,7 +88,7 @@ final class MapTileFogTest
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel(services, setup));
         transformable.teleport(3, 3);
         fovable.prepare(object);
-        fovable.setFov(1);
+        fovable.setFov(0);
 
         final MapTileFog fog = new MapTileFog();
         Medias.setLoadFromJar(MapTileFog.class);
@@ -110,7 +110,7 @@ final class MapTileFogTest
         assertEquals(16, fog.getTile(3, 3).getNumber());
         assertEquals(16, fog.getTile(4, 3).getNumber());
 
-        fog.updateFov(fovable);
+        fog.updateFov(fovable, 3, 3);
 
         assertEquals(10, fog.getTile(2, 2).getNumber());
         assertEquals(1, fog.getTile(3, 2).getNumber());
@@ -126,7 +126,7 @@ final class MapTileFogTest
         assertEquals(3, rtx.get());
         assertEquals(3, rty.get());
 
-        fog.reset(fovable);
+        fog.reset(fovable, 3, 3);
         fog.removeListener(listener);
         count.set(0);
 
@@ -134,7 +134,7 @@ final class MapTileFogTest
         assertEquals(16, fog.getTile(3, 3).getNumber());
         assertEquals(16, fog.getTile(4, 3).getNumber());
 
-        fog.updateFov(fovable);
+        fog.updateFov(fovable, 3, 3);
 
         assertEquals(0, count.get());
     }
