@@ -119,17 +119,27 @@ final class FogOfWarTest
         final AtomicInteger rtx = new AtomicInteger();
         final AtomicInteger rty = new AtomicInteger();
         final AtomicInteger count = new AtomicInteger();
-        final RevealedListener listener = (tx, ty) ->
+        final RevealedListener listener = new RevealedListener()
         {
-            rtx.set(tx);
-            rty.set(ty);
-            count.incrementAndGet();
+            @Override
+            public void notifyVisited(int tx, int ty)
+            {
+                rtx.set(tx);
+                rty.set(ty);
+                count.incrementAndGet();
+            }
+
+            @Override
+            public void notifyFogged(int tx, int ty, boolean fog)
+            {
+                // Fog
+            }
         };
         fog.addListener(listener);
 
-        assertFalse(fog.isFogged(2, 3));
-        assertFalse(fog.isFogged(3, 3));
-        assertFalse(fog.isFogged(4, 3));
+        assertTrue(fog.isFogged(2, 3));
+        assertTrue(fog.isFogged(3, 3));
+        assertTrue(fog.isFogged(4, 3));
         assertFalse(fog.isVisible(map.getTile(2, 3)));
         assertFalse(fog.isVisible(map.getTile(3, 3)));
         assertFalse(fog.isVisible(map.getTile(4, 3)));
@@ -161,7 +171,7 @@ final class FogOfWarTest
         count.set(0);
         fog.update(fovable, 3, 3, 4, 4);
 
-        assertFalse(fog.isFogged(2, 3));
+        assertTrue(fog.isFogged(2, 3));
         assertTrue(fog.isFogged(3, 3));
         assertTrue(fog.isFogged(4, 3));
         assertFalse(fog.isVisible(map.getTile(2, 3)));

@@ -42,9 +42,9 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 public class MapTileFog implements Listenable<RevealedListener>
 {
     /** No fog tile. */
-    static final int FOG = 16;
+    public static final int FOG = 16;
     /** Fog tile. */
-    static final int NO_FOG = 17;
+    public static final int NO_FOG = 17;
     /** Fog group. */
     private static final String FOG_GROUP = "fog";
     /** Transition group. */
@@ -81,8 +81,10 @@ public class MapTileFog implements Listenable<RevealedListener>
 
     /**
      * Create a fog of war.
+     * 
+     * @param fog <code>true</code> if fog, <code>false</code> if hide.
      */
-    public MapTileFog()
+    public MapTileFog(boolean fog)
     {
         super();
 
@@ -91,7 +93,15 @@ public class MapTileFog implements Listenable<RevealedListener>
         transition = map.addFeatureAndGet(new MapTileTransitionModel());
         map.addListener(tile ->
         {
-            if (NO_FOG == tile.getNumber())
+            if (fog)
+            {
+                final int n = listenable.size();
+                for (int i = 0; i < n; i++)
+                {
+                    listenable.get(i).notifyFogged(tile.getInTileX(), tile.getInTileY(), tile.getNumber() == FOG);
+                }
+            }
+            else if (NO_FOG == tile.getNumber())
             {
                 final int n = listenable.size();
                 for (int i = 0; i < n; i++)

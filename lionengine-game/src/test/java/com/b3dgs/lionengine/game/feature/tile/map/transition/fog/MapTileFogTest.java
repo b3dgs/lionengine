@@ -90,7 +90,7 @@ final class MapTileFogTest
         fovable.prepare(object);
         fovable.setFov(0);
 
-        final MapTileFog fog = new MapTileFog();
+        final MapTileFog fog = new MapTileFog(false);
         Medias.setLoadFromJar(MapTileFog.class);
         fog.create(map.getFeature(MapTileSurface.class), Medias.create("fog.xml"), null);
         Medias.setLoadFromJar(null);
@@ -98,11 +98,21 @@ final class MapTileFogTest
         final AtomicInteger rtx = new AtomicInteger();
         final AtomicInteger rty = new AtomicInteger();
         final AtomicInteger count = new AtomicInteger();
-        final RevealedListener listener = (tx, ty) ->
+        final RevealedListener listener = new RevealedListener()
         {
-            rtx.set(tx);
-            rty.set(ty);
-            count.incrementAndGet();
+            @Override
+            public void notifyVisited(int tx, int ty)
+            {
+                rtx.set(tx);
+                rty.set(ty);
+                count.incrementAndGet();
+            }
+
+            @Override
+            public void notifyFogged(int tx, int ty, boolean fog)
+            {
+                // Fog
+            }
         };
         fog.addListener(listener);
 

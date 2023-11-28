@@ -17,8 +17,10 @@
 package com.b3dgs.lionengine.helper;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilMath;
@@ -31,6 +33,7 @@ import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.HandlerListener;
 import com.b3dgs.lionengine.game.feature.HandlerPersister;
 import com.b3dgs.lionengine.game.feature.Identifiable;
+import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileAppenderModel;
@@ -61,6 +64,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCirc
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuitModel;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.Fovable;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.MapTileFog;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
@@ -151,6 +155,7 @@ public class MapTileHelper extends MapTileGame
     private final MapTileViewer mapViewer;
     private final FogOfWar fogOfWar;
     private final Handler handler;
+    private final MapTileGame mapFow = new MapTileGame();
     private final PathfindableListener listener = new PathfindableListenerVoid()
     {
         @Override
@@ -186,7 +191,12 @@ public class MapTileHelper extends MapTileGame
         mapCircuit = addFeatureAndGet(new MapTileCircuitModel());
         mapRaster = addFeatureAndGet(new MapTileRasteredModel());
         mapViewer = addFeatureAndGet(new MapTileViewerModel(services));
-        fogOfWar = services.add(addFeatureAndGet(new FogOfWar()));
+
+        mapFow.addFeature(new LayerableModel(Constant.HUNDRED));
+        fogOfWar = services.add(mapFow.addFeatureAndGet(new FogOfWar()));
+        mapFow.addFeatureAndGet(new MapTileViewerModel(services)).addRenderer(fogOfWar);
+        handler.add(mapFow);
+
         addFeature(new MapTileAppenderModel());
         addFeatureAndGet(new MapTilePersisterModel()).addListener(new MapTilePersisterListener()
         {
@@ -194,6 +204,7 @@ public class MapTileHelper extends MapTileGame
             public void notifyMapLoadStart()
             {
                 loadBefore(getMedia());
+                mapFow.create(getTileWidth(), getTileHeight(), getInTileWidth(), getInTileHeight());
             }
 
             @Override
@@ -272,9 +283,16 @@ public class MapTileHelper extends MapTileGame
                 hide.prepare();
                 fog.load();
                 fog.prepare();
+                mapFow.loadSheets(Arrays.asList(hide));
+                for (int y = 0; y < getInTileHeight(); y++)
+                {
+                    for (int x = 0; x < getInTileWidth(); x++)
+                    {
+                        mapFow.setTile(x, y, MapTileFog.NO_FOG);
+                    }
+                }
                 fogOfWar.setTilesheet(hide, fog);
                 fogOfWar.setEnabled(true, true);
-                mapViewer.addRenderer(fogOfWar);
             }
         }
     }
@@ -376,6 +394,7 @@ public class MapTileHelper extends MapTileGame
         super.create(tileWidth, tileHeight, widthInTile, heightInTile);
 
         loadBefore(getMedia());
+        mapFow.create(tileWidth, tileHeight, widthInTile, heightInTile);
         loadAfter(getMedia());
     }
 
@@ -385,6 +404,7 @@ public class MapTileHelper extends MapTileGame
         super.create(levelrip, tileWidth, tileHeight, horizontalTiles);
 
         loadBefore(getMedia());
+        mapFow.create(tileWidth, tileHeight, getInTileWidth(), getInTileHeight());
         loadAfter(levelrip);
     }
 
@@ -394,6 +414,7 @@ public class MapTileHelper extends MapTileGame
         super.create(levelrip);
 
         loadBefore(getMedia());
+        mapFow.create(getTileWidth(), getTileHeight(), getInTileWidth(), getInTileHeight());
         loadAfter(getMedia());
     }
 }

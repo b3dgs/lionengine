@@ -44,9 +44,9 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listenable<RevealedListener>
 {
     /** Hidden map. */
-    private final MapTileFog mapHidden = new MapTileFog();
+    private final MapTileFog mapHidden = new MapTileFog(false);
     /** Fogged map. */
-    private final MapTileFog mapFogged = new MapTileFog();
+    private final MapTileFog mapFogged = new MapTileFog(true);
     /** Tile width. */
     private int tw = 1;
     /** Tile width. */
@@ -222,8 +222,8 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
      */
     public boolean isFogged(int tx, int ty)
     {
-        final Tile tile = mapHidden.getTile(tx, ty);
-        return fogMap && tile != null && mapFogged.getTile(tx, ty).getNumber() < MapTileFog.FOG;
+        final Tile tile = mapFogged.getTile(tx, ty);
+        return fogMap && tile != null && tile.getNumber() < MapTileFog.NO_FOG;
     }
 
     /*
@@ -246,12 +246,14 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
     public void addListener(RevealedListener listener)
     {
         mapHidden.addListener(listener);
+        mapFogged.addListener(listener);
     }
 
     @Override
     public void removeListener(RevealedListener listener)
     {
         mapHidden.removeListener(listener);
+        mapFogged.removeListener(listener);
     }
 
     /*

@@ -28,4 +28,13 @@ public interface RevealedListener
      * @param ty The vertical tile.
      */
     void notifyVisited(int tx, int ty);
+
+    /**
+     * Notify fogged tile.
+     * 
+     * @param tx The horizontal tile.
+     * @param ty The vertical tile.
+     * @param fog <code>true</code> if fog, <code>false</code> else.
+     */
+    void notifyFogged(int tx, int ty, boolean fog);
 }
