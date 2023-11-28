@@ -98,7 +98,6 @@ public class Selector extends FeaturableAbstract implements SelectorConfigurer, 
             @Override
             public void notifySelectionStarted(Area selection)
             {
-                unSelectAll();
 
                 for (int i = 0; i < listenable.size(); i++)
                 {
@@ -109,6 +108,7 @@ public class Selector extends FeaturableAbstract implements SelectorConfigurer, 
             @Override
             public void notifySelectionDone(Area selection)
             {
+                unSelectAll();
                 checkSelection(componentCollision, selection);
 
                 for (int i = 0; i < listenable.size(); i++)

@@ -46,7 +46,6 @@ import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
@@ -133,7 +132,7 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
     /** Created menus. */
     private final Map<ActionRef, Actionable> menus = new HashMap<>();
     /** Current active menus. */
-    private final Collection<Actionable> active = new ArrayList<>();
+    private final List<Actionable> active = new ArrayList<>();
     /** Previous menus. */
     private final Map<ActionRef, Collection<ActionRef>> previous = new HashMap<>();
     /** Last action. */
@@ -164,22 +163,9 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
         }
         else
         {
-            selector.addListener(new SelectorListener()
-            {
-                @Override
-                public void notifySelectionStarted(Area selection)
-                {
-                    clearMenus();
-                }
-
-                @Override
-                public void notifySelectionDone(Area selection)
-                {
-                    // Nothing to do
-                }
-            });
             selector.addListener(selection ->
             {
+                clearMenus();
                 last.clear();
                 last.addAll(selection);
                 createMenus(new ArrayList<>(0), getActionsInCommon(selection));
@@ -233,9 +219,10 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
      */
     public void clearMenus()
     {
-        for (final Actionable menu : active)
+        final int n = active.size();
+        for (int i = 0; i < n; i++)
         {
-            menu.setEnabled(false);
+            active.get(i).setEnabled(false);
         }
         active.clear();
     }
@@ -245,7 +232,7 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
      * 
      * @return The active menus.
      */
-    public Collection<Actionable> getActive()
+    public List<Actionable> getActive()
     {
         return active;
     }
