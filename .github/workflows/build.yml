@@ -62,7 +62,7 @@ jobs:
 
      - name: maven-settings-xml-action
        shell: bash
-       run: type C:\Users\runneradmin\.m2\settings.xml
+       run: type C:\\Users\runneradmin\\.m2\\settings.xml
 
      - name: GPG
        uses: crazy-max/ghaction-import-gpg@v5.2.0
