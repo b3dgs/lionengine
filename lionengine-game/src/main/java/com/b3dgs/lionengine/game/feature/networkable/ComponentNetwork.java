@@ -242,9 +242,7 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
         }
         else if (server != null)
         {
-            Verbose.critical(getClass(),
-                             "handleData",
-                             "Unknown id: " + client.getClientId() + " " + packet.getDataId());
+            Verbose.critical(getClass(), "handleData", "Unknown id: " + packet.getDataId());
         }
     }
 

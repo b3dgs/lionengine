@@ -199,15 +199,14 @@ final class MediaDefault implements Media
             if (folder.getPath().startsWith(TEMP))
             {
                 prefix = folder.getPath() + File.separator;
-                prefixLength = prefix.length();
             }
             else
             {
                 final String folderPath = folder.getPath();
                 final String suffix = getPrefix().replace(separator, File.separator);
                 prefix = folderPath.substring(0, folderPath.indexOf(suffix) + suffix.length()) + File.separator;
-                prefixLength = prefix.length();
             }
+            prefixLength = prefix.length();
 
             for (final File current : files)
             {

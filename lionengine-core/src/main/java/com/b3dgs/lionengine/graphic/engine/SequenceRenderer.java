@@ -285,16 +285,13 @@ public final class SequenceRenderer implements Rasterbar
         {
             cursorVisibility = Boolean.valueOf(visible);
         }
+        else if (visible)
+        {
+            screen.showCursor();
+        }
         else
         {
-            if (visible)
-            {
-                screen.showCursor();
-            }
-            else
-            {
-                screen.hideCursor();
-            }
+            screen.hideCursor();
         }
     }
 

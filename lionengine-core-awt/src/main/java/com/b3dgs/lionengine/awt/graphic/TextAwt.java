@@ -133,22 +133,20 @@ final class TextAwt implements Text
         if (Align.LEFT == alignment)
         {
             tx = x;
-            ty = (int) textSize.getHeight() + y;
         }
         else if (Align.CENTER == alignment)
         {
             tx = x - (int) textSize.getWidth() / 2;
-            ty = (int) textSize.getHeight() + y;
         }
         else if (Align.RIGHT == alignment)
         {
             tx = x - (int) textSize.getWidth();
-            ty = (int) textSize.getHeight() + y;
         }
         else
         {
             throw new LionEngineException(alignment);
         }
+        ty = (int) textSize.getHeight() + y;
 
         final Color colorOld = g2d.getColor();
         g2d.setColor(colorCache.get(color));

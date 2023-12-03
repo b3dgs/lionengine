@@ -79,16 +79,13 @@ public final class AnimatorModel implements Animator
             {
                 checkStatePlaying();
             }
+            else if (speed < 0)
+            {
+                speed = -speed;
+            }
             else
             {
-                if (speed < 0)
-                {
-                    speed = -speed;
-                }
-                else
-                {
-                    state = AnimState.REVERSING;
-                }
+                state = AnimState.REVERSING;
             }
 
             for (int i = 0; i < listenable.size(); i++)

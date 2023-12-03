@@ -110,9 +110,9 @@ public final class UtilColor
         Check.notNull(a);
         Check.notNull(b);
 
-        final double dr = a.getRed() - b.getRed();
-        final double dg = a.getGreen() - b.getGreen();
-        final double db = a.getBlue() - b.getBlue();
+        final int dr = a.getRed() - b.getRed();
+        final int dg = a.getGreen() - b.getGreen();
+        final int db = a.getBlue() - b.getBlue();
 
         return Math.sqrt(dr * dr + dg * dg + db * db);
     }
