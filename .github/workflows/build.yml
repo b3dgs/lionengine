@@ -53,7 +53,7 @@ jobs:
      - name: maven-settings-xml-action
        shell: bash
        run: echo ^<settings^> > ~/.m2/settings.xml
-            | echo ^<servers^> >  >> ~/.m2/settings.xml
+            | echo ^<servers^> >> ~/.m2/settings.xml
             | echo ^<server^> >> ~/.m2/settings.xml
             | echo ^<id^>ossrh^</id^> >> ~/.m2/settings.xml
             | echo ^<username^>${{ secrets.MAVEN_USERNAME }}^</username^> >> ~/.m2/settings.xml
