@@ -51,6 +51,7 @@ jobs:
          server-password: MAVEN_PASSWORD
 
      - name: maven-settings-xml-action
+       shell: bash
        run: echo | (set /p="<settings><servers><server><id>ossrh</id><username>${{ secrets.MAVEN_USERNAME }}</username><password>${{ secrets.MAVEN_PASSWORD }}</password></server></servers><mirrors><mirror><id>maven-default-http-blocker</id><mirrorOf>external:dont-match-anything-mate:*</mirrorOf><name>Pseudo repo.</name><url>http://0.0.0.0/</url><blocked>false</blocked></mirror></mirrors></settings>" & echo .) > ~/.m2/settings.xml
 
      - name: GPG
