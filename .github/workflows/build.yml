@@ -39,7 +39,7 @@ jobs:
             maven-${{ matrix.os }}-
 
      - name: Maven
-       uses: s4u/setup-maven-action@1.9.0
+       uses: s4u/setup-maven-action@1.11.0
        with:
          java-version: ${{ matrix.jdk }}
          maven-version: 3.9.6
