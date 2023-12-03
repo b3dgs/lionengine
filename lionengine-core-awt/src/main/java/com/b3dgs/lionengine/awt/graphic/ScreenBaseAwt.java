@@ -19,9 +19,12 @@ package com.b3dgs.lionengine.awt.graphic;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
@@ -151,6 +154,18 @@ class ScreenBaseAwt extends ScreenAwtAbstract
     @Override
     public void setIcons(Collection<Media> icons)
     {
-        frame.setIconImages(icons.stream().map(i -> new ImageIcon(i.getUrl()).getImage()).collect(Collectors.toList()));
+        final List<Image> img;
+        if (icons.isEmpty())
+        {
+            img = Arrays.asList("16", "32", "48", "64", "128", "256")
+                        .stream()
+                        .map(i -> new ImageIcon(Engine.class.getResource("icon-" + i + ".png")).getImage())
+                        .collect(Collectors.toList());
+        }
+        else
+        {
+            img = icons.stream().map(i -> new ImageIcon(i.getUrl()).getImage()).collect(Collectors.toList());
+        }
+        frame.setIconImages(img);
     }
 }
