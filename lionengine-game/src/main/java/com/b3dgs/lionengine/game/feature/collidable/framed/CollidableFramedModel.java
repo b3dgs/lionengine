@@ -23,10 +23,8 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.AnimatorFrameListener;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -44,8 +42,7 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
     /** Frame listener. */
     private final AnimatorFrameListener listener = new AnimListener();
 
-    @FeatureGet private Collidable collidable;
-    @FeatureGet private Animatable animatable;
+    private final Collidable collidable;
 
     /**
      * Create feature.
@@ -62,23 +59,16 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
      * 
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
+     * @param animatable The animatable feature.
+     * @param collidable The collidable feature.
      * @throws LionEngineException If invalid arguments.
      */
-    public CollidableFramedModel(Services services, Setup setup)
+    public CollidableFramedModel(Services services, Setup setup, Animatable animatable, Collidable collidable)
     {
         super(services, setup);
 
+        this.collidable = collidable;
         config = CollidableFramedConfig.imports(setup);
-    }
-
-    /*
-     * CollidableFramed
-     */
-
-    @Override
-    public void prepare(FeatureProvider provider)
-    {
-        super.prepare(provider);
 
         if (!config.getCollisions().isEmpty())
         {
@@ -86,6 +76,10 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
             animatable.addListener(listener);
         }
     }
+
+    /*
+     * CollidableFramed
+     */
 
     @Override
     public void recycle()

@@ -74,7 +74,7 @@ final class FogOfWarTest
 
     private final Services services = new Services();
     private final MapTileGame map = UtilMap.createMap(5);
-    private final FogOfWar fog = map.addFeatureAndGet(new FogOfWar());
+    private final FogOfWar fog = map.addFeature(new FogOfWar());
 
     /**
      * Prepare test.
@@ -106,8 +106,8 @@ final class FogOfWarTest
     {
         final Setup setup = new Setup(config);
         final FeaturableModel object = new FeaturableModel(services, setup);
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(services, setup));
-        final FovableModel fovable = object.addFeatureAndGet(new FovableModel(services, setup));
+        final Transformable transformable = object.addFeature(TransformableModel.class, services, setup);
+        final FovableModel fovable = object.addFeature(FovableModel.class, services, setup);
         fovable.prepare(object);
         fovable.setFov(0);
 

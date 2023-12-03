@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 /**
  * Refreshable object mock.
  */
-final class Refresher extends FeaturableModel implements Refreshable
+public final class Refresher extends FeaturableModel implements Refreshable
 {
     /** Refreshed flag. */
     private boolean refreshed;

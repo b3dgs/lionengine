@@ -173,7 +173,7 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
             handler.add(selector);
         }
 
-        addFeature(new LayerableModel(services, setup));
+        addFeature(LayerableModel.class, services, setup);
 
         surface = load(setup);
         surface.prepare();

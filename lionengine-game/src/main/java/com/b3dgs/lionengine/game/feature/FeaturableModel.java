@@ -17,9 +17,7 @@
 package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Featurable model implementation.
@@ -52,19 +50,6 @@ public class FeaturableModel extends FeaturableAbstract
     /*
      * Featurable
      */
-
-    @Override
-    public final void addFeature(Feature feature)
-    {
-        try
-        {
-            super.addFeature(feature);
-        }
-        catch (final LionEngineException exception)
-        {
-            throw new LionEngineException(exception, media, exception.getMessage());
-        }
-    }
 
     @Override
     public Media getMedia()

@@ -87,9 +87,9 @@ public final class Scene extends Sequence
         camera.setLimits(map);
         handler.add(camera);
 
-        final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        final MapTileCollision mapCollision = map.addFeatureAndGet(new MapTileCollisionModel());
-        mapCollisionRenderer = map.addFeatureAndGet(new MapTileCollisionRendererModel());
+        final MapTileGroup mapGroup = map.addFeature(new MapTileGroupModel());
+        final MapTileCollision mapCollision = map.addFeature(new MapTileCollisionModel());
+        mapCollisionRenderer = map.addFeature(new MapTileCollisionRendererModel());
 
         handler.add(map);
 
@@ -97,7 +97,7 @@ public final class Scene extends Sequence
         mapCollision.loadCollisions(Medias.create("formulas.xml"), Medias.create("collisions.xml"));
         mapCollisionRenderer.createCollisionDraw();
 
-        final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
+        final MapTileViewer mapViewer = map.addFeature(new MapTileViewerModel(services));
         mapViewer.addRenderer(mapCollisionRenderer);
         mapViewer.prepare(map);
 

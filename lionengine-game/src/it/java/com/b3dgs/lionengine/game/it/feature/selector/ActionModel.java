@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 /**
  * Move action.
  */
-class ActionModel extends FeaturableModel
+public class ActionModel extends FeaturableModel
 {
     /** Actionnable reference. */
     protected final Actionable actionable;
@@ -70,14 +70,14 @@ class ActionModel extends FeaturableModel
         handler = services.get(Handler.class);
         selector = services.get(Selector.class);
 
-        addFeatureAndGet(new LayerableModel(4, 6));
+        addFeature(new LayerableModel(4, 6));
 
-        actionable = addFeatureAndGet(new ActionableModel(services, setup));
+        actionable = addFeature(ActionableModel.class, services, setup);
         actionable.setClickAction(MouseAwt.LEFT);
 
         state = new AtomicReference<>(actionable);
 
-        assignable = addFeatureAndGet(new AssignableModel(services, setup));
+        assignable = addFeature(AssignableModel.class, services, setup);
         assignable.setClickAssign(MouseAwt.LEFT);
 
         actionable.setAction(() ->

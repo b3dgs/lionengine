@@ -120,8 +120,8 @@ final class MapTileCollisionModelComplexTest
 
     private final Services services = new Services();
     private final MapTileGame map = services.add(new MapTileGame());
-    private final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-    private final MapTileCollision mapCollision = map.addFeatureAndGet(new MapTileCollisionModel());
+    private final MapTileGroup mapGroup = map.addFeature(new MapTileGroupModel());
+    private final MapTileCollision mapCollision = map.addFeature(new MapTileCollisionModel());
     private Transformable transformable;
 
     /**
@@ -178,10 +178,10 @@ final class MapTileCollisionModelComplexTest
         CollisionCategoryConfig.exports(setup.getRoot(), category);
         final FeaturableModel object = new FeaturableModel(services, setup);
 
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(services, setup));
+        final Transformable transformable = object.addFeature(TransformableModel.class, services, setup);
         transformable.setSize(1, 1);
 
-        final TileCollidable collidable = object.addFeatureAndGet(new TileCollidableModel(services, setup));
+        final TileCollidable collidable = object.addFeature(TileCollidableModel.class, services, setup);
         collidable.setEnabled(true);
 
         return transformable;

@@ -36,6 +36,7 @@ import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -92,11 +93,11 @@ final class RasterableModelTest
         final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_XML));
 
         final Featurable featurable = new FeaturableModel(services, setup);
-        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(services, setup));
-        final Animatable animatable = featurable.addFeatureAndGet(new AnimatableModel(services, setup));
-        featurable.addFeature(new MirrorableModel(services, setup));
+        final Transformable transformable = featurable.addFeature(TransformableModel.class, services, setup);
+        final Animatable animatable = featurable.addFeature(AnimatableModel.class, services, setup);
+        final Mirrorable mirrorable = featurable.addFeature(MirrorableModel.class, services, setup);
 
-        final Rasterable rasterable = new RasterableModel(services, setup);
+        final Rasterable rasterable = new RasterableModel(services, setup, transformable, mirrorable, animatable);
         rasterable.setFrameOffsets(1, 2);
         rasterable.prepare(featurable);
         rasterable.setOrigin(Origin.TOP_LEFT);

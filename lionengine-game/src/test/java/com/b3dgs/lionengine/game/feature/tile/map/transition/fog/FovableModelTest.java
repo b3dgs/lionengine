@@ -76,10 +76,11 @@ final class FovableModelTest
         services.add(map);
 
         final Setup setup = new Setup(config);
-        final Fovable fovable = new FovableModel(services, setup);
 
         final Featurable featurable = new FeaturableModel(services, setup);
-        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(services, setup));
+        final Transformable transformable = featurable.addFeature(TransformableModel.class, services, setup);
+        final Fovable fovable = new FovableModel(services, setup, transformable);
+
         transformable.teleport(1, 2);
         transformable.setSize(3, 4);
         fovable.prepare(featurable);

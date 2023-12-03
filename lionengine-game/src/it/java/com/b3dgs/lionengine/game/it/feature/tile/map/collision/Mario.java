@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidableModel;
 /**
  * Implementation of our controllable entity.
  */
-final class Mario extends FeaturableModel
+public final class Mario extends FeaturableModel
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Mario.xml");
@@ -46,12 +46,12 @@ final class Mario extends FeaturableModel
     {
         super(services, setup);
 
-        addFeature(new TransformableModel(services, setup));
-        addFeature(new BodyModel(services, setup));
-        addFeatureAndGet(new LayerableModel(1));
-        addFeatureAndGet(new CollidableModel(services, setup)).setOrigin(Origin.CENTER_BOTTOM);
-        addFeature(new TileCollidableModel(services, setup));
-        addFeature(new MarioUpdater(services, setup));
-        addFeature(new MarioRenderer(services, setup));
+        addFeature(TransformableModel.class, services, setup);
+        addFeature(BodyModel.class, services, setup);
+        addFeature(new LayerableModel(1));
+        addFeature(CollidableModel.class, services, setup).setOrigin(Origin.CENTER_BOTTOM);
+        addFeature(TileCollidableModel.class, services, setup);
+        addFeature(MarioUpdater.class, services, setup);
+        addFeature(MarioRenderer.class, services, setup);
     }
 }

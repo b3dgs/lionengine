@@ -217,7 +217,7 @@ final class TransformableModelTest
     void testNotify()
     {
         final AtomicBoolean transformed = new AtomicBoolean();
-        final TransformableListener listener = (t) -> transformed.set(true);
+        final TransformableListener listener = t -> transformed.set(true);
         transformable.addListener(listener);
         transformable.setSize(transformable.getWidth(), transformable.getHeight());
         transformable.check(false);

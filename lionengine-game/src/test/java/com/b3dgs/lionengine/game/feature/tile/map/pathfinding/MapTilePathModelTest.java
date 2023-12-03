@@ -94,7 +94,7 @@ final class MapTilePathModelTest
         map.create(1, 1, 7, 7);
         UtilMap.setGroups(map);
         UtilMap.fill(map, UtilMap.TILE_GROUND);
-        mapPath = map.addFeatureAndGet(new MapTilePathModel());
+        mapPath = map.addFeature(new MapTilePathModel());
         mapPath.prepare(map);
 
         mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
@@ -253,9 +253,9 @@ final class MapTilePathModelTest
     private Pathfindable createObject()
     {
         final FeaturableModel object = new FeaturableModel(services, setup);
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(services, setup));
+        final Transformable transformable = object.addFeature(TransformableModel.class, services, setup);
         transformable.setSize(1, 1);
 
-        return object.addFeatureAndGet(new PathfindableModel(services, setup));
+        return object.addFeature(PathfindableModel.class, services, setup);
     }
 }

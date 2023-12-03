@@ -414,7 +414,7 @@ final class ConfigurerTest
     /**
      * Mock class.
      */
-    static final class Accessible
+    public static final class Accessible
     {
         private final boolean created;
 
@@ -430,7 +430,7 @@ final class ConfigurerTest
     /**
      * Mock class.
      */
-    static final class NotAccessible
+    public static final class NotAccessible
     {
         private NotAccessible()
         {
@@ -441,7 +441,7 @@ final class ConfigurerTest
     /**
      * Mock class.
      */
-    static final class Custom
+    public static final class Custom
     {
         private final boolean created;
 
@@ -459,7 +459,7 @@ final class ConfigurerTest
     /**
      * Mock class.
      */
-    abstract static class Abstract
+    public abstract static class Abstract
     {
         /**
          * Create mock.
@@ -475,7 +475,7 @@ final class ConfigurerTest
     /**
      * Mock class.
      */
-    static final class Throws
+    public static final class Throws
     {
         /**
          * Create mock.

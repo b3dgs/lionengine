@@ -201,7 +201,7 @@ final class LaunchableModelTest
     @Test
     void testCheck()
     {
-        final Launchable launchable = new LaunchableModel(services, setup);
+        final Launchable launchable = new LaunchableModel(services, setup, transformable);
         final Self self = new Self(services, setup);
         launchable.checkListener(self);
         launchable.launch();

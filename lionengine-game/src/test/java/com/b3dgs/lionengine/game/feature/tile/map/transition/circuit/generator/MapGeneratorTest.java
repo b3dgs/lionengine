@@ -84,8 +84,8 @@ final class MapGeneratorTest
     private final Services services = new Services();
     private final Camera camera = services.add(new Camera());
     private final MapTileGame map = new MapTileGame();
-    private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
-    private final MapTileAppender append = map.addFeatureAndGet(new MapTileAppenderModel());
+    private final MapTileViewer mapViewer = map.addFeature(new MapTileViewerModel(services));
+    private final MapTileAppender append = map.addFeature(new MapTileAppenderModel());
     private final GeneratorParameter parameters = new GeneratorParameter();
     private final MapGenerator generator = new MapGeneratorImpl();
     private final Graphic g = new GraphicMock();
@@ -105,9 +105,9 @@ final class MapGeneratorTest
                                   Medias.create("sheets.xml"),
                                   Medias.create("groups.xml"));
 
-        map.addFeatureAndGet(new MapTileGroupModel()).loadGroups(Medias.create("groups.xml"));
-        map.addFeatureAndGet(new MapTileTransitionModel()).loadTransitions(Medias.create("transitions.xml"));
-        map.addFeatureAndGet(new MapTileCircuitModel()).loadCircuits(Medias.create("circuits.xml"));
+        map.addFeature(new MapTileGroupModel()).loadGroups(Medias.create("groups.xml"));
+        map.addFeature(new MapTileTransitionModel()).loadTransitions(Medias.create("transitions.xml"));
+        map.addFeature(new MapTileCircuitModel()).loadCircuits(Medias.create("circuits.xml"));
 
         camera.setView(0, 0, 640, 480, 480);
         camera.setLimits(map);

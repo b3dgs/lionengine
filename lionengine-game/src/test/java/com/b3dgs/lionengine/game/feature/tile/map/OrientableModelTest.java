@@ -35,6 +35,7 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilTransformable;
 
@@ -78,9 +79,9 @@ final class OrientableModelTest
     public void prepare()
     {
         services.add(new MapTileGame());
-        featurable.addFeature(new TransformableModel(services, setup));
+        final Transformable transformable = featurable.addFeature(TransformableModel.class, services, setup);
 
-        orientable = new OrientableModel(services, setup);
+        orientable = new OrientableModel(services, setup, transformable);
         orientable.prepare(featurable);
     }
 

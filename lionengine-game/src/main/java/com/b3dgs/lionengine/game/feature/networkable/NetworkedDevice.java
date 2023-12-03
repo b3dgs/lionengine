@@ -20,7 +20,6 @@ import java.nio.ByteBuffer;
 
 import com.b3dgs.lionengine.InputDeviceListener;
 import com.b3dgs.lionengine.UtilConversion;
-import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -39,26 +38,27 @@ public class NetworkedDevice extends FeatureModel implements Syncable, DevicePus
 {
     private final DevicePushVirtual virtual = new DevicePushVirtual();
 
-    @FeatureGet private Networkable networkable;
-
-    private final DeviceControllerListener listener = (n, e, c, s) ->
-    {
-        final ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES * 2 + 1);
-        buffer.putInt(getSyncId());
-        buffer.putInt(e.intValue());
-        buffer.put(s ? UtilConversion.fromUnsignedByte(1) : UtilConversion.fromUnsignedByte(0));
-        networkable.send(buffer);
-    };
+    private final DeviceControllerListener listener;
 
     /**
      * Create device.
      * 
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
+     * @param networkable The networkable feature.
      */
-    public NetworkedDevice(Services services, Setup setup)
+    public NetworkedDevice(Services services, Setup setup, Networkable networkable)
     {
         super(services, setup);
+
+        listener = (n, e, c, s) ->
+        {
+            final ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES * 2 + 1);
+            buffer.putInt(getSyncId());
+            buffer.putInt(e.intValue());
+            buffer.put(s ? UtilConversion.fromUnsignedByte(1) : UtilConversion.fromUnsignedByte(0));
+            networkable.send(buffer);
+        };
     }
 
     /**

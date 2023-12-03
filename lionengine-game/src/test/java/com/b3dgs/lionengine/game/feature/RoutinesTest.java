@@ -69,7 +69,7 @@ final class RoutinesTest
     {
         final MyRoutine routine = new MyRoutine(services, setup);
         featurable.addFeature(routine);
-        final Routines routines = featurable.addFeatureAndGet(new Routines(services, setup));
+        final Routines routines = featurable.addFeature(Routines.class, services, setup);
 
         assertFalse(routine.update.get());
         assertFalse(routine.render.get());

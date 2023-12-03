@@ -100,8 +100,7 @@ final class HandlablesImplTest
     @Test
     void testFeature()
     {
-        final Mirrorable mirrorable = new MirrorableModel(services, setup);
-        object.addFeatureAndGet(mirrorable);
+        final Mirrorable mirrorable = object.addFeature(MirrorableModel.class, services, setup);
 
         featurables.remove(object, object.getFeature(Identifiable.class).getId());
 
@@ -128,8 +127,8 @@ final class HandlablesImplTest
     void testFeatureComplex()
     {
         final Featurable complex = new ObjectComplex(services, setup);
-        complex.addFeature(new MirrorableModel(services, setup));
-        complex.addFeature(new TransformableModel(services, setup));
+        complex.addFeature(MirrorableModel.class, services, setup);
+        complex.addFeature(TransformableModel.class, services, setup);
         featurables.add(complex);
 
         int i = 0;
@@ -148,7 +147,7 @@ final class HandlablesImplTest
     void testFeatureInheritance()
     {
         final Featurable inheritance = new ObjectComplex(services, setup);
-        inheritance.addFeature(new FeatureLevel2(services, setup));
+        inheritance.addFeature(FeatureLevel2.class, services, setup);
         featurables.add(inheritance);
 
         int i = 0;
@@ -164,9 +163,15 @@ final class HandlablesImplTest
      * Complex object with interface.
      */
     @FeatureInterface
-    private static final class ObjectComplex extends FeaturableModel implements Updatable
+    public static final class ObjectComplex extends FeaturableModel implements Updatable
     {
-        private ObjectComplex(Services services, Setup setup)
+        /**
+         * Create object.
+         * 
+         * @param services The services reference.
+         * @param setup The setup reference.
+         */
+        public ObjectComplex(Services services, Setup setup)
         {
             super(services, setup);
         }
@@ -182,9 +187,15 @@ final class HandlablesImplTest
      * Mock feature.
      */
     @FeatureInterface
-    private static class FeatureLevel1 extends FeatureModel implements Refreshable
+    public static class FeatureLevel1 extends FeatureModel implements Refreshable
     {
-        private FeatureLevel1(Services services, Setup setup)
+        /**
+         * Create feature.
+         * 
+         * @param services The services reference.
+         * @param setup The setup reference.
+         */
+        public FeatureLevel1(Services services, Setup setup)
         {
             super(services, setup);
         }
@@ -200,9 +211,15 @@ final class HandlablesImplTest
      * Mock feature.
      */
     @FeatureInterface
-    private static final class FeatureLevel2 extends FeatureLevel1
+    public static final class FeatureLevel2 extends FeatureLevel1
     {
-        private FeatureLevel2(Services services, Setup setup)
+        /**
+         * Create feature.
+         * 
+         * @param services The services reference.
+         * @param setup The setup reference.
+         */
+        public FeatureLevel2(Services services, Setup setup)
         {
             super(services, setup);
         }

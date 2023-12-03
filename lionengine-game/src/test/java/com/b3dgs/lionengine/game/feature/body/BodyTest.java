@@ -67,7 +67,7 @@ final class BodyTest
     private final Setup setup = new Setup(config);
     private final Body body = new BodyModel(services, setup);
     private final FeaturableModel object = new FeaturableModel(services, setup);
-    private final Transformable transformable = object.addFeatureAndGet(new TransformableModel(services, setup));
+    private final Transformable transformable = object.addFeature(TransformableModel.class, services, setup);
 
     /**
      * Clean test.

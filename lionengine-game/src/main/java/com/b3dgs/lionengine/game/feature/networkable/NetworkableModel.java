@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.FeatureGet;
-import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -40,7 +38,6 @@ import com.b3dgs.lionengine.network.server.Server;
 /**
  * Abstract networkable implementation.
  */
-@FeatureInterface
 public class NetworkableModel extends FeatureModel implements Networkable
 {
     /** Server reference (<code>null</code> if unavailable). */
@@ -55,8 +52,6 @@ public class NetworkableModel extends FeatureModel implements Networkable
     private int dataId = -1;
     /** Synced on server flag. */
     private boolean synced;
-
-    @FeatureGet private Identifiable identifiable;
 
     /**
      * Create feature.

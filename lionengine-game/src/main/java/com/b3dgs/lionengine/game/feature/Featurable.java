@@ -92,28 +92,34 @@ public interface Featurable extends FeatureProvider
     }
 
     /**
-     * Add a feature.
-     * 
-     * @param feature The feature to add.
-     */
-    void addFeature(Feature feature);
-
-    /**
-     * Add a feature.
-     * 
-     * @param feature The feature to add.
-     * @param overwrite <code>true</code> to overwrite existing feature, <code>false</code> else.
-     */
-    void addFeature(Feature feature, boolean overwrite);
-
-    /**
      * Add a feature and retrieve it. Read all {@link FeaturableConfig#NODE_FEATURE} nodes.
      * 
      * @param <T> The feature type.
      * @param feature The feature to add.
      * @return The added feature (same as source).
      */
-    <T extends Feature> T addFeatureAndGet(T feature);
+    <T extends Feature> T addFeature(T feature);
+
+    /**
+     * Add a feature and retrieve it.
+     * 
+     * @param <T> The feature type.
+     * @param feature The feature to add.
+     * @param overwrite <code>true</code> to overwrite existing feature, <code>false</code> else.
+     * @return The added feature.
+     */
+    <T extends Feature> T addFeature(T feature, boolean overwrite);
+
+    /**
+     * Add a feature and retrieve it. Read all {@link FeaturableConfig#NODE_FEATURE} nodes.
+     * 
+     * @param <T> The feature type.
+     * @param feature The feature to add.
+     * @param services The services reference.
+     * @param setup The setup reference.
+     * @return The added feature.
+     */
+    <T extends Feature> T addFeature(Class<T> feature, Services services, Setup setup);
 
     /**
      * Check object interface listening and add them automatically. If the {@link Feature} provide listeners, this will

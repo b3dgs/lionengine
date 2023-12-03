@@ -337,13 +337,7 @@ public class Factory implements HandlerListener
      */
     private void addFeatures(Featurable featurable, Services services, Setup setup)
     {
-        final List<Feature> rawFeatures = FeaturableConfig.getFeatures(classLoader, services, setup);
-        final int length = rawFeatures.size();
-        for (int i = 0; i < length; i++)
-        {
-            final Feature feature = rawFeatures.get(i);
-            featurable.addFeature(feature);
-        }
+        FeaturableConfig.addFeatures(classLoader, featurable, services, setup);
         featurable.addAfter(services, setup);
     }
 

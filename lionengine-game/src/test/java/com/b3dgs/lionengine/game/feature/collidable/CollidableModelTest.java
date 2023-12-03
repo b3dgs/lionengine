@@ -91,11 +91,11 @@ final class CollidableModelTest
         final Setup setup = new Setup(config);
         final FeaturableModel featurable = new FeaturableModel(services, setup);
 
-        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(services, setup));
+        final Transformable transformable = featurable.addFeature(TransformableModel.class, services, setup);
         transformable.setLocation(1.0, 2.0);
         transformable.setSize(2, 2);
 
-        featurable.addFeature(new CollidableModel(services, setup));
+        featurable.addFeature(CollidableModel.class, services, setup);
 
         return featurable;
     }
@@ -186,8 +186,8 @@ final class CollidableModelTest
     @Test
     void testDifferentSizes()
     {
-        featurable1.addFeature(new MirrorableModel(services, setup));
-        featurable2.addFeature(new MirrorableModel(services, setup));
+        featurable1.addFeature(MirrorableModel.class, services, setup);
+        featurable2.addFeature(MirrorableModel.class, services, setup);
 
         final AtomicBoolean auto = new AtomicBoolean();
         collidable1.checkListener((CollidableListener) (collidable, with, by) -> auto.set(true));
@@ -222,11 +222,11 @@ final class CollidableModelTest
     @Test
     void testMirror()
     {
-        final Mirrorable mirror1 = featurable1.addFeatureAndGet(new MirrorableModel(services, setup));
+        final Mirrorable mirror1 = featurable1.addFeature(MirrorableModel.class, services, setup);
         mirror1.mirror(Mirror.HORIZONTAL);
         mirror1.update(1.0);
 
-        final Mirrorable mirror2 = featurable2.addFeatureAndGet(new MirrorableModel(services, setup));
+        final Mirrorable mirror2 = featurable2.addFeature(MirrorableModel.class, services, setup);
         mirror2.mirror(Mirror.VERTICAL);
         mirror2.update(1.0);
 

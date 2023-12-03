@@ -88,7 +88,7 @@ final class AnimatableModelTest
     @Test
     void testConstructorNullAnimator()
     {
-        assertThrows(() -> new AnimatableModel(services, setup, null), "Unexpected null argument !");
+        assertThrows(() -> new AnimatableModel(null, services, setup), "Unexpected null argument !");
     }
 
     /**
@@ -155,7 +155,7 @@ final class AnimatableModelTest
         final int last = 5;
         final double speed = 2.0;
         final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, speed, false, false);
-        final Animatable animatable = new AnimatableModel(services, setup, new AnimatorModel());
+        final Animatable animatable = new AnimatableModel(new AnimatorModel(), services, setup);
         testAnimatorState(animatable, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
         animatable.play(animation);
@@ -204,7 +204,7 @@ final class AnimatableModelTest
             }
         };
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 0.25, true, false);
-        final Animatable animatable = new AnimatableModel(services, setup, new AnimatorModel());
+        final Animatable animatable = new AnimatableModel(new AnimatorModel(), services, setup);
         animatable.addListener(listener);
 
         assertNull(played.get());

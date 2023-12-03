@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.game.feature.TransformableModel;
 /**
  * Launchable object test.
  */
-class LaunchableObject extends FeaturableModel
+public class LaunchableObject extends FeaturableModel
 {
     /**
      * Constructor.
@@ -36,7 +36,7 @@ class LaunchableObject extends FeaturableModel
     {
         super(services, setup);
 
-        addFeatureAndGet(new TransformableModel(services, setup));
-        addFeatureAndGet(new LaunchableModel(services, setup));
+        addFeature(TransformableModel.class, services, setup);
+        addFeature(LaunchableModel.class, services, setup);
     }
 }

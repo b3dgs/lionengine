@@ -109,7 +109,7 @@ final class FeatureModelTest
         assertThrowsNpe(feature::getFeatures);
     }
 
-    private class FeatureTest extends FeatureModel implements IdentifiableListener
+    private static final class FeatureTest extends FeatureModel implements IdentifiableListener
     {
         private FeatureTest(Services services, Setup setup)
         {

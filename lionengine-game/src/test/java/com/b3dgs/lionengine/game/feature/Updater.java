@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.Updatable;
 /**
  * Updatable object mock.
  */
-final class Updater extends FeaturableModel implements Updatable
+public final class Updater extends FeaturableModel implements Updatable
 {
     /** Updated flag. */
     private boolean updated;

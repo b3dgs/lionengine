@@ -18,13 +18,7 @@ package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,7 +27,6 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -130,42 +123,19 @@ final class FeaturableModelTest
     }
 
     /**
-     * Test with annotation.
+     * Test.
      */
     @Test
-    void testFeatureAnnotation()
+    void testFeature()
     {
         final Featurable featurable = new FeaturableModel(services, setup);
 
         final MyFeatureInterface featureModel = new MyFeature(services, setup);
         featurable.addFeature(featureModel);
 
-        final MyFeatureModel feature = featurable.addFeatureAndGet(new MyFeatureModel(services, setup));
+        final MyFeatureModel feature = featurable.addFeature(MyFeatureModel.class, services, setup);
 
         assertEquals(featureModel, feature.feature);
-    }
-
-    /**
-     * Test with annotation and feature not found.
-     */
-    @Test
-    void testFeatureAnnotationNotFound()
-    {
-        final Featurable featurable = new FeaturableModel(services, setup);
-        final AtomicReference<String> unfilledType = new AtomicReference<>();
-        final Feature feature = new FeatureModel(services, setup)
-        {
-            private @FeatureGet String type;
-
-            @Override
-            public void prepare(FeatureProvider provider)
-            {
-                super.prepare(provider);
-                unfilledType.set(type);
-            }
-        };
-        assertThrows(() -> featurable.addFeature(feature),
-                     "[transformable_FeaturableModelTest.xml] Class not found: " + String.class + " in " + feature);
     }
 
     /**
@@ -178,29 +148,6 @@ final class FeaturableModelTest
         object.prepare(object);
 
         assertFalse(object.hasFeature(FeatureItself.class));
-    }
-
-    /**
-     * Test the set field not accessible.
-     * 
-     * @throws ReflectiveOperationException If error.
-     */
-    @Test
-    void testSetFieldNotAccessible() throws ReflectiveOperationException
-    {
-        final FeatureItself featurable = new FeatureItself(services, setup);
-        final Method method = FeaturableAbstract.class.getDeclaredMethod("setField",
-                                                                         Field.class,
-                                                                         Object.class,
-                                                                         Class.class);
-        UtilReflection.setAccessible(method, true);
-        assertThrows(InvocationTargetException.class,
-                     () -> method.invoke(featurable,
-                                         featurable.getClass().getDeclaredField("object"),
-                                         featurable,
-                                         Object.class),
-                     null);
-
     }
 
     /**
@@ -235,22 +182,34 @@ final class FeaturableModelTest
         UtilFile.deleteFile(media.getFile());
     }
 
+    /**
+     * My feature.
+     */
     @FeatureInterface
-    private static class MyFeatureModel extends FeatureModel
+    public static final class MyFeatureModel extends FeatureModel
     {
-        private MyFeatureModel(Services services, Setup setup)
+        private final MyFeatureInterface feature;
+
+        /**
+         * Create model.
+         * 
+         * @param services The services reference.
+         * @param setup The setup reference.
+         * @param feature The feature.
+         */
+        public MyFeatureModel(Services services, Setup setup, MyFeatureInterface feature)
         {
             super(services, setup);
-        }
 
-        private @FeatureGet MyFeatureInterface feature;
+            this.feature = feature;
+        }
     }
 
     /**
      * Mock feature.
      */
     @FeatureInterface
-    private interface MyFeatureInterface extends Feature
+    public interface MyFeatureInterface extends Feature
     {
         // Mock
     }
@@ -259,40 +218,56 @@ final class FeaturableModelTest
      * Mock feature.
      */
     @FeatureInterface
-    private static class MyFeature extends FeatureModel implements MyFeatureInterface
+    public static final class MyFeature extends FeatureModel implements MyFeatureInterface
     {
-        private MyFeature(Services services, Setup setup)
+        /**
+         * Create model.
+         * 
+         * @param services The services reference.
+         * @param setup The setup reference.
+         */
+        public MyFeature(Services services, Setup setup)
         {
             super(services, setup);
         }
-        // Mock
     }
 
     /**
      * Mock feature.
      */
     @FeatureInterface
-    private static class MyFeatureNotCompatible extends FeatureModel
+    public static final class MyFeatureNotCompatible extends FeatureModel
     {
-        private MyFeatureNotCompatible(Services services, Setup setup)
+        /**
+         * Create model.
+         * 
+         * @param services The services reference.
+         * @param setup The setup reference.
+         */
+        public MyFeatureNotCompatible(Services services, Setup setup)
         {
             super(services, setup);
         }
-        // Mock
     }
 
     /**
      * Mock feature itself.
      */
     @FeatureInterface
-    private static class FeatureItself extends FeaturableModel implements Feature
+    public static final class FeatureItself extends FeaturableModel implements Feature
     {
-        private FeatureItself(Services services, Setup setup)
+        @SuppressWarnings("unused") private Object object;
+
+        /**
+         * Create model.
+         * 
+         * @param services The services reference.
+         * @param setup The setup reference.
+         */
+        public FeatureItself(Services services, Setup setup)
         {
             super(services, setup);
         }
-
-        @SuppressWarnings("unused") private Object object;
 
         @Override
         public void prepare(FeatureProvider provider)

@@ -273,7 +273,6 @@ public final class UtilReflection
 
         try
         {
-            setAccessible(constructor, true);
             return constructor.newInstance(params);
         }
         catch (final IllegalArgumentException exception)

@@ -20,10 +20,9 @@ import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.feature.Displayable;
-import com.b3dgs.lionengine.game.feature.FeatureGet;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
@@ -38,27 +37,31 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 /**
  * Rendering of our controllable entity.
  */
-final class MarioRenderer extends FeatureModel implements Displayable
+@FeatureInterface
+public final class MarioRenderer extends FeatureModel implements Displayable
 {
+    private final Viewer viewer = services.get(Viewer.class);
+
+    private final Collidable collidable;
+    private final Transformable transformable;
+
     private final TextGame text = new TextGame(Constant.FONT_SERIF, 12, TextStyle.NORMAL);
     private final SpriteAnimated surface;
-
-    private final Viewer viewer;
-
-    @FeatureGet private Collidable collidable;
-    @FeatureGet private Transformable transformable;
 
     /**
      * Constructor.
      * 
      * @param services The services reference.
      * @param setup The setup reference.
+     * @param collidable The collidable feature.
+     * @param transformable The transformable feature.
      */
-    public MarioRenderer(Services services, Setup setup)
+    public MarioRenderer(Services services, Setup setup, Collidable collidable, Transformable transformable)
     {
         super(services, setup);
 
-        viewer = services.get(Viewer.class);
+        this.collidable = collidable;
+        this.transformable = transformable;
 
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
@@ -66,12 +69,6 @@ final class MarioRenderer extends FeatureModel implements Displayable
         text.setAlign(Align.CENTER);
         text.setColor(ColorRgba.BLACK);
         text.setText(Mario.class.getSimpleName());
-    }
-
-    @Override
-    public void prepare(FeatureProvider provider)
-    {
-        super.prepare(provider);
 
         collidable.setCollisionVisibility(true);
         surface.setFrameOffsets(0, -1);

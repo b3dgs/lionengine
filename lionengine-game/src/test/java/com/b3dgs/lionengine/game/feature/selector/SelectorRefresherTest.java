@@ -115,9 +115,9 @@ final class SelectorRefresherTest
         cursor.setSync(mouse);
 
         final Featurable featurable = new FeaturableModel(services, setup);
-        featurable.addFeature(new LayerableModel(services, setup));
-        featurable.addFeature(new TransformableModel(services, setup));
-        featurable.addFeature(new CollidableModel(services, setup));
+        featurable.addFeature(LayerableModel.class, services, setup);
+        featurable.addFeature(TransformableModel.class, services, setup);
+        featurable.addFeature(CollidableModel.class, services, setup);
 
         refresher = new SelectorRefresher(services, model);
         refresher.addListener(listener);

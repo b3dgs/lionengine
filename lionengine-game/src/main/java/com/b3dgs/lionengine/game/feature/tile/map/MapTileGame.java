@@ -61,7 +61,7 @@ public class MapTileGame extends FeaturableAbstract implements MapTile, Listenab
     {
         super();
 
-        mapSurface = addFeatureAndGet(new MapTileSurfaceModel());
+        mapSurface = addFeature(new MapTileSurfaceModel());
     }
 
     /**

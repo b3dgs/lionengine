@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.ComponentDisplayable;
@@ -31,6 +32,7 @@ import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Handler;
+import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -73,11 +75,11 @@ public final class SceneRasterable extends Sequence
     {
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 4, 4);
         final Featurable featurable = new FeaturableModel(services, setup);
-        featurable.addFeature(new MirrorableModel(services, setup));
-        featurable.addFeature(new AnimatableModel(services, setup, surface));
+        final Transformable transformable = featurable.addFeature(TransformableModel.class, services, setup);
+        final Mirrorable mirrorable = featurable.addFeature(MirrorableModel.class, services, setup);
+        final Animatable animatable = featurable.addFeature(new AnimatableModel(surface, services, setup));
 
-        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(services, setup));
-        final Rasterable rasterable = new RasterableModel(services, setup);
+        final Rasterable rasterable = new RasterableModel(services, setup, transformable, mirrorable, animatable);
         rasterable.setOrigin(Origin.MIDDLE);
         rasterable.setFrameOffsets(1, 2);
         featurable.addFeature(rasterable);

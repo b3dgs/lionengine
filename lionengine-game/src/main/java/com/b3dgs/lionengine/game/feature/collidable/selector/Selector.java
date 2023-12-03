@@ -86,9 +86,9 @@ public class Selector extends FeaturableAbstract implements SelectorConfigurer, 
 
         Check.notNull(services);
 
-        model = addFeatureAndGet(new SelectorModel());
-        refresher = addFeatureAndGet(new SelectorRefresher(services, model));
-        displayer = addFeatureAndGet(new SelectorDisplayer(services, model));
+        model = addFeature(new SelectorModel());
+        refresher = addFeature(new SelectorRefresher(services, model));
+        displayer = addFeature(new SelectorDisplayer(services, model));
 
         final ComponentCollision componentCollision = services.get(ComponentCollision.class);
 

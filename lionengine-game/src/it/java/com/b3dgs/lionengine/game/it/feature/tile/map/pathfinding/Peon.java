@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 /**
  * Peon entity implementation.
  */
-final class Peon extends FeaturableModel
+public final class Peon extends FeaturableModel
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
@@ -53,16 +53,16 @@ final class Peon extends FeaturableModel
     {
         super(services, setup);
 
-        addFeatureAndGet(new LayerableModel(1));
+        addFeature(new LayerableModel(1));
 
-        final Transformable transformable = addFeatureAndGet(new TransformableModel(services, setup));
+        final Transformable transformable = addFeature(TransformableModel.class, services, setup);
         transformable.teleport(208, 224);
 
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.BOTTOM_LEFT);
         surface.setFrameOffsets(8, 8);
 
-        final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
+        final Pathfindable pathfindable = addFeature(PathfindableModel.class, services, setup);
         pathfindable.setSpeed(6.0, 6.0);
         pathfindable.setRenderDebug(true);
         pathfindable.clearIgnoredId();

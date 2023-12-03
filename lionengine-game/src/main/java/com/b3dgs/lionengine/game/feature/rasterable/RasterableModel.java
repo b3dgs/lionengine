@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UpdatableVoid;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.OriginConfig;
 import com.b3dgs.lionengine.game.SurfaceConfig;
@@ -91,11 +90,11 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     private boolean visible = true;
 
     /** Transformable reference. */
-    private Transformable transformable;
+    private final Transformable transformable;
     /** Mirrorable reference. */
-    private Mirrorable mirrorable;
+    private final Mirrorable mirrorable;
     /** Animatable reference. */
-    private Animatable animatable;
+    private final Animatable animatable;
 
     /**
      * Create feature.
@@ -116,11 +115,23 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
      * 
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
+     * @param transformable The transformable feature.
+     * @param mirrorable The mirrorable feature.
+     * @param animatable The animatable feature.
      * @throws LionEngineException If invalid arguments.
      */
-    public RasterableModel(Services services, SetupSurfaceRastered setup)
+    // CHECKSTYLE IGNORE LINE: ExecutableStatementCount
+    public RasterableModel(Services services,
+                           SetupSurfaceRastered setup,
+                           Transformable transformable,
+                           Mirrorable mirrorable,
+                           Animatable animatable)
     {
         super(services, setup);
+
+        this.transformable = transformable;
+        this.mirrorable = mirrorable;
+        this.animatable = animatable;
 
         setupRastered = setup;
         viewer = services.get(Viewer.class);
@@ -213,16 +224,6 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     /*
      * Rasterable
      */
-
-    @Override
-    public void prepare(FeatureProvider provider)
-    {
-        super.prepare(provider);
-
-        transformable = provider.getFeature(Transformable.class);
-        mirrorable = provider.getFeature(Mirrorable.class);
-        animatable = provider.getFeature(Animatable.class);
-    }
 
     @Override
     public void update(double extrp)

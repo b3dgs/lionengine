@@ -48,7 +48,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 /**
  * Entity representation base.
  */
-class Entity extends FeaturableModel
+public final class Entity extends FeaturableModel
 {
     /**
      * Create entity.
@@ -60,10 +60,10 @@ class Entity extends FeaturableModel
     {
         super(services, setup);
 
-        addFeature(new LayerableModel(services, setup));
+        addFeature(LayerableModel.class, services, setup);
 
-        final Transformable transformable = addFeatureAndGet(new TransformableModel(services, setup));
-        final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
+        final Transformable transformable = addFeature(TransformableModel.class, services, setup);
+        final Pathfindable pathfindable = addFeature(PathfindableModel.class, services, setup);
 
         final FramesConfig config = FramesConfig.imports(setup);
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(),
@@ -72,18 +72,18 @@ class Entity extends FeaturableModel
         surface.setOrigin(Origin.BOTTOM_LEFT);
         surface.setFrameOffsets(config.getOffsetX(), config.getOffsetY());
 
-        final Collidable collidable = addFeatureAndGet(new CollidableModel(services, setup));
+        final Collidable collidable = addFeature(CollidableModel.class, services, setup);
         collidable.setGroup(Integer.valueOf(2));
         collidable.addCollision(Collision.AUTOMATIC);
         collidable.setCollisionVisibility(false);
         collidable.setOrigin(Origin.BOTTOM_LEFT);
 
-        final Producer producer = addFeatureAndGet(new ProducerModel(services, setup));
+        final Producer producer = addFeature(ProducerModel.class, services, setup);
         producer.setStepsSpeed(1.0);
 
         final MapTile map = services.get(MapTile.class);
 
-        final Producible producible = addFeatureAndGet(new ProducibleModel(services, setup));
+        final Producible producible = addFeature(ProducibleModel.class, services, setup);
         producible.addListener(new ProducibleListenerVoid()
         {
             @Override
@@ -99,7 +99,7 @@ class Entity extends FeaturableModel
                 surface.setFrame(2);
             }
         });
-        addFeature(new ActionerModel(services, setup));
+        addFeature(ActionerModel.class, services, setup);
 
         final Viewer viewer = services.get(Viewer.class);
 
@@ -110,7 +110,7 @@ class Entity extends FeaturableModel
             surface.setLocation(viewer, transformable);
         }));
 
-        final Selectable selectable = addFeatureAndGet(new SelectableModel(services, setup));
+        final Selectable selectable = addFeature(SelectableModel.class, services, setup);
 
         addFeature(new DisplayableModel(g ->
         {

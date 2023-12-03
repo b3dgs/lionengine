@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.feature;
 /**
  * Object without constructor.
  */
-final class ObjectNoConstructor extends FeaturableModel
+public final class ObjectNoConstructor extends FeaturableModel
 {
     /**
      * Constructor.
@@ -27,7 +27,7 @@ final class ObjectNoConstructor extends FeaturableModel
      * @param services The services.
      * @param setup The setup.
      */
-    private ObjectNoConstructor(Services services, Setup setup)
+    public ObjectNoConstructor(Services services, Setup setup)
     {
         super(services, setup);
     }

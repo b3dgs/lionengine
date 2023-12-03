@@ -476,7 +476,6 @@ public class XmlReader implements AttributesReader
 
             final Class<?> clazz = CLASS_CACHE.get(className);
             final Constructor<?> constructor = UtilReflection.getCompatibleConstructor(clazz, paramsType);
-            UtilReflection.setAccessible(constructor, true);
             return type.cast(constructor.newInstance(paramsValue.toArray()));
         }
         catch (final InstantiationException | IllegalArgumentException | InvocationTargetException exception)

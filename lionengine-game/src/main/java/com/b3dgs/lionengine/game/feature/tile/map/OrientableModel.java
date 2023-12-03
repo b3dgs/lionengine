@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.game.feature.tile.map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -39,7 +38,7 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
     private Orientation orientation = Orientation.NORTH;
 
     /** Localizable reference. */
-    private Transformable transformable;
+    private final Transformable transformable;
 
     /**
      * Create feature.
@@ -58,22 +57,19 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
      * 
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
+     * @param transformable The transformable feature.
      * @throws LionEngineException If invalid arguments.
      */
-    public OrientableModel(Services services, Setup setup)
+    public OrientableModel(Services services, Setup setup, Transformable transformable)
     {
         super(services, setup);
+
+        this.transformable = transformable;
     }
 
     /*
      * Orientable
      */
-
-    @Override
-    public void prepare(FeatureProvider provider)
-    {
-        transformable = provider.getFeature(Transformable.class);
-    }
 
     @Override
     public void pointTo(int dtx, int dty)
@@ -90,7 +86,7 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
     @Override
     public void pointTo(Tiled tiled)
     {
-        pointTo(tiled.getInTileX(), tiled.getInTileY());
+        pointTo(tiled.getInTileX() + tiled.getInTileWidth() / 2, tiled.getInTileY() + tiled.getInTileHeight() / 2);
     }
 
     @Override

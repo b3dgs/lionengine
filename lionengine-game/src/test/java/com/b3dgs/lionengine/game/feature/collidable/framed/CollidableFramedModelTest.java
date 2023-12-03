@@ -106,12 +106,12 @@ final class CollidableFramedModelTest
         final Setup setup = new Setup(config);
         final FeaturableModel featurable = new FeaturableModel(services, setup);
 
-        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(services, setup));
+        final Transformable transformable = featurable.addFeature(TransformableModel.class, services, setup);
         transformable.setLocation(1.0, 2.0);
 
-        featurable.addFeature(new AnimatableModel(services, setup));
-        featurable.addFeatureAndGet(new CollidableModel(services, setup));
-        featurable.addFeature(new CollidableFramedModel(services, setup));
+        featurable.addFeature(AnimatableModel.class, services, setup);
+        featurable.addFeature(CollidableModel.class, services, setup);
+        featurable.addFeature(CollidableFramedModel.class, services, setup);
 
         return featurable;
     }

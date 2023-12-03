@@ -184,21 +184,21 @@ public class MapTileHelper extends MapTileGame
         super();
 
         handler = services.get(Handler.class);
-        mapGroup = addFeatureAndGet(new MapTileGroupModel());
-        mapCollision = addFeatureAndGet(new MapTileCollisionModel());
-        mapPath = addFeatureAndGet(new MapTilePathModel());
-        mapTransition = addFeatureAndGet(new MapTileTransitionModel());
-        mapCircuit = addFeatureAndGet(new MapTileCircuitModel());
-        mapRaster = addFeatureAndGet(new MapTileRasteredModel());
-        mapViewer = addFeatureAndGet(new MapTileViewerModel(services));
+        mapGroup = addFeature(new MapTileGroupModel());
+        mapCollision = addFeature(new MapTileCollisionModel());
+        mapPath = addFeature(new MapTilePathModel());
+        mapTransition = addFeature(new MapTileTransitionModel());
+        mapCircuit = addFeature(new MapTileCircuitModel());
+        mapRaster = addFeature(new MapTileRasteredModel());
+        mapViewer = addFeature(new MapTileViewerModel(services));
 
         mapFow.addFeature(new LayerableModel(Constant.HUNDRED));
-        fogOfWar = services.add(mapFow.addFeatureAndGet(new FogOfWar()));
-        mapFow.addFeatureAndGet(new MapTileViewerModel(services)).addRenderer(fogOfWar);
+        fogOfWar = services.add(mapFow.addFeature(new FogOfWar()));
+        mapFow.addFeature(new MapTileViewerModel(services)).addRenderer(fogOfWar);
         handler.add(mapFow);
 
         addFeature(new MapTileAppenderModel());
-        addFeatureAndGet(new MapTilePersisterModel()).addListener(new MapTilePersisterListener()
+        addFeature(new MapTilePersisterModel()).addListener(new MapTilePersisterListener()
         {
             @Override
             public void notifyMapLoadStart()

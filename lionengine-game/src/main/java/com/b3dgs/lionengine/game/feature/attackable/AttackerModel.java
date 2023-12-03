@@ -51,9 +51,9 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     /** Attack distance allowed. */
     private Range distAttack = new Range(1, 1);
     /** Animatable reference. */
-    private Animatable animatable;
+    private final Animatable animatable;
     /** Transformable reference. */
-    private Transformable transformable;
+    private final Transformable transformable;
     /** Attacker checker. */
     private Predicate<Transformable> canAttack = t -> true;
     /** Attack distance computer. */
@@ -95,11 +95,16 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
      * 
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
+     * @param animatable The animatable feature.
+     * @param transformable The transformable feature.
      * @throws LionEngineException If invalid arguments.
      */
-    public AttackerModel(Services services, Setup setup)
+    public AttackerModel(Services services, Setup setup, Animatable animatable, Transformable transformable)
     {
         super(services, setup);
+
+        this.animatable = animatable;
+        this.transformable = transformable;
 
         if (setup.hasNode(AttackerConfig.NODE_ATTACKER))
         {
@@ -170,22 +175,19 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
                 state = AttackState.CHECK;
             }
         }
+        else if (!canAttack.test(target) || !distAttack.includes(distance.applyAsDouble(transformable, target)))
+        {
+            stop = true;
+        }
+        else if (tick.elapsed(attackPause))
+        {
+            updateAttackHit();
+        }
         else
         {
-            if (!canAttack.test(target) || !distAttack.includes(distance.applyAsDouble(transformable, target)))
+            for (int i = 0; i < listenable.size(); i++)
             {
-                stop = true;
-            }
-            else if (tick.elapsed(attackPause))
-            {
-                updateAttackHit();
-            }
-            else
-            {
-                for (int i = 0; i < listenable.size(); i++)
-                {
-                    listenable.get(i).notifyPreparingAttack(target);
-                }
+                listenable.get(i).notifyPreparingAttack(target);
             }
         }
     }
@@ -225,9 +227,6 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     public void prepare(FeatureProvider provider)
     {
         super.prepare(provider);
-
-        animatable = provider.getFeature(Animatable.class);
-        transformable = provider.getFeature(Transformable.class);
 
         if (provider instanceof AttackerListener)
         {

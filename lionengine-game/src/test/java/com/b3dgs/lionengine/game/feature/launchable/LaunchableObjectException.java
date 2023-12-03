@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 /**
  * Launchable object test with exception.
  */
-class LaunchableObjectException extends FeaturableModel
+public final class LaunchableObjectException extends FeaturableModel
 {
     /**
      * Constructor.

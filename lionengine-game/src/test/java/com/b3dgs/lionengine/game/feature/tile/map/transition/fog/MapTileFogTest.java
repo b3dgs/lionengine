@@ -82,10 +82,10 @@ final class MapTileFogTest
         final MapTile map = UtilMap.createMap(5);
         services.add(map);
 
-        final FovableModel fovable = new FovableModel(services, setup);
-
         final FeaturableModel object = new FeaturableModel(services, setup);
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(services, setup));
+        final Transformable transformable = object.addFeature(TransformableModel.class, services, setup);
+        final FovableModel fovable = new FovableModel(services, setup, transformable);
+
         transformable.teleport(3, 3);
         fovable.prepare(object);
         fovable.setFov(0);

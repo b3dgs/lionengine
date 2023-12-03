@@ -117,32 +117,32 @@ public class EntityHelper extends FeaturableModel
     {
         super(services, setup);
 
-        addFeature(new NetworkableModel(services, setup));
-        addFeature(new LayerableModel(services, setup));
-        transformable = addFeatureAndGet(new TransformableModel(services, setup));
-        addFeature(new FovableModel(services, setup));
-        addFeature(new ActionerModel(services, setup));
+        addFeature(NetworkableModel.class, services, setup);
+        addFeature(LayerableModel.class, services, setup);
+        transformable = addFeature(TransformableModel.class, services, setup);
+        addFeature(FovableModel.class, services, setup);
+        addFeature(ActionerModel.class, services, setup);
 
-        state = addFeatureAndGet(new StateHandler(services, setup, EntityHelper::getAnimationName));
-        body = addFeatureAndGet(new BodyModel(services, setup));
-        mirrorable = addFeatureAndGet(new MirrorableModel(services, setup));
-        animatable = addFeatureAndGet(new AnimatableModel(services, setup));
-        rasterable = addFeatureAndGet(new RasterableModel(services, setup));
-        collidable = addFeatureAndGet(new CollidableModel(services, setup));
-        tileCollidable = addFeatureAndGet(new TileCollidableModel(services, setup));
-        pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
-        attacker = addFeatureAndGet(new AttackerModel(services, setup));
-        extractor = addFeatureAndGet(new ExtractorModel(services, setup));
-        producer = addFeatureAndGet(new ProducerModel(services, setup));
-        launchable = addFeatureAndGet(new LaunchableModel(services, setup));
-        launcher = addFeatureAndGet(new LauncherModel(services, setup));
+        state = addFeature(new StateHandler(services, setup, EntityHelper::getAnimationName));
+        body = addFeature(BodyModel.class, services, setup);
+        mirrorable = addFeature(MirrorableModel.class, services, setup);
+        animatable = addFeature(AnimatableModel.class, services, setup);
+        rasterable = addFeature(RasterableModel.class, services, setup);
+        collidable = addFeature(CollidableModel.class, services, setup);
+        tileCollidable = addFeature(TileCollidableModel.class, services, setup);
+        pathfindable = addFeature(PathfindableModel.class, services, setup);
+        attacker = addFeature(AttackerModel.class, services, setup);
+        extractor = addFeature(ExtractorModel.class, services, setup);
+        producer = addFeature(ProducerModel.class, services, setup);
+        launchable = addFeature(LaunchableModel.class, services, setup);
+        launcher = addFeature(LauncherModel.class, services, setup);
 
-        addFeature(new ProducibleModel(services, setup));
-        addFeature(new ExtractableModel(services, setup));
-        addFeature(new CollidableFramedModel(services, setup));
-        addFeature(new SelectableModel(services, setup));
+        addFeature(ProducibleModel.class, services, setup);
+        addFeature(ExtractableModel.class, services, setup);
+        addFeature(CollidableFramedModel.class, services, setup);
+        addFeature(SelectableModel.class, services, setup);
 
-        checker = addFeatureAndGet(new EntityChecker());
+        checker = addFeature(new EntityChecker());
         checker.addListener(new EntityCheckerListener()
         {
             @Override
@@ -217,7 +217,7 @@ public class EntityHelper extends FeaturableModel
     @Override
     public void addAfter(Services services, Setup setup)
     {
-        final Routines routines = addFeatureAndGet(new Routines(services, setup));
+        final Routines routines = addFeature(Routines.class, services, setup);
 
         updating = extrp ->
         {

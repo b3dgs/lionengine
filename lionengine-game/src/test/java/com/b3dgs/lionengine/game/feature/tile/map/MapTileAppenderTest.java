@@ -53,7 +53,7 @@ final class MapTileAppenderTest
 
     private final Services services = new Services();
     private final MapTileGame map = services.add(new MapTileGame());
-    private final MapTileAppender appender = map.addFeatureAndGet(new MapTileAppenderModel());
+    private final MapTileAppender appender = map.addFeature(new MapTileAppenderModel());
 
     /**
      * Test the map append when map is not created.

@@ -24,12 +24,11 @@ import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.util.List;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
@@ -142,7 +141,7 @@ final class FeaturableConfigTest
         final Xml root = new Xml("test");
         root.createChild(FeaturableConfig.NODE_FEATURES)
             .createChild(FeaturableConfig.NODE_FEATURE)
-            .setText(FeatureModel.class.getName());
+            .setText(TransformableModel.class.getName());
         final Media media = Medias.create("Object.xml");
         root.save(media);
 
@@ -150,10 +149,16 @@ final class FeaturableConfigTest
         final Services services = new Services();
         final Setup setup = new Setup(media);
 
-        final List<Feature> a = FeaturableConfig.getFeatures(loader, services, setup);
-        final List<Feature> b = FeaturableConfig.getFeatures(loader, services, setup);
+        final Featurable fa = new FeaturableModel(services, setup);
+        final Featurable fb = new FeaturableModel(services, setup);
 
-        assertNotEquals(a.get(0), b.get(0));
+        FeaturableConfig.addFeatures(loader, fa, services, setup);
+        FeaturableConfig.addFeatures(loader, fb, services, setup);
+
+        final Iterable<Feature> a = fa.getFeatures();
+        final Iterable<Feature> b = fb.getFeatures();
+
+        assertNotEquals(a.iterator().next(), b.iterator().next());
     }
 
     /**
@@ -169,10 +174,11 @@ final class FeaturableConfigTest
         final Media media = Medias.create("Object.xml");
         root.save(media);
 
-        assertCause(() -> FeaturableConfig.getFeatures(ClassLoader.getSystemClassLoader(),
+        assertCause(() -> FeaturableConfig.addFeatures(ClassLoader.getSystemClassLoader(),
+                                                       new FeaturableModel(new Services(), new Setup(media)),
                                                        new Services(),
                                                        new Setup(media)),
-                    NoSuchMethodException.class);
+                    LionEngineException.class);
     }
 
     /**

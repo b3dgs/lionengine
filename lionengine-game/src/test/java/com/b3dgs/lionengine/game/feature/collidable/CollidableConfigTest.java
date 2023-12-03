@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.TransformableModel;
 
 /**
  * Test {@link CollidableConfig}.
@@ -125,7 +126,9 @@ final class CollidableConfigTest
         final Services services = new Services();
         services.add(new ViewerMock());
 
-        final Collidable collidable = new CollidableModel(services, new Setup(media));
+        final Collidable collidable = new CollidableModel(services,
+                                                          new Setup(media),
+                                                          new TransformableModel(services, new Setup(media)));
         collidable.setGroup(Integer.valueOf(1));
         CollidableConfig.exports(root, collidable);
 
@@ -150,7 +153,9 @@ final class CollidableConfigTest
         final Services services = new Services();
         services.add(new ViewerMock());
 
-        final Collidable collidable = new CollidableModel(services, new Setup(media));
+        final Collidable collidable = new CollidableModel(services,
+                                                          new Setup(media),
+                                                          new TransformableModel(services, new Setup(media)));
         collidable.setGroup(Integer.valueOf(1));
         collidable.addAccept(Integer.valueOf(2));
         collidable.addAccept(Integer.valueOf(3));

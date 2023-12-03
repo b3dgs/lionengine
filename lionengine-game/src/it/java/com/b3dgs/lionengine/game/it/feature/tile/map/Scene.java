@@ -57,7 +57,7 @@ public final class Scene extends Sequence
     /** Map reference. */
     private final MapTileGame map = services.create(MapTileGame.class);
     /** Map viewer. */
-    private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
+    private final MapTileViewer mapViewer = map.addFeature(new MapTileViewerModel(services));
     /** Minimap reference. */
     private final Minimap minimap = new Minimap(map);
     /** Scrolling speed. */

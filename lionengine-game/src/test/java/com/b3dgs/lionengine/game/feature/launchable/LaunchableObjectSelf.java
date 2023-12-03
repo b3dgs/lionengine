@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 /**
  * Launchable object test self listener.
  */
-class LaunchableObjectSelf extends LaunchableObject implements LauncherListener, LaunchableListener
+public final class LaunchableObjectSelf extends LaunchableObject implements LauncherListener, LaunchableListener
 {
     /** Fired flag. */
     final AtomicBoolean fired = new AtomicBoolean();

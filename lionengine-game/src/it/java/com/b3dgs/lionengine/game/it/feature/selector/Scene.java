@@ -120,8 +120,8 @@ public final class Scene extends Sequence
     {
         map.create(Medias.create("forest.png"));
 
-        final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        final MapTilePath mapPath = map.addFeatureAndGet(new MapTilePathModel());
+        final MapTileGroup mapGroup = map.addFeature(new MapTileGroupModel());
+        final MapTilePath mapPath = map.addFeature(new MapTilePathModel());
 
         camera.setView(VIEW_X, VIEW_Y, getWidth() - VIEW_X, getHeight() - VIEW_Y, getHeight());
         camera.setLimits(map);
@@ -146,7 +146,7 @@ public final class Scene extends Sequence
         handler.add(hud);
 
         final Selector selector = services.get(Selector.class);
-        selector.addFeatureAndGet(new LayerableModel(4));
+        selector.addFeature(new LayerableModel(4));
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
         selector.setClickSelection(MouseAwt.LEFT);

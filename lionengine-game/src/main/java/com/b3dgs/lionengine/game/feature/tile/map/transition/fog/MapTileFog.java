@@ -89,8 +89,8 @@ public class MapTileFog implements Listenable<RevealedListener>
         super();
 
         map = new MapTileGame();
-        mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        transition = map.addFeatureAndGet(new MapTileTransitionModel());
+        mapGroup = map.addFeature(new MapTileGroupModel());
+        transition = map.addFeature(new MapTileTransitionModel());
         map.addListener(tile ->
         {
             if (fog)

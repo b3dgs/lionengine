@@ -141,7 +141,7 @@ final class MapTilePersisterModelTest
     void testListener() throws IOException
     {
         final MapTileGame map = new MapTileGame();
-        final MapTilePersister mapPersister = map.addFeatureAndGet(new MapTilePersisterModel());
+        final MapTilePersister mapPersister = map.addFeature(new MapTilePersisterModel());
         final Media level = Medias.create("level");
         map.create(16, 32, 3, 3);
         UtilMapTilePersister.saveMap(map, level);

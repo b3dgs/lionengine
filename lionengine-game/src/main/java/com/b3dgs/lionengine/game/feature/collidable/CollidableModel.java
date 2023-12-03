@@ -70,7 +70,7 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
     /** Associated group Id. */
     private Integer group = Integer.valueOf(0);
     /** Transformable owning this model. */
-    private Transformable transformable;
+    private final Transformable transformable;
     /** Origin used. */
     private Origin origin;
     /** Min offset X. */
@@ -108,11 +108,14 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
      * 
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
+     * @param transformable The transformable feature.
      * @throws LionEngineException If invalid argument.
      */
-    public CollidableModel(Services services, Setup setup)
+    public CollidableModel(Services services, Setup setup, Transformable transformable)
     {
         super(services, setup);
+
+        this.transformable = transformable;
 
         final CollidableConfig config = CollidableConfig.imports(setup);
         group = config.getGroup();
@@ -146,7 +149,6 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
     {
         super.prepare(provider);
 
-        transformable = provider.getFeature(Transformable.class);
         transformable.addListener(this);
 
         if (provider instanceof CollidableListener)

@@ -25,21 +25,21 @@ import com.b3dgs.lionengine.game.feature.Setup;
 /**
  * Object self collision listener mock.
  */
-final class ObjectSelf extends FeaturableModel implements CollidableListener
+public final class ObjectSelf extends FeaturableModel implements CollidableListener
 {
+    /** Called flag. */
+    final AtomicReference<Collidable> called = new AtomicReference<>();
+
     /**
      * Create self.
      * 
      * @param services The services reference.
      * @param setup The setup reference.
      */
-    ObjectSelf(Services services, Setup setup)
+    public ObjectSelf(Services services, Setup setup)
     {
         super(services, setup);
     }
-
-    /** Called flag. */
-    final AtomicReference<Collidable> called = new AtomicReference<>();
 
     @Override
     public void notifyCollided(Collidable collidable, Collision with, Collision by)

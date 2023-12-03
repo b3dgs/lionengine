@@ -20,7 +20,6 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
@@ -245,12 +244,6 @@ public class CameraTracker extends FeaturableAbstract
     /*
      * Featurable
      */
-
-    @Override
-    public final void addFeature(Feature feature)
-    {
-        super.addFeature(feature);
-    }
 
     /**
      * Return always <code>null</code>.

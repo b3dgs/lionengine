@@ -40,6 +40,7 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.feature.Animatable;
+import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -90,7 +91,6 @@ final class AttackerModelTest
     @BeforeEach
     public void prepare()
     {
-        UtilAttackable.prepare(object, services, setup);
         attacker = UtilAttackable.createAttacker(object, services, setup);
     }
 
@@ -113,7 +113,10 @@ final class AttackerModelTest
         final Xml xml = new Xml(media);
         xml.save(media);
 
-        final AttackerModel attacker = new AttackerModel(services, new Setup(media));
+        final AttackerModel attacker = new AttackerModel(services,
+                                                         new Setup(media),
+                                                         new AnimatableModel(services, setup),
+                                                         new TransformableModel(services, setup));
 
         assertTrue(attacker.getAttackDamages() == 0);
         assertTrue(media.getFile().delete());
@@ -137,7 +140,10 @@ final class AttackerModelTest
         xml.add(AttackerConfig.exports(new AttackerConfig(time, distanceMin, distanceMax, damagesMin, damagesMax)));
         xml.save(media);
 
-        final AttackerModel attacker = new AttackerModel(services, new Setup(media));
+        final AttackerModel attacker = new AttackerModel(services,
+                                                         new Setup(media),
+                                                         new AnimatableModel(services, setup),
+                                                         new TransformableModel(services, setup));
         attacker.setAttackFrame(frame);
 
         assertTrue(attacker.getAttackDamages() >= damagesMin);
@@ -313,10 +319,7 @@ final class AttackerModelTest
     @Test
     void testSelfListener()
     {
-        UtilAttackable.createAttacker(object, services, setup); // No listener check
-
         final ObjectAttackerSelf object2 = new ObjectAttackerSelf(services, setup);
-        UtilAttackable.prepare(object2, services, setup);
         final AttackerModel attacker = UtilAttackable.createAttacker(object2, services, setup);
         attacker.recycle();
         canAttack.set(true);
@@ -449,7 +452,6 @@ final class AttackerModelTest
     void testListenerAutoAdd()
     {
         final ObjectAttackerSelf object = new ObjectAttackerSelf(services, setup);
-        UtilAttackable.prepare(object, services, setup);
         final Attacker attacker = UtilAttackable.createAttacker(object, services, setup);
         attacker.checkListener(new Object());
         attacker.checkListener(object);

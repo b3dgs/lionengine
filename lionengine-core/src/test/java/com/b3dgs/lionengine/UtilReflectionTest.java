@@ -416,7 +416,7 @@ final class UtilReflectionTest
     /**
      * Object mock.
      */
-    class ObjectTest1 implements Interface1, Serializable
+    static class ObjectTest1 implements Interface1, Serializable
     {
         // Mock
     }
@@ -467,7 +467,7 @@ final class UtilReflectionTest
     /**
      * Test field class without field
      */
-    class FieldTest
+    static class FieldTest
     {
         /** Test field. */
         static final String test = Constant.EMPTY_STRING;
@@ -484,7 +484,7 @@ final class UtilReflectionTest
     /**
      * Accessible object test.
      */
-    final class AccessibleTest
+    static final class AccessibleTest
     {
         @SuppressWarnings("unused") private int a;
     }

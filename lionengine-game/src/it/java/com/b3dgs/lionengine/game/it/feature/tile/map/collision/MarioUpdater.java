@@ -16,9 +16,8 @@
  */
 package com.b3dgs.lionengine.game.it.feature.tile.map.collision;
 
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.feature.FeatureGet;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Refreshable;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -35,33 +34,40 @@ import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidableListen
 /**
  * Updating of our controllable entity.
  */
-final class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableListener
+@FeatureInterface
+public final class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableListener
 {
     private static final double GRAVITY = 3.5;
 
+    private final Body body;
+    private final Transformable transformable;
+    private final TileCollidable tileCollidable;
+
     private final Force movement = new Force();
     private final Force jump = new Force();
-
-    @FeatureGet private Body body;
-    @FeatureGet private Transformable transformable;
-    @FeatureGet private Collidable collidable;
-    @FeatureGet private TileCollidable tileCollidable;
 
     /**
      * Create updater.
      * 
      * @param services The services reference.
      * @param setup The setup reference.
+     * @param body The body feature.
+     * @param transformable The transformable feature.
+     * @param collidable The collidable feature.
+     * @param tileCollidable The tile collidable feature.
      */
-    public MarioUpdater(Services services, Setup setup)
+    public MarioUpdater(Services services,
+                        Setup setup,
+                        Body body,
+                        Transformable transformable,
+                        Collidable collidable,
+                        TileCollidable tileCollidable)
     {
         super(services, setup);
-    }
 
-    @Override
-    public void prepare(FeatureProvider provider)
-    {
-        super.prepare(provider);
+        this.body = body;
+        this.transformable = transformable;
+        this.tileCollidable = tileCollidable;
 
         movement.setVelocity(1.0);
 

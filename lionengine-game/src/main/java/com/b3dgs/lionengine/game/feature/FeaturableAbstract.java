@@ -16,13 +16,6 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.Feature;
 
 /**
@@ -30,40 +23,6 @@ import com.b3dgs.lionengine.game.Feature;
  */
 public abstract class FeaturableAbstract implements Featurable
 {
-    /** Class not found error. */
-    static final String ERROR_CLASS_PRESENCE = "Class not found: ";
-    /** In. */
-    private static final String IN = " in ";
-    /** Inject service error. */
-    private static final String ERROR_INJECT = "Error during service injection !";
-
-    /**
-     * Get all with that require an injected service.
-     * 
-     * @param object The object which requires injected services.
-     * @return The field requiring injected services.
-     */
-    private static List<Field> getServiceFields(Object object)
-    {
-        final List<Field> toInject = new ArrayList<>();
-        Class<?> clazz = object.getClass();
-        while (clazz != null)
-        {
-            final Field[] fields = clazz.getDeclaredFields();
-            final int length = fields.length;
-            for (int i = 0; i < length; i++)
-            {
-                final Field field = fields[i];
-                if (field.isAnnotationPresent(FeatureGet.class))
-                {
-                    toInject.add(field);
-                }
-            }
-            clazz = clazz.getSuperclass();
-        }
-        return toInject;
-    }
-
     /** Features provider. */
     private final Features features = new Features();
 
@@ -93,59 +52,6 @@ public abstract class FeaturableAbstract implements Featurable
         features.add(feature, overwrite);
     }
 
-    /**
-     * Fill services fields with their right instance.
-     * 
-     * @param object The object to update.
-     * @throws LionEngineException If error on setting service.
-     */
-    private void fillServices(Object object)
-    {
-        final List<Field> fields = getServiceFields(object);
-        final int length = fields.size();
-        for (int i = 0; i < length; i++)
-        {
-            final Field field = fields.get(i);
-            UtilReflection.setAccessible(field, true);
-
-            final Class<?> type = field.getType();
-            setField(field, object, type);
-        }
-    }
-
-    /**
-     * Set the field service only if currently <code>null</code>.
-     * 
-     * @param field The field to set.
-     * @param object The object to update.
-     * @param type The service type.
-     * @throws LionEngineException If error on setting service.
-     */
-    private void setField(Field field, Object object, Class<?> type)
-    {
-        try
-        {
-            if (field.get(object) == null)
-            {
-                final Class<? extends Feature> clazz;
-                // CHECKSTYLE IGNORE LINE: InnerAssignment
-                if (Feature.class.isAssignableFrom(type) && hasFeature(clazz = type.asSubclass(Feature.class)))
-                {
-                    field.set(object, getFeature(clazz));
-                }
-                else
-                {
-                    throw new LionEngineException(ERROR_CLASS_PRESENCE + String.valueOf(type) + IN + object);
-                }
-            }
-        }
-        catch (final IllegalAccessException exception)
-        {
-            throw new LionEngineException(exception,
-                                          ERROR_INJECT + type.getSimpleName() + Constant.SLASH + field.getName());
-        }
-    }
-
     /*
      * Featurable
      */
@@ -163,23 +69,23 @@ public abstract class FeaturableAbstract implements Featurable
     }
 
     @Override
-    public void addFeature(Feature feature)
+    public final <T extends Feature> T addFeature(T feature)
     {
-        addFeature(feature, false);
-    }
-
-    @Override
-    public void addFeature(Feature feature, boolean overwrite)
-    {
-        fillServices(feature);
-        addFeatureInternal(feature, overwrite);
-    }
-
-    @Override
-    public final <T extends Feature> T addFeatureAndGet(T feature)
-    {
-        addFeature(feature);
+        addFeatureInternal(feature, false);
         return feature;
+    }
+
+    @Override
+    public final <T extends Feature> T addFeature(T feature, boolean overwrite)
+    {
+        addFeatureInternal(feature, overwrite);
+        return feature;
+    }
+
+    @Override
+    public final <T extends Feature> T addFeature(Class<T> feature, Services services, Setup setup)
+    {
+        return FeaturableConfig.createAndAdd(feature, this, services, setup);
     }
 
     @Override

@@ -54,7 +54,7 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     private boolean enabled;
 
     /** Transformable owning this model. */
-    private Transformable transformable;
+    private final Transformable transformable;
 
     /**
      * Create feature.
@@ -80,11 +80,14 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
      * 
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
+     * @param transformable The transformable feature.
      * @throws LionEngineException If invalid arguments.
      */
-    public TileCollidableModel(Services services, Setup setup)
+    public TileCollidableModel(Services services, Setup setup, Transformable transformable)
     {
         super(services, setup);
+
+        this.transformable = transformable;
 
         if (setup.hasNode(CollisionCategoryConfig.NODE_CATEGORIES))
         {
@@ -136,8 +139,6 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     @Override
     public void prepare(FeatureProvider provider)
     {
-        transformable = provider.getFeature(Transformable.class);
-
         if (provider instanceof TileCollidableListener)
         {
             addListener((TileCollidableListener) provider);

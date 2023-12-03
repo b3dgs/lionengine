@@ -48,9 +48,9 @@ final class UtilLaunchable
      */
     public static Launchable createLaunchable(Services services, Setup setup, Featurable featurable)
     {
-        featurable.addFeature(new TransformableModel(services, setup));
+        final Transformable transformable = featurable.addFeature(TransformableModel.class, services, setup);
 
-        final Launchable launchable = new LaunchableModel(services, setup);
+        final Launchable launchable = new LaunchableModel(services, setup, transformable);
         launchable.prepare(featurable);
         launchable.setLocation(0.0, 0.0);
         launchable.setVector(new Force(0.0, 1.0));
@@ -109,7 +109,7 @@ final class UtilLaunchable
         services.add(new Handler(services));
         if (!featurable.hasFeature(Transformable.class))
         {
-            featurable.addFeature(new TransformableModel(services, setup));
+            featurable.addFeature(TransformableModel.class, services, setup);
         }
 
         final LauncherModel launcher = new LauncherModel(services, setup);

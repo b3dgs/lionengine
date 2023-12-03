@@ -90,9 +90,9 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     /** Orientable model. */
     private final OrientableModel orientable;
     /** Object id. */
-    private Integer id;
+    private final Integer id;
     /** Transformable model. */
-    private Transformable transformable;
+    private final Transformable transformable;
     /** Last valid path found. */
     private Path path;
     /** Text debug rendering. */
@@ -154,14 +154,19 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      * 
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
+     * @param identifiable The identifiable feature.
+     * @param transformable The transformable feature.
      * @throws LionEngineException If invalid arguments.
      */
-    public PathfindableModel(Services services, Setup setup)
+    public PathfindableModel(Services services, Setup setup, Identifiable identifiable, Transformable transformable)
     {
         super(services, setup);
 
+        id = identifiable.getId();
+        this.transformable = transformable;
+
         categories = PathfindableConfig.imports(setup);
-        orientable = new OrientableModel(services, setup);
+        orientable = new OrientableModel(services, setup, transformable);
 
         final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth()
                                           + map.getInTileHeight() * (double) map.getInTileHeight());
@@ -559,8 +564,6 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     {
         super.prepare(provider);
 
-        id = provider.getFeature(Identifiable.class).getId();
-        transformable = provider.getFeature(Transformable.class);
         if (orientable != null)
         {
             orientable.prepare(provider);

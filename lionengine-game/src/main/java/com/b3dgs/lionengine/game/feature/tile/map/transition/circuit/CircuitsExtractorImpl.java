@@ -151,8 +151,8 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
             final MapTileGame map = new MapTileGame();
             map.create(level, sheetsConfig);
 
-            final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-            final MapTileTransition mapTransition = map.addFeatureAndGet(new MapTileTransitionModel());
+            final MapTileGroup mapGroup = map.addFeature(new MapTileGroupModel());
+            final MapTileTransition mapTransition = map.addFeature(new MapTileTransitionModel());
 
             mapGroup.loadGroups(groupsConfig);
             mapTransition.loadTransitions(levels, sheetsConfig, groupsConfig);

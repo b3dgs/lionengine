@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -40,7 +39,7 @@ public class ExtractableModel extends FeatureModel implements Extractable
     private String type;
 
     /** Transformable model. */
-    private Transformable transformable;
+    private final Transformable transformable;
 
     /**
      * Create feature.
@@ -62,11 +61,14 @@ public class ExtractableModel extends FeatureModel implements Extractable
      * 
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
+     * @param transformable The transformable feature.
      * @throws LionEngineException If invalid arguments.
      */
-    public ExtractableModel(Services services, Setup setup)
+    public ExtractableModel(Services services, Setup setup, Transformable transformable)
     {
         super(services, setup);
+
+        this.transformable = transformable;
 
         if (setup.hasNode(ExtractableConfig.NODE_EXTRACTABLE))
         {
@@ -80,14 +82,6 @@ public class ExtractableModel extends FeatureModel implements Extractable
     /*
      * Extractable
      */
-
-    @Override
-    public void prepare(FeatureProvider provider)
-    {
-        super.prepare(provider);
-
-        transformable = provider.getFeature(Transformable.class);
-    }
 
     @Override
     public int extractResource(int quantity)

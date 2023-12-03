@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilTransformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -77,10 +78,11 @@ final class ExtractableModelTest
         services.add(map);
 
         final Featurable featurable = new FeaturableModel(services, setup);
-        featurable.addFeatureAndGet(new TransformableModel(services, setup)).teleport(16, 32);
+        final Transformable transformable = featurable.addFeature(TransformableModel.class, services, setup);
+        transformable.teleport(16, 32);
 
         final Media media = UtilExtractable.createMedia();
-        final Extractable extractable = new ExtractableModel(services, new Setup(media));
+        final Extractable extractable = new ExtractableModel(services, new Setup(media), transformable);
         extractable.prepare(featurable);
 
         assertEquals(10, extractable.getResourceQuantity());
@@ -122,9 +124,9 @@ final class ExtractableModelTest
         services.add(new MapTileGame());
 
         final Featurable featurable = new FeaturableModel(services, setup);
-        featurable.addFeature(new TransformableModel(services, setup));
+        final Transformable transformable = featurable.addFeature(TransformableModel.class, services, setup);
 
-        final Extractable extractable = new ExtractableModel(services, setup);
+        final Extractable extractable = new ExtractableModel(services, setup, transformable);
         extractable.prepare(featurable);
         extractable.setResourcesQuantity(10);
 

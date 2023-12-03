@@ -100,7 +100,7 @@ final class MapTileCollisionModelTest
         map.create(1, 1, 3, 3);
         UtilMap.setGroups(map);
         UtilMap.fill(map, UtilMap.TILE_GROUND);
-        mapCollision = map.addFeatureAndGet(new MapTileCollisionModel());
+        mapCollision = map.addFeature(new MapTileCollisionModel());
         mapCollision.prepare(map);
 
         formulasConfig = UtilConfig.createFormulaConfig(formulaV, formulaH);
@@ -334,10 +334,10 @@ final class MapTileCollisionModelTest
         CollisionCategoryConfig.exports(setup.getRoot(), categoryX);
         final FeaturableModel object = new FeaturableModel(services, setup);
 
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(services, setup));
+        final Transformable transformable = object.addFeature(TransformableModel.class, services, setup);
         transformable.setSize(1, 1);
 
-        final TileCollidable collidable = object.addFeatureAndGet(new TileCollidableModel(services, setup));
+        final TileCollidable collidable = object.addFeature(TileCollidableModel.class, services, setup);
         collidable.setEnabled(true);
 
         return transformable;

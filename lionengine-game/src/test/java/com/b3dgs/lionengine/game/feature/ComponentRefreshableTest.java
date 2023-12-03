@@ -193,7 +193,7 @@ final class ComponentRefreshableTest
         {
             // Mock
         }));
-        final Layerable layerable = featurable.addFeatureAndGet(new LayerableModel(services, setup));
+        final Layerable layerable = featurable.addFeature(LayerableModel.class, services, setup);
         component.notifyHandlableAdded(featurable);
         component.notifyHandlableRemoved(featurable);
 
@@ -233,7 +233,7 @@ final class ComponentRefreshableTest
     private Layerable createObject(ComponentRefreshable component, AtomicInteger last)
     {
         final FeaturableModel object = new FeaturableModel(services, setup);
-        final LayerableModel layerable = object.addFeatureAndGet(new LayerableModel(services, setup));
+        final LayerableModel layerable = object.addFeature(LayerableModel.class, services, setup);
         layerable.prepare(object);
         component.notifyHandlableAdded(object);
 

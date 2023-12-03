@@ -100,8 +100,8 @@ final class ComponentCollisionTest
         services.add(new Camera());
 
         featurable1 = new ObjectSelf(services, setup);
-        transformable1 = featurable1.addFeatureAndGet(new TransformableModel(services, setup));
-        collidable1 = featurable1.addFeatureAndGet(new CollidableModel(services, setup));
+        transformable1 = featurable1.addFeature(TransformableModel.class, services, setup);
+        collidable1 = featurable1.addFeature(CollidableModel.class, services, setup);
         collidable1.setGroup(Integer.valueOf(1));
         collidable1.addAccept(Integer.valueOf(0));
         collidable1.setEnabled(true);
@@ -116,8 +116,8 @@ final class ComponentCollisionTest
         collidable2.setGroup(Integer.valueOf(0));
         collidable2.setEnabled(true);
 
-        featurable1.addFeature(new MirrorableModel(services, setup));
-        featurable2.addFeature(new MirrorableModel(services, setup));
+        featurable1.addFeature(MirrorableModel.class, services, setup);
+        featurable2.addFeature(MirrorableModel.class, services, setup);
 
         final Collision collision2 = new Collision("test2", 0, 0, 3, 3, true);
         collidable2.addCollision(collision2);

@@ -115,8 +115,8 @@ public final class Scene extends Sequence
 
         map.create(Medias.create("level.png"));
         map.addFeature(new MapTileViewerModel(services));
-        map.addFeatureAndGet(new MapTileGroupModel()).loadGroups(Medias.create("groups.xml"));
-        map.addFeatureAndGet(new MapTilePathModel()).loadPathfinding(Medias.create("pathfinding.xml"));
+        map.addFeature(new MapTileGroupModel()).loadGroups(Medias.create("groups.xml"));
+        map.addFeature(new MapTilePathModel()).loadPathfinding(Medias.create("pathfinding.xml"));
         camera.setLimits(map);
         handler.add(map);
 

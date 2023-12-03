@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,7 +28,6 @@ import java.util.Map;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
@@ -54,6 +55,8 @@ public final class FeaturableConfig
     public static final String NODE_FEATURE = Constant.XML_PREFIX + "feature";
     /** Class not found error. */
     static final String ERROR_CLASS_PRESENCE = "Class not found: ";
+    /** Constructor not found error. */
+    static final String ERROR_CONSTRUCTOR = "Constructor not found: ";
     /** Default class name. */
     private static final String DEFAULT_CLASS_NAME = FeaturableModel.class.getName();
     /** Minimum to string length. */
@@ -156,14 +159,14 @@ public final class FeaturableConfig
      * Default constructor of each feature must be available or with {@link Setup} as single parameter.
      * 
      * @param loader The class loader reference.
+     * @param featurable The featurable reference.
      * @param services The services reference.
      * @param setup The setup reference.
-     * @return The available features.
      * @throws LionEngineException If invalid class.
      */
-    public static List<Feature> getFeatures(ClassLoader loader, Services services, Setup setup)
+    public static void addFeatures(ClassLoader loader, Featurable featurable, Services services, Setup setup)
     {
-        return getFeatures(loader, services, setup, null);
+        addFeatures(loader, featurable, services, setup, null);
     }
 
     /**
@@ -171,13 +174,17 @@ public final class FeaturableConfig
      * Default constructor of each feature must be available or with {@link Setup} as single parameter.
      * 
      * @param loader The class loader reference.
+     * @param featurable The featurable reference.
      * @param services The services reference.
      * @param setup The setup reference.
      * @param filter The type filter (can be <code>null</code> if none).
-     * @return The available features.
      * @throws LionEngineException If invalid class.
      */
-    public static List<Feature> getFeatures(ClassLoader loader, Services services, Setup setup, Class<?> filter)
+    public static void addFeatures(ClassLoader loader,
+                                   Featurable featurable,
+                                   Services services,
+                                   Setup setup,
+                                   Class<?> filter)
     {
         final Collection<XmlReader> children;
         final XmlReader root = setup.getRoot();
@@ -191,28 +198,85 @@ public final class FeaturableConfig
         {
             children = Collections.emptyList();
         }
-        final List<Feature> features = new ArrayList<>(children.size());
 
         for (final XmlReader featureNode : children)
         {
             final String className = featureNode.getText();
-            try
+            final Class<? extends Feature> clazz = getClass(loader, className);
+            if (filter == null || filter.isAssignableFrom(clazz))
             {
-                final Class<? extends Feature> clazz = getClass(loader, className);
-                if (filter == null || filter.isAssignableFrom(clazz))
-                {
-                    final Feature feature = UtilReflection.createReduce(clazz, services, setup);
-                    features.add(feature);
-                }
-            }
-            catch (final NoSuchMethodException | LionEngineException exception)
-            {
-                throw new LionEngineException(exception, setup.getMedia());
+                createAndAdd(clazz, featurable, services, setup);
             }
         }
         children.clear();
+    }
 
-        return features;
+    /**
+     * Create and add feature to featurable.
+     * 
+     * @param <T> The feature type.
+     * @param clazz The feature class.
+     * @param featurable The featurable owner.
+     * @param services The services reference.
+     * @param setup The setup reference.
+     * @return The created feature.
+     */
+    static <T extends Feature> T createAndAdd(Class<T> clazz, Featurable featurable, Services services, Setup setup)
+    {
+
+        try
+        {
+            return checkConstructors(clazz, featurable, services, setup);
+        }
+        catch (final ReflectiveOperationException | IllegalArgumentException | LionEngineException exception)
+        {
+            throw new LionEngineException(exception, setup.getMedia() + " for " + clazz);
+        }
+    }
+
+    private static <T extends Feature> T checkConstructors(Class<T> clazz,
+                                                           Featurable featurable,
+                                                           Services services,
+                                                           Setup setup)
+            throws ReflectiveOperationException
+    {
+        final Constructor<?>[] constructors = clazz.getConstructors();
+        for (int i = 0; i < constructors.length; i++)
+        {
+            final Parameter[] parameters = constructors[i].getParameters();
+
+            // At least services and setup arguments
+            if (parameters.length > 1
+                && Services.class.equals(parameters[0].getType())
+                && Setup.class.isAssignableFrom(parameters[1].getType()))
+            {
+                final List<Object> args = new ArrayList<>();
+                args.add(services);
+                args.add(setup);
+
+                addConstructorArgs(featurable, parameters, args);
+
+                @SuppressWarnings("unchecked")
+                final T feature = (T) constructors[i].newInstance(args.toArray());
+                featurable.addFeature(feature);
+
+                return feature;
+            }
+        }
+        throw new LionEngineException(ERROR_CONSTRUCTOR + setup.getMedia());
+    }
+
+    private static void addConstructorArgs(Featurable featurable, Parameter[] parameters, List<Object> args)
+    {
+        // Start after services and setup arguments
+        for (int j = 2; j < parameters.length; j++)
+        {
+            final Class<?> type = parameters[j].getType();
+            if (Feature.class.isAssignableFrom(type))
+            {
+                args.add(featurable.getFeature(type.asSubclass(Feature.class)));
+            }
+        }
     }
 
     /**

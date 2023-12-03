@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
@@ -63,9 +64,9 @@ final class UtilExtractable
         services.add(new MapTileGame());
 
         final Featurable featurable = new FeaturableModel(services, setup);
-        featurable.addFeature(new TransformableModel(services, setup));
+        final Transformable transformable = featurable.addFeature(TransformableModel.class, services, setup);
 
-        final Extractable extractable = new ExtractableModel(services, setup);
+        final Extractable extractable = new ExtractableModel(services, setup, transformable);
         extractable.setResourcesQuantity(10);
         extractable.setResourcesType("wood");
         extractable.prepare(featurable);

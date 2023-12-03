@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.game.feature.launchable;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -38,7 +37,7 @@ public class LaunchableModel extends FeatureModel implements Launchable, Recycla
     private Force vector;
 
     /** Transformable reference. */
-    private Transformable transformable;
+    private final Transformable transformable;
 
     /**
      * Create feature.
@@ -51,24 +50,19 @@ public class LaunchableModel extends FeatureModel implements Launchable, Recycla
      * 
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
+     * @param transformable The transformable feature.
      * @throws LionEngineException If invalid arguments.
      */
-    public LaunchableModel(Services services, Setup setup)
+    public LaunchableModel(Services services, Setup setup, Transformable transformable)
     {
         super(services, setup);
+
+        this.transformable = transformable;
     }
 
     /*
      * Launchable
      */
-
-    @Override
-    public void prepare(FeatureProvider provider)
-    {
-        super.prepare(provider);
-
-        transformable = provider.getFeature(Transformable.class);
-    }
 
     @Override
     public void checkListener(Object listener)

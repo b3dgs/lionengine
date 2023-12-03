@@ -21,7 +21,6 @@ import java.util.function.BooleanSupplier;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -42,7 +41,7 @@ public class FovableModel extends FeatureModel implements Fovable
     private BooleanSupplier checker = () -> true;
 
     /** Transformable model. */
-    private Transformable transformable;
+    private final Transformable transformable;
 
     /**
      * Create model.
@@ -64,24 +63,19 @@ public class FovableModel extends FeatureModel implements Fovable
      * 
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
+     * @param transformable The transformable feature.
      * @throws LionEngineException If invalid arguments.
      */
-    public FovableModel(Services services, Setup setup)
+    public FovableModel(Services services, Setup setup, Transformable transformable)
     {
         super(services, setup);
+
+        this.transformable = transformable;
     }
 
     /*
      * Fovable
      */
-
-    @Override
-    public void prepare(FeatureProvider provider)
-    {
-        super.prepare(provider);
-
-        transformable = provider.getFeature(Transformable.class);
-    }
 
     @Override
     public void setFov(int fov)

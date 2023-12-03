@@ -113,7 +113,7 @@ final class ExtractorModelTest
     void testConfig()
     {
         final ObjectExtractor object = new ObjectExtractor(services, setup, true, true);
-        object.addFeature(new TransformableModel(services, setup));
+        object.addFeature(TransformableModel.class, services, setup);
 
         final Media media = UtilSetup.createConfig(ExtractorModelTest.class);
         final Xml xml = new Xml(media);
@@ -145,7 +145,7 @@ final class ExtractorModelTest
     void testExtractor()
     {
         final Featurable object = new FeaturableModel(services, setup);
-        object.addFeature(new TransformableModel(services, setup));
+        object.addFeature(TransformableModel.class, services, setup);
 
         final ExtractorModel extractor = new ExtractorModel(services, setup);
         extractor.recycle();
@@ -222,7 +222,7 @@ final class ExtractorModelTest
     void testCannotExtract()
     {
         final ObjectExtractor object = new ObjectExtractor(services, setup, false, true);
-        object.addFeature(new TransformableModel(services, setup));
+        object.addFeature(TransformableModel.class, services, setup);
 
         final Extractor extractor = new ExtractorModel(services, setup);
         extractor.setCapacity(1);
@@ -255,7 +255,7 @@ final class ExtractorModelTest
     void testCannotCarry()
     {
         final ObjectExtractor object = new ObjectExtractor(services, setup, true, false);
-        object.addFeature(new TransformableModel(services, setup));
+        object.addFeature(TransformableModel.class, services, setup);
 
         final Extractor extractor = new ExtractorModel(services, setup);
         extractor.setCapacity(1);
@@ -288,7 +288,7 @@ final class ExtractorModelTest
     void testExtractorExtractable()
     {
         final ObjectExtractorSelf object = new ObjectExtractorSelf(services, setup);
-        object.addFeature(new TransformableModel(services, setup));
+        object.addFeature(TransformableModel.class, services, setup);
 
         final Extractor extractor = new ExtractorModel(services, setup);
         extractor.setCapacity(2);
@@ -362,7 +362,7 @@ final class ExtractorModelTest
     void testExtractorExtractableNoResource()
     {
         final ObjectExtractorSelf object = new ObjectExtractorSelf(services, setup);
-        object.addFeature(new TransformableModel(services, setup));
+        object.addFeature(TransformableModel.class, services, setup);
 
         final Extractor extractor = new ExtractorModel(services, setup);
         extractor.setCapacity(6);
@@ -406,7 +406,7 @@ final class ExtractorModelTest
     void testStopExtraction()
     {
         final ObjectExtractor object = new ObjectExtractor(services, setup, true, true);
-        object.addFeature(new TransformableModel(services, setup));
+        object.addFeature(TransformableModel.class, services, setup);
 
         final Extractor extractor = new ExtractorModel(services, setup);
         extractor.prepare(object);
@@ -456,7 +456,7 @@ final class ExtractorModelTest
     void testListenerAutoAdd()
     {
         final ObjectExtractorSelf object = new ObjectExtractorSelf(services, setup);
-        object.addFeature(new TransformableModel(services, setup));
+        object.addFeature(TransformableModel.class, services, setup);
 
         final Extractor extractor = new ExtractorModel(services, setup);
         extractor.prepare(object);
@@ -478,7 +478,7 @@ final class ExtractorModelTest
     void testCheckListener()
     {
         final ObjectExtractorSelf object = new ObjectExtractorSelf(services, setup);
-        object.addFeature(new TransformableModel(services, setup));
+        object.addFeature(TransformableModel.class, services, setup);
 
         final AtomicBoolean add = new AtomicBoolean();
         final Extractor extractor = new ExtractorModel(services, setup)

@@ -19,12 +19,12 @@ package com.b3dgs.lionengine.game.feature;
 /**
  * Setup without constructor.
  */
-final class SetupNoConstructor extends Setup
+public final class SetupNoConstructor extends Setup
 {
     /**
      * Constructor.
      */
-    private SetupNoConstructor()
+    public SetupNoConstructor()
     {
         super(null);
     }

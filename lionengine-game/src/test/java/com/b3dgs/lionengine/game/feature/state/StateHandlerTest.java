@@ -145,7 +145,7 @@ final class StateHandlerTest
             final Setup setup = new Setup(Medias.create("ObjectState.xml"));
             final Featurable featurable = new FeaturableModel(services, setup);
             final StateHandler handler;
-            handler = featurable.addFeatureAndGet(new StateHandler(services, setup, Class::getName));
+            handler = featurable.addFeature(new StateHandler(services, setup, Class::getName));
             handler.prepare(featurable);
             handler.changeState(StateIdle.class);
 
@@ -198,7 +198,7 @@ final class StateHandlerTest
             final Setup setup = new Setup(Medias.create("ObjectState.xml"));
             final Featurable featurable = new FeaturableModel(services, setup);
             final StateHandler handler;
-            handler = featurable.addFeatureAndGet(new StateHandler(services, setup));
+            handler = featurable.addFeature(StateHandler.class, services, setup);
             handler.prepare(featurable);
             handler.changeState(StateIdle.class);
             handler.postUpdate();
@@ -349,7 +349,7 @@ final class StateHandlerTest
             final Setup setup = new Setup(Medias.create("ObjectState.xml"));
             final Featurable featurable = new FeaturableModel(services, setup);
             final StateHandler handler;
-            handler = featurable.addFeatureAndGet(new StateHandler(services, setup));
+            handler = featurable.addFeature(StateHandler.class, services, setup);
             handler.prepare(featurable);
             final StateTransitionListener listener = (o, n) ->
             {
@@ -395,8 +395,14 @@ final class StateHandlerTest
         assertThrows(() -> mock.addTransition(StateMock.class, () -> true), StateAbstract.ERROR_ADD_ITSELF);
     }
 
-    private static class StateMock extends StateAbstract
+    /**
+     * Mock.
+     */
+    public static final class StateMock extends StateAbstract
     {
+        /**
+         * Mock.
+         */
         public StateMock()
         {
             super();
