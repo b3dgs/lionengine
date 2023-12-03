@@ -39,9 +39,8 @@ jobs:
             maven-${{ matrix.os }}-
 
      - name: Maven
-       uses: s4u/setup-maven-action@v1.11.0
+       uses: stCarolas/setup-maven@v4.5
        with:
-         java-version: ${{ matrix.jdk }}
          maven-version: 3.9.6
 
      - name: JDK
@@ -62,7 +61,7 @@ jobs:
 
      - name: maven-settings-xml-action
        shell: bash
-       run: type C:\\Users\runneradmin\\.m2\\settings.xml
+       run: type C:\\Users\\runneradmin\\.m2\\settings.xml
 
      - name: GPG
        uses: crazy-max/ghaction-import-gpg@v5.2.0
@@ -105,9 +104,8 @@ jobs:
             maven-${{ matrix.os }}-
 
      - name: Maven
-       uses: s4u/setup-maven-action@v1.11.0
+       uses: stCarolas/setup-maven@v4.5
        with:
-         java-version: ${{ matrix.jdk }}
          maven-version: 3.9.6
 
      - name: JDK
