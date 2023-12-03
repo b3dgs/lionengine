@@ -52,7 +52,7 @@ jobs:
 
      - name: maven-settings-xml-action
        shell: bash
-       run: echo ^<settings^> > ~/.m2/settings.xml
+       run: echo \<settings\> > ~/.m2/settings.xml
 
      - name: GPG
        uses: crazy-max/ghaction-import-gpg@v5.2.0
