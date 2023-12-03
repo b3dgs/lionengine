@@ -52,7 +52,24 @@ jobs:
 
      - name: maven-settings-xml-action
        shell: bash
-       run: echo ^<settings^>^<servers^>^<server^>^<id^>ossrh^</id^>^<username^>${{ secrets.MAVEN_USERNAME }}^</username^>^<password^>${{ secrets.MAVEN_PASSWORD }}^</password^>^</server^>^</servers^>^<mirrors^>^<mirror^>^<id^>maven-default-http-blocker^</id^>^<mirrorOf^>external:dont-match-anything-mate:*^</mirrorOf^>^<name^>Pseudo repo.^</name^>^<url^>http://0.0.0.0/^</url^>^<blocked^>false^</blocked^>^</mirror^>^</mirrors^>^</settings^> > ~/.m2/settings.xml
+       run: echo ^<settings^> > ~/.m2/settings.xml
+            | echo ^<servers^> >  >> ~/.m2/settings.xml
+            | echo ^<server^> >> ~/.m2/settings.xml
+            | echo ^<id^>ossrh^</id^> >> ~/.m2/settings.xml
+            | echo ^<username^>${{ secrets.MAVEN_USERNAME }}^</username^> >> ~/.m2/settings.xml
+            | echo ^<password^>${{ secrets.MAVEN_PASSWORD }}^</password^> >> ~/.m2/settings.xml
+            | echo ^</server^> >> ~/.m2/settings.xml
+            | echo ^</servers^> >> ~/.m2/settings.xml
+            | echo ^<mirrors^> >> ~/.m2/settings.xml
+            | echo ^<mirror^> >> ~/.m2/settings.xml
+            | echo ^<id^>maven-default-http-blocker^</id^> >> ~/.m2/settings.xml
+            | echo ^<mirrorOf^>external:dont-match-anything-mate:*^</mirrorOf^> >> ~/.m2/settings.xml
+            | echo ^<name^>Pseudo repo.^</name^> >> ~/.m2/settings.xml
+            | echo ^<url^>http://0.0.0.0/^</url^> >> ~/.m2/settings.xml
+            | echo ^<blocked^>false^</blocked^> >> ~/.m2/settings.xml
+            | echo ^</mirror^> >> ~/.m2/settings.xml
+            | echo ^</mirrors^> >> ~/.m2/settings.xml
+            | echo ^</settings^> >> ~/.m2/settings.xml
 
      - name: GPG
        uses: crazy-max/ghaction-import-gpg@v5.2.0
