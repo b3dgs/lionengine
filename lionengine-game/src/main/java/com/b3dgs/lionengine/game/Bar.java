@@ -86,26 +86,24 @@ public class Bar implements Renderable
             if (leftRight)
             {
                 x1 = x + hBorder;
-                x2 = (int) Math.ceil(rx * (pWidth / 100.0));
             }
             else
             {
                 x1 = x + hBorder + (int) Math.ceil(rx - pWidth / 100.0 * rx);
-                x2 = (int) Math.ceil(rx * (pWidth / 100.0));
             }
+            x2 = (int) Math.ceil(rx * (pWidth / 100.0));
 
             final int y1;
             final int y2;
             if (upDown)
             {
                 y1 = y + vBorder;
-                y2 = (int) Math.ceil(ry * (pHeight / 100.0));
             }
             else
             {
                 y1 = y + vBorder + (int) Math.floor(ry - pHeight / 100.0 * ry);
-                y2 = (int) Math.ceil(ry * (pHeight / 100.0));
             }
+            y2 = (int) Math.ceil(ry * (pHeight / 100.0));
 
             if (foreground != null)
             {

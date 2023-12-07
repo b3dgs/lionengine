@@ -87,7 +87,7 @@ public class StateHandler extends FeatureModel
      */
     public StateHandler(Services services, Setup setup)
     {
-        this(services, setup, Class::getSimpleName);
+        this(Class::getSimpleName, services, setup);
     }
 
     /**
@@ -95,14 +95,14 @@ public class StateHandler extends FeatureModel
      * <p>
      * The {@link Configurer} can provide {@link Animation}.
      * </p>
-     * 
+     * @param converter The animation name converter (must not be <code>null</code>).
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
-     * @param converter The animation name converter (must not be <code>null</code>).
+     * 
      * @throws LionEngineException If invalid arguments.
      */
     @SuppressWarnings("unchecked")
-    public StateHandler(Services services, Setup setup, Function<Class<? extends State>, String> converter)
+    public StateHandler(Function<Class<? extends State>, String> converter, Services services, Setup setup)
     {
         super(services, setup);
 

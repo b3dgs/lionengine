@@ -72,7 +72,7 @@ final class ActionsConfigTest
     @Test
     void testExportsImports()
     {
-        final ActionRef ref = new ActionRef("ref", false, new ArrayList<ActionRef>());
+        final ActionRef ref = new ActionRef("ref", false, new ArrayList<>());
         final ActionRef ref2 = new ActionRef("ref", false, Arrays.asList(ref));
         final Collection<ActionRef> refs = Arrays.asList(new ActionRef("test", true, Arrays.asList(ref2)));
 
@@ -94,7 +94,7 @@ final class ActionsConfigTest
     @Test
     void testCancelOnRef()
     {
-        final ActionRef ref = new ActionRef("ref", true, new ArrayList<ActionRef>());
+        final ActionRef ref = new ActionRef("ref", true, new ArrayList<>());
         final Collection<ActionRef> refs = Arrays.asList(new ActionRef("test", false, Arrays.asList(ref)));
 
         final Xml root = new Xml("test");

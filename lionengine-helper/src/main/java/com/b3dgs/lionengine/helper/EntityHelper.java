@@ -123,7 +123,7 @@ public class EntityHelper extends FeaturableModel
         addFeature(FovableModel.class, services, setup);
         addFeature(ActionerModel.class, services, setup);
 
-        state = addFeature(new StateHandler(services, setup, EntityHelper::getAnimationName));
+        state = addFeature(new StateHandler(EntityHelper::getAnimationName, services, setup));
         body = addFeature(BodyModel.class, services, setup);
         mirrorable = addFeature(MirrorableModel.class, services, setup);
         animatable = addFeature(AnimatableModel.class, services, setup);

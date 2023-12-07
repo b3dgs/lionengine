@@ -69,7 +69,7 @@ final class CollisionCategoryTest
         assertEquals(category, new CollisionCategory("name", Axis.X, 2, 2, true, Arrays.asList(group)));
         assertEquals(category, new CollisionCategory("name", Axis.X, 1, 3, true, Arrays.asList(group)));
         assertEquals(category, new CollisionCategory("name", Axis.X, 1, 2, false, Arrays.asList(group)));
-        assertEquals(category, new CollisionCategory("name", Axis.X, 1, 2, true, new ArrayList<CollisionGroup>()));
+        assertEquals(category, new CollisionCategory("name", Axis.X, 1, 2, true, new ArrayList<>()));
 
         assertNotEquals(category, null);
         assertNotEquals(category, new Object());
@@ -87,7 +87,7 @@ final class CollisionCategoryTest
         assertHashEquals(category, new CollisionCategory("name", Axis.X, 2, 2, true, Arrays.asList(group)));
         assertHashEquals(category, new CollisionCategory("name", Axis.X, 1, 3, true, Arrays.asList(group)));
         assertHashEquals(category, new CollisionCategory("name", Axis.X, 1, 2, false, Arrays.asList(group)));
-        assertHashEquals(category, new CollisionCategory("name", Axis.X, 1, 2, true, new ArrayList<CollisionGroup>()));
+        assertHashEquals(category, new CollisionCategory("name", Axis.X, 1, 2, true, new ArrayList<>()));
 
         assertHashNotEquals(category, new Object());
         assertHashNotEquals(category, new CollisionCategory("void", Axis.X, 1, 2, true, Arrays.asList(group)));

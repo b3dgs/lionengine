@@ -116,13 +116,13 @@ final class LauncherConfigTest
         assertNotEquals(launcher, null);
         assertNotEquals(launcher, new Object());
         assertNotEquals(launcher, new LauncherConfig(0, 0, false, false, Arrays.asList(launchable)));
-        assertNotEquals(launcher, new LauncherConfig(0, 1, false, false, new ArrayList<LaunchableConfig>()));
+        assertNotEquals(launcher, new LauncherConfig(0, 1, false, false, new ArrayList<>()));
         assertNotEquals(launcher, new LauncherConfig(1, 0, false, false, Arrays.asList(launchable)));
         assertNotEquals(launcher, new LauncherConfig(0, 0, true, false, Arrays.asList(launchable)));
-        assertNotEquals(launcher, new LauncherConfig(0, 1, true, false, new ArrayList<LaunchableConfig>()));
+        assertNotEquals(launcher, new LauncherConfig(0, 1, true, false, new ArrayList<>()));
         assertNotEquals(launcher, new LauncherConfig(1, 0, true, false, Arrays.asList(launchable)));
         assertNotEquals(launcher, new LauncherConfig(0, 0, false, true, Arrays.asList(launchable)));
-        assertNotEquals(launcher, new LauncherConfig(0, 1, false, true, new ArrayList<LaunchableConfig>()));
+        assertNotEquals(launcher, new LauncherConfig(0, 1, false, true, new ArrayList<>()));
         assertNotEquals(launcher, new LauncherConfig(1, 0, false, true, Arrays.asList(launchable)));
     }
 
@@ -139,14 +139,14 @@ final class LauncherConfigTest
         assertHashEquals(launcher, new LauncherConfig(0, 1, false, false, Arrays.asList(launchable)));
 
         assertHashNotEquals(launcher, new LauncherConfig(0, 0, false, false, Arrays.asList(launchable)));
-        assertHashNotEquals(launcher, new LauncherConfig(0, 1, false, false, new ArrayList<LaunchableConfig>()));
+        assertHashNotEquals(launcher, new LauncherConfig(0, 1, false, false, new ArrayList<>()));
         assertHashNotEquals(launcher, new LauncherConfig(1, 0, false, false, Arrays.asList(launchable)));
         assertHashNotEquals(launcher, new LauncherConfig(0, 1, true, false, Arrays.asList(launchable)));
         assertHashNotEquals(launcher, new LauncherConfig(0, 0, true, false, Arrays.asList(launchable)));
-        assertHashNotEquals(launcher, new LauncherConfig(0, 1, true, false, new ArrayList<LaunchableConfig>()));
+        assertHashNotEquals(launcher, new LauncherConfig(0, 1, true, false, new ArrayList<>()));
         assertHashNotEquals(launcher, new LauncherConfig(1, 0, false, true, Arrays.asList(launchable)));
         assertHashNotEquals(launcher, new LauncherConfig(0, 0, false, true, Arrays.asList(launchable)));
-        assertHashNotEquals(launcher, new LauncherConfig(0, 1, false, true, new ArrayList<LaunchableConfig>()));
+        assertHashNotEquals(launcher, new LauncherConfig(0, 1, false, true, new ArrayList<>()));
     }
 
     /**

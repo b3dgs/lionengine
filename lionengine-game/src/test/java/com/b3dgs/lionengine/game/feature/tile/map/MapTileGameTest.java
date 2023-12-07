@@ -42,7 +42,6 @@ import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
-import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
 /**
  * Test {@link MapTileGame}.
@@ -83,7 +82,7 @@ final class MapTileGameTest
 
         assertTrue(map.isCreated());
 
-        map.loadSheets(new ArrayList<SpriteTiled>());
+        map.loadSheets(new ArrayList<>());
 
         assertEquals(16, map.getTileWidth());
         assertEquals(32, map.getTileHeight());
@@ -231,7 +230,7 @@ final class MapTileGameTest
     void testSetGetTile()
     {
         map.create(16, 16, 3, 3);
-        map.loadSheets(new ArrayList<SpriteTiled>());
+        map.loadSheets(new ArrayList<>());
 
         assertEquals(0, map.getTilesNumber());
         assertNull(map.getTile(0, 0));

@@ -73,7 +73,7 @@ final class CollisionGroupTest
     @Test
     void testHashCode()
     {
-        assertHashEquals(group, new CollisionGroup("group", new ArrayList<CollisionFormula>()));
+        assertHashEquals(group, new CollisionGroup("group", new ArrayList<>()));
         assertHashEquals(group, new CollisionGroup("group", Arrays.asList(formula)));
 
         assertHashNotEquals(group, new Object());
@@ -87,7 +87,7 @@ final class CollisionGroupTest
     void testEquals()
     {
         assertEquals(group, group);
-        assertEquals(group, new CollisionGroup("group", new ArrayList<CollisionFormula>()));
+        assertEquals(group, new CollisionGroup("group", new ArrayList<>()));
         assertEquals(group, new CollisionGroup("group", Arrays.asList(formula)));
 
         assertNotEquals(group, null);

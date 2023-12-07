@@ -115,7 +115,7 @@ final class MapTilePersisterModelTest
     {
         final Media config = Medias.create("config.xml");
 
-        TileSheetsConfig.exports(config, 16, 32, new ArrayList<String>());
+        TileSheetsConfig.exports(config, 16, 32, new ArrayList<>());
 
         final MapTileGame map = new MapTileGame();
         map.addFeature(new MapTilePersisterModel());

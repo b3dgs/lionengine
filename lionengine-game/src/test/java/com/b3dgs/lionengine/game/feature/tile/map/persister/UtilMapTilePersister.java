@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
-import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
 
@@ -41,7 +40,7 @@ final class UtilMapTilePersister
         final MapTileGame map = new MapTileGame();
         map.addFeature(new MapTilePersisterModel());
         map.create(16, 32, 3, 3);
-        map.loadSheets(new ArrayList<SpriteTiled>());
+        map.loadSheets(new ArrayList<>());
 
         for (int tx = 0; tx < map.getInTileWidth(); tx++)
         {

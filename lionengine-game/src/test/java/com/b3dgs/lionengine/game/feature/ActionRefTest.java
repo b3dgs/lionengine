@@ -70,7 +70,7 @@ final class ActionRefTest
 
     private final boolean cancel = true;
     private final FeaturableModel model = new FeaturableModel(services, setup);
-    private final ActionRef actionRef1 = new ActionRef("path", !cancel, new ArrayList<ActionRef>());
+    private final ActionRef actionRef1 = new ActionRef("path", !cancel, new ArrayList<>());
     private final ActionRef actionRef2 = new ActionRef("path2", cancel, Arrays.asList(actionRef1), model::getFeature);
 
     /**
@@ -119,7 +119,7 @@ final class ActionRefTest
         final FeaturableModel featurable = new FeaturableModel(services, setup);
 
         assertEquals(actionRef1, actionRef1);
-        assertEquals(actionRef1, new ActionRef("path", !cancel, new ArrayList<ActionRef>()));
+        assertEquals(actionRef1, new ActionRef("path", !cancel, new ArrayList<>()));
 
         assertEquals(actionRef2, actionRef2);
         assertEquals(actionRef2, new ActionRef("path2", cancel, Arrays.asList(actionRef1), model::getFeature));
@@ -131,8 +131,8 @@ final class ActionRefTest
         assertNotEquals(actionRef1, actionRef2);
         assertNotEquals(actionRef2, actionRef1);
 
-        assertNotEquals(actionRef1, new ActionRef("", !cancel, new ArrayList<ActionRef>()));
-        assertNotEquals(actionRef1, new ActionRef("path", cancel, new ArrayList<ActionRef>()));
+        assertNotEquals(actionRef1, new ActionRef("", !cancel, new ArrayList<>()));
+        assertNotEquals(actionRef1, new ActionRef("path", cancel, new ArrayList<>()));
         assertNotEquals(actionRef1, new ActionRef("path", cancel, Arrays.asList(actionRef1)));
         assertNotEquals(actionRef1, new ActionRef("path", !cancel, Arrays.asList(actionRef1)));
         assertNotEquals(new ActionRef("path2", cancel, Arrays.asList(actionRef1), featurable::getFeature),
@@ -151,7 +151,7 @@ final class ActionRefTest
         final ActionRef hash = actionRef1;
         final FeaturableModel featurable = new FeaturableModel(services, setup);
 
-        assertHashEquals(hash, new ActionRef("path", !cancel, new ArrayList<ActionRef>()));
+        assertHashEquals(hash, new ActionRef("path", !cancel, new ArrayList<>()));
 
         assertHashEquals(actionRef2, actionRef2);
         assertHashEquals(actionRef2, new ActionRef("path2", cancel, Arrays.asList(actionRef1), model::getFeature));
@@ -162,8 +162,8 @@ final class ActionRefTest
         assertHashNotEquals(hash, actionRef2);
         assertHashNotEquals(actionRef2, hash);
 
-        assertHashNotEquals(hash, new ActionRef("", !cancel, new ArrayList<ActionRef>()));
-        assertHashNotEquals(hash, new ActionRef("path", cancel, new ArrayList<ActionRef>()));
+        assertHashNotEquals(hash, new ActionRef("", !cancel, new ArrayList<>()));
+        assertHashNotEquals(hash, new ActionRef("path", cancel, new ArrayList<>()));
         assertHashNotEquals(hash, new ActionRef("path", cancel, Arrays.asList(actionRef1)));
         assertHashNotEquals(hash, new ActionRef("path", !cancel, Arrays.asList(actionRef1)));
         assertHashNotEquals(new ActionRef("path2", cancel, Arrays.asList(actionRef1), featurable::getFeature),
