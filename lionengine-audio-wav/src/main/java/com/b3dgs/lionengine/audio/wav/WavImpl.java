@@ -16,9 +16,10 @@
  */
 package com.b3dgs.lionengine.audio.wav;
 
-import java.io.File;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -42,7 +43,6 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.audio.PlayerAbstract;
@@ -66,7 +66,7 @@ final class WavImpl implements Wav
      * @return The created and opened playback ready to be played.
      * @throws IOException If playback error.
      */
-    private static Playback createPlayback(File media) throws IOException
+    private static Playback createPlayback(byte[] media) throws IOException
     {
         final AudioInputStream input = openStream(media);
         final SourceDataLine dataLine = getDataLine(input);
@@ -82,11 +82,11 @@ final class WavImpl implements Wav
      * @throws IOException If error when reading the audio file.
      * @throws LionEngineException If error when getting the stream.
      */
-    private static AudioInputStream openStream(File media) throws IOException
+    private static AudioInputStream openStream(byte[] media) throws IOException
     {
-        try
+        try (ByteArrayInputStream input = new ByteArrayInputStream(media))
         {
-            return AudioSystem.getAudioInputStream(media);
+            return AudioSystem.getAudioInputStream(input);
         }
         catch (final UnsupportedAudioFileException exception)
         {
@@ -220,14 +220,12 @@ final class WavImpl implements Wav
 
     /** Opened playback. */
     private final Map<Media, Playback> opened = new ConcurrentHashMap<>();
-    /** Cached stream. */
-    private final Map<Media, File> originalToCache = new HashMap<>();
     /** Tasks executor. */
     private final ExecutorService executor;
     /** Sound file reference. */
     private final Media media;
-    /** Cache file reference. */
-    private final File cache;
+    /** Cache reference. */
+    private final byte[] cache;
     /** Volume used. */
     private volatile int volume = PlayerAbstract.VOLUME_MAX;
     /** Exception flag. */
@@ -252,17 +250,21 @@ final class WavImpl implements Wav
 
         this.executor = executor;
         this.media = media;
-        if (media.isJar())
+
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream();
+             InputStream input = media.getInputStream())
         {
-            if (!originalToCache.containsKey(media))
+            final byte[] buf = new byte[Constant.MAX_PORT];
+            int r;
+            while ((r = input.read(buf)) != -1)
             {
-                originalToCache.put(media, UtilStream.getCopy(media));
+                output.write(buf, 0, r);
             }
-            cache = originalToCache.get(media);
+            cache = output.toByteArray();
         }
-        else
+        catch (final IOException exception)
         {
-            cache = media.getFile();
+            throw new LionEngineException(exception, ERROR_PLAY_SOUND);
         }
     }
 
