@@ -227,8 +227,8 @@ final class UtilReflectionTest
     @Test
     void testGetMethodNotAccessible()
     {
-        assertThrows(() -> UtilTests.getMethod(Verbose.class, "getMessage", "test"),
-                     UtilReflection.ERROR_METHOD + "getMessage");
+        assertThrows(() -> UtilTests.getMethod(UtilTests.class, "getPrimitive", "test"),
+                     UtilReflection.ERROR_METHOD + "getPrimitive");
     }
 
     /**
@@ -291,7 +291,7 @@ final class UtilReflectionTest
     @Test
     void testGetFieldNotAccessible()
     {
-        assertNotNull(UtilTests.getField(Verbose.class, "LOGGER"));
+        assertNotNull(UtilTests.getField(UtilTests.class, "PRECISION"));
     }
 
     /**

@@ -20,11 +20,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Factory;
@@ -77,6 +79,9 @@ import com.b3dgs.lionengine.io.FileWriting;
 // CHECKSTYLE IGNORE LINE: DataAbstractionCoupling|FanOutComplexity
 public class MapTileHelper extends MapTileGame
 {
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(MapTileHelper.class);
+
     /**
      * Import and save the level.
      * 
@@ -126,7 +131,7 @@ public class MapTileHelper extends MapTileGame
         }
         catch (final IOException exception)
         {
-            Verbose.exception(exception, "Error on saving map !");
+            LOGGER.error("Error on saving map !", exception);
         }
     }
 

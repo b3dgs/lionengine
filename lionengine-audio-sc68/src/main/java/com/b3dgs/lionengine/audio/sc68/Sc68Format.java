@@ -20,10 +20,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Generated;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.AudioFormat;
 import com.b3dgs.lionengine.audio.AudioVoidFormat;
 import com.sun.jna.Native;
@@ -33,14 +35,16 @@ import com.sun.jna.Native;
  */
 public final class Sc68Format implements AudioFormat
 {
-    /** Load library error. */
-    public static final String ERROR_LOAD_LIBRARY = "Error on loading SC68 Library: ";
     /** Sc68 format. */
-    private static final String SC68 = "sc68";
+    public static final String SC68 = "sc68";
+    /** Load library error. */
+    static final String ERROR_LOAD_LIBRARY = "Error on loading library: ";
     /** Standard library name. */
     private static final String LIBRARY_NAME = SC68;
     /** Audio extensions as read only. */
     private static final Collection<String> FORMATS = Collections.unmodifiableCollection(Arrays.asList(SC68));
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(Sc68Format.class);
 
     /**
      * Get the library, or void format if not found.
@@ -56,7 +60,7 @@ public final class Sc68Format implements AudioFormat
         }
         catch (final LionEngineException exception)
         {
-            Verbose.exception(exception, ERROR_LOAD_LIBRARY);
+            LOGGER.error(ERROR_LOAD_LIBRARY + "{}", LIBRARY_NAME, exception);
             return new AudioVoidFormat(FORMATS);
         }
     }
@@ -88,7 +92,7 @@ public final class Sc68Format implements AudioFormat
     private static Sc68Binding getLibrary()
     {
         final Sc68Binding binding = Native.load(LIBRARY_NAME, Sc68Binding.class);
-        Verbose.info("Library ", LIBRARY_NAME, " loaded");
+        LOGGER.debug("Library {} loaded", LIBRARY_NAME);
         return binding;
     }
 

@@ -16,9 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.feature.tile.TilesExtractor;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
@@ -32,6 +34,9 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
  */
 public final class LevelRipConverter
 {
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(LevelRipConverter.class);
+
     /**
      * Run the converter.
      * 
@@ -91,7 +96,9 @@ public final class LevelRipConverter
             {
                 if (!checkPixel(map, tileRef, progressTileX, progressTileY))
                 {
-                    Verbose.warning("Tile missing at: " + progressTileX + " " + progressTileY);
+                    LOGGER.warn("Tile missing at: {} - {}",
+                                Integer.valueOf(progressTileX),
+                                Integer.valueOf(progressTileY));
                     errors++;
                 }
 

@@ -21,9 +21,11 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 
 /**
  * Image header reader interface.
@@ -37,6 +39,8 @@ abstract class ImageHeaderReaderAbstract implements ImageHeaderReader
     private static final String MESSAGE_SKIPPED = "Skipped ";
     /** Message bytes instead of. */
     private static final String MESSAGE_BYTES_INSTEAD_OF = " bytes instead of ";
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImageHeaderReaderAbstract.class);
 
     /**
      * Read integer in image data.
@@ -155,7 +159,7 @@ abstract class ImageHeaderReaderAbstract implements ImageHeaderReader
             }
             catch (final IOException exception)
             {
-                Verbose.exception(exception);
+                LOGGER.error("is image error", exception);
             }
         }
         return false;

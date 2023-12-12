@@ -20,10 +20,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Generated;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.AudioFormat;
 import com.b3dgs.lionengine.audio.AudioVoidFormat;
 import com.sun.jna.Native;
@@ -33,12 +35,14 @@ import com.sun.jna.Native;
  */
 public final class AdPlugFormat implements AudioFormat
 {
-    /** Load library error. */
-    public static final String ERROR_LOAD_LIBRARY = "Error on loading AdPlug Library: ";
     /** Standard library name. */
-    private static final String LIBRARY_NAME = "adplug";
+    public static final String LIBRARY_NAME = "adplug";
+    /** Load library error. */
+    static final String ERROR_LOAD_LIBRARY = "Error on loading library: ";
     /** Audio extensions as read only. */
     private static final Collection<String> FORMATS = Collections.unmodifiableCollection(Arrays.asList("lds"));
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdPlugFormat.class);
 
     /**
      * Get the library, or void format if not found.
@@ -54,7 +58,7 @@ public final class AdPlugFormat implements AudioFormat
         }
         catch (final LionEngineException exception)
         {
-            Verbose.exception(exception, ERROR_LOAD_LIBRARY);
+            LOGGER.error(ERROR_LOAD_LIBRARY + "{}", LIBRARY_NAME, exception);
             return new AudioVoidFormat(FORMATS);
         }
     }
@@ -86,7 +90,7 @@ public final class AdPlugFormat implements AudioFormat
     private static AdPlugBinding getLibrary()
     {
         final AdPlugBinding binding = Native.load(LIBRARY_NAME, AdPlugBinding.class);
-        Verbose.info("Library ", LIBRARY_NAME, " loaded");
+        LOGGER.debug("Library {} loaded", LIBRARY_NAME);
         return binding;
     }
 

@@ -39,11 +39,13 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Transparency;
@@ -62,6 +64,9 @@ public final class ToolsAwt
     private static final GraphicsDevice DEV = ENV.getDefaultScreenDevice();
     /** Graphics configuration. */
     private static final GraphicsConfiguration CONFIG = DEV.getDefaultConfiguration();
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ToolsAwt.class);
+
     /** Image loading strategy. */
     private static volatile ImageLoadStrategy imageLoadStragegy = ImageLoadStrategy.FAST_RENDERING;
 
@@ -787,7 +792,7 @@ public final class ToolsAwt
         }
         catch (final AWTException exception)
         {
-            Verbose.exception(exception);
+            LOGGER.error("createBuffer canvas", exception);
             component.createBufferStrategy(1);
         }
     }
@@ -806,7 +811,7 @@ public final class ToolsAwt
         }
         catch (final AWTException exception)
         {
-            Verbose.exception(exception);
+            LOGGER.error("createBuffer window", exception);
             component.createBufferStrategy(1);
         }
     }

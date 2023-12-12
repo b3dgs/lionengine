@@ -32,12 +32,17 @@ import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Test {@link UtilFolder}.
  */
 final class UtilFolderTest
 {
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(UtilFolderTest.class);
+
     /**
      * Prepare tests.
      */
@@ -158,7 +163,7 @@ final class UtilFolderTest
     @Test
     void testDeleteDirectoryWarning() throws IOException
     {
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
         UtilFolder.deleteDirectory(new File("void"));
         UtilFolder.deleteDirectory(new File("warn")
         {
@@ -216,7 +221,7 @@ final class UtilFolderTest
                 return null;
             }
         });
-        Verbose.info("****************************************************************************************");
+        LOGGER.info("****************************************************************************************");
     }
 
     /**

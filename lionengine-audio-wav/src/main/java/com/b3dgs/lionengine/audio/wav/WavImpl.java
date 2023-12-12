@@ -37,13 +37,15 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.audio.PlayerAbstract;
 
@@ -58,6 +60,8 @@ final class WavImpl implements Wav
     private static final long MIN_DELAY_NANO = 10_000_000L;
     /** Play sound error. */
     private static final String ERROR_PLAY_SOUND = "Error on playing sound: ";
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(WavImpl.class);
 
     /**
      * Play a sound.
@@ -180,7 +184,7 @@ final class WavImpl implements Wav
             }
             catch (final IllegalStateException | LineUnavailableException exception)
             {
-                Verbose.exception(exception);
+                LOGGER.error("openLine error", exception);
             }
         }
     }
@@ -284,7 +288,7 @@ final class WavImpl implements Wav
             }
             catch (final IOException exception)
             {
-                Verbose.exception(exception, media.toString());
+                LOGGER.error(media.toString(), exception);
             }
         }
 
@@ -318,7 +322,7 @@ final class WavImpl implements Wav
         {
             if (last == null || exception.getMessage() != null && !exception.getMessage().equals(last.getMessage()))
             {
-                Verbose.exception(exception, media.toString());
+                LOGGER.error(media.toString(), exception);
                 last = exception;
             }
         }
@@ -390,11 +394,11 @@ final class WavImpl implements Wav
         catch (final InterruptedException exception)
         {
             Thread.currentThread().interrupt();
-            Verbose.exception(exception);
+            LOGGER.error("Interrupted !", exception);
         }
         catch (final ExecutionException | TimeoutException exception)
         {
-            Verbose.exception(exception);
+            LOGGER.error("Stopped !", exception);
         }
     }
 

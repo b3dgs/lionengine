@@ -22,26 +22,30 @@ import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.b3dgs.lionengine.MediaMock;
-import com.b3dgs.lionengine.Verbose;
 
 /**
  * Test {@link ImageHeaderGif}.
  */
 final class ImageInfoGifTest
 {
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImageInfoGifTest.class);
+
     /**
      * Test constructor.
      */
     @Test
     void testGif()
     {
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
 
         assertFalse(new ImageHeaderGif().is(new MediaMock()));
         assertThrows(IOException.class, () -> new ImageHeaderGif().readHeader(new MediaMock().getInputStream()), null);
 
-        Verbose.info("****************************************************************************************");
+        LOGGER.info("****************************************************************************************");
     }
 }

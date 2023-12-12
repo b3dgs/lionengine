@@ -24,12 +24,14 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferStrategy;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.awt.Keyboard;
 import com.b3dgs.lionengine.awt.KeyboardAwt;
 import com.b3dgs.lionengine.awt.KeyboardAwtListener;
@@ -54,6 +56,8 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     private static final Cursor CURSOR_DEFAULT = Cursor.getDefaultCursor();
     /** Max ready time in millisecond. */
     private static final long READY_TIMEOUT = 5000L;
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScreenAwtAbstract.class);
 
     /** Buffer strategy reference. */
     protected BufferStrategy buf;
@@ -222,7 +226,7 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
         }
         catch (final IllegalComponentStateException exception)
         {
-            Verbose.exception(exception);
+            LOGGER.error("getX", exception);
             return 0;
         }
     }
@@ -236,7 +240,7 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
         }
         catch (final IllegalComponentStateException exception)
         {
-            Verbose.exception(exception);
+            LOGGER.error("getY", exception);
             return 0;
         }
     }

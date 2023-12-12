@@ -29,6 +29,8 @@ import java.io.IOException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Engine;
@@ -39,7 +41,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.UtilTests;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 
 /**
@@ -47,6 +48,9 @@ import com.b3dgs.lionengine.Version;
  */
 final class GraphicsTest
 {
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(GraphicsTest.class);
+
     /**
      * Start engine.
      */
@@ -72,7 +76,7 @@ final class GraphicsTest
         }
         catch (final LionEngineException exception)
         {
-            Verbose.exception(exception);
+            LOGGER.error("afterAll", exception);
         }
 
         Medias.setLoadFromJar(null);

@@ -20,10 +20,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Generated;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.AudioFormat;
 import com.b3dgs.lionengine.audio.AudioVoidFormat;
 import com.sun.jna.Native;
@@ -33,10 +35,10 @@ import com.sun.jna.Native;
  */
 public final class AdlMidiFormat implements AudioFormat
 {
-    /** Load library error. */
-    public static final String ERROR_LOAD_LIBRARY = "Error on loading Library: ";
     /** Standard library name. */
-    private static final String LIBRARY_NAME = "adlmidi";
+    public static final String LIBRARY_NAME = "adlmidi";
+    /** Load library error. */
+    static final String ERROR_LOAD_LIBRARY = "Error on loading library: ";
     /** Audio extensions as read only. */
     private static final Collection<String> FORMATS = Collections.unmodifiableCollection(Arrays.asList("xmi",
                                                                                                        "midi",
@@ -44,6 +46,9 @@ public final class AdlMidiFormat implements AudioFormat
                                                                                                        "rmi",
                                                                                                        "imf",
                                                                                                        "mus"));
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdlMidiFormat.class);
+
     /** Default sound bank (<code>null</code> if not defined). */
     private static Integer bank;
 
@@ -61,7 +66,7 @@ public final class AdlMidiFormat implements AudioFormat
         }
         catch (final LionEngineException exception)
         {
-            Verbose.exception(exception, ERROR_LOAD_LIBRARY);
+            LOGGER.error(ERROR_LOAD_LIBRARY + "{}", LIBRARY_NAME, exception);
             return new AudioVoidFormat(FORMATS);
         }
     }
@@ -113,7 +118,7 @@ public final class AdlMidiFormat implements AudioFormat
     private static AdlMidiBinding getLibrary()
     {
         final AdlMidiBinding binding = Native.load(LIBRARY_NAME, AdlMidiBinding.class);
-        Verbose.info("Library ", LIBRARY_NAME, " loaded");
+        LOGGER.debug("Library {} loaded", LIBRARY_NAME);
         return binding;
     }
 

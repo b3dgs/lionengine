@@ -21,8 +21,10 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -40,6 +42,9 @@ import com.b3dgs.lionengine.network.server.Server;
  */
 public class NetworkableModel extends FeatureModel implements Networkable
 {
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(NetworkableModel.class);
+
     /** Server reference (<code>null</code> if unavailable). */
     protected final Server server = services.getOptional(Server.class).orElse(null);
     /** Client reference (<code>null</code> if unavailable). */
@@ -99,7 +104,7 @@ public class NetworkableModel extends FeatureModel implements Networkable
         }
         catch (final IOException exception)
         {
-            Verbose.exception(exception);
+            LOGGER.error("send error", exception);
         }
     }
 

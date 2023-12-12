@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Tools related to files and directories handling.
  * <p>
@@ -38,9 +41,11 @@ public final class UtilStream
     /** Temp folder. */
     private static final String TEMP = Constant.getSystemProperty(TEMP_DIR, Constant.EMPTY_STRING);
     /** Temp file created. */
-    private static final String TEMP_FILE_CREATED = "Temp file created: ";
+    private static final String TEMP_FILE_CREATED = "Temp file created: {}";
     /** Copy buffer. */
     private static final int BUFFER_COPY = 65_535;
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(UtilStream.class);
 
     /**
      * Copy a stream onto another.
@@ -90,7 +95,7 @@ public final class UtilStream
                  OutputStream output = new BufferedOutputStream(new FileOutputStream(temp)))
             {
                 copy(input, output);
-                Verbose.info(TEMP_FILE_CREATED + temp);
+                LOGGER.info(TEMP_FILE_CREATED, temp);
             }
             return temp;
         }

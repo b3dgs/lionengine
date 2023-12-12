@@ -43,6 +43,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Test {@link Xml and XmlReader}.
@@ -65,6 +67,8 @@ final class XmlTest
     private static final double DOUBLE_VALUE = 7.1;
     /** String value. */
     private static final String STRING_VALUE = "string";
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlTest.class);
 
     /**
      * Start engine.
@@ -87,7 +91,7 @@ final class XmlTest
         }
         catch (final LionEngineException exception)
         {
-            Verbose.exception(exception);
+            LOGGER.error("afterAll", exception);
         }
 
         Engine.terminate();
@@ -173,9 +177,9 @@ final class XmlTest
         Medias.setLoadFromJar(XmlTest.class);
         testWrongReadXml(media);
 
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
         testWrongWriteXml();
-        Verbose.info("****************************************************************************************");
+        LOGGER.info("****************************************************************************************");
 
         Files.delete(file);
     }
@@ -493,10 +497,10 @@ final class XmlTest
     @Test
     void testBadNormalize()
     {
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
         final Xml node = new Xml("test");
         node.normalize("\\//text()[test]");
-        Verbose.info("****************************************************************************************");
+        LOGGER.info("****************************************************************************************");
     }
 
     /**

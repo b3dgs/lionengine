@@ -25,6 +25,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Tools related to directories handling.
  * <p>
@@ -33,10 +36,8 @@ import java.util.stream.Collectors;
  */
 public final class UtilFolder
 {
-    /** Error delete file. */
-    private static final String ERROR_DELETE_FILE = "File not deleted: ";
-    /** Error delete directory. */
-    private static final String ERROR_DELETE_DIRECTORY = "Directory not deleted: ";
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(UtilFolder.class);
 
     /**
      * Get all directories existing in the path.
@@ -122,7 +123,7 @@ public final class UtilFolder
             }
             catch (final IOException exception)
             {
-                Verbose.exception(exception, ERROR_DELETE_DIRECTORY, element.getAbsolutePath());
+                LOGGER.error("Directory not deleted: {}", element.getAbsolutePath(), exception);
             }
         }
         else if (element.isFile())
@@ -133,7 +134,7 @@ public final class UtilFolder
             }
             catch (final IOException exception)
             {
-                Verbose.exception(exception, ERROR_DELETE_FILE, element.getAbsolutePath());
+                LOGGER.error("File not deleted: {}", element.getAbsolutePath(), exception);
             }
         }
     }

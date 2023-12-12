@@ -31,12 +31,13 @@ import java.util.Locale;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.FactoryMediaDefault;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.graphic.ImageFormat;
 
 /**
@@ -44,6 +45,9 @@ import com.b3dgs.lionengine.graphic.ImageFormat;
  */
 final class ImageInfoTest
 {
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImageInfoTest.class);
+
     /**
      * Prepare tests.
      */
@@ -143,11 +147,11 @@ final class ImageInfoTest
         assertThrows(() -> ImageInfo.get(Medias.create("image_error7.tiff")),
                      "[image_error7.tiff] " + ImageInfo.ERROR_READ);
 
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
 
         assertFalse(ImageInfo.isImage(Medias.create("image_error7.tiff")));
 
-        Verbose.info("****************************************************************************************");
+        LOGGER.info("****************************************************************************************");
     }
 
     /**

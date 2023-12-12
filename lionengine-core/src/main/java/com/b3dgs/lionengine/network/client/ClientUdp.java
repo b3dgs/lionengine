@@ -30,12 +30,14 @@ import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.UtilConversion;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.network.Alive;
 import com.b3dgs.lionengine.network.Channel;
 import com.b3dgs.lionengine.network.Data;
@@ -53,8 +55,8 @@ import com.b3dgs.lionengine.network.UtilNetwork;
 public class ClientUdp implements Client
 {
     private static final int ALIVE_DELAY_MS = 4000;
-
     private static final String SERVER_DISCONNECTED = "Server disconnected!";
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientUdp.class);
 
     private final ListenableModel<ClientListener> listenable = new ListenableModel<>();
     private final Semaphore pingLock = new Semaphore(0);
@@ -127,7 +129,7 @@ public class ClientUdp implements Client
             {
                 if (running)
                 {
-                    Verbose.exception(exception);
+                    LOGGER.error("Receive error", exception);
                 }
             }
         }
@@ -188,7 +190,7 @@ public class ClientUdp implements Client
         if (disconnected.intValue() == 0)
         {
             close();
-            Verbose.info(SERVER_DISCONNECTED);
+            LOGGER.info(SERVER_DISCONNECTED);
         }
         else
         {
@@ -205,7 +207,7 @@ public class ClientUdp implements Client
         }
         catch (final IOException exception)
         {
-            Verbose.exception(exception);
+            LOGGER.error("handlePing error", exception);
             ping.set(-1L);
             throw exception;
         }
@@ -248,7 +250,7 @@ public class ClientUdp implements Client
             {
                 if (running)
                 {
-                    Verbose.exception(exception);
+                    LOGGER.error("Alive error", exception);
                 }
             }
         }
@@ -273,7 +275,7 @@ public class ClientUdp implements Client
 
         notifyConnected(ip, port, clientId);
 
-        Verbose.info("Connected to " + UtilNetwork.toString(ip, port) + " as " + clientId);
+        LOGGER.info("Connected to {} as {}", UtilNetwork.toString(ip, port), clientId);
     }
 
     private void notifyConnected(String ip, int port, Integer id)
@@ -310,7 +312,7 @@ public class ClientUdp implements Client
             }
             catch (final IOException exception)
             {
-                Verbose.exception(exception);
+                LOGGER.error("Connect error", exception);
             }
             running = true;
 
@@ -333,7 +335,7 @@ public class ClientUdp implements Client
             }
             catch (final IOException exception)
             {
-                Verbose.exception(exception);
+                LOGGER.error("Disconnect error", exception);
             }
             close();
         }
@@ -382,7 +384,7 @@ public class ClientUdp implements Client
             }
             catch (final IOException exception)
             {
-                Verbose.exception(exception);
+                LOGGER.error("Ping error", exception);
             }
         }
         return -1;

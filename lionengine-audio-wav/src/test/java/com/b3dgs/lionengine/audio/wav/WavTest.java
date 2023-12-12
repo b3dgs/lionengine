@@ -21,6 +21,8 @@ import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Constant;
@@ -28,7 +30,6 @@ import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilTests;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
@@ -38,6 +39,9 @@ import com.b3dgs.lionengine.audio.AudioFactory;
  */
 final class WavTest
 {
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(WavTest.class);
+
     /**
      * Start engine.
      */
@@ -80,7 +84,7 @@ final class WavTest
     @Test
     void testInvalidAudio() throws InterruptedException
     {
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
         final Audio wav = AudioFactory.loadAudio(Medias.create("invalid.wav"));
         try
         {
@@ -92,7 +96,7 @@ final class WavTest
             wav.stop();
         }
 
-        Verbose.info("****************************************************************************************");
+        LOGGER.info("****************************************************************************************");
     }
 
     /**

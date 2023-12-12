@@ -18,11 +18,13 @@ package com.b3dgs.lionengine.audio;
 
 import java.io.File;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilStream;
-import com.b3dgs.lionengine.Verbose;
 
 /**
  * Abstract player base implementation.
@@ -33,8 +35,8 @@ public abstract class PlayerAbstract implements Audio
     public static final int VOLUME_MIN = 0;
     /** Maximum volume value. */
     public static final int VOLUME_MAX = 100;
-    /** Info playing. */
-    private static final String INFO_PLAYING = "Playing track: ";
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlayerAbstract.class);
 
     /**
      * Extract music from jar to temp file.
@@ -80,7 +82,7 @@ public abstract class PlayerAbstract implements Audio
      */
     private void play(String track, String name)
     {
-        Verbose.info(INFO_PLAYING, name);
+        LOGGER.info("Playing track: {}", name);
         play(track);
     }
 

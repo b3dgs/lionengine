@@ -16,10 +16,12 @@
  */
 package com.b3dgs.lionengine.graphic.engine;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.UtilTests;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
@@ -27,6 +29,9 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 public final class SequenceArgumentsMock extends Sequence
 {
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(SequenceArgumentsMock.class);
+
     /** Argument. */
     private final Object argument;
     /** Width. */
@@ -68,11 +73,11 @@ public final class SequenceArgumentsMock extends Sequence
     @Override
     public void render(Graphic g)
     {
-        Verbose.info("Sequence single mock info");
-        Verbose.info(String.valueOf(width));
-        Verbose.info(String.valueOf(height));
-        Verbose.info(String.valueOf(config));
-        Verbose.info(String.valueOf(getFps()));
-        Verbose.info(argument.toString());
+        LOGGER.info("Sequence single mock info");
+        LOGGER.info(String.valueOf(width));
+        LOGGER.info(String.valueOf(height));
+        LOGGER.info(String.valueOf(config));
+        LOGGER.info(String.valueOf(getFps()));
+        LOGGER.info(argument.toString());
     }
 }

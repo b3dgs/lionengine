@@ -32,12 +32,17 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Test {@link DocumentFactory}.
  */
 final class DocumentFactoryTest
 {
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(DocumentFactoryTest.class);
+
     /**
      * Test the constructor.
      */
@@ -119,9 +124,9 @@ final class DocumentFactoryTest
 
         try
         {
-            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+            LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
             assertCause(DocumentFactory::createDocument, ParserConfigurationException.class);
-            Verbose.info("****************************************************************************************");
+            LOGGER.info("****************************************************************************************");
         }
         finally
         {

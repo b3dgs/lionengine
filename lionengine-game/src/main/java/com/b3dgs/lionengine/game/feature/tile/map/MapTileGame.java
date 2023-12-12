@@ -20,13 +20,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Surface;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.feature.FeaturableAbstract;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TilesExtractor;
@@ -51,6 +53,9 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
  */
 public class MapTileGame extends FeaturableAbstract implements MapTile, Listenable<TileSetListener>
 {
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(MapTileGame.class);
+
     /** Map tile surface. */
     protected final MapTileSurface mapSurface;
 
@@ -131,7 +136,7 @@ public class MapTileGame extends FeaturableAbstract implements MapTile, Listenab
         final int errors = LevelRipConverter.start(levelrip, mapSurface);
         if (errors > 0)
         {
-            Verbose.warning(getClass(), "create", "Number of missing tiles: ", String.valueOf(errors));
+            LOGGER.warn("Number of missing tiles: ", Integer.valueOf(errors));
         }
     }
 

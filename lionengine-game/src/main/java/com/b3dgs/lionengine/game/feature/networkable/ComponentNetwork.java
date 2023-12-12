@@ -24,7 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.b3dgs.lionengine.Verbose;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.game.feature.ComponentUpdater;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -53,6 +55,8 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
     public static final int MODE_IDENTIFIABLE_GET = UtilNetwork.MODE_DISCONNECT + 1;
     /** Mode identifiable create. */
     public static final int MODE_IDENTIFIABLE_CREATE = MODE_IDENTIFIABLE_GET + 1;
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ComponentNetwork.class);
 
     /** Networkable by dataId. */
     private final Map<Integer, Networkable> networkables = new HashMap<>();
@@ -143,7 +147,7 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
         }
         catch (final IOException exception)
         {
-            Verbose.exception(exception);
+            LOGGER.error("send client error", exception);
         }
     }
 
@@ -155,7 +159,7 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
         }
         catch (final IOException exception)
         {
-            Verbose.exception(exception);
+            LOGGER.error("send error", exception);
         }
     }
 
@@ -242,7 +246,7 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
         }
         else if (server != null)
         {
-            Verbose.critical(getClass(), "handleData", "Unknown id: " + packet.getDataId());
+            LOGGER.error("Unknown id: {}" + packet.getDataId());
         }
     }
 

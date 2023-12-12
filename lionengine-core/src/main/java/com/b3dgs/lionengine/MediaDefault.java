@@ -28,6 +28,9 @@ import java.util.Collection;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Media implementation.
  * <p>
@@ -54,6 +57,8 @@ final class MediaDefault implements Media
     private static final String JAR_FILE_PREFIX = "file:";
     /** Jar file suffix. */
     private static final String JAR_FILE_SUFFIX = ".jar!";
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(MediaDefault.class);
 
     /**
      * Check if path exists.
@@ -404,7 +409,7 @@ final class MediaDefault implements Media
             file = new File(getPathFromTemp());
             if (file.getParentFile().mkdirs())
             {
-                Verbose.info("Temp path created: ", file.getPath());
+                LOGGER.info("Temp path created: {}", file.getPath());
             }
         }
         try

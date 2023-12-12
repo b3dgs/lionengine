@@ -34,6 +34,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Engine;
@@ -43,7 +45,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilTests;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -63,6 +64,9 @@ final class LoaderTest
     static final Resolution OUTPUT = new Resolution(640, 480, 60);
     /** Config. */
     static final Config CONFIG = new Config(OUTPUT, 16, true);
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoaderTest.class);
+
     /** Icon. */
     private static Media icon;
 
@@ -150,14 +154,14 @@ final class LoaderTest
         ScreenMock.setScreenWait(true);
         try
         {
-            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+            LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
 
             assertThrows(() -> Loader.start(CONFIG, SequenceSingleMock.class).await(), "Unable to get screen ready !");
         }
         finally
         {
             ScreenMock.setScreenWait(false);
-            Verbose.info("****************************************************************************************");
+            LOGGER.info("****************************************************************************************");
         }
     }
 
@@ -206,11 +210,11 @@ final class LoaderTest
     @Test
     void testSequencePreload()
     {
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
 
         assertThrows(() -> Loader.start(CONFIG, SequenceNextPreloadMock.class).await(), "expected failure");
 
-        Verbose.info("****************************************************************************************");
+        LOGGER.info("****************************************************************************************");
     }
 
     /**
@@ -219,11 +223,11 @@ final class LoaderTest
     @Test
     void testSequenceFail()
     {
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
 
         assertThrows(() -> Loader.start(CONFIG, SequenceFailMock.class).await(), "expected failure");
 
-        Verbose.info("****************************************************************************************");
+        LOGGER.info("****************************************************************************************");
     }
 
     /**
@@ -232,11 +236,11 @@ final class LoaderTest
     @Test
     void testSequenceFailNext()
     {
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
 
         assertThrows(() -> Loader.start(CONFIG, SequenceNextFailMock.class).await(), "expected failure");
 
-        Verbose.info("****************************************************************************************");
+        LOGGER.info("****************************************************************************************");
     }
 
     /**
@@ -245,7 +249,7 @@ final class LoaderTest
     @Test
     void testSequenceMalformed()
     {
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
 
         final String message = NoSuchMethodException.class.getName()
                                + ": No compatible constructor found for "
@@ -254,7 +258,7 @@ final class LoaderTest
                                + Arrays.asList(ContextWrapper.class);
         assertThrows(() -> Loader.start(CONFIG, SequenceMalformedMock.class).await(), message);
 
-        Verbose.info("****************************************************************************************");
+        LOGGER.info("****************************************************************************************");
     }
 
     /**
@@ -319,13 +323,13 @@ final class LoaderTest
             exception.set(throwable);
             semaphore.release();
         });
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
         thread.start();
 
         assertTimeout(SequenceInterruptMock.PAUSE_MILLI * 2L, semaphore::acquire);
         assertTrue(exception.get().getCause() instanceof NullPointerException);
 
-        Verbose.info("****************************************************************************************");
+        LOGGER.info("****************************************************************************************");
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 

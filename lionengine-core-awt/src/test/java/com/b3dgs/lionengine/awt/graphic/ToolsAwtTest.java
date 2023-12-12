@@ -33,13 +33,14 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Transparency;
@@ -49,6 +50,9 @@ import com.b3dgs.lionengine.graphic.Transparency;
  */
 final class ToolsAwtTest
 {
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ToolsAwtTest.class);
+
     /**
      * Start engine.
      */
@@ -206,7 +210,7 @@ final class ToolsAwtTest
     {
         final AtomicReference<Integer> result = new AtomicReference<>();
 
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
         ToolsAwt.createBufferStrategy(new java.awt.Canvas(null)
         {
             @Override
@@ -219,7 +223,7 @@ final class ToolsAwtTest
                 result.set(Integer.valueOf(numBuffers));
             }
         }, GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
-        Verbose.info("****************************************************************************************");
+        LOGGER.info("****************************************************************************************");
 
         assertEquals(1, result.get().intValue());
     }
@@ -252,7 +256,7 @@ final class ToolsAwtTest
     {
         final AtomicReference<Integer> result = new AtomicReference<>();
 
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
         ToolsAwt.createBufferStrategy(new java.awt.Window(null)
         {
             @Override
@@ -265,7 +269,7 @@ final class ToolsAwtTest
                 result.set(Integer.valueOf(numBuffers));
             }
         }, GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
-        Verbose.info("****************************************************************************************");
+        LOGGER.info("****************************************************************************************");
 
         assertEquals(1, result.get().intValue());
     }

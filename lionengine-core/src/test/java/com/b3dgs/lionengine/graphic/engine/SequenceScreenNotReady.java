@@ -18,9 +18,11 @@ package com.b3dgs.lionengine.graphic.engine;
 
 import java.util.concurrent.CountDownLatch;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.UtilTests;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
@@ -28,6 +30,9 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 public final class SequenceScreenNotReady extends Sequence
 {
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(SequenceScreenNotReady.class);
+
     private final CountDownLatch waitUpdate;
     private final CountDownLatch waitScreenUnready;
 
@@ -62,7 +67,7 @@ public final class SequenceScreenNotReady extends Sequence
         }
         catch (final InterruptedException exception)
         {
-            Verbose.exception(exception);
+            LOGGER.error("Interrupted !", exception);
         }
     }
 

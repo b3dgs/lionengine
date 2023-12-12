@@ -16,6 +16,9 @@
  */
 package com.b3dgs.lionengine;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Engine base implementation. This class is intended to be inherited by an engine implementation depending of the
  * library used (as it is done for AWT, SWT and Android implementation).
@@ -33,13 +36,11 @@ public abstract class Engine
     /** Error message engine already started. */
     static final String ERROR_STARTED_ALREADY = "The engine has already been started !";
     /** Engine starting. */
-    private static final String ENGINE_STARTING = "Starting \"" + Constant.ENGINE_NAME + " \"";
+    private static final String ENGINE_STARTING = "Starting \"" + Constant.ENGINE_NAME + " \" {} for {} {}";
     /** Engine terminated. */
     private static final String ENGINE_TERMINATED = Constant.ENGINE_NAME + " terminated";
-    /** For string. */
-    private static final String FOR = " for ";
-    /** Minimum start message length. */
-    private static final int MIN_LENGTH = 30;
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(Engine.class);
 
     /** Started engine flag. */
     private static volatile boolean started;
@@ -60,16 +61,7 @@ public abstract class Engine
         {
             throw new LionEngineException(ERROR_STARTED_ALREADY);
         }
-        Verbose.info(new StringBuilder(MIN_LENGTH).append(ENGINE_STARTING)
-                                                  .append(Constant.ENGINE_VERSION)
-                                                  .append(Constant.QUOTE)
-                                                  .append(FOR)
-                                                  .append(Constant.QUOTE)
-                                                  .append(engine.getName())
-                                                  .append(Constant.SPACE)
-                                                  .append(engine.getVersion())
-                                                  .append(Constant.QUOTE)
-                                                  .toString());
+        LOGGER.info(ENGINE_STARTING, Constant.ENGINE_VERSION, engine.getName(), engine.getVersion());
 
         Medias.setFactoryMedia(new FactoryMediaDefault());
 
@@ -88,9 +80,9 @@ public abstract class Engine
         {
             engine.close();
             started = false;
-            Verbose.info(ENGINE_TERMINATED);
             engine.postClose();
             engine = null;
+            LOGGER.info(ENGINE_TERMINATED);
         }
     }
 

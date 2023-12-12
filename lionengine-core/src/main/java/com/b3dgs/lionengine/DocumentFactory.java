@@ -26,6 +26,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -37,6 +39,9 @@ import org.xml.sax.SAXException;
  */
 final class DocumentFactory
 {
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(DocumentFactory.class);
+
     /** Load factory. */
     private static DocumentBuilder documentBuilder;
     /** Save factory. */
@@ -103,7 +108,7 @@ final class DocumentFactory
             }
             catch (final IllegalArgumentException exception)
             {
-                Verbose.exception(exception);
+                LOGGER.error("Invalid DTD", exception);
             }
             try
             {
@@ -111,7 +116,7 @@ final class DocumentFactory
             }
             catch (final IllegalArgumentException exception)
             {
-                Verbose.exception(exception);
+                LOGGER.error("Invalid schema", exception);
             }
             documentBuilderFactory.setIgnoringElementContentWhitespace(true);
             try

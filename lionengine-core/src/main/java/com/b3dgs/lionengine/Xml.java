@@ -32,6 +32,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -54,6 +56,8 @@ public class Xml extends XmlReader
     private static final String PROPERTY_INDENT = "{http://xml.apache.org/xslt}indent-amount";
     /** Normalize. */
     private static final String NORMALIZE = "//text()[normalize-space()='']";
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(Xml.class);
 
     /**
      * Create node from media.
@@ -417,7 +421,7 @@ public class Xml extends XmlReader
         }
         catch (final XPathExpressionException exception)
         {
-            Verbose.exception(exception);
+            LOGGER.error("XPath error", exception);
         }
     }
 

@@ -32,13 +32,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilConversion;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.network.Alive;
 import com.b3dgs.lionengine.network.Channel;
 import com.b3dgs.lionengine.network.Data;
@@ -57,16 +59,11 @@ public class ServerUdp implements Server
 {
     private static final int TIMEOUT = 12_000;
 
-    private static final String INFO_CONNECTED = " connected";
-    private static final String INFO_DISCONNECTED = " disconnected";
-    private static final String INFO_PING = " ping";
-    private static final String INFO_STOPPED = "Server stopped";
-
     private static final String ERROR_MAX_CLIENTS = "Maximum clients reached!";
     private static final String ERROR_START_SERVER = "Unable to start server!";
-    private static final String ERROR_ALREADY_CONNECTED = " already connected!";
-    private static final String ERROR_NOT_CONNECTED = " not connected!";
-    private static final String ERROR_TIMEOUT = " timeout!";
+    private static final String ERROR_NOT_CONNECTED = "Client {} not connected!";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServerUdp.class);
 
     private static Integer getId(DatagramPacket packet)
     {
@@ -144,7 +141,7 @@ public class ServerUdp implements Server
 
         if (clients.containsKey(id))
         {
-            Verbose.warning(ServerUdp.class, UtilNetwork.toString(packet) + ERROR_ALREADY_CONNECTED);
+            LOGGER.warn("Client {} already connected!", UtilNetwork.toString(packet));
         }
         else
         {
@@ -180,7 +177,7 @@ public class ServerUdp implements Server
                 }
             }
 
-            Verbose.info(client + INFO_CONNECTED);
+            LOGGER.info("Client {} connected", client);
         }
     }
 
@@ -209,7 +206,7 @@ public class ServerUdp implements Server
         }
         else
         {
-            Verbose.warning(ServerUdp.class, UtilNetwork.toString(packet) + ERROR_NOT_CONNECTED);
+            LOGGER.warn(ERROR_NOT_CONNECTED, UtilNetwork.toString(packet));
         }
     }
 
@@ -234,11 +231,11 @@ public class ServerUdp implements Server
 
             notifyClientDisconnected(client);
 
-            Verbose.info(client + INFO_DISCONNECTED);
+            LOGGER.info("Client {} disconnected", client);
         }
         else
         {
-            Verbose.warning(ServerUdp.class, UtilNetwork.toString(packet) + ERROR_NOT_CONNECTED);
+            LOGGER.warn(ERROR_NOT_CONNECTED, UtilNetwork.toString(packet));
         }
     }
 
@@ -262,11 +259,11 @@ public class ServerUdp implements Server
             Ping.decode(buffer, clientId);
 
             send(client, new Ping(clientId));
-            Verbose.info(client + INFO_PING);
+            LOGGER.info("Client {} ping", client);
         }
         else
         {
-            Verbose.warning(ServerUdp.class, UtilNetwork.toString(packet) + ERROR_NOT_CONNECTED);
+            LOGGER.warn(ERROR_NOT_CONNECTED, UtilNetwork.toString(packet));
         }
     }
 
@@ -280,7 +277,7 @@ public class ServerUdp implements Server
         }
         else
         {
-            Verbose.warning(ServerUdp.class, UtilNetwork.toString(packet) + ERROR_NOT_CONNECTED);
+            LOGGER.warn(ERROR_NOT_CONNECTED, UtilNetwork.toString(packet));
         }
     }
 
@@ -296,7 +293,7 @@ public class ServerUdp implements Server
         }
         else
         {
-            Verbose.warning(ServerUdp.class, UtilNetwork.toString(packet) + ERROR_NOT_CONNECTED);
+            LOGGER.warn(ERROR_NOT_CONNECTED, UtilNetwork.toString(packet));
         }
     }
 
@@ -342,7 +339,7 @@ public class ServerUdp implements Server
         }
         else
         {
-            Verbose.warning(ServerUdp.class, UtilNetwork.toString(packet) + ERROR_NOT_CONNECTED);
+            LOGGER.warn(ERROR_NOT_CONNECTED, UtilNetwork.toString(packet));
         }
     }
 
@@ -368,7 +365,7 @@ public class ServerUdp implements Server
             {
                 if (running)
                 {
-                    Verbose.exception(exception);
+                    LOGGER.error("listen error", exception);
                 }
             }
         }
@@ -436,7 +433,8 @@ public class ServerUdp implements Server
                 {
                     toRemove.add(client.getClientId());
                     notifyClientDisconnected(client);
-                    Verbose.info(UtilNetwork.toString(client.getIp().toString(), client.getPort()) + ERROR_TIMEOUT);
+                    LOGGER.info("Client {} timeout!",
+                                UtilNetwork.toString(client.getIp().toString(), client.getPort()));
                 }
             }
             for (final Integer id : toRemove)
@@ -527,7 +525,7 @@ public class ServerUdp implements Server
             }
             catch (final IOException exception)
             {
-                Verbose.exception(exception);
+                LOGGER.error("stop error", exception);
             }
         }
 
@@ -550,7 +548,7 @@ public class ServerUdp implements Server
 
         notifyServerStopped();
 
-        Verbose.info(INFO_STOPPED);
+        LOGGER.info("Server stopped");
     }
 
     @Override

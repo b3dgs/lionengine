@@ -21,6 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -28,7 +31,6 @@ import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilReflection;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.AnimationConfig;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Feature;
@@ -56,6 +58,8 @@ public class StateHandler extends FeatureModel
 {
     /** Feature parameter constructor index. */
     private static final int PARAM_FEATURE_INDEX = 0;
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(StateHandler.class);
 
     /** List of available states. */
     private final Map<Class<? extends State>, State> states = new HashMap<>();
@@ -95,6 +99,7 @@ public class StateHandler extends FeatureModel
      * <p>
      * The {@link Configurer} can provide {@link Animation}.
      * </p>
+     * 
      * @param converter The animation name converter (must not be <code>null</code>).
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
@@ -119,7 +124,7 @@ public class StateHandler extends FeatureModel
             }
             catch (final ClassNotFoundException exception)
             {
-                Verbose.exception(exception);
+                LOGGER.error("Constructor error", exception);
             }
         });
     }

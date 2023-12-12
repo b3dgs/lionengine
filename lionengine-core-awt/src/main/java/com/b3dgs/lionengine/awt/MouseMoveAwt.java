@@ -24,7 +24,9 @@ import java.awt.Robot;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
-import com.b3dgs.lionengine.Verbose;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.geom.Point;
 
 /**
@@ -36,6 +38,8 @@ final class MouseMoveAwt implements MouseMotionListener
     private static final int ROBOT_MARGIN = 64;
     /** Robot error. */
     private static final String ERROR_ROBOT = "No mouse robot available !";
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(MouseMoveAwt.class);
 
     /**
      * Create a mouse robot.
@@ -50,7 +54,7 @@ final class MouseMoveAwt implements MouseMotionListener
         }
         catch (final AWTException exception)
         {
-            Verbose.exception(exception, ERROR_ROBOT);
+            LOGGER.error(ERROR_ROBOT, exception);
             return null;
         }
     }
@@ -70,7 +74,7 @@ final class MouseMoveAwt implements MouseMotionListener
         }
         catch (final HeadlessException exception)
         {
-            Verbose.exception(exception);
+            LOGGER.error("getCursor error", exception);
             return new Point();
         }
     }

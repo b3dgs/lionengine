@@ -18,6 +18,9 @@ package com.b3dgs.lionengine.graphic.engine;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
@@ -25,7 +28,6 @@ import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Screen;
 
@@ -38,12 +40,10 @@ import com.b3dgs.lionengine.graphic.Screen;
  */
 public final class Loader
 {
-    /** Start sequence. */
-    private static final String SEQUENCE_START = "Starting sequence: ";
-    /** End sequence. */
-    private static final String SEQUENCE_END = "Ending sequence: ";
     /** Error task stopped. */
     private static final String ERROR_TASK_STOPPED = "Task stopped before ended !";
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(Loader.class);
 
     /**
      * Start the loader with an initial sequence.
@@ -66,7 +66,7 @@ public final class Loader
         thread.setUncaughtExceptionHandler((t, e) ->
         {
             reference.set(e);
-            Verbose.exception(e);
+            LOGGER.error("Loader error", e);
             Engine.terminate();
         });
         thread.start();
@@ -97,10 +97,10 @@ public final class Loader
                 final Sequencable sequence = nextSequence;
                 final String sequenceName = sequence.getClass().getName();
 
-                Verbose.info(SEQUENCE_START, sequenceName);
+                LOGGER.info("Starting sequence: {}", sequenceName);
                 sequence.start(screen);
 
-                Verbose.info(SEQUENCE_END, sequenceName);
+                LOGGER.info("Ending sequence: {}", sequenceName);
 
                 nextSequence = sequence.getNextSequence();
                 sequence.onTerminated(nextSequence != null);

@@ -16,12 +16,14 @@
  */
 package com.b3dgs.lionengine.awt.graphic;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilFolder;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -33,6 +35,8 @@ public class EngineAwt extends Engine
 {
     /** User directory property. */
     private static final String PROPERTY_USER_DIR = "user.dir";
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(EngineAwt.class);
 
     /**
      * Start engine. Has to be called before anything and only one time, in the main.
@@ -116,7 +120,14 @@ public class EngineAwt extends Engine
         Graphics.setFactoryGraphic(new FactoryGraphicAwt());
 
         final String workingDir = Constant.getSystemProperty(PROPERTY_USER_DIR, Constant.EMPTY_STRING);
-        Verbose.info("Resources dir = ", UtilFolder.getPath(workingDir, Medias.getResourcesDirectory()));
+        if (Medias.getResourcesLoader() != null)
+        {
+            LOGGER.info("Resources class: {}", Medias.getResourcesLoader());
+        }
+        if (Medias.getResourcesDirectory() != null)
+        {
+            LOGGER.info("Resources dir: {}", UtilFolder.getPath(workingDir, Medias.getResourcesDirectory()));
+        }
     }
 
     @Override

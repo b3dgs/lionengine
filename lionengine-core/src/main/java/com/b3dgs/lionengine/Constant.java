@@ -16,6 +16,9 @@
  */
 package com.b3dgs.lionengine;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * List of common constants.
  * <p>
@@ -113,7 +116,9 @@ public final class Constant
     /** Standard text dialog. */
     public static final String FONT_DIALOG = "Dialog";
     /** Error system property. */
-    private static final String ERROR_PROPERTY = "Unable to get system property: ";
+    private static final String ERROR_PROPERTY = "Unable to get system property: ({})";
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(Constant.class);
 
     /**
      * Get the system property. If the property is not valid due to a {@link SecurityException}, an empty string is
@@ -133,13 +138,7 @@ public final class Constant
         }
         catch (final SecurityException exception)
         {
-            Verbose.exception(exception,
-                              new StringBuilder(Constant.HUNDRED).append(ERROR_PROPERTY)
-                                                                 .append(property)
-                                                                 .append(" (")
-                                                                 .append(exception.getClass().getName())
-                                                                 .append(')')
-                                                                 .toString());
+            LOGGER.error(ERROR_PROPERTY, exception.getClass().getName(), exception);
             return def;
         }
     }

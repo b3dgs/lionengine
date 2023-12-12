@@ -32,6 +32,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Engine;
@@ -40,7 +42,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilTests;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Screen;
@@ -51,6 +52,9 @@ import com.b3dgs.lionengine.graphic.ScreenListener;
  */
 final class ScreenAwtTest
 {
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScreenAwtTest.class);
+
     /**
      * Prepare tests.
      */
@@ -228,10 +232,10 @@ final class ScreenAwtTest
 
         screen.dispose();
 
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
         assertEquals(0, screen.getX());
         assertEquals(0, screen.getY());
-        Verbose.info("****************************************************************************************");
+        LOGGER.info("****************************************************************************************");
 
         screen.removeListener(screenListener);
     }
