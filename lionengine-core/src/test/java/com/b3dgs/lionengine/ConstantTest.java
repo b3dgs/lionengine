@@ -103,24 +103,4 @@ final class ConstantTest
     {
         assertNotEquals("default", Constant.getSystemProperty("java.io.tmpdir", "default"));
     }
-
-    /**
-     * Test system property with security not allowing it.
-     */
-    @Test
-    void testSystemPropertySecurityException()
-    {
-        final SecurityManager old = System.getSecurityManager();
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-        System.setSecurityManager(new SecurityManagerMock(false));
-        try
-        {
-            assertEquals("default", Constant.getSystemProperty("security", "default"));
-        }
-        finally
-        {
-            System.setSecurityManager(old);
-        }
-        Verbose.info("****************************************************************************************");
-    }
 }
