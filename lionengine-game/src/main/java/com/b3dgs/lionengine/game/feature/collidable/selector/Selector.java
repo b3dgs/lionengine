@@ -98,7 +98,6 @@ public class Selector extends FeaturableAbstract implements SelectorConfigurer, 
             @Override
             public void notifySelectionStarted(Area selection)
             {
-
                 for (int i = 0; i < listenable.size(); i++)
                 {
                     listenable.get(i).notifySelectionStarted();
