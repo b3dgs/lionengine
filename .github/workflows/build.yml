@@ -64,7 +64,7 @@ jobs:
      - name: Deploy
        uses: coactions/setup-xvfb@v1.0.1
        with:
-         run: mvn clean deploy --file lionengine-parent/pom.xml -U -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} -Prelease
+         run: mvn clean deploy --file lionengine-parent/pom.xml -U -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} -Psign
        env:
          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
