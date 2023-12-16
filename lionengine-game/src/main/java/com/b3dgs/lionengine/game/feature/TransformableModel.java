@@ -71,6 +71,17 @@ public class TransformableModel extends FeatureModel implements Transformable, R
      */
 
     @Override
+    public void checkListener(Object listener)
+    {
+        super.checkListener(listener);
+
+        if (listener instanceof TransformableListener)
+        {
+            addListener((TransformableListener) listener);
+        }
+    }
+
+    @Override
     public void addListener(TransformableListener listener)
     {
         listenable.addListener(listener);
