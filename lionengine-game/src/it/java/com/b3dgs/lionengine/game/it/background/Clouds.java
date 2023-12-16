@@ -32,7 +32,7 @@ final class Clouds extends CloudsAbstract
     };
     private static final double[] LINES_SPEED =
     {
-        -1.12, -0.95, -0.72, -0.5, -0.36, -0.28
+        -1.5, -1.3, -1.0, -0.7, -0.5, -0.3
     };
 
     /**

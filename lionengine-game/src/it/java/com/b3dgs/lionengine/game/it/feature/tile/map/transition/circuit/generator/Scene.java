@@ -75,14 +75,15 @@ public final class Scene extends Sequence
     @Override
     public void load()
     {
-        map.create(Medias.create("forest.png"));
-        mapViewer.prepare(map);
-
         final Media media = Medias.create("transitions.xml");
         TransitionsConfig.exports(media,
-                                  Arrays.asList(Medias.create("forest.png")),
+                                  Arrays.asList(Medias.create("transitions.png")),
                                   Medias.create("sheets.xml"),
                                   Medias.create("groups.xml"));
+
+        map.loadSheets(Medias.create("sheets.xml"));
+        map.create(16, 16, 64, 48);
+        mapViewer.prepare(map);
 
         map.addFeature(new MapTileGroupModel()).loadGroups(Medias.create("groups.xml"));
         map.addFeature(new MapTileTransitionModel()).loadTransitions(Medias.create("transitions.xml"));
@@ -90,17 +91,17 @@ public final class Scene extends Sequence
 
         UtilFile.deleteFile(media.getFile());
 
-        camera.setView(0, 0, 1024, 768, getHeight());
+        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
 
         parameters.add(new PrefMapSize(16, 16, 64, 48))
                   .add(new PrefMapFill(0))
-                  .add(new PrefMapRegion(12, new TileArea(0, 0, 8, 48), 4, 60))
-                  .add(new PrefMapRegion(12, new TileArea(56, 0, 64, 48), 4, 60))
-                  .add(new PrefMapRegion(12, new TileArea(0, 0, 64, 8), 4, 60))
-                  .add(new PrefMapRegion(12, new TileArea(0, 40, 64, 48), 4, 60))
-                  .add(new PrefMapRegion(29, new TileArea(12, 12, 56, 42), 2, 250))
-                  .add(new PrefMapRegion(12, new TileArea(24, 24, 40, 40), 2, 80))
+                  .add(new PrefMapRegion(61, new TileArea(0, 0, 8, 48), 4, 60))
+                  .add(new PrefMapRegion(61, new TileArea(56, 0, 64, 48), 4, 60))
+                  .add(new PrefMapRegion(61, new TileArea(0, 0, 64, 8), 4, 60))
+                  .add(new PrefMapRegion(61, new TileArea(0, 40, 64, 48), 4, 60))
+                  .add(new PrefMapRegion(70, new TileArea(12, 12, 56, 42), 2, 250))
+                  .add(new PrefMapRegion(61, new TileArea(24, 24, 40, 40), 2, 80))
                   .add(new PrefMapRegion(0, new TileArea(4, 4, 60, 40), 1, 100));
 
         tickGen.start();
@@ -115,13 +116,13 @@ public final class Scene extends Sequence
         if (tickGen.elapsed(10L))
         {
             final MapTile generated = generator.generateMap(parameters,
-                                                            Arrays.asList(Medias.create("forest.png")),
+                                                            Arrays.asList(Medias.create("transitions.png")),
                                                             Medias.create("sheets.xml"),
                                                             Medias.create("groups.xml"));
             append.append(generated, 0, 0);
             tickGen.restart();
         }
-        if (tick.elapsed(40L))
+        if (tick.elapsed(50L))
         {
             end();
         }

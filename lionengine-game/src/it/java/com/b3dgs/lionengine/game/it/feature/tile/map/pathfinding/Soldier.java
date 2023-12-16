@@ -38,10 +38,10 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 /**
  * Peon entity implementation.
  */
-public final class Peon extends FeaturableModel
+public final class Soldier extends FeaturableModel
 {
     /** Media reference. */
-    public static final Media MEDIA = Medias.create("Peon.xml");
+    public static final Media MEDIA = Medias.create("OrcSoldier.xml");
 
     /**
      * Create a peon.
@@ -49,16 +49,15 @@ public final class Peon extends FeaturableModel
      * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Peon(Services services, Setup setup)
+    public Soldier(Services services, Setup setup)
     {
         super(services, setup);
 
         addFeature(new LayerableModel(1));
 
         final Transformable transformable = addFeature(TransformableModel.class, services, setup);
-        transformable.teleport(208, 224);
 
-        final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
+        final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 24, 8);
         surface.setOrigin(Origin.BOTTOM_LEFT);
         surface.setFrameOffsets(8, 8);
 

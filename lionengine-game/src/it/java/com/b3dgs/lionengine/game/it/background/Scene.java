@@ -52,8 +52,7 @@ public final class Scene extends Sequence
     {
         super(context, NATIVE);
 
-        foreground = new Foreground(NATIVE);
-        background = new Swamp(new SourceResolutionProvider()
+        final SourceResolutionProvider source = new SourceResolutionProvider()
         {
             @Override
             public int getWidth()
@@ -72,7 +71,9 @@ public final class Scene extends Sequence
             {
                 return Scene.this.getRate();
             }
-        });
+        };
+        foreground = new ForegroundWater(source);
+        background = new Swamp(source);
     }
 
     /*
@@ -89,12 +90,12 @@ public final class Scene extends Sequence
     @Override
     public void update(double extrp)
     {
-        y = UtilMath.wrapDouble(y + 20, 0.0, 360.0);
+        y = UtilMath.wrapDouble(y + 30, 0.0, 360.0);
         final double dy = UtilMath.sin(y) * 100 + 100;
-        background.update(extrp, 10.0, 0.0, dy);
-        foreground.update(extrp, 10.0, 0.0, dy);
+        background.update(extrp, 20.0, 0.0, dy);
+        foreground.update(extrp, 20.0, 0.0, dy);
         tick.update(extrp);
-        if (tick.elapsed(20L))
+        if (tick.elapsed(30L))
         {
             end();
         }

@@ -111,7 +111,6 @@ public final class Scene extends Sequence
         map.create(Medias.create("level.png"));
 
         camera.setView(0, 0, getWidth(), getHeight(), getHeight());
-        camera.setLocation(160, 96);
 
         map.create(Medias.create("level.png"));
         map.addFeature(new MapTileViewerModel(services));
@@ -120,26 +119,26 @@ public final class Scene extends Sequence
         camera.setLimits(map);
         handler.add(map);
 
-        final Featurable peon1 = factory.create(Peon.MEDIA);
-        peon1.getFeature(Pathfindable.class).setLocation(20, 16);
-        peon1.getFeature(Pathfindable.class).setDestination(23, 12);
+        final Featurable peon1 = factory.create(Soldier.MEDIA);
+        peon1.getFeature(Pathfindable.class).setLocation(5, 5);
+        peon1.getFeature(Pathfindable.class).setDestination(10, 10);
         peon1.getFeature(Pathfindable.class).pointTo(1, 2);
         handler.add(peon1);
 
-        peon2 = factory.create(Peon.MEDIA);
-        peon2.getFeature(Pathfindable.class).setLocation(22, 8);
+        peon2 = factory.create(Soldier.MEDIA);
+        peon2.getFeature(Pathfindable.class).setLocation(8, 8);
         handler.add(peon2);
 
-        final Featurable peon3 = factory.create(Peon.MEDIA);
-        peon3.getFeature(Pathfindable.class).setLocation(25, 10);
+        final Featurable peon3 = factory.create(Soldier.MEDIA);
+        peon3.getFeature(Pathfindable.class).setLocation(10, 5);
 
-        assertTrue(peon3.getFeature(Pathfindable.class).isPathAvailable(23, 12));
+        assertTrue(peon3.getFeature(Pathfindable.class).isPathAvailable(7, 7));
 
-        peon3.getFeature(Pathfindable.class).setDestination(23, 12);
+        peon3.getFeature(Pathfindable.class).setDestination(5, 10);
         handler.add(peon3);
 
         peon2.getFeature(Pathfindable.class).setIgnoreId(peon3.getFeature(Identifiable.class).getId(), true);
-        peon2.getFeature(Pathfindable.class).pointTo(map.getTile(25, 25));
+        peon2.getFeature(Pathfindable.class).pointTo(map.getTile(10, 10));
 
         assertEquals(Orientation.NORTH_EAST, peon2.getFeature(Pathfindable.class).getOrientation());
 
@@ -161,7 +160,7 @@ public final class Scene extends Sequence
         tick.update(extrp);
         if (!changed && tick.elapsed(15L))
         {
-            peon2.getFeature(Pathfindable.class).setDestination(23, 14);
+            peon2.getFeature(Pathfindable.class).setDestination(7, 7);
             changed = true;
         }
         if (tick.elapsed(40L))
