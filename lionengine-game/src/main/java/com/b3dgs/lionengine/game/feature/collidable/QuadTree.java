@@ -17,7 +17,9 @@
 package com.b3dgs.lionengine.game.feature.collidable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
@@ -209,7 +211,7 @@ public class QuadTree implements Renderable
      */
     public List<Collidable> getInside(Area area)
     {
-        final List<Collidable> result = new ArrayList<>();
+        final Set<Collidable> result = new HashSet<>();
         checkInside(area, result);
 
         if (children != null)
@@ -232,7 +234,7 @@ public class QuadTree implements Renderable
                 }
             }
         }
-        return result;
+        return new ArrayList<>(result);
     }
 
     @Override
@@ -328,7 +330,7 @@ public class QuadTree implements Renderable
      * @param area The area used.
      * @param result The elements found.
      */
-    private void checkInside(Area area, List<Collidable> result)
+    private void checkInside(Area area, Set<Collidable> result)
     {
         final int n = refs.size();
         for (int i = 0; i < n; i++)
