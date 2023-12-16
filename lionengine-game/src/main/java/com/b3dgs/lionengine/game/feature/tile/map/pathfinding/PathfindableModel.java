@@ -576,6 +576,17 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     }
 
     @Override
+    public void checkListener(Object listener)
+    {
+        super.checkListener(listener);
+
+        if (listener instanceof PathfindableListener)
+        {
+            addListener((PathfindableListener) listener);
+        }
+    }
+
+    @Override
     public void addListener(PathfindableListener listener)
     {
         listenable.addListener(listener);
