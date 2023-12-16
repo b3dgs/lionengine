@@ -157,6 +157,16 @@ public final class Node implements Comparable<Node>
         return depth;
     }
 
+    /**
+     * Print coordinates.
+     * 
+     * @return Coordinates.
+     */
+    public String toStringCoordinates()
+    {
+        return "x=" + x + ", y=" + y;
+    }
+
     /*
      * Comparable
      */
@@ -214,13 +224,5 @@ public final class Node implements Comparable<Node>
                                             .append(parent != null ? '{' + parent.toStringCoordinates() + '}' : null)
                                             .append("]")
                                             .toString();
-    }
-
-    /**
-     * @return Coordinates.
-     */
-    public String toStringCoordinates()
-    {
-        return "x=" + x + ", y=" + y;
     }
 }
