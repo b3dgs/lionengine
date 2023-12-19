@@ -10,6 +10,10 @@ Using Java 17 internal libraries, it is specifically designed for 2D games (no s
 Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available (_Wav_, _Midi_, and more using plug-ins, such as _Sc68_, _AdPlug_ and _AdlMidi_).
 Windowed, full-screen and applet formats are fully supported, with a complete frame rate control.
 
+It supports __Android 5.0__ *(API 21)*.
+The only change to perform is the gameplay part, as the '__mouse__' and '__keyboard__' concepts are different on Android.
+Everything else is fully compatible and does not require any changes.
+
 ## General Features
 * #### __lionengine-core__
 >  * Simple initialization and screen configuration (_windowed, fullscreen_)
@@ -24,6 +28,8 @@ Windowed, full-screen and applet formats are fully supported, with a complete fr
 >  * Verbosity control
 * #### __lionengine-core-awt__
 >  * Engine implementation using __AWT__ from _JDK 17_
+* #### __lionengine-core-android__
+>  * Engine implementation using __Android 5.0__ _as graphic renderer, target for smartphones_
 * #### __lionengine-game__
 >  * Camera management (_view and movement_)
 >  * Cursor (_synced or not to system pointer_)
@@ -79,6 +85,7 @@ Steps to include the __LionEngine__ in your project:
 Once you installed the __LionEngine__ in your project, you may would like to know how to prepare a quick sample as a first try:
 
 #### Main class
+* Using __lionengine-core-awt__
 ```java
 public class AppSamplePc
 {
@@ -86,6 +93,19 @@ public class AppSamplePc
     {
         EngineAwt.start("Sample Project", new Version(0, 1, 0), AppSamplePc.class);
         Loader.start(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
+    }
+}
+```
+
+* Using __lionengine-core-android__
+```java
+public class ActivitySample extends ActivityGame
+{
+    @Override
+    protected void start(Bundle bundle)
+    {
+        EngineAndroid.start("Sample Project", new Version(0, 1, 0), this);
+        Loader.start(Config.fullscreen(Scene.NATIVE), Scene.class);
     }
 }
 ```
