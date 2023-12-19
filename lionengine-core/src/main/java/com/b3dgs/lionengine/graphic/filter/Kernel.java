@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.graphic.filter;
 
+import java.util.Arrays;
+
 /**
  * Local kernel representation.
  * 
@@ -42,5 +44,28 @@ record Kernel(int width, float[] matrix)
     float[] getMatrix()
     {
         return matrix;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + width;
+        return prime * result + Arrays.hashCode(matrix);
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (!(obj instanceof final Kernel other) || width != other.width || !Arrays.equals(matrix, other.matrix))
+        {
+            return false;
+        }
+        return true;
     }
 }
