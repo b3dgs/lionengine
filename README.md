@@ -62,7 +62,7 @@ Windowed, full-screen and applet formats are fully supported, with a complete fr
 
 ## Installation
 Steps to include the __LionEngine__ in your project:
-1. Install at least the [Java JDK 8](https://adoptium.net/)
+1. Install at least the [Java JDK 17](https://adoptium.net/)
 2. Choose your favourite IDE ([Eclipse](https://www.eclipse.org/downloads/), [Netbeans](https://netbeans.apache.org/download/)...)
 3. Download the latest [LionEngine](https://search.maven.org/search?q=com.b3dgs.lionengine)
 4. Include all __LionEngine__ libraries you need for your project, following the tree dependency:
@@ -84,7 +84,7 @@ public class AppSamplePc
 {
     public static void main(String[] args)
     {
-        EngineAwt.start("Sample Project", Version.create(0, 1, 0), AppSamplePc.class);
+        EngineAwt.start("Sample Project", new Version(0, 1, 0), AppSamplePc.class);
         Loader.start(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
     }
 }
