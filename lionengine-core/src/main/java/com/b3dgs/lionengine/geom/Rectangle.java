@@ -190,10 +190,6 @@ public final class Rectangle implements Area
         return y + height;
     }
 
-    /*
-     * Area
-     */
-
     @Override
     public boolean intersects(Area area)
     {
@@ -240,10 +236,6 @@ public final class Rectangle implements Area
         return height;
     }
 
-    /*
-     * Shape
-     */
-
     @Override
     public double getX()
     {
@@ -268,10 +260,6 @@ public final class Rectangle implements Area
         return (int) height;
     }
 
-    /*
-     * Object
-     */
-
     @Override
     public int hashCode()
     {
@@ -285,8 +273,7 @@ public final class Rectangle implements Area
         temp = Double.doubleToLongBits(width);
         result = prime * result + (int) (temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(height);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        return result;
+        return prime * result + (int) (temp ^ temp >>> 32);
     }
 
     @Override

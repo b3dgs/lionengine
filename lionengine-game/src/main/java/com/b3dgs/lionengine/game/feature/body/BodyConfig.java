@@ -27,8 +27,11 @@ import com.b3dgs.lionengine.Xml;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param gravity The gravity.
+ * @param gravityMax The gravity max.
  */
-public final class BodyConfig
+public record BodyConfig(double gravity, double gravityMax)
 {
     /** Body node. */
     public static final String NODE_BODY = Constant.XML_PREFIX + "body";
@@ -36,8 +39,6 @@ public final class BodyConfig
     public static final String ATT_GRAVITY = "gravity";
     /** Body accepted groups attribute name. */
     public static final String ATT_GRAVITY_MAX = "gravityMax";
-    /** Minimum to string length. */
-    private static final int MIN_LENGTH = 40;
 
     /**
      * Create the collidable data from node.
@@ -77,25 +78,6 @@ public final class BodyConfig
         node.writeDouble(ATT_GRAVITY_MAX, body.getGravityMax());
     }
 
-    /** The gravity. */
-    private final double gravity;
-    /** The gravity max. */
-    private final double gravityMax;
-
-    /**
-     * Private constructor.
-     * 
-     * @param gravity The gravity.
-     * @param gravityMax The gravity max.
-     */
-    public BodyConfig(double gravity, double gravityMax)
-    {
-        super();
-
-        this.gravity = gravity;
-        this.gravityMax = gravityMax;
-    }
-
     /**
      * Get the defined gravity.
      * 
@@ -114,50 +96,5 @@ public final class BodyConfig
     public double getGravityMax()
     {
         return gravityMax;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        long temp;
-        temp = Double.doubleToLongBits(gravity);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        temp = Double.doubleToLongBits(gravityMax);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final BodyConfig other = (BodyConfig) object;
-        return Double.compare(getGravity(), other.getGravity()) == 0
-               && Double.compare(getGravityMax(), other.getGravityMax()) == 0;
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
-                                            .append(" [gravity=")
-                                            .append(gravity)
-                                            .append(", gravityMax=")
-                                            .append(gravityMax)
-                                            .append("]")
-                                            .toString();
     }
 }

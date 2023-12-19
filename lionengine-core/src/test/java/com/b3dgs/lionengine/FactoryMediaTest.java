@@ -36,7 +36,7 @@ final class FactoryMediaTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(FactoryMediaTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(FactoryMediaTest.class.getSimpleName(), new Version(1, 0, 0)));
     }
 
     /**

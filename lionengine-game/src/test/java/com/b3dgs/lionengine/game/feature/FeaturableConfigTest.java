@@ -220,6 +220,6 @@ final class FeaturableConfigTest
     {
         final FeaturableConfig config = new FeaturableConfig("clazz", "setup");
 
-        assertEquals("FeaturableConfig [clazz=clazz, setup=setup]", config.toString());
+        assertEquals("FeaturableConfig[clazz=clazz, setup=setup]", config.toString());
     }
 }

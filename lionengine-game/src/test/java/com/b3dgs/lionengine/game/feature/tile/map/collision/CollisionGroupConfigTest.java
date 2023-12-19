@@ -30,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 
@@ -89,8 +90,8 @@ final class CollisionGroupConfigTest
 
         final CollisionGroupConfig imported = CollisionGroupConfig.imports(config);
 
-        assertEquals(group, imported.getGroups().values().iterator().next());
-        assertEquals(group, imported.getGroup("group"));
+        assertEquals(group.getName(), imported.getGroups().values().iterator().next().getName());
+        assertEquals(group.getName(), imported.getGroup("group").getName());
 
         assertTrue(config.getFile().delete());
     }
@@ -111,7 +112,7 @@ final class CollisionGroupConfigTest
 
         mapCollision.loadCollisions(formulasConfig, groupsConfig);
 
-        final CollisionGroupConfig groups = CollisionGroupConfig.imports(groupsConfig);
+        final CollisionGroupConfig groups = CollisionGroupConfig.imports(new XmlReader(groupsConfig), mapCollision);
 
         assertEquals(group, groups.getGroups().values().iterator().next());
 

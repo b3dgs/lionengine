@@ -16,53 +16,42 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.NameableAbstract;
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Nameable;
 
 /**
  * Represents the collision data, offsets and size. Should be used in combination with
  * {@link CollisionConfig#getCollision(String)} and {@link Collidable#addCollision(Collision)}.
  * 
+ * @param name The collision name.
+ * @param offsetX The collision horizontal offset.
+ * @param offsetY The collision vertical offset.
+ * @param width The collision width.
+ * @param height The collision height.
+ * @param mirror The mirror flag.
+ * 
  * @see ComponentCollision
  */
-public class Collision extends NameableAbstract
+public record Collision(String name, int offsetX, int offsetY, int width, int height, boolean mirror)
+                       implements Nameable
 {
+
     /** Compute automatically collision by using the owner size. */
     public static final Collision AUTOMATIC = new Collision("automatic", 0, 0, 0, 0, false);
-    /** Min to string length. */
-    private static final int MIN_LENGTH = 64;
-
-    /** Horizontal offset. */
-    private final int offsetX;
-    /** Vertical offset. */
-    private final int offsetY;
-    /** Width. */
-    private final int width;
-    /** Height. */
-    private final int height;
-    /** Has mirror. */
-    private final boolean mirror;
 
     /**
-     * Create a collision.
+     * Create collision.
      * 
-     * @param name The collision name.
+     * @param name The collision name (must not be <code>null</code>).
      * @param offsetX The collision horizontal offset.
      * @param offsetY The collision vertical offset.
      * @param width The collision width.
      * @param height The collision height.
      * @param mirror The mirror flag.
-     * @throws LionEngineException If <code>null</code> name.
      */
-    public Collision(String name, int offsetX, int offsetY, int width, int height, boolean mirror)
+    public Collision
     {
-        super(name);
-
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
-        this.width = width;
-        this.height = height;
-        this.mirror = mirror;
+        Check.notNull(name);
     }
 
     /**
@@ -115,27 +104,9 @@ public class Collision extends NameableAbstract
         return mirror;
     }
 
-    /*
-     * Object
-     */
-
     @Override
-    public String toString()
+    public String getName()
     {
-        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
-                                            .append(" [name=")
-                                            .append(getName())
-                                            .append(", offsetX=")
-                                            .append(offsetX)
-                                            .append(", offsetY=")
-                                            .append(offsetY)
-                                            .append(", width=")
-                                            .append(width)
-                                            .append(", height=")
-                                            .append(height)
-                                            .append(", mirror=")
-                                            .append(mirror)
-                                            .append("]")
-                                            .toString();
+        return name;
     }
 }

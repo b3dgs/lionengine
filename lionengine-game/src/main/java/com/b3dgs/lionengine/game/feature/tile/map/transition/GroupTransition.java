@@ -21,17 +21,12 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Represents transition between two groups.
+ * 
+ * @param groupIn The first group.
+ * @param groupOut The second group.
  */
-public class GroupTransition
+public record GroupTransition(String groupIn, String groupOut)
 {
-    /** Transition string representation. */
-    private static final String TRANSITION = " -> ";
-
-    /** The first group. */
-    private final String groupIn;
-    /** The second group. */
-    private final String groupOut;
-
     /**
      * Create the group transition.
      * 
@@ -39,15 +34,10 @@ public class GroupTransition
      * @param groupOut The second group.
      * @throws LionEngineException If <code>null</code> arguments.
      */
-    public GroupTransition(String groupIn, String groupOut)
+    public GroupTransition
     {
-        super();
-
         Check.notNull(groupIn);
         Check.notNull(groupOut);
-
-        this.groupIn = groupIn;
-        this.groupOut = groupOut;
     }
 
     /**
@@ -68,40 +58,5 @@ public class GroupTransition
     public String getOut()
     {
         return groupOut;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + groupIn.hashCode();
-        result = prime * result + groupOut.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final GroupTransition other = (GroupTransition) object;
-        return groupIn.equals(other.groupIn) && groupOut.equals(other.groupOut);
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(groupIn).append(TRANSITION).append(groupOut).toString();
     }
 }

@@ -21,43 +21,14 @@ package com.b3dgs.lionengine.geom;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param x The horizontal location.
+ * @param y The vertical location.
+ * @param width The area width.
+ * @param height The area height.
  */
-final class AreaImpl implements Area
+record AreaImpl(double x, double y, double width, double height) implements Area
 {
-    /** Min to string size. */
-    private static final int MIN_LENGHT = 48;
-
-    /** Horizontal coordinate. */
-    private final double x;
-    /** Vertical coordinate. */
-    private final double y;
-    /** Width. */
-    private final double width;
-    /** Height. */
-    private final double height;
-
-    /**
-     * Create a area.
-     * 
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     * @param width The area width.
-     * @param height The area height.
-     */
-    AreaImpl(double x, double y, double width, double height)
-    {
-        super();
-
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-    }
-
-    /*
-     * Area
-     */
-
     @Override
     public boolean intersects(Area area)
     {
@@ -126,60 +97,5 @@ final class AreaImpl implements Area
     public int getHeight()
     {
         return (int) height;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        long temp;
-        temp = Double.doubleToLongBits(x);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        temp = Double.doubleToLongBits(y);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        temp = Double.doubleToLongBits(width);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        temp = Double.doubleToLongBits(height);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final AreaImpl other = (AreaImpl) object;
-        return Double.compare(x, other.x) == 0
-               && Double.compare(y, other.y) == 0
-               && Double.compare(width, other.width) == 0
-               && Double.compare(height, other.height) == 0;
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGHT).append(getClass().getSimpleName())
-                                            .append(" [x=")
-                                            .append(x)
-                                            .append(", y=")
-                                            .append(y)
-                                            .append(", width=")
-                                            .append(width)
-                                            .append(", height=")
-                                            .append(height)
-                                            .append("]")
-                                            .toString();
     }
 }

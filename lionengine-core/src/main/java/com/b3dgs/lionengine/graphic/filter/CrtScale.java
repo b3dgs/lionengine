@@ -72,7 +72,7 @@ final class CrtScale
     private final int scale2;
     private final int th;
 
-    private int[] dst = new int[0];
+    private int[] dst = {};
 
     /**
      * Internal constructor.

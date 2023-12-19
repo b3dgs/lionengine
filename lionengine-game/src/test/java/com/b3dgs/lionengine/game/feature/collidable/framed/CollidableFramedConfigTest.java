@@ -184,8 +184,8 @@ final class CollidableFramedConfigTest
 
         final CollidableFramedConfig config = new CollidableFramedConfig(collisions);
 
-        assertEquals("CollidableFramedConfig"
-                     + "{1=[Collision [name=anim%1, offsetX=0, offsetY=1, width=2, height=3, mirror=true]]}",
+        assertEquals("CollidableFramedConfig[collisions="
+                     + "{1=[Collision[name=anim%1, offsetX=0, offsetY=1, width=2, height=3, mirror=true]]}]",
                      config.toString());
     }
 }

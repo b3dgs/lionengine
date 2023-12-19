@@ -28,9 +28,17 @@ import com.b3dgs.lionengine.game.Configurer;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param name The action name.
+ * @param description The action description.
+ * @param x The horizontal location on screen.
+ * @param y The vertical location on screen.
+ * @param width The button width.
+ * @param height The button height.
  */
-public final class ActionConfig
+public record ActionConfig(String name, String description, int x, int y, int width, int height)
 {
+
     /** Action node name. */
     public static final String NODE_ACTION = Constant.XML_PREFIX + "action";
     /** Action attribute name. */
@@ -45,8 +53,6 @@ public final class ActionConfig
     public static final String ATT_WIDTH = "width";
     /** Action attribute height. */
     public static final String ATT_HEIGHT = "height";
-    /** Minimum to string length. */
-    private static final int MIN_LENGTH = 65;
 
     /**
      * Import the action data from setup.
@@ -106,19 +112,6 @@ public final class ActionConfig
         return nodeAction;
     }
 
-    /** Action name. */
-    private final String name;
-    /** Action description. */
-    private final String description;
-    /** Horizontal location on screen. */
-    private final int x;
-    /** Vertical location on screen. */
-    private final int y;
-    /** Width on screen. */
-    private final int width;
-    /** Height on screen. */
-    private final int height;
-
     /**
      * Create action from configuration media.
      *
@@ -130,19 +123,10 @@ public final class ActionConfig
      * @param height The button height.
      * @throws LionEngineException If <code>null</code> argument.
      */
-    public ActionConfig(String name, String description, int x, int y, int width, int height)
+    public ActionConfig
     {
-        super();
-
         Check.notNull(name);
         Check.notNull(description);
-
-        this.name = name;
-        this.description = description;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
     }
 
     /**
@@ -203,63 +187,5 @@ public final class ActionConfig
     public int getHeight()
     {
         return height;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + x;
-        result = prime * result + y;
-        result = prime * result + width;
-        result = prime * result + height;
-        result = prime * result + name.hashCode();
-        result = prime * result + description.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final ActionConfig other = (ActionConfig) object;
-        return other.x == x
-               && other.y == y
-               && other.width == width
-               && other.height == height
-               && other.name.equals(name)
-               && other.description.equals(description);
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
-                                            .append(" [name=")
-                                            .append(name)
-                                            .append(", description=")
-                                            .append(description)
-                                            .append(", x=")
-                                            .append(x)
-                                            .append(", y=")
-                                            .append(y)
-                                            .append(", width=")
-                                            .append(width)
-                                            .append(", height=")
-                                            .append(height)
-                                            .append("]")
-                                            .toString();
     }
 }

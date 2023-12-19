@@ -159,22 +159,13 @@ public final class ToolsAwt
         {
             throw new IOException("Invalid image !");
         }
-        final BufferedImage copy;
-        switch (imageLoadStragegy)
+        return switch (imageLoadStragegy)
         {
-            case FAST_LOADING:
-                copy = buffer;
-                break;
-            case FAST_RENDERING:
-                copy = copyImageDraw(buffer);
-                break;
-            case LOW_MEMORY:
-                copy = copyImage(buffer);
-                break;
-            default:
-                throw new LionEngineException(imageLoadStragegy);
-        }
-        return copy;
+            case FAST_LOADING -> buffer;
+            case FAST_RENDERING -> copyImageDraw(buffer);
+            case LOW_MEMORY -> copyImage(buffer);
+            default -> throw new LionEngineException(imageLoadStragegy);
+        };
     }
 
     /**

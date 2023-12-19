@@ -174,7 +174,7 @@ public class Minimap implements Image
                 final int v = number / tiles.getTilesHorizontal() * th;
                 final ColorRgba color = UtilColor.getWeightedColor(tilesSurface, h, v, tw, th);
 
-                if (!(NO_TILE.equals(color) || color.getAlpha() == 0))
+                if (!NO_TILE.equals(color) && color.getAlpha() != 0)
                 {
                     colors.put(Integer.valueOf(number), color);
                 }

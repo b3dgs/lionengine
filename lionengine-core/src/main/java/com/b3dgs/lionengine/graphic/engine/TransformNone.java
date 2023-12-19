@@ -23,32 +23,12 @@ import com.b3dgs.lionengine.graphic.Transform;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param scaleX The horizontal scaling.
+ * @param scaleY The vertical scaling.
  */
-public final class TransformNone implements Transform
+public record TransformNone(double scaleX, double scaleY) implements Transform
 {
-    /** Horizontal scaling. */
-    private final double scaleX;
-    /** Vertical scaling. */
-    private final double scaleY;
-
-    /**
-     * Create transform.
-     * 
-     * @param scaleX The horizontal scaling.
-     * @param scaleY The vertical scaling.
-     */
-    public TransformNone(double scaleX, double scaleY)
-    {
-        super();
-
-        this.scaleX = scaleX;
-        this.scaleY = scaleY;
-    }
-
-    /*
-     * Transform
-     */
-
     @Override
     public void setInterpolation(boolean bilinear)
     {

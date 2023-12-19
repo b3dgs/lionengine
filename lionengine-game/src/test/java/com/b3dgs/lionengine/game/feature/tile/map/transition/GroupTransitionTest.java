@@ -84,6 +84,6 @@ final class GroupTransitionTest
     @Test
     void testToString()
     {
-        assertEquals("a -> b", new GroupTransition("a", "b").toString());
+        assertEquals("GroupTransition[groupIn=a, groupOut=b]", new GroupTransition("a", "b").toString());
     }
 }

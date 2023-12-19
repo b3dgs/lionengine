@@ -23,35 +23,12 @@ import com.b3dgs.lionengine.Localizable;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param x The horizontal location.
+ * @param y The vertical location.
  */
-final class LocalizableImpl implements Localizable
+record LocalizableImpl(double x, double y) implements Localizable
 {
-    /** Min to string size. */
-    private static final int MIN_LENGHT = 31;
-
-    /** Coordinate horizontal. */
-    private final double x;
-    /** Coordinate vertical. */
-    private final double y;
-
-    /**
-     * Create a coord.
-     * 
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     */
-    LocalizableImpl(double x, double y)
-    {
-        super();
-
-        this.x = x;
-        this.y = y;
-    }
-
-    /*
-     * Localizable
-     */
-
     @Override
     public double getX()
     {
@@ -62,49 +39,5 @@ final class LocalizableImpl implements Localizable
     public double getY()
     {
         return y;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        long temp;
-        temp = Double.doubleToLongBits(x);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        temp = Double.doubleToLongBits(y);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final LocalizableImpl other = (LocalizableImpl) object;
-        return Double.compare(x, other.x) == 0 && Double.compare(y, other.y) == 0;
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGHT).append(getClass().getSimpleName())
-                                            .append(" [x=")
-                                            .append(x)
-                                            .append(", y=")
-                                            .append(y)
-                                            .append("]")
-                                            .toString();
     }
 }

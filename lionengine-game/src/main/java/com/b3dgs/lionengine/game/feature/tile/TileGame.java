@@ -194,8 +194,7 @@ public class TileGame implements Tile
         int result = 1;
         result = prime * result + number;
         result = prime * result + tx;
-        result = prime * result + ty;
-        return result;
+        return prime * result + ty;
     }
 
     @Override

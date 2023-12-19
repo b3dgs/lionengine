@@ -69,11 +69,11 @@ final class CollisionTest
         assertNotEquals(collision, null);
         assertNotEquals(collision, new Object());
         assertNotEquals(collision, new Collision("", 1, 2, 3, 4, true));
-        assertEquals(collision, new Collision("void", 0, 2, 3, 4, true));
-        assertEquals(collision, new Collision("void", 1, 0, 3, 4, true));
-        assertEquals(collision, new Collision("void", 1, 2, 0, 4, true));
-        assertEquals(collision, new Collision("void", 1, 2, 3, 0, true));
-        assertEquals(collision, new Collision("void", 1, 2, 3, 4, false));
+        assertNotEquals(collision, new Collision("void", 0, 2, 3, 4, true));
+        assertNotEquals(collision, new Collision("void", 1, 0, 3, 4, true));
+        assertNotEquals(collision, new Collision("void", 1, 2, 0, 4, true));
+        assertNotEquals(collision, new Collision("void", 1, 2, 3, 0, true));
+        assertNotEquals(collision, new Collision("void", 1, 2, 3, 4, false));
     }
 
     /**
@@ -88,11 +88,11 @@ final class CollisionTest
 
         assertHashNotEquals(collision, new Object());
         assertHashNotEquals(collision, new Collision("", 1, 2, 3, 4, true));
-        assertHashEquals(collision, new Collision("void", 0, 2, 3, 4, true));
-        assertHashEquals(collision, new Collision("void", 1, 0, 3, 4, true));
-        assertHashEquals(collision, new Collision("void", 1, 2, 0, 4, true));
-        assertHashEquals(collision, new Collision("void", 1, 2, 3, 0, true));
-        assertHashEquals(collision, new Collision("void", 1, 2, 3, 4, false));
+        assertHashNotEquals(collision, new Collision("void", 0, 2, 3, 4, true));
+        assertHashNotEquals(collision, new Collision("void", 1, 0, 3, 4, true));
+        assertHashNotEquals(collision, new Collision("void", 1, 2, 0, 4, true));
+        assertHashNotEquals(collision, new Collision("void", 1, 2, 3, 0, true));
+        assertHashNotEquals(collision, new Collision("void", 1, 2, 3, 4, false));
     }
 
     /**
@@ -103,7 +103,7 @@ final class CollisionTest
     {
         final Collision collision = new Collision("void", 0, 2, 3, 4, true);
 
-        assertEquals("Collision [name=void, offsetX=0, offsetY=2, width=3, height=4, mirror=true]",
+        assertEquals("Collision[name=void, offsetX=0, offsetY=2, width=3, height=4, mirror=true]",
                      collision.toString());
     }
 }

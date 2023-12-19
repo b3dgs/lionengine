@@ -39,9 +39,11 @@ import com.b3dgs.lionengine.game.feature.collidable.Collision;
  * This class is Thread-Safe.
  * </p>
  * 
+ * @param collisions The collisions mapping.
+ * 
  * @see CollidableFramed
  */
-public final class CollidableFramedConfig
+public record CollidableFramedConfig(Map<Integer, List<Collision>> collisions)
 {
     /** Collision framed node name. */
     public static final String NODE_COLLISION_FRAMED = Constant.XML_PREFIX + "collisionFramed";
@@ -65,8 +67,6 @@ public final class CollidableFramedConfig
     private static final String FRAME_SEPARATOR = Constant.PERCENT;
     /** Default mirror. */
     private static final boolean DEFAULT_MIRROR = true;
-    /** Minimum to string length. */
-    private static final int MIN_LENGTH = 64;
 
     /**
      * Create the collision data from node.
@@ -226,22 +226,15 @@ public final class CollidableFramedConfig
         return new Collision(name + FRAME_SEPARATOR + number, offsetX, offsetY, width, height, mirror);
     }
 
-    /** Collisions map. */
-    private final Map<Integer, List<Collision>> collisions;
-
     /**
      * Load collisions from configuration media.
      * 
      * @param collisions The collisions mapping (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public CollidableFramedConfig(Map<Integer, List<Collision>> collisions)
+    public CollidableFramedConfig
     {
-        super();
-
         Check.notNull(collisions);
-
-        this.collisions = new HashMap<>(collisions);
     }
 
     /**
@@ -273,39 +266,5 @@ public final class CollidableFramedConfig
             all.addAll(current);
         }
         return all;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + collisions.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final CollidableFramedConfig other = (CollidableFramedConfig) object;
-        return collisions.equals(other.collisions);
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName()).append(collisions).toString();
     }
 }

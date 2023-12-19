@@ -60,8 +60,9 @@ public final class ScanlineCrt implements Scanline
     private static ColorRgba[][] createColor()
     {
         final int f = 14;
-        final ColorRgba[][] color = new ColorRgba[][]
+        return new ColorRgba[][]
         {
+            // CHECKSTYLE OFF: MagicNumber
             {
                 new ColorRgba(5 * f / 3, 1 * f / 4, 1 * f / 3, (int) (ALPHA * 0.9)),
                 new ColorRgba(1 * f / 3, 5 * f / 4, 1 * f / 3, (int) (ALPHA * 0.9)),
@@ -87,8 +88,8 @@ public final class ScanlineCrt implements Scanline
                 new ColorRgba(2 * f / 2, 8 * f / 2, 2 * f / 2, (int) (ALPHA * 0.8)),
                 new ColorRgba(2 * f / 2, 2 * f / 2, 8 * f / 2, (int) (ALPHA * 0.8))
             }
+            // CHECKSTYLE ON: MagicNumber
         };
-        return color;
     }
 
     private final Map<Config, ImageBuffer> cache = new HashMap<>();

@@ -21,14 +21,12 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Represents a collision couple.
+ * 
+ * @param with The collision with.
+ * @param by The collision by.
  */
-public final class CollisionCouple
+public record CollisionCouple(Collision with, Collision by)
 {
-    /** Source collision. */
-    private final Collision with;
-    /** Collided collision. */
-    private final Collision by;
-
     /**
      * Create couple.
      * 
@@ -36,15 +34,10 @@ public final class CollisionCouple
      * @param by The collision by (must not be <code>null</code>).
      * @throws LionEngineException If <code>null</code> arguments.
      */
-    public CollisionCouple(Collision with, Collision by)
+    public CollisionCouple
     {
-        super();
-
         Check.notNull(with);
         Check.notNull(by);
-
-        this.with = with;
-        this.by = by;
     }
 
     /**
@@ -65,34 +58,5 @@ public final class CollisionCouple
     public Collision getBy()
     {
         return by;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + by.hashCode();
-        result = prime * result + with.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final CollisionCouple other = (CollisionCouple) object;
-        return with.equals(other.with) && by.equals(other.by);
     }
 }

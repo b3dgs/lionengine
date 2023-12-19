@@ -18,9 +18,9 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.NameableAbstract;
+import com.b3dgs.lionengine.Nameable;
 
 /**
  * Represents the collision group, which can be applied to a {@link com.b3dgs.lionengine.game.feature.tile.Tile}.
@@ -38,14 +38,14 @@ import com.b3dgs.lionengine.NameableAbstract;
  * &lt;/lionengine:groups&gt;
  * </pre>
  * 
+ * @param name The group name.
+ * @param formulas The collision formulas reference.
+ * 
  * @see CollisionGroupConfig
  * @see CollisionFormula
  */
-public class CollisionGroup extends NameableAbstract
+public record CollisionGroup(String name, Collection<CollisionFormula> formulas) implements Nameable
 {
-    /** Minimum to string characters. */
-    private static final int MINIMUM_LENGTH = 32;
-
     /**
      * Check if tiles groups are same.
      * 
@@ -71,21 +71,17 @@ public class CollisionGroup extends NameableAbstract
         return result;
     }
 
-    /** The collision formulas used. */
-    private final Collection<CollisionFormula> formulas;
-
     /**
-     * Create a collision group.
+     * Create group.
      * 
      * @param name The group name.
      * @param formulas The collision formulas reference.
      * @throws LionEngineException If invalid arguments.
      */
-    public CollisionGroup(String name, Collection<CollisionFormula> formulas)
+    public CollisionGroup
     {
-        super(name);
-
-        this.formulas = formulas;
+        Check.notNull(name);
+        Check.notNull(formulas);
     }
 
     /**
@@ -98,20 +94,9 @@ public class CollisionGroup extends NameableAbstract
         return formulas;
     }
 
-    /*
-     * Object
-     */
-
     @Override
-    public String toString()
+    public String getName()
     {
-        return new StringBuilder(MINIMUM_LENGTH).append(getClass().getSimpleName())
-                                                .append(" (name=")
-                                                .append(getName())
-                                                .append(")")
-                                                .append(System.lineSeparator())
-                                                .append(Constant.TAB)
-                                                .append(formulas)
-                                                .toString();
+        return name;
     }
 }

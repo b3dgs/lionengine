@@ -16,33 +16,31 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.NameableAbstract;
+import com.b3dgs.lionengine.Nameable;
 
 /**
  * Represents a pathfinding category, with its group list.
+ * 
+ * @param name The category name.
+ * @param groups The associated groups.
  */
-public class PathCategory extends NameableAbstract
+public record PathCategory(String name, Collection<String> groups) implements Nameable
 {
-    /** Associated groups. */
-    private final Collection<String> groups;
-
     /**
-     * Create the category.
+     * Create category.
      * 
      * @param name The category name.
      * @param groups The associated groups.
      * @throws LionEngineException If invalid arguments.
      */
-    public PathCategory(String name, Collection<String> groups)
+    public PathCategory
     {
-        super(name);
-
-        this.groups = new ArrayList<>(groups);
+        Check.notNull(name);
+        Check.notNull(groups);
     }
 
     /**
@@ -52,6 +50,12 @@ public class PathCategory extends NameableAbstract
      */
     public Collection<String> getGroups()
     {
-        return Collections.unmodifiableCollection(groups);
+        return groups;
+    }
+
+    @Override
+    public String getName()
+    {
+        return name;
     }
 }

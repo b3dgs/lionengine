@@ -131,6 +131,6 @@ final class RangeTest
     @Test
     void testToString()
     {
-        assertEquals("Range [min=1, max=2]", new Range(1, 2).toString());
+        assertEquals("Range[min=1, max=2]", new Range(1, 2).toString());
     }
 }

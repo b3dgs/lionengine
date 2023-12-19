@@ -51,7 +51,7 @@ final class PlayerTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(PlayerTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(PlayerTest.class.getSimpleName(), new Version(1, 0, 0)));
     }
 
     /**

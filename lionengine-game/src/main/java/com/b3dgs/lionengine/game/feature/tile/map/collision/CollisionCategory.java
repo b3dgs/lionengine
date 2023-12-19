@@ -16,12 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.NameableAbstract;
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Nameable;
 
 /**
  * Collision category, representing a collision point at a specified offset relative to the owner position. Computation
@@ -51,32 +50,21 @@ import com.b3dgs.lionengine.NameableAbstract;
  * collision).
  * </p>
  * 
+ * @param name The category name.
+ * @param axis The designated axis to apply collision.
+ * @param x The horizontal offset.
+ * @param y The vertical offset.
+ * @param glue The glue flag.
+ * @param groups The collision groups used.
+ * 
  * @see CollisionCategoryConfig
  * @see CollisionFormula
  */
-public class CollisionCategory extends NameableAbstract
+public record CollisionCategory(String name, Axis axis, int x, int y, boolean glue, List<CollisionGroup> groups)
+                               implements Nameable
 {
-    /** Minimum to string characters. */
-    private static final int MINIMUM_LENGTH = 64;
-
-    /** Working for this axis. */
-    private final Axis axis;
-    /** Horizontal offset relative to collision owner. */
-    private final int x;
-    /** Vertical offset relative to collision owner. */
-    private final int y;
-    /** Glue flag (keep collision locked on ground even on fast movement over slopes). */
-    private final boolean glue;
-    /** Defined groups. */
-    private final List<CollisionGroup> groups;
     /**
-     * Collision formula used list (each must be available in
-     * {@link com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision#getCollisionFormula(String)}.
-     */
-    private final List<CollisionFormula> formulas = new ArrayList<>();
-
-    /**
-     * Constructor.
+     * Create category.
      * 
      * @param name The category name.
      * @param axis The designated axis to apply collision.
@@ -84,40 +72,13 @@ public class CollisionCategory extends NameableAbstract
      * @param y The vertical offset.
      * @param glue The glue flag.
      * @param groups The collision groups used.
+     * @throws LionEngineException If invalid arguments.
      */
-    public CollisionCategory(String name, Axis axis, int x, int y, boolean glue, Collection<CollisionGroup> groups)
+    public CollisionCategory
     {
-        super(name);
-
-        this.axis = axis;
-        this.x = x;
-        this.y = y;
-        this.glue = glue;
-        this.groups = new ArrayList<>(groups);
-        for (final CollisionGroup group : groups)
-        {
-            formulas.addAll(group.getFormulas());
-        }
-    }
-
-    /**
-     * Get the defined groups as read only.
-     * 
-     * @return The defined groups.
-     */
-    public List<CollisionGroup> getGroups()
-    {
-        return groups;
-    }
-
-    /**
-     * Get the list of collision formulas to test as read only.
-     * 
-     * @return The collision formulas list.
-     */
-    public List<CollisionFormula> getFormulas()
-    {
-        return formulas;
+        Check.notNull(name);
+        Check.notNull(axis);
+        Check.notNull(groups);
     }
 
     /**
@@ -151,6 +112,16 @@ public class CollisionCategory extends NameableAbstract
     }
 
     /**
+     * Get the defined groups as read only.
+     * 
+     * @return The defined groups.
+     */
+    public List<CollisionGroup> getGroups()
+    {
+        return groups;
+    }
+
+    /**
      * Get the glue flag.
      * 
      * @return <code>true</code> if glue enabled, <code>false</code> else.
@@ -160,28 +131,9 @@ public class CollisionCategory extends NameableAbstract
         return glue;
     }
 
-    /*
-     * Object
-     */
-
     @Override
-    public String toString()
+    public String getName()
     {
-        return new StringBuilder(MINIMUM_LENGTH).append(getClass().getSimpleName())
-                                                .append(" (name=")
-                                                .append(getName())
-                                                .append(", axis=")
-                                                .append(axis)
-                                                .append(", x=")
-                                                .append(x)
-                                                .append(", y=")
-                                                .append(y)
-                                                .append(", glue=")
-                                                .append(glue)
-                                                .append(")")
-                                                .append(System.lineSeparator())
-                                                .append(Constant.TAB)
-                                                .append(groups)
-                                                .toString();
+        return name;
     }
 }

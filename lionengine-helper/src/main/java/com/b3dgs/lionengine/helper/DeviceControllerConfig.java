@@ -107,9 +107,8 @@ public final class DeviceControllerConfig
     private static void create(DeviceControllerConfig config, InputDevice device, DeviceController controller)
     {
         final InputDevice current = device.getCurrent(config.getId());
-        if (current instanceof DevicePush)
+        if (current instanceof final DevicePush push)
         {
-            final DevicePush push = (DevicePush) current;
             config.getHorizontal().forEach(h -> controller.addHorizontal(push, new DeviceActionModel(h, push)));
             config.getVertical().forEach(v -> controller.addVertical(push, new DeviceActionModel(v, push)));
 
@@ -122,9 +121,8 @@ public final class DeviceControllerConfig
                                                                   c,
                                                                   new DeviceActionModel(c, push))));
         }
-        if (current instanceof DevicePointer)
+        if (current instanceof final DevicePointer pointer)
         {
-            final DevicePointer pointer = (DevicePointer) current;
             controller.addHorizontal(pointer, () -> pointer.getMoveX());
             controller.addVertical(pointer, () -> -pointer.getMoveY());
         }
@@ -271,8 +269,7 @@ public final class DeviceControllerConfig
         final Context context = services.getOptional(Context.class).orElse(null);
         if (context != null)
         {
-            final InputDevice device = context.getInputDevice(clazz);
-            return device;
+            return context.getInputDevice(clazz);
         }
         return services.get(clazz);
     }

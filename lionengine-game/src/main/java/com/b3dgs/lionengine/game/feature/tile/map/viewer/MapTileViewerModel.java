@@ -109,7 +109,7 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
         for (int h = 0; h <= inTileWidth; h++)
         {
             final int tx = h + sx;
-            if (!(tx < 0 || tx >= map.getInTileWidth()))
+            if (tx >= 0 && tx < map.getInTileWidth())
             {
                 renderTile(g, tx, ty, viewX, viewY);
             }
@@ -159,7 +159,7 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
             for (int v = 0; v <= inTileHeight; v++)
             {
                 final int ty = v + sy;
-                if (!(ty < 0 || ty >= map.getInTileHeight()))
+                if (ty >= 0 && ty < map.getInTileHeight())
                 {
                     renderHorizontal(g, ty, viewY);
                 }

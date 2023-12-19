@@ -119,7 +119,7 @@ final class AttackerConfigTest
     {
         final AttackerConfig config = new AttackerConfig(1, 2, 3, 4, 5);
 
-        assertEquals("AttackerConfig [delay=1, distanceMin=2, distanceMax=3, damagesMin=4, damagesMax=5]",
+        assertEquals("AttackerConfig[delay=1, distanceMin=2, distanceMax=3, damagesMin=4, damagesMax=5]",
                      config.toString());
     }
 }

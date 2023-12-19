@@ -114,6 +114,6 @@ final class LayerableConfigTest
     {
         final LayerableConfig config = new LayerableConfig(0, 1);
 
-        assertEquals("LayerableConfig [layerRefresh=0, layerDisplay=1]", config.toString());
+        assertEquals("LayerableConfig[layerRefresh=0, layerDisplay=1]", config.toString());
     }
 }

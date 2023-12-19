@@ -149,7 +149,7 @@ public class ImageBufferMock implements ImageBuffer
         {
             return true;
         }
-        if (object == null || !(object.getClass() != getClass()))
+        if (object == null || object.getClass() == getClass())
         {
             return false;
         }

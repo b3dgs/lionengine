@@ -99,9 +99,8 @@ public class CollisionConstraint
     public int hashCode()
     {
         final int prime = 31;
-        int result = 1;
-        result = prime * result + constraints.hashCode();
-        return result;
+        final int result = 1;
+        return prime * result + constraints.hashCode();
     }
 
     @Override

@@ -58,7 +58,7 @@ final class AdlMidiTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(AdlMidiTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(AdlMidiTest.class.getSimpleName(), new Version(1, 0, 0)));
     }
 
     /**

@@ -58,14 +58,11 @@ public final class CollisionFunctionConfig
         final CollisionFunctionType type = node.getEnum(CollisionFunctionType.class, TYPE);
         try
         {
-            switch (type)
+            return switch (type)
             {
-                case LINEAR:
-                    return new CollisionFunctionLinear(node.getDouble(A), node.getDouble(B));
-                // $CASES-OMITTED$
-                default:
-                    throw new LionEngineException(type);
-            }
+                case LINEAR -> new CollisionFunctionLinear(node.getDouble(A), node.getDouble(B));
+                default -> throw new LionEngineException(type);
+            };
         }
         catch (final IllegalArgumentException | NullPointerException exception)
         {
@@ -86,9 +83,8 @@ public final class CollisionFunctionConfig
         Check.notNull(function);
 
         final Xml node = root.createChild(FUNCTION);
-        if (function instanceof CollisionFunctionLinear)
+        if (function instanceof final CollisionFunctionLinear linear)
         {
-            final CollisionFunctionLinear linear = (CollisionFunctionLinear) function;
             node.writeEnum(TYPE, CollisionFunctionType.LINEAR);
             node.writeDouble(A, linear.getA());
             node.writeDouble(B, linear.getB());

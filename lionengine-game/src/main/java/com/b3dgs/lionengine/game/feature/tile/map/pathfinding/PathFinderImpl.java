@@ -163,7 +163,7 @@ final class PathFinderImpl implements PathFinder
         {
             for (int x = -1; x < 2; x++)
             {
-                if (!(x == 0 && y == 0))
+                if (x != 0 || y != 0)
                 {
                     depth = check(category, depth, x, y, mover, stx, sty, dtx, dty, ignoreRef, current, maxDepth);
                 }

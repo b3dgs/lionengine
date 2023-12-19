@@ -57,7 +57,7 @@ final class CircuitsConfigTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(CircuitsConfigTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(CircuitsConfigTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         Medias.setLoadFromJar(CircuitsConfigTest.class);

@@ -76,7 +76,7 @@ final class XmlTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(XmlTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(XmlTest.class.getSimpleName(), new Version(1, 0, 0)));
     }
 
     /**
@@ -195,7 +195,7 @@ final class XmlTest
     void testTransformerError() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException
     {
         final Field field = DocumentFactory.class.getDeclaredField("transformerFactory");
-        UtilReflection.setAccessible(field, true);
+        field.setAccessible(true);
         final javax.xml.transform.TransformerFactory old = (TransformerFactory) field.get(DocumentFactory.class);
         try
         {

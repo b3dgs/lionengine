@@ -58,7 +58,7 @@ final class Sc68Test
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(Sc68Test.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(Sc68Test.class.getSimpleName(), new Version(1, 0, 0)));
     }
 
     /**

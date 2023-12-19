@@ -98,7 +98,7 @@ final class UtilColorTest
                         {
                             assertNotEquals(color.getRgba(), colorInc.getRgba());
                         }
-                        if (!(a == 0 && (r > 0 || g > 0 || b > 0)))
+                        if (a != 0 || r <= 0 && g <= 0 && b <= 0)
                         {
                             assertEquals(color.getAlpha(), colorInc.getAlpha());
                             assertEquals(UtilMath.clamp(color.getRed() + r, 0, 255), colorInc.getRed());

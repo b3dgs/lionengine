@@ -79,7 +79,7 @@ public class Bar implements Renderable
 
         final int rx = maxWidth - hBorder * 2;
         final int ry = maxHeight - vBorder * 2;
-        if (!(pWidth == 0 || pHeight == 0))
+        if (pWidth != 0 && pHeight != 0)
         {
             final int x1;
             final int x2;

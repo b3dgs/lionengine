@@ -83,8 +83,11 @@ final class ScreenAwtTest
     {
         Medias.setLoadFromJar(ScreenAwtTest.class);
 
-        final Config config = new Config(UtilTests.RESOLUTION_320_240, 32, true, Medias.create("image.png"));
-        EngineAwt.start(ScreenAwtTest.class.getSimpleName(), Version.DEFAULT, ScreenAwtTest.class);
+        final Config config = new Config(UtilTests.RESOLUTION_320_240,
+                                         32,
+                                         true,
+                                         Arrays.asList(Medias.create("image.png")));
+        EngineAwt.start(ScreenAwtTest.class.getSimpleName(), new Version(1, 0, 0), ScreenAwtTest.class);
         testScreen(config);
     }
 
@@ -96,7 +99,10 @@ final class ScreenAwtTest
     {
         Medias.setLoadFromJar(ScreenAwtTest.class);
 
-        final Config config = new Config(UtilTests.RESOLUTION_320_240, 32, true, Medias.create("image.png"));
+        final Config config = new Config(UtilTests.RESOLUTION_320_240,
+                                         32,
+                                         true,
+                                         Arrays.asList(Medias.create("image.png")));
         testScreen(config);
     }
 
@@ -114,7 +120,7 @@ final class ScreenAwtTest
         final Config config = new Config(new Resolution(res.getWidth(), res.getHeight(), res.getRefreshRate()),
                                          res.getBitDepth(),
                                          false,
-                                         Medias.create("image.png"));
+                                         Arrays.asList(Medias.create("image.png")));
         try
         {
             testScreen(config);
@@ -213,7 +219,7 @@ final class ScreenAwtTest
         {
             while (config.isWindowed() && !gained.get())
             {
-                continue;
+                // continue
             }
         });
         assertThrows(() -> screen.setIcons(Arrays.asList(Medias.create("void"))), "[void] Cannot open the media !");
@@ -226,7 +232,7 @@ final class ScreenAwtTest
         {
             while (config.isWindowed() && !gained.get())
             {
-                continue;
+                // continue
             }
         });
 

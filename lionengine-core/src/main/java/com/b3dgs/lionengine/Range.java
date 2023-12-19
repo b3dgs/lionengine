@@ -21,20 +21,16 @@ package com.b3dgs.lionengine;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param min The minimum value.
+ * @param max The maximum value.
  */
-public final class Range
+public record Range(int min, int max)
 {
     /** Positive integer numbers including 0. */
     public static final Range INT_POSITIVE = new Range(0, Integer.MAX_VALUE);
     /** Positive integer numbers excluding 0. */
     public static final Range INT_POSITIVE_STRICT = new Range(1, Integer.MAX_VALUE);
-    /** Min to string size. */
-    private static final int MIN_LENGHT = 10;
-
-    /** Minimum value. */
-    private final int min;
-    /** Maximum value. */
-    private final int max;
 
     /**
      * Create a blank range where min and max are equals to <code>0</code>.
@@ -49,17 +45,11 @@ public final class Range
      * 
      * @param min The minimum value (must be inferior or equal to max).
      * @param max The maximum value (must be superior or equal to min).
-     * 
      * @throws LionEngineException If invalid arguments.
      */
-    public Range(int min, int max)
+    public Range
     {
-        super();
-
         Check.inferiorOrEqual(min, max);
-
-        this.min = min;
-        this.max = max;
     }
 
     /**
@@ -102,46 +92,5 @@ public final class Range
     public boolean includes(double value)
     {
         return Double.compare(value, min) >= 0 && Double.compare(value, max) <= 0;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + min;
-        result = prime * result + max;
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final Range other = (Range) object;
-        return min == other.min && max == other.max;
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGHT).append(getClass().getSimpleName())
-                                            .append(" [min=")
-                                            .append(min)
-                                            .append(", max=")
-                                            .append(max)
-                                            .append("]")
-                                            .toString();
     }
 }

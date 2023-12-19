@@ -34,9 +34,11 @@ import com.b3dgs.lionengine.game.Configurer;
  * This class is Thread-Safe.
  * </p>
  * 
+ * @param collisions The collisions mapping.
+ * 
  * @see Collision
  */
-public final class CollisionConfig
+public record CollisionConfig(Map<String, Collision> collisions)
 {
     /** Collisions node name. */
     public static final String NODE_COLLISIONS = Constant.XML_PREFIX + "collisions";
@@ -157,22 +159,15 @@ public final class CollisionConfig
         node.writeBoolean(ATT_MIRROR, collision.hasMirror());
     }
 
-    /** Collisions map. */
-    private final Map<String, Collision> collisions;
-
     /**
      * Load collisions from configuration media.
      * 
      * @param collisions The collisions mapping (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public CollisionConfig(Map<String, Collision> collisions)
+    public CollisionConfig
     {
-        super();
-
         Check.notNull(collisions);
-
-        this.collisions = new HashMap<>(collisions);
     }
 
     /**
@@ -198,6 +193,6 @@ public final class CollisionConfig
      */
     public Collection<Collision> getCollisions()
     {
-        return Collections.unmodifiableCollection(collisions.values());
+        return collisions.values();
     }
 }

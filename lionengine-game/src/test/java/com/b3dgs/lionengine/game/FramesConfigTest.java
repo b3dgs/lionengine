@@ -129,6 +129,6 @@ final class FramesConfigTest
     {
         final FramesConfig config = new FramesConfig(1, 2, 3, 4);
 
-        assertEquals("FramesConfig [horizontalFrames=1, verticalFrames=2, offsetX=3, offsetY=4]", config.toString());
+        assertEquals("FramesConfig[horizontalFrames=1, verticalFrames=2, offsetX=3, offsetY=4]", config.toString());
     }
 }

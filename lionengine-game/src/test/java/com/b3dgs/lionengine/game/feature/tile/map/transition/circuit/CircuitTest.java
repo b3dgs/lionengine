@@ -101,6 +101,7 @@ final class CircuitTest
     @Test
     void testToString()
     {
-        assertEquals(CircuitType.MIDDLE.name() + " a -> b", new Circuit(CircuitType.MIDDLE, "a", "b").toString());
+        assertEquals(CircuitType.MIDDLE.name() + " GroupTransition[groupIn=a, groupOut=b]",
+                     new Circuit(CircuitType.MIDDLE, "a", "b").toString());
     }
 }

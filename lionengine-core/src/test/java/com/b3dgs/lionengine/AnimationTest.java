@@ -103,11 +103,11 @@ final class AnimationTest
 
         assertEquals(animation, animation);
         assertEquals(animation, new Animation("test", 1, 2, 3, false, true));
-        assertEquals(animation, new Animation("test", 11, 12, 3, false, true));
-        assertEquals(animation, new Animation("test", 1, 12, 2, false, true));
-        assertEquals(animation, new Animation("test", 1, 2, 13, false, true));
-        assertEquals(animation, new Animation("test", 1, 2, 3, true, true));
-        assertEquals(animation, new Animation("test", 1, 2, 3, false, false));
+        assertNotEquals(animation, new Animation("test", 11, 12, 3, false, true));
+        assertNotEquals(animation, new Animation("test", 1, 12, 2, false, true));
+        assertNotEquals(animation, new Animation("test", 1, 2, 13, false, true));
+        assertNotEquals(animation, new Animation("test", 1, 2, 3, true, true));
+        assertNotEquals(animation, new Animation("test", 1, 2, 3, false, false));
 
         assertNotEquals(animation, null);
         assertNotEquals(animation, new Object());
@@ -123,11 +123,11 @@ final class AnimationTest
         final Animation animation = new Animation("test", 1, 2, 3, false, true);
 
         assertHashEquals(animation, new Animation("test", 1, 2, 3, false, true));
-        assertHashEquals(animation, new Animation("test", 11, 12, 3, false, true));
-        assertHashEquals(animation, new Animation("test", 1, 12, 3, false, true));
-        assertHashEquals(animation, new Animation("test", 1, 2, 13, false, true));
-        assertHashEquals(animation, new Animation("test", 1, 2, 3, true, true));
-        assertHashEquals(animation, new Animation("test", 1, 2, 3, false, false));
+        assertHashNotEquals(animation, new Animation("test", 11, 12, 3, false, true));
+        assertHashNotEquals(animation, new Animation("test", 1, 12, 3, false, true));
+        assertHashNotEquals(animation, new Animation("test", 1, 2, 13, false, true));
+        assertHashNotEquals(animation, new Animation("test", 1, 2, 3, true, true));
+        assertHashNotEquals(animation, new Animation("test", 1, 2, 3, false, false));
 
         assertHashNotEquals(animation, new Object());
         assertHashNotEquals(animation, new Animation("test1", 1, 2, 3, false, true));

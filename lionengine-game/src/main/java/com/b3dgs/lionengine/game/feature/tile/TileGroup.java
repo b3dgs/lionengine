@@ -18,8 +18,9 @@ package com.b3dgs.lionengine.game.feature.tile;
 
 import java.util.Set;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.NameableAbstract;
+import com.b3dgs.lionengine.Nameable;
 
 /**
  * Represents the tile group, which can be applied to a {@link Integer}.
@@ -38,29 +39,27 @@ import com.b3dgs.lionengine.NameableAbstract;
  * &lt;/lionengine:groups&gt;
  * </pre>
  * 
+ * @param name The group name.
+ * @param type The group type.
+ * @param tiles The tiles inside the group.
+ * 
  * @see com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig
  */
-public class TileGroup extends NameableAbstract
+public record TileGroup(String name, TileGroupType type, Set<Integer> tiles) implements Nameable
 {
-    /** The group type. */
-    private final TileGroupType type;
-    /** Elements inside group. */
-    private final Set<Integer> tiles;
-
     /**
-     * Create a tile group.
+     * Create group.
      * 
      * @param name The group name.
      * @param type The group type.
      * @param tiles The tiles inside the group (stores reference).
      * @throws LionEngineException If invalid arguments.
      */
-    public TileGroup(String name, TileGroupType type, Set<Integer> tiles)
+    public TileGroup
     {
-        super(name);
-
-        this.type = type;
-        this.tiles = tiles;
+        Check.notNull(name);
+        Check.notNull(type);
+        Check.notNull(tiles);
     }
 
     /**
@@ -103,5 +102,11 @@ public class TileGroup extends NameableAbstract
     public Set<Integer> getTiles()
     {
         return tiles;
+    }
+
+    @Override
+    public String getName()
+    {
+        return name;
     }
 }

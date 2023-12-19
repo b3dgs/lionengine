@@ -97,14 +97,11 @@ public final class MarioUpdater extends FeatureModel implements Refreshable, Til
         {
             tileCollidable.apply(result);
         }
-        else if (Axis.Y == category.getAxis())
+        else if (Axis.Y == category.getAxis() && transformable.getY() < transformable.getOldY())
         {
-            if (transformable.getY() < transformable.getOldY())
-            {
-                tileCollidable.apply(result);
-                body.resetGravity();
-                jump.setDirection(0.0, 10.0);
-            }
+            tileCollidable.apply(result);
+            body.resetGravity();
+            jump.setDirection(0.0, 10.0);
         }
     }
 }

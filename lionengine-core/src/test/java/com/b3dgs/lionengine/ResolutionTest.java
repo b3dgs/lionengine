@@ -162,6 +162,6 @@ final class ResolutionTest
     @Test
     void testToString()
     {
-        assertEquals("Resolution [width=320, height=240, rate=60]", new Resolution(320, 240, 60).toString());
+        assertEquals("Resolution[width=320, height=240, rate=60]", new Resolution(320, 240, 60).toString());
     }
 }

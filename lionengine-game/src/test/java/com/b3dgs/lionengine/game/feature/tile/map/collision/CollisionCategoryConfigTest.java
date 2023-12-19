@@ -137,7 +137,7 @@ final class CollisionCategoryConfigTest
 
         final Collection<CollisionCategory> imported = CollisionCategoryConfig.imports(root);
 
-        assertEquals(category, imported.iterator().next());
+        assertEquals(category.getName(), imported.iterator().next().getName());
     }
 
     /**

@@ -91,10 +91,6 @@ public enum MovementTile implements Nameable
         return NONE;
     }
 
-    /*
-     * Nameable
-     */
-
     @Override
     public String getName()
     {

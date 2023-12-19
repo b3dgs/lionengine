@@ -20,40 +20,14 @@ import com.b3dgs.lionengine.game.Tiled;
 
 /**
  * Represents the resource location.
+ * 
+ * @param tx The horizontal location.
+ * @param ty The vertical location.
+ * @param tw The width in tile.
+ * @param th The height in tile.
  */
-final class ResourceLocation implements Tiled
+record ResourceLocation(int tx, int ty, int tw, int th) implements Tiled
 {
-    /** The horizontal location. */
-    private final int tx;
-    /** The vertical location. */
-    private final int ty;
-    /** The width in tile. */
-    private final int tw;
-    /** The height in tile. */
-    private final int th;
-
-    /**
-     * Internal constructor.
-     * 
-     * @param tx The horizontal location.
-     * @param ty The vertical location.
-     * @param tw The width in tile.
-     * @param th The height in tile.
-     */
-    ResourceLocation(int tx, int ty, int tw, int th)
-    {
-        super();
-
-        this.tx = tx;
-        this.ty = ty;
-        this.tw = tw;
-        this.th = th;
-    }
-
-    /*
-     * Tiled
-     */
-
     @Override
     public int getInTileX()
     {

@@ -24,11 +24,11 @@ import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the size data.
- * <p>
- * This class is Thread-Safe.
- * </p>
+ * 
+ * @param width The width value.
+ * @param height The height value.
  */
-public final class SizeConfig
+public record SizeConfig(int width, int height)
 {
     /** Size node name. */
     public static final String NODE_SIZE = Constant.XML_PREFIX + "size";
@@ -36,8 +36,6 @@ public final class SizeConfig
     public static final String ATT_WIDTH = "width";
     /** Size height attribute. */
     public static final String ATT_HEIGHT = "height";
-    /** Minimum to string length. */
-    private static final int MIN_LENGTH = 30;
 
     /**
      * Import the size data from configurer.
@@ -89,25 +87,6 @@ public final class SizeConfig
         return node;
     }
 
-    /** The width value. */
-    private final int width;
-    /** The height value. */
-    private final int height;
-
-    /**
-     * Create a size configuration.
-     * 
-     * @param width The width value.
-     * @param height The height value.
-     */
-    public SizeConfig(int width, int height)
-    {
-        super();
-
-        this.width = width;
-        this.height = height;
-    }
-
     /**
      * Get the width value.
      * 
@@ -126,46 +105,5 @@ public final class SizeConfig
     public int getHeight()
     {
         return height;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + width;
-        result = prime * result + height;
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final SizeConfig other = (SizeConfig) object;
-        return other.width == width && other.height == height;
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
-                                            .append(" [width=")
-                                            .append(width)
-                                            .append(", height=")
-                                            .append(height)
-                                            .append("]")
-                                            .toString();
     }
 }

@@ -58,7 +58,7 @@ final class RasterImageTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(RasterImageTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(RasterImageTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(RasterImageTest.class);

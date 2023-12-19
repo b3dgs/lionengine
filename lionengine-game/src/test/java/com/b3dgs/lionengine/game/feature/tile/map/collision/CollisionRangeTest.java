@@ -84,6 +84,6 @@ final class CollisionRangeTest
     @Test
     void testToString()
     {
-        assertEquals("CollisionRange (output=X, minX=0, maxX=1, minY=2, maxY=3)", range.toString());
+        assertEquals("CollisionRange[output=X, minX=0, maxX=1, minY=2, maxY=3]", range.toString());
     }
 }

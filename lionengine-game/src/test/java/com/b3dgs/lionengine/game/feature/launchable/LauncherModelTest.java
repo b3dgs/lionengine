@@ -129,7 +129,6 @@ final class LauncherModelTest
             while (!launcher.fire())
             {
                 launcher.update(1.0);
-                continue;
             }
         });
 
@@ -148,7 +147,6 @@ final class LauncherModelTest
             while (!launcher.fire(transformable))
             {
                 launcher.update(1.0);
-                continue;
             }
         });
 
@@ -165,7 +163,6 @@ final class LauncherModelTest
             while (!launcher.fire(localizable))
             {
                 launcher.update(1.0);
-                continue;
             }
         });
 
@@ -200,7 +197,6 @@ final class LauncherModelTest
             while (!launcher.fire(force))
             {
                 launcher.update(1.0);
-                continue;
             }
         });
 
@@ -291,7 +287,6 @@ final class LauncherModelTest
             while (!launcher.fire())
             {
                 launcher.update(1.0);
-                continue;
             }
         });
 
@@ -313,7 +308,6 @@ final class LauncherModelTest
             while (!launcher.fire())
             {
                 launcher.update(1.0);
-                continue;
             }
         });
         assertTimeout(1000L, () ->
@@ -321,7 +315,6 @@ final class LauncherModelTest
             while (!launcher.fire())
             {
                 launcher.update(1.0);
-                continue;
             }
         });
 
@@ -358,7 +351,6 @@ final class LauncherModelTest
             while (!launcher.fire())
             {
                 launcher.update(1.0);
-                continue;
             }
         });
 
@@ -394,7 +386,6 @@ final class LauncherModelTest
             while (!launcher.fire())
             {
                 launcher.update(1.0);
-                continue;
             }
         });
         final Handler handler = services.get(Handler.class);
@@ -436,7 +427,6 @@ final class LauncherModelTest
                 while (!launcher.fire())
                 {
                     launcher.update(1.0);
-                    continue;
                 }
             }, "No recognized constructor found for: Featurable.xml");
         }
@@ -469,7 +459,6 @@ final class LauncherModelTest
                 while (!launcher.fire())
                 {
                     launcher.update(1.0);
-                    continue;
                 }
             }, "Feature not found: " + Launchable.class.getName());
         }

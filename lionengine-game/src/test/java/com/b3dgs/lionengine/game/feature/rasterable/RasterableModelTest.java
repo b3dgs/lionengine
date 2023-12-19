@@ -61,7 +61,7 @@ final class RasterableModelTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(RasterableModelTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(RasterableModelTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setLoadFromJar(RasterableModelTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());

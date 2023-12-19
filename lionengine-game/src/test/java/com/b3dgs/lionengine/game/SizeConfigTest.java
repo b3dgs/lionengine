@@ -112,6 +112,6 @@ final class SizeConfigTest
     {
         final SizeConfig config = new SizeConfig(16, 32);
 
-        assertHashEquals("SizeConfig [width=16, height=32]", config.toString());
+        assertEquals("SizeConfig[width=16, height=32]", config.toString());
     }
 }

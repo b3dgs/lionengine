@@ -29,24 +29,20 @@ package com.b3dgs.lionengine;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param width The resolution width in pixel.
+ * @param height The resolution height in pixel.
+ * @param rate The refresh rate.
  */
-public final class Resolution
+public record Resolution(int width, int height, int rate)
 {
+
     /** Double factor. */
     private static final int FACTOR_2X = 2;
     /** Triple factor. */
     private static final int FACTOR_3X = 3;
     /** Quad factor. */
     private static final int FACTOR_4X = 4;
-    /** Min to string size. */
-    private static final int MIN_LENGHT = 43;
-
-    /** Display rate. */
-    private final int rate;
-    /** Resolution width. */
-    private final int width;
-    /** Resolution height. */
-    private final int height;
 
     /**
      * Create a resolution.
@@ -56,17 +52,11 @@ public final class Resolution
      * @param rate The refresh rate, usually 50 or 60 (superior or equal to -1).
      * @throws LionEngineException If invalid arguments.
      */
-    public Resolution(int width, int height, int rate)
+    public Resolution
     {
-        super();
-
         Check.superiorStrict(width, 0);
         Check.superiorStrict(height, 0);
         Check.superiorOrEqual(rate, -1);
-
-        this.width = width;
-        this.height = height;
-        this.rate = rate;
     }
 
     /**
@@ -161,49 +151,5 @@ public final class Resolution
     public int getRate()
     {
         return rate;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + width;
-        result = prime * result + height;
-        result = prime * result + rate;
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || getClass() != object.getClass())
-        {
-            return false;
-        }
-        final Resolution other = (Resolution) object;
-        return width == other.width && height == other.height && rate == other.rate;
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGHT).append(getClass().getSimpleName())
-                                            .append(" [width=")
-                                            .append(width)
-                                            .append(", height=")
-                                            .append(height)
-                                            .append(", rate=")
-                                            .append(rate)
-                                            .append("]")
-                                            .toString();
     }
 }

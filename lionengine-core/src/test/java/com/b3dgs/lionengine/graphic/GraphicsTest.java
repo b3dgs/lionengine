@@ -57,7 +57,7 @@ final class GraphicsTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(GraphicsTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(GraphicsTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(GraphicsTest.class);

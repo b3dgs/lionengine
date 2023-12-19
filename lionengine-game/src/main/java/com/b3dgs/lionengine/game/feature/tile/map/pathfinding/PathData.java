@@ -22,20 +22,19 @@ import java.util.EnumSet;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.NameableAbstract;
+import com.b3dgs.lionengine.Nameable;
 
 /**
  * Represents the data associated to a path.
+ * 
+ * @param category The category name.
+ * @param cost The cost value.
+ * @param blocking The blocking flag.
+ * @param movements The allowed movements.
  */
-public class PathData extends NameableAbstract
+public record PathData(String category, double cost, boolean blocking, Collection<MovementTile> movements)
+                      implements Nameable
 {
-    /** Path cost. */
-    private final double cost;
-    /** Blocking flag. */
-    private final boolean blocking;
-    /** Allowed movements. */
-    private final Collection<MovementTile> movements;
-
     /**
      * Create a path data.
      * 
@@ -45,21 +44,18 @@ public class PathData extends NameableAbstract
      * @param movements The allowed movements.
      * @throws LionEngineException If invalid arguments.
      */
-    public PathData(String category, double cost, boolean blocking, Collection<MovementTile> movements)
+    public PathData
     {
-        super(category);
-
+        Check.notNull(category);
         Check.notNull(movements);
 
-        this.cost = cost;
-        this.blocking = blocking;
         if (movements.isEmpty())
         {
-            this.movements = EnumSet.noneOf(MovementTile.class);
+            movements = EnumSet.noneOf(MovementTile.class);
         }
         else
         {
-            this.movements = EnumSet.copyOf(movements);
+            movements = EnumSet.copyOf(movements);
         }
     }
 
@@ -102,5 +98,11 @@ public class PathData extends NameableAbstract
     public Collection<MovementTile> getAllowedMovements()
     {
         return Collections.unmodifiableCollection(movements);
+    }
+
+    @Override
+    public String getName()
+    {
+        return category;
     }
 }

@@ -54,7 +54,7 @@ final class ScreenHeadlessTest
     @BeforeAll
     public static void beforeTests()
     {
-        EngineHeadless.start(ScreenHeadlessTest.class.getName(), Version.DEFAULT);
+        EngineHeadless.start(ScreenHeadlessTest.class.getName(), new Version(1, 0, 0));
     }
 
     /**
@@ -77,7 +77,7 @@ final class ScreenHeadlessTest
         final Config config = new Config(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240,
                                          32,
                                          true,
-                                         Medias.create(IMAGE));
+                                         Arrays.asList(Medias.create(IMAGE)));
 
         assertTimeout(1000L, () -> testScreen(config));
     }
@@ -91,7 +91,7 @@ final class ScreenHeadlessTest
     void testFullscreen() throws Exception
     {
         final Resolution resolution = com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240;
-        final Config config = new Config(resolution, 32, false, Medias.create(IMAGE));
+        final Config config = new Config(resolution, 32, false, Arrays.asList(Medias.create(IMAGE)));
 
         assertTimeout(1000L, () -> testScreen(config));
     }

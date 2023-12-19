@@ -29,7 +29,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
@@ -158,15 +157,12 @@ final class LauncherConfigTest
         final LaunchableConfig launchable = new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(0, 1, true, true, Arrays.asList(launchable, launchable));
 
-        assertEquals("LauncherConfig [level=0, delay=1, mirrorable=true, centered=true, launchables="
-                     + System.lineSeparator()
-                     + Constant.TAB
-                     + "LaunchableConfig [media=media, sfx=sfx, delay=10, ox=1, oy=2, vector="
-                     + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]"
-                     + System.lineSeparator()
-                     + Constant.TAB
-                     + "LaunchableConfig [media=media, sfx=sfx, delay=10, ox=1, oy=2, vector="
-                     + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]]",
+        assertEquals("""
+                LauncherConfig[level=0, delay=1, mirrorable=true, centered=true,\s\
+                launchables=[LaunchableConfig[media=media, delay=10, ox=1, oy=2,\s\
+                vector=Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0], sfx=Optional[sfx]],\s\
+                LaunchableConfig[media=media, delay=10, ox=1, oy=2,\s\
+                vector=Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0], sfx=Optional[sfx]]]]""",
                      launcher.toString());
     }
 }

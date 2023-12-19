@@ -407,15 +407,13 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract
                 onCollided(result, category);
             }
         }
-        else if (Axis.Y == category.getAxis())
+        else if (Axis.Y == category.getAxis()
+                 && collideSide(name, "bottom", "top", transformable.getY(), transformable.getOldY()))
         {
-            if (collideSide(name, "bottom", "top", transformable.getY(), transformable.getOldY()))
-            {
-                tileCollidable.apply(result);
-                collideY = true;
-                body.resetGravity();
-                onCollided(result, category);
-            }
+            tileCollidable.apply(result);
+            collideY = true;
+            body.resetGravity();
+            onCollided(result, category);
         }
     }
 

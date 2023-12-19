@@ -119,6 +119,6 @@ final class ActionConfigTest
     {
         final ActionConfig action = new ActionConfig("a", "b", 0, 1, 2, 3);
 
-        assertEquals("ActionConfig [name=a, description=b, x=0, y=1, width=2, height=3]", action.toString());
+        assertEquals("ActionConfig[name=a, description=b, x=0, y=1, width=2, height=3]", action.toString());
     }
 }

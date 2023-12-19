@@ -179,7 +179,7 @@ final class ActionRefTest
     @Test
     void testToString()
     {
-        assertEquals("ActionRef [path=path2, cancel=true, refs=[ActionRef [path=path, cancel=false, refs=[]]]]",
+        assertEquals("ActionRef[path=path2, cancel=true, refs=[ActionRef[path=path, cancel=false, refs=[]]]]",
                      actionRef2.toString());
     }
 }

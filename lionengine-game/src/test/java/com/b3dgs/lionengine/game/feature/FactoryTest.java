@@ -49,7 +49,7 @@ final class FactoryTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(FactoryTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(FactoryTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         Medias.setLoadFromJar(FactoryTest.class);

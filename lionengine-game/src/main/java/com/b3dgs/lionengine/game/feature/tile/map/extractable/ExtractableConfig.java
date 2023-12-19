@@ -25,8 +25,11 @@ import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Represents the {@link Extractable} data.
+ * 
+ * @param type The resource type.
+ * @param quantity The resource quantity.
  */
-public final class ExtractableConfig
+public record ExtractableConfig(String type, int quantity)
 {
     /** Extractable node name. */
     public static final String NODE_EXTRACTABLE = Constant.XML_PREFIX + "extractable";
@@ -34,8 +37,6 @@ public final class ExtractableConfig
     public static final String ATT_QUANTITY = "quantity";
     /** Resource type attribute name. */
     public static final String ATT_TYPE = "type";
-    /** Minimum to string length. */
-    private static final int MIN_LENGTH = 40;
 
     /**
      * Imports the config from configurer.
@@ -87,25 +88,6 @@ public final class ExtractableConfig
         return node;
     }
 
-    /** Resource type. */
-    private final String type;
-    /** Resource quantity. */
-    private final int quantity;
-
-    /**
-     * Create the configuration.
-     * 
-     * @param type The resource type.
-     * @param quantity The resource quantity.
-     */
-    public ExtractableConfig(String type, int quantity)
-    {
-        super();
-
-        this.type = type;
-        this.quantity = quantity;
-    }
-
     /**
      * Get the resource type.
      * 
@@ -124,46 +106,5 @@ public final class ExtractableConfig
     public int getQuantity()
     {
         return quantity;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + type.hashCode();
-        result = prime * result + quantity;
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final ExtractableConfig other = (ExtractableConfig) object;
-        return type.equals(other.type) && quantity == other.quantity;
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
-                                            .append(" [type=")
-                                            .append(type)
-                                            .append(" quantity=")
-                                            .append(quantity)
-                                            .append("]")
-                                            .toString();
     }
 }

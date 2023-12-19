@@ -49,7 +49,7 @@ final class TransformAwtTest extends TransformTest
         {
             return AffineTransformOp.TYPE_NEAREST_NEIGHBOR;
         }
-        else if (value == 2)
+        if (value == 2)
         {
             return AffineTransformOp.TYPE_BILINEAR;
         }

@@ -28,8 +28,11 @@ import com.b3dgs.lionengine.game.Configurer;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param layerRefresh The layer refresh.
+ * @param layerDisplay The layer display.
  */
-public final class LayerableConfig
+public record LayerableConfig(int layerRefresh, int layerDisplay)
 {
     /** Frames node name. */
     public static final String NODE_LAYERABLE = Constant.XML_PREFIX + "layerable";
@@ -37,8 +40,6 @@ public final class LayerableConfig
     public static final String ATT_REFRESH = "layerRefresh";
     /** Display layer node name. */
     public static final String ATT_DISPLAY = "layerDisplay";
-    /** Minimum to string length. */
-    private static final int MIN_LENGTH = 48;
 
     /**
      * Imports the layerable config from configurer.
@@ -90,25 +91,6 @@ public final class LayerableConfig
         return node;
     }
 
-    /** The layer refresh. */
-    private final int layerRefresh;
-    /** The layer display. */
-    private final int layerDisplay;
-
-    /**
-     * Create the layerable configuration.
-     * 
-     * @param layerRefresh The layer refresh.
-     * @param layerDisplay The layer display.
-     */
-    public LayerableConfig(int layerRefresh, int layerDisplay)
-    {
-        super();
-
-        this.layerRefresh = layerRefresh;
-        this.layerDisplay = layerDisplay;
-    }
-
     /**
      * Get the layer refresh.
      * 
@@ -127,46 +109,5 @@ public final class LayerableConfig
     public int getLayerDisplay()
     {
         return layerDisplay;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + layerRefresh;
-        result = prime * result + layerDisplay;
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final LayerableConfig other = (LayerableConfig) object;
-        return layerRefresh == other.layerRefresh && layerDisplay == other.layerDisplay;
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
-                                            .append(" [layerRefresh=")
-                                            .append(layerRefresh)
-                                            .append(", layerDisplay=")
-                                            .append(layerDisplay)
-                                            .append("]")
-                                            .toString();
     }
 }

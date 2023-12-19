@@ -140,13 +140,10 @@ public class ClientUdp implements Client
         final Set<Integer> list = ClientsList.decode(buffer, clientId);
         for (final Integer current : list)
         {
-            if (!current.equals(clientId))
+            if (!current.equals(clientId) && clientsNew.add(current))
             {
-                if (clientsNew.add(current))
-                {
-                    notifyClientConnected(current);
-                    clientsConnected.add(current);
-                }
+                notifyClientConnected(current);
+                clientsConnected.add(current);
             }
         }
         for (final Integer current : clientsConnected)

@@ -29,9 +29,14 @@ import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the tile sheets data.
+ * 
+ * @param tileWidth The tile width.
+ * @param tileHeight The tile height.
+ * @param sheets The defined sheets.
  */
-public final class TileSheetsConfig
+public record TileSheetsConfig(int tileWidth, int tileHeight, List<String> sheets)
 {
+
     /** Configuration file name. */
     public static final String FILENAME = "sheets.xml";
     /** Tile sheets node. */
@@ -127,13 +132,6 @@ public final class TileSheetsConfig
         }
     }
 
-    /** Tile width. */
-    private final int tileWidth;
-    /** Tile height. */
-    private final int tileHeight;
-    /** Sheets filename. */
-    private final List<String> sheets;
-
     /**
      * Create config.
      * 
@@ -142,17 +140,11 @@ public final class TileSheetsConfig
      * @param sheets The defined sheets (stores reference, must not be <code>null</code>).
      * @throws LionEngineException If invalid size or sheets is <code>null</code>.
      */
-    public TileSheetsConfig(int tileWidth, int tileHeight, List<String> sheets)
+    public TileSheetsConfig
     {
-        super();
-
         Check.superiorStrict(tileWidth, 0);
         Check.superiorStrict(tileHeight, 0);
         Check.notNull(sheets);
-
-        this.tileWidth = tileWidth;
-        this.tileHeight = tileHeight;
-        this.sheets = sheets;
     }
 
     /**

@@ -168,6 +168,7 @@ final class ColorRgbaTest
     @Test
     void testToString()
     {
-        assertEquals("ColorRgba [r=100, g=150, b=200, a=255]", new ColorRgba(100, 150, 200, 255).toString());
+        assertEquals("ColorRgba[r=100, g=150, b=200, a=255, rgba=-10185016]",
+                     new ColorRgba(100, 150, 200, 255).toString());
     }
 }

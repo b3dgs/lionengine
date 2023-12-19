@@ -115,6 +115,6 @@ final class ExtractorConfigTest
     {
         final ExtractorConfig config = new ExtractorConfig(1.0, 2.0, 3);
 
-        assertEquals("ExtractorConfig [extract=1.0, dropoff=2.0, capacity=3]", config.toString());
+        assertEquals("ExtractorConfig[extract=1.0, dropoff=2.0, capacity=3]", config.toString());
     }
 }

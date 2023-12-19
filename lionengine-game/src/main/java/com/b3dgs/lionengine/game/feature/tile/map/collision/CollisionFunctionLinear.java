@@ -21,28 +21,12 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
  * <p>
  * <code>a * input + b</code>
  * </p>
+ * 
+ * @param a The multiplication factor.
+ * @param b The offset value.
  */
-public class CollisionFunctionLinear implements CollisionFunction
+public record CollisionFunctionLinear(double a, double b) implements CollisionFunction
 {
-    /** Multiplication factor. */
-    private final double a;
-    /** Offset value. */
-    private final double b;
-
-    /**
-     * Create a linear function.
-     * 
-     * @param a The multiplication factor.
-     * @param b The offset value.
-     */
-    public CollisionFunctionLinear(double a, double b)
-    {
-        super();
-
-        this.a = a;
-        this.b = b;
-    }
-
     /**
      * Get the factor value.
      * 
@@ -62,10 +46,6 @@ public class CollisionFunctionLinear implements CollisionFunction
     {
         return b;
     }
-
-    /*
-     * CollisionFunction
-     */
 
     @Override
     public double compute(double input)
@@ -93,51 +73,5 @@ public class CollisionFunctionLinear implements CollisionFunction
     public CollisionFunctionType getType()
     {
         return CollisionFunctionType.LINEAR;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        long temp;
-        temp = Double.doubleToLongBits(a);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        temp = Double.doubleToLongBits(b);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final CollisionFunctionLinear other = (CollisionFunctionLinear) object;
-        return Double.doubleToLongBits(a) == Double.doubleToLongBits(other.a)
-               && Double.doubleToLongBits(b) == Double.doubleToLongBits(other.b);
-
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" (a=")
-                                  .append(a)
-                                  .append(", b=")
-                                  .append(b)
-                                  .append(")")
-                                  .toString();
     }
 }

@@ -58,7 +58,7 @@ final class AdPlugTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(AdPlugTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(AdPlugTest.class.getSimpleName(), new Version(1, 0, 0)));
     }
 
     /**

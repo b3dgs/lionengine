@@ -62,10 +62,10 @@ final class PathDataTest
         assertNotEquals(data, null);
         assertNotEquals(data, new Object());
         assertNotEquals(data, new PathData("", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
-        assertEquals(data, new PathData("c", 0.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
-        assertEquals(data, new PathData("c", 1.0, false, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
-        assertEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP)));
-        assertEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN)));
+        assertNotEquals(data, new PathData("c", 0.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
+        assertNotEquals(data, new PathData("c", 1.0, false, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
+        assertNotEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP)));
+        assertNotEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN)));
     }
 
     /**
@@ -81,9 +81,9 @@ final class PathDataTest
 
         assertHashNotEquals(data, new Object());
         assertHashNotEquals(data, new PathData("", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
-        assertHashEquals(data, new PathData("c", 0.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
-        assertHashEquals(data, new PathData("c", 1.0, false, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
-        assertHashEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP)));
-        assertHashEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN)));
+        assertHashNotEquals(data, new PathData("c", 0.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
+        assertHashNotEquals(data, new PathData("c", 1.0, false, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
+        assertHashNotEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP)));
+        assertHashNotEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN)));
     }
 }

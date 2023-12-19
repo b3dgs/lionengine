@@ -192,7 +192,7 @@ final class UtilConversionTest
 
             for (int j = 0; j < inverted.length; j++)
             {
-                assertTrue(inverted[j] == !table[j]);
+                assertTrue(inverted[j] ^ table[j]);
             }
         }
     }

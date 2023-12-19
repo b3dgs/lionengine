@@ -29,8 +29,11 @@ import com.b3dgs.lionengine.XmlReader;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param image The image file path.
+ * @param icon The icon file path.
  */
-public final class SurfaceConfig
+public record SurfaceConfig(String image, Optional<String> icon)
 {
     /** Surface node name. */
     public static final String NODE_SURFACE = Constant.XML_PREFIX + "surface";
@@ -38,8 +41,6 @@ public final class SurfaceConfig
     public static final String ATT_IMAGE = "image";
     /** Icon attribute name. */
     public static final String ATT_ICON = "icon";
-    /** Minimum to string length. */
-    private static final int MIN_LENGTH = 31;
 
     /**
      * Create the surface data from configurer.
@@ -68,7 +69,7 @@ public final class SurfaceConfig
 
         final XmlReader node = root.getChild(NODE_SURFACE);
         final String surface = node.getString(ATT_IMAGE);
-        final String icon = node.getStringDefault(null, ATT_ICON);
+        final Optional<String> icon = node.getStringOptional(ATT_ICON);
 
         return new SurfaceConfig(surface, icon);
     }
@@ -91,26 +92,16 @@ public final class SurfaceConfig
         return node;
     }
 
-    /** The image descriptor. */
-    private final String image;
-    /** The icon descriptor. */
-    private final Optional<String> icon;
-
     /**
      * Create the surface configuration.
      * 
      * @param image The image file path.
-     * @param icon The icon file path (can be <code>null</code>).
+     * @param icon The icon file path.
      * @throws LionEngineException If invalid argument.
      */
-    public SurfaceConfig(String image, String icon)
+    public SurfaceConfig
     {
-        super();
-
         Check.notNull(image);
-
-        this.image = image;
-        this.icon = Optional.ofNullable(icon);
     }
 
     /**
@@ -131,46 +122,5 @@ public final class SurfaceConfig
     public Optional<String> getIcon()
     {
         return icon;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + image.hashCode();
-        result = prime * result + icon.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final SurfaceConfig other = (SurfaceConfig) object;
-        return icon.equals(other.icon) && image.equals(other.image);
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
-                                            .append(" [image=")
-                                            .append(image)
-                                            .append(", icon=")
-                                            .append(icon.orElse(null))
-                                            .append("]")
-                                            .toString();
     }
 }

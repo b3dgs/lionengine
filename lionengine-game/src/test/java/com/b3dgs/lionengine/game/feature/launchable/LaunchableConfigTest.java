@@ -139,8 +139,8 @@ final class LaunchableConfigTest
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(1.0, 2.0));
 
-        assertEquals("LaunchableConfig [media=media, sfx=sfx, delay=10, ox=1, oy=2, vector="
-                     + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]",
+        assertEquals("LaunchableConfig[media=media, delay=10, ox=1, oy=2, vector="
+                     + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0], sfx=Optional[sfx]]",
                      launchable.toString());
     }
 }

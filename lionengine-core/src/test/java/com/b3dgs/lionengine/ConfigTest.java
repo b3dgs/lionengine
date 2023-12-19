@@ -21,6 +21,9 @@ import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -92,7 +95,10 @@ final class ConfigTest
 
         final Media icon = Medias.create("image.png");
 
-        assertEquals(icon, new Config(new Resolution(320, 240, 60), 32, true, icon).getIcons().iterator().next());
+        assertEquals(icon,
+                     new Config(new Resolution(320, 240, 60), 32, true, Arrays.asList(icon)).getIcons()
+                                                                                            .iterator()
+                                                                                            .next());
     }
 
     /**
@@ -116,7 +122,7 @@ final class ConfigTest
     void testDefaultWindowedIcons()
     {
         final Resolution output = new Resolution(320, 240, 60);
-        final Config config = Config.windowed(output, new Media[0]);
+        final Config config = Config.windowed(output, Collections.emptyList());
 
         assertTrue(config.isWindowed());
         assertEquals(output, config.getOutput());

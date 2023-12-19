@@ -70,15 +70,18 @@ public final class CollisionCategoryConfig
         final Collection<CollisionCategory> categories = new ArrayList<>();
         if (root.hasNode(NODE_CATEGORIES))
         {
-            final Collection<XmlReader> childrenCategory = root.getChild(NODE_CATEGORIES).getChildren(NODE_CATEGORY);
-            for (final XmlReader node : childrenCategory)
+            final List<XmlReader> childrenCategory = root.getChild(NODE_CATEGORIES).getChildren(NODE_CATEGORY);
+            final int n = childrenCategory.size();
+            for (int i = 0; i < n; i++)
             {
-                final Collection<XmlReader> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
-                final Collection<CollisionGroup> groups = new ArrayList<>(childrenGroup.size());
+                final XmlReader node = childrenCategory.get(i);
+                final List<XmlReader> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
+                final List<CollisionGroup> groups = new ArrayList<>(childrenGroup.size());
 
-                for (final XmlReader group : childrenGroup)
+                final int k = childrenGroup.size();
+                for (int j = 0; j < k; j++)
                 {
-                    final String name = group.getText();
+                    final String name = childrenGroup.get(j).getText();
                     groups.add(new CollisionGroup(name, new ArrayList<>(0)));
                 }
                 childrenGroup.clear();
@@ -111,14 +114,13 @@ public final class CollisionCategoryConfig
         Check.notNull(configurer);
         Check.notNull(map);
 
-        final Collection<XmlReader> children = configurer.getRoot()
-                                                         .getChild(NODE_CATEGORIES)
-                                                         .getChildren(NODE_CATEGORY);
-        final List<CollisionCategory> categories = new ArrayList<>(children.size());
+        final List<XmlReader> children = configurer.getRoot().getChild(NODE_CATEGORIES).getChildren(NODE_CATEGORY);
+        final int n = children.size();
+        final List<CollisionCategory> categories = new ArrayList<>(n);
 
-        for (final XmlReader node : children)
+        for (int i = 0; i < n; i++)
         {
-            final CollisionCategory category = imports(node, map);
+            final CollisionCategory category = imports(children.get(i), map);
             categories.add(category);
         }
         children.clear();
@@ -139,12 +141,13 @@ public final class CollisionCategoryConfig
         Check.notNull(root);
         Check.notNull(map);
 
-        final Collection<XmlReader> children = root.getChildren(TileGroupsConfig.NODE_GROUP);
-        final Collection<CollisionGroup> groups = new ArrayList<>(children.size());
+        final List<XmlReader> children = root.getChildren(TileGroupsConfig.NODE_GROUP);
+        final int n = children.size();
+        final List<CollisionGroup> groups = new ArrayList<>(n);
 
-        for (final XmlReader groupNode : children)
+        for (int i = 0; i < n; i++)
         {
-            final String groupName = groupNode.getText();
+            final String groupName = children.get(i).getText();
             map.getCollisionGroup(groupName).ifPresent(groups::add);
         }
         children.clear();
@@ -197,10 +200,12 @@ public final class CollisionCategoryConfig
         node.writeInteger(ATT_Y, category.getOffsetY());
         node.writeBoolean(ATT_GLUE, category.isGlue());
 
-        for (final CollisionGroup group : category.getGroups())
+        final List<CollisionGroup> groups = category.getGroups();
+        final int n = groups.size();
+        for (int i = 0; i < n; i++)
         {
             final Xml groupNode = node.createChild(TileGroupsConfig.NODE_GROUP);
-            groupNode.setText(group.getName());
+            groupNode.setText(groups.get(i).getName());
         }
     }
 

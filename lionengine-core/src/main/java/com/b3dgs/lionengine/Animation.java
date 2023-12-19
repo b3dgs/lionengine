@@ -39,9 +39,18 @@ package com.b3dgs.lionengine;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param name The animation name
+ * @param firstFrame The first frame.
+ * @param lastFrame The last frame.
+ * @param speed The animation playing speed.
+ * @param reverse The reverse flag.
+ * @param repeat The repeat flag.
  */
-public final class Animation extends NameableAbstract
+public record Animation(String name, int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
+                       implements Nameable
 {
+
     /** Animation default name. */
     public static final String DEFAULT_NAME = "default_anim";
     /** The minimum frame number. */
@@ -49,41 +58,23 @@ public final class Animation extends NameableAbstract
     /** The minimum animation speed. */
     public static final double MINIMUM_SPEED = 0.0;
 
-    /** First animation frame. */
-    private final int firstFrame;
-    /** Last animation frame. */
-    private final int lastFrame;
-    /** Animation speed. */
-    private final double speed;
-    /** Reverse flag. */
-    private final boolean reverse;
-    /** Repeat flag. */
-    private final boolean repeat;
-
     /**
-     * Create an animation, which can be played by an {@link Animator}.
+     * Create an animation.
      * 
      * @param name The animation name (must not be <code>null</code>).
      * @param firstFrame The first frame (included) to play (superior or equal to {@value #MINIMUM_FRAME}).
      * @param lastFrame The last frame (included) to play (superior or equal to firstFrame).
-     * @param speed The animation playing speed (superior or equal to #MINIMUM_SPEED).
+     * @param speed The animation playing speed (superior or equal to {@value #MINIMUM_SPEED}).
      * @param reverse <code>true</code> to reverse animation play (play it from first to last, and last to first).
      * @param repeat The repeat state (<code>true</code> will play in loop, <code>false</code> will play once only).
      * @throws LionEngineException If invalid parameters.
      */
-    public Animation(String name, int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
+    public Animation
     {
-        super(name);
-
+        Check.notNull(name);
         Check.superiorOrEqual(firstFrame, MINIMUM_FRAME);
         Check.superiorOrEqual(lastFrame, firstFrame);
         Check.superiorOrEqual(speed, MINIMUM_SPEED);
-
-        this.firstFrame = firstFrame;
-        this.lastFrame = lastFrame;
-        this.speed = speed;
-        this.reverse = reverse;
-        this.repeat = repeat;
     }
 
     /**
@@ -144,5 +135,11 @@ public final class Animation extends NameableAbstract
     public boolean hasRepeat()
     {
         return repeat;
+    }
+
+    @Override
+    public String getName()
+    {
+        return name;
     }
 }

@@ -16,10 +16,8 @@
  */
 package com.b3dgs.lionengine;
 
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.security.PrivilegedAction;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -202,24 +200,6 @@ public final class UtilReflection
                                         + type.getName()
                                         + ERROR_WITH
                                         + Arrays.asList(paramTypes));
-    }
-
-    /**
-     * Set the object accessibility with an access controller.
-     * 
-     * @param object The accessible object (must not be <code>null</code>).
-     * @param accessible <code>true</code> if accessible, <code>false</code> else.
-     * @throws LionEngineException If invalid parameters or field not found.
-     */
-    public static void setAccessible(AccessibleObject object, boolean accessible)
-    {
-        Check.notNull(object);
-
-        java.security.AccessController.doPrivileged((PrivilegedAction<Void>) () ->
-        {
-            object.setAccessible(accessible);
-            return null;
-        });
     }
 
     /**

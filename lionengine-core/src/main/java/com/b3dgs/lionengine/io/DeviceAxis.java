@@ -21,14 +21,12 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Axis data.
+ * 
+ * @param positive The positive.
+ * @param negative The negative.
  */
-public class DeviceAxis
+public record DeviceAxis(Integer positive, Integer negative)
 {
-    /** Positive. */
-    private final Integer positive;
-    /** Negative. */
-    private final Integer negative;
-
     /**
      * Create axis.
      * 
@@ -36,15 +34,10 @@ public class DeviceAxis
      * @param negative The negative (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public DeviceAxis(Integer positive, Integer negative)
+    public DeviceAxis
     {
-        super();
-
         Check.notNull(positive);
         Check.notNull(negative);
-
-        this.positive = positive;
-        this.negative = negative;
     }
 
     /**

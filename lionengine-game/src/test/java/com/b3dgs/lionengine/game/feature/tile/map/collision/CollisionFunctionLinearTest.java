@@ -83,6 +83,6 @@ final class CollisionFunctionLinearTest
     @Test
     void testToString()
     {
-        assertEquals("CollisionFunctionLinear (a=2.0, b=3.0)", function.toString());
+        assertEquals("CollisionFunctionLinear[a=2.0, b=3.0]", function.toString());
     }
 }

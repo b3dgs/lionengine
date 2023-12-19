@@ -245,19 +245,12 @@ final class MapTileCollisionComputer
      */
     private static double getInputValue(Tile tile, Axis input, double x, double y)
     {
-        final double v;
-        switch (input)
+        return switch (input)
         {
-            case X:
-                v = Math.floor(x - tile.getX());
-                break;
-            case Y:
-                v = Math.floor(y - tile.getY());
-                break;
-            default:
-                throw new LionEngineException(input);
-        }
-        return v;
+            case X -> Math.floor(x - tile.getX());
+            case Y -> Math.floor(y - tile.getY());
+            default -> throw new LionEngineException(input);
+        };
     }
 
     /**

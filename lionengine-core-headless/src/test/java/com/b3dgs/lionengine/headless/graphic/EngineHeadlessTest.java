@@ -46,9 +46,9 @@ final class EngineHeadlessTest
     @Test
     void testDefaultAlready()
     {
-        EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT);
+        EngineHeadless.start(EngineHeadlessTest.class.getName(), new Version(1, 0, 0));
 
-        assertThrows(() -> EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT),
+        assertThrows(() -> EngineHeadless.start(EngineHeadlessTest.class.getName(), new Version(1, 0, 0)),
                      "The engine has already been started !");
     }
 
@@ -58,7 +58,9 @@ final class EngineHeadlessTest
     @Test
     void testNullResources()
     {
-        assertThrows(() -> EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT, (String) null),
+        assertThrows(() -> EngineHeadless.start(EngineHeadlessTest.class.getName(),
+                                                new Version(1, 0, 0),
+                                                (String) null),
                      "Unexpected null argument !");
     }
 
@@ -68,11 +70,11 @@ final class EngineHeadlessTest
     @Test
     void testResourcesAlready()
     {
-        EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING);
+        EngineHeadless.start(EngineHeadlessTest.class.getName(), new Version(1, 0, 0), Constant.EMPTY_STRING);
 
         assertTrue(Engine.isStarted());
         assertThrows(() -> EngineHeadless.start(EngineHeadlessTest.class.getName(),
-                                                Version.DEFAULT,
+                                                new Version(1, 0, 0),
                                                 Constant.EMPTY_STRING),
                      "The engine has already been started !");
     }
@@ -83,11 +85,11 @@ final class EngineHeadlessTest
     @Test
     void testClass()
     {
-        EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT, EngineHeadlessTest.class);
+        EngineHeadless.start(EngineHeadlessTest.class.getName(), new Version(1, 0, 0), EngineHeadlessTest.class);
 
         assertTrue(Engine.isStarted());
         assertThrows(() -> EngineHeadless.start(EngineHeadlessTest.class.getName(),
-                                                Version.DEFAULT,
+                                                new Version(1, 0, 0),
                                                 EngineHeadlessTest.class),
                      "The engine has already been started !");
     }

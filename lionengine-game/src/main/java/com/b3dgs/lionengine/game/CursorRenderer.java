@@ -105,14 +105,11 @@ final class CursorRenderer implements Resource, Renderable
     {
         Check.superiorOrEqual(surfaceId, 0);
         this.surfaceId = Integer.valueOf(surfaceId);
-        if (surfaces.containsKey(this.surfaceId))
-        {
-            nextSurface = surfaces.get(this.surfaceId);
-        }
-        else
+        if (!surfaces.containsKey(this.surfaceId))
         {
             throw new LionEngineException(ERROR_SURFACE_ID + surfaceId);
         }
+        nextSurface = surfaces.get(this.surfaceId);
     }
 
     /**

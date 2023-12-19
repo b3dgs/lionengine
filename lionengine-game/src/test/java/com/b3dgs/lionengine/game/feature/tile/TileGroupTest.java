@@ -84,9 +84,9 @@ final class TileGroupTest
 
         assertEquals(tileGroup, tileGroup);
         assertEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, getTile(1)));
-        assertEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, getTile(2)));
-        assertEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, getTile(1)));
-        assertEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, getTile(2)));
+        assertNotEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, getTile(2)));
+        assertNotEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, getTile(1)));
+        assertNotEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, getTile(2)));
 
         assertNotEquals(tileGroup, new Object());
         assertNotEquals(tileGroup, new TileGroup("toto", TileGroupType.NONE, getTile(1)));
@@ -103,9 +103,9 @@ final class TileGroupTest
 
         assertHashEquals(tileGroup, tileGroup);
         assertHashEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, getTile(1)));
-        assertHashEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, getTile(2)));
-        assertHashEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, getTile(1)));
-        assertHashEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, getTile(2)));
+        assertHashNotEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, getTile(2)));
+        assertHashNotEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, getTile(1)));
+        assertHashNotEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, getTile(2)));
 
         assertHashNotEquals(tileGroup, new Object());
         assertHashNotEquals(tileGroup, new TileGroup("toto", TileGroupType.NONE, getTile(1)));

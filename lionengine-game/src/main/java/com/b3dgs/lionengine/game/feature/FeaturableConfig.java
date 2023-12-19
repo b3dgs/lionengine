@@ -38,8 +38,11 @@ import com.b3dgs.lionengine.game.Feature;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param clazz The featurable class name.
+ * @param setup The setup class name.
  */
-public final class FeaturableConfig
+public record FeaturableConfig(String clazz, String setup)
 {
     /** Default file name. */
     public static final String DEFAULT_FILENAME = "featurable.xml";
@@ -59,8 +62,6 @@ public final class FeaturableConfig
     static final String ERROR_CONSTRUCTOR = "Constructor not found: ";
     /** Default class name. */
     private static final String DEFAULT_CLASS_NAME = FeaturableModel.class.getName();
-    /** Minimum to string length. */
-    private static final int MIN_LENGTH = 35;
     /** Class cache. */
     private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
 
@@ -307,27 +308,17 @@ public final class FeaturableConfig
         }
     }
 
-    /** Featurable class name. */
-    private final String clazz;
-    /** Setup class name. */
-    private final String setup;
-
     /**
-     * Create an featurable configuration.
+     * Create configuration.
      * 
      * @param clazz The featurable class name (must not be <code>null</code>).
      * @param setup The setup class name, {@link Constant#EMPTY_STRING} if undefined (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public FeaturableConfig(String clazz, String setup)
+    public FeaturableConfig
     {
-        super();
-
         Check.notNull(clazz);
         Check.notNull(setup);
-
-        this.clazz = clazz;
-        this.setup = setup;
     }
 
     /**
@@ -348,46 +339,5 @@ public final class FeaturableConfig
     public String getSetupName()
     {
         return setup;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + clazz.hashCode();
-        result = prime * result + setup.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final FeaturableConfig other = (FeaturableConfig) object;
-        return clazz.equals(other.clazz) && setup.equals(other.setup);
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
-                                            .append(" [clazz=")
-                                            .append(clazz)
-                                            .append(", setup=")
-                                            .append(setup)
-                                            .append("]")
-                                            .toString();
     }
 }

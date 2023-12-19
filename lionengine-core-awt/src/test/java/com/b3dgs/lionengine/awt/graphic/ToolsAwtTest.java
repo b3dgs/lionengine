@@ -59,7 +59,7 @@ final class ToolsAwtTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(ToolsAwtTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(ToolsAwtTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setLoadFromJar(ToolsAwtTest.class);
     }

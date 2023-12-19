@@ -25,9 +25,16 @@ import com.b3dgs.lionengine.LionEngineException;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param r The red value.
+ * @param g The green value.
+ * @param b The blue value.
+ * @param a The alpha value.
+ * @param rgba The rgba value.
  */
-public final class ColorRgba
+public record ColorRgba(int r, int g, int b, int a, int rgba)
 {
+
     /** Red color. */
     public static final ColorRgba RED = new ColorRgba(255, 0, 0);
     /** Green color. */
@@ -54,19 +61,6 @@ public final class ColorRgba
     public static final ColorRgba TRANSPARENT = new ColorRgba(0, 0, 0, 0);
     /** Opaque color. */
     public static final ColorRgba OPAQUE = new ColorRgba(0, 0, 0, 255);
-    /** Minimum to string length. */
-    private static final int MIN_LENGHT = 30;
-
-    /** Color value. */
-    private final int value;
-    /** Red. */
-    private final int valueRed;
-    /** Green. */
-    private final int valueGreen;
-    /** Blue. */
-    private final int valueBlue;
-    /** Alpha. */
-    private final int valueAlpha;
 
     /**
      * Create an opaque color.
@@ -78,11 +72,11 @@ public final class ColorRgba
      */
     public ColorRgba(int r, int g, int b)
     {
-        this(r, g, b, 255);
+        this(r, g, b, 255, UtilColor.getRgbaValue(r, g, b, 255));
     }
 
     /**
-     * Create a 4 channels color.
+     * Create a transparent color.
      * 
      * @param r The red value [0-255].
      * @param g The green value [0-255].
@@ -92,8 +86,35 @@ public final class ColorRgba
      */
     public ColorRgba(int r, int g, int b, int a)
     {
-        super();
+        this(r, g, b, a, UtilColor.getRgbaValue(r, g, b, a));
+    }
 
+    /**
+     * Create a color.
+     * 
+     * @param rgba The color value.
+     */
+    public ColorRgba(int rgba)
+    {
+        this(rgba >> Constant.BYTE_3 & 0xFF,
+             rgba >> Constant.BYTE_2 & 0xFF,
+             rgba >> Constant.BYTE_1 & 0xFF,
+             rgba >> Constant.BYTE_4 & 0xFF,
+             rgba);
+    }
+
+    /**
+     * Create a 4 channels color.
+     * 
+     * @param r The red value [0-255].
+     * @param g The green value [0-255].
+     * @param b The blue value [0-255].
+     * @param a The alpha value [0-255].
+     * @param rgba The rgba value.
+     * @throws LionEngineException If color value is not in a valid range.
+     */
+    public ColorRgba
+    {
         Check.superiorOrEqual(r, 0);
         Check.inferiorOrEqual(r, 255);
 
@@ -106,27 +127,7 @@ public final class ColorRgba
         Check.superiorOrEqual(a, 0);
         Check.inferiorOrEqual(a, 255);
 
-        value = UtilColor.getRgbaValue(r, g, b, a);
-        valueAlpha = a;
-        valueRed = r;
-        valueGreen = g;
-        valueBlue = b;
-    }
-
-    /**
-     * Create a color.
-     * 
-     * @param value The color value.
-     */
-    public ColorRgba(int value)
-    {
-        super();
-
-        this.value = value;
-        valueAlpha = value >> Constant.BYTE_4 & 0xFF;
-        valueRed = value >> Constant.BYTE_3 & 0xFF;
-        valueGreen = value >> Constant.BYTE_2 & 0xFF;
-        valueBlue = value >> Constant.BYTE_1 & 0xFF;
+        Check.equality(UtilColor.getRgbaValue(r, g, b, a), rgba);
     }
 
     /**
@@ -136,7 +137,7 @@ public final class ColorRgba
      */
     public int getRgba()
     {
-        return value;
+        return rgba;
     }
 
     /**
@@ -146,7 +147,7 @@ public final class ColorRgba
      */
     public int getRed()
     {
-        return valueRed;
+        return r;
     }
 
     /**
@@ -156,7 +157,7 @@ public final class ColorRgba
      */
     public int getGreen()
     {
-        return valueGreen;
+        return g;
     }
 
     /**
@@ -166,7 +167,7 @@ public final class ColorRgba
      */
     public int getBlue()
     {
-        return valueBlue;
+        return b;
     }
 
     /**
@@ -176,50 +177,6 @@ public final class ColorRgba
      */
     public int getAlpha()
     {
-        return valueAlpha;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + value;
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final ColorRgba color = (ColorRgba) object;
-        return color.value == value;
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGHT).append(getClass().getSimpleName())
-                                            .append(" [r=")
-                                            .append(valueRed)
-                                            .append(", g=")
-                                            .append(valueGreen)
-                                            .append(", b=")
-                                            .append(valueBlue)
-                                            .append(", a=")
-                                            .append(valueAlpha)
-                                            .append("]")
-                                            .toString();
+        return a;
     }
 }

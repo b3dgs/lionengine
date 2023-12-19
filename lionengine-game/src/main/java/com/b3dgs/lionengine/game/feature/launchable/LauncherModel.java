@@ -298,9 +298,8 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         double dx = target.getX();
         double dy = target.getY();
 
-        if (target instanceof Transformable)
+        if (target instanceof final Transformable targetTransformable)
         {
-            final Transformable targetTransformable = (Transformable) target;
             if (extrapolate)
             {
                 final double ray = UtilMath.getDistance(transformable.getX(),

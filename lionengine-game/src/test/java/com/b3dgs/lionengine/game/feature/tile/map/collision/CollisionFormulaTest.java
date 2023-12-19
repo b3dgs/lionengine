@@ -21,7 +21,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.game.Orientation;
 
 /**
@@ -58,13 +57,17 @@ final class CollisionFormulaTest
     {
         assertEquals(formula, formula);
         assertEquals(formula,
-                     new CollisionFormula("formula", new CollisionRange(Axis.Y, 0, 1, 2, 3), function, constaint));
-        assertEquals(formula, new CollisionFormula("formula", range, new CollisionFunctionLinear(2.0, 2.0), constaint));
+                     new CollisionFormula("formula", new CollisionRange(Axis.X, 0, 1, 2, 3), function, constaint));
+
+        assertNotEquals(formula,
+                        new CollisionFormula("formula", new CollisionRange(Axis.Y, 0, 1, 2, 3), function, constaint));
+        assertNotEquals(formula,
+                        new CollisionFormula("formula", range, new CollisionFunctionLinear(2.0, 2.0), constaint));
 
         final CollisionConstraint newConstraint = new CollisionConstraint();
         newConstraint.add(Orientation.EAST, "test");
 
-        assertEquals(formula, new CollisionFormula("formula", range, function, newConstraint));
+        assertNotEquals(formula, new CollisionFormula("formula", range, function, newConstraint));
 
         assertNotEquals(formula, null);
         assertNotEquals(formula, new Object());
@@ -78,13 +81,17 @@ final class CollisionFormulaTest
     void testHashCode()
     {
         assertEquals(formula,
-                     new CollisionFormula("formula", new CollisionRange(Axis.Y, 0, 1, 2, 3), function, constaint));
-        assertEquals(formula, new CollisionFormula("formula", range, new CollisionFunctionLinear(2.0, 2.0), constaint));
+                     new CollisionFormula("formula", new CollisionRange(Axis.X, 0, 1, 2, 3), function, constaint));
+
+        assertNotEquals(formula,
+                        new CollisionFormula("formula", new CollisionRange(Axis.Y, 0, 1, 2, 3), function, constaint));
+        assertNotEquals(formula,
+                        new CollisionFormula("formula", range, new CollisionFunctionLinear(2.0, 2.0), constaint));
 
         final CollisionConstraint newConstraint = new CollisionConstraint();
         newConstraint.add(Orientation.EAST, "test");
 
-        assertEquals(formula, new CollisionFormula("formula", range, function, newConstraint));
+        assertNotEquals(formula, new CollisionFormula("formula", range, function, newConstraint));
 
         assertNotEquals(formula, new Object());
         assertNotEquals(formula, new CollisionFormula("void", range, function, constaint));
@@ -96,18 +103,10 @@ final class CollisionFormulaTest
     @Test
     void testToString()
     {
-        assertEquals("CollisionFormula (name=formula)"
-                     + System.lineSeparator()
-                     + Constant.TAB
-                     + "CollisionRange (output=X, minX=0, maxX=1, minY=2, maxY=3)"
-                     + System.lineSeparator()
-                     + Constant.TAB
-                     + "CollisionFunctionLinear (a=1.0, b=2.0)"
-                     + System.lineSeparator()
-                     + Constant.TAB
-                     + "CollisionConstraint{NORTH=[], NORTH_EAST=[], EAST=[], SOUTH_EAST=[], "
-                     + "SOUTH=[], SOUTH_WEST=[], WEST=[], NORTH_WEST=[]}"
-                     + System.lineSeparator(),
-                     formula.toString());
+        assertEquals("""
+                CollisionFormula[name=formula, range=CollisionRange[output=X, minX=0, maxX=1, minY=2, maxY=3],\s\
+                function=CollisionFunctionLinear[a=1.0, b=2.0],\s\
+                constraint=CollisionConstraint{NORTH=[], NORTH_EAST=[], EAST=[], SOUTH_EAST=[], SOUTH=[],\s\
+                SOUTH_WEST=[], WEST=[], NORTH_WEST=[]}]""", formula.toString());
     }
 }

@@ -422,10 +422,6 @@ public class Force implements Direction, Updatable
         fv = UtilMath.clamp(fv, minV, maxV) + 0.0;
     }
 
-    /*
-     * Updatable
-     */
-
     @Override
     public void update(double extrp)
     {
@@ -438,10 +434,6 @@ public class Force implements Direction, Updatable
         fixForce();
     }
 
-    /*
-     * Direction
-     */
-
     @Override
     public double getDirectionHorizontal()
     {
@@ -453,10 +445,6 @@ public class Force implements Direction, Updatable
     {
         return fv;
     }
-
-    /*
-     * Object
-     */
 
     @Override
     public int hashCode()
@@ -471,8 +459,7 @@ public class Force implements Direction, Updatable
         temp = Double.doubleToLongBits(sensibility);
         result = prime * result + (int) (temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(velocity);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        return result;
+        return prime * result + (int) (temp ^ temp >>> 32);
     }
 
     @Override

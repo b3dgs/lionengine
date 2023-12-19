@@ -35,7 +35,6 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.UtilTests;
 
 /**
@@ -81,7 +80,7 @@ final class IdentifiableModelTest
         ids.clear();
 
         final Field field = IdentifiableModel.class.getDeclaredField("lastId");
-        UtilReflection.setAccessible(field, true);
+        field.setAccessible(true);
         field.set(IdentifiableModel.class, Integer.valueOf(0));
 
         final Collection<Identifiable> identifiables = new ArrayList<>();

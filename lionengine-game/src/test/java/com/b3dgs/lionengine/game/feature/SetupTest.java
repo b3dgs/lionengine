@@ -44,7 +44,7 @@ final class SetupTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(SetupTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(SetupTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setLoadFromJar(SetupTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());

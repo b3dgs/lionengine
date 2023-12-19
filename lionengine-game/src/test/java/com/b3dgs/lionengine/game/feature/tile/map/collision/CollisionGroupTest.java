@@ -28,8 +28,6 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.Constant;
-
 /**
  * Test {@link CollisionGroup}.
  */
@@ -73,8 +71,9 @@ final class CollisionGroupTest
     @Test
     void testHashCode()
     {
-        assertHashEquals(group, new CollisionGroup("group", new ArrayList<>()));
         assertHashEquals(group, new CollisionGroup("group", Arrays.asList(formula)));
+
+        assertHashNotEquals(group, new CollisionGroup("group", new ArrayList<>()));
 
         assertHashNotEquals(group, new Object());
         assertHashNotEquals(group, new CollisionGroup("void", Arrays.asList(formula)));
@@ -87,8 +86,9 @@ final class CollisionGroupTest
     void testEquals()
     {
         assertEquals(group, group);
-        assertEquals(group, new CollisionGroup("group", new ArrayList<>()));
         assertEquals(group, new CollisionGroup("group", Arrays.asList(formula)));
+
+        assertNotEquals(group, new CollisionGroup("group", new ArrayList<>()));
 
         assertNotEquals(group, null);
         assertNotEquals(group, new Object());
@@ -101,22 +101,7 @@ final class CollisionGroupTest
     @Test
     void testToString()
     {
-        assertEquals("CollisionGroup (name=group)"
-                     + System.lineSeparator()
-                     + Constant.TAB
-                     + "[CollisionFormula (name=formula)"
-                     + System.lineSeparator()
-                     + Constant.TAB
-                     + "CollisionRange (output=X, minX=0, maxX=1, minY=2, maxY=3)"
-                     + System.lineSeparator()
-                     + Constant.TAB
-                     + "CollisionFunctionLinear (a=1.0, b=2.0)"
-                     + System.lineSeparator()
-                     + Constant.TAB
-                     + "CollisionConstraint{NORTH=[], NORTH_EAST=[], EAST=[], SOUTH_EAST=[], SOUTH=[], "
-                     + "SOUTH_WEST=[], WEST=[], NORTH_WEST=[]}"
-                     + System.lineSeparator()
-                     + "]",
+        assertEquals("CollisionGroup[name=group, formulas=[CollisionFormula[name=formula, range=CollisionRange[output=X, minX=0, maxX=1, minY=2, maxY=3], function=CollisionFunctionLinear[a=1.0, b=2.0], constraint=CollisionConstraint{NORTH=[], NORTH_EAST=[], EAST=[], SOUTH_EAST=[], SOUTH=[], SOUTH_WEST=[], WEST=[], NORTH_WEST=[]}]]]",
                      group.toString());
     }
 }

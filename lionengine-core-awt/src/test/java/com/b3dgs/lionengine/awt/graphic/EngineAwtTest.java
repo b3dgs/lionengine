@@ -45,9 +45,9 @@ final class EngineAwtTest
     @Test
     void testDefaultAlready()
     {
-        EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT);
+        EngineAwt.start(EngineAwtTest.class.getName(), new Version(1, 0, 0));
 
-        assertThrows(() -> EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT),
+        assertThrows(() -> EngineAwt.start(EngineAwtTest.class.getName(), new Version(1, 0, 0)),
                      "The engine has already been started !");
     }
 
@@ -57,10 +57,10 @@ final class EngineAwtTest
     @Test
     void testClass()
     {
-        EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, EngineAwtTest.class);
+        EngineAwt.start(EngineAwtTest.class.getName(), new Version(1, 0, 0), EngineAwtTest.class);
 
         assertTrue(Engine.isStarted());
-        assertThrows(() -> EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, EngineAwtTest.class),
+        assertThrows(() -> EngineAwt.start(EngineAwtTest.class.getName(), new Version(1, 0, 0), EngineAwtTest.class),
                      "The engine has already been started !");
     }
 }

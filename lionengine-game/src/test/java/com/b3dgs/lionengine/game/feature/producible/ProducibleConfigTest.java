@@ -118,6 +118,6 @@ final class ProducibleConfigTest
     {
         final ProducibleConfig producible = new ProducibleConfig(1, 2, 3);
 
-        assertEquals("ProducibleConfig [steps=1, width=2, height=3]", producible.toString());
+        assertEquals("ProducibleConfig[steps=1, width=2, height=3]", producible.toString());
     }
 }

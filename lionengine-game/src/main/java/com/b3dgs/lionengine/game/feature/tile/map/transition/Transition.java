@@ -16,20 +16,16 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition;
 
-import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Represents a tile transition from two groups.
+ * 
+ * @param type The transition type.
+ * @param groups The groups transition.
  */
-public class Transition
+public record Transition(TransitionType type, GroupTransition groups)
 {
-    /** The transition type. */
-    private final TransitionType type;
-    /** Group transition. */
-    private final GroupTransition groups;
-
     /**
      * Create the transition.
      * 
@@ -40,14 +36,7 @@ public class Transition
      */
     public Transition(TransitionType type, String groupIn, String groupOut)
     {
-        super();
-
-        Check.notNull(type);
-        Check.notNull(groupIn);
-        Check.notNull(groupOut);
-
-        this.type = type;
-        groups = new GroupTransition(groupIn, groupOut);
+        this(type, new GroupTransition(groupIn, groupOut));
     }
 
     /**
@@ -91,18 +80,13 @@ public class Transition
         return getIn().equals(other.getOut()) && getOut().equals(other.getIn()) && type == other.type.getSymetric();
     }
 
-    /*
-     * Object
-     */
-
     @Override
     public int hashCode()
     {
         final int prime = 31;
         int result = 1;
         result = prime * result + groups.hashCode();
-        result = prime * result + type.hashCode();
-        return result;
+        return prime * result + type.hashCode();
     }
 
     @Override
@@ -118,11 +102,5 @@ public class Transition
         }
         final Transition other = (Transition) object;
         return groups.equals(other.groups) && type == other.type || isSymmetric(other);
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder().append(type).append(Constant.SPACE).append(groups).toString();
     }
 }

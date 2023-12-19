@@ -115,10 +115,6 @@ public final class Line
         return y2;
     }
 
-    /*
-     * Object
-     */
-
     @Override
     public int hashCode()
     {
@@ -132,8 +128,7 @@ public final class Line
         temp = Double.doubleToLongBits(x2);
         result = prime * result + (int) (temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(y2);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        return result;
+        return prime * result + (int) (temp ^ temp >>> 32);
     }
 
     @Override

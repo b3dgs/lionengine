@@ -97,7 +97,7 @@ final class LoaderTest
     @BeforeEach
     public void beforeTest()
     {
-        Engine.start(new EngineMock("LoaderTest", Version.DEFAULT));
+        Engine.start(new EngineMock("LoaderTest", new Version(1, 0, 0)));
     }
 
     /**
@@ -367,7 +367,7 @@ final class LoaderTest
     @Test
     void testNoIconWindowed()
     {
-        final Config config = new Config(OUTPUT, 16, true, Medias.create("void"));
+        final Config config = new Config(OUTPUT, 16, true, Arrays.asList(Medias.create("void")));
         Loader.start(config, SequenceSingleMock.class).await();
     }
 
@@ -377,7 +377,7 @@ final class LoaderTest
     @Test
     void testIconWindowed()
     {
-        final Config config = new Config(OUTPUT, 16, true, icon);
+        final Config config = new Config(OUTPUT, 16, true, Arrays.asList(icon));
         Loader.start(config, SequenceSingleMock.class).await();
     }
 
@@ -387,7 +387,7 @@ final class LoaderTest
     @Test
     void testIconFullScreen()
     {
-        final Config config = new Config(OUTPUT, 16, false, icon);
+        final Config config = new Config(OUTPUT, 16, false, Arrays.asList(icon));
         Loader.start(config, SequenceSingleMock.class).await();
     }
 

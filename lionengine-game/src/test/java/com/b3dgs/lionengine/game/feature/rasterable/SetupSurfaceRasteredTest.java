@@ -45,7 +45,7 @@ final class SetupSurfaceRasteredTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(SetupSurfaceRasteredTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(SetupSurfaceRasteredTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setLoadFromJar(SetupSurfaceRasteredTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());

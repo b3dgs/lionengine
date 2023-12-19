@@ -116,7 +116,7 @@ final class DocumentFactoryTest
     {
         final Object old = UtilTests.getField(DocumentFactory.class, "documentBuilder");
         final Field field = DocumentFactory.class.getDeclaredField("documentBuilder");
-        UtilReflection.setAccessible(field, true);
+        field.setAccessible(true);
         field.set(DocumentFactory.class, null);
 
         final String oldFactory = System.getProperty(DocumentBuilderFactory.class.getName());
@@ -139,7 +139,7 @@ final class DocumentFactoryTest
                 System.setProperty(DocumentBuilderFactory.class.getName(), "");
             }
             field.set(DocumentFactory.class, old);
-            UtilReflection.setAccessible(field, false);
+            field.setAccessible(false);
         }
     }
 

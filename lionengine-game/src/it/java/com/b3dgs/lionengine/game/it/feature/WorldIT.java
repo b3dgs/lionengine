@@ -35,7 +35,7 @@ final class WorldIT
     @Test
     void testWorld()
     {
-        EngineAwt.start(getClass().getSimpleName(), Version.create(1, 0, 0), System.getProperty("java.io.tmpdir"));
+        EngineAwt.start(getClass().getSimpleName(), new Version(1, 0, 0), System.getProperty("java.io.tmpdir"));
         final Resolution output = new Resolution(640, 480, 60);
         Loader.start(Config.windowed(output), Scene.class).await();
     }

@@ -43,7 +43,7 @@ final class ComponentUpdatableTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(ComponentUpdatableTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(ComponentUpdatableTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         Medias.setLoadFromJar(ComponentUpdatableTest.class);

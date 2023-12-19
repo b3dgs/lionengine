@@ -113,6 +113,6 @@ final class ExtractableConfigTest
     {
         final ExtractableConfig config = new ExtractableConfig("gold", 1);
 
-        assertEquals("ExtractableConfig [type=gold quantity=1]", config.toString());
+        assertEquals("ExtractableConfig[type=gold, quantity=1]", config.toString());
     }
 }

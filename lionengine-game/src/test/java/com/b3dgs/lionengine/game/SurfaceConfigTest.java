@@ -24,6 +24,8 @@ import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -63,7 +65,7 @@ final class SurfaceConfigTest
     {
         final Xml root = new Xml("test");
 
-        final SurfaceConfig config = new SurfaceConfig("image", "icon");
+        final SurfaceConfig config = new SurfaceConfig("image", Optional.of("icon"));
         root.add(SurfaceConfig.exports(config));
 
         final Media media = Medias.create("Object.xml");
@@ -83,7 +85,7 @@ final class SurfaceConfigTest
     {
         final Xml root = new Xml("test");
 
-        final SurfaceConfig config = new SurfaceConfig("image", null);
+        final SurfaceConfig config = new SurfaceConfig("image", Optional.empty());
         root.add(SurfaceConfig.exports(config));
 
         final Media media = Medias.create("Object.xml");
@@ -101,7 +103,7 @@ final class SurfaceConfigTest
     @Test
     void testNullImage()
     {
-        assertThrows(() -> new SurfaceConfig(null, "icon"), "Unexpected null argument !");
+        assertThrows(() -> new SurfaceConfig(null, Optional.of("icon")), "Unexpected null argument !");
     }
 
     /**
@@ -110,7 +112,7 @@ final class SurfaceConfigTest
     @Test
     void testConfigNullIcon()
     {
-        final SurfaceConfig config = new SurfaceConfig("image", null);
+        final SurfaceConfig config = new SurfaceConfig("image", Optional.empty());
 
         assertEquals("image", config.getImage());
         assertFalse(config.getIcon().isPresent());
@@ -122,18 +124,18 @@ final class SurfaceConfigTest
     @Test
     void testEquals()
     {
-        final SurfaceConfig config = new SurfaceConfig("image", "icon");
+        final SurfaceConfig config = new SurfaceConfig("image", Optional.of("icon"));
 
         assertEquals(config, config);
-        assertEquals(config, new SurfaceConfig("image", "icon"));
-        assertEquals(new SurfaceConfig("image", null), new SurfaceConfig("image", null));
+        assertEquals(config, new SurfaceConfig("image", Optional.of("icon")));
+        assertEquals(new SurfaceConfig("image", Optional.empty()), new SurfaceConfig("image", Optional.empty()));
 
         assertNotEquals(config, null);
         assertNotEquals(config, new Object());
-        assertNotEquals(config, new SurfaceConfig("", "icon"));
-        assertNotEquals(config, new SurfaceConfig("image", ""));
-        assertNotEquals(new SurfaceConfig("image", "icon"), new SurfaceConfig("image", null));
-        assertNotEquals(new SurfaceConfig("image", null), new SurfaceConfig("image", "icon"));
+        assertNotEquals(config, new SurfaceConfig("", Optional.of("icon")));
+        assertNotEquals(config, new SurfaceConfig("image", Optional.of("")));
+        assertNotEquals(new SurfaceConfig("image", Optional.of("icon")), new SurfaceConfig("image", Optional.empty()));
+        assertNotEquals(new SurfaceConfig("image", Optional.empty()), new SurfaceConfig("image", Optional.of("icon")));
     }
 
     /**
@@ -142,16 +144,18 @@ final class SurfaceConfigTest
     @Test
     void testHashCode()
     {
-        final SurfaceConfig hash = new SurfaceConfig("image", "icon");
+        final SurfaceConfig hash = new SurfaceConfig("image", Optional.of("icon"));
 
-        assertHashEquals(hash, new SurfaceConfig("image", "icon"));
-        assertHashEquals(new SurfaceConfig("image", null), new SurfaceConfig("image", null));
+        assertHashEquals(hash, new SurfaceConfig("image", Optional.of("icon")));
+        assertHashEquals(new SurfaceConfig("image", Optional.empty()), new SurfaceConfig("image", Optional.empty()));
 
         assertHashNotEquals(hash, new Object());
-        assertHashNotEquals(hash, new SurfaceConfig("", "icon"));
-        assertHashNotEquals(hash, new SurfaceConfig("image", ""));
-        assertHashNotEquals(new SurfaceConfig("image", "icon"), new SurfaceConfig("image", null));
-        assertHashNotEquals(new SurfaceConfig("image", null), new SurfaceConfig("image", "icon"));
+        assertHashNotEquals(hash, new SurfaceConfig("", Optional.of("icon")));
+        assertHashNotEquals(hash, new SurfaceConfig("image", Optional.of("")));
+        assertHashNotEquals(new SurfaceConfig("image", Optional.of("icon")),
+                            new SurfaceConfig("image", Optional.empty()));
+        assertHashNotEquals(new SurfaceConfig("image", Optional.empty()),
+                            new SurfaceConfig("image", Optional.of("icon")));
     }
 
     /**
@@ -160,8 +164,8 @@ final class SurfaceConfigTest
     @Test
     void testToString()
     {
-        final SurfaceConfig config = new SurfaceConfig("image", "icon");
+        final SurfaceConfig config = new SurfaceConfig("image", Optional.of("icon"));
 
-        assertEquals("SurfaceConfig [image=image, icon=icon]", config.toString());
+        assertEquals("SurfaceConfig[image=image, icon=Optional[icon]]", config.toString());
     }
 }

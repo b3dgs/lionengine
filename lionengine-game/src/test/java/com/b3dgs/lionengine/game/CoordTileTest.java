@@ -81,6 +81,6 @@ final class CoordTileTest
     {
         final CoordTile config = new CoordTile(1, 2);
 
-        assertHashEquals("CoordTile [tx=1, ty=2]", config.toString());
+        assertHashEquals("CoordTile[tx=1, ty=2]", config.toString());
     }
 }

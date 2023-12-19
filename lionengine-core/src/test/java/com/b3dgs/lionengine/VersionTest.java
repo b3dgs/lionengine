@@ -34,7 +34,7 @@ final class VersionTest
     @Test
     void testConstructor()
     {
-        final Version version = Version.create(3, 2, 1);
+        final Version version = new Version(3, 2, 1);
 
         assertEquals(3, version.getMajor());
         assertEquals(2, version.getMinor());
@@ -47,19 +47,19 @@ final class VersionTest
     @Test
     void testEquals()
     {
-        final Version version = Version.create(3, 2, 1);
+        final Version version = new Version(3, 2, 1);
 
         assertEquals(version, version);
-        assertEquals(version, Version.create(3, 2, 1));
+        assertEquals(version, new Version(3, 2, 1));
 
         assertNotEquals(version, null);
         assertNotEquals(version, new Object());
-        assertNotEquals(version, Version.create(3, 2, 0));
-        assertNotEquals(version, Version.create(3, 0, 1));
-        assertNotEquals(version, Version.create(0, 2, 1));
-        assertNotEquals(version, Version.create(3, 0, 0));
-        assertNotEquals(version, Version.create(0, 0, 1));
-        assertNotEquals(version, Version.create(0, 0, 0));
+        assertNotEquals(version, new Version(3, 2, 0));
+        assertNotEquals(version, new Version(3, 0, 1));
+        assertNotEquals(version, new Version(0, 2, 1));
+        assertNotEquals(version, new Version(3, 0, 0));
+        assertNotEquals(version, new Version(0, 0, 1));
+        assertNotEquals(version, new Version(0, 0, 0));
     }
 
     /**
@@ -68,17 +68,17 @@ final class VersionTest
     @Test
     void testHashCode()
     {
-        final Version version = Version.create(3, 2, 1);
+        final Version version = new Version(3, 2, 1);
 
-        assertHashEquals(version, Version.create(3, 2, 1));
+        assertHashEquals(version, new Version(3, 2, 1));
 
         assertHashNotEquals(version, new Object());
-        assertHashNotEquals(version, Version.create(3, 2, 0));
-        assertHashNotEquals(version, Version.create(3, 0, 1));
-        assertHashNotEquals(version, Version.create(0, 2, 1));
-        assertHashNotEquals(version, Version.create(3, 0, 0));
-        assertHashNotEquals(version, Version.create(0, 0, 1));
-        assertHashNotEquals(version, Version.create(0, 0, 0));
+        assertHashNotEquals(version, new Version(3, 2, 0));
+        assertHashNotEquals(version, new Version(3, 0, 1));
+        assertHashNotEquals(version, new Version(0, 2, 1));
+        assertHashNotEquals(version, new Version(3, 0, 0));
+        assertHashNotEquals(version, new Version(0, 0, 1));
+        assertHashNotEquals(version, new Version(0, 0, 0));
     }
 
     /**
@@ -87,6 +87,6 @@ final class VersionTest
     @Test
     void testToString()
     {
-        assertEquals("3.2.1", Version.create(3, 2, 1).toString());
+        assertEquals("3.2.1", new Version(3, 2, 1).toString());
     }
 }

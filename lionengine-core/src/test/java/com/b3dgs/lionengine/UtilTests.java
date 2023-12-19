@@ -49,6 +49,7 @@ public final class UtilTests
      * @return The value returned.
      * @throws LionEngineException If invalid parameters.
      */
+    @SuppressWarnings("unchecked")
     public static <T> T getMethod(Object object, String name, Object... params)
     {
         Check.notNull(object);
@@ -59,10 +60,8 @@ public final class UtilTests
         {
             final Class<?> clazz = UtilReflection.getClass(object);
             final Method method = clazz.getDeclaredMethod(name, UtilReflection.getParamTypes(params));
-            UtilReflection.setAccessible(method, true);
-            @SuppressWarnings("unchecked")
-            final T value = (T) method.invoke(object, params);
-            return value;
+            method.setAccessible(true);
+            return (T) method.invoke(object, params);
         }
         catch (final NoSuchMethodException | InvocationTargetException | IllegalAccessException exception)
         {
@@ -83,6 +82,7 @@ public final class UtilTests
      * @return The field found.
      * @throws LionEngineException If invalid parameters or field not found.
      */
+    @SuppressWarnings("unchecked")
     public static <T> T getField(Object object, String name)
     {
         Check.notNull(object);
@@ -92,10 +92,8 @@ public final class UtilTests
         {
             final Class<?> clazz = UtilReflection.getClass(object);
             final Field field = getDeclaredFieldSuper(clazz, name);
-            UtilReflection.setAccessible(field, true);
-            @SuppressWarnings("unchecked")
-            final T value = (T) field.get(object);
-            return value;
+            field.setAccessible(true);
+            return (T) field.get(object);
         }
         catch (final NoSuchFieldException | IllegalAccessException exception)
         {
@@ -139,10 +137,9 @@ public final class UtilTests
     {
         final Class<?>[] params = UtilReflection.getParamTypes(args);
         final Constructor<?> constructor = clazz.getDeclaredConstructor(params);
-        final boolean accessible = constructor.isAccessible();
         try
         {
-            UtilReflection.setAccessible(constructor, true);
+            constructor.setAccessible(true);
             Assertions.assertNull(constructor.newInstance(args));
         }
         catch (final InvocationTargetException exception)
@@ -153,13 +150,6 @@ public final class UtilTests
                 throw (LionEngineException) cause;
             }
             throw exception;
-        }
-        finally
-        {
-            if (constructor.isAccessible() != accessible)
-            {
-                UtilReflection.setAccessible(constructor, accessible);
-            }
         }
         Assertions.fail("Constructor is not private !");
     }
@@ -209,7 +199,7 @@ public final class UtilTests
         {
             return Integer.valueOf(0);
         }
-        else if (type == Double.TYPE)
+        if (type == Double.TYPE)
         {
             return Double.valueOf(0.0);
         }

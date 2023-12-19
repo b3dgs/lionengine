@@ -56,7 +56,7 @@ public class FactoryGraphicTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(FactoryGraphicTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(FactoryGraphicTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
@@ -410,7 +410,7 @@ public class FactoryGraphicTest
         assertThrows(() -> Graphics.generateTileset(new ImageBuffer[0], null), "Unexpected null argument !");
         assertThrows(() -> Graphics.generateTileset(new ImageBuffer[0], Medias.create("")), "No images found !");
 
-        final ImageBuffer[] images = new ImageBuffer[]
+        final ImageBuffer[] images =
         {
             Graphics.getImageBuffer(Medias.create("image.png")), Graphics.getImageBuffer(Medias.create("image.png"))
         };
@@ -426,7 +426,7 @@ public class FactoryGraphicTest
     @Test
     void testGenerateTileset()
     {
-        final ImageBuffer[] images = new ImageBuffer[]
+        final ImageBuffer[] images =
         {
             Graphics.getImageBuffer(Medias.create("image.png")), Graphics.getImageBuffer(Medias.create("image.png"))
         };

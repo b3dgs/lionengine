@@ -251,9 +251,7 @@ public final class UtilMath
         }
         curMin = min(curMin, getDistance(x1, y1, maxX, y2));
         curMin = min(curMin, getDistance(x1, y1, x2, maxY));
-        curMin = min(curMin, getDistance(x1, y1, maxX, maxY));
-
-        return curMin;
+        return min(curMin, getDistance(x1, y1, maxX, maxY));
     }
 
     /**
@@ -292,9 +290,7 @@ public final class UtilMath
         }
         curMin = min(curMin, getDistance(maxX, y2, x1, y1, w1, h1));
         curMin = min(curMin, getDistance(x2, maxY, x1, y1, w1, h1));
-        curMin = min(curMin, getDistance(maxX, maxY, x1, y1, w1, h1));
-
-        return curMin;
+        return min(curMin, getDistance(maxX, maxY, x1, y1, w1, h1));
     }
 
     /**
@@ -482,7 +478,7 @@ public final class UtilMath
         final double sqrt = Math.sqrt(value);
         int a = (int) Math.ceil(sqrt);
         int b = a;
-        final int[] closest = new int[]
+        final int[] closest =
         {
             a, b
         };

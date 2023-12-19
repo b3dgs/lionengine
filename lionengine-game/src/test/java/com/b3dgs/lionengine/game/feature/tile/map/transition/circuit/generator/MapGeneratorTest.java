@@ -61,7 +61,7 @@ final class MapGeneratorTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(FactoryGraphicTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(FactoryGraphicTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         Medias.setLoadFromJar(MapGeneratorTest.class);

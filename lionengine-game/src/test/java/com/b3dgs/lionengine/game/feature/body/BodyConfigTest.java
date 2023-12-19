@@ -119,6 +119,6 @@ final class BodyConfigTest
     {
         final BodyConfig config = new BodyConfig(1.0, 2.0);
 
-        assertEquals("BodyConfig [gravity=1.0, gravityMax=2.0]", config.toString());
+        assertEquals("BodyConfig[gravity=1.0, gravityMax=2.0]", config.toString());
     }
 }

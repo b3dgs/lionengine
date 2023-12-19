@@ -256,8 +256,6 @@ final class FeaturableModelTest
     @FeatureInterface
     public static final class FeatureItself extends FeaturableModel implements Feature
     {
-        @SuppressWarnings("unused") private Object object;
-
         /**
          * Create model.
          * 

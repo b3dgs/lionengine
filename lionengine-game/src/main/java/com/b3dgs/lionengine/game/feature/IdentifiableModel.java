@@ -136,9 +136,8 @@ public class IdentifiableModel extends FeatureAbstract implements Identifiable, 
     public int hashCode()
     {
         final int prime = 31;
-        int result = 1;
-        result = prime * result + id.hashCode();
-        return result;
+        final int result = 1;
+        return prime * result + id.hashCode();
     }
 
     @Override

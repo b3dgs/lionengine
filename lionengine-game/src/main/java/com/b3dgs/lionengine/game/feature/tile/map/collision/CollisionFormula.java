@@ -16,8 +16,9 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
-import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.NameableAbstract;
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Nameable;
 
 /**
  * Collision formula representation. It define the way of collision is computed, and its constraints compared to
@@ -52,41 +53,37 @@ import com.b3dgs.lionengine.NameableAbstract;
  * This will create 4 formulas, defining a collision for each side.
  * </p>
  * 
+ * @param name The formula name.
+ * @param range The range reference.
+ * @param function The function used.
+ * @param constraint The constraint used.
+ * 
  * @see CollisionFormulaConfig
  * @see CollisionRange
  * @see CollisionFunction
  * @see CollisionConstraint
  */
-public class CollisionFormula extends NameableAbstract
+public record CollisionFormula(String name,
+                               CollisionRange range,
+                               CollisionFunction function,
+                               CollisionConstraint constraint)
+                              implements Nameable
 {
-    /** Minimum to string characters. */
-    private static final int MINIMUM_LENGTH = 64;
-
-    /** Range representation. */
-    private final CollisionRange range;
-    /** Function used. */
-    private final CollisionFunction function;
-    /** Constraint defined. */
-    private final CollisionConstraint constraint;
-
     /**
-     * Create a collision formula.
+     * Create formula.
      * 
      * @param name The formula name.
      * @param range The range reference.
      * @param function The function used.
      * @param constraint The constraint used.
+     * @throws LionEngineException If invalid arguments.
      */
-    public CollisionFormula(String name,
-                            CollisionRange range,
-                            CollisionFunction function,
-                            CollisionConstraint constraint)
+    public CollisionFormula
     {
-        super(name);
-
-        this.range = range;
-        this.function = function;
-        this.constraint = constraint;
+        Check.notNull(name);
+        Check.notNull(range);
+        Check.notNull(function);
+        Check.notNull(constraint);
     }
 
     /**
@@ -119,27 +116,9 @@ public class CollisionFormula extends NameableAbstract
         return constraint;
     }
 
-    /*
-     * Object
-     */
-
     @Override
-    public String toString()
+    public String getName()
     {
-        return new StringBuilder(MINIMUM_LENGTH).append(getClass().getSimpleName())
-                                                .append(" (name=")
-                                                .append(getName())
-                                                .append(")")
-                                                .append(System.lineSeparator())
-                                                .append(Constant.TAB)
-                                                .append(range)
-                                                .append(System.lineSeparator())
-                                                .append(Constant.TAB)
-                                                .append(function)
-                                                .append(System.lineSeparator())
-                                                .append(Constant.TAB)
-                                                .append(constraint)
-                                                .append(System.lineSeparator())
-                                                .toString();
+        return name;
     }
 }

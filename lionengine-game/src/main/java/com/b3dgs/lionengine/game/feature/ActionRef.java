@@ -25,19 +25,35 @@ import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Action reference structure.
+ * 
+ * @param path The action media path.
+ * @param cancel The cancel flag.
+ * @param refs The associated actions.
+ * @param id The id supplier to handle unique instance if needed.
+ * @param unique The unique flag.
  */
-public class ActionRef
+public record ActionRef(String path,
+                        boolean cancel,
+                        Collection<ActionRef> refs,
+                        Function<Class<? extends Feature>, Feature> id,
+                        boolean unique)
 {
-    /** Action path media. */
-    private final String path;
-    /** Cancel flag. */
-    private final boolean cancel;
-    /** Unique flag. */
-    private final boolean unique;
-    /** Associated actions. */
-    private final Collection<ActionRef> refs;
-    /** Id supplier. */
-    private final Function<Class<? extends Feature>, Feature> id;
+    /**
+     * Create action reference.
+     * 
+     * @param path The action media path (must not be <code>null</code>).
+     * @param cancel The cancel flag (must not be <code>null</code>).
+     * @param refs The associated actions (must not be <code>null</code>).
+     * @param id The id supplier to handle unique instance if needed (can be <code>null</code> if non unique).
+     * @throws LionEngineException If <code>null</code> arguments.
+     */
+    public ActionRef(String path,
+                     boolean cancel,
+                     Collection<ActionRef> refs,
+                     Function<Class<? extends Feature>, Feature> id)
+    {
+        this(path, cancel, refs, id, id != null);
+    }
 
     /**
      * Create action reference.
@@ -59,23 +75,13 @@ public class ActionRef
      * @param cancel The cancel flag (must not be <code>null</code>).
      * @param refs The associated actions (must not be <code>null</code>).
      * @param id The id supplier to handle unique instance if needed (can be <code>null</code> if non unique).
+     * @param unique The unique flag.
      * @throws LionEngineException If <code>null</code> arguments.
      */
-    public ActionRef(String path,
-                     boolean cancel,
-                     Collection<ActionRef> refs,
-                     Function<Class<? extends Feature>, Feature> id)
+    public ActionRef
     {
-        super();
-
         Check.notNull(path);
         Check.notNull(refs);
-
-        this.path = path;
-        this.cancel = cancel;
-        this.refs = refs;
-        this.id = id;
-        unique = id != null;
     }
 
     /**
@@ -118,10 +124,6 @@ public class ActionRef
         return refs;
     }
 
-    /*
-     * Object
-     */
-
     @Override
     public int hashCode()
     {
@@ -159,7 +161,7 @@ public class ActionRef
     public String toString()
     {
         return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" [path=")
+                                  .append("[path=")
                                   .append(path)
                                   .append(", cancel=")
                                   .append(cancel)

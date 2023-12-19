@@ -18,28 +18,12 @@ package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
 /**
  * Path step.
+ * 
+ * @param x The location x.
+ * @param y The location y.
  */
-public final class Step
+public record Step(int x, int y)
 {
-    /** Step location x. */
-    private final int x;
-    /** Step location y. */
-    private final int y;
-
-    /**
-     * Internal constructor.
-     * 
-     * @param x The location x.
-     * @param y The location y.
-     */
-    public Step(int x, int y)
-    {
-        super();
-
-        this.x = x;
-        this.y = y;
-    }
-
     /**
      * Get location x.
      * 
@@ -58,22 +42,5 @@ public final class Step
     public int getY()
     {
         return y;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return x * y;
-    }
-
-    @Override
-    public boolean equals(Object other)
-    {
-        if (other instanceof Step)
-        {
-            final Step o = (Step) other;
-            return o.getX() == x && o.getY() == y;
-        }
-        return false;
     }
 }

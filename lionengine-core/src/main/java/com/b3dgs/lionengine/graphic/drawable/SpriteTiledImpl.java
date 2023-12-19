@@ -152,8 +152,7 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
             result = prime * result + media.hashCode();
         }
         result = prime * result + tilesHorizontal;
-        result = prime * result + tilesVertical;
-        return result;
+        return prime * result + tilesVertical;
     }
 
     @Override

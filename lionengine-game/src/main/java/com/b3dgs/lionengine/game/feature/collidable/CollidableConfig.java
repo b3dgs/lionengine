@@ -35,9 +35,12 @@ import com.b3dgs.lionengine.game.Configurer;
  * This class is Thread-Safe.
  * </p>
  * 
+ * @param group The defined group.
+ * @param accepted The accepted groups.
+ * 
  * @see Collidable
  */
-public final class CollidableConfig
+public record CollidableConfig(Integer group, Collection<Integer> accepted)
 {
     /** Collidable node. */
     public static final String NODE_COLLIDABLE = Constant.XML_PREFIX + "collidable";
@@ -53,8 +56,6 @@ public final class CollidableConfig
     private static final String ACCEPTED_SEPARATOR = Constant.PERCENT;
     /** Accepted separator pattern. */
     private static final Pattern ACCEPTED_SEPARATOR_PATTERN = Pattern.compile(ACCEPTED_SEPARATOR);
-    /** Minimum to string length. */
-    private static final int MIN_LENGTH = 38;
 
     /**
      * Create the collidable data from node.
@@ -119,25 +120,6 @@ public final class CollidableConfig
         node.writeString(ATT_ACCEPTED, accepted.toString());
     }
 
-    /** The defined group. */
-    private final Integer group;
-    /** The accepted groups. */
-    private final Collection<Integer> accepted;
-
-    /**
-     * Private constructor.
-     * 
-     * @param group The defined group.
-     * @param accepted The accepted groups.
-     */
-    public CollidableConfig(Integer group, Collection<Integer> accepted)
-    {
-        super();
-
-        this.group = group;
-        this.accepted = accepted;
-    }
-
     /**
      * Get the defined group.
      * 
@@ -156,48 +138,5 @@ public final class CollidableConfig
     public Collection<Integer> getAccepted()
     {
         return accepted;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + group.hashCode();
-        result = prime * result + accepted.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final CollidableConfig other = (CollidableConfig) object;
-        return group.equals(other.getGroup())
-               && accepted.containsAll(other.getAccepted())
-               && other.getAccepted().containsAll(accepted);
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
-                                            .append(" [group=")
-                                            .append(group)
-                                            .append(", accepted=")
-                                            .append(accepted)
-                                            .append("]")
-                                            .toString();
     }
 }

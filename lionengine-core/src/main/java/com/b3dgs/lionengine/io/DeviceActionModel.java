@@ -21,14 +21,12 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Represents device action.
+ * 
+ * @param axis The axis action.
+ * @param push The device reference.
  */
-public class DeviceActionModel implements DeviceAction
+public record DeviceActionModel(DeviceAxis axis, DevicePush push) implements DeviceAction
 {
-    /** Axis action. */
-    private final DeviceAxis axis;
-    /** Device push reference. */
-    private final DevicePush push;
-
     /**
      * Create model.
      * 
@@ -36,15 +34,10 @@ public class DeviceActionModel implements DeviceAction
      * @param push The device reference.
      * @throws LionEngineException If invalid arguments.
      */
-    public DeviceActionModel(DeviceAxis axis, DevicePush push)
+    public DeviceActionModel
     {
-        super();
-
         Check.notNull(axis);
         Check.notNull(push);
-
-        this.axis = axis;
-        this.push = push;
     }
 
     /**
@@ -56,13 +49,7 @@ public class DeviceActionModel implements DeviceAction
      */
     public DeviceActionModel(Integer value, DevicePush push)
     {
-        super();
-
-        Check.notNull(value);
-        Check.notNull(push);
-
-        this.push = push;
-        axis = new DeviceAxis(value, value);
+        this(new DeviceAxis(value, value), push);
     }
 
     @Override

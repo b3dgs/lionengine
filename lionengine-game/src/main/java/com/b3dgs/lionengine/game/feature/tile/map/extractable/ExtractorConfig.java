@@ -25,9 +25,14 @@ import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Represents the {@link Extractor} data.
+ * 
+ * @param extract The extraction unit per tick.
+ * @param dropoff The drop off unit per tick.
+ * @param capacity The extraction capacity.
  */
-public final class ExtractorConfig
+public record ExtractorConfig(double extract, double dropoff, int capacity)
 {
+
     /** Extractor node name. */
     public static final String NODE_EXTRACTOR = Constant.XML_PREFIX + "extractor";
     /** Extract speed attribute name. */
@@ -36,8 +41,6 @@ public final class ExtractorConfig
     public static final String ATT_DROPOFF = "dropoff";
     /** Capacity attribute name. */
     public static final String ATT_CAPACITY = "capacity";
-    /** Minimum to string length. */
-    private static final int MIN_LENGTH = 54;
 
     /**
      * Imports the config from configurer.
@@ -91,29 +94,6 @@ public final class ExtractorConfig
         return node;
     }
 
-    /** Extraction unit per tick. */
-    private final double extract;
-    /** Drop off unit per tick. */
-    private final double dropoff;
-    /** Extraction capacity. */
-    private final int capacity;
-
-    /**
-     * Create the configuration.
-     * 
-     * @param extract The extraction unit per tick.
-     * @param dropoff The drop off unit per tick.
-     * @param capacity The extraction capacity.
-     */
-    public ExtractorConfig(double extract, double dropoff, int capacity)
-    {
-        super();
-
-        this.extract = extract;
-        this.dropoff = dropoff;
-        this.capacity = capacity;
-    }
-
     /**
      * Get extraction unit per tick.
      * 
@@ -142,54 +122,5 @@ public final class ExtractorConfig
     public int getCapacity()
     {
         return capacity;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        long temp;
-        temp = Double.doubleToLongBits(extract);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        temp = Double.doubleToLongBits(dropoff);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        result = prime * result + capacity;
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final ExtractorConfig other = (ExtractorConfig) object;
-        return Double.compare(extract, other.extract) == 0
-               && Double.compare(dropoff, other.dropoff) == 0
-               && capacity == other.capacity;
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
-                                            .append(" [extract=")
-                                            .append(extract)
-                                            .append(", dropoff=")
-                                            .append(dropoff)
-                                            .append(", capacity=")
-                                            .append(capacity)
-                                            .append("]")
-                                            .toString();
     }
 }

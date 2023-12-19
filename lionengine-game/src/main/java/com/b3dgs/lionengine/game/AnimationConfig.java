@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.game;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,9 +33,11 @@ import com.b3dgs.lionengine.XmlReader;
  * This class is Thread-Safe.
  * </p>
  * 
+ * @param animations The animations mapping.
+ * 
  * @see Animation
  */
-public final class AnimationConfig
+public record AnimationConfig(Map<String, Animation> animations)
 {
     /** Animations node name. */
     public static final String NODE_ANIMATIONS = Constant.XML_PREFIX + "animations";
@@ -151,22 +152,15 @@ public final class AnimationConfig
         node.writeBoolean(ANIMATION_REPEAT, animation.hasRepeat());
     }
 
-    /** Animations map. */
-    private final Map<String, Animation> animations;
-
     /**
      * Create configuration.
      * 
      * @param animations The animations mapping (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public AnimationConfig(Map<String, Animation> animations)
+    public AnimationConfig
     {
-        super();
-
         Check.notNull(animations);
-
-        this.animations = new HashMap<>(animations);
     }
 
     /**
@@ -204,6 +198,6 @@ public final class AnimationConfig
      */
     public Collection<Animation> getAnimations()
     {
-        return Collections.unmodifiableCollection(animations.values());
+        return animations.values();
     }
 }

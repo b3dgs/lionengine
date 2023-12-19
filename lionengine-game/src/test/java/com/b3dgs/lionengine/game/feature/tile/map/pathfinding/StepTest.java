@@ -67,10 +67,10 @@ final class StepTest
         final Step hash = new Step(0, 1);
 
         assertHashEquals(hash, new Step(0, 1));
-        assertHashEquals(hash, new Step(0, 0));
-        assertHashEquals(hash, new Step(1, 0));
 
         assertHashNotEquals(hash, new Object());
+        assertHashNotEquals(hash, new Step(0, 0));
+        assertHashNotEquals(hash, new Step(1, 0));
         assertHashNotEquals(hash, new Step(1, 1));
     }
 }

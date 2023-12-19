@@ -97,10 +97,6 @@ public final class Coord implements Localizable
         this.y = y;
     }
 
-    /*
-     * Localizable
-     */
-
     @Override
     public double getX()
     {
@@ -113,10 +109,6 @@ public final class Coord implements Localizable
         return y;
     }
 
-    /*
-     * Object
-     */
-
     @Override
     public int hashCode()
     {
@@ -126,8 +118,7 @@ public final class Coord implements Localizable
         temp = Double.doubleToLongBits(x);
         result = prime * result + (int) (temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(y);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        return result;
+        return prime * result + (int) (temp ^ temp >>> 32);
     }
 
     @Override

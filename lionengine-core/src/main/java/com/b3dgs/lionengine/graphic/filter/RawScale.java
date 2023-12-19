@@ -31,7 +31,7 @@ abstract class RawScale
     private static final int COUNT = Runtime.getRuntime().availableProcessors() > MAX_PARALLEL ? MAX_PARALLEL : 1;
 
     /** Cache. */
-    protected int[] dstImage = new int[0];
+    protected int[] dstImage = {};
     /** Width. */
     protected final int width;
     /** Height. */

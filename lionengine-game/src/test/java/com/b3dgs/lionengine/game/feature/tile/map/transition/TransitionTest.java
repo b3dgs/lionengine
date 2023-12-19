@@ -101,7 +101,7 @@ final class TransitionTest
     @Test
     void testToString()
     {
-        assertEquals(TransitionType.CENTER.name() + " a -> b",
+        assertEquals("Transition[type=CENTER, groups=GroupTransition[groupIn=a, groupOut=b]]",
                      new Transition(TransitionType.CENTER, "a", "b").toString());
     }
 }

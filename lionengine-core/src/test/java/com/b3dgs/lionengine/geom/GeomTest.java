@@ -181,7 +181,7 @@ final class GeomTest
     @Test
     void testToStringLocalizable()
     {
-        assertEquals("LocalizableImpl [x=1.5, y=2.5]", Geom.createLocalizable(1.5, 2.5).toString());
+        assertEquals("LocalizableImpl[x=1.5, y=2.5]", Geom.createLocalizable(1.5, 2.5).toString());
     }
 
     /**
@@ -312,6 +312,6 @@ final class GeomTest
     @Test
     void testToStringArea()
     {
-        assertEquals("AreaImpl [x=1.5, y=2.5, width=3.5, height=4.5]", Geom.createArea(1.5, 2.5, 3.5, 4.5).toString());
+        assertEquals("AreaImpl[x=1.5, y=2.5, width=3.5, height=4.5]", Geom.createArea(1.5, 2.5, 3.5, 4.5).toString());
     }
 }

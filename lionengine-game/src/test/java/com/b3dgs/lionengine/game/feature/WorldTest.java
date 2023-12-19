@@ -56,7 +56,7 @@ final class WorldTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(WorldTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(WorldTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setLoadFromJar(WorldTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());

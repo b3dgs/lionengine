@@ -58,7 +58,7 @@ final class MapTilePathModelTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(MapTilePathModelTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(MapTilePathModelTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         config = UtilSetup.createConfig(MapTilePathModelTest.class);

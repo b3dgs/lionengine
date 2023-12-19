@@ -151,18 +151,13 @@ public class Damages
         return new Range(min, max);
     }
 
-    /*
-     * Object
-     */
-
     @Override
     public int hashCode()
     {
         final int prime = 31;
         int result = 1;
         result = prime * result + min;
-        result = prime * result + max;
-        return result;
+        return prime * result + max;
     }
 
     @Override

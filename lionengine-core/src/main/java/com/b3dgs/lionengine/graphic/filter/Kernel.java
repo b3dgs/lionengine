@@ -18,28 +18,12 @@ package com.b3dgs.lionengine.graphic.filter;
 
 /**
  * Local kernel representation.
+ * 
+ * @param width The kernel width.
+ * @param matrix The kernel matrix.
  */
-final class Kernel
+record Kernel(int width, float[] matrix)
 {
-    /** Kernel width. */
-    private final int width;
-    /** Kernel matrix. */
-    private final float[] matrix;
-
-    /**
-     * Create the kernel.
-     * 
-     * @param width The kernel width.
-     * @param matrix The kernel matrix.
-     */
-    Kernel(int width, float[] matrix)
-    {
-        super();
-
-        this.width = width;
-        this.matrix = matrix;
-    }
-
     /**
      * Get the matrix width.
      * 

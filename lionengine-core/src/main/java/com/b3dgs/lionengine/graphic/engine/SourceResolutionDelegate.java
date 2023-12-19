@@ -22,13 +22,14 @@ import com.b3dgs.lionengine.Resolution;
 
 /**
  * Provide resolution from source.
+ * 
+ * @param width The width provider.
+ * @param height The height provider.
+ * @param rate The rate provider.
  */
-public final class SourceResolutionDelegate implements SourceResolutionProvider
+public record SourceResolutionDelegate(IntSupplier width, IntSupplier height, IntSupplier rate)
+                                      implements SourceResolutionProvider
 {
-    private final IntSupplier width;
-    private final IntSupplier height;
-    private final IntSupplier rate;
-
     /**
      * Create delegate.
      * 
@@ -37,20 +38,6 @@ public final class SourceResolutionDelegate implements SourceResolutionProvider
     public SourceResolutionDelegate(Resolution resolution)
     {
         this(resolution::getWidth, resolution::getHeight, resolution::getRate);
-    }
-
-    /**
-     * Create delegate.
-     * 
-     * @param width The width provider.
-     * @param height The height provider.
-     * @param rate The rate provider.
-     */
-    public SourceResolutionDelegate(IntSupplier width, IntSupplier height, IntSupplier rate)
-    {
-        this.width = width;
-        this.height = height;
-        this.rate = rate;
     }
 
     @Override

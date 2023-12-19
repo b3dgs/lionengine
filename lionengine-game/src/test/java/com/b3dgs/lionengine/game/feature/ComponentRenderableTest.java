@@ -47,7 +47,7 @@ final class ComponentRenderableTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(ComponentRenderableTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(ComponentRenderableTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         Medias.setLoadFromJar(ComponentRenderableTest.class);

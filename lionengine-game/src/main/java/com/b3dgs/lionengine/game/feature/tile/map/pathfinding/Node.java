@@ -204,8 +204,7 @@ public final class Node implements Comparable<Node>
     {
         int hash = 12;
         hash = hash * 17 + x;
-        hash = hash * 31 + y;
-        return hash;
+        return hash * 31 + y;
     }
 
     @Override

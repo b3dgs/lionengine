@@ -44,9 +44,9 @@ final class EngineTest
     @Test
     void testStart()
     {
-        Engine.start(new EngineMock("name", Version.DEFAULT));
+        Engine.start(new EngineMock("name", new Version(1, 0, 0)));
 
-        assertThrows(() -> Engine.start(new EngineMock(null, Version.DEFAULT)), Check.ERROR_NULL);
+        assertThrows(() -> Engine.start(new EngineMock(null, new Version(1, 0, 0))), Check.ERROR_NULL);
         assertThrows(() -> Engine.start(new EngineMock("name", null)), Check.ERROR_NULL);
     }
 
@@ -74,9 +74,9 @@ final class EngineTest
     @Test
     void testAlreadyStarted()
     {
-        Engine.start(new EngineMock("name", Version.DEFAULT));
+        Engine.start(new EngineMock("name", new Version(1, 0, 0)));
 
-        assertThrows(() -> Engine.start(new EngineMock("name", Version.DEFAULT)), Engine.ERROR_STARTED_ALREADY);
+        assertThrows(() -> Engine.start(new EngineMock("name", new Version(1, 0, 0))), Engine.ERROR_STARTED_ALREADY);
     }
 
     /**
@@ -97,7 +97,7 @@ final class EngineTest
     {
         assertFalse(Engine.isStarted());
 
-        Engine.start(new EngineMock("name", Version.DEFAULT));
+        Engine.start(new EngineMock("name", new Version(1, 0, 0)));
 
         assertTrue(Engine.isStarted());
 
@@ -112,9 +112,9 @@ final class EngineTest
     @Test
     void testGetter()
     {
-        Engine.start(new EngineMock("name", Version.create(1, 2, 3)));
+        Engine.start(new EngineMock("name", new Version(1, 2, 3)));
 
         assertEquals("name", Engine.getProgramName());
-        assertEquals(Version.create(1, 2, 3), Engine.getProgramVersion());
+        assertEquals(new Version(1, 2, 3), Engine.getProgramVersion());
     }
 }

@@ -116,9 +116,8 @@ public class NetworkableModel extends FeatureModel implements Networkable
     {
         for (final Feature feature : getFeatures())
         {
-            if (feature != this && feature instanceof Syncable)
+            if (feature != this && feature instanceof final Syncable syncable)
             {
-                final Syncable syncable = (Syncable) feature;
                 syncables.put(Integer.valueOf(syncable.getSyncId()), syncable);
                 syncable.onConnected();
             }

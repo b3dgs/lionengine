@@ -358,13 +358,9 @@ final class MediaDefault implements Media
     {
         final File file;
         File current = null;
-        if ((current = exists(getPathFromResourcesDir())) != null // CHECKSTYLE IGNORE LINE: Assign|Comment
-            || (current = exists(getPathFromUser())) != null // CHECKSTYLE IGNORE LINE: Assign|Comment
-            || (current = exists(getPathFromTemp())) != null) // CHECKSTYLE IGNORE LINE: Assign|Comment
-        {
-            file = current;
-        }
-        else
+        if ((current = exists(getPathFromResourcesDir())) == null // CHECKSTYLE IGNORE LINE: Assign|Comment
+            && (current = exists(getPathFromUser())) == null // CHECKSTYLE IGNORE LINE: Assign|Comment
+            && (current = exists(getPathFromTemp())) == null) // CHECKSTYLE IGNORE LINE: Assign|Comment
         {
             final InputStream i = resourcesClass.getResourceAsStream(UtilFolder.getPathSeparator(separator, getPath()));
             if (i != null)
@@ -373,6 +369,7 @@ final class MediaDefault implements Media
             }
             throw new LionEngineException(this, ERROR_OPEN_MEDIA);
         }
+        file = current;
         try
         {
             return new FileInputStream(file);
@@ -445,9 +442,8 @@ final class MediaDefault implements Media
     public int hashCode()
     {
         final int prime = 31;
-        int result = 1;
-        result = prime * result + path.hashCode();
-        return result;
+        final int result = 1;
+        return prime * result + path.hashCode();
     }
 
     @Override

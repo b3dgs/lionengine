@@ -241,8 +241,7 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
             result = prime * result + media.hashCode();
         }
         result = prime * result + framesHorizontal;
-        result = prime * result + framesVertical;
-        return result;
+        return prime * result + framesVertical;
     }
 
     @Override

@@ -17,9 +17,7 @@
 package com.b3dgs.lionengine.game.feature.launchable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import com.b3dgs.lionengine.Check;
@@ -34,9 +32,20 @@ import com.b3dgs.lionengine.game.Configurer;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param level The associated level.
+ * @param delay The delay value.
+ * @param mirrorable The mirrorable flag.
+ * @param centered The centered flag.
+ * @param launchables The launchables reference.
  */
-public final class LauncherConfig
+public record LauncherConfig(int level,
+                             int delay,
+                             boolean mirrorable,
+                             boolean centered,
+                             Collection<LaunchableConfig> launchables)
 {
+
     /** Launcher node name. */
     public static final String NODE_LAUNCHER = Constant.XML_PREFIX + "launcher";
     /** Level attribute name. */
@@ -47,8 +56,6 @@ public final class LauncherConfig
     public static final String ATT_MIRRORABLE = "mirrorable";
     /** Centered attribute name. */
     public static final String ATT_CENTERED = "centered";
-    /** Minimum to string length. */
-    private static final int MIN_LENGTH = 66;
 
     /**
      * Import the launcher data from configurer.
@@ -125,42 +132,6 @@ public final class LauncherConfig
         return node;
     }
 
-    /** The level index. */
-    private final int level;
-    /** The fire delay. */
-    private final int delay;
-    /** The mirrorable flag. */
-    private final boolean mirrorable;
-    /** The centered flag. */
-    private final boolean centered;
-    /** The launchable configurations. */
-    private final Collection<LaunchableConfig> launchables;
-
-    /**
-     * Create a launcher configuration.
-     * 
-     * @param level The associated level.
-     * @param delay The delay value.
-     * @param mirrorable The mirrorable flag.
-     * @param centered The centered flag.
-     * @param launchables The launchables reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    public LauncherConfig(int level,
-                          int delay,
-                          boolean mirrorable,
-                          boolean centered,
-                          Collection<LaunchableConfig> launchables)
-    {
-        super();
-
-        this.level = level;
-        this.delay = delay;
-        this.mirrorable = mirrorable;
-        this.centered = centered;
-        this.launchables = new ArrayList<>(launchables);
-    }
-
     /**
      * Get the associated level.
      * 
@@ -208,74 +179,6 @@ public final class LauncherConfig
      */
     public Iterable<LaunchableConfig> getLaunchables()
     {
-        return Collections.unmodifiableCollection(launchables);
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + level;
-        result = prime * result + delay;
-        result = prime * result + (mirrorable ? 1 : 0);
-        result = prime * result + (centered ? 1 : 0);
-        result = prime * result + launchables.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final LauncherConfig other = (LauncherConfig) object;
-        return level == other.level
-               && delay == other.delay
-               && mirrorable == other.mirrorable
-               && centered == other.centered
-               && Arrays.equals(launchables.toArray(), other.launchables.toArray());
-    }
-
-    @Override
-    public String toString()
-    {
-        final StringBuilder launchablesToString = new StringBuilder();
-        final int n = launchables.size();
-        int i = 0;
-        for (final LaunchableConfig config : launchables)
-        {
-            launchablesToString.append(config);
-            i++;
-            if (i < n)
-            {
-                launchablesToString.append(System.lineSeparator()).append(Constant.TAB);
-            }
-        }
-        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
-                                            .append(" [level=")
-                                            .append(level)
-                                            .append(", delay=")
-                                            .append(delay)
-                                            .append(", mirrorable=")
-                                            .append(mirrorable)
-                                            .append(", centered=")
-                                            .append(centered)
-                                            .append(", launchables=")
-                                            .append(System.lineSeparator())
-                                            .append(Constant.TAB)
-                                            .append(launchablesToString.toString())
-                                            .append("]")
-                                            .toString();
+        return launchables;
     }
 }

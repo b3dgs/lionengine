@@ -22,18 +22,14 @@ import com.b3dgs.lionengine.game.Tiled;
 
 /**
  * Represents the tile area.
+ * 
+ * @param tx The horizontal location in tile.
+ * @param ty The vertical location in tile.
+ * @param tw The width in tile.
+ * @param th The height in tile.
  */
-public class TileArea implements Tiled
+public record TileArea(int tx, int ty, int tw, int th) implements Tiled
 {
-    /** The horizontal location in tile. */
-    private final int tx;
-    /** The vertical location in tile. */
-    private final int ty;
-    /** The width in tile. */
-    private final int tw;
-    /** The height in tile. */
-    private final int th;
-
     /**
      * Create the tile area.
      * 
@@ -43,24 +39,13 @@ public class TileArea implements Tiled
      * @param th The height in tile (strictly superior to 0).
      * @throws LionEngineException If invalid arguments.
      */
-    public TileArea(int tx, int ty, int tw, int th)
+    public TileArea
     {
-        super();
-
         Check.superiorOrEqual(tx, 0);
         Check.superiorOrEqual(ty, 0);
         Check.superiorStrict(tw, 0);
         Check.superiorStrict(th, 0);
-
-        this.tx = tx;
-        this.ty = ty;
-        this.tw = tw;
-        this.th = th;
     }
-
-    /*
-     * Tiled
-     */
 
     @Override
     public int getInTileX()

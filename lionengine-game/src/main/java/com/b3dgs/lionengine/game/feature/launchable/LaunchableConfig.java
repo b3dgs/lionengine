@@ -31,9 +31,17 @@ import com.b3dgs.lionengine.game.ForceConfig;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param media The media value.
+ * @param delay The delay value.
+ * @param ox The horizontal offset.
+ * @param oy The vertical offset.
+ * @param vector The vector force.
+ * @param sfx The sfx value.
  */
-public final class LaunchableConfig
+public record LaunchableConfig(String media, int delay, int ox, int oy, Force vector, Optional<String> sfx)
 {
+
     /** Launchable node name. */
     public static final String NODE_LAUNCHABLE = Constant.XML_PREFIX + "launchable";
     /** Media attribute. */
@@ -46,8 +54,6 @@ public final class LaunchableConfig
     public static final String ATT_OFFSET_X = "ox";
     /** Vertical offset attribute. */
     public static final String ATT_OFFSET_Y = "oy";
-    /** Minimum to string length. */
-    private static final int MIN_LENGTH = 65;
 
     /**
      * Import the launchable data from node.
@@ -61,12 +67,12 @@ public final class LaunchableConfig
         Check.notNull(node);
 
         final String media = node.getString(ATT_MEDIA);
-        final String sfx = node.getStringDefault(null, ATT_SFX);
+        final Optional<String> sfx = node.getStringOptional(ATT_SFX);
         final int delay = node.getInteger(0, ATT_DELAY);
         final int ox = node.getInteger(0, ATT_OFFSET_X);
         final int oy = node.getInteger(0, ATT_OFFSET_Y);
 
-        return new LaunchableConfig(media, sfx, delay, ox, oy, ForceConfig.imports(node));
+        return new LaunchableConfig(media, delay, ox, oy, ForceConfig.imports(node), sfx);
     }
 
     /**
@@ -91,19 +97,6 @@ public final class LaunchableConfig
         return node;
     }
 
-    /** The media value. */
-    private final String media;
-    /** The sfx value. */
-    private final Optional<String> sfx;
-    /** The delay value. */
-    private final int delay;
-    /** The horizontal offset. */
-    private final int ox;
-    /** The vertical offset. */
-    private final int oy;
-    /** The launchable vector. */
-    private final Force vector;
-
     /**
      * Constructor.
      * 
@@ -117,17 +110,24 @@ public final class LaunchableConfig
      */
     public LaunchableConfig(String media, String sfx, int delay, int ox, int oy, Force vector)
     {
-        super();
+        this(media, delay, ox, oy, vector, Optional.ofNullable(sfx));
+    }
 
+    /**
+     * Constructor.
+     * 
+     * @param media The media value (must not be <code>null</code>).
+     * @param sfx The sfx value (can be <code>null</code>).
+     * @param delay The delay value.
+     * @param ox The horizontal offset.
+     * @param oy The vertical offset.
+     * @param vector The vector force (must not be <code>null</code>).
+     * @throws LionEngineException If <code>null</code> arguments.
+     */
+    public LaunchableConfig
+    {
         Check.notNull(media);
         Check.notNull(vector);
-
-        this.media = media;
-        this.sfx = Optional.ofNullable(sfx);
-        this.delay = delay;
-        this.ox = ox;
-        this.oy = oy;
-        this.vector = vector;
     }
 
     /**
@@ -188,63 +188,5 @@ public final class LaunchableConfig
     public Force getVector()
     {
         return vector;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + media.hashCode();
-        result = prime * result + sfx.hashCode();
-        result = prime * result + delay;
-        result = prime * result + ox;
-        result = prime * result + oy;
-        result = prime * result + vector.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final LaunchableConfig other = (LaunchableConfig) object;
-        return ox == other.ox
-               && oy == other.oy
-               && delay == other.delay
-               && media.equals(other.media)
-               && sfx.equals(other.sfx)
-               && vector.equals(other.vector);
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
-                                            .append(" [media=")
-                                            .append(media)
-                                            .append(", sfx=")
-                                            .append(sfx.orElse(null))
-                                            .append(", delay=")
-                                            .append(delay)
-                                            .append(", ox=")
-                                            .append(ox)
-                                            .append(", oy=")
-                                            .append(oy)
-                                            .append(", vector=")
-                                            .append(vector)
-                                            .append("]")
-                                            .toString();
     }
 }

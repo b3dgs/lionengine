@@ -27,9 +27,15 @@ import com.b3dgs.lionengine.XmlReader;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param horizontalFrames The horizontal frames value.
+ * @param verticalFrames The vertical frames value.
+ * @param offsetX The horizontal offset.
+ * @param offsetY The vertical offset.
  */
-public final class FramesConfig
+public record FramesConfig(int horizontalFrames, int verticalFrames, int offsetX, int offsetY)
 {
+
     /** Frames node name. */
     public static final String NODE_FRAMES = Constant.XML_PREFIX + "frames";
     /** Frames horizontal node name. */
@@ -40,8 +46,6 @@ public final class FramesConfig
     public static final String ATT_OFFSET_X = "offsetX";
     /** Frames offset vertical attribute name. */
     public static final String ATT_OFFSET_Y = "offsetY";
-    /** Minimum to string length. */
-    private static final int MIN_LENGTH = 73;
 
     /**
      * Imports the frames config from configurer.
@@ -101,33 +105,6 @@ public final class FramesConfig
         return node;
     }
 
-    /** The number of horizontal frames. */
-    private final int horizontalFrames;
-    /** The number of vertical frames. */
-    private final int verticalFrames;
-    /** The horizontal offset. */
-    private final int offsetX;
-    /** The vertical offset. */
-    private final int offsetY;
-
-    /**
-     * Create the frames configuration.
-     * 
-     * @param horizontalFrames The horizontal frames value.
-     * @param verticalFrames The vertical frames value.
-     * @param offsetX The horizontal offset.
-     * @param offsetY The vertical offset.
-     */
-    public FramesConfig(int horizontalFrames, int verticalFrames, int offsetX, int offsetY)
-    {
-        super();
-
-        this.horizontalFrames = horizontalFrames;
-        this.verticalFrames = verticalFrames;
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
-    }
-
     /**
      * Get the number of horizontal frames.
      * 
@@ -166,55 +143,5 @@ public final class FramesConfig
     public int getOffsetY()
     {
         return offsetY;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + horizontalFrames;
-        result = prime * result + verticalFrames;
-        result = prime * result + offsetX;
-        result = prime * result + offsetY;
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final FramesConfig other = (FramesConfig) object;
-        return horizontalFrames == other.horizontalFrames
-               && verticalFrames == other.verticalFrames
-               && offsetX == other.offsetX
-               && offsetY == other.offsetY;
-    }
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
-                                            .append(" [horizontalFrames=")
-                                            .append(horizontalFrames)
-                                            .append(", verticalFrames=")
-                                            .append(verticalFrames)
-                                            .append(", offsetX=")
-                                            .append(offsetX)
-                                            .append(", offsetY=")
-                                            .append(offsetY)
-                                            .append("]")
-                                            .toString();
     }
 }

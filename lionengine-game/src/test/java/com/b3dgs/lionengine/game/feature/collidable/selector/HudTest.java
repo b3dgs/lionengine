@@ -60,7 +60,7 @@ final class HudTest
     @BeforeAll
     public static void beforeTests()
     {
-        Engine.start(new EngineMock(HudTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(HudTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setLoadFromJar(HudTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());

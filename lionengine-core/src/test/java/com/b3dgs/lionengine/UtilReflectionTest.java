@@ -17,14 +17,12 @@
 package com.b3dgs.lionengine;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.io.Serializable;
-import java.lang.reflect.AccessibleObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -119,13 +117,13 @@ final class UtilReflectionTest
     {
         assertThrows(NoSuchMethodException.class,
                      () -> UtilReflection.create(Engine.class,
-                                                 UtilReflection.getParamTypes("", Version.DEFAULT),
+                                                 UtilReflection.getParamTypes("", new Version(1, 0, 0)),
                                                  "",
-                                                 Version.DEFAULT),
+                                                 new Version(1, 0, 0)),
                      UtilReflection.ERROR_NO_CONSTRUCTOR_COMPATIBLE
-                                                                   + Engine.class.getName()
-                                                                   + UtilReflection.ERROR_WITH
-                                                                   + Arrays.asList(String.class, Version.class));
+                                                                        + Engine.class.getName()
+                                                                        + UtilReflection.ERROR_WITH
+                                                                        + Arrays.asList(String.class, Version.class));
     }
 
     /**
@@ -168,29 +166,6 @@ final class UtilReflectionTest
         assertThrows(NoSuchMethodException.class,
                      () -> UtilReflection.createReduce(Reduce.class, Integer.valueOf(1), "test", Integer.valueOf(3)),
                      expected);
-    }
-
-    /**
-     * Test the accessibility setting.
-     */
-    @Test
-    void testSetAccessible()
-    {
-        final AccessibleObject accessible = AccessibleTest.class.getDeclaredFields()[0];
-
-        assertFalse(accessible.isAccessible());
-
-        UtilReflection.setAccessible(accessible, true);
-
-        assertTrue(accessible.isAccessible());
-
-        UtilReflection.setAccessible(accessible, false);
-
-        assertFalse(accessible.isAccessible());
-
-        UtilReflection.setAccessible(accessible, false);
-
-        assertFalse(accessible.isAccessible());
     }
 
     /**
@@ -424,7 +399,7 @@ final class UtilReflectionTest
     /**
      * Object mock.
      */
-    final class ObjectTest2 extends ObjectTest1 implements Interface3
+    static final class ObjectTest2 extends ObjectTest1 implements Interface3
     {
         // Mock
     }
@@ -476,16 +451,8 @@ final class UtilReflectionTest
     /**
      * Test field class without field
      */
-    final class FieldTest2 extends FieldTest
+    static final class FieldTest2 extends FieldTest
     {
         // No field
-    }
-
-    /**
-     * Accessible object test.
-     */
-    static final class AccessibleTest
-    {
-        @SuppressWarnings("unused") private int a;
     }
 }

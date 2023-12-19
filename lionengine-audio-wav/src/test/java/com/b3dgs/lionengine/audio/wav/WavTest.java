@@ -48,7 +48,7 @@ final class WavTest
     @BeforeAll
     static void beforeAll()
     {
-        Engine.start(new EngineMock(WavTest.class.getSimpleName(), Version.DEFAULT));
+        Engine.start(new EngineMock(WavTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setLoadFromJar(WavTest.class);
         WavFormat.setMixer(null);

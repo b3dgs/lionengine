@@ -28,9 +28,16 @@ import java.util.List;
  * <li>windowed : Allows to set the screen output mode (<code>true</code> for windowed, <code>false</code> for
  * fullscreen).</li>
  * </ul>
+ * 
+ * @param output The output resolution used on rendering.
+ * @param depth The screen color depth in bits.
+ * @param windowed The windowed mode.
+ * @param devices The devices reference.
+ * @param icons The icons media.
  */
-public final class Config
+public record Config(Resolution output, int depth, boolean windowed, List<InputDevice> devices, Collection<Media> icons)
 {
+
     /** Default color depth. */
     private static final int DEPTH_DEFAULT = 32;
 
@@ -56,7 +63,7 @@ public final class Config
      */
     public static Config windowed(Resolution output, Media... icons)
     {
-        return new Config(output, DEPTH_DEFAULT, true, icons);
+        return new Config(output, DEPTH_DEFAULT, true, Arrays.asList(icons));
     }
 
     /**
@@ -70,7 +77,7 @@ public final class Config
      */
     public static Config windowed(Resolution output, List<InputDevice> devices, Media... icons)
     {
-        return new Config(output, DEPTH_DEFAULT, true, devices, icons);
+        return new Config(output, DEPTH_DEFAULT, true, devices, Arrays.asList(icons));
     }
 
     /**
@@ -96,19 +103,8 @@ public final class Config
      */
     public static Config fullscreen(Resolution output, List<InputDevice> devices, Media... icons)
     {
-        return new Config(output, DEPTH_DEFAULT, false, devices, icons);
+        return new Config(output, DEPTH_DEFAULT, false, devices, Arrays.asList(icons));
     }
-
-    /** Output resolution reference. */
-    private final Resolution output;
-    /** Display depth. */
-    private final int depth;
-    /** Windowed mode. */
-    private final boolean windowed;
-    /** Icon media. */
-    private final Collection<Media> icons;
-    /** Devices. */
-    private final List<InputDevice> devices;
 
     /**
      * Create a configuration without icon.
@@ -120,7 +116,7 @@ public final class Config
      */
     public Config(Resolution output, int depth, boolean windowed)
     {
-        this(output, depth, windowed, new Media[0]);
+        this(output, depth, windowed, Collections.emptyList());
     }
 
     /**
@@ -132,7 +128,7 @@ public final class Config
      * @param icons The icons media (can be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public Config(Resolution output, int depth, boolean windowed, Media... icons)
+    public Config(Resolution output, int depth, boolean windowed, Collection<Media> icons)
     {
         this(output, depth, windowed, Collections.emptyList(), icons);
     }
@@ -147,7 +143,7 @@ public final class Config
      * @param icons The icons media (can be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public Config(Resolution output, int depth, boolean windowed, List<InputDevice> devices, Media... icons)
+    public Config(Resolution output, int depth, boolean windowed, List<InputDevice> devices, Collection<Media> icons)
     {
         Check.notNull(output);
         Check.superiorOrEqual(depth, -1);
@@ -156,7 +152,7 @@ public final class Config
         this.depth = depth;
         this.windowed = windowed;
         this.devices = devices;
-        this.icons = Arrays.asList(icons);
+        this.icons = icons;
     }
 
     /**

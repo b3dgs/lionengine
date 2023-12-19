@@ -257,13 +257,11 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
             for (int i = 0; i < size; i++)
             {
                 final Collision with = cacheColls.get(i);
-                if (nonDisabledFlag || !disabled.contains(with))
+                // CHECKSTYLE IGNORE LINE: NestedIfDepth
+                if ((nonDisabledFlag || !disabled.contains(with))
+                    && collide(origin, collidable, transformable, with, other, cacheRect.get(i)))
                 {
-                    // CHECKSTYLE IGNORE LINE: NestedIfDepth
-                    if (collide(origin, collidable, transformable, with, other, cacheRect.get(i)))
-                    {
-                        collide = true;
-                    }
+                    collide = true;
                 }
             }
         }

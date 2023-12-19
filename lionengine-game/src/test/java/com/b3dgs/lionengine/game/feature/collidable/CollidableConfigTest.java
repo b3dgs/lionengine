@@ -212,6 +212,6 @@ final class CollidableConfigTest
     {
         final CollidableConfig config = new CollidableConfig(Integer.valueOf(1), Arrays.asList(Integer.valueOf(2)));
 
-        assertEquals(CollidableConfig.class.getSimpleName() + " [group=1, accepted=[2]]", config.toString());
+        assertEquals(CollidableConfig.class.getSimpleName() + "[group=1, accepted=[2]]", config.toString());
     }
 }

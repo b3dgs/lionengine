@@ -22,115 +22,92 @@ import com.b3dgs.lionengine.InputDevice;
 
 /**
  * Represents the device used to control.
+ * 
+ * @param provider The provider reference.
  */
-public class DeviceControllerDelegate implements DeviceController
+public record DeviceControllerDelegate(Supplier<DeviceController> provider) implements DeviceController
 {
-    /** The provider reference. */
-    private final Supplier<DeviceController> provider;
-
-    /**
-     * Create delegate.
-     * 
-     * @param provider The provider reference.
-     */
-    public DeviceControllerDelegate(Supplier<DeviceController> provider)
-    {
-        super();
-
-        this.provider = provider;
-    }
-
-    /**
-     * Get current control.
-     * 
-     * @return The current control.
-     */
-    private DeviceController get()
-    {
-        return provider.get();
-    }
-
     @Override
     public void addListener(DeviceControllerListener listener)
     {
-        get().addListener(listener);
+        provider.get().addListener(listener);
     }
 
     @Override
     public void removeListener(DeviceControllerListener listener)
     {
-        get().removeListener(listener);
+        provider.get().removeListener(listener);
     }
 
     @Override
     public void addHorizontal(InputDevice device, DeviceAction action)
     {
-        get().addHorizontal(device, action);
+        provider.get().addHorizontal(device, action);
     }
 
     @Override
     public void addVertical(InputDevice device, DeviceAction action)
     {
-        get().addVertical(device, action);
+        provider.get().addVertical(device, action);
     }
 
     @Override
     public void addFire(String name, InputDevice device, Integer index, Integer code, DeviceAction action)
     {
-        get().addFire(name, device, index, code, action);
+        provider.get().addFire(name, device, index, code, action);
     }
 
     @Override
     public void setVisible(boolean visible)
     {
-        get().setVisible(visible);
+        provider.get().setVisible(visible);
     }
 
     @Override
     public void setDisabled(String device, boolean horizontal, boolean vertical)
     {
-        get().setDisabled(device, horizontal, vertical);
+        provider.get().setDisabled(device, horizontal, vertical);
     }
 
     @Override
     public double getHorizontalDirection()
     {
-        return get().getHorizontalDirection();
+        return provider.get().getHorizontalDirection();
     }
 
     @Override
     public double getVerticalDirection()
     {
-        return get().getVerticalDirection();
+        return provider.get().getVerticalDirection();
     }
 
     @Override
     public boolean isFired()
     {
-        return get().isFired();
+        return provider.get().isFired();
     }
 
     @Override
     public Integer getFired()
     {
-        return get().getFired();
+        return provider.get().getFired();
     }
 
     @Override
     public boolean isFired(Integer index)
     {
-        return get().isFired(index);
+        return provider.get().isFired(index);
     }
 
     @Override
     public boolean isFiredOnce(Integer index)
     {
-        return get().isFiredOnce(index);
+        return provider.get().isFiredOnce(index);
     }
 
     @Override
     public void update(double extrp)
     {
-        get().update(extrp);
+        provider.get().update(extrp);
     }
 }
