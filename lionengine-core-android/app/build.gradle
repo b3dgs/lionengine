@@ -1,0 +1,100 @@
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+    id 'signing'
+}
+
+group = 'com.b3dgs.lionengine'
+version = '10.0.0-SNAPSHOT'
+
+android {
+    signingConfigs {
+        app {
+            storeFile file(property('keystore'))
+            keyAlias property('keystore.alias')
+            keyPassword property('keystore.password')
+            storePassword property('keystore.storepassword')
+        }
+    }
+    compileSdk 34
+    defaultConfig {
+        minSdkVersion 21
+        targetSdk 34
+        signingConfig signingConfigs.app
+        multiDexEnabled true
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
+    namespace 'com.b3dgs.lionengine.android'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.release
+                group = 'com.b3dgs.lionengine'
+                artifactId = 'lionengine-core-android'
+                version = '10.0.0-SNAPSHOT'
+
+                pom {
+                    name = 'LionEngine Core Android'
+                    description = 'LionEngine Core Android implementation'
+                    url = 'https://github.com/b3dgs/lionengine'
+                    licenses {
+                        license {
+                            name = 'GNU General Public License (GPL) version 3.0'
+                            url = 'https://www.gnu.org/licenses/gpl-3.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'DjThunder'
+                            name = 'Pierre-Alexandre'
+                            email = 'contact@b3dgs.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git@github.com:b3dgs/lionengine-core-android.git'
+                        developerConnection = 'scm:git:git@github.com:b3dgs/lionengine-core-android.git'
+                        url = 'https://github.com/b3dgs/lionengine-core-android'
+                    }
+                }
+            }
+        }
+        repositories {
+            maven {
+                credentials {
+                    username = MAVEN_USERNAME
+                    password = MAVEN_PASSWORD
+                }
+
+                def releasesRepoUrl = 'https://oss.sonatype.org/content/repositories/releases'
+                def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            }
+        }
+    }
+    signing {
+        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+        sign configurations.archives
+    }
+}
+
+dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+
+    implementation 'com.b3dgs:b3dgs-parent:2.0.0-SNAPSHOT'
+    implementation 'com.b3dgs.lionengine:lionengine-core:10.0.0-SNAPSHOT'
+}

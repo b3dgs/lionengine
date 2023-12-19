@@ -1,0 +1,37 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+            mavenContent {
+                snapshotsOnly()
+            }
+        }
+        mavenCentral()
+        google()
+        maven {url 'https://storage.googleapis.com/r8-releases/raw'}
+    }
+    dependencies {
+        classpath 'com.android.tools:r8:8.2.33'
+        classpath 'com.android.tools.build:gradle:8.2.0'
+        classpath 'digital.wup:android-maven-publish:3.6.3'
+    }
+}
+
+allprojects {
+    repositories {
+        mavenLocal()
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+            mavenContent {
+                snapshotsOnly()
+            }
+        }
+        mavenCentral()
+        google()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
