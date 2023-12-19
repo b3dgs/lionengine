@@ -33,7 +33,7 @@ jobs:
        uses: actions/cache@v3.3.2
        with:
           path: ~/.m2/repository
-          key: maven-${{ matrix.os }}-java${{ matrix.jdk }}-${{ hashFiles('**/pom.xml') }}
+          key: maven-${{ matrix.os }}-java${{ matrix.jdk }}-${{ hashFiles('**/pom.xml') }}-${{ hashFiles('**/app/build.gradle') }}
           restore-keys: |
             maven-${{ matrix.os }}-java${{ matrix.jdk }}-
             maven-${{ matrix.os }}-
@@ -55,6 +55,13 @@ jobs:
          server-username: MAVEN_USERNAME
          server-password: MAVEN_PASSWORD
 
+     - name: Decode Keystore
+       uses: timheuer/base64-to-file@v1.2
+       with:
+         fileName: 'android.jks'
+         fileDir: 'app/'
+         encodedString: ${{ secrets.KEYSTORE_BASE64 }}
+
      - name: GPG
        uses: crazy-max/ghaction-import-gpg@v6.0.0
        with:
@@ -68,6 +75,11 @@ jobs:
        env:
          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+
+     - name: Build AAR
+       run: |
+         chmod +x ./gradlew
+         ./gradlew publishAllPublicationsToMavenRepository -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} -PMAVEN_USERNAME=${{ secrets.MAVEN_USERNAME }} -PMAVEN_PASSWORD=${{ secrets.MAVEN_PASSWORD }} -Pkeystore=android.jks -Pkeystore.alias=${{ secrets.KEYSTORE_ALIAS }} -Pkeystore.storepassword=${{ secrets.KEYSTORE_STOREPASS }} -Pkeystore.password=${{ secrets.KEYSTORE_PASS }}
 
   sonar:
     strategy:
