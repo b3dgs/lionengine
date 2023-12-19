@@ -46,6 +46,11 @@
                         <goals>
                             <goal>test-jar</goal>
                         </goals>
+                        <configuration>
+                            <archive>
+                                <manifestFile>META-INF/MANIFEST-TEST.MF</manifestFile>
+                            </archive>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
