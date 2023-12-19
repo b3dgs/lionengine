@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_8yNOoOkkEeWt1ruEBAQ_7g">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_doQ30O-KEeWyS_zFNs-5Zw" featurename="children" parentElementId="com.b3dgs.lionengine.editor.part.world.toolbar" positionInList="first">
+    <elements xsi:type="menu:DirectToolItem" xmi:id="_DM5aMO-0EeWBTdkjXEBBZw" elementId="com.b3dgs.lionengine.editor.part.world.toolbar.palette.selection" label="%toolbar.world.selection" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.object/icons/toolbar/selection.png" tooltip="%toolbar.world.selection-tip" type="Check" contributionURI="bundleclass://com.b3dgs.lionengine.editor.object/com.b3dgs.lionengine.editor.object.toolbar.SetSelectionHandler"/>
+    <elements xsi:type="menu:DirectToolItem" xmi:id="_hLvloO-KEeWyS_zFNs-5Zw" elementId="com.b3dgs.lionengine.editor.part.world.toolbar.palette.pointer-object" label="%toolbar.world.pointer-object" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.object/icons/toolbar/pointer-object.png" tooltip="%toolbar.world.pointer-object-tip" selected="true" type="Check" contributionURI="bundleclass://com.b3dgs.lionengine.editor.object/com.b3dgs.lionengine.editor.object.toolbar.SetPointerObjectHandler"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_huVYsO-zEeWBTdkjXEBBZw" featurename="children" parentElementId="com.b3dgs.lionengine.editor.part.project.menu" positionInList="first">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_kgpvUO-zEeWBTdkjXEBBZw" elementId="com.b3dgs.lionengine.editor.part.project.menu.object-remove" label="%menu.object-delete" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.object/icons/context-menu/object-delete.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.object/com.b3dgs.lionengine.editor.object.project.ObjectDeleteHandler">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_kgpvUe-zEeWBTdkjXEBBZw" coreExpressionId="com.b3dgs.lionengine.editor.objects-folder.isObject"/>
+    </elements>
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_kDq4YO-zEeWBTdkjXEBBZw" elementId="com.b3dgs.lionengine.editor.part.project.menu.object-add" label="%menu.object-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.object/icons/context-menu/object-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.object/com.b3dgs.lionengine.editor.object.project.ObjectAddHandler">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_kDq4Ye-zEeWBTdkjXEBBZw" coreExpressionId="com.b3dgs.lionengine.editor.objects-folder.addObject"/>
+    </elements>
+  </fragments>
+</fragment:ModelFragments>

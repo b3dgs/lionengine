@@ -4,6 +4,9 @@
 /build
 /dist
 /extra
+/lib
+/.m2
+.m2
 *.class
 *xml.versionsBackup
 .project
