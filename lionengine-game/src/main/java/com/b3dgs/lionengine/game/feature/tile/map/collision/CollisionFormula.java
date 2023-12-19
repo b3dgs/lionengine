@@ -81,9 +81,6 @@ public record CollisionFormula(String name,
     public CollisionFormula
     {
         Check.notNull(name);
-        Check.notNull(range);
-        Check.notNull(function);
-        Check.notNull(constraint);
     }
 
     /**
