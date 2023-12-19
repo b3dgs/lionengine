@@ -6,7 +6,7 @@ The __LionEngine__ is a game engine especially developed during the project [Lio
 The engine is as a library, in Jar format (_including its javadoc_), which can be included in any project;
 for utility class uses, or to directly implement and inherit a game skeleton (_including management of frame rate, extrapolation, input output..._).
 
-Using Java 8 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resources management (_images_, _sprites_, _animations_, _tiles_, _font_...).
+Using Java 17 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resources management (_images_, _sprites_, _animations_, _tiles_, _font_...).
 Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available (_Wav_, _Midi_, and more using plug-ins, such as _Sc68_, _AdPlug_ and _AdlMidi_).
 Windowed, full-screen and applet formats are fully supported, with a complete frame rate control.
 
@@ -23,7 +23,7 @@ Windowed, full-screen and applet formats are fully supported, with a complete fr
 >  * Utility classes (_Random, Conversions, Maths, File..._)
 >  * Verbosity control
 * #### __lionengine-core-awt__
->  * Engine implementation using __AWT__ from _JDK 8_
+>  * Engine implementation using __AWT__ from _JDK 17_
 * #### __lionengine-game__
 >  * Camera management (_view and movement_)
 >  * Cursor (_synced or not to system pointer_)
@@ -49,7 +49,7 @@ Windowed, full-screen and applet formats are fully supported, with a complete fr
 >    * and more...
 * #### __lionengine-audio-wav__
 >  * Support for Wav sound
-* #### __lionengine-audio-sc68__
+* #### __lionengine-audio-sc6__
 >  * Support for Sc68 Atari music (Sc68 wrapper)
 * #### __lionengine-audio-adplug__
 >  * Support for Loudness Sound music (AdPlug wrapper)
