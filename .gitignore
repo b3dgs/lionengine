@@ -5,7 +5,6 @@
 /dist
 /extra
 *.class
-*.bat
 *xml.versionsBackup
 .project
 jacoco-ut.exec
