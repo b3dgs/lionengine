@@ -76,8 +76,9 @@ jobs:
          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
-     - name: Build AAR
+     - name: Deploy Android
        run: |
+         cd lionengine-core-android
          chmod +x ./gradlew
          ./gradlew publishAllPublicationsToMavenRepository -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} -PMAVEN_USERNAME=${{ secrets.MAVEN_USERNAME }} -PMAVEN_PASSWORD=${{ secrets.MAVEN_PASSWORD }} -Pkeystore=android.jks -Pkeystore.alias=${{ secrets.KEYSTORE_ALIAS }} -Pkeystore.storepassword=${{ secrets.KEYSTORE_STOREPASS }} -Pkeystore.password=${{ secrets.KEYSTORE_PASS }}
 
