@@ -155,6 +155,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
     {
         shell = new Shell(parent, SWT.DIALOG_TRIM);
         shell.setText(Messages.Title);
+        shell.setToolTipText(Messages.Title);
         shell.setLayout(UtilSwt.borderless());
 
         minimap.load();
