@@ -76,13 +76,28 @@ jobs:
          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
-     - name: Upload Editor
+     - name: Upload Editor Repository
        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
        with:
          server: ftp.b3dgs.com
          username: ${{ secrets.FTP_USER }}
          password: ${{ secrets.FTP_PASS }}
          local-dir: com.b3dgs.lionengine.editor.repository/target/repository/
+
+     - name: Prepare Editor Product
+       run: |
+         rmdir /s /q com.b3dgs.lionengine.editor.product\target\products\com.b3dgs.lionengine.editor.product
+       shell: cmd
+
+     - name: Upload Editor Product
+       uses: dennisameling/ftp-upload-action@v1.0.14
+       with:
+         server: ftp.b3dgs.com
+         username: ${{ secrets.FTP_USER }}
+         password: ${{ secrets.FTP_PASS }}
+         local_dir: com.b3dgs.lionengine.editor.product/target/products/
+         server_dir: /product/
+         secure: false
 
      - name: Deploy Android
        run: |
