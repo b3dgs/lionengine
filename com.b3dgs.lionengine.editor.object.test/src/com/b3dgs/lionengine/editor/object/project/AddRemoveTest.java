@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor.object.project;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
@@ -61,7 +62,7 @@ public class AddRemoveTest
            .click();
 
         BOT.waitUntil(Conditions.shellIsActive(Messages.Title));
-        BOT.shell(Messages.Title).bot().button(0).click();
+        BOT.shell(Messages.Title).bot().button(IDialogConstants.OK_LABEL).click();
 
         UtilEditorTests.waitResourcesCopied(BOT, projectFolder, 2);
 
@@ -77,7 +78,7 @@ public class AddRemoveTest
            .click();
 
         BOT.waitUntil(Conditions.shellIsActive(Messages.RemoveObjectTitle));
-        BOT.shell(Messages.RemoveObjectTitle).bot().button(0).click();
+        BOT.shell(Messages.RemoveObjectTitle).bot().button(IDialogConstants.OK_LABEL).click();
         UtilEditorTests.waitResourcesCopied(BOT, projectFolder, 1);
 
         Assert.assertFalse(file.getPath(), file.isFile());
@@ -99,7 +100,7 @@ public class AddRemoveTest
 
         BOT.waitUntil(Conditions.shellIsActive(Messages.Title));
 
-        BOT.shell(Messages.Title).bot().button(0).click();
+        BOT.shell(Messages.Title).bot().button(IDialogConstants.OK_LABEL).click();
         UtilEditorTests.waitResourcesCopied(BOT, projectFolder, 2);
 
         final File file = new File(projectFolder, UtilFolder.getPath("resources", FeaturableConfig.DEFAULT_FILENAME));

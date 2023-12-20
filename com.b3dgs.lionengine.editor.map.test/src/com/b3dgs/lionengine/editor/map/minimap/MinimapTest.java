@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.editor.map.minimap;
 
 import java.io.File;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
@@ -69,7 +70,7 @@ public class MinimapTest
            .click();
         BOT.sleep(500);
 
-        BOT.activeShell().bot().button(0).click();
+        BOT.activeShell().bot().button(IDialogConstants.OK_LABEL).click();
 
         UtilEditorTests.waitResourcesCopied(BOT, projectFolder, 5);
 
