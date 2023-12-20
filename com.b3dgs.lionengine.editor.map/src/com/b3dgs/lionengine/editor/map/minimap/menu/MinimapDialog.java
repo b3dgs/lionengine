@@ -161,6 +161,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         minimap.load();
 
         composite = new Composite(shell, SWT.DOUBLE_BUFFERED);
+        composite.setToolTipText(Messages.Title);
         composite.setLayoutData(new GridData(minimap.getWidth(), minimap.getHeight()));
         gc = new GC(composite);
         green = shell.getDisplay().getSystemColor(SWT.COLOR_GREEN);
