@@ -16,9 +16,9 @@
  */
 package com.b3dgs.lionengine.editor.map.world;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCanvas;
 import org.junit.Assert;
 import org.junit.Test;
@@ -63,14 +63,16 @@ public class WorldNavigationTest
         final SWTBotCanvas canvas = BOT.canvas(1);
         canvas.setFocus();
 
-        canvas.pressShortcut(Keystrokes.RIGHT);
+        WorldModel.INSTANCE.getServices().get(WorldNavigation.class).onKeyPushed(Integer.valueOf(SWT.ARROW_RIGHT));
+        canvas.display.syncExec(canvas.widget::redraw);
 
         BOT.sleep(500);
 
         Assert.assertEquals(WorldNavigation.GRID_MOVEMENT_SENSIBILITY * 16.0, camera.getX(), 0.0);
         Assert.assertEquals(0.0, camera.getY(), 0.0);
 
-        canvas.pressShortcut(Keystrokes.LEFT);
+        WorldModel.INSTANCE.getServices().get(WorldNavigation.class).onKeyPushed(Integer.valueOf(SWT.ARROW_LEFT));
+        canvas.display.syncExec(canvas.widget::redraw);
 
         BOT.sleep(500);
 

@@ -22,7 +22,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCanvas;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -62,7 +61,7 @@ public class AddRemoveTest
            .click();
 
         BOT.waitUntil(Conditions.shellIsActive(Messages.Title));
-        BOT.shell(Messages.Title).pressShortcut(Keystrokes.CR);
+        BOT.shell(Messages.Title).bot().button(0).click();
 
         UtilEditorTests.waitResourcesCopied(BOT, projectFolder, 2);
 
@@ -78,7 +77,7 @@ public class AddRemoveTest
            .click();
 
         BOT.waitUntil(Conditions.shellIsActive(Messages.RemoveObjectTitle));
-        BOT.shell(Messages.RemoveObjectTitle).pressShortcut(Keystrokes.CR);
+        BOT.shell(Messages.RemoveObjectTitle).bot().button(0).click();
         UtilEditorTests.waitResourcesCopied(BOT, projectFolder, 1);
 
         Assert.assertFalse(file.getPath(), file.isFile());
@@ -100,7 +99,7 @@ public class AddRemoveTest
 
         BOT.waitUntil(Conditions.shellIsActive(Messages.Title));
 
-        BOT.shell(Messages.Title).pressShortcut(Keystrokes.CR);
+        BOT.shell(Messages.Title).bot().button(0).click();
         UtilEditorTests.waitResourcesCopied(BOT, projectFolder, 2);
 
         final File file = new File(projectFolder, UtilFolder.getPath("resources", FeaturableConfig.DEFAULT_FILENAME));

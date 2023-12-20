@@ -20,7 +20,6 @@ import java.io.File;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.junit.Assert;
@@ -70,7 +69,7 @@ public class MinimapTest
            .click();
         BOT.sleep(500);
 
-        BOT.activeShell().pressShortcut(Keystrokes.CR);
+        BOT.activeShell().bot().button(0).click();
 
         UtilEditorTests.waitResourcesCopied(BOT, projectFolder, 5);
 
@@ -107,7 +106,6 @@ public class MinimapTest
 
         Assert.assertEquals(0.0, WorldModel.INSTANCE.getCamera().getX(), PRECISION);
 
-        minimap.pressShortcut(Keystrokes.ESC);
-        BOT.waitUntil(Conditions.shellCloses(minimap));
+        minimap.display.syncExec(minimap.widget::close);
     }
 }
