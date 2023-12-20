@@ -97,12 +97,12 @@ public class MinimapTest
         final SWTBotShell minimap = BOT.activeShell();
 
         // Click on minimap
-        BOT.canvasWithTooltip(com.b3dgs.lionengine.editor.map.minimap.menu.Messages.Title).click(10, 1);
+        BOT.canvas(1).click(10, 1);
         BOT.sleep(500);
 
         Assert.assertEquals(160.0, WorldModel.INSTANCE.getCamera().getX(), PRECISION);
 
-        BOT.canvasWithTooltip(com.b3dgs.lionengine.editor.map.minimap.menu.Messages.Title).click(0, 0);
+        BOT.canvas(1).click(0, 0);
         BOT.sleep(500);
 
         Assert.assertEquals(0.0, WorldModel.INSTANCE.getCamera().getX(), PRECISION);
