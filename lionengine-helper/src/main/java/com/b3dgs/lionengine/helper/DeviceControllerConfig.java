@@ -46,9 +46,26 @@ import com.b3dgs.lionengine.io.DevicePush;
 
 /**
  * Represents the input controller data.
+ * 
+ * @param name The device name.
+ * @param index The device index.
+ * @param id The device id.
+ * @param device The device interface.
+ * @param disabled The disable flag.
+ * @param horizontal The horizontal axis.
+ * @param vertical The vertical axis.
+ * @param fire The fire.
  */
-public final class DeviceControllerConfig
+public record DeviceControllerConfig(String name,
+                                     int index,
+                                     int id,
+                                     Class<? extends InputDevice> device,
+                                     boolean disabled,
+                                     List<DeviceAxis> horizontal,
+                                     List<DeviceAxis> vertical,
+                                     Map<Integer, Set<Integer>> fire)
 {
+
     /** Input node name. */
     public static final String NODE_INPUT = Constant.XML_PREFIX + "input";
     /** Mapping attribute. */
@@ -338,56 +355,6 @@ public final class DeviceControllerConfig
             axis.add(new DeviceAxis(positive, negative));
         }
         return axis;
-    }
-
-    /** Device name. */
-    private final String name;
-    /** Device index. */
-    private final int index;
-    /** Device id. */
-    private final int id;
-    /** Device class. */
-    private final Class<? extends InputDevice> device;
-    /** Disabled. */
-    private final boolean disabled;
-    /** Horizontal axis. */
-    private final List<DeviceAxis> horizontal;
-    /** Vertical axis. */
-    private final List<DeviceAxis> vertical;
-    /** Fire index mapping. */
-    private final Map<Integer, Set<Integer>> fire;
-
-    /**
-     * Create a size configuration.
-     * 
-     * @param name The device name.
-     * @param index The device index.
-     * @param id The device id.
-     * @param device The device interface.
-     * @param disabled The disable flag.
-     * @param horizontal The horizontal axis.
-     * @param vertical The vertical axis.
-     * @param fire The fire.
-     */
-    public DeviceControllerConfig(String name,
-                                  int index,
-                                  int id,
-                                  Class<? extends InputDevice> device,
-                                  boolean disabled,
-                                  List<DeviceAxis> horizontal,
-                                  List<DeviceAxis> vertical,
-                                  Map<Integer, Set<Integer>> fire)
-    {
-        super();
-
-        this.name = name;
-        this.index = index;
-        this.id = id;
-        this.device = device;
-        this.disabled = disabled;
-        this.horizontal = horizontal;
-        this.vertical = vertical;
-        this.fire = fire;
     }
 
     /**
