@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/featurable.xsd">
+    <lionengine:class>com.b3dgs.lionengine.helper.EntityHelper</lionengine:class>
+    <lionengine:features>
+        <lionengine:feature>com.b3dgs.lionengine.tutorials.mario.d.EntityModel</lionengine:feature>
+        <lionengine:feature>com.b3dgs.lionengine.tutorials.mario.d.Mario</lionengine:feature>
+        <lionengine:feature>com.b3dgs.lionengine.helper.EntityInputController</lionengine:feature>
+    </lionengine:features>
+    <lionengine:surface image="Mario.png"/>
+    <lionengine:frames horizontal="7" vertical="1" offsetY="-1"/>
+    <lionengine:size width="16" height="16"/>
+    <lionengine:origin>CENTER_BOTTOM</lionengine:origin>
+    <lionengine:animations>
+        <lionengine:animation name="idle" start="1" end="1" speed="0.125" repeat="false" reversed="false"/>
+        <lionengine:animation name="walk" start="4" end="6" speed="0.25" repeat="true" reversed="false"/>
+        <lionengine:animation name="turn" start="7" end="7" speed="0.125" repeat="false" reversed="false"/>
+        <lionengine:animation name="jump" start="3" end="3" speed="0.25" repeat="false" reversed="false"/>
+        <lionengine:animation name="fall" start="3" end="3" speed="0.25" repeat="false" reversed="false"/>
+        <lionengine:animation name="die" start="2" end="2" speed="0.25" repeat="false" reversed="false"/>
+    </lionengine:animations>
+    <lionengine:collisions>
+        <lionengine:collision name="default" width="12" height="15" offsetX="0" offsetY="0" mirror="false"/>
+    </lionengine:collisions>
+    <lionengine:categories>
+        <lionengine:category name="rightBottom" axis="X" x="6" y="2" glue="false">
+            <lionengine:group>block</lionengine:group>
+        </lionengine:category>
+        <lionengine:category name="leftBottom" axis="X" x="-7" y="2" glue="false">
+            <lionengine:group>block</lionengine:group>
+        </lionengine:category>
+        <lionengine:category name="bottomRight" axis="Y" x="5" y="0" glue="false">
+            <lionengine:group>block</lionengine:group>
+        </lionengine:category>
+        <lionengine:category name="bottomLeft" axis="Y" x="-6" y="0" glue="false">
+            <lionengine:group>block</lionengine:group>
+        </lionengine:category>
+    </lionengine:categories>
+    <lionengine:state>com.b3dgs.lionengine.tutorials.mario.d.StateIdle</lionengine:state>
+    <lionengine:layerable layerRefresh="1" layerDisplay="2"/>
+    <lionengine:collidable group="1" accepted="2"/>
+</lionengine:featurable>

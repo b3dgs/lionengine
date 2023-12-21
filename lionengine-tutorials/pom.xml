@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.b3dgs.lionengine</groupId>
@@ -9,17 +9,15 @@
         <version>10.0.0-SNAPSHOT</version>
         <relativePath>../lionengine-parent/pom.xml</relativePath>
     </parent>
-    <artifactId>lionengine-examples</artifactId>
+    <artifactId>lionengine-tutorials</artifactId>
     <packaging>jar</packaging>
-    <name>LionEngine Examples</name>
+    <name>LionEngine Tutorials</name>
     <properties>
         <maven.install.skip>true</maven.install.skip>
         <maven.test.skip>true</maven.test.skip>
         <checkstyle.skip>true</checkstyle.skip>
         <sonar.skip>true</sonar.skip>
         <log4j2.version>2.22.0</log4j2.version>
-        <lwjgl.natives>natives-windows</lwjgl.natives>
-        <lwjgl.version>3.3.3</lwjgl.version>
     </properties>
     <dependencies>
         <dependency>
@@ -44,6 +42,21 @@
         </dependency>
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-core-awt</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-audio-wav</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-audio-adlmidi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
             <artifactId>lionengine-game</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -53,34 +66,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.b3dgs.lionengine</groupId>
-            <artifactId>lionengine-core-awt</artifactId>
-            <version>${project.version}</version>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>${jna.version}</version>
         </dependency>
-        <!-- <dependency>
-            <groupId>com.b3dgs.lionengine</groupId>
-            <artifactId>lionengine-core-opengl</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.lwjgl</groupId>
-            <artifactId>lwjgl</artifactId>
-            <classifier>${lwjgl.natives}</classifier>
-            <version>${lwjgl.version}</version>
-        </dependency> -->
     </dependencies>
-    <repositories>
-        <repository>
-            <id>snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
     <build>
         <plugins>
             <plugin>
@@ -140,7 +130,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.b3dgs.lionengine.example.AppExamples</mainClass>
+                            <mainClass>com.b3dgs.lionengine.tutorials.mario.d.AppMario</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
