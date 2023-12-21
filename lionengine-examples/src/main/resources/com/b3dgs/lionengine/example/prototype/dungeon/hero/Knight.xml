@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/featurable.xsd">
+    <lionengine:class>com.b3dgs.lionengine.helper.EntityHelper</lionengine:class>
+    <lionengine:features>
+        <lionengine:feature>com.b3dgs.lionengine.example.prototype.dungeon.EntityModel</lionengine:feature>
+        <lionengine:feature>com.b3dgs.lionengine.example.prototype.dungeon.AttackSword</lionengine:feature>
+        <lionengine:feature>com.b3dgs.lionengine.helper.EntityInputController</lionengine:feature>
+    </lionengine:features>
+    <lionengine:surface image="Knight.png"/>
+    <lionengine:frames horizontal="9" vertical="1"/>
+    <lionengine:size width="16" height="32"/>
+    <lionengine:origin>CENTER_BOTTOM</lionengine:origin>
+    <lionengine:animations>
+        <lionengine:animation name="idle" start="1" end="4" speed="0.25" reversed="false" repeat="true"/>
+        <lionengine:animation name="run" start="5" end="8" speed="0.25" reversed="false" repeat="true"/>
+        <lionengine:animation name="jump" start="9" end="9" speed="0.25" reversed="false" repeat="false"/>
+        <lionengine:animation name="attack" start="1" end="4" speed="0.25" reversed="false" repeat="false"/>
+    </lionengine:animations>
+    <lionengine:collisions>
+        <lionengine:collision name="default" offsetX="0" offsetY="0" width="16" height="16" mirror="false"/>
+    </lionengine:collisions>
+    <lionengine:categories>
+        <lionengine:category name="leftTop" x="-23" y="20" axis="X" glue="false">
+            <lionengine:group>left</lionengine:group>
+        </lionengine:category>
+        <lionengine:category name="leftBottom" x="-23" y="0" axis="X" glue="false">
+            <lionengine:group>left</lionengine:group>
+        </lionengine:category>
+        <lionengine:category name="rightTop" x="22" y="20" axis="X" glue="false">
+            <lionengine:group>right</lionengine:group>
+        </lionengine:category>
+        <lionengine:category name="rightBottom" x="22" y="0" axis="X" glue="false">
+            <lionengine:group>right</lionengine:group>
+        </lionengine:category>
+        <lionengine:category name="topLeft" x="-7" y="36" axis="Y" glue="false">
+            <lionengine:group>top</lionengine:group>
+        </lionengine:category>
+        <lionengine:category name="topRight" x="6" y="36" axis="Y" glue="false">
+            <lionengine:group>top</lionengine:group>
+        </lionengine:category>
+        <lionengine:category name="bottomLeft" x="-7" y="0" axis="Y" glue="false">
+            <lionengine:group>bottom</lionengine:group>
+        </lionengine:category>
+        <lionengine:category name="bottomRight" x="6" y="0" axis="Y" glue="false">
+            <lionengine:group>bottom</lionengine:group>
+        </lionengine:category>
+    </lionengine:categories>
+    <lionengine:input class="com.b3dgs.lionengine.awt.KeyboardController">
+        <lionengine:code index="0" value="17"/>
+        <lionengine:code index="1" value="18"/>
+    </lionengine:input>
+    <lionengine:state>com.b3dgs.lionengine.example.prototype.dungeon.StateIdle</lionengine:state>
+    <lionengine:layerable layerRefresh="1" layerDisplay="2"/>
+    <lionengine:collidable group="1" accepted="2"/>
+</lionengine:featurable>

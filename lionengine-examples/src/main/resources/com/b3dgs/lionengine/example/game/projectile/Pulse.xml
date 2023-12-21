@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/featurable.xsd">
+    <lionengine:class>com.b3dgs.lionengine.example.game.projectile.Projectile</lionengine:class>
+    <lionengine:surface image="Pulse.png"/>
+    <lionengine:size width="12" height="14"/>
+    <lionengine:collisions>
+        <lionengine:collision name="default" offsetX="0" offsetY="0" width="1" height="1" mirror="false"/>
+    </lionengine:collisions>
+</lionengine:featurable>

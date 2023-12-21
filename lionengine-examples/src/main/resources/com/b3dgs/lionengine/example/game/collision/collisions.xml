@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:collisions xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/tileCollisions.xsd">
+    <lionengine:collision group="ground">
+        <lionengine:formula>ground</lionengine:formula>
+    </lionengine:collision>
+    <lionengine:collision group="slope_left_0">
+        <lionengine:formula>slope_left_0</lionengine:formula>
+    </lionengine:collision>
+    <lionengine:collision group="slope_left_1">
+        <lionengine:formula>slope_left_1</lionengine:formula>
+    </lionengine:collision>
+	<lionengine:collision group="slope_right_0">
+        <lionengine:formula>slope_right_0</lionengine:formula>
+    </lionengine:collision>
+    <lionengine:collision group="slope_right_1">
+        <lionengine:formula>slope_right_1</lionengine:formula>
+    </lionengine:collision>
+    <lionengine:collision group="steep_left">
+        <lionengine:formula>steep_left</lionengine:formula>
+    </lionengine:collision>
+    <lionengine:collision group="steep_right">
+        <lionengine:formula>steep_right</lionengine:formula>
+    </lionengine:collision>
+</lionengine:collisions>

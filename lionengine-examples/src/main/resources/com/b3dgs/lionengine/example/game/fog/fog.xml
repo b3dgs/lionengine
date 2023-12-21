@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:transitions xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/tileTransitions.xsd">
+    <lionengine:transition in="fog" out="none" type="UP">
+        <lionengine:tile number="0" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="fog" out="none" type="DOWN">
+        <lionengine:tile number="1" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="fog" out="none" type="RIGHT">
+        <lionengine:tile number="2" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="fog" out="none" type="LEFT">
+        <lionengine:tile number="3" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="fog" out="none" type="CORNER_UP_LEFT">
+        <lionengine:tile number="7" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="fog" out="none" type="CORNER_UP_RIGHT">
+        <lionengine:tile number="6" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="fog" out="none" type="CORNER_DOWN_LEFT">
+        <lionengine:tile number="5" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="fog" out="none" type="CORNER_DOWN_RIGHT">
+        <lionengine:tile number="4" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="fog" out="none" type="UP_LEFT">
+        <lionengine:tile number="8" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="fog" out="none" type="UP_RIGHT">
+        <lionengine:tile number="9" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="fog" out="none" type="DOWN_LEFT">
+        <lionengine:tile number="10" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="fog" out="none" type="DOWN_RIGHT">
+        <lionengine:tile number="11" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="fog" out="none" type="UP_LEFT_DOWN_RIGHT">
+        <lionengine:tile number="13" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="fog" out="none" type="UP_RIGHT_DOWN_LEFT">
+        <lionengine:tile number="12" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="none" out="fog" type="DOWN">
+        <lionengine:tile number="0" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="none" out="fog" type="UP">
+        <lionengine:tile number="1" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="none" out="fog" type="LEFT">
+        <lionengine:tile number="2" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="none" out="fog" type="RIGHT">
+        <lionengine:tile number="3" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="none" out="fog" type="UP_LEFT">
+        <lionengine:tile number="7" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="none" out="fog" type="UP_RIGHT">
+        <lionengine:tile number="6" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="none" out="fog" type="DOWN_LEFT">
+        <lionengine:tile number="5" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="none" out="fog" type="DOWN_RIGHT">
+        <lionengine:tile number="4" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="none" out="fog" type="CORNER_UP_LEFT">
+        <lionengine:tile number="8" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="none" out="fog" type="CORNER_UP_RIGHT">
+        <lionengine:tile number="9" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="none" out="fog" type="CORNER_DOWN_LEFT">
+        <lionengine:tile number="10" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="none" out="fog" type="CORNER_DOWN_RIGHT">
+        <lionengine:tile number="11" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="none" out="fog" type="UP_RIGHT_DOWN_LEFT">
+        <lionengine:tile number="13" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="none" out="fog" type="UP_LEFT_DOWN_RIGHT">
+        <lionengine:tile number="12" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="none" out="none" type="CENTER">
+        <lionengine:tile number="17" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="fog" out="fog" type="CENTER">
+        <lionengine:tile number="16" sheet="0"/>
+    </lionengine:transition>
+</lionengine:transitions>

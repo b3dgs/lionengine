@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/featurable.xsd">
+    <lionengine:class>com.b3dgs.lionengine.helper.EntityHelper</lionengine:class>
+    <lionengine:features>
+        <lionengine:feature>com.b3dgs.lionengine.example.game.collision.PlayerModel</lionengine:feature>
+        <lionengine:feature>com.b3dgs.lionengine.helper.EntityInputController</lionengine:feature>
+    </lionengine:features>
+    <lionengine:surface image="Player.png"/>
+    <lionengine:size width="16" height="16"/>
+    <lionengine:origin>CENTER_BOTTOM</lionengine:origin>
+    <lionengine:categories>
+        <lionengine:category name="leg" axis="Y" x="0" y="0">
+            <lionengine:group>ground</lionengine:group>
+            <lionengine:group>slope_left_0</lionengine:group>
+            <lionengine:group>slope_left_1</lionengine:group>
+            <lionengine:group>slope_right_0</lionengine:group>
+            <lionengine:group>slope_right_1</lionengine:group>
+            <lionengine:group>steep_left</lionengine:group>
+            <lionengine:group>steep_right</lionengine:group>
+        </lionengine:category>
+    </lionengine:categories>
+    <lionengine:input class="com.b3dgs.lionengine.awt.KeyboardController"/>
+    <lionengine:layerable layerRefresh="1" layerDisplay="1"/>
+</lionengine:featurable>

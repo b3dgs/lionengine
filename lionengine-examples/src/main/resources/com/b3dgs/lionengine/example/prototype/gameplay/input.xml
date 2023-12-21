@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:input mapping="com.b3dgs.lionengine.example.prototype.gameplay.DeviceMapping" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/input.xsd">
+    <lionengine:device class="com.b3dgs.lionengine.awt.Keyboard" name="control" index="0">
+        <lionengine:horizontal positive="39" negative="37"/>
+        <lionengine:vertical positive="38" negative="40"/>
+        <lionengine:horizontal positive="68" negative="81"/>
+        <lionengine:vertical positive="90" negative="83"/>
+        <lionengine:horizontal positive="102" negative="100"/>
+        <lionengine:vertical positive="104" negative="98"/>
+        <lionengine:fire index="LEFT" positive="68"/>
+        <lionengine:fire index="LEFT" positive="37"/>
+        <lionengine:fire index="LEFT" positive="102"/>
+        <lionengine:fire index="RIGHT" positive="81"/>
+        <lionengine:fire index="RIGHT" positive="100"/>
+        <lionengine:fire index="RIGHT" positive="39"/>
+        <lionengine:fire index="UP" positive="38"/>
+        <lionengine:fire index="UP" positive="104"/>
+        <lionengine:fire index="UP" positive="90"/>
+        <lionengine:fire index="DOWN" positive="98"/>
+        <lionengine:fire index="DOWN" positive="83"/>
+        <lionengine:fire index="DOWN" positive="40"/>
+        <lionengine:fire index="FIRE1" positive="16"/>
+        <lionengine:fire index="FIRE2" positive="32"/>
+        <lionengine:fire index="FIRE1" positive="96"/>
+        <lionengine:fire index="FIRE2" positive="17"/>
+        <lionengine:fire index="FIRE1" positive="10"/>
+    </lionengine:device>
+</lionengine:input>

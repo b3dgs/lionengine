@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/tileGroups.xsd">
+    <lionengine:group name="ground" type="NONE">
+        <lionengine:tile number="0" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="slope_left_0" type="NONE">
+        <lionengine:tile number="1" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="slope_left_1" type="NONE">
+        <lionengine:tile number="2" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="slope_right_1" type="NONE">
+        <lionengine:tile number="3" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="slope_right_0" type="NONE">
+        <lionengine:tile number="4" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="steep_left" type="NONE">
+        <lionengine:tile number="5" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="steep_right" type="NONE">
+        <lionengine:tile number="6" sheet="0"/>
+    </lionengine:group>
+</lionengine:groups>

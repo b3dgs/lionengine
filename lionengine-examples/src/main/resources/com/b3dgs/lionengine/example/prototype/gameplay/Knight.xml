@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/featurable.xsd">
+    <lionengine:class>com.b3dgs.lionengine.helper.EntityHelper</lionengine:class>
+    <lionengine:features>
+        <lionengine:feature>com.b3dgs.lionengine.example.prototype.gameplay.EntityModel</lionengine:feature>
+        <lionengine:feature>com.b3dgs.lionengine.helper.EntityInputController</lionengine:feature>
+    </lionengine:features>
+    <lionengine:surface image="Knight.png"/>
+    <lionengine:frames horizontal="10" vertical="9" offsetY="2"/>
+    <lionengine:size width="100" height="55"/>
+    <lionengine:origin>CENTER_BOTTOM</lionengine:origin>
+    <lionengine:animations>
+        <lionengine:animation name="idle" start="1" end="8" speed="0.25" reversed="false" repeat="true"/>
+        <lionengine:animation name="run" start="9" end="18" speed="0.25" reversed="false" repeat="true"/>
+        <lionengine:animation name="attack1" start="19" end="24" speed="0.25" reversed="false" repeat="false">
+            <lionengine:collisionFramed number="3" x="26" y="0" width="40" height="55"/>
+        </lionengine:animation>
+        <lionengine:animation name="attack2" start="25" end="29" speed="0.25" reversed="false" repeat="false">
+            <lionengine:collisionFramed number="2" x="0" y="20" width="50" height="25"/>
+            <lionengine:collisionFramed number="3" x="-15" y="10" width="50" height="5"/>
+        </lionengine:animation>
+        <lionengine:animation name="attack3" start="30" end="38" speed="0.25" reversed="false" repeat="false">
+            <lionengine:collisionFramed number="3" x="19" y="10" width="60" height="45"/>
+        </lionengine:animation>
+        <lionengine:animation name="jump" start="39" end="41" speed="0.25" reversed="false" repeat="false"/>
+        <lionengine:animation name="fall" start="42" end="45" speed="0.25" reversed="false" repeat="false"/>
+        <lionengine:animation name="hurt" start="46" end="48" speed="0.25" reversed="false" repeat="false"/>
+        <lionengine:animation name="die" start="49" end="58" speed="0.25" reversed="false" repeat="false"/>
+        <lionengine:animation name="blockidle" start="59" end="66" speed="0.25" reversed="false" repeat="true"/>
+        <lionengine:animation name="block" start="67" end="71" speed="0.25" reversed="false" repeat="false"/>
+        <lionengine:animation name="roll" start="72" end="80" speed="0.25" reversed="false" repeat="false"/>
+        <lionengine:animation name="ledge_grab" start="81" end="89" speed="0.25" reversed="false" repeat="false"/>
+        <lionengine:animation name="wall_slide" start="90" end="94" speed="0.25" reversed="false" repeat="false"/>
+    </lionengine:animations>
+    <lionengine:collisions>
+        <lionengine:collision name="default" offsetX="0" offsetY="0" width="24" height="40" mirror="false"/>
+    </lionengine:collisions>
+    <lionengine:state>com.b3dgs.lionengine.example.prototype.gameplay.StateIdle</lionengine:state>
+    <lionengine:layerable layerRefresh="1" layerDisplay="2"/>
+    <lionengine:body gravity="0.1" gravityMax="8.0"/>
+    <lionengine:collidable group="1" accepted="2"/>
+</lionengine:featurable>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:letters xmlns:lionengine="https://lionengine.b3dgs.com">
+    <lionengine:letter char="A" height="0" width="7"/>
+    <lionengine:letter char="B" height="0" width="7"/>
+    <lionengine:letter char="C" height="0" width="7"/>
+    <lionengine:letter char="D" height="0" width="7"/>
+    <lionengine:letter char="E" height="0" width="7"/>
+    <lionengine:letter char="F" height="0" width="7"/>
+    <lionengine:letter char="G" height="0" width="7"/>
+    <lionengine:letter char="H" height="0" width="7"/>
+    <lionengine:letter char="I" height="0" width="6"/>
+    <lionengine:letter char="J" height="0" width="7"/>
+    <lionengine:letter char="K" height="0" width="7"/>
+    <lionengine:letter char="L" height="0" width="7"/>
+    <lionengine:letter char="M" height="0" width="7"/>
+    <lionengine:letter char="N" height="0" width="7"/>
+    <lionengine:letter char="O" height="0" width="7"/>
+    <lionengine:letter char="P" height="0" width="7"/>
+    <lionengine:letter char="Q" height="0" width="7"/>
+    <lionengine:letter char="R" height="0" width="7"/>
+    <lionengine:letter char="S" height="0" width="7"/>
+    <lionengine:letter char="T" height="0" width="8"/>
+    <lionengine:letter char="U" height="0" width="7"/>
+    <lionengine:letter char="V" height="0" width="7"/>
+    <lionengine:letter char="W" height="0" width="7"/>
+    <lionengine:letter char="X" height="0" width="7"/>
+    <lionengine:letter char="Y" height="0" width="8"/>
+    <lionengine:letter char="Z" height="0" width="7"/>
+</lionengine:letters>

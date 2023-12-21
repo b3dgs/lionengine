@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/tileGroups.xsd">
+    <lionengine:group name="top" type="NONE">
+        <lionengine:tile number="0" sheet="0"/>
+        <lionengine:tile number="1" sheet="0"/>
+        <lionengine:tile number="2" sheet="0"/>
+        <lionengine:tile number="26" sheet="0"/>
+        <lionengine:tile number="27" sheet="0"/>
+        <lionengine:tile number="34" sheet="0"/>
+        <lionengine:tile number="35" sheet="0"/>
+        <lionengine:tile number="38" sheet="0"/>
+        <lionengine:tile number="39" sheet="0"/>
+        <lionengine:tile number="46" sheet="0"/>
+        <lionengine:tile number="47" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="left" type="NONE">
+        <lionengine:tile number="30" sheet="0"/>
+        <lionengine:tile number="33" sheet="0"/>
+        <lionengine:tile number="34" sheet="0"/>
+        <lionengine:tile number="39" sheet="0"/>
+        <lionengine:tile number="40" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="right" type="NONE">
+        <lionengine:tile number="31" sheet="0"/>
+        <lionengine:tile number="32" sheet="0"/>
+        <lionengine:tile number="35" sheet="0"/>
+        <lionengine:tile number="38" sheet="0"/>
+        <lionengine:tile number="41" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="bottom" type="NONE">
+        <lionengine:tile number="3" sheet="0"/>
+        <lionengine:tile number="4" sheet="0"/>
+        <lionengine:tile number="5" sheet="0"/>
+    </lionengine:group>
+</lionengine:groups>

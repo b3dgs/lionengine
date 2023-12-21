@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:pathfinding xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/pathfinding.xsd">
+    <lionengine:tilePath category="ground">
+        <lionengine:group>grass</lionengine:group>
+        <lionengine:group>road</lionengine:group>
+    </lionengine:tilePath>
+    <lionengine:tilePath category="waterBorder">
+        <lionengine:group>waterBorder</lionengine:group>
+    </lionengine:tilePath>
+    <lionengine:tilePath category="tree">
+        <lionengine:group>tree</lionengine:group>
+        <lionengine:group>treeBorder</lionengine:group>
+    </lionengine:tilePath>
+    <lionengine:tilePath category="water">
+        <lionengine:group>water</lionengine:group>
+    </lionengine:tilePath>
+</lionengine:pathfinding>

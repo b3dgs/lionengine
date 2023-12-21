@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/featurable.xsd">
+    <lionengine:class>com.b3dgs.lionengine.helper.EntityHelper</lionengine:class>
+    <lionengine:features>
+        <lionengine:feature>com.b3dgs.lionengine.example.prototype.gameplay.EntityModel</lionengine:feature>
+        <lionengine:feature>com.b3dgs.lionengine.example.prototype.gameplay.Zombi</lionengine:feature>
+    </lionengine:features>
+    <lionengine:surface image="Zombi.png"/>
+    <lionengine:frames horizontal="7" vertical="6" offsetY="1"/>
+    <lionengine:size width="64" height="64"/>
+    <lionengine:origin>CENTER_BOTTOM</lionengine:origin>
+    <lionengine:animations>
+        <lionengine:animation name="idle" start="1" end="8" speed="0.15" reversed="false" repeat="true"/>
+        <lionengine:animation name="spawn" start="1" end="15" speed="0.3" reversed="false" repeat="false"/>
+        <lionengine:animation name="run" start="16" end="24" speed="0.15" reversed="false" repeat="true"/>
+        <lionengine:animation name="attack1" start="25" end="33" speed="0.15" reversed="false" repeat="false"/>
+        <lionengine:animation name="die" start="34" end="42" speed="0.15" reversed="false" repeat="false"/>
+    </lionengine:animations>
+    <lionengine:collisions>
+        <lionengine:collision name="default" offsetX="0" offsetY="0" width="16" height="44" mirror="false"/>
+    </lionengine:collisions>
+    <lionengine:state>com.b3dgs.lionengine.example.prototype.gameplay.StateSpawn</lionengine:state>
+    <lionengine:layerable layerRefresh="1" layerDisplay="1"/>
+    <lionengine:body gravity="4.0" gravityMax="4.0"/>
+    <lionengine:collidable group="2" accepted="1"/>
+</lionengine:featurable>

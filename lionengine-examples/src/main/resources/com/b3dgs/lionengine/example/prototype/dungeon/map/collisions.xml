@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:collisions xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/tileCollisions.xsd">
+    <lionengine:collision group="top">
+        <lionengine:formula>top</lionengine:formula>
+    </lionengine:collision>
+    <lionengine:collision group="left">
+        <lionengine:formula>left</lionengine:formula>
+    </lionengine:collision>
+    <lionengine:collision group="right">
+        <lionengine:formula>right</lionengine:formula>
+    </lionengine:collision>
+    <lionengine:collision group="bottom">
+        <lionengine:formula>bottom</lionengine:formula>
+    </lionengine:collision>
+</lionengine:collisions>

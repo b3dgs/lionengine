@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/featurable.xsd">
+    <lionengine:class>com.b3dgs.lionengine.helper.EntityHelper</lionengine:class>
+    <lionengine:features>
+        <lionengine:feature>com.b3dgs.lionengine.example.game.attack.Soldier</lionengine:feature>
+    </lionengine:features>
+    <lionengine:surface image="OrcSoldier.png"/>
+    <lionengine:frames horizontal="24" vertical="8" offsetX="8" offsetY="8"/>
+    <lionengine:size width="16" height="16"/>
+    <lionengine:animations>
+        <lionengine:animation name="idle" start="1" end="2" speed="0.05" reversed="false" repeat="true"/>
+        <lionengine:animation name="walk" start="3" end="4" speed="0.125" reversed="false" repeat="true"/>
+        <lionengine:animation name="attack" start="5" end="8" speed="0.128" reversed="false" repeat="false"/>
+        <lionengine:animation name="hurt" start="20" end="20" speed="0.125" reversed="false" repeat="false"/>
+        <lionengine:animation name="die" start="21" end="23" speed="0.125" reversed="false" repeat="false"/>
+        <lionengine:animation name="dead" start="24" end="24" speed="0.125" reversed="false" repeat="false"/>
+    </lionengine:animations>
+    <lionengine:origin>BOTTOM_LEFT</lionengine:origin>
+    <lionengine:layerable layerRefresh="2" layerDisplay="2"/>
+    <lionengine:attacker delay="60" distanceMin="1" distanceMax="1" damagesMin="1" damagesMax="5"/>
+    <lionengine:pathfindable>
+        <lionengine:path category="ground" cost="1" block="false">
+            <lionengine:movement>UP</lionengine:movement>
+            <lionengine:movement>LEFT</lionengine:movement>
+            <lionengine:movement>RIGHT</lionengine:movement>
+            <lionengine:movement>DOWN</lionengine:movement>
+            <lionengine:movement>DIAGONAL_UP_LEFT</lionengine:movement>
+            <lionengine:movement>DIAGONAL_UP_RIGHT</lionengine:movement>
+            <lionengine:movement>DIAGONAL_DOWN_LEFT</lionengine:movement>
+            <lionengine:movement>DIAGONAL_DOWN_RIGHT</lionengine:movement>
+        </lionengine:path>
+        <lionengine:path category="waterBorder" block="true"/>
+        <lionengine:path category="tree" block="true"/>
+        <lionengine:path category="water" block="true"/>
+    </lionengine:pathfindable>
+</lionengine:featurable>

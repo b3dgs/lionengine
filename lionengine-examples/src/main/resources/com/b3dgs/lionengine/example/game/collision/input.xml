@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:input mapping="com.b3dgs.lionengine.example.game.state.DeviceMapping" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/input.xsd">
+    <lionengine:device class="com.b3dgs.lionengine.awt.Keyboard" id="0" index="0" name="Arrow keys">
+        <lionengine:horizontal negative="37" positive="39"/>
+        <lionengine:vertical negative="40" positive="38"/>
+        <lionengine:fire index="JUMP" positive="16"/>
+        <lionengine:fire index="RUN" positive="16"/>
+        <lionengine:fire index="ATTACK" positive="17"/>
+        <lionengine:fire index="DEFEND" positive="18"/>
+    </lionengine:device>
+    <lionengine:device class="com.b3dgs.lionengine.awt.Keyboard" id="0" index="1" name="Left keyboard">
+        <lionengine:horizontal negative="81" positive="68"/>
+        <lionengine:vertical negative="83" positive="90"/>
+        <lionengine:fire index="JUMP" positive="71"/>
+        <lionengine:fire index="RUN" positive="16711696"/>
+        <lionengine:fire index="ATTACK" positive="69"/>
+        <lionengine:fire index="DEFEND" positive="65"/>
+    </lionengine:device>
+</lionengine:input>

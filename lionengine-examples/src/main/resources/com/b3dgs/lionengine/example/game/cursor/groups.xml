@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/tileGroups.xsd">
+    <lionengine:group name="grass" type="PLAIN">
+        <lionengine:tile number="0" sheet="0"/>
+        <lionengine:tile number="1" sheet="0"/>
+        <lionengine:tile number="2" sheet="0"/>
+        <lionengine:tile number="3" sheet="0"/>
+        <lionengine:tile number="4" sheet="0"/>
+        <lionengine:tile number="12" sheet="0"/>
+        <lionengine:tile number="13" sheet="0"/>
+        <lionengine:tile number="14" sheet="0"/>
+        <lionengine:tile number="24" sheet="0"/>
+        <lionengine:tile number="25" sheet="0"/>
+        <lionengine:tile number="26" sheet="0"/>
+        <lionengine:tile number="36" sheet="0"/>
+        <lionengine:tile number="37" sheet="0"/>
+        <lionengine:tile number="38" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="road" type="CIRCUIT">
+        <lionengine:tile number="5" sheet="0"/>
+        <lionengine:tile number="6" sheet="0"/>
+        <lionengine:tile number="7" sheet="0"/>
+        <lionengine:tile number="16" sheet="0"/>
+        <lionengine:tile number="17" sheet="0"/>
+        <lionengine:tile number="18" sheet="0"/>
+        <lionengine:tile number="19" sheet="0"/>
+        <lionengine:tile number="28" sheet="0"/>
+        <lionengine:tile number="29" sheet="0"/>
+        <lionengine:tile number="30" sheet="0"/>
+        <lionengine:tile number="31" sheet="0"/>
+        <lionengine:tile number="40" sheet="0"/>
+        <lionengine:tile number="41" sheet="0"/>
+        <lionengine:tile number="42" sheet="0"/>
+        <lionengine:tile number="43" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="treeBorder" type="TRANSITION">
+        <lionengine:tile number="57" sheet="0"/>
+        <lionengine:tile number="58" sheet="0"/>
+        <lionengine:tile number="59" sheet="0"/>
+        <lionengine:tile number="69" sheet="0"/>
+        <lionengine:tile number="70" sheet="0"/>
+        <lionengine:tile number="71" sheet="0"/>
+        <lionengine:tile number="81" sheet="0"/>
+        <lionengine:tile number="82" sheet="0"/>
+        <lionengine:tile number="83" sheet="0"/>
+        <lionengine:tile number="92" sheet="0"/>
+        <lionengine:tile number="93" sheet="0"/>
+        <lionengine:tile number="94" sheet="0"/>
+        <lionengine:tile number="95" sheet="0"/>
+        <lionengine:tile number="104" sheet="0"/>
+        <lionengine:tile number="105" sheet="0"/>
+        <lionengine:tile number="106" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="tree" type="PLAIN">
+        <lionengine:tile number="70" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="waterBorder" type="TRANSITION">
+        <lionengine:tile number="48" sheet="0"/>
+        <lionengine:tile number="49" sheet="0"/>
+        <lionengine:tile number="50" sheet="0"/>
+        <lionengine:tile number="60" sheet="0"/>
+        <lionengine:tile number="61" sheet="0"/>
+        <lionengine:tile number="62" sheet="0"/>
+        <lionengine:tile number="72" sheet="0"/>
+        <lionengine:tile number="73" sheet="0"/>
+        <lionengine:tile number="74" sheet="0"/>
+        <lionengine:tile number="84" sheet="0"/>
+        <lionengine:tile number="85" sheet="0"/>
+        <lionengine:tile number="96" sheet="0"/>
+        <lionengine:tile number="97" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="water" type="PLAIN">
+        <lionengine:tile number="61" sheet="0"/>
+    </lionengine:group>
+</lionengine:groups>
