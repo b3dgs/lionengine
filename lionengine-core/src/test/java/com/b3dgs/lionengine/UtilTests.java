@@ -65,9 +65,9 @@ public final class UtilTests
         }
         catch (final NoSuchMethodException | InvocationTargetException | IllegalAccessException exception)
         {
-            if (exception.getCause() instanceof LionEngineException)
+            if (exception.getCause() instanceof final LionEngineException e)
             {
-                throw (LionEngineException) exception.getCause();
+                throw e;
             }
             throw new LionEngineException(exception, UtilReflection.ERROR_METHOD + name);
         }
@@ -144,10 +144,9 @@ public final class UtilTests
         }
         catch (final InvocationTargetException exception)
         {
-            final Throwable cause = exception.getCause();
-            if (cause instanceof LionEngineException)
+            if (exception.getCause() instanceof final LionEngineException e)
             {
-                throw (LionEngineException) cause;
+                throw e;
             }
             throw exception;
         }

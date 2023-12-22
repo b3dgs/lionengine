@@ -206,13 +206,13 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     {
         super.prepare(provider);
 
-        if (provider instanceof ExtractorListener)
+        if (provider instanceof final ExtractorListener l)
         {
-            addListener((ExtractorListener) provider);
+            addListener(l);
         }
-        if (provider instanceof ExtractorChecker)
+        if (provider instanceof final ExtractorChecker c)
         {
-            checker = (ExtractorChecker) provider;
+            checker = c;
         }
     }
 
@@ -221,9 +221,9 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     {
         super.checkListener(listener);
 
-        if (listener instanceof ExtractorListener)
+        if (listener instanceof final ExtractorListener l)
         {
-            addListener((ExtractorListener) listener);
+            addListener(l);
         }
     }
 

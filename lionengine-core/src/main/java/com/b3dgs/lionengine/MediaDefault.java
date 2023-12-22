@@ -356,7 +356,6 @@ final class MediaDefault implements Media
     @Override
     public InputStream getInputStream()
     {
-        final File file;
         File current = null;
         if ((current = exists(getPathFromResourcesDir())) == null // CHECKSTYLE IGNORE LINE: Assign|Comment
             && (current = exists(getPathFromUser())) == null // CHECKSTYLE IGNORE LINE: Assign|Comment
@@ -369,7 +368,7 @@ final class MediaDefault implements Media
             }
             throw new LionEngineException(this, ERROR_OPEN_MEDIA);
         }
-        file = current;
+        final File file = current;
         try
         {
             return new FileInputStream(file);

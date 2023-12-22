@@ -100,9 +100,9 @@ public final class UtilText
     public static void registerDirty(Text text, boolean enable)
     {
         final Object oldListener = text.getData(UtilSwt.KEY_DIRTY);
-        if (oldListener instanceof ModifyListener)
+        if (oldListener instanceof final ModifyListener listener)
         {
-            text.removeModifyListener((ModifyListener) oldListener);
+            text.removeModifyListener(listener);
         }
         if (enable)
         {

@@ -87,9 +87,9 @@ public final class UtilCombo
     public static void registerDirty(final Combo combo, boolean enable)
     {
         final Object oldListener = combo.getData(UtilSwt.KEY_DIRTY);
-        if (oldListener instanceof ModifyListener)
+        if (oldListener instanceof final ModifyListener listener)
         {
-            combo.removeModifyListener((ModifyListener) oldListener);
+            combo.removeModifyListener(listener);
         }
         if (enable)
         {

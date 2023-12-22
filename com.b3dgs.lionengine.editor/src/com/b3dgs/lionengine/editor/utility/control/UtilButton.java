@@ -102,9 +102,9 @@ public final class UtilButton
     public static void registerDirty(final Button button, boolean enable)
     {
         final Object oldListener = button.getData(UtilSwt.KEY_DIRTY);
-        if (oldListener instanceof SelectionListener)
+        if (oldListener instanceof final SelectionListener listener)
         {
-            button.removeSelectionListener((SelectionListener) oldListener);
+            button.removeSelectionListener(listener);
         }
         if (enable)
         {

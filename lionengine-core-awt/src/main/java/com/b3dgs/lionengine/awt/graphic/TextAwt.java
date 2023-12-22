@@ -127,9 +127,8 @@ final class TextAwt implements Text
         final Graphics2D g2d = (Graphics2D) g.getGraphic();
         final FontRenderContext context = g2d.getFontRenderContext();
         final Rectangle2D textSize = font.getStringBounds(text, context);
-        final int tx;
-        final int ty;
 
+        final int tx;
         if (Align.LEFT == alignment)
         {
             tx = x;
@@ -146,7 +145,7 @@ final class TextAwt implements Text
         {
             throw new LionEngineException(alignment);
         }
-        ty = (int) textSize.getHeight() + y;
+        final int ty = (int) textSize.getHeight() + y;
 
         final Color colorOld = g2d.getColor();
         g2d.setColor(colorCache.get(color));

@@ -71,9 +71,9 @@ public class AssignableModel extends FeatureModel implements Assignable
     {
         super.prepare(provider);
 
-        if (provider instanceof Assign)
+        if (provider instanceof final Assign assign)
         {
-            setAssign((Assign) provider);
+            setAssign(assign);
         }
     }
 

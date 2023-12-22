@@ -182,9 +182,9 @@ final class ResourceLoaderTest
         final AtomicReference<LionEngineException> exception = new AtomicReference<>();
         thread.setUncaughtExceptionHandler((t, throwable) ->
         {
-            if (throwable instanceof LionEngineException)
+            if (throwable instanceof final LionEngineException e)
             {
-                exception.set((LionEngineException) throwable);
+                exception.set(e);
                 exceptionLatch.countDown();
             }
         });

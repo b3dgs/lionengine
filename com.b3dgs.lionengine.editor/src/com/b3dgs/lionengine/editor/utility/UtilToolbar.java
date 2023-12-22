@@ -50,9 +50,9 @@ public final class UtilToolbar
         for (final MToolBarElement element : toolbar.getChildren())
         {
             final String id = element.getElementId().substring(toolbar.getElementId().length() + 1);
-            if (element instanceof MDirectToolItem && id.startsWith(prefix))
+            if (element instanceof final MDirectToolItem item && id.startsWith(prefix))
             {
-                ((MDirectToolItem) element).setSelected(selected);
+                item.setSelected(selected);
             }
         }
     }
@@ -70,9 +70,9 @@ public final class UtilToolbar
         for (final MToolBarElement element : toolbar.getChildren())
         {
             final String id = element.getElementId().substring(toolbar.getElementId().length() + 1);
-            if (element instanceof MDirectToolItem && (items.isEmpty() || items.contains(id)))
+            if (element instanceof final MDirectToolItem item && (items.isEmpty() || items.contains(id)))
             {
-                ((MDirectToolItem) element).setSelected(selected);
+                item.setSelected(selected);
             }
         }
     }
@@ -90,9 +90,9 @@ public final class UtilToolbar
         for (final MToolBarElement element : toolbar.getChildren())
         {
             final Object widget = element.getWidget();
-            if (widget instanceof ToolItem && (items.isEmpty() || toolbarElementContained(element, items)))
+            if (widget instanceof final ToolItem item && (items.isEmpty() || toolbarElementContained(element, items)))
             {
-                ((ToolItem) widget).setEnabled(enabled);
+                item.setEnabled(enabled);
             }
         }
     }
@@ -129,9 +129,9 @@ public final class UtilToolbar
     {
         for (final MToolBarElement element : toolbar.getChildren())
         {
-            if (element.getElementId().contains(name) && element instanceof MToolControl)
+            if (element.getElementId().contains(name) && element instanceof final MToolControl control)
             {
-                return clazz.cast(((MToolControl) element).getObject());
+                return clazz.cast(control.getObject());
             }
         }
         throw new LionEngineException(ERROR_ITEM + name);
@@ -150,9 +150,9 @@ public final class UtilToolbar
         {
             for (final Control control : composite.getChildren())
             {
-                if (control instanceof Text)
+                if (control instanceof final Text t)
                 {
-                    ((Text) control).setText(text);
+                    t.setText(text);
                 }
             }
         }

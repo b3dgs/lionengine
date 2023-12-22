@@ -161,17 +161,17 @@ public class EntityHelper extends FeaturableModel
         tileCollidable.addListener((r, c) ->
         {
             final State current = state.getCurrent();
-            if (current instanceof StateHelper<?>)
+            if (current instanceof final StateHelper<?> s)
             {
-                ((StateHelper<?>) current).notifyTileCollided(r, c);
+                s.notifyTileCollided(r, c);
             }
         });
         collidable.addListener((c, w, b) ->
         {
             final State current = state.getCurrent();
-            if (current instanceof StateHelper<?>)
+            if (current instanceof final StateHelper<?> s)
             {
-                ((StateHelper<?>) current).notifyCollided(c, w, b);
+                s.notifyCollided(c, w, b);
             }
         });
     }
@@ -254,9 +254,6 @@ public class EntityHelper extends FeaturableModel
             checker.update(extrp);
             updatingCurrent.update(extrp);
         }));
-        addFeature(new DisplayableModel(g ->
-        {
-            renderingCurrent.render(g);
-        }));
+        addFeature(new DisplayableModel(renderingCurrent::render));
     }
 }

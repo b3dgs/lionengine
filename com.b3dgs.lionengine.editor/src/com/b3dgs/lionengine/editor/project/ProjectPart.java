@@ -107,9 +107,8 @@ public final class ProjectPart implements Focusable
      */
     private static void updateSelection(TreeItem item)
     {
-        if (item.getData() instanceof Media)
+        if (item.getData() instanceof final Media media)
         {
-            final Media media = (Media) item.getData();
             ProjectModel.INSTANCE.setSelection(media);
             updateProperties(media);
         }

@@ -368,13 +368,13 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
             mirrorable = provider.getFeature(Mirrorable.class);
         }
 
-        if (provider instanceof LauncherListener)
+        if (provider instanceof final LauncherListener l)
         {
-            addListener((LauncherListener) provider);
+            addListener(l);
         }
-        if (provider instanceof LaunchableListener)
+        if (provider instanceof final LaunchableListener l)
         {
-            addListener((LaunchableListener) provider);
+            addListener(l);
         }
     }
 
@@ -383,13 +383,13 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     {
         super.checkListener(listener);
 
-        if (listener instanceof LauncherListener)
+        if (listener instanceof final LauncherListener l)
         {
-            addListener((LauncherListener) listener);
+            addListener(l);
         }
-        if (listener instanceof LaunchableListener)
+        if (listener instanceof final LaunchableListener l)
         {
-            addListener((LaunchableListener) listener);
+            addListener(l);
         }
     }
 

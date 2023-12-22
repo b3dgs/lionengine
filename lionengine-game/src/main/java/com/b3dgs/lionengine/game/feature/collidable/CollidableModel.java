@@ -52,8 +52,6 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
 {
     /** Collision updater. */
     private final CollidableUpdater updater = new CollidableUpdater();
-    /** Collision renderer. */
-    private final CollidableRenderer renderer = new CollidableRenderer();
     /** The collision listener reference. */
     private final ListenableModel<CollidableListener> listenable = new ListenableModel<>();
     /** The collisions used. */
@@ -151,9 +149,9 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
 
         transformable.addListener(this);
 
-        if (provider instanceof CollidableListener)
+        if (provider instanceof final CollidableListener l)
         {
-            addListener((CollidableListener) provider);
+            addListener(l);
         }
     }
 
@@ -162,9 +160,9 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
     {
         super.checkListener(listener);
 
-        if (listener instanceof CollidableListener)
+        if (listener instanceof final CollidableListener l)
         {
-            addListener((CollidableListener) listener);
+            addListener(l);
         }
     }
 
@@ -233,10 +231,16 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
         if (showCollision && isEnabled())
         {
             g.setColor(ColorRgba.RED);
-            renderer.render(g, viewer, origin, transformable, updater.getCache(), cacheRectRender, updater::isEnabled);
+            CollidableRenderer.render(g,
+                                      viewer,
+                                      origin,
+                                      transformable,
+                                      updater.getCache(),
+                                      cacheRectRender,
+                                      updater::isEnabled);
 
             g.setColor(ColorRgba.GREEN);
-            renderer.renderMax(g, viewer, origin, transformable, maxWidth, minHeight, maxHeight);
+            CollidableRenderer.renderMax(g, viewer, origin, transformable, maxWidth, minHeight, maxHeight);
         }
     }
 

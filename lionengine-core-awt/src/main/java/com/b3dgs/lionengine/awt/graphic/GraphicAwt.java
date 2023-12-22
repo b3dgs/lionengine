@@ -267,13 +267,13 @@ final class GraphicAwt implements Graphic
     @Override
     public void setGraphic(Object graphic)
     {
-        if (graphic instanceof Graphics2D)
+        if (graphic instanceof final Graphics2D graphics2d)
         {
-            g = (Graphics2D) graphic;
+            g = graphics2d;
         }
-        else if (graphic instanceof GraphicAwt)
+        else if (graphic instanceof final GraphicAwt graphicAwt)
         {
-            g = ((GraphicAwt) graphic).g;
+            g = graphicAwt.g;
         }
         else
         {

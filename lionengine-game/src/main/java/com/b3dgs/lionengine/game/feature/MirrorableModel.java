@@ -79,9 +79,9 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
     {
         super.checkListener(listener);
 
-        if (listener instanceof MirrorableListener)
+        if (listener instanceof final MirrorableListener l)
         {
-            addListener((MirrorableListener) listener);
+            addListener(l);
         }
     }
 

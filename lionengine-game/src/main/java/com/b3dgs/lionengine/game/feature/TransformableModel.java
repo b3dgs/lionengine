@@ -75,9 +75,9 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     {
         super.checkListener(listener);
 
-        if (listener instanceof TransformableListener)
+        if (listener instanceof final TransformableListener l)
         {
-            addListener((TransformableListener) listener);
+            addListener(l);
         }
     }
 

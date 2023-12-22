@@ -60,9 +60,9 @@ public class Routines extends FeatureModel implements Updatable, Renderable
 
         for (final Feature feature : provider.getFeatures())
         {
-            if (feature instanceof Routine)
+            if (feature instanceof final Routine routine)
             {
-                routines.add((Routine) feature);
+                routines.add(routine);
             }
         }
         routinesCount = routines.size();

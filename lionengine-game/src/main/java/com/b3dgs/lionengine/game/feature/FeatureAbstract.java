@@ -47,9 +47,9 @@ public class FeatureAbstract implements Feature
 
         this.provider = provider;
 
-        if (this instanceof IdentifiableListener && provider.hasFeature(Identifiable.class))
+        if (this instanceof final IdentifiableListener listener && provider.hasFeature(Identifiable.class))
         {
-            provider.getFeature(Identifiable.class).addListener((IdentifiableListener) this);
+            provider.getFeature(Identifiable.class).addListener(listener);
         }
     }
 

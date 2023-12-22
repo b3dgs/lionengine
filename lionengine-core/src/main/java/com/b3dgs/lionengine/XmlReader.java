@@ -590,9 +590,9 @@ public class XmlReader implements AttributesReader
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            if (node instanceof Element && node.getNodeName().equals(name))
+            if (node instanceof final Element element && node.getNodeName().equals(name))
             {
-                return new XmlReader(document, (Element) node);
+                return new XmlReader(document, element);
             }
         }
         throw new LionEngineException(ERROR_NODE + name);
@@ -607,9 +607,9 @@ public class XmlReader implements AttributesReader
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            if (node instanceof Element && node.getNodeName().equals(name))
+            if (node instanceof final Element element && node.getNodeName().equals(name))
             {
-                return Optional.of(new XmlReader(document, (Element) node));
+                return Optional.of(new XmlReader(document, element));
             }
         }
         return Optional.empty();
@@ -650,9 +650,9 @@ public class XmlReader implements AttributesReader
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            if (node instanceof Element)
+            if (node instanceof final Element element)
             {
-                nodes.add(new XmlReader(document, (Element) node));
+                nodes.add(new XmlReader(document, element));
             }
         }
         return nodes;

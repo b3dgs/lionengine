@@ -44,9 +44,9 @@ public abstract class FeaturableAbstract implements Featurable
      */
     private void addFeatureInternal(Feature feature, boolean overwrite)
     {
-        if (feature instanceof Recyclable)
+        if (feature instanceof final Recyclable recyclable)
         {
-            ((Recyclable) feature).recycle();
+            recyclable.recycle();
         }
         feature.prepare(this);
         features.add(feature, overwrite);

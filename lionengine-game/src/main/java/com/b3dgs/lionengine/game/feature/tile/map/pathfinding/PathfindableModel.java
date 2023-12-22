@@ -569,9 +569,9 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
             orientable.prepare(provider);
         }
 
-        if (provider instanceof PathfindableListener)
+        if (provider instanceof final PathfindableListener l)
         {
-            addListener((PathfindableListener) provider);
+            addListener(l);
         }
     }
 
@@ -580,9 +580,9 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     {
         super.checkListener(listener);
 
-        if (listener instanceof PathfindableListener)
+        if (listener instanceof final PathfindableListener l)
         {
-            addListener((PathfindableListener) listener);
+            addListener(l);
         }
     }
 

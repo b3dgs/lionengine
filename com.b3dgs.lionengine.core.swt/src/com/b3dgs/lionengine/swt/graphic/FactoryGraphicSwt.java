@@ -224,7 +224,7 @@ public final class FactoryGraphicSwt implements FactoryGraphic
         Check.notNull(media);
 
         final int tiles = images.length;
-        if (images.length == 0)
+        if (tiles == 0)
         {
             throw new LionEngineException("No images found !");
         }

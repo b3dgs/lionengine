@@ -84,9 +84,10 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     {
         updaters.add(component);
         services.add(component);
-        if (component instanceof HandlerListener)
+
+        if (component instanceof final HandlerListener l)
         {
-            addListener((HandlerListener) component);
+            addListener(l);
         }
     }
 
@@ -100,9 +101,10 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     {
         renderers.add(component);
         services.add(component);
-        if (component instanceof HandlerListener)
+
+        if (component instanceof final HandlerListener l)
         {
-            addListener((HandlerListener) component);
+            addListener(l);
         }
     }
 

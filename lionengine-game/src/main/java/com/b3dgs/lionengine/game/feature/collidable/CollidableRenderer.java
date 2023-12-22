@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.collidable;
 import java.util.List;
 import java.util.Map;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Viewer;
@@ -32,14 +33,6 @@ import com.b3dgs.lionengine.graphic.Graphic;
 final class CollidableRenderer
 {
     /**
-     * Create a collidable renderer.
-     */
-    CollidableRenderer()
-    {
-        super();
-    }
-
-    /**
      * Render collisions.
      * 
      * @param g The graphic output.
@@ -50,13 +43,13 @@ final class CollidableRenderer
      * @param cacheRect The computed rectangles.
      * @param checker The collision checker.
      */
-    public void render(Graphic g,
-                       Viewer viewer,
-                       Origin origin,
-                       Shape transformable,
-                       List<Collision> cacheColls,
-                       Map<Collision, Rectangle> cacheRect,
-                       CollisionChecker checker)
+    public static void render(Graphic g,
+                              Viewer viewer,
+                              Origin origin,
+                              Shape transformable,
+                              List<Collision> cacheColls,
+                              Map<Collision, Rectangle> cacheRect,
+                              CollisionChecker checker)
     {
         final int size = cacheColls.size();
         for (int i = 0; i < size; i++)
@@ -91,17 +84,25 @@ final class CollidableRenderer
      * @param minHeight The min height.
      * @param maxHeight The max height.
      */
-    public void renderMax(Graphic g,
-                          Viewer viewer,
-                          Origin origin,
-                          Shape transformable,
-                          int maxWidth,
-                          int minHeight,
-                          int maxHeight)
+    public static void renderMax(Graphic g,
+                                 Viewer viewer,
+                                 Origin origin,
+                                 Shape transformable,
+                                 int maxWidth,
+                                 int minHeight,
+                                 int maxHeight)
     {
         g.drawRect(viewer, origin, transformable.getX() - maxWidth / 2, transformable.getY() + minHeight, 1, 1, false);
         g.drawRect(viewer, origin, transformable.getX() + maxWidth / 2, transformable.getY() + minHeight, 1, 1, false);
         g.drawRect(viewer, origin, transformable.getX() - maxWidth / 2, transformable.getY() + maxHeight, 1, 1, false);
         g.drawRect(viewer, origin, transformable.getX() + maxWidth / 2, transformable.getY() + maxHeight, 1, 1, false);
+    }
+
+    /**
+     * Create a collidable renderer.
+     */
+    private CollidableRenderer()
+    {
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

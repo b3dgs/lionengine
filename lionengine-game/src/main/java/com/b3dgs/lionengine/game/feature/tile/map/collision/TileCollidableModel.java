@@ -139,9 +139,9 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     @Override
     public void prepare(FeatureProvider provider)
     {
-        if (provider instanceof TileCollidableListener)
+        if (provider instanceof final TileCollidableListener l)
         {
-            addListener((TileCollidableListener) provider);
+            addListener(l);
         }
     }
 
@@ -150,9 +150,9 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     {
         super.checkListener(listener);
 
-        if (listener instanceof TileCollidableListener)
+        if (listener instanceof final TileCollidableListener l)
         {
-            addListener((TileCollidableListener) listener);
+            addListener(l);
         }
     }
 

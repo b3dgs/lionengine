@@ -79,9 +79,9 @@ public class ActionableModel extends FeatureModel implements Actionable
     {
         super.prepare(provider);
 
-        if (provider instanceof Action)
+        if (provider instanceof final Action a)
         {
-            setAction((Action) provider);
+            setAction(a);
         }
     }
 

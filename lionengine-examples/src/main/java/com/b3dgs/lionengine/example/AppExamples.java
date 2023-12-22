@@ -206,9 +206,8 @@ public final class AppExamples
         for (final Component component : components)
         {
             component.setEnabled(enabled);
-            if (component instanceof Container)
+            if (component instanceof final Container container)
             {
-                final Container container = (Container) component;
                 setEnabled(container.getComponents(), enabled);
             }
         }

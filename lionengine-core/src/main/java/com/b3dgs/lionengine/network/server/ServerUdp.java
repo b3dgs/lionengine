@@ -463,7 +463,7 @@ public class ServerUdp implements Server
             final float elapsed = timing.elapsed() / (float) Constant.THOUSAND;
             timing.restart();
 
-            final float factor = 1 / 1024f * elapsed;
+            final float factor = 1 / 1024F * elapsed;
             bandwidthUp = bandwidthUpSum.getAndSet(0) * factor;
             bandwidthDown = bandwidthDownSum.getAndSet(0) * factor;
         }

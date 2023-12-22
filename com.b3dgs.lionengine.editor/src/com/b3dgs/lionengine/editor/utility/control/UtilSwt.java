@@ -122,9 +122,9 @@ public final class UtilSwt
     public static void setDirty(Widget shell, boolean dirty)
     {
         final Object data = shell.getData();
-        if (data instanceof MDirtyable)
+        if (data instanceof final MDirtyable dirtyable)
         {
-            ((MDirtyable) data).setDirty(dirty);
+            dirtyable.setDirty(dirty);
         }
     }
 

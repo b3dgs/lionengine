@@ -103,9 +103,9 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
     {
         super.prepare(provider);
 
-        if (provider instanceof ProducibleListener)
+        if (provider instanceof final ProducibleListener l)
         {
-            addListener((ProducibleListener) provider);
+            addListener(l);
         }
     }
 
@@ -114,9 +114,9 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
     {
         super.checkListener(listener);
 
-        if (listener instanceof ProducibleListener)
+        if (listener instanceof final ProducibleListener l)
         {
-            addListener((ProducibleListener) listener);
+            addListener(l);
         }
     }
 

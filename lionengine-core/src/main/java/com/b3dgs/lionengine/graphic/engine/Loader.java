@@ -134,9 +134,9 @@ public final class Loader
         if (throwable != null)
         {
             Engine.terminate();
-            if (throwable instanceof LionEngineException)
+            if (throwable instanceof final LionEngineException exception)
             {
-                throw (LionEngineException) throwable;
+                throw exception;
             }
             throw new LionEngineException(throwable);
         }

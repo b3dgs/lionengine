@@ -165,11 +165,8 @@ public final class ImageBufferSwt implements ImageBuffer
     public int[] getRgbRef()
     {
         final int length = data.data.length;
-        final int array[] = new int[length];
-        for (int i = 0; i < length; i++)
-        {
-            array[i] = data.data[i];
-        }
+        final int[] array = new int[length];
+        System.arraycopy(data.data, 0, array, 0, length);
         return array;
     }
 

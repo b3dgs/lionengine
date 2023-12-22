@@ -255,9 +255,9 @@ final class GraphicHeadless implements Graphic
     @Override
     public void setGraphic(Object graphic)
     {
-        if (graphic instanceof ImageBufferHeadless)
+        if (graphic instanceof final ImageBufferHeadless buffer)
         {
-            g = (ImageBufferHeadless) graphic;
+            g = buffer;
         }
         else
         {

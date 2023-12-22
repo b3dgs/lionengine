@@ -228,9 +228,9 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     {
         super.prepare(provider);
 
-        if (provider instanceof AttackerListener)
+        if (provider instanceof final AttackerListener l)
         {
-            addListener((AttackerListener) provider);
+            addListener(l);
         }
     }
 
@@ -239,9 +239,9 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     {
         super.checkListener(listener);
 
-        if (listener instanceof AttackerListener)
+        if (listener instanceof final AttackerListener l)
         {
-            addListener((AttackerListener) listener);
+            addListener(l);
         }
     }
 

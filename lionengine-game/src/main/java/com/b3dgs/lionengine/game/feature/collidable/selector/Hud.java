@@ -194,11 +194,12 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
         addFeature(new DisplayableModel(g ->
         {
             surface.render(g);
+
             for (final Feature feature : getFeatures())
             {
-                if (feature instanceof Renderable && !(feature instanceof Displayable))
+                if (feature instanceof final Renderable renderable && !(feature instanceof Displayable))
                 {
-                    ((Renderable) feature).render(g);
+                    renderable.render(g);
                 }
             }
         }));
@@ -345,9 +346,9 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
     @Override
     public void checkListener(Object listener)
     {
-        if (listener instanceof SelectionListener)
+        if (listener instanceof final SelectionListener l)
         {
-            selector.addListener((SelectionListener) listener);
+            selector.addListener(l);
         }
     }
 }

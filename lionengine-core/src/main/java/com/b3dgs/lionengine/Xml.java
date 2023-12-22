@@ -368,9 +368,9 @@ public class Xml extends XmlReader
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            if (node instanceof Element)
+            if (node instanceof final Element element)
             {
-                nodes.add(new Xml(document, (Element) node));
+                nodes.add(new Xml(document, element));
             }
         }
         return nodes;
@@ -394,9 +394,9 @@ public class Xml extends XmlReader
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            if (node instanceof Element && node.getNodeName().equals(name))
+            if (node instanceof final Element element && node.getNodeName().equals(name))
             {
-                return new Xml(document, (Element) node);
+                return new Xml(document, element);
             }
         }
         throw new LionEngineException(ERROR_NODE + name);

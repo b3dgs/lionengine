@@ -122,7 +122,6 @@ final class TextSwt implements Text
         gc.setFont(font);
         final Point textSize = gc.stringExtent(text);
         final int tx;
-        final int ty;
 
         if (Align.LEFT == alignment)
         {
@@ -140,11 +139,10 @@ final class TextSwt implements Text
         {
             throw new LionEngineException(alignment);
         }
-        ty = y;
 
         final Color c = new Color(device, color.getRed(), color.getGreen(), color.getBlue());
         gc.setForeground(c);
-        gc.drawString(text, tx, ty, true);
+        gc.drawString(text, tx, y, true);
         c.dispose();
     }
 

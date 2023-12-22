@@ -44,9 +44,9 @@ public class Recycler extends FeatureModel
     {
         for (final Feature feature : getFeatures())
         {
-            if (feature instanceof Recyclable)
+            if (feature instanceof final Recyclable recyclable)
             {
-                ((Recyclable) feature).recycle();
+                recyclable.recycle();
             }
         }
     }

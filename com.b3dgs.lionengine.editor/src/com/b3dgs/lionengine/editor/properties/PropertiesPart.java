@@ -215,9 +215,8 @@ public class PropertiesPart implements Focusable, PropertiesProviderObject, Prop
                 if (items.length > 0)
                 {
                     final TreeItem item = items[0];
-                    if (properties.getData() instanceof Configurer)
+                    if (properties.getData() instanceof final Configurer configurer)
                     {
-                        final Configurer configurer = (Configurer) properties.getData();
                         onDoubleClick(item, configurer);
                     }
                 }

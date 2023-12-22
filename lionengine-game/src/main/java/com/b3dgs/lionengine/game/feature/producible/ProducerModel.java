@@ -206,13 +206,13 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     {
         super.prepare(provider);
 
-        if (provider instanceof ProducerListener)
+        if (provider instanceof final ProducerListener l)
         {
-            addListener((ProducerListener) provider);
+            addListener(l);
         }
-        if (provider instanceof ProducerChecker)
+        if (provider instanceof final ProducerChecker c)
         {
-            checker = (ProducerChecker) provider;
+            checker = c;
         }
     }
 
@@ -221,9 +221,9 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     {
         super.checkListener(listener);
 
-        if (listener instanceof ProducerListener)
+        if (listener instanceof final ProducerListener l)
         {
-            addListener((ProducerListener) listener);
+            addListener(l);
         }
     }
 

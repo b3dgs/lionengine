@@ -69,9 +69,9 @@ public class LaunchableModel extends FeatureModel implements Launchable, Recycla
     {
         super.checkListener(listener);
 
-        if (listener instanceof LaunchableListener)
+        if (listener instanceof final LaunchableListener l)
         {
-            addListener((LaunchableListener) listener);
+            addListener(l);
         }
     }
 
