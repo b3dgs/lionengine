@@ -206,7 +206,7 @@ public class ProjectTreeCreator
             {
                 folderItem = createFolder(folder, tree, parent);
             }
-            Arrays.sort(children, new DirectoryFolderComparator());
+            Arrays.sort(children, UtilExtension::compare);
             for (final File child : children)
             {
                 final String pathName = child.getPath();

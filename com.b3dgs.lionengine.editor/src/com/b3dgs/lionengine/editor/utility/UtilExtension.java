@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.editor.utility;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,6 +57,36 @@ public final class UtilExtension
     public static void clearCache()
     {
         EXTENSIONS_CACHE.clear();
+    }
+
+    /**
+     * Compare two files.
+     * 
+     * @param file1 The first object to be compared.
+     * @param file2 The second object to be compared.
+     * @return The negative integer, zero, or a positive integer as the first argument is less than, equal to, or
+     *         greater than the second.
+     */
+    public static int compare(File file1, File file2)
+    {
+        final int result;
+        if (file1.isFile() && file2.isFile() || file1.isDirectory() && file2.isDirectory())
+        {
+            result = file1.compareTo(file2);
+        }
+        else if (file1.isFile() && file2.isDirectory())
+        {
+            result = 1;
+        }
+        else if (file1.isDirectory() && file2.isFile())
+        {
+            result = -1;
+        }
+        else
+        {
+            result = 0;
+        }
+        return result;
     }
 
     /**
