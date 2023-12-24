@@ -177,12 +177,13 @@ public class QuadTree implements Renderable
      */
     public void compute()
     {
-        if (refs.size() > 1)
+        final int size = refs.size();
+        if (size > 1)
         {
-            for (int i = 0; i < refs.size() - 1; i++)
+            for (int i = 0; i < size - 1; i++)
             {
                 final Collidable a = refs.get(i);
-                for (int j = i + 1; j < refs.size(); j++)
+                for (int j = i + 1; j < size; j++)
                 {
                     final Collidable b = refs.get(j);
                     if (a != b)
@@ -240,12 +241,13 @@ public class QuadTree implements Renderable
     @Override
     public void render(Graphic g)
     {
-        if (refs.size() > 0)
+        final int size = refs.size();
+        if (size > 0)
         {
             g.drawRect(viewer, Origin.MIDDLE, x, y, size, size, false);
 
             TEXT.update(viewer);
-            TEXT.draw(g, x, y, Align.CENTER, String.valueOf(refs.size()));
+            TEXT.draw(g, x, y, Align.CENTER, Integer.toString(size));
         }
 
         if (children != null)

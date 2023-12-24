@@ -151,7 +151,7 @@ public class Network
      */
     public boolean is(NetworkType type)
     {
-        return this.type.equals(type);
+        return this.type == type;
     }
 
     /**

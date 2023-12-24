@@ -161,8 +161,58 @@ public class MapTileHelper extends MapTileGame
     private final FogOfWar fogOfWar;
     private final Handler handler;
     private final MapTileGame mapFow = new MapTileGame();
+    // CHECKSTYLE IGNORE LINE: AnonInnerLength
     private final PathfindableListener listener = new PathfindableListenerVoid()
     {
+        /**
+         * Update others fovable around current fov.
+         * 
+         * @param fovable The fovable reference.
+         * @param nx The current horizontal location.
+         * @param ny The current vertical location.
+         */
+        private void updateOthers(Fovable fovable, int nx, int ny)
+        {
+            final Integer cur = fovable.getFeature(Identifiable.class).getId();
+            final int tw = fovable.getInTileWidth() / 2;
+            final int th = fovable.getInTileHeight() / 2;
+            final int ray = fovable.getInTileFov() * 2 - 1;
+            final int sx = UtilMath.clamp(nx - ray - tw, 0, getInTileWidth());
+            final int ex = UtilMath.clamp(nx + ray + tw + 1, 0, getInTileWidth());
+            final int sy = UtilMath.clamp(ny - ray - th, 0, getInTileHeight());
+            final int ey = UtilMath.clamp(ny + ray + th + 1, 0, getInTileHeight());
+
+            for (int x = sx; x < ex; x++)
+            {
+                for (int y = sy; y < ey; y++)
+                {
+                    updateOthers(x, y, cur);
+                }
+            }
+        }
+
+        /**
+         * Update others in current location.
+         * 
+         * @param x The current horizontal location.
+         * @param y The current vertical location.
+         * @param cur The id reference.
+         */
+        private void updateOthers(int x, int y, Integer cur)
+        {
+            for (final Integer id : mapPath.getObjectsId(x, y))
+            {
+                if (!id.equals(cur))
+                {
+                    final Featurable featurable = handler.get(id);
+                    final Pathfindable p = featurable.getFeature(Pathfindable.class);
+                    final int tx = p.getInTileX();
+                    final int ty = p.getInTileY();
+                    fogOfWar.update(featurable.getFeature(Fovable.class), tx, ty, tx, ty);
+                }
+            }
+        }
+
         @Override
         public void notifyMoving(Pathfindable pathfindable, int ox, int oy, int nx, int ny)
         {
@@ -298,55 +348,6 @@ public class MapTileHelper extends MapTileGame
                 }
                 fogOfWar.setTilesheet(hide, fog);
                 fogOfWar.setEnabled(true, true);
-            }
-        }
-    }
-
-    /**
-     * Update others fovable around current fov.
-     * 
-     * @param fovable The fovable reference.
-     * @param nx The current horizontal location.
-     * @param ny The current vertical location.
-     */
-    private void updateOthers(Fovable fovable, int nx, int ny)
-    {
-        final Integer cur = fovable.getFeature(Identifiable.class).getId();
-        final int tw = fovable.getInTileWidth() / 2;
-        final int th = fovable.getInTileHeight() / 2;
-        final int ray = fovable.getInTileFov() * 2 - 1;
-        final int sx = UtilMath.clamp(nx - ray - tw, 0, getInTileWidth());
-        final int ex = UtilMath.clamp(nx + ray + tw + 1, 0, getInTileWidth());
-        final int sy = UtilMath.clamp(ny - ray - th, 0, getInTileHeight());
-        final int ey = UtilMath.clamp(ny + ray + th + 1, 0, getInTileHeight());
-
-        for (int x = sx; x < ex; x++)
-        {
-            for (int y = sy; y < ey; y++)
-            {
-                updateOthers(x, y, cur);
-            }
-        }
-    }
-
-    /**
-     * Update others in current location.
-     * 
-     * @param x The current horizontal location.
-     * @param y The current vertical location.
-     * @param cur The id reference.
-     */
-    private void updateOthers(int x, int y, Integer cur)
-    {
-        for (final Integer id : mapPath.getObjectsId(x, y))
-        {
-            if (!id.equals(cur))
-            {
-                final Featurable featurable = handler.get(id);
-                final Pathfindable p = featurable.getFeature(Pathfindable.class);
-                final int tx = p.getInTileX();
-                final int ty = p.getInTileY();
-                fogOfWar.update(featurable.getFeature(Fovable.class), tx, ty, tx, ty);
             }
         }
     }

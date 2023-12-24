@@ -86,7 +86,7 @@ public final class AppExamples
     /** Executor. */
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
     /** Example classes. */
-    private static final Class<?>[] EXAMPLES = new Class<?>[]
+    private static final Class<?>[] EXAMPLES =
     {
         AppHelloWorld.class, AppDrawable.class, AppAction.class, AppAssign.class, AppAttack.class, AppBackground.class,
         AppCollision.class, AppCursor.class, AppEffect.class, AppFog.class, AppMap.class, AppPathfinding.class,

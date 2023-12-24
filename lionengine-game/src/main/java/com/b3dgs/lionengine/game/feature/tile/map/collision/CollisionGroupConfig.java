@@ -35,9 +35,10 @@ import com.b3dgs.lionengine.XmlReader;
  * This class is Thread-Safe.
  * </p>
  * 
+ * @param groups The collisions groups mapping.
  * @see CollisionGroup
  */
-public final class CollisionGroupConfig
+public record CollisionGroupConfig(Map<String, CollisionGroup> groups)
 {
     /** Configuration file name. */
     public static final String FILENAME = "collisions.xml";
@@ -192,22 +193,15 @@ public final class CollisionGroupConfig
         return has;
     }
 
-    /** Collision groups list. */
-    private final Map<String, CollisionGroup> groups;
-
     /**
      * Create a collision groups config map.
      * 
      * @param groups The collisions groups mapping (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public CollisionGroupConfig(Map<String, CollisionGroup> groups)
+    public CollisionGroupConfig
     {
-        super();
-
         Check.notNull(groups);
-
-        this.groups = new HashMap<>(groups);
     }
 
     /**

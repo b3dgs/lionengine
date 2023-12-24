@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.collidable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -58,8 +59,6 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
     private final List<Collision> collisions = new ArrayList<>();
     /** The accepted groups. */
     private final Set<Integer> accepted = new HashSet<>();
-    /** The accepted groups. */
-    private final List<Integer> acceptedList = new ArrayList<>();
     /** Bounding box cache for rendering. */
     private final Map<Collision, Rectangle> cacheRectRender = new HashMap<>();
     /** The viewer reference. */
@@ -118,7 +117,6 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
         final CollidableConfig config = CollidableConfig.imports(setup);
         group = config.getGroup();
         accepted.addAll(config.getAccepted());
-        acceptedList.addAll(accepted);
         collisions.addAll(CollisionConfig.imports(setup).getCollisions());
         updater.setEnabled(!collisions.isEmpty());
         origin = OriginConfig.imports(setup);
@@ -198,19 +196,12 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
     public void addAccept(Integer group)
     {
         accepted.add(group);
-        if (!acceptedList.contains(group))
-        {
-            acceptedList.add(group);
-        }
     }
 
     @Override
     public void removeAccept(Integer group)
     {
-        if (accepted.remove(group))
-        {
-            acceptedList.remove(group);
-        }
+        accepted.remove(group);
     }
 
     @Override
@@ -309,9 +300,9 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
     }
 
     @Override
-    public List<Integer> getAccepted()
+    public Collection<Integer> getAccepted()
     {
-        return acceptedList;
+        return accepted;
     }
 
     @Override

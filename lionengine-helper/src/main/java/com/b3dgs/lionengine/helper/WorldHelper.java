@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.game.feature.rasterable.Rasterable;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
-import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
 
@@ -47,8 +46,6 @@ public class WorldHelper extends WorldGame
     protected final CameraTracker tracker = services.create(CameraTracker.class);
     /** Handler persister. */
     protected final HandlerPersister persister = services.create(HandlerPersister.class);
-    /** Source provider. */
-    protected final SourceResolutionProvider source = services.get(SourceResolutionProvider.class);
     /** Component collisions. */
     protected final ComponentCollision componentCollision = new ComponentCollision(camera);
 

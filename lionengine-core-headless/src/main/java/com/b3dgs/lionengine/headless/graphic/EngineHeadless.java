@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.headless.graphic;
 
+import java.io.File;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -26,7 +27,6 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -122,22 +122,19 @@ public class EngineHeadless extends Engine
         Medias.setLoadFromJar(classResource);
     }
 
-    /*
-     * Engine
-     */
-
     @Override
     protected void open()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicHeadless());
+
         if (resourcesDir.isPresent())
         {
             final String workingDir = Constant.getSystemProperty(PROPERTY_USER_DIR, Constant.EMPTY_STRING);
-            LOGGER.info("Resources class: {}", UtilFolder.getPath(workingDir, resourcesDir.get()));
+            LOGGER.info("Resources folder: {}{}{}", workingDir, File.separator, resourcesDir.get());
         }
-        else
+        else if (classResource.isPresent())
         {
-            LOGGER.info("Resources dir: {}", classResource.get().getName());
+            LOGGER.info("Resources class: {}", classResource.get().getName());
         }
     }
 

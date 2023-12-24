@@ -143,16 +143,10 @@ public record Config(Resolution output, int depth, boolean windowed, List<InputD
      * @param icons The icons media (can be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public Config(Resolution output, int depth, boolean windowed, List<InputDevice> devices, Collection<Media> icons)
+    public Config
     {
         Check.notNull(output);
         Check.superiorOrEqual(depth, -1);
-
-        this.output = output;
-        this.depth = depth;
-        this.windowed = windowed;
-        this.devices = devices;
-        this.icons = icons;
     }
 
     /**

@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
  */
 final class CrtScale
 {
-    private static final double QUART = com.b3dgs.lionengine.Constant.QUART;
+    private static final double QUART = Constant.QUART;
     private static final int COUNT = Math.max(1, Runtime.getRuntime().availableProcessors() / 2 - 1);
 
     private static final ColorRgba C = new ColorRgba(100, 100, 100, 255);

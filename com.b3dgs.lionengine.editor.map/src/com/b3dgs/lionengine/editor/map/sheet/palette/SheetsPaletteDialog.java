@@ -22,8 +22,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -55,7 +55,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 /**
  * Sheets palette dialog.
  */
-public final class SheetsPaletteDialog implements MouseListener, Focusable
+public final class SheetsPaletteDialog implements Focusable
 {
     /** Dialog instance. */
     private static SheetsPaletteDialog instance;
@@ -144,7 +144,22 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         }
 
         composite = new Composite(shell, SWT.DOUBLE_BUFFERED);
-        composite.addMouseListener(this);
+        composite.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseDown(MouseEvent event)
+            {
+                final int x = (int) Math.floor(event.x / (double) map.getTileWidth());
+                final int y = (int) Math.floor(event.y / (double) map.getTileHeight());
+                final int n = x + y * map.getSheet(sheetId.intValue()).getTilesHorizontal();
+                if (n < available.size())
+                {
+                    number = n;
+                    SheetsPaletteModel.INSTANCE.setSelectedTile(available.get(number).intValue());
+                }
+                render();
+            }
+        });
         gc = new GC(composite);
         tileColor = shell.getDisplay().getSystemColor(SWT.COLOR_GREEN);
         gridColor = shell.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY);
@@ -394,40 +409,6 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         }
         return centerTiles;
     }
-
-    /*
-     * MouseListener
-     */
-
-    @Override
-    public void mouseDown(MouseEvent event)
-    {
-        final int x = (int) Math.floor(event.x / (double) map.getTileWidth());
-        final int y = (int) Math.floor(event.y / (double) map.getTileHeight());
-        final int n = x + y * map.getSheet(sheetId.intValue()).getTilesHorizontal();
-        if (n < available.size())
-        {
-            number = n;
-            SheetsPaletteModel.INSTANCE.setSelectedTile(available.get(number).intValue());
-        }
-        render();
-    }
-
-    @Override
-    public void mouseUp(MouseEvent event)
-    {
-        // Nothing to do
-    }
-
-    @Override
-    public void mouseDoubleClick(MouseEvent event)
-    {
-        // Nothing to do
-    }
-
-    /*
-     * Focusable
-     */
 
     @Override
     public void focus()

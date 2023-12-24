@@ -140,7 +140,7 @@ public record DeviceControllerConfig(String name,
         }
         if (current instanceof final DevicePointer pointer)
         {
-            controller.addHorizontal(pointer, () -> pointer.getMoveX());
+            controller.addHorizontal(pointer, pointer::getMoveX);
             controller.addVertical(pointer, () -> -pointer.getMoveY());
         }
         if (config.isDisabled())

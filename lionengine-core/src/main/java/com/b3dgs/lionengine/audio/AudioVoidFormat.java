@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.audio;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -28,30 +27,21 @@ import com.b3dgs.lionengine.Media;
  * <p>
  * This class is Thread-Safe.
  * </p>
+ * 
+ * @param formats The associated files type.
  */
-public final class AudioVoidFormat implements AudioFormat
+public record AudioVoidFormat(Collection<String> formats) implements AudioFormat
 {
-    /** Formats list as read only. */
-    private final Collection<String> formats;
-
     /**
      * Create void audio format.
      * 
      * @param formats The associated files type (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public AudioVoidFormat(Collection<String> formats)
+    public AudioVoidFormat
     {
-        super();
-
         Check.notNull(formats);
-
-        this.formats = Collections.unmodifiableCollection(formats);
     }
-
-    /*
-     * AudioFormat
-     */
 
     @Override
     public AudioVoid loadAudio(Media media)

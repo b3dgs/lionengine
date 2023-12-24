@@ -38,7 +38,6 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.editor.dialog.project.ProjectImportDialog;
 import com.b3dgs.lionengine.editor.utility.UtilBundle;
 
 /**
@@ -53,7 +52,7 @@ public class ProjectClassLoader
     /** Cast error. */
     private static final String ERROR_CLASS_CAST = "Can not cast class to: ";
     /** Logger. */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectImportDialog.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectClassLoader.class);
 
     /**
      * Get the list of potential file descriptor which may contains classes (could be folder or jar).

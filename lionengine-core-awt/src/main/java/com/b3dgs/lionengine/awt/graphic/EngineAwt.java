@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.awt.graphic;
 
+import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +25,6 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -110,23 +111,19 @@ public class EngineAwt extends Engine
         Medias.setLoadFromJar(resourcesClass);
     }
 
-    /*
-     * Engine
-     */
-
     @Override
     protected void open()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicAwt());
 
-        final String workingDir = Constant.getSystemProperty(PROPERTY_USER_DIR, Constant.EMPTY_STRING);
+        if (Medias.getResourcesDirectory() != null)
+        {
+            final String workingDir = Constant.getSystemProperty(PROPERTY_USER_DIR, Constant.EMPTY_STRING);
+            LOGGER.info("Resources folder: {}{}{}", workingDir, File.separator, Medias.getResourcesDirectory());
+        }
         if (Medias.getResourcesLoader() != null)
         {
             LOGGER.info("Resources class: {}", Medias.getResourcesLoader());
-        }
-        if (Medias.getResourcesDirectory() != null)
-        {
-            LOGGER.info("Resources dir: {}", UtilFolder.getPath(workingDir, Medias.getResourcesDirectory()));
         }
     }
 

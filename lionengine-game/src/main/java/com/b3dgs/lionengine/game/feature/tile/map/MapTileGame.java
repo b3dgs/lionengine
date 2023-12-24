@@ -136,7 +136,7 @@ public class MapTileGame extends FeaturableAbstract implements MapTile, Listenab
         final int errors = LevelRipConverter.start(levelrip, mapSurface);
         if (errors > 0)
         {
-            LOGGER.warn("Number of missing tiles: ", Integer.valueOf(errors));
+            LOGGER.warn("Number of missing tiles: {}", Integer.valueOf(errors));
         }
     }
 
