@@ -76,10 +76,6 @@ public class MapTileAppenderModel extends FeatureAbstract implements MapTileAppe
         }
     }
 
-    /*
-     * MapTileAppender
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {

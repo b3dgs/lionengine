@@ -290,10 +290,6 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
         return mouseX >= 0 && mouseX < surface.getWidth() && mouseY >= 0 && mouseY < surface.getHeight();
     }
 
-    /*
-     * PaintListener
-     */
-
     @Override
     public void paintControl(PaintEvent paintEvent)
     {
@@ -301,10 +297,6 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
         g.setGraphic(gc);
         render(g);
     }
-
-    /*
-     * MouseListener
-     */
 
     @Override
     public void mouseDoubleClick(MouseEvent mouseEvent)
@@ -333,10 +325,6 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
         updateMouse(mx, my);
     }
 
-    /*
-     * MouseMoveListener
-     */
-
     @Override
     public void mouseMove(MouseEvent mouseEvent)
     {
@@ -346,10 +334,6 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
         updateMouse(mx, my);
         updateFrameSelection();
     }
-
-    /*
-     * FrameSelector
-     */
 
     @Override
     public void setSelectedFrames(int start, int end)

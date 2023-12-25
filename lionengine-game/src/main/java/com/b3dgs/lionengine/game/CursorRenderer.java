@@ -144,10 +144,6 @@ final class CursorRenderer implements Resource, Renderable
         return surfaceId;
     }
 
-    /*
-     * Resource
-     */
-
     @Override
     public void load()
     {
@@ -185,10 +181,6 @@ final class CursorRenderer implements Resource, Renderable
         surfaces.clear();
         surfaceId = null;
     }
-
-    /*
-     * Renderable
-     */
 
     @Override
     public void render(Graphic g)

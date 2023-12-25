@@ -52,10 +52,6 @@ public class ImageHeaderModel implements ImageHeader
         this.format = format;
     }
 
-    /*
-     * ImageHeader
-     */
-
     @Override
     public int getWidth()
     {

@@ -173,10 +173,6 @@ final class MouseClickAwt implements MouseListener
         return false;
     }
 
-    /*
-     * MouseListener
-     */
-
     @Override
     public void mousePressed(MouseEvent event)
     {

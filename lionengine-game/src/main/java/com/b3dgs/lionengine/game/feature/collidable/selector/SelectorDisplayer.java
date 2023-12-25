@@ -74,10 +74,6 @@ public class SelectorDisplayer extends FeatureAbstract implements Displayable
         colorSelection = color;
     }
 
-    /*
-     * Displayable
-     */
-
     @Override
     public void render(Graphic g)
     {

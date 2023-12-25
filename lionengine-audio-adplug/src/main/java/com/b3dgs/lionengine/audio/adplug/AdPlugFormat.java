@@ -109,10 +109,6 @@ public final class AdPlugFormat implements AudioFormat
         bind = loadLibrary();
     }
 
-    /*
-     * AudioFormat
-     */
-
     @Override
     public AdPlug loadAudio(Media media)
     {

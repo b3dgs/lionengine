@@ -231,10 +231,6 @@ public class SheetsExtractDialog extends DialogAbstract
         return horizontalTiles.getValue().orElse(0);
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite content)
     {

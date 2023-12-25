@@ -62,10 +62,6 @@ public class AnimatableModel extends FeatureModel implements Animatable, Recycla
         this.animator = animator;
     }
 
-    /*
-     * Animatable
-     */
-
     @Override
     public void addListener(AnimatorListener listener)
     {
@@ -155,10 +151,6 @@ public class AnimatableModel extends FeatureModel implements Animatable, Recycla
     {
         return animator.getAnimState() == state;
     }
-
-    /*
-     * Recyclable
-     */
 
     @Override
     public void recycle()

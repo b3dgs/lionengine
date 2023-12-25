@@ -72,10 +72,6 @@ final class GraphicSwt implements Graphic
         device = g.getDevice();
     }
 
-    /*
-     * Graphic
-     */
-
     @Override
     public void clear(int x, int y, int width, int height)
     {

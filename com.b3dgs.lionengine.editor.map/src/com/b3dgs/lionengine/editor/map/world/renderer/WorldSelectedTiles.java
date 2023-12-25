@@ -112,10 +112,6 @@ public class WorldSelectedTiles implements WorldRenderListener
         g.drawRect(x, y, tw, th, true);
     }
 
-    /*
-     * WorldRenderListener
-     */
-
     @Override
     public void onRender(Graphic g, int width, int height, double scale, int tw, int th)
     {

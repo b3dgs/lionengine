@@ -67,10 +67,6 @@ final class ImageHeaderTiff extends ImageHeaderReaderAbstract
         });
     }
 
-    /*
-     * ImageHeaderReader
-     */
-
     @Override
     public ImageHeader readHeader(InputStream input) throws IOException
     {

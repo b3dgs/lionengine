@@ -64,10 +64,6 @@ public final class LoopLocked implements Loop
         maxFrameTimeNano = computeFrameTime(rate);
     }
 
-    /*
-     * Loop
-     */
-
     @Override
     public void start(Screen screen, Frame frame)
     {

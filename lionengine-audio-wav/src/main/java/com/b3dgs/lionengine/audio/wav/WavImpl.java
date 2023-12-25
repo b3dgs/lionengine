@@ -332,10 +332,6 @@ final class WavImpl implements Wav
         }
     }
 
-    /*
-     * Wav
-     */
-
     @Override
     public void play()
     {

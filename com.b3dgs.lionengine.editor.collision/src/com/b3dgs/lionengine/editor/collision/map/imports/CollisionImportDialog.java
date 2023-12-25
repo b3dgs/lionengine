@@ -122,10 +122,6 @@ public class CollisionImportDialog extends DialogAbstract
         finish.setEnabled(formulas.getMedia() != null && collisions.getMedia() != null);
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite content)
     {

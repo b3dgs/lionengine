@@ -64,10 +64,6 @@ public class PrefMapRegion extends PrefAbstract
         this.count = count;
     }
 
-    /*
-     * Preference
-     */
-
     @Override
     public void apply(MapTile map)
     {

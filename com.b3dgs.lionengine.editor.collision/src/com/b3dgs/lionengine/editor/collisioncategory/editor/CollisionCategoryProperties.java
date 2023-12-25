@@ -72,10 +72,6 @@ public class CollisionCategoryProperties extends ObjectPropertiesAbstract<Collis
         return groups;
     }
 
-    /*
-     * ObjectProperties
-     */
-
     @Override
     protected void createTextFields(Composite parent)
     {
@@ -109,10 +105,6 @@ public class CollisionCategoryProperties extends ObjectPropertiesAbstract<Collis
                                      glue.getSelection(),
                                      groups.getObjects());
     }
-
-    /*
-     * ObjectListListener
-     */
 
     @Override
     public void notifyObjectSelected(CollisionCategory category)

@@ -205,10 +205,6 @@ final class ScreenFullAwt extends ScreenBaseAwt
         return null;
     }
 
-    /*
-     * ScreenAwt
-     */
-
     @Override
     protected void setResolution(Resolution output)
     {

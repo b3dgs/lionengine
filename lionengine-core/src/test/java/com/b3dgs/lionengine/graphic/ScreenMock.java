@@ -54,10 +54,6 @@ public final class ScreenMock extends ScreenAbstract
         super(config, READY_TIMEOUT);
     }
 
-    /*
-     * Screen
-     */
-
     @Override
     public void preUpdate()
     {

@@ -36,10 +36,6 @@ public class FeatureAbstract implements Feature
         super();
     }
 
-    /*
-     * Feature
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {

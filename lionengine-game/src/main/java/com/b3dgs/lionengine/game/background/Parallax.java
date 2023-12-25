@@ -146,10 +146,6 @@ public class Parallax implements BackgroundComponent
         }
     }
 
-    /*
-     * BackgroundComponent
-     */
-
     @Override
     public void update(double extrp, int x, int y, double speed)
     {

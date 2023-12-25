@@ -598,10 +598,6 @@ public class Camera extends FeaturableAbstract implements Viewer
         }
     }
 
-    /*
-     * Viewer
-     */
-
     @Override
     public double getViewpointX(double x)
     {

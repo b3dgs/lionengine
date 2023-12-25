@@ -323,10 +323,6 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
         });
     }
 
-    /*
-     * Listenable
-     */
-
     @Override
     public void addListener(HudListener listener)
     {
@@ -338,10 +334,6 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
     {
         listenable.removeListener(listener);
     }
-
-    /*
-     * FeaturableModel
-     */
 
     @Override
     public void checkListener(Object listener)

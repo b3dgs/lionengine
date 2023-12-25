@@ -123,10 +123,6 @@ class ScreenBaseAwt extends ScreenAwtAbstract
         return builder.toString();
     }
 
-    /*
-     * Screen
-     */
-
     @Override
     public void start()
     {

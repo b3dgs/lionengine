@@ -390,10 +390,6 @@ public class MapTileHelper extends MapTileGame
         }
     }
 
-    /*
-     * MapTileGame
-     */
-
     @Override
     public void create(int tileWidth, int tileHeight, int widthInTile, int heightInTile)
     {

@@ -221,10 +221,6 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
         raster.setFrameOffsets(frameOffsetX, frameOffsetY);
     }
 
-    /*
-     * Rasterable
-     */
-
     @Override
     public void update(double extrp)
     {
@@ -379,10 +375,6 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     {
         return visible;
     }
-
-    /*
-     * Recyclable
-     */
 
     @Override
     public void recycle()

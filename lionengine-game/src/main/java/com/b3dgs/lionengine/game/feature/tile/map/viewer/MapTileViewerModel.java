@@ -116,10 +116,6 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
         }
     }
 
-    /*
-     * MapTileViewer
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {
@@ -166,10 +162,6 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
             }
         }
     }
-
-    /*
-     * MapTileRenderer
-     */
 
     @Override
     public void renderTile(Graphic g, Tile tile, int x, int y)

@@ -66,10 +66,6 @@ public class TransformableModel extends FeatureModel implements Transformable, R
         }
     }
 
-    /*
-     * Transformable
-     */
-
     @Override
     public void checkListener(Object listener)
     {
@@ -243,10 +239,6 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     {
         return oldHeight;
     }
-
-    /*
-     * Recyclable
-     */
 
     @Override
     public void recycle()

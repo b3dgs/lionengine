@@ -79,10 +79,6 @@ public class ListenableModel<T> implements Listenable<T>
         size = 0;
     }
 
-    /*
-     * Listenable
-     */
-
     @Override
     public void addListener(T listener)
     {

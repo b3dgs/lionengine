@@ -61,10 +61,6 @@ public class CategoryList extends ObjectListAbstract<PathCategory> implements Ob
         loadObjects(groups);
     }
 
-    /*
-     * ObjectList
-     */
-
     @Override
     protected PathCategory copyObject(PathCategory category)
     {
@@ -76,10 +72,6 @@ public class CategoryList extends ObjectListAbstract<PathCategory> implements Ob
     {
         return new PathCategory(name, new HashSet<>());
     }
-
-    /*
-     * ObjectListListener
-     */
 
     @Override
     public void notifyObjectSelected(PathCategory category)

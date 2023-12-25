@@ -61,10 +61,6 @@ public class GroupsEditDialog extends EditorAbstract
         this.configGroups = configGroups;
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite parent)
     {

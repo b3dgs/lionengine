@@ -221,10 +221,6 @@ public abstract class ScreenSwtAbstract extends ScreenAbstract implements FocusL
         height = output.getHeight();
     }
 
-    /*
-     * Screen
-     */
-
     @Override
     public void start()
     {
@@ -389,10 +385,6 @@ public abstract class ScreenSwtAbstract extends ScreenAbstract implements FocusL
     {
         ((MouseSwt) getInputDevice(Mouse.class)).setConfig(config.getOutput(), source);
     }
-
-    /*
-     * FocusListener
-     */
 
     @Override
     public void focusGained(FocusEvent event)

@@ -183,10 +183,6 @@ public class Minimap implements Image
         }
     }
 
-    /*
-     * Image
-     */
-
     /**
      * Load minimap surface from map tile size. Does nothing if already loaded.
      */

@@ -167,10 +167,6 @@ public final class Node implements Comparable<Node>
         return "x=" + x + ", y=" + y;
     }
 
-    /*
-     * Comparable
-     */
-
     @Override
     public int compareTo(Node other)
     {

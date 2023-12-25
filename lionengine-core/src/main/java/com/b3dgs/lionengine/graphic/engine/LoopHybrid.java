@@ -70,10 +70,6 @@ public final class LoopHybrid implements Loop
         maxFrameTimeNano = computeFrameTime(rateDesired);
     }
 
-    /*
-     * Loop
-     */
-
     @Override
     public void start(Screen screen, Frame frame)
     {

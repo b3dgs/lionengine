@@ -52,10 +52,6 @@ public abstract class FeaturableAbstract implements Featurable
         features.add(feature, overwrite);
     }
 
-    /*
-     * Featurable
-     */
-
     /**
      * {@inheritDoc}
      * <p>

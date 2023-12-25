@@ -51,10 +51,6 @@ public class WorldGridRenderer implements WorldRenderListener
         world = services.get(WorldUpdater.class);
     }
 
-    /*
-     * WorldRenderListener
-     */
-
     @Override
     public void onRender(Graphic g, int width, int height, double scale, int ctw, int cth)
     {

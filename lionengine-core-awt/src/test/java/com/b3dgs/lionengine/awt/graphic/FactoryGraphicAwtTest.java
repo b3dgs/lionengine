@@ -55,10 +55,6 @@ final class FactoryGraphicAwtTest extends FactoryGraphicTest
         Graphics.setFactoryGraphic(null);
     }
 
-    /*
-     * FactoryGraphicTest
-     */
-
     @Test
     @Override
     protected void testRotate()

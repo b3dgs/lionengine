@@ -324,10 +324,6 @@ final class MouseMoveAwt implements MouseMotionListener
                || y > centerY + ROBOT_MARGIN;
     }
 
-    /*
-     * MouseListener
-     */
-
     @Override
     public void mouseMoved(MouseEvent event)
     {

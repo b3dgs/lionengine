@@ -44,10 +44,6 @@ public class DisplayableModel extends FeatureAbstract implements Displayable
         this.renderable = renderable;
     }
 
-    /*
-     * Displayable
-     */
-
     @Override
     public void render(Graphic g)
     {

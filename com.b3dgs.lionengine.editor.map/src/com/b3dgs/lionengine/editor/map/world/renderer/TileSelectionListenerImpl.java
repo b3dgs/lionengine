@@ -57,10 +57,6 @@ final class TileSelectionListenerImpl implements TileSelectionListener
         return tileGroup;
     }
 
-    /*
-     * TileSelectionListener
-     */
-
     @Override
     public void notifyTileSelected(int click, Tile tile)
     {

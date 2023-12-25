@@ -555,10 +555,6 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         return 0;
     }
 
-    /*
-     * Pathfindable
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {
@@ -916,10 +912,6 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     {
         return moving;
     }
-
-    /*
-     * Recyclable
-     */
 
     @Override
     public void recycle()

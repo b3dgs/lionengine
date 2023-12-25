@@ -74,10 +74,6 @@ public class EntityChecker extends FeatureAbstract implements Updatable, Listena
         checkerRender = checker;
     }
 
-    /*
-     * Updatable
-     */
-
     @Override
     public void update(double extrp)
     {
@@ -102,10 +98,6 @@ public class EntityChecker extends FeatureAbstract implements Updatable, Listena
             }
         }
     }
-
-    /*
-     * Listenable
-     */
 
     @Override
     public void addListener(EntityCheckerListener listener)

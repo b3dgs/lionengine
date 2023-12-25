@@ -57,10 +57,6 @@ public class CollisionGroupProperties extends ObjectPropertiesAbstract<Collision
         tree.createTree(parent);
     }
 
-    /*
-     * ObjectProperties
-     */
-
     @Override
     protected void createTextFields(Composite parent)
     {
@@ -76,10 +72,6 @@ public class CollisionGroupProperties extends ObjectPropertiesAbstract<Collision
     {
         return new CollisionGroup(name, tree.getObjects());
     }
-
-    /*
-     * ObjectListListener
-     */
 
     @Override
     public void notifyObjectSelected(CollisionGroup collision)

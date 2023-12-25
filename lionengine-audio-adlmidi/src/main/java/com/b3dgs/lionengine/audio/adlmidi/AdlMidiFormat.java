@@ -137,10 +137,6 @@ public final class AdlMidiFormat implements AudioFormat
         bind = loadLibrary();
     }
 
-    /*
-     * AudioFormat
-     */
-
     @Override
     public AdlMidi loadAudio(Media media)
     {

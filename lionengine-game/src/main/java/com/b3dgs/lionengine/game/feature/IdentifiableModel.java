@@ -75,10 +75,6 @@ public class IdentifiableModel extends FeatureAbstract implements Identifiable, 
         super();
     }
 
-    /*
-     * Identifiable
-     */
-
     @Override
     public void addListener(IdentifiableListener listener)
     {
@@ -127,10 +123,6 @@ public class IdentifiableModel extends FeatureAbstract implements Identifiable, 
         destroy = false;
         destroyed = false;
     }
-
-    /*
-     * Object
-     */
 
     @Override
     public int hashCode()

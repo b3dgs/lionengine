@@ -36,10 +36,6 @@ public final class EngineMock extends Engine
         super(name, version);
     }
 
-    /*
-     * Engine
-     */
-
     @Override
     protected void open()
     {

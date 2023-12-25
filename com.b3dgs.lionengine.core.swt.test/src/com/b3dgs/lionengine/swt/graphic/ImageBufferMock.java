@@ -54,10 +54,6 @@ public class ImageBufferMock implements ImageBuffer
         rgba = new int[width * height];
     }
 
-    /*
-     * ImageBuffer
-     */
-
     @Override
     public void prepare()
     {

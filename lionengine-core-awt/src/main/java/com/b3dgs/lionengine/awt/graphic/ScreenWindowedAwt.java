@@ -76,10 +76,6 @@ final class ScreenWindowedAwt extends ScreenBaseAwt
         frame.validate();
     }
 
-    /*
-     * ScreenAwt
-     */
-
     @Override
     protected void setResolution(Resolution output)
     {

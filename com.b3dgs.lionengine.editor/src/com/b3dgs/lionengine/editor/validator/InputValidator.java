@@ -94,10 +94,6 @@ public class InputValidator implements IInputValidator
         this.errorText = errorText;
     }
 
-    /*
-     * IInputValidator
-     */
-
     @Override
     public String isValid(String newText)
     {

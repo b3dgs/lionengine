@@ -136,10 +136,6 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
         maxHeight = Math.max(maxHeight, collision.getOffsetY() + collision.getHeight());
     }
 
-    /*
-     * Collidable
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {
@@ -335,10 +331,6 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
         return origin;
     }
 
-    /*
-     * Shape
-     */
-
     @Override
     public double getX()
     {
@@ -363,19 +355,11 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
         return transformable.getHeight();
     }
 
-    /*
-     * Recyclable
-     */
-
     @Override
     public void recycle()
     {
         setEnabled(!collisions.isEmpty());
     }
-
-    /*
-     * TransformableListener
-     */
 
     @Override
     public void notifyTransformed(Transformable transformable)
@@ -383,29 +367,17 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
         updater.notifyTransformed(origin, this, transformable, collisions, cacheRectRender);
     }
 
-    /*
-     * MirrorableListener
-     */
-
     @Override
     public void notifyMirrored(Mirror old, Mirror next)
     {
         updater.notifyTransformed(origin, this, transformable, collisions, cacheRectRender);
     }
 
-    /*
-     * IdentifiableListener
-     */
-
     @Override
     public void notifyDestroyed(Integer id)
     {
         updater.notifyDestroyed(id);
     }
-
-    /*
-     * CollidableChecker
-     */
 
     @Override
     public boolean isEnabled(Collision collision)

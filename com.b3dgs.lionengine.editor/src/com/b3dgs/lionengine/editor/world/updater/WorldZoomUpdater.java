@@ -149,10 +149,6 @@ public class WorldZoomUpdater implements WorldMouseClickListener, WorldMouseScro
         camera.teleport(camera.getX() + ox, camera.getY() + oy);
     }
 
-    /*
-     * WorldMouseClickListener
-     */
-
     @Override
     public void onMousePressed(int click, int mx, int my)
     {
@@ -164,10 +160,6 @@ public class WorldZoomUpdater implements WorldMouseClickListener, WorldMouseScro
     {
         enabled = true;
     }
-
-    /*
-     * WorldMouseScrollListener
-     */
 
     @Override
     public void onMouseScroll(int value, int mx, int my)

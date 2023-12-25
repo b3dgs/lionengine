@@ -200,10 +200,6 @@ public class GroupsEditDialog extends DialogAbstract
         close();
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite content)
     {

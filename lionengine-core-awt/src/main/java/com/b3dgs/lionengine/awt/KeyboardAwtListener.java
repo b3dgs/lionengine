@@ -46,10 +46,6 @@ public final class KeyboardAwtListener implements KeyListener
         this.listener = listener;
     }
 
-    /*
-     * KeyListener
-     */
-
     @Override
     public void keyTyped(KeyEvent event)
     {

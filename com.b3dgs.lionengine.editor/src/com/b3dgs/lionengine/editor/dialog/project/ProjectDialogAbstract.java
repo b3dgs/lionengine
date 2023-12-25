@@ -267,10 +267,6 @@ public abstract class ProjectDialogAbstract extends DialogAbstract
         return browse;
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite content)
     {

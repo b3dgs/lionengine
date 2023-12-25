@@ -57,10 +57,6 @@ public class BodyModel extends FeatureModel implements Body, Recyclable
         force.setDirectionMinimum(gravityMax);
     }
 
-    /*
-     * Body
-     */
-
     @Override
     public void update(double extrp)
     {
@@ -128,10 +124,6 @@ public class BodyModel extends FeatureModel implements Body, Recyclable
     {
         return force.getDirectionVertical();
     }
-
-    /*
-     * Recyclable
-     */
 
     @Override
     public void recycle()

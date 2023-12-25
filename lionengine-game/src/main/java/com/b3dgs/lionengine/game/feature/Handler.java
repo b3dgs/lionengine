@@ -210,10 +210,6 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
         willRemove = false;
     }
 
-    /*
-     * Listenable
-     */
-
     @Override
     public final void addListener(HandlerListener listener)
     {
@@ -225,10 +221,6 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     {
         listenable.removeListener(listener);
     }
-
-    /*
-     * Handlables
-     */
 
     @Override
     public final Featurable get(Integer id)
@@ -253,10 +245,6 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
         return featurables.values();
     }
 
-    /*
-     * Updatable
-     */
-
     @Override
     public void update(double extrp)
     {
@@ -275,10 +263,6 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
         }
     }
 
-    /*
-     * Renderable
-     */
-
     @Override
     public void render(Graphic g)
     {
@@ -288,10 +272,6 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
             renderers.get(i).render(g, featurables);
         }
     }
-
-    /*
-     * IdentifiableListener
-     */
 
     @Override
     public final void notifyDestroyed(Integer id)

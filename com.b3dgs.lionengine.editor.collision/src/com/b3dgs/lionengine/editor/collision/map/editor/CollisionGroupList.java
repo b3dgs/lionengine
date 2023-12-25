@@ -97,10 +97,6 @@ public class CollisionGroupList extends ObjectListAbstract<CollisionGroup> imple
         loadObjects(groups.getGroups().values());
     }
 
-    /*
-     * ObjectList
-     */
-
     @Override
     protected CollisionGroup copyObject(CollisionGroup collision)
     {
@@ -112,10 +108,6 @@ public class CollisionGroupList extends ObjectListAbstract<CollisionGroup> imple
     {
         return new CollisionGroup(name, new ArrayList<>());
     }
-
-    /*
-     * ObjectListListener
-     */
 
     @Override
     public void notifyObjectSelected(CollisionGroup collision)

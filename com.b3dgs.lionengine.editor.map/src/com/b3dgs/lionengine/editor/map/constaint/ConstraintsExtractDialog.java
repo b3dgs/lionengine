@@ -157,10 +157,6 @@ public class ConstraintsExtractDialog extends DialogAbstract
         });
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite content)
     {

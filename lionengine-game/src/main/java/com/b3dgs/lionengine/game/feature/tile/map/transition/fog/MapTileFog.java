@@ -259,10 +259,6 @@ public class MapTileFog implements Listenable<RevealedListener>
         return map.getTile(tx, ty);
     }
 
-    /*
-     * Listenable
-     */
-
     @Override
     public void addListener(RevealedListener listener)
     {

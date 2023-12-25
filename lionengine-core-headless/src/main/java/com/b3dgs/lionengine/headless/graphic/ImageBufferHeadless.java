@@ -99,10 +99,6 @@ final class ImageBufferHeadless implements ImageBuffer
         transparency = image.getTransparency();
     }
 
-    /*
-     * ImageBuffer
-     */
-
     @Override
     public void prepare()
     {

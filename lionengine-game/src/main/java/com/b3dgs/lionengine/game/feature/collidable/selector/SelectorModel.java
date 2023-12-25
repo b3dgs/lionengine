@@ -151,10 +151,6 @@ public class SelectorModel extends FeatureAbstract implements SelectorConfigurer
         return enabled;
     }
 
-    /*
-     * SelectorConfigurer
-     */
-
     @Override
     public void setClickSelection(Integer click)
     {

@@ -121,10 +121,6 @@ final class ImageImpl implements Image
         return ry;
     }
 
-    /*
-     * Image
-     */
-
     @Override
     public synchronized void load()
     {
@@ -218,10 +214,6 @@ final class ImageImpl implements Image
     {
         return surface != null;
     }
-
-    /*
-     * Object
-     */
 
     @Override
     public int hashCode()

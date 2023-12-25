@@ -89,10 +89,6 @@ public class WorldHelper extends WorldGame
         };
     }
 
-    /*
-     * WorldGame
-     */
-
     @Override
     protected void saving(FileWriting file) throws IOException
     {

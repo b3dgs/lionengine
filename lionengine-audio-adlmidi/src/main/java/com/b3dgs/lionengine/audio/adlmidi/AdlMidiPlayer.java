@@ -51,10 +51,6 @@ final class AdlMidiPlayer extends PlayerAbstract implements AdlMidi
         }
     }
 
-    /*
-     * AdlMidi
-     */
-
     @Override
     protected void play(String track)
     {

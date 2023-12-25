@@ -66,10 +66,6 @@ final class Playback implements Closeable
         return dataLine;
     }
 
-    /*
-     * Closeable
-     */
-
     @Override
     public void close() throws IOException
     {

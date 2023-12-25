@@ -197,10 +197,6 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         }
     }
 
-    /*
-     * Producer
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {
@@ -351,10 +347,6 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     {
         return ProducerState.PRODUCING == state;
     }
-
-    /*
-     * Recyclable
-     */
 
     @Override
     public void recycle()

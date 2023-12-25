@@ -32,10 +32,6 @@ public class ComponentRenderable implements ComponentRenderer
         super();
     }
 
-    /*
-     * ComponentRenderer
-     */
-
     @Override
     public void render(Graphic g, Handlables featurables)
     {

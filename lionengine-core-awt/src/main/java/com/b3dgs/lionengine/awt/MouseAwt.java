@@ -97,10 +97,6 @@ public final class MouseAwt implements Mouse
         return mover;
     }
 
-    /*
-     * Mouse
-     */
-
     @Override
     public void addListener(InputDeviceListener listener)
     {
@@ -236,10 +232,6 @@ public final class MouseAwt implements Mouse
     {
         return clicker.hasClickedOnce(index);
     }
-
-    /*
-     * Updatable
-     */
 
     @Override
     public void update(double extrp)

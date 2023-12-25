@@ -29,10 +29,6 @@ public final class StateLast extends StateAbstract
         super();
     }
 
-    /*
-     * StateAbstract
-     */
-
     @Override
     public void enter()
     {

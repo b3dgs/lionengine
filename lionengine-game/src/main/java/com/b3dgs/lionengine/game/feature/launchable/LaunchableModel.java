@@ -60,10 +60,6 @@ public class LaunchableModel extends FeatureModel implements Launchable, Recycla
         this.transformable = transformable;
     }
 
-    /*
-     * Launchable
-     */
-
     @Override
     public void checkListener(Object listener)
     {

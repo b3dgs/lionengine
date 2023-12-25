@@ -40,10 +40,6 @@ public abstract class PrefAbstract implements Preference
         this.priority = Integer.valueOf(priority);
     }
 
-    /*
-     * Preference
-     */
-
     @Override
     public Integer getPrority()
     {

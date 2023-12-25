@@ -56,10 +56,6 @@ public class AnimationList extends ObjectListAbstract<Animation>
         loadObjects(animations);
     }
 
-    /*
-     * ObjectList
-     */
-
     @Override
     protected Animation copyObject(Animation animation)
     {

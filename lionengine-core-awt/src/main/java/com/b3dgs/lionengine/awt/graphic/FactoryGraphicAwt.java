@@ -55,10 +55,6 @@ public final class FactoryGraphicAwt implements FactoryGraphic
         super();
     }
 
-    /*
-     * FactoryGraphic
-     */
-
     @Override
     public Screen createScreen(Config config)
     {

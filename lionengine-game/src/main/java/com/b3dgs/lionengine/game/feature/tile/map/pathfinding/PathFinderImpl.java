@@ -255,10 +255,6 @@ final class PathFinderImpl implements PathFinder
         return nextDepth;
     }
 
-    /*
-     * PathFinder
-     */
-
     @Override
     public Path findPath(Pathfindable mover, int dtx, int dty, boolean ignoreRef)
     {

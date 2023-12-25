@@ -66,10 +66,6 @@ public abstract class ScreenAbstract implements Screen
         }
     }
 
-    /*
-     * Screen
-     */
-
     /**
      * {@inheritDoc}
      * Set the icon if has.

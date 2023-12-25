@@ -42,10 +42,6 @@ public class FormulaResource implements ResourceChecker
         super();
     }
 
-    /*
-     * ResourceChecker
-     */
-
     @Override
     public boolean check(Shell shell, Media media)
     {

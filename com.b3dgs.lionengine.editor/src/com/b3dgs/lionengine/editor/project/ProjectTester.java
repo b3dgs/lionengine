@@ -34,10 +34,6 @@ public final class ProjectTester extends PropertyTester
         super();
     }
 
-    /*
-     * PropertyTester
-     */
-
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {

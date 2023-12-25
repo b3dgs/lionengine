@@ -94,10 +94,6 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
         });
     }
 
-    /*
-     * Producible
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {
@@ -186,10 +182,6 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
     {
         return produced;
     }
-
-    /*
-     * Recyclable
-     */
 
     @Override
     public void recycle()

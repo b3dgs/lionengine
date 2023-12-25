@@ -53,10 +53,6 @@ public class HandlerPersisterEditor extends HandlerPersister
         super(services);
     }
 
-    /*
-     * HandlerPersister
-     */
-
     @Override
     protected Featurable create(Media media)
     {

@@ -180,10 +180,6 @@ public class SheetsEditDialog extends DialogAbstract
         nodeSheets.clear();
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite content)
     {

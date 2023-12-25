@@ -43,10 +43,6 @@ public class PrefMapFill extends PrefAbstract
         this.number = number;
     }
 
-    /*
-     * Preference
-     */
-
     @Override
     public void apply(MapTile map)
     {

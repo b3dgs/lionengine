@@ -279,10 +279,6 @@ public class WorldPart implements WorldView, Focusable
         composite.forceFocus();
     }
 
-    /*
-     * WorldView
-     */
-
     @Override
     public void update()
     {

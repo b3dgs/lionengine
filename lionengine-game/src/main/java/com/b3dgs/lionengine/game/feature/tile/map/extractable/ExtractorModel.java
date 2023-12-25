@@ -197,10 +197,6 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
         }
     }
 
-    /*
-     * ExtractorServices
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {
@@ -372,10 +368,6 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     {
         return resourceType;
     }
-
-    /*
-     * Recyclable
-     */
 
     @Override
     public void recycle()

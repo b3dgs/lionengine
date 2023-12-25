@@ -140,10 +140,6 @@ public class MapTileGame extends FeaturableAbstract implements MapTile, Listenab
         }
     }
 
-    /*
-     * MapTile
-     */
-
     @Override
     public void create(int tileWidth, int tileHeight, int widthInTile, int heightInTile)
     {

@@ -55,10 +55,6 @@ final class FactoryGraphicHeadlessTest extends FactoryGraphicTest
         Graphics.setFactoryGraphic(null);
     }
 
-    /*
-     * FactoryGraphicTest
-     */
-
     /**
      * Test rotate.
      */

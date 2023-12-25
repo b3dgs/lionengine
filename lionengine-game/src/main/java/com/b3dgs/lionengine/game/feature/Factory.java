@@ -341,10 +341,6 @@ public class Factory implements HandlerListener
         featurable.addAfter(services, setup);
     }
 
-    /*
-     * HandlerListener
-     */
-
     @Override
     public void notifyHandlableAdded(Featurable featurable)
     {

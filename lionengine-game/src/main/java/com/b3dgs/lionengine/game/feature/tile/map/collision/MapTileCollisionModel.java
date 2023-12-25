@@ -60,10 +60,6 @@ public class MapTileCollisionModel extends FeatureAbstract implements MapTileCol
         super();
     }
 
-    /*
-     * MapTileCollision
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {
@@ -116,10 +112,6 @@ public class MapTileCollisionModel extends FeatureAbstract implements MapTileCol
             groupsNode.save(groupsConfig);
         }
     }
-
-    /*
-     * MapTileCollision
-     */
 
     @Override
     public CollisionResult computeCollision(Transformable transformable, CollisionCategory category)

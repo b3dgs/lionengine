@@ -39,10 +39,6 @@ final class TransformSwt implements Transform
         super();
     }
 
-    /*
-     * Transform
-     */
-
     @Override
     public void scale(double sx, double sy)
     {

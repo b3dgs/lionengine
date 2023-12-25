@@ -219,10 +219,6 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         }
     }
 
-    /*
-     * Attacker
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {
@@ -377,10 +373,6 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     {
         return target;
     }
-
-    /*
-     * Recyclable
-     */
 
     @Override
     public void recycle()

@@ -369,10 +369,6 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
         }
     }
 
-    /*
-     * IdentifiableListener
-     */
-
     @Override
     public void notifyDestroyed(Integer id)
     {
@@ -383,10 +379,6 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
         disabled.clear();
         nonDisabledFlag = true;
     }
-
-    /*
-     * CollisionChecker
-     */
 
     @Override
     public boolean isEnabled(Collision collision)

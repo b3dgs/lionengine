@@ -106,10 +106,6 @@ public final class LoopFrameSkipping implements Loop
         maxFrameTimeNano = computeFrameTime(rateDesired);
     }
 
-    /*
-     * Loop
-     */
-
     @Override
     public void start(Screen screen, Frame frame)
     {

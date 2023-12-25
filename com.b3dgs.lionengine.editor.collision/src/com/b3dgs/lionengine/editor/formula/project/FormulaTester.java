@@ -87,10 +87,6 @@ public final class FormulaTester extends PropertyTester
         super();
     }
 
-    /*
-     * PropertyTester
-     */
-
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {

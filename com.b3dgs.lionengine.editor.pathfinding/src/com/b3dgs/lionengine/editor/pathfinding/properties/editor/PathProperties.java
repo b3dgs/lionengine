@@ -56,10 +56,6 @@ public class PathProperties extends ObjectPropertiesAbstract<PathData> implement
         super();
     }
 
-    /*
-     * ObjectProperties
-     */
-
     @Override
     protected void createTextFields(Composite parent)
     {
@@ -86,10 +82,6 @@ public class PathProperties extends ObjectPropertiesAbstract<PathData> implement
                             Boolean.parseBoolean(block.getText()),
                             movements.getObjects());
     }
-
-    /*
-     * ObjectListListener
-     */
 
     @Override
     public void notifyObjectSelected(PathData path)

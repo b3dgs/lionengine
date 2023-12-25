@@ -55,10 +55,6 @@ public final class FilterCrt implements Filter
         this.scale = scale;
     }
 
-    /*
-     * Filter
-     */
-
     @Override
     public ImageBuffer filter(ImageBuffer source)
     {

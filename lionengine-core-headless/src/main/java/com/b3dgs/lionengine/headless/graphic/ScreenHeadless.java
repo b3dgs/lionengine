@@ -68,10 +68,6 @@ final class ScreenHeadless extends ScreenAbstract
         height = output.getHeight();
     }
 
-    /*
-     * Screen
-     */
-
     @Override
     public void start()
     {

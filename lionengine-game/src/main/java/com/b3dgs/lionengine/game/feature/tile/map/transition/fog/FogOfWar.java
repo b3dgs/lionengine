@@ -226,10 +226,6 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
         return fogMap && tile != null && tile.getNumber() < MapTileFog.NO_FOG;
     }
 
-    /*
-     * Feature
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {
@@ -237,10 +233,6 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
 
         map = provider.getFeature(MapTileSurface.class);
     }
-
-    /*
-     * Listenable
-     */
 
     @Override
     public void addListener(RevealedListener listener)
@@ -255,10 +247,6 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
         mapHidden.removeListener(listener);
         mapFogged.removeListener(listener);
     }
-
-    /*
-     * MapTileRenderer
-     */
 
     @Override
     public void renderTile(Graphic g, Tile tile, int x, int y)

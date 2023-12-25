@@ -38,10 +38,6 @@ final class TransformAwtTest extends TransformTest
         Graphics.setFactoryGraphic(new FactoryGraphicAwt());
     }
 
-    /*
-     * TransformTest
-     */
-
     @Override
     protected int getInterpolation(int value)
     {

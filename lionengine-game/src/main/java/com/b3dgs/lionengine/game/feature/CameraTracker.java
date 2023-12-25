@@ -241,10 +241,6 @@ public class CameraTracker extends FeaturableAbstract
         tracked = null;
     }
 
-    /*
-     * Featurable
-     */
-
     /**
      * Return always <code>null</code>.
      */

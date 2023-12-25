@@ -171,10 +171,6 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
         }
     }
 
-    /*
-     * MapTilePersister
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {

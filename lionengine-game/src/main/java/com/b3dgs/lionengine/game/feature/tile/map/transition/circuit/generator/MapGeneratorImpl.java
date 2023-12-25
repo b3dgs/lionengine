@@ -41,10 +41,6 @@ public class MapGeneratorImpl implements MapGenerator
         super();
     }
 
-    /*
-     * MapGenerator
-     */
-
     @Override
     public MapTile generateMap(GeneratorParameter parameters,
                                Collection<Media> levels,

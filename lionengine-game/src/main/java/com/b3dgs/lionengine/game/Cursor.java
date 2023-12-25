@@ -323,10 +323,6 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
         return isPushedOnce(mapper.getIndex());
     }
 
-    /*
-     * Resource
-     */
-
     @Override
     public void addListener(InputDeviceListener listener)
     {
@@ -457,10 +453,6 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
         renderer.setVisible(visible);
     }
 
-    /*
-     * Updatable
-     */
-
     @Override
     public void update(double extrp)
     {
@@ -496,19 +488,11 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
         renderer.update(screenX, screenY);
     }
 
-    /*
-     * Renderable
-     */
-
     @Override
     public void render(Graphic g)
     {
         renderer.render(g);
     }
-
-    /*
-     * Localizable
-     */
 
     @Override
     public double getX()

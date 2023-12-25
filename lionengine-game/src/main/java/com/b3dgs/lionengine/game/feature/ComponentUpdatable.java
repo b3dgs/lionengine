@@ -32,10 +32,6 @@ public class ComponentUpdatable implements ComponentUpdater
         super();
     }
 
-    /*
-     * ComponentUpdater
-     */
-
     @Override
     public void update(double extrp, Handlables featurables)
     {

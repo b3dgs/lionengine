@@ -174,10 +174,6 @@ public abstract class SequenceGame<W extends WorldGame> extends Sequence
         setSystemCursorVisible(false);
     }
 
-    /*
-     * Sequence
-     */
-
     /**
      * {@inheritDoc}
      * Does nothing by default.

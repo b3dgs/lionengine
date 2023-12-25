@@ -62,10 +62,6 @@ public class AssignableModel extends FeatureModel implements Assignable
         super(services, setup);
     }
 
-    /*
-     * Assignable
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {

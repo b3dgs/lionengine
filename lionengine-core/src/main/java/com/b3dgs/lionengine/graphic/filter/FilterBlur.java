@@ -279,10 +279,6 @@ public class FilterBlur implements Filter
         this.edge = edge;
     }
 
-    /*
-     * Filter
-     */
-
     @Override
     public ImageBuffer filter(ImageBuffer source)
     {

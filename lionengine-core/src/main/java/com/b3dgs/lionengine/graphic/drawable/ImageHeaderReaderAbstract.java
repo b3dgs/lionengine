@@ -139,10 +139,6 @@ abstract class ImageHeaderReaderAbstract implements ImageHeaderReader
         this.providers = Arrays.asList(providers);
     }
 
-    /*
-     * ImageHeaderReader
-     */
-
     @Override
     public boolean is(Media media)
     {

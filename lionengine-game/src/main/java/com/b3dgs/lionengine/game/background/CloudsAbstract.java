@@ -112,10 +112,6 @@ public abstract class CloudsAbstract implements BackgroundComponent
         w = wi;
     }
 
-    /*
-     * BackgroundComponent
-     */
-
     @Override
     public void update(double extrp, int x, int y, double speed)
     {

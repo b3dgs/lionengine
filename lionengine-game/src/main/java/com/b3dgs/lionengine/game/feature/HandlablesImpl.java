@@ -175,10 +175,6 @@ final class HandlablesImpl implements Handlables
         }
     }
 
-    /*
-     * Handlables
-     */
-
     @Override
     public Featurable get(Integer id)
     {

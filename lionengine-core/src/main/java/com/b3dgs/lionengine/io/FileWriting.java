@@ -147,10 +147,6 @@ public final class FileWriting implements Closeable
         out.writeUTF(s);
     }
 
-    /*
-     * Closeable
-     */
-
     /**
      * Terminate writing, close file.
      * 

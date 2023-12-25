@@ -48,10 +48,6 @@ public final class FilterHq2x implements Filter
         super();
     }
 
-    /*
-     * Filter
-     */
-
     @Override
     public ImageBuffer filter(ImageBuffer source)
     {

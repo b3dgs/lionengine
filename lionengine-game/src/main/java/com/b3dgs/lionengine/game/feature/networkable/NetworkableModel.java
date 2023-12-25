@@ -84,10 +84,6 @@ public class NetworkableModel extends FeatureModel implements Networkable
         super(services, setup);
     }
 
-    /*
-     * Networkable
-     */
-
     @Override
     public void send(ByteBuffer buffer)
     {

@@ -397,10 +397,6 @@ final class SpriteFontImpl implements SpriteFont
         return surface.isLoaded();
     }
 
-    /*
-     * Object
-     */
-
     @Override
     public int hashCode()
     {

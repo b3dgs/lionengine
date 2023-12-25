@@ -42,10 +42,6 @@ public class GraphicMock implements Graphic
         super();
     }
 
-    /*
-     * Graphic
-     */
-
     @Override
     public void clear(int x, int y, int width, int height)
     {

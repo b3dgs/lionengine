@@ -73,10 +73,6 @@ public class FovableModel extends FeatureModel implements Fovable
         this.transformable = transformable;
     }
 
-    /*
-     * Fovable
-     */
-
     @Override
     public void setFov(int fov)
     {

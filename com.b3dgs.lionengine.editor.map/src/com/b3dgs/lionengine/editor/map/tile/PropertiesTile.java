@@ -137,10 +137,6 @@ public class PropertiesTile implements PropertiesProviderTile
         super();
     }
 
-    /*
-     * PropertiesProviderTile
-     */
-
     @Override
     public void setInput(Tree properties, Tile tile)
     {

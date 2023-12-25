@@ -202,10 +202,6 @@ public final class Tick implements Updatable
         return started;
     }
 
-    /*
-     * Updatable
-     */
-
     @Override
     public void update(double extrp)
     {
@@ -269,10 +265,6 @@ public final class Tick implements Updatable
         {
             return delay;
         }
-
-        /*
-         * TickAction
-         */
 
         @Override
         public void execute()

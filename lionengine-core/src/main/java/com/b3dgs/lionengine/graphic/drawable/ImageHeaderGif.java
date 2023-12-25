@@ -37,10 +37,6 @@ final class ImageHeaderGif extends ImageHeaderReaderAbstract
         super('G', 'I', 'F');
     }
 
-    /*
-     * ImageHeaderReader
-     */
-
     @Override
     public ImageHeader readHeader(InputStream input) throws IOException
     {

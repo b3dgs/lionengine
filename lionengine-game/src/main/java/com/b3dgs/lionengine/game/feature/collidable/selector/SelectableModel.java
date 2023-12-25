@@ -41,10 +41,6 @@ public class SelectableModel extends FeatureModel implements Selectable
         super(services, setup);
     }
 
-    /*
-     * Selectable
-     */
-
     @Override
     public void onSelection(boolean selected)
     {

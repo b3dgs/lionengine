@@ -44,10 +44,6 @@ public class MovementList extends ObjectListAbstract<MovementTile>
         loadObjects(movements);
     }
 
-    /*
-     * ObjectList
-     */
-
     @Override
     protected MovementTile copyObject(MovementTile movement)
     {

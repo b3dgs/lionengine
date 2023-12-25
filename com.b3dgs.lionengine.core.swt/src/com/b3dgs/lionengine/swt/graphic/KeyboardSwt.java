@@ -86,10 +86,6 @@ public final class KeyboardSwt implements Keyboard, KeyListener
         lastCode = Integer.valueOf(-1);
     }
 
-    /*
-     * Keyboard
-     */
-
     @Override
     public void addListener(InputDeviceListener listener)
     {
@@ -192,10 +188,6 @@ public final class KeyboardSwt implements Keyboard, KeyListener
     {
         return Keyboard.class.getSimpleName();
     }
-
-    /*
-     * KeyListener
-     */
 
     @Override
     public void keyPressed(KeyEvent event)

@@ -111,10 +111,6 @@ public final class Sc68Format implements AudioFormat
         bind = loadLibrary();
     }
 
-    /*
-     * AudioFormat
-     */
-
     @Override
     public Sc68 loadAudio(Media media)
     {

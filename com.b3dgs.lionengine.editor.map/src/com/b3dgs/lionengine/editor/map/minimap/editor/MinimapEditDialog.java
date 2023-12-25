@@ -275,10 +275,6 @@ public class MinimapEditDialog extends DialogAbstract
         return sheetData.get(selection);
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite content)
     {

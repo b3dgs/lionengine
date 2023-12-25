@@ -43,10 +43,6 @@ public class RefreshableModel extends FeatureAbstract implements Refreshable
         this.updatable = updatable;
     }
 
-    /*
-     * Refreshable
-     */
-
     @Override
     public void update(double extrp)
     {

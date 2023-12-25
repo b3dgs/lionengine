@@ -114,10 +114,6 @@ final class Watcher implements Runnable
         }
     }
 
-    /*
-     * Runnable
-     */
-
     @Override
     public void run()
     {

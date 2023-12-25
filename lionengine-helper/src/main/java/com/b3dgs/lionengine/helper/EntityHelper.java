@@ -210,10 +210,6 @@ public class EntityHelper extends FeaturableModel
         }
     }
 
-    /*
-     * Featurable
-     */
-
     @Override
     public void addAfter(Services services, Setup setup)
     {

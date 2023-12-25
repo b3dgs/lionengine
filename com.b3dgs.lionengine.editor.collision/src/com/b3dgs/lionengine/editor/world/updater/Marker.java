@@ -68,10 +68,6 @@ public class Marker
         return Collections.unmodifiableCollection(tiles);
     }
 
-    /*
-     * Object
-     */
-
     @Override
     public int hashCode()
     {

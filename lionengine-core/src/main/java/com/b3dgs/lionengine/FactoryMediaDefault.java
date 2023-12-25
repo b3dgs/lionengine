@@ -32,10 +32,6 @@ public class FactoryMediaDefault implements FactoryMedia
         super();
     }
 
-    /*
-     * FactoryMedia
-     */
-
     @Override
     public Media create(String separator, String resourcesDir, Class<?> resourcesClass, String... path)
     {

@@ -222,10 +222,6 @@ public class SelectorRefresher extends FeatureAbstract implements Refreshable, L
         model.getSelectionArea().set(selectX, selectY, selectW, selectH);
     }
 
-    /*
-     * Listenable
-     */
-
     @Override
     public void addListener(SelectorListener listener)
     {
@@ -237,10 +233,6 @@ public class SelectorRefresher extends FeatureAbstract implements Refreshable, L
     {
         listenable.removeListener(listener);
     }
-
-    /*
-     * Refreshable
-     */
 
     @Override
     public void update(double extrp)

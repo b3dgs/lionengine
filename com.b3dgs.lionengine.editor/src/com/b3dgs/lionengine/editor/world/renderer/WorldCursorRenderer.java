@@ -97,10 +97,6 @@ public class WorldCursorRenderer implements WorldRenderListener
         g.drawRect(mx, my, size, size, true);
     }
 
-    /*
-     * WorldRenderListener
-     */
-
     @Override
     public void onRender(Graphic g, int width, int height, double scale, int tw, int th)
     {

@@ -353,10 +353,6 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         }
     }
 
-    /*
-     * Launcher
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {

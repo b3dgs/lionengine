@@ -66,10 +66,6 @@ final class TextHeadless implements Text
         this.size = size;
     }
 
-    /*
-     * Text
-     */
-
     @Override
     public void draw(Graphic g, int x, int y, String text)
     {

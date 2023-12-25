@@ -205,10 +205,6 @@ public final class Timing implements Updatable
         return systemTime();
     }
 
-    /*
-     * Updatable
-     */
-
     @Override
     public void update(double extrp)
     {

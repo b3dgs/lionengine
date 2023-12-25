@@ -39,10 +39,6 @@ public final class FilterNone implements Filter
         super();
     }
 
-    /*
-     * Filter
-     */
-
     @Override
     public ImageBuffer filter(ImageBuffer source)
     {

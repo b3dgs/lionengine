@@ -95,10 +95,6 @@ public interface Media extends Nameable
      */
     boolean isJar();
 
-    /*
-     * Nameable
-     */
-
     /**
      * Get the media name (excluding its path).
      * 

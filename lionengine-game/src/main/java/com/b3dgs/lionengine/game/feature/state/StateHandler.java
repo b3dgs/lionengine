@@ -255,10 +255,6 @@ public class StateHandler extends FeatureModel
         }
     }
 
-    /*
-     * Listenable
-     */
-
     @Override
     public void addListener(StateTransitionListener listener)
     {
@@ -270,10 +266,6 @@ public class StateHandler extends FeatureModel
     {
         listenable.removeListener(listener);
     }
-
-    /*
-     * Updatable
-     */
 
     @Override
     public void update(double extrp)
@@ -292,10 +284,6 @@ public class StateHandler extends FeatureModel
             current.exit();
         }
     }
-
-    /*
-     * Recyclable
-     */
 
     @Override
     public void recycle()

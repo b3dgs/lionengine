@@ -98,10 +98,6 @@ public class PropertiesClass implements PropertiesProviderObject
         super();
     }
 
-    /*
-     * PropertiesListener
-     */
-
     @Override
     public void setInput(Tree properties, Configurer configurer)
     {

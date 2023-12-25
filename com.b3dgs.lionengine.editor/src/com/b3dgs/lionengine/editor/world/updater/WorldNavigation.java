@@ -79,10 +79,6 @@ public class WorldNavigation implements WorldMouseMoveListener, WorldKeyboardLis
         palette = services.get(PaletteModel.class);
     }
 
-    /*
-     * WorldMouseMoveListener
-     */
-
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)
     {
@@ -91,10 +87,6 @@ public class WorldNavigation implements WorldMouseMoveListener, WorldKeyboardLis
             camera.moveLocation(1.0, oldMx - (double) mx, my - (double) oldMy);
         }
     }
-
-    /*
-     * WorldKeyboardListener
-     */
 
     @Override
     public void onKeyPushed(Integer key)

@@ -174,10 +174,6 @@ public class ObjectRepresentation extends FeaturableModel
         return origin;
     }
 
-    /*
-     * FeaturableModel
-     */
-
     @Override
     public boolean isLoadFeaturesEnabled()
     {

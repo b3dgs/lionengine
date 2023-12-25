@@ -42,10 +42,6 @@ public class MinimapResource implements ResourceChecker
         super();
     }
 
-    /*
-     * ResourceChecker
-     */
-
     @Override
     public boolean check(Shell shell, Media media)
     {

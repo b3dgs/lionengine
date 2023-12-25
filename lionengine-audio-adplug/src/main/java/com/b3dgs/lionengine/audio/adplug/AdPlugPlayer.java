@@ -45,10 +45,6 @@ final class AdPlugPlayer extends PlayerAbstract implements AdPlug
         this.binding = binding;
     }
 
-    /*
-     * AdPlug
-     */
-
     @Override
     protected void play(String track)
     {

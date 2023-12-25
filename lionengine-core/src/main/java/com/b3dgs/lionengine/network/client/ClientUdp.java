@@ -410,10 +410,6 @@ public class ClientUdp implements Client
         return clientId;
     }
 
-    /*
-     * Listenable
-     */
-
     @Override
     public void addListener(ClientListener listener)
     {

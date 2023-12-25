@@ -102,10 +102,6 @@ public class TextGame implements Text
         g.drawRect(x - this.x, this.y - y - height + this.height, width, height, false);
     }
 
-    /*
-     * Text
-     */
-
     @Override
     public void draw(Graphic g, int x, int y, Align alignment, String text)
     {

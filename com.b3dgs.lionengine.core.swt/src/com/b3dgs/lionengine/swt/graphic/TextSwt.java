@@ -104,10 +104,6 @@ final class TextSwt implements Text
         color = ColorRgba.WHITE;
     }
 
-    /*
-     * Text
-     */
-
     @Override
     public void draw(Graphic g, int x, int y, String text)
     {

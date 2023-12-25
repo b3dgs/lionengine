@@ -92,10 +92,6 @@ public class Circuit
         return getIn().equals(other.getOut()) && getOut().equals(other.getIn()) && type == other.type.getSymetric();
     }
 
-    /*
-     * Object
-     */
-
     @Override
     public int hashCode()
     {

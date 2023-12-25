@@ -350,10 +350,6 @@ public class GroupsAssignDialog extends DialogAbstract implements WorldView, Foc
         }
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite content)
     {
@@ -381,10 +377,6 @@ public class GroupsAssignDialog extends DialogAbstract implements WorldView, Foc
         view.forceFocus();
     }
 
-    /*
-     * WorldView
-     */
-
     @Override
     public void update()
     {
@@ -406,10 +398,6 @@ public class GroupsAssignDialog extends DialogAbstract implements WorldView, Foc
         return null;
     }
 
-    /*
-     * KeyListener
-     */
-
     @Override
     public void keyPressed(KeyEvent event)
     {
@@ -421,10 +409,6 @@ public class GroupsAssignDialog extends DialogAbstract implements WorldView, Foc
     {
         // Nothing to do
     }
-
-    /*
-     * TileSelectionListener
-     */
 
     @Override
     public void notifyTileSelected(int click, Tile tile)
@@ -449,10 +433,6 @@ public class GroupsAssignDialog extends DialogAbstract implements WorldView, Foc
     {
         // Nothing to do
     }
-
-    /*
-     * ObjectListListener
-     */
 
     @Override
     public void notifyObjectSelected(TileGroup object)

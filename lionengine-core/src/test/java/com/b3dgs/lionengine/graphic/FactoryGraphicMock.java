@@ -47,10 +47,6 @@ public class FactoryGraphicMock implements FactoryGraphic
         super();
     }
 
-    /*
-     * FactoryGraphic
-     */
-
     @Override
     public Screen createScreen(Config config)
     {

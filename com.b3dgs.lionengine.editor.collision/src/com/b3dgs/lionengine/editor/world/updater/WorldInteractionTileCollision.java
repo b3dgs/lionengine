@@ -371,10 +371,6 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
         return function;
     }
 
-    /*
-     * CollisionVerifier
-     */
-
     @Override
     public void verifyCollision(int offset)
     {
@@ -399,10 +395,6 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
         }
     }
 
-    /*
-     * WorldMouseClickListener
-     */
-
     @Override
     public void onMousePressed(int click, int mx, int my)
     {
@@ -422,10 +414,6 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
             collLine = null;
         }
     }
-
-    /*
-     * WorldMouseMoveListener
-     */
 
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)

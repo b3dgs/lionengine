@@ -135,10 +135,6 @@ public class HandlerPersister implements Persistable
         transformable.teleport(x, y);
     }
 
-    /*
-     * Persistable
-     */
-
     @Override
     public void save(FileWriting writing) throws IOException
     {

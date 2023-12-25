@@ -104,10 +104,6 @@ public class FormulaList extends ObjectListAbstract<CollisionFormula> implements
         loadObjects(formulas);
     }
 
-    /*
-     * ObjectList
-     */
-
     @Override
     protected CollisionFormula copyObject(CollisionFormula formula)
     {
@@ -125,10 +121,6 @@ public class FormulaList extends ObjectListAbstract<CollisionFormula> implements
                                     new CollisionFunctionLinear(0, 0),
                                     new CollisionConstraint());
     }
-
-    /*
-     * ObjectListListener
-     */
 
     @Override
     public void notifyObjectSelected(CollisionFormula formula)

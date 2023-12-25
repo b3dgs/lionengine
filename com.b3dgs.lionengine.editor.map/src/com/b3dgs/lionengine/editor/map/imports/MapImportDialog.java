@@ -73,10 +73,6 @@ public class MapImportDialog extends DialogAbstract
         finish.setEnabled(levelRip.getMedia() != null && sheets.getMedia() != null && groups.getMedia() != null);
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite content)
     {

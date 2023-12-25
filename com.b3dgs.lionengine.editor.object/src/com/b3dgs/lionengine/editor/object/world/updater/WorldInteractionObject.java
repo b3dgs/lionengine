@@ -248,10 +248,6 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
         }
     }
 
-    /*
-     * WorldMouseClickListener
-     */
-
     @Override
     public void onMousePressed(int click, int mx, int my)
     {
@@ -278,10 +274,6 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
             endSelection(mx, my);
         }
     }
-
-    /*
-     * WorldMouseMoveListener
-     */
 
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)

@@ -77,10 +77,6 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
         }
     }
 
-    /*
-     * CollidableFramed
-     */
-
     @Override
     public void recycle()
     {

@@ -46,10 +46,6 @@ public class ActionerModel extends FeatureModel implements Actioner
         actions = ActionsConfig.imports(setup, this::getFeature);
     }
 
-    /*
-     * Actioner
-     */
-
     @Override
     public List<ActionRef> getActions()
     {

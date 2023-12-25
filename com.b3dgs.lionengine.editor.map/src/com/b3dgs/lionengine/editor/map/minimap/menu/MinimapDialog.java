@@ -409,10 +409,6 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         }
     }
 
-    /*
-     * MouseListener
-     */
-
     @Override
     public void mouseDown(MouseEvent event)
     {
@@ -432,19 +428,11 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         // Nothing to do
     }
 
-    /*
-     * MouseMoveListener
-     */
-
     @Override
     public void mouseMove(MouseEvent event)
     {
         moveMap(event.x, event.y);
     }
-
-    /*
-     * MouseWheelListener
-     */
 
     @Override
     public void mouseScrolled(MouseEvent event)
@@ -455,10 +443,6 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         }
     }
 
-    /*
-     * WorldMouseMoveListener
-     */
-
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)
     {
@@ -467,10 +451,6 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
             render();
         }
     }
-
-    /*
-     * WorldMouseScrollListener
-     */
 
     @Override
     public void onMouseScroll(int value, int mx, int my)
@@ -481,10 +461,6 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         }
     }
 
-    /*
-     * WorldKeyboardListener
-     */
-
     @Override
     public void onKeyPushed(Integer key)
     {
@@ -493,10 +469,6 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
             render();
         }
     }
-
-    /*
-     * Focusable
-     */
 
     @Override
     public void focus()

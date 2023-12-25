@@ -91,10 +91,6 @@ public class CollisionConstraint
         return getConstraints(orientation).contains(group);
     }
 
-    /*
-     * Object
-     */
-
     @Override
     public int hashCode()
     {

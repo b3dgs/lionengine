@@ -76,10 +76,6 @@ final class SpriteParallaxedImpl implements SpriteParallaxed
         factorV = 1.0;
     }
 
-    /*
-     * SpriteParallaxed
-     */
-
     @Override
     public void load(boolean alpha)
     {

@@ -145,10 +145,6 @@ public class WorldRenderer implements PaintListener
         }
     }
 
-    /*
-     * PaintListener
-     */
-
     @Override
     public void paintControl(PaintEvent paintEvent)
     {

@@ -35,10 +35,6 @@ public final class DirectionNone implements Direction
         super();
     }
 
-    /*
-     * Direction
-     */
-
     @Override
     public double getDirectionVertical()
     {

@@ -69,10 +69,6 @@ public class FormulasEditDialog extends DialogAbstract
         finish.setEnabled(true);
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite content)
     {

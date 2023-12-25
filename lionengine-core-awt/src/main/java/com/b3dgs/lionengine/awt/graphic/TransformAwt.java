@@ -40,10 +40,6 @@ final class TransformAwt implements Transform
         super();
     }
 
-    /*
-     * Transform
-     */
-
     @Override
     public void scale(double sx, double sy)
     {

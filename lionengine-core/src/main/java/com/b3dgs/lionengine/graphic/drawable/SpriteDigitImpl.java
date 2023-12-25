@@ -89,10 +89,6 @@ public class SpriteDigitImpl implements SpriteDigit
         }
     }
 
-    /*
-     * SpriteDigit
-     */
-
     @Override
     public void setValue(int value)
     {
@@ -115,10 +111,6 @@ public class SpriteDigitImpl implements SpriteDigit
             old = value;
         }
     }
-
-    /*
-     * Sprite
-     */
 
     @Override
     public void load()
@@ -298,10 +290,6 @@ public class SpriteDigitImpl implements SpriteDigit
     {
         return sprite.getMirror();
     }
-
-    /*
-     * Object
-     */
 
     @Override
     public int hashCode()

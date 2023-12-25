@@ -256,10 +256,6 @@ public class MapTilePathModel extends FeatureAbstract implements MapTilePath
         return null;
     }
 
-    /*
-     * MapTilePath
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {

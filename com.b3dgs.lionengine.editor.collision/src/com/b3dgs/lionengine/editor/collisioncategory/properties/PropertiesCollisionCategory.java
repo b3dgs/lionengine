@@ -57,10 +57,6 @@ public class PropertiesCollisionCategory implements PropertiesProviderObject
         super();
     }
 
-    /*
-     * PropertiesProviderObject
-     */
-
     @Override
     public void setInput(Tree properties, Configurer configurer)
     {

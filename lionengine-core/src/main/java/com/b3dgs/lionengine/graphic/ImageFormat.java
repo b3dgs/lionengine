@@ -37,10 +37,6 @@ public enum ImageFormat
     /** TIFF format. */
     TIFF;
 
-    /*
-     * Object
-     */
-
     @Override
     public String toString()
     {

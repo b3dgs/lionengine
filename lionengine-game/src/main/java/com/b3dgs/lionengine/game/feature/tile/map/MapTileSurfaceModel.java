@@ -106,10 +106,6 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
         }
     }
 
-    /*
-     * MapTileSurface
-     */
-
     @Override
     public void addListener(TileSetListener listener)
     {

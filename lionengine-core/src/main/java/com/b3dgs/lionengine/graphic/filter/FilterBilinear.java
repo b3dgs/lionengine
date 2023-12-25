@@ -136,10 +136,6 @@ public class FilterBilinear implements Filter
         super();
     }
 
-    /*
-     * Filter
-     */
-
     @Override
     public ImageBuffer filter(ImageBuffer source)
     {

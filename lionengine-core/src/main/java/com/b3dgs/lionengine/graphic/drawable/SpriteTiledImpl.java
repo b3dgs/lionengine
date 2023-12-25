@@ -76,10 +76,6 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
         tilesVertical = Math.max(getHeight() / tileHeight, 1);
     }
 
-    /*
-     * SpriteTiled
-     */
-
     @Override
     public void render(Graphic g)
     {
@@ -133,10 +129,6 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
     {
         super.computeRenderingPoint(width / tilesHorizontal, height / tilesVertical);
     }
-
-    /*
-     * Object
-     */
 
     @Override
     public int hashCode()

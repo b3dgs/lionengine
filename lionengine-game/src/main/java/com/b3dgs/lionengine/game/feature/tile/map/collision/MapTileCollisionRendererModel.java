@@ -180,10 +180,6 @@ public class MapTileCollisionRendererModel extends FeatureAbstract implements Ma
         }
     }
 
-    /*
-     * MapTileCollisionRenderer
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {

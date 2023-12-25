@@ -49,10 +49,6 @@ public class GroupProperties extends ObjectPropertiesAbstract<TileGroup> impleme
         super();
     }
 
-    /*
-     * ObjectProperties
-     */
-
     @Override
     protected void createTextFields(Composite parent)
     {
@@ -68,10 +64,6 @@ public class GroupProperties extends ObjectPropertiesAbstract<TileGroup> impleme
     {
         return new TileGroup(name, (TileGroupType) type.getData(), new TreeSet<>(tiles));
     }
-
-    /*
-     * ObjectListListener
-     */
 
     @Override
     public void notifyObjectSelected(TileGroup group)

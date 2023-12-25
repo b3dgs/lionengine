@@ -139,10 +139,6 @@ public abstract class MessageAbstract implements Message
         return ByteBuffer.allocate(0);
     }
 
-    /*
-     * Message
-     */
-
     @Override
     public ByteBuffer create()
     {

@@ -67,10 +67,6 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
         this.transformable = transformable;
     }
 
-    /*
-     * Orientable
-     */
-
     @Override
     public void pointTo(int dtx, int dty)
     {
@@ -102,10 +98,6 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
     {
         return orientation;
     }
-
-    /*
-     * Recyclable
-     */
 
     @Override
     public void recycle()

@@ -152,10 +152,6 @@ public final class Polygon
         }
     }
 
-    /*
-     * Object
-     */
-
     @Override
     public String toString()
     {

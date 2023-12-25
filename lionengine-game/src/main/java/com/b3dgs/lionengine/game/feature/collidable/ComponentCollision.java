@@ -91,19 +91,11 @@ public class ComponentCollision implements ComponentUpdater, ComponentRenderer, 
         return collidables.getInside(area);
     }
 
-    /*
-     * ComponentUpdater
-     */
-
     @Override
     public void update(double extrp, Handlables objects)
     {
         collidables.compute();
     }
-
-    /*
-     * ComponentRenderer
-     */
 
     @Override
     public void render(Graphic g, Handlables featurables)
@@ -111,10 +103,6 @@ public class ComponentCollision implements ComponentUpdater, ComponentRenderer, 
         g.setColor(ColorRgba.BLUE);
         renderable.render(g);
     }
-
-    /*
-     * HandlerListener
-     */
 
     @Override
     public void notifyHandlableAdded(Featurable featurable)
@@ -138,10 +126,6 @@ public class ComponentCollision implements ComponentUpdater, ComponentRenderer, 
             collidables.remove(transformable, collidable);
         }
     }
-
-    /*
-     * TransformableListener
-     */
 
     @Override
     public void notifyTransformed(Transformable transformable)

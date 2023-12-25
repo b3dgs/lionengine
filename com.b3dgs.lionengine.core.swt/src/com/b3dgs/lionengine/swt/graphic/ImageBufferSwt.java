@@ -97,10 +97,6 @@ public final class ImageBufferSwt implements ImageBuffer
         return image;
     }
 
-    /*
-     * ImageBuffer
-     */
-
     @Override
     public void prepare()
     {

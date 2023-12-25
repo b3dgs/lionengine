@@ -81,10 +81,6 @@ public class PathfindingEditDialog extends DialogAbstract
         pathfinding.setLocation(destination);
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite content)
     {

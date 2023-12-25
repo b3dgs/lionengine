@@ -65,10 +65,6 @@ public class GroupList extends ObjectListAbstract<TileGroup> implements ObjectLi
         loadObjects(groups);
     }
 
-    /*
-     * ObjectList
-     */
-
     @Override
     protected TileGroup copyObject(TileGroup group)
     {
@@ -80,10 +76,6 @@ public class GroupList extends ObjectListAbstract<TileGroup> implements ObjectLi
     {
         return new TileGroup(name, TileGroupType.NONE, new TreeSet<>());
     }
-
-    /*
-     * ObjectListListener
-     */
 
     @Override
     public void notifyObjectSelected(TileGroup group)

@@ -63,10 +63,6 @@ public class CollisionProperties extends ObjectPropertiesAbstract<Collision> imp
         setValue(offsetY, String.valueOf(last));
     }
 
-    /*
-     * ObjectProperties
-     */
-
     @Override
     protected void createTextFields(Composite parent)
     {
@@ -94,10 +90,6 @@ public class CollisionProperties extends ObjectPropertiesAbstract<Collision> imp
                              Integer.parseInt(height.getText()),
                              mirror.getSelection());
     }
-
-    /*
-     * ObjectListListener
-     */
 
     @Override
     public void notifyObjectSelected(Collision collision)

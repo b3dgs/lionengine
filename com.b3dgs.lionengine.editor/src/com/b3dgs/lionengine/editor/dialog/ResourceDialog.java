@@ -188,10 +188,6 @@ public class ResourceDialog extends DialogAbstract
         }
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite content)
     {

@@ -260,10 +260,6 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
         return collisionsEnabled;
     }
 
-    /*
-     * MouseListener
-     */
-
     @Override
     public void mouseDown(MouseEvent mouseEvent)
     {
@@ -303,10 +299,6 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
         // Nothing to do
     }
 
-    /*
-     * MouseMoveListener
-     */
-
     @Override
     public void mouseMove(MouseEvent mouseEvent)
     {
@@ -325,10 +317,6 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
         }
     }
 
-    /*
-     * MouseWheelListener
-     */
-
     @Override
     public void mouseScrolled(MouseEvent mouseEvent)
     {
@@ -337,10 +325,6 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
             listener.onMouseScroll(mouseEvent.count, getMouseX(), getMouseY());
         }
     }
-
-    /*
-     * KeyListener
-     */
 
     @Override
     public void keyPressed(KeyEvent keyEvent)

@@ -112,10 +112,6 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
         }
     }
 
-    /*
-     * ComponentRenderer
-     */
-
     @Override
     public void render(Graphic g, Handlables featurables)
     {
@@ -149,10 +145,6 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
             updateRequested = false;
         }
     }
-
-    /*
-     * HandlerListener
-     */
 
     @Override
     public void notifyHandlableAdded(Featurable featurable)
@@ -189,10 +181,6 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
             featurable.getFeature(Layerable.class).removeListener(this);
         }
     }
-
-    /*
-     * LayerableListener
-     */
 
     @Override
     public void notifyLayerChanged(FeatureProvider provider,

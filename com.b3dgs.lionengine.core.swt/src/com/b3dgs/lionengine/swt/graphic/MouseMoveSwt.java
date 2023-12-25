@@ -154,10 +154,6 @@ public final class MouseMoveSwt implements MouseMoveListener
         my = y - oldY;
     }
 
-    /*
-     * MouseMoveListener
-     */
-
     @Override
     public void mouseMove(MouseEvent event)
     {

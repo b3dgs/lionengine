@@ -153,10 +153,6 @@ public final class MouseClickSwt implements MouseListener, MouseWheelListener
         return false;
     }
 
-    /*
-     * MouseListener
-     */
-
     @Override
     public void mouseScrolled(MouseEvent event)
     {

@@ -84,10 +84,6 @@ public class LayerableModel extends FeatureAbstract implements Layerable
         }
     }
 
-    /*
-     * Layerable
-     */
-
     @Override
     public void addListener(LayerableListener listener)
     {

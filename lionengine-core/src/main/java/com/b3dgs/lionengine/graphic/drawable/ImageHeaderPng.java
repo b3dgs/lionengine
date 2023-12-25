@@ -44,10 +44,6 @@ final class ImageHeaderPng extends ImageHeaderReaderAbstract
         super(HEADER_1, HEADER_2, HEADER_3);
     }
 
-    /*
-     * ImageHeaderReader
-     */
-
     @Override
     public ImageHeader readHeader(InputStream input) throws IOException
     {

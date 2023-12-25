@@ -319,10 +319,6 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         }
     }
 
-    /*
-     * Sequencable
-     */
-
     @Override
     public void start(Screen screen)
     {
@@ -487,10 +483,6 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         }
     }
 
-    /*
-     * Rasterbar
-     */
-
     @Override
     public void clearRasterbarColor()
     {
@@ -530,10 +522,6 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         renderer[split].renderRasterbar();
     }
 
-    /*
-     * SourceResolutionProvider
-     */
-
     @Override
     public final int getWidth()
     {
@@ -551,10 +539,6 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     {
         return source.getRate();
     }
-
-    /*
-     * ScreenListener
-     */
 
     /**
      * {@inheritDoc}

@@ -211,10 +211,6 @@ public class Selector extends FeaturableAbstract implements SelectorConfigurer, 
         selected.clear();
     }
 
-    /*
-     * Listenable
-     */
-
     @Override
     public final void addListener(SelectionListener listener)
     {
@@ -226,10 +222,6 @@ public class Selector extends FeaturableAbstract implements SelectorConfigurer, 
     {
         listenable.removeListener(listener);
     }
-
-    /*
-     * SelectorConfigurer
-     */
 
     @Override
     public void setClickSelection(Integer click)
@@ -254,10 +246,6 @@ public class Selector extends FeaturableAbstract implements SelectorConfigurer, 
     {
         model.setEnabled(enabled);
     }
-
-    /*
-     * Featurable
-     */
 
     /**
      * Return always <code>null</code>.

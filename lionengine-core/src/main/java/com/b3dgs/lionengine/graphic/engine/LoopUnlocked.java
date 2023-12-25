@@ -63,10 +63,6 @@ public final class LoopUnlocked implements Loop
         }
     }
 
-    /*
-     * Loop
-     */
-
     @Override
     public void start(Screen screen, Frame frame)
     {

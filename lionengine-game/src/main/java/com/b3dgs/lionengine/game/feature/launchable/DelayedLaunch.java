@@ -115,10 +115,6 @@ final class DelayedLaunch implements Updatable
         return launchable;
     }
 
-    /*
-     * Updatable
-     */
-
     @Override
     public void update(double extrp)
     {

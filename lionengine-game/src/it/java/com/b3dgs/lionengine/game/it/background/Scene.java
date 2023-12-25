@@ -76,10 +76,6 @@ public final class Scene extends Sequence
         background = new Swamp(source);
     }
 
-    /*
-     * Sequence
-     */
-
     @Override
     public void load()
     {

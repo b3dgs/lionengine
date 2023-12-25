@@ -173,10 +173,6 @@ public final class AnimationRenderer implements PaintListener
         surface.render(g);
     }
 
-    /*
-     * PaintListener
-     */
-
     @Override
     public void paintControl(PaintEvent paintEvent)
     {
@@ -200,10 +196,6 @@ public final class AnimationRenderer implements PaintListener
         {
             this.display = display;
         }
-
-        /*
-         * Runnable
-         */
 
         @Override
         public void run()

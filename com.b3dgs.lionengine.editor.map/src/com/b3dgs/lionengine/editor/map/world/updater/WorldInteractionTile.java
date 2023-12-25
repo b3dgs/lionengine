@@ -234,10 +234,6 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         }
     }
 
-    /*
-     * WorldMouseClickListener
-     */
-
     @Override
     public void onMousePressed(int click, int mx, int my)
     {
@@ -256,10 +252,6 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         // Nothing to do
     }
-
-    /*
-     * WorldMouseMoveListener
-     */
 
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)

@@ -380,10 +380,6 @@ public class FormulaProperties extends ObjectPropertiesAbstract<CollisionFormula
         return !type.getText().isEmpty() && !output.getText().isEmpty() && range && linear;
     }
 
-    /*
-     * ObjectProperties
-     */
-
     @Override
     protected void createTextFields(Composite parent)
     {
@@ -450,10 +446,6 @@ public class FormulaProperties extends ObjectPropertiesAbstract<CollisionFormula
         constraintsLeft.save();
         constraintsRight.save();
     }
-
-    /*
-     * ObjectListListener
-     */
 
     @Override
     public void notifyObjectSelected(CollisionFormula formula)

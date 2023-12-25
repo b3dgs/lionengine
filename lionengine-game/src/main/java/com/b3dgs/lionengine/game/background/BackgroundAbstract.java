@@ -169,10 +169,6 @@ public abstract class BackgroundAbstract implements Background
         this.offsetY = offsetY;
     }
 
-    /*
-     * Background
-     */
-
     @Override
     public final void update(double extrp, double speed, double x, double y)
     {

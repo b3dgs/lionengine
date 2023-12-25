@@ -51,10 +51,6 @@ final class ImageBufferAwt implements ImageBuffer
         this.bufferedImage = bufferedImage;
     }
 
-    /*
-     * ImageBuffer
-     */
-
     @Override
     public void prepare()
     {

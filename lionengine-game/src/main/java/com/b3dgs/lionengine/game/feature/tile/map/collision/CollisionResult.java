@@ -245,10 +245,6 @@ public class CollisionResult
         return formulaY != null && formulaY.getName().contains(name);
     }
 
-    /*
-     * Object
-     */
-
     @Override
     public String toString()
     {

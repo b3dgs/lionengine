@@ -255,10 +255,6 @@ final class MediaDefault implements Media
         return UtilFolder.getPathSeparator(separator, USER, path);
     }
 
-    /*
-     * Media
-     */
-
     @Override
     public String getName()
     {
@@ -432,10 +428,6 @@ final class MediaDefault implements Media
                && exists(getPathFromTemp()) == null
                && resourcesClass.getResource(path) != null;
     }
-
-    /*
-     * Object
-     */
 
     @Override
     public int hashCode()

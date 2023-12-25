@@ -230,10 +230,6 @@ public class PropertiesPart implements Focusable, PropertiesProviderObject, Prop
         menuService.registerContextMenu(properties, MENU_ID);
     }
 
-    /*
-     * PropertiesProviderObject
-     */
-
     @Override
     public void setInput(Tree properties, Configurer configurer)
     {
@@ -268,10 +264,6 @@ public class PropertiesPart implements Focusable, PropertiesProviderObject, Prop
         }
         return updated;
     }
-
-    /*
-     * PropertiesProviderTile
-     */
 
     @Override
     public void setInput(Tree properties, Tile tile)

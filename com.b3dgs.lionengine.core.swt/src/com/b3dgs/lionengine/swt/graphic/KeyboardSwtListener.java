@@ -38,10 +38,6 @@ public final class KeyboardSwtListener implements org.eclipse.swt.events.KeyList
         this.listener = listener;
     }
 
-    /*
-     * KeyListener
-     */
-
     @Override
     public void keyPressed(KeyEvent event)
     {

@@ -147,10 +147,6 @@ public final class FileReading implements Closeable
         return in.readUTF();
     }
 
-    /*
-     * Closeable
-     */
-
     /**
      * Terminate reading, close file.
      * 

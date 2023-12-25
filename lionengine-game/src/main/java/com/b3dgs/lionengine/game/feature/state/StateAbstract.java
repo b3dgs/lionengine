@@ -52,10 +52,6 @@ public abstract class StateAbstract implements State
         // Nothing by default
     }
 
-    /*
-     * State
-     */
-
     @Override
     public final void addTransition(Class<? extends State> next, StateChecker checker)
     {

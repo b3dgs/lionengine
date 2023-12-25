@@ -70,10 +70,6 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
         updater = UpdatableVoid.getInstance();
     }
 
-    /*
-     * Mirrorable
-     */
-
     @Override
     public void checkListener(Object listener)
     {
@@ -123,10 +119,6 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
     {
         return this.mirror == mirror;
     }
-
-    /*
-     * Recyclable
-     */
 
     @Override
     public void recycle()

@@ -49,10 +49,6 @@ public class Routines extends FeatureModel implements Updatable, Renderable
         super(services, setup);
     }
 
-    /*
-     * Feature
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {
@@ -68,10 +64,6 @@ public class Routines extends FeatureModel implements Updatable, Renderable
         routinesCount = routines.size();
     }
 
-    /*
-     * Updatable
-     */
-
     @Override
     public void update(double extrp)
     {
@@ -80,10 +72,6 @@ public class Routines extends FeatureModel implements Updatable, Renderable
             routines.get(i).update(extrp);
         }
     }
-
-    /*
-     * Renderable
-     */
 
     @Override
     public void render(Graphic g)

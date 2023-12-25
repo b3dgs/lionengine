@@ -85,10 +85,6 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
         framesNumber = framesHorizontal * framesVertical;
     }
 
-    /*
-     * SpriteAnimated
-     */
-
     @Override
     public void addListener(AnimatorListener listener)
     {
@@ -222,10 +218,6 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     {
         super.computeRenderingPoint(width / framesHorizontal, height / framesVertical);
     }
-
-    /*
-     * Object
-     */
 
     @Override
     public int hashCode()

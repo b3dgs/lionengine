@@ -125,10 +125,6 @@ public class MapCollisionAssignDialog extends DialogAbstract
         return check;
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite content)
     {

@@ -154,10 +154,6 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
         componentForMouse.addFocusListener(this);
     }
 
-    /*
-     * Screen
-     */
-
     @Override
     public void start()
     {
@@ -268,10 +264,6 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     {
         ((MouseAwt) getInputDevice(Mouse.class)).setResolution(config.getOutput(), source);
     }
-
-    /*
-     * FocusListener
-     */
 
     @Override
     public void focusGained(FocusEvent event)

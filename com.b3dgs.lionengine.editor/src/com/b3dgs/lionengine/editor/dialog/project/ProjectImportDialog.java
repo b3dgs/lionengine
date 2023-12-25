@@ -250,10 +250,6 @@ public class ProjectImportDialog extends ProjectDialogAbstract
         finish.setEnabled(true);
     }
 
-    /*
-     * AbstractProjectDialog
-     */
-
     @Override
     protected void onLocationSelected(String path)
     {

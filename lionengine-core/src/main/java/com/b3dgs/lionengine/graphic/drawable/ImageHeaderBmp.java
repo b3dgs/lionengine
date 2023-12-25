@@ -42,10 +42,6 @@ final class ImageHeaderBmp extends ImageHeaderReaderAbstract
         super(HEADER_1, HEADER_2);
     }
 
-    /*
-     * ImageHeaderReader
-     */
-
     @Override
     public ImageHeader readHeader(InputStream input) throws IOException
     {

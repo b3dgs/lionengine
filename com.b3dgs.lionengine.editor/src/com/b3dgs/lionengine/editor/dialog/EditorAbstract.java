@@ -133,10 +133,6 @@ public abstract class EditorAbstract implements MDirtyable
         });
     }
 
-    /*
-     * MDirtyable
-     */
-
     @Override
     public void setDirty(boolean value)
     {

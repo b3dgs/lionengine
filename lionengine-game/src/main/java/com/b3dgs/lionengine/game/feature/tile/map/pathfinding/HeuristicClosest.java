@@ -29,10 +29,6 @@ public final class HeuristicClosest implements Heuristic
         super();
     }
 
-    /*
-     * Heuristic
-     */
-
     @Override
     public double getCost(int sx, int sy, int dx, int dy)
     {

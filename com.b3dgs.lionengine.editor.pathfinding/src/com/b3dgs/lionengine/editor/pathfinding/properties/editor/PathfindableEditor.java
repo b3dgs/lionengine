@@ -61,10 +61,6 @@ public class PathfindableEditor extends EditorAbstract
         list = new PathList(properties);
     }
 
-    /*
-     * AbstractEditor
-     */
-
     @Override
     protected void createContent(Composite parent)
     {

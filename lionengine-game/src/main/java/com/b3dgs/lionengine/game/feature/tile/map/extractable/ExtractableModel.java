@@ -79,10 +79,6 @@ public class ExtractableModel extends FeatureModel implements Extractable
         }
     }
 
-    /*
-     * Extractable
-     */
-
     @Override
     public int extractResource(int quantity)
     {

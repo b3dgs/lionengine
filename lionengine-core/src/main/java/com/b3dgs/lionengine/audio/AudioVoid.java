@@ -35,10 +35,6 @@ public final class AudioVoid implements Audio
         super();
     }
 
-    /*
-     * Audio
-     */
-
     @Override
     public void play()
     {

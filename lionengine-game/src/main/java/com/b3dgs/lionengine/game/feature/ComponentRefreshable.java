@@ -115,10 +115,6 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
         }
     }
 
-    /*
-     * ComponentUpdater
-     */
-
     @Override
     public void update(double extrp, Handlables featurables)
     {
@@ -157,10 +153,6 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
             updateRequested = false;
         }
     }
-
-    /*
-     * HandlerListener
-     */
 
     @Override
     public void notifyHandlableAdded(Featurable featurable)
@@ -207,10 +199,6 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
             backupCount--;
         });
     }
-
-    /*
-     * LayerableListener
-     */
 
     @Override
     public void notifyLayerChanged(FeatureProvider provider,

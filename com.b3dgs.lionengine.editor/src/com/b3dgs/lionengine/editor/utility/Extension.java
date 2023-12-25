@@ -56,10 +56,6 @@ final class Extension<T> implements Comparable<Extension<T>>
         return instance;
     }
 
-    /*
-     * Comparable
-     */
-
     @Override
     public int compareTo(Extension<T> other)
     {
@@ -78,10 +74,6 @@ final class Extension<T> implements Comparable<Extension<T>>
         }
         return value;
     }
-
-    /*
-     * Object
-     */
 
     @Override
     public int hashCode()

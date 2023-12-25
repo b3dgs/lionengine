@@ -95,10 +95,6 @@ public class BackgroundElementRastered extends BackgroundElement implements Rend
         rasters.setLocation(x, y);
     }
 
-    /*
-     * Renderable
-     */
-
     @Override
     public void render(Graphic g)
     {

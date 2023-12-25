@@ -53,10 +53,6 @@ public class CollisionList extends ObjectListAbstract<Collision>
         loadObjects(collisions);
     }
 
-    /*
-     * ObjectList
-     */
-
     @Override
     protected Collision copyObject(Collision collision)
     {

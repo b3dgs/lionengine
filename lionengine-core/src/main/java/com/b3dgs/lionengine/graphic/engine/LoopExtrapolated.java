@@ -60,10 +60,6 @@ public final class LoopExtrapolated implements Loop
         notifyRateChanged(rate);
     }
 
-    /*
-     * Loop
-     */
-
     @Override
     public void start(Screen screen, Frame frame)
     {

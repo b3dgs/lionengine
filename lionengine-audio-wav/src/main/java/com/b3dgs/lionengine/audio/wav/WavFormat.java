@@ -61,10 +61,6 @@ public final class WavFormat implements AudioFormat
         executor = Executors.newCachedThreadPool(runnable -> new Thread(runnable, getClass().getSimpleName()));
     }
 
-    /*
-     * AudioFormat
-     */
-
     @Override
     public Wav loadAudio(Media media)
     {

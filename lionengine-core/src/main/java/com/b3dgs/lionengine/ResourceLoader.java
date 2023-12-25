@@ -169,10 +169,6 @@ public final class ResourceLoader<T extends Enum<T>>
             this.resources = resources;
         }
 
-        /*
-         * Thread
-         */
-
         @Override
         public void run()
         {

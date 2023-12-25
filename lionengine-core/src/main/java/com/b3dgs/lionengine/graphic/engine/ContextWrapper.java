@@ -46,10 +46,6 @@ final class ContextWrapper implements Context
         this.screen = screen;
     }
 
-    /*
-     * Context
-     */
-
     @Override
     public int getX()
     {

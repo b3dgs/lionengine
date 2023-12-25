@@ -107,10 +107,6 @@ public class AnimationEditor extends EditorAbstract
         return animationRenderer;
     }
 
-    /*
-     * AbstractEditor
-     */
-
     @Override
     protected void createContent(Composite parent)
     {

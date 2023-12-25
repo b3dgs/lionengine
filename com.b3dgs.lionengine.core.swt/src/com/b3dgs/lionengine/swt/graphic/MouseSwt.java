@@ -91,10 +91,6 @@ public final class MouseSwt implements Mouse
         return mover;
     }
 
-    /*
-     * Mouse
-     */
-
     @Override
     public void addListener(InputDeviceListener listener)
     {
@@ -142,10 +138,6 @@ public final class MouseSwt implements Mouse
     {
         return mover.getY();
     }
-
-    /*
-     * InputDevicePointer
-     */
 
     @Override
     public double getX()
@@ -200,10 +192,6 @@ public final class MouseSwt implements Mouse
     {
         return Mouse.class.getSimpleName();
     }
-
-    /*
-     * Updatable
-     */
 
     @Override
     public void update(double extrp)

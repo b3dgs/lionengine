@@ -132,10 +132,6 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
         }
     }
 
-    /*
-     * TileCollidable
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {
@@ -224,10 +220,6 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     {
         return Collections.unmodifiableCollection(categories);
     }
-
-    /*
-     * Recyclable
-     */
 
     @Override
     public void recycle()

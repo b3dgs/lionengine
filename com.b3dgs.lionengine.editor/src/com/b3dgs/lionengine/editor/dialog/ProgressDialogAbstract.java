@@ -96,10 +96,6 @@ public abstract class ProgressDialogAbstract extends DialogAbstract
         return progress.isDisposed();
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite content)
     {

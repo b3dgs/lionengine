@@ -172,10 +172,6 @@ public final class AnimatorModel implements Animator
         }
     }
 
-    /*
-     * Animator
-     */
-
     @Override
     public void addListener(AnimatorListener listener)
     {

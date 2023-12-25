@@ -126,10 +126,6 @@ public class GroupChooser extends DialogAbstract
         loadGroups(values.toArray(new String[values.size()]));
     }
 
-    /*
-     * AbstractDialog
-     */
-
     @Override
     protected void createContent(Composite content)
     {

@@ -46,10 +46,6 @@ public final class ViewerMock implements Viewer
         this.y = y;
     }
 
-    /*
-     * Viewer
-     */
-
     @Override
     public double getX()
     {

@@ -317,10 +317,6 @@ public abstract class DialogAbstract extends Dialog implements MDirtyable
         part.update();
     }
 
-    /*
-     * MDirtyable
-     */
-
     @Override
     public void setDirty(boolean value)
     {

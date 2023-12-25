@@ -255,10 +255,6 @@ public class MapTileCircuitModel extends FeatureAbstract implements MapTileCircu
         return groupOut;
     }
 
-    /*
-     * MapTileCircuit
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {

@@ -107,10 +107,6 @@ public class TileGame implements Tile
         sheetKey = Integer.valueOf(sheetId);
     }
 
-    /*
-     * Tile
-     */
-
     @Override
     public int getNumber()
     {
@@ -182,10 +178,6 @@ public class TileGame implements Tile
     {
         return y;
     }
-
-    /*
-     * Object
-     */
 
     @Override
     public int hashCode()

@@ -123,10 +123,6 @@ public class PropertiesSurface implements PropertiesProviderObject
         super();
     }
 
-    /*
-     * PropertiesProvider
-     */
-
     @Override
     public void setInput(Tree properties, Configurer configurer)
     {

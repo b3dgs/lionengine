@@ -50,10 +50,6 @@ public class PathList extends ObjectListAbstract<PathData>
         loadObjects(config.values());
     }
 
-    /*
-     * ObjectList
-     */
-
     @Override
     protected PathData copyObject(PathData path)
     {

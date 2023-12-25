@@ -40,10 +40,6 @@ public class ObjectResource implements ResourceChecker
         super();
     }
 
-    /*
-     * ResourceChecker
-     */
-
     @Override
     public boolean check(Shell shell, Media media)
     {

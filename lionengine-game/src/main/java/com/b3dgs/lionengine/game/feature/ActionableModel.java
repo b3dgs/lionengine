@@ -70,10 +70,6 @@ public class ActionableModel extends FeatureModel implements Actionable
         description = config.getDescription();
     }
 
-    /*
-     * Actionable
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {

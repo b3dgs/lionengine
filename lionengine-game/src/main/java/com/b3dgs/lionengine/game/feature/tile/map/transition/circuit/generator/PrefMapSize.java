@@ -58,10 +58,6 @@ public class PrefMapSize extends PrefAbstract
         this.heightInTile = heightInTile;
     }
 
-    /*
-     * Preference
-     */
-
     @Override
     public void apply(MapTile map)
     {

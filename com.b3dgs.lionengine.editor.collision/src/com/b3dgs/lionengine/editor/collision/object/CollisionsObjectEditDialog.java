@@ -57,10 +57,6 @@ public class CollisionsObjectEditDialog extends EditorAbstract
         list = new CollisionList(configurer, properties);
     }
 
-    /*
-     * AbstractEditor
-     */
-
     @Override
     protected void createContent(Composite parent)
     {

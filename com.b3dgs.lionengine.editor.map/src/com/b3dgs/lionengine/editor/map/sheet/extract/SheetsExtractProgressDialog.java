@@ -104,10 +104,6 @@ public class SheetsExtractProgressDialog extends ProgressDialogAbstract
         }
     }
 
-    /*
-     * AbstractProgressDialog
-     */
-
     @Override
     protected void createProgressContent(Composite content)
     {
@@ -122,10 +118,6 @@ public class SheetsExtractProgressDialog extends ProgressDialogAbstract
             gc.dispose();
         }
     }
-
-    /*
-     * ProgressListener
-     */
 
     @Override
     public void notifyProgress(int percent, Collection<ImageBuffer> tiles)

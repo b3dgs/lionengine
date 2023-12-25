@@ -56,10 +56,6 @@ final class GraphicHeadless implements Graphic
         this.g = g;
     }
 
-    /*
-     * Graphic
-     */
-
     @Override
     public void clear(int x, int y, int width, int height)
     {

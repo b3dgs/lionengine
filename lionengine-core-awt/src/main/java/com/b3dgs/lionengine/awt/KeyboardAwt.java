@@ -87,10 +87,6 @@ public final class KeyboardAwt implements Keyboard, KeyListener
         super();
     }
 
-    /*
-     * Keyboard
-     */
-
     @Override
     public void addListener(InputDeviceListener listener)
     {
@@ -181,10 +177,6 @@ public final class KeyboardAwt implements Keyboard, KeyListener
         }
         return false;
     }
-
-    /*
-     * KeyListener
-     */
 
     @Override
     public void keyPressed(KeyEvent event)

@@ -228,10 +228,6 @@ class SpriteImpl implements Sprite
         }
     }
 
-    /*
-     * Sprite
-     */
-
     @Override
     public synchronized void load()
     {
@@ -401,10 +397,6 @@ class SpriteImpl implements Sprite
     {
         return surface != null;
     }
-
-    /*
-     * Object
-     */
 
     @Override
     public int hashCode()

@@ -608,10 +608,6 @@ public class ServerUdp implements Server
         return bandwidthDown;
     }
 
-    /*
-     * Listenable
-     */
-
     @Override
     public void addListener(ServerListener listener)
     {

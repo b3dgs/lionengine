@@ -38,10 +38,6 @@ public class MoverModel implements Mover
         super();
     }
 
-    /*
-     * Mover
-     */
-
     @Override
     public void backup()
     {

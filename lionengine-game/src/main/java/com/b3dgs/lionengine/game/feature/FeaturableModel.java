@@ -47,10 +47,6 @@ public class FeaturableModel extends FeaturableAbstract
         addFeature(new Recycler(services, setup));
     }
 
-    /*
-     * Featurable
-     */
-
     @Override
     public Media getMedia()
     {

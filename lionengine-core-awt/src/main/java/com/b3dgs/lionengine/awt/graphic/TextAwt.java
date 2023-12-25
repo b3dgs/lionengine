@@ -111,10 +111,6 @@ final class TextAwt implements Text
         font = new Font(fontName, TextAwt.getStyle(style), size);
     }
 
-    /*
-     * Text
-     */
-
     @Override
     public void draw(Graphic g, int x, int y, String text)
     {

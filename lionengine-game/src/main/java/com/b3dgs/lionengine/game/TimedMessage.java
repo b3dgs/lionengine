@@ -81,10 +81,6 @@ public final class TimedMessage implements Updatable, Renderable
         return hasMessage;
     }
 
-    /*
-     * Updatable
-     */
-
     @Override
     public void update(double extrp)
     {
@@ -106,10 +102,6 @@ public final class TimedMessage implements Updatable, Renderable
             deleted = false;
         }
     }
-
-    /*
-     * Renderable
-     */
 
     @Override
     public void render(Graphic g)

@@ -45,10 +45,6 @@ public class CategoryProperties extends ObjectPropertiesAbstract<PathCategory>
         super();
     }
 
-    /*
-     * ObjectProperties
-     */
-
     @Override
     protected void createTextFields(Composite parent)
     {
@@ -66,10 +62,6 @@ public class CategoryProperties extends ObjectPropertiesAbstract<PathCategory>
     {
         return new PathCategory(name, groups.getObjectsName());
     }
-
-    /*
-     * ObjectListListener
-     */
 
     @Override
     public void notifyObjectSelected(PathCategory category)

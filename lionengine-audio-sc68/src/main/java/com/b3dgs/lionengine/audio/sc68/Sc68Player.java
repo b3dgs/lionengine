@@ -45,10 +45,6 @@ final class Sc68Player extends PlayerAbstract implements Sc68
         this.binding = binding;
     }
 
-    /*
-     * Sc68
-     */
-
     @Override
     protected void play(String track)
     {

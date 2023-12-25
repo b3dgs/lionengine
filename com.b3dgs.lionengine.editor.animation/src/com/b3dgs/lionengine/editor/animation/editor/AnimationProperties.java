@@ -83,10 +83,6 @@ public class AnimationProperties extends ObjectPropertiesAbstract<Animation> imp
         setValue(lastFrame, String.valueOf(last));
     }
 
-    /*
-     * ObjectProperties
-     */
-
     @Override
     protected void createTextFields(Composite parent)
     {
@@ -118,10 +114,6 @@ public class AnimationProperties extends ObjectPropertiesAbstract<Animation> imp
         final boolean repeat = repeatAnim.getSelection();
         return new Animation(name, Math.min(first, last), Math.max(first, last), animSpeed, reverse, repeat);
     }
-
-    /*
-     * ObjectListListener
-     */
 
     @Override
     public void notifyObjectSelected(Animation animation)

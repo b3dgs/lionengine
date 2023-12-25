@@ -232,10 +232,6 @@ public abstract class WorldGame implements Updatable, Renderable, Spawner
         // Nothing by default
     }
 
-    /*
-     * Updatable
-     */
-
     /**
      * {@inheritDoc}
      * By default, updates handler.
@@ -245,10 +241,6 @@ public abstract class WorldGame implements Updatable, Renderable, Spawner
     {
         handler.update(extrp);
     }
-
-    /*
-     * Renderable
-     */
 
     /**
      * {@inheritDoc}
@@ -260,10 +252,6 @@ public abstract class WorldGame implements Updatable, Renderable, Spawner
         camera.backup();
         handler.render(g);
     }
-
-    /*
-     * Spawner
-     */
 
     @Override
     public Featurable spawn(Media media, double x, double y)

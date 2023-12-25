@@ -54,10 +54,6 @@ public class CollisionCategoryList extends ObjectListAbstract<CollisionCategory>
         loadObjects(categories);
     }
 
-    /*
-     * ObjectList
-     */
-
     @Override
     protected CollisionCategory copyObject(CollisionCategory category)
     {

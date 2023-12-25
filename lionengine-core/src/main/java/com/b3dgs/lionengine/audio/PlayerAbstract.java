@@ -93,10 +93,6 @@ public abstract class PlayerAbstract implements Audio
      */
     protected abstract void play(String track);
 
-    /*
-     * Audio
-     */
-
     @Override
     public void play()
     {
