@@ -159,12 +159,7 @@ public record CollidableFramedConfig(Map<Integer, List<Collision>> collisions)
             final Collision collision = createCollision(name, framed, number - start);
             final Integer key = Integer.valueOf(number - 1);
 
-            List<Collision> list = collisions.get(key);
-            if (list == null)
-            {
-                list = new ArrayList<>();
-                collisions.put(key, list);
-            }
+            final List<Collision> list = collisions.computeIfAbsent(key, k -> new ArrayList<>());
             list.add(collision);
         }
         else
@@ -175,12 +170,7 @@ public record CollidableFramedConfig(Map<Integer, List<Collision>> collisions)
                 final Collision collision = createCollision(name, framed, number - start + 1);
                 final Integer key = Integer.valueOf(number);
 
-                List<Collision> list = collisions.get(key);
-                if (list == null)
-                {
-                    list = new ArrayList<>();
-                    collisions.put(key, list);
-                }
+                final List<Collision> list = collisions.computeIfAbsent(key, k -> new ArrayList<>());
                 list.add(collision);
             }
         }

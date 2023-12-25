@@ -119,13 +119,7 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
      */
     private static Collection<Integer> getTiles(Map<Circuit, Collection<Integer>> circuits, Circuit circuit)
     {
-        Collection<Integer> set = circuits.get(circuit);
-        if (set == null)
-        {
-            set = new HashSet<>();
-            circuits.put(circuit, set);
-        }
-        return set;
+        return circuits.computeIfAbsent(circuit, k -> new HashSet<>());
     }
 
     /**
@@ -135,10 +129,6 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
     {
         super();
     }
-
-    /*
-     * CircuitsExtractor
-     */
 
     @Override
     public Map<Circuit, Collection<Integer>> getCircuits(Collection<Media> levels,

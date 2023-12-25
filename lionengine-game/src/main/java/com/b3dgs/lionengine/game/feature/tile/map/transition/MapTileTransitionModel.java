@@ -395,10 +395,6 @@ public class MapTileTransitionModel extends FeatureAbstract implements MapTileTr
         return false;
     }
 
-    /*
-     * MapTileTransition
-     */
-
     @Override
     public void prepare(FeatureProvider provider)
     {
@@ -433,12 +429,7 @@ public class MapTileTransitionModel extends FeatureAbstract implements MapTileTr
             final Transition transition = entry.getKey();
             for (final Integer tileRef : entry.getValue())
             {
-                Collection<Transition> set = tiles.get(tileRef);
-                if (set == null)
-                {
-                    set = new HashSet<>();
-                    tiles.put(tileRef, set);
-                }
+                final Collection<Transition> set = tiles.computeIfAbsent(tileRef, k -> new HashSet<>());
                 set.add(transition);
             }
             groupLinks.add(new GroupTransition(transition.getIn(), transition.getOut()));

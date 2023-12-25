@@ -125,12 +125,8 @@ final class GraphicSwt implements Graphic
         final Image surface = image.getSurface();
         if (sx2 < sx1)
         {
-            if (!cacheFlip.containsKey(image))
-            {
-                final Image flip = ToolsSwt.flipHorizontal(surface);
-                cacheFlip.put(image, flip);
-            }
-            gc.drawImage(cacheFlip.get(image), dx1, dy1);
+            final Image flip = cacheFlip.computeIfAbsent(image, i -> ToolsSwt.flipHorizontal(surface));
+            gc.drawImage(flip, dx1, dy1);
         }
         else
         {

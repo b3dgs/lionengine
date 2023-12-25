@@ -124,10 +124,7 @@ public class MinimapEditDialog extends DialogAbstract
         for (final Map.Entry<Integer, ColorRgba> current : colors.entrySet())
         {
             final Integer tile = current.getKey();
-            if (!data.containsKey(tile))
-            {
-                data.put(tile, new HashMap<>());
-            }
+            data.computeIfAbsent(tile, t -> new HashMap<>());
 
             final int th = map.getSheet(tile.intValue()).getTilesHorizontal();
             final int x = tile.intValue() % th;
@@ -253,12 +250,7 @@ public class MinimapEditDialog extends DialogAbstract
      */
     private Map<Point, Color> getSheetData()
     {
-        final Integer key = Integer.valueOf(sheet);
-        if (!data.containsKey(key))
-        {
-            data.put(key, new HashMap<>());
-        }
-        return data.get(key);
+        return data.computeIfAbsent(Integer.valueOf(sheet), k -> new HashMap<>());
     }
 
     /**

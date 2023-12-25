@@ -90,13 +90,7 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
      */
     private static Collection<Integer> getTiles(Map<Transition, Collection<Integer>> transitions, Transition transition)
     {
-        Collection<Integer> set = transitions.get(transition);
-        if (set == null)
-        {
-            set = new HashSet<>();
-            transitions.put(transition, set);
-        }
-        return set;
+        return transitions.computeIfAbsent(transition, k -> new HashSet<>());
     }
 
     /**
@@ -106,10 +100,6 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
     {
         super();
     }
-
-    /*
-     * TransitionsExtractor
-     */
 
     @Override
     public Map<Transition, Collection<Integer>> getTransitions(Collection<Media> levels,

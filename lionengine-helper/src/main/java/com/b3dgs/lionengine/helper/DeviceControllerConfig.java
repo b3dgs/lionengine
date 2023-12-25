@@ -306,12 +306,7 @@ public record DeviceControllerConfig(String name,
             final DeviceMapper mapper = findEnum(mapping, nodeFire.getString(ATT_INDEX));
             final Integer index = mapper.getIndex();
             final Integer positive = Integer.valueOf(nodeFire.getInteger(ATT_POSITIVE));
-            Set<Integer> codes = fire.get(index);
-            if (codes == null)
-            {
-                codes = new HashSet<>();
-                fire.put(index, codes);
-            }
+            final Set<Integer> codes = fire.computeIfAbsent(index, k -> new HashSet<>());
             codes.add(positive);
         }
         return fire;

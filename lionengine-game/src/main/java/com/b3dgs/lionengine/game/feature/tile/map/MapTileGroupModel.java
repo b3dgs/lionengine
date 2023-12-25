@@ -55,10 +55,6 @@ public class MapTileGroupModel extends FeatureAbstract implements MapTileGroup
         super();
     }
 
-    /*
-     * MapTileGroup
-     */
-
     @Override
     public void loadGroups(Collection<TileGroup> groups)
     {
@@ -105,12 +101,7 @@ public class MapTileGroupModel extends FeatureAbstract implements MapTileGroup
         {
             tilesGroup.put(number, group);
 
-            Set<Integer> set = groupTiles.get(group);
-            if (set == null)
-            {
-                set = new HashSet<>();
-                groupTiles.put(group, set);
-            }
+            final Set<Integer> set = groupTiles.computeIfAbsent(group, k -> new HashSet<>());
             set.add(number);
         }
         else

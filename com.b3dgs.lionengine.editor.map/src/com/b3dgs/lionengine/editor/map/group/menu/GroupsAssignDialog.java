@@ -255,11 +255,7 @@ public class GroupsAssignDialog extends DialogAbstract implements WorldView, Foc
         final String group = mapGroup.getGroup(tile);
         if (group != null)
         {
-            if (!groups.containsKey(group))
-            {
-                groups.put(group, new HashSet<>());
-            }
-            final Set<Integer> tiles = groups.get(group);
+            final Set<Integer> tiles = groups.computeIfAbsent(group, g -> new HashSet<>());
             tiles.add(tile.getKey());
         }
     }

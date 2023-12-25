@@ -184,20 +184,10 @@ public class DeviceControllerModel implements DeviceController
         indexes.add(index);
         actionToDevice.put(action, device.getName());
 
-        List<String> list = codeToDevices.get(code);
-        if (list == null)
-        {
-            list = new ArrayList<>();
-            codeToDevices.put(code, list);
-        }
+        final List<String> list = codeToDevices.computeIfAbsent(code, k -> new ArrayList<>());
         list.add(name);
 
-        List<DeviceAction> list2 = fire.get(index);
-        if (list2 == null)
-        {
-            list2 = new ArrayList<>();
-            fire.put(index, list2);
-        }
+        final List<DeviceAction> list2 = fire.computeIfAbsent(index, k -> new ArrayList<>());
         list2.add(action);
 
         fired.put(index, Boolean.FALSE);
