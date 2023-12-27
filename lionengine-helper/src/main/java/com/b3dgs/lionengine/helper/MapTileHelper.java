@@ -342,7 +342,7 @@ public class MapTileHelper extends MapTileGame
                 {
                     for (int x = 0; x < getInTileWidth(); x++)
                     {
-                        mapFow.setTile(x, y, MapTileFog.NO_FOG);
+                        mapFow.setTile(x, y, MapTileFog.TILE_NO_FOG);
                     }
                 }
                 fogOfWar.setTilesheet(hide, fog);

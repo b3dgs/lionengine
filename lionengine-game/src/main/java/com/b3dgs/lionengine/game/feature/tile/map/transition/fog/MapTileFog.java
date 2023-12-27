@@ -42,9 +42,9 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 public class MapTileFog implements Listenable<RevealedListener>
 {
     /** No fog tile. */
-    public static final int FOG = 16;
+    public static final int TILE_FOG = 16;
     /** Fog tile. */
-    public static final int NO_FOG = 17;
+    public static final int TILE_NO_FOG = 17;
     /** Fog group. */
     private static final String FOG_GROUP = "fog";
     /** Transition group. */
@@ -98,10 +98,10 @@ public class MapTileFog implements Listenable<RevealedListener>
                 final int n = listenable.size();
                 for (int i = 0; i < n; i++)
                 {
-                    listenable.get(i).notifyFogged(tile.getInTileX(), tile.getInTileY(), tile.getNumber() == FOG);
+                    listenable.get(i).notifyFogged(tile.getInTileX(), tile.getInTileY(), tile.getNumber() == TILE_FOG);
                 }
             }
-            else if (NO_FOG == tile.getNumber())
+            else if (TILE_NO_FOG == tile.getNumber())
             {
                 final int n = listenable.size();
                 for (int i = 0; i < n; i++)
@@ -126,10 +126,10 @@ public class MapTileFog implements Listenable<RevealedListener>
         {
             this.map.loadSheets(Arrays.asList(sheet));
         }
-        for (int i = 0; i < NO_FOG; i++)
+        for (int i = 0; i < TILE_NO_FOG; i++)
         {
             final String group;
-            if (i == FOG)
+            if (i == TILE_FOG)
             {
                 group = FOG_GROUP;
             }
@@ -139,7 +139,7 @@ public class MapTileFog implements Listenable<RevealedListener>
             }
             mapGroup.changeGroup(new TileGame(i, 0, 0, map.getTileWidth(), map.getTileHeight()), group);
         }
-        mapGroup.changeGroup(new TileGame(NO_FOG, 0, 0, map.getTileWidth(), map.getTileHeight()),
+        mapGroup.changeGroup(new TileGame(TILE_NO_FOG, 0, 0, map.getTileWidth(), map.getTileHeight()),
                              MapTileGroupModel.NO_GROUP_NAME);
         transition.loadTransitions(config);
 
@@ -147,7 +147,7 @@ public class MapTileFog implements Listenable<RevealedListener>
         {
             for (int ty = 0; ty < map.getInTileHeight(); ty++)
             {
-                this.map.setTile(tx, ty, FOG);
+                this.map.setTile(tx, ty, TILE_FOG);
                 fog.add(new HashSet<>());
             }
         }
@@ -182,9 +182,9 @@ public class MapTileFog implements Listenable<RevealedListener>
             {
                 if (allowAngle || !isAngle(x, y, sx, sy, ex, ey))
                 {
-                    if (map.getTile(x, y).getNumber() != NO_FOG)
+                    if (map.getTile(x, y).getNumber() != TILE_NO_FOG)
                     {
-                        map.setTile(x, y, NO_FOG);
+                        map.setTile(x, y, TILE_NO_FOG);
                         transition.resolve(map.getTile(x, y));
                     }
 
@@ -229,7 +229,7 @@ public class MapTileFog implements Listenable<RevealedListener>
 
                     if (set.isEmpty())
                     {
-                        map.setTile(x, y, FOG);
+                        map.setTile(x, y, TILE_FOG);
                         transition.resolve(map.getTile(x, y));
                     }
                 }

@@ -210,7 +210,7 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
     public boolean isVisited(int tx, int ty)
     {
         final Tile tile = mapHidden.getTile(tx, ty);
-        return !hideMap || tile != null && tile.getNumber() == MapTileFog.NO_FOG;
+        return !hideMap || tile != null && tile.getNumber() == MapTileFog.TILE_NO_FOG;
     }
 
     /**
@@ -223,7 +223,7 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
     public boolean isFogged(int tx, int ty)
     {
         final Tile tile = mapFogged.getTile(tx, ty);
-        return fogMap && tile != null && tile.getNumber() < MapTileFog.NO_FOG;
+        return fogMap && tile != null && tile.getNumber() < MapTileFog.TILE_NO_FOG;
     }
 
     @Override
@@ -255,7 +255,7 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
         final int ty = tile.getInTileY();
 
         final Tile fogTile = mapFogged.getTile(tx, ty);
-        if (fogMap && fogTile != null && fogTile.getNumber() != MapTileFog.NO_FOG)
+        if (fogMap && fogTile != null && fogTile.getNumber() != MapTileFog.TILE_NO_FOG)
         {
             fogTiles.setLocation(x, y);
             fogTiles.setTile(fogTile.getNumber());
@@ -263,7 +263,7 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
         }
 
         final Tile hideTile = mapHidden.getTile(tx, ty);
-        if (hideMap && hideTile != null && hideTile.getNumber() != MapTileFog.NO_FOG)
+        if (hideMap && hideTile != null && hideTile.getNumber() != MapTileFog.TILE_NO_FOG)
         {
             hideTiles.setTile(hideTile.getNumber());
             hideTiles.setLocation(x, y);

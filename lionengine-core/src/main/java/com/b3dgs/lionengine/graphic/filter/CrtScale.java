@@ -57,7 +57,7 @@ final class CrtScale
                               + (rgb4 >> Constant.BYTE_1 & 0xFF) * factor)
                              * (color.getBlue() / 100.0));
 
-        return -16777216
+        return -16_777_216
                | (r & 0xFF) << Constant.BYTE_3
                | (g & 0xFF) << Constant.BYTE_2
                | (b & 0xFF) << Constant.BYTE_1;
