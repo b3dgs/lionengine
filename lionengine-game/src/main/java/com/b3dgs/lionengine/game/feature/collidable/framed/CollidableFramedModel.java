@@ -80,8 +80,11 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
     @Override
     public void recycle()
     {
-        for (final Collision collision : config.getCollisions())
+        final List<Collision> list = config.getCollisions();
+        final int n = list.size();
+        for (int i = 0; i < n; i++)
         {
+            final Collision collision = list.get(i);
             collidable.addCollision(collision);
             collidable.setEnabled(false, collision);
         }

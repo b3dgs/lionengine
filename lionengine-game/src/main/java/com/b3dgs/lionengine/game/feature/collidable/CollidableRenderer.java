@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Viewer;
@@ -87,7 +88,7 @@ final class CollidableRenderer
     public static void renderMax(Graphic g,
                                  Viewer viewer,
                                  Origin origin,
-                                 Shape transformable,
+                                 Localizable transformable,
                                  int maxWidth,
                                  int minHeight,
                                  int maxHeight)

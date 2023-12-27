@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -36,6 +37,8 @@ public final class UtilZip
 {
     /** Error opening ZIP. */
     static final String ERROR_OPEN_ZIP = "Unable to open ZIP : ";
+    /** Pattern matcher. */
+    private static final Pattern MATCHER = Pattern.compile("\\s", Pattern.UNICODE_CHARACTER_CLASS);
 
     /**
      * Get all entries existing in the path.
@@ -64,8 +67,8 @@ public final class UtilZip
         Check.notNull(jar);
         Check.notNull(path);
 
-        try (ZipFile zip = new ZipFile(URLDecoder.decode(jar.getAbsolutePath(), "UTF-8")
-                                                 .replaceAll("\\s", Constant.SPACE),
+        try (ZipFile zip = new ZipFile(MATCHER.matcher(URLDecoder.decode(jar.getAbsolutePath(), "UTF-8"))
+                                              .replaceAll(Constant.SPACE),
                                        StandardCharsets.UTF_8))
         {
             return checkEntries(zip, path, extension);

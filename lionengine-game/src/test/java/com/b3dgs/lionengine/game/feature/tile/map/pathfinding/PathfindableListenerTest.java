@@ -27,9 +27,11 @@ final class PathfindableListenerTest
 {
     /**
      * Test the calls
+     * 
+     * @throws ReflectiveOperationException If error.
      */
     @Test
-    void testCall()
+    void testCall() throws ReflectiveOperationException
     {
         UtilTests.testCalls(PathfindableListener.class, new PathfindableListenerVoid());
     }

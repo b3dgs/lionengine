@@ -270,7 +270,6 @@ public class MapTileHelper extends MapTileGame
             }
         });
 
-        final Handler handler = services.get(Handler.class);
         handler.addListener(new HandlerListener()
         {
             @Override

@@ -331,12 +331,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
      */
     private void audioCacheAndPlay(String sfx)
     {
-        Audio sound = audio.get(sfx);
-        if (sound == null)
-        {
-            sound = AudioFactory.loadAudio(Medias.create(sfx));
-            audio.put(sfx, sound);
-        }
+        final Audio sound = audio.computeIfAbsent(sfx, s -> AudioFactory.loadAudio(Medias.create(s)));
         sound.play();
     }
 

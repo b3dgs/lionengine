@@ -248,10 +248,10 @@ public record CollidableFramedConfig(Map<Integer, List<Collision>> collisions)
      * 
      * @return The collisions.
      */
-    public Collection<Collision> getCollisions()
+    public List<Collision> getCollisions()
     {
-        final Collection<Collision> all = new ArrayList<>();
-        for (final Collection<Collision> current : collisions.values())
+        final List<Collision> all = new ArrayList<>();
+        for (final List<Collision> current : collisions.values())
         {
             all.addAll(current);
         }

@@ -387,12 +387,12 @@ public final class SequenceRenderer implements Rasterbar
         final int n = bu.length;
         for (int i = 0; i < n; i++)
         {
-            final int y = h - i / w;
+            final int lineY = h - i / w;
             final int[] k = raster.get(bu[i] & NO_ALPHA);
             if (k != null)
             {
-                final int r = UtilMath.clamp((y1 + y + offsetY) / factorY, 1, k.length - 1);
-                if (y < marginY)
+                final int r = UtilMath.clamp((y1 + lineY + offsetY) / factorY, 1, k.length - 1);
+                if (lineY < marginY)
                 {
                     bu[i] = k[0];
                 }
@@ -453,22 +453,22 @@ public final class SequenceRenderer implements Rasterbar
     public void addRasterbarColor(ImageBuffer buffer)
     {
         rasterRenderer = this::renderRasterbar;
-        final int w = buffer.getWidth();
-        final int h = buffer.getHeight();
+        final int bw = buffer.getWidth();
+        final int bh = buffer.getHeight();
 
-        for (int x = 0; x < w; x++)
+        for (int bx = 0; bx < bw; bx++)
         {
-            final int p = buffer.getRgb(x, 0) & NO_ALPHA;
+            final int p = buffer.getRgb(bx, 0) & NO_ALPHA;
             int[] v = raster.get(p);
             if (v == null)
             {
-                v = new int[h - 1];
+                v = new int[bh - 1];
                 raster.put(p, v);
             }
 
-            for (int y = 0; y < h - 1; y++)
+            for (int by = 0; by < bh - 1; by++)
             {
-                v[y] = buffer.getRgb(x, y + 1);
+                v[by] = buffer.getRgb(bx, by + 1);
             }
         }
     }

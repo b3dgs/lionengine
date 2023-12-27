@@ -34,9 +34,10 @@ import com.b3dgs.lionengine.XmlReader;
  * This class is Thread-Safe.
  * </p>
  * 
+ * @param formulas The collisions formula mapping.
  * @see CollisionFormula
  */
-public final class CollisionFormulaConfig
+public record CollisionFormulaConfig(Map<String, CollisionFormula> formulas)
 {
     /** Configuration file name. */
     public static final String FILENAME = "formulas.xml";
@@ -160,22 +161,15 @@ public final class CollisionFormulaConfig
         return has;
     }
 
-    /** Collision formulas list. */
-    private final Map<String, CollisionFormula> formulas;
-
     /**
      * Create a collision formula config map.
      * 
      * @param formulas The collisions formula mapping (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public CollisionFormulaConfig(Map<String, CollisionFormula> formulas)
+    public CollisionFormulaConfig
     {
-        super();
-
         Check.notNull(formulas);
-
-        this.formulas = new HashMap<>(formulas);
     }
 
     /**

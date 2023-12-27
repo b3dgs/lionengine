@@ -135,10 +135,10 @@ public final class SheetsPaletteDialog implements Focusable
 
         int width = 0;
         int height = 0;
-        final int sheetsCount = map.getSheetsNumber();
-        for (int sheetId = 0; sheetId < sheetsCount; sheetId++)
+        final int count = map.getSheetsNumber();
+        for (int id = 0; id < count; id++)
         {
-            final SpriteTiled sheet = map.getSheet(sheetId);
+            final SpriteTiled sheet = map.getSheet(id);
             width = Math.max(width, sheet.getWidth());
             height = Math.max(height, sheet.getHeight());
         }
@@ -376,8 +376,7 @@ public final class SheetsPaletteDialog implements Focusable
         int id = 0;
         for (final Integer tile : tiles)
         {
-            final int sheetId = (int) Math.floor(number / (double) map.getTilesPerSheet());
-            final SpriteTiled sheet = map.getSheet(sheetId);
+            final SpriteTiled sheet = map.getSheet((int) Math.floor(number / (double) map.getTilesPerSheet()));
             sheet.setTile(tile.intValue());
 
             final int x = id % horizontalTiles * tw;

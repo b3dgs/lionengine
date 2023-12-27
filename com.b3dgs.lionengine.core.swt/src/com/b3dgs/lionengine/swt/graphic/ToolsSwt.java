@@ -323,36 +323,6 @@ public final class ToolsSwt
     }
 
     /**
-     * Flip an image depending of the axis.
-     * 
-     * @param image The image source.
-     * @param vertical <code>true</code> if vertical, <code>false</code> if horizontal.
-     * @return The flipped image data.
-     * @throws SWTException If error on getting data.
-     */
-    public static Image flip(Image image, boolean vertical)
-    {
-        final ImageData data = image.getImageData();
-        final ImageData flip = image.getImageData();
-        for (int y = 0; y < data.height; y++)
-        {
-            for (int x = 0; x < data.width; x++)
-            {
-                final int pixel = data.getPixel(x, y);
-                if (vertical)
-                {
-                    flip.setPixel(data.width - x - 1, y, pixel);
-                }
-                else
-                {
-                    flip.setPixel(x, data.height - y - 1, pixel);
-                }
-            }
-        }
-        return new Image(image.getDevice(), flip);
-    }
-
-    /**
      * Apply an horizontal flip to the input image.
      * 
      * @param image The input image.
@@ -474,6 +444,36 @@ public final class ToolsSwt
         palette.colors = newColorsRgb;
 
         return new Image(image.getDevice(), data);
+    }
+
+    /**
+     * Flip an image depending of the axis.
+     * 
+     * @param image The image source.
+     * @param vertical <code>true</code> if vertical, <code>false</code> if horizontal.
+     * @return The flipped image data.
+     * @throws SWTException If error on getting data.
+     */
+    private static Image flip(Image image, boolean vertical)
+    {
+        final ImageData data = image.getImageData();
+        final ImageData flip = image.getImageData();
+        for (int y = 0; y < data.height; y++)
+        {
+            for (int x = 0; x < data.width; x++)
+            {
+                final int pixel = data.getPixel(x, y);
+                if (vertical)
+                {
+                    flip.setPixel(data.width - x - 1, y, pixel);
+                }
+                else
+                {
+                    flip.setPixel(x, data.height - y - 1, pixel);
+                }
+            }
+        }
+        return new Image(image.getDevice(), flip);
     }
 
     /**

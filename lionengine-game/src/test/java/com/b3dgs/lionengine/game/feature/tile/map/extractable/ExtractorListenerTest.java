@@ -27,9 +27,11 @@ final class ExtractorListenerTest
 {
     /**
      * Test the calls
+     * 
+     * @throws ReflectiveOperationException If error.
      */
     @Test
-    void testCall()
+    void testCall() throws ReflectiveOperationException
     {
         UtilTests.testCalls(ExtractorListener.class, new ExtractorListenerVoid());
     }

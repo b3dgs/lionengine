@@ -401,8 +401,7 @@ public class ServerUdp implements Server
             case DATA:
                 data(packet, buffer);
                 break;
-            case CLIENTS_LIST:
-            case UNKNOWN:
+            case CLIENTS_LIST, UNKNOWN:
                 break;
             case NAME_SET:
                 nameSet(packet, buffer);

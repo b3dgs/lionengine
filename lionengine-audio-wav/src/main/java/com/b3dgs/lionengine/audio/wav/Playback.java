@@ -24,48 +24,12 @@ import javax.sound.sampled.SourceDataLine;
 
 /**
  * Playback representation of an active sound.
+ * 
+ * @param input The audio input.
+ * @param dataLine The audio data.
  */
-final class Playback implements Closeable
+record Playback(AudioInputStream input, SourceDataLine dataLine) implements Closeable
 {
-    /** Audio input. */
-    private final AudioInputStream input;
-    /** Audio data. */
-    private final SourceDataLine dataLine;
-
-    /**
-     * Create playback.
-     * 
-     * @param input The audio input.
-     * @param dataLine The audio data.
-     */
-    Playback(AudioInputStream input, SourceDataLine dataLine)
-    {
-        super();
-
-        this.input = input;
-        this.dataLine = dataLine;
-    }
-
-    /**
-     * Get input.
-     * 
-     * @return The input.
-     */
-    public AudioInputStream getInput()
-    {
-        return input;
-    }
-
-    /**
-     * Get the audio data.
-     * 
-     * @return The audio data.
-     */
-    public SourceDataLine getDataLine()
-    {
-        return dataLine;
-    }
-
     @Override
     public void close() throws IOException
     {

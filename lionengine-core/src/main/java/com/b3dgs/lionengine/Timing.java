@@ -17,7 +17,7 @@
 package com.b3dgs.lionengine;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Handle timer operation, in milliseconds, system clock independent.
@@ -38,11 +38,11 @@ public final class Timing implements Updatable
     }
 
     /** Actions to add. */
-    private final Collection<ActionDelayed> toAdd = new ArrayList<>();
+    private final List<ActionDelayed> toAdd = new ArrayList<>();
     /** Actions. */
-    private final Collection<ActionDelayed> actions = new ArrayList<>();
+    private final List<ActionDelayed> actions = new ArrayList<>();
     /** Actions executed. */
-    private final Collection<ActionDelayed> toRemove = new ArrayList<>();
+    private final List<ActionDelayed> toRemove = new ArrayList<>();
     /** Current time. */
     private long cur;
     /** Time when pause. */
@@ -214,11 +214,13 @@ public final class Timing implements Updatable
             toAdd.clear();
         }
 
-        for (final ActionDelayed action : actions)
+        final int n = actions.size();
+        for (int i = 0; i < n; i++)
         {
-            if (elapsed(action.getDelayMs()))
+            final ActionDelayed action = actions.get(i);
+            if (elapsed(action.delayMs()))
             {
-                action.getAction().execute();
+                action.action().execute();
                 toRemove.add(action);
             }
         }
@@ -232,47 +234,15 @@ public final class Timing implements Updatable
 
     /**
      * Delayed action data.
+     * 
+     * @param action The action reference.
+     * @param delayMs The delay.
      */
-    private static final class ActionDelayed
+    private record ActionDelayed(TickAction action, long delayMs)
     {
-        /** Action reference. */
-        private final TickAction action;
-        /** Delay trigger. */
-        private final long delayMs;
-
-        /**
-         * Create delayed action data.
-         * 
-         * @param action The action reference (must not be <code>null</code>).
-         * @param delayMs The delay.
-         * @throws LionEngineException If invalid argument.
-         */
-        private ActionDelayed(TickAction action, long delayMs)
+        private ActionDelayed
         {
             Check.notNull(action);
-
-            this.action = action;
-            this.delayMs = delayMs;
-        }
-
-        /**
-         * Get action reference.
-         * 
-         * @return The action reference.
-         */
-        public TickAction getAction()
-        {
-            return action;
-        }
-
-        /**
-         * Get the delay.
-         * 
-         * @return The delay.
-         */
-        public long getDelayMs()
-        {
-            return delayMs;
         }
     }
 }

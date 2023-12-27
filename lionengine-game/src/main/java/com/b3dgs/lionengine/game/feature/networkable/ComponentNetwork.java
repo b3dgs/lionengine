@@ -246,7 +246,7 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
         }
         else if (server != null)
         {
-            LOGGER.error("Unknown id: {}" + packet.getDataId());
+            LOGGER.error("Unknown id: {}", Integer.toString(packet.getDataId()));
         }
     }
 

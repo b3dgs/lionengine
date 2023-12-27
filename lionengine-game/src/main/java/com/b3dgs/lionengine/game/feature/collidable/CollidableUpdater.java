@@ -84,8 +84,6 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
             sy = dv;
         }
 
-        final double oldX = rectangle.getX();
-        final double oldY = rectangle.getY();
         for (int count = 0; count < max + 1; count++)
         {
             if (checkCollide(collidable, with, rectangle, other))
@@ -94,7 +92,11 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
             }
             rectangle.translate(sx, sy);
         }
+
+        final double oldX = rectangle.getX();
+        final double oldY = rectangle.getY();
         rectangle.set(oldX, oldY, rectangle.getWidth(), rectangle.getHeight());
+
         return false;
     }
 

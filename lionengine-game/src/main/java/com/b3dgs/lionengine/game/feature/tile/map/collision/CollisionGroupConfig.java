@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -228,6 +227,6 @@ public record CollisionGroupConfig(Map<String, CollisionGroup> groups)
      */
     public Map<String, CollisionGroup> getGroups()
     {
-        return Collections.unmodifiableMap(groups);
+        return groups;
     }
 }

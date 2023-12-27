@@ -158,31 +158,25 @@ public final class UtilTests
      * 
      * @param signature The object functions to call.
      * @param object The object to call with.
+     * @throws ReflectiveOperationException If error.
      */
-    public static void testCalls(Class<?> signature, Object object)
+    public static void testCalls(Class<?> signature, Object object) throws ReflectiveOperationException
     {
         for (final Method method : signature.getMethods())
         {
-            try
+            final List<Object> arguments = new ArrayList<>();
+            for (final Class<?> type : method.getParameterTypes())
             {
-                final List<Object> arguments = new ArrayList<>();
-                for (final Class<?> type : method.getParameterTypes())
+                if (type.isPrimitive())
                 {
-                    if (type.isPrimitive())
-                    {
-                        arguments.add(getPrimitive(type));
-                    }
-                    else
-                    {
-                        arguments.add(null);
-                    }
+                    arguments.add(getPrimitive(type));
                 }
-                method.invoke(object, arguments.toArray());
+                else
+                {
+                    arguments.add(null);
+                }
             }
-            catch (final InvocationTargetException | IllegalAccessException exception)
-            {
-                Assertions.fail(exception);
-            }
+            method.invoke(object, arguments.toArray());
         }
     }
 

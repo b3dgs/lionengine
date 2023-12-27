@@ -32,6 +32,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -56,6 +58,8 @@ public final class ProjectPart implements Focusable
     public static final String ID = Activator.PLUGIN_ID + ".part.project";
     /** Menu ID. */
     public static final String MENU_ID = ProjectPart.ID + ".menu";
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectPart.class);
 
     /**
      * Update the properties view with the selected media. Shows object properties, or nothing if not an object.
@@ -247,8 +251,10 @@ public final class ProjectPart implements Focusable
             {
                 java.awt.Desktop.getDesktop().open(media.getFile());
             }
-            catch (@SuppressWarnings("unused") final IOException exception)
+            catch (final IOException exception)
             {
+                LOGGER.error("checkOpenFile error", exception);
+
                 UtilDialog.error(tree.getShell(),
                                  com.b3dgs.lionengine.editor.utility.dialog.Messages.Error,
                                  Messages.Project_UnableOpen + media);

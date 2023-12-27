@@ -36,8 +36,6 @@ public final class FilterCrt implements Filter
     private int width;
     /** Cache height. */
     private int height;
-    /** Cache data. */
-    private int[] srcData;
     /** Cache image. */
     private ImageBuffer image;
     /** Cache scaler. */
@@ -62,7 +60,6 @@ public final class FilterCrt implements Filter
         {
             width = source.getWidth();
             height = source.getHeight();
-            srcData = new int[width * height];
             if (scaler != null)
             {
                 scaler.close();
@@ -70,7 +67,7 @@ public final class FilterCrt implements Filter
             scaler = new CrtScale(width, height, scale);
             image = Graphics.createImageBuffer(width * scale, height * scale, source.getTransparentColor());
         }
-        srcData = source.getRgbRef();
+        final int[] srcData = source.getRgbRef();
         image.setRgb(0, 0, width * scale, height * scale, scaler.getScaled(srcData), 0, width * scale);
 
         return image;
