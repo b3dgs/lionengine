@@ -148,7 +148,7 @@ public class Configurer implements AttributesReader
     }
 
     @Override
-    public final char getChar(byte defaultValue, String attribute, String... path)
+    public final char getChar(char defaultValue, String attribute, String... path)
     {
         return root.getChar(defaultValue, attribute, path);
     }

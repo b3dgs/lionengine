@@ -102,6 +102,7 @@ final class FilterBlurTest
         blur.setRadius(1.0f);
         assertNotNull(blur.filter(image));
 
+        blur.close();
         image.dispose();
         filtered.dispose();
     }
@@ -120,6 +121,7 @@ final class FilterBlurTest
         assertEquals(image.getWidth(), filtered.getWidth());
         assertEquals(image.getHeight(), filtered.getHeight());
 
+        blur.close();
         image.dispose();
         filtered.dispose();
     }
@@ -143,6 +145,7 @@ final class FilterBlurTest
 
         assertNotEquals(image, filtered);
 
+        blur.close();
         image.dispose();
         filtered.dispose();
     }

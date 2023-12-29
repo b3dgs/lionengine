@@ -181,13 +181,27 @@ public class XmlReader implements AttributesReader
     @Override
     public byte getByte(String attribute, String... path)
     {
-        return Byte.parseByte(getNodeString(attribute, path));
+        try
+        {
+            return Byte.parseByte(getNodeString(attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception, ERROR_ATTRIBUTE + attribute);
+        }
     }
 
     @Override
     public byte getByte(byte defaultValue, String attribute, String... path)
     {
-        return Byte.parseByte(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
+        try
+        {
+            return Byte.parseByte(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception, ERROR_ATTRIBUTE + attribute);
+        }
     }
 
     @Override
@@ -197,7 +211,7 @@ public class XmlReader implements AttributesReader
     }
 
     @Override
-    public char getChar(byte defaultValue, String attribute, String... path)
+    public char getChar(char defaultValue, String attribute, String... path)
     {
         return getNodeStringDefault(String.valueOf(defaultValue), attribute, path).charAt(0);
     }
@@ -205,13 +219,27 @@ public class XmlReader implements AttributesReader
     @Override
     public short getShort(String attribute, String... path)
     {
-        return Short.parseShort(getNodeString(attribute, path));
+        try
+        {
+            return Short.parseShort(getNodeString(attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception, ERROR_ATTRIBUTE + attribute);
+        }
     }
 
     @Override
     public short getShort(short defaultValue, String attribute, String... path)
     {
-        return Short.parseShort(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
+        try
+        {
+            return Short.parseShort(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception, ERROR_ATTRIBUTE + attribute);
+        }
     }
 
     @Override
@@ -289,13 +317,27 @@ public class XmlReader implements AttributesReader
     @Override
     public float getFloat(String attribute, String... path)
     {
-        return Float.parseFloat(getNodeString(attribute, path));
+        try
+        {
+            return Float.parseFloat(getNodeString(attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception, ERROR_ATTRIBUTE + attribute);
+        }
     }
 
     @Override
     public float getFloat(float defaultValue, String attribute, String... path)
     {
-        return Float.parseFloat(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
+        try
+        {
+            return Float.parseFloat(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception, ERROR_ATTRIBUTE + attribute);
+        }
     }
 
     @Override

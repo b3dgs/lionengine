@@ -93,6 +93,7 @@ final class FilterCrtTest
 
         assertNotNull(filter.filter(image));
 
+        filter.close();
         image.dispose();
         filtered.dispose();
     }

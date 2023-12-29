@@ -91,6 +91,7 @@ final class FilterBilinearTest
         assertEquals(image.getWidth(), filtered.getWidth());
         assertEquals(image.getHeight(), filtered.getHeight());
 
+        bilinear.close();
         image.dispose();
         filtered.dispose();
     }

@@ -26,6 +26,9 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -79,7 +82,13 @@ final class ConfigurerTest
 
         final Xml root = new Xml("root");
         root.writeString("attStr", "string");
-        root.writeString("attInt", "1");
+        root.writeByte("attByte", (byte) 2);
+        root.writeChar("attChar", 'c');
+        root.writeShort("attShort", (short) 2);
+        root.writeInteger("attInt", 1);
+        root.writeLong("attLong", 1L);
+        root.writeFloat("attFloat", 1.0F);
+        root.writeDouble("attDouble", 1.0);
 
         final Xml accessible = root.createChild(Accessible.class.getSimpleName());
         accessible.setText(Accessible.class.getName());
@@ -188,6 +197,128 @@ final class ConfigurerTest
     }
 
     /**
+     * Test the boolean getter with optional.
+     */
+    @Test
+    void testGetBooleanOptional()
+    {
+        assertEquals(Optional.of(Boolean.FALSE), configurer.getBooleanOptional("attStr"));
+        assertEquals(Optional.empty(), configurer.getBooleanOptional("void"));
+        assertEquals(Optional.empty(), configurer.getBooleanOptional("void", "none"));
+    }
+
+    /**
+     * Test the byte getter.
+     */
+    @Test
+    void testGetByte()
+    {
+        assertEquals(2, configurer.getByte("attByte"));
+    }
+
+    /**
+     * Test the byte getter with default value.
+     */
+    @Test
+    void testGetByteDefault()
+    {
+        assertEquals(2, configurer.getByte((byte) 2, "attByte"));
+        assertEquals(3, configurer.getByte((byte) 3, "void"));
+    }
+
+    /**
+     * Test the byte getter invalid value.
+     */
+    @Test
+    void testGetByteInvalid()
+    {
+        assertThrows(() -> configurer.getByte("attStr"), XmlReader.ERROR_ATTRIBUTE + "attStr");
+    }
+
+    /**
+     * Test the byte getter invalid value.
+     */
+    @Test
+    void testGetByteDefaultInvalid()
+    {
+        assertThrows(() -> configurer.getByte((byte) 1, "attStr"), XmlReader.ERROR_ATTRIBUTE + "attStr");
+    }
+
+    /**
+     * Test the char getter.
+     */
+    @Test
+    void testGetChar()
+    {
+        assertEquals('c', configurer.getChar("attChar"));
+    }
+
+    /**
+     * Test the char getter with default value.
+     */
+    @Test
+    void testGetCharDefault()
+    {
+        assertEquals('c', configurer.getChar('c', "attChar"));
+        assertEquals('d', configurer.getChar('d', "void"));
+    }
+
+    /**
+     * Test the char getter invalid value.
+     */
+    @Test
+    void testGetCharInvalid()
+    {
+        assertThrows(() -> configurer.getInteger("attStr"), XmlReader.ERROR_ATTRIBUTE + "attStr");
+    }
+
+    /**
+     * Test the char getter invalid value.
+     */
+    @Test
+    void testGetCharDefaultInvalid()
+    {
+        assertThrows(() -> configurer.getInteger(1, "attStr"), XmlReader.ERROR_ATTRIBUTE + "attStr");
+    }
+
+    /**
+     * Test the short getter.
+     */
+    @Test
+    void testGetShort()
+    {
+        assertEquals(2, configurer.getShort("attShort"));
+    }
+
+    /**
+     * Test the short getter with default value.
+     */
+    @Test
+    void testGetShortDefault()
+    {
+        assertEquals(2, configurer.getShort((short) 2, "attShort"));
+        assertEquals(3, configurer.getShort((short) 3, "void"));
+    }
+
+    /**
+     * Test the short getter invalid value.
+     */
+    @Test
+    void testGetShortInvalid()
+    {
+        assertThrows(() -> configurer.getShort("attStr"), XmlReader.ERROR_ATTRIBUTE + "attStr");
+    }
+
+    /**
+     * Test the short getter invalid value.
+     */
+    @Test
+    void testGetShortDefaultInvalid()
+    {
+        assertThrows(() -> configurer.getShort((short) 1, "attStr"), XmlReader.ERROR_ATTRIBUTE + "attStr");
+    }
+
+    /**
      * Test the integer getter.
      */
     @Test
@@ -225,12 +356,108 @@ final class ConfigurerTest
     }
 
     /**
+     * Test the integer getter with optional.
+     */
+    @Test
+    void testGetIntegerOptional()
+    {
+        assertEquals(OptionalInt.of(1), configurer.getIntegerOptional("attInt"));
+        assertEquals(OptionalInt.empty(), configurer.getIntegerOptional("void"));
+        assertEquals(OptionalInt.empty(), configurer.getIntegerOptional("void", "none"));
+    }
+
+    /**
+     * Test the long getter.
+     */
+    @Test
+    void testGetLong()
+    {
+        assertEquals(1, configurer.getLong("attLong"));
+    }
+
+    /**
+     * Test the long getter with default value.
+     */
+    @Test
+    void testGetLongDefault()
+    {
+        assertEquals(1, configurer.getLong(2, "attLong"));
+        assertEquals(2, configurer.getLong(2, "void"));
+    }
+
+    /**
+     * Test the long getter invalid value.
+     */
+    @Test
+    void testGetLongInvalid()
+    {
+        assertThrows(() -> configurer.getLong("attStr"), XmlReader.ERROR_ATTRIBUTE + "attStr");
+    }
+
+    /**
+     * Test the long getter invalid value.
+     */
+    @Test
+    void testGetLongDefaultInvalid()
+    {
+        assertThrows(() -> configurer.getLong(1, "attStr"), XmlReader.ERROR_ATTRIBUTE + "attStr");
+    }
+
+    /**
+     * Test the long getter with optional.
+     */
+    @Test
+    void testGetLongOptional()
+    {
+        assertEquals(OptionalLong.of(1), configurer.getLongOptional("attLong"));
+        assertEquals(OptionalLong.empty(), configurer.getLongOptional("void"));
+        assertEquals(OptionalLong.empty(), configurer.getLongOptional("void", "none"));
+    }
+
+    /**
+     * Test the float getter.
+     */
+    @Test
+    void testGetFloat()
+    {
+        assertEquals(1.0F, configurer.getFloat("attFloat"));
+    }
+
+    /**
+     * Test the float getter with default value.
+     */
+    @Test
+    void testGetFloatDefault()
+    {
+        assertEquals(1, configurer.getFloat(2.0F, "attFloat"));
+        assertEquals(2, configurer.getFloat(2.0F, "void"));
+    }
+
+    /**
+     * Test the float getter invalid value.
+     */
+    @Test
+    void testGetFloatInvalid()
+    {
+        assertThrows(() -> configurer.getFloat("attStr"), XmlReader.ERROR_ATTRIBUTE + "attStr");
+    }
+
+    /**
+     * Test the float getter invalid value.
+     */
+    @Test
+    void testGetFloatDefaultInvalid()
+    {
+        assertThrows(() -> configurer.getFloat(1.0F, "attStr"), XmlReader.ERROR_ATTRIBUTE + "attStr");
+    }
+
+    /**
      * Test the integer getter.
      */
     @Test
     void testGetDouble()
     {
-        assertEquals(1.0, configurer.getDouble("attInt"));
+        assertEquals(1.0, configurer.getDouble("attDouble"));
     }
 
     /**
@@ -239,8 +466,7 @@ final class ConfigurerTest
     @Test
     void testGetDoubleDefault()
     {
-        assertEquals(1.0, configurer.getDouble(2.0, "attInt"));
-
+        assertEquals(1.0, configurer.getDouble(2.0, "attDouble"));
         assertEquals(2.0, configurer.getDouble(2.0, "void"));
     }
 
@@ -260,6 +486,17 @@ final class ConfigurerTest
     void testGetDoubleDefaultInvalid()
     {
         assertThrows(() -> configurer.getDouble(1.0, "attStr"), XmlReader.ERROR_ATTRIBUTE + "attStr");
+    }
+
+    /**
+     * Test the double getter with optional.
+     */
+    @Test
+    void testGetDoubleOptional()
+    {
+        assertEquals(OptionalDouble.of(1.0), configurer.getDoubleOptional("attDouble"));
+        assertEquals(OptionalDouble.empty(), configurer.getDoubleOptional("void"));
+        assertEquals(OptionalDouble.empty(), configurer.getDoubleOptional("void", "none"));
     }
 
     /**

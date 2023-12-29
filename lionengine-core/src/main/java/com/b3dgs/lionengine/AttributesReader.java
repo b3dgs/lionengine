@@ -114,7 +114,7 @@ public interface AttributesReader
      * @param path The node path (child list).
      * @return The char value.
      */
-    char getChar(byte defaultValue, String attribute, String... path);
+    char getChar(char defaultValue, String attribute, String... path);
 
     /**
      * Read a short.

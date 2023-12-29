@@ -39,7 +39,9 @@
         <module>../com.b3dgs.lionengine.editor.animation</module>
         <module>../com.b3dgs.lionengine.editor.animation.test</module>
         <module>../com.b3dgs.lionengine.editor.collision</module>
+        <module>../com.b3dgs.lionengine.editor.collision.test</module>
         <module>../com.b3dgs.lionengine.editor.pathfinding</module>
+        <module>../com.b3dgs.lionengine.editor.pathfinding.test</module>
         <module>../com.b3dgs.lionengine.editor.repository</module>
         <module>../com.b3dgs.lionengine.editor.product</module>
     </modules>

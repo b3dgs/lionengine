@@ -175,7 +175,7 @@ public class Xml extends XmlReader
      */
     public void writeBoolean(String attribute, boolean content)
     {
-        write(attribute, String.valueOf(content));
+        write(attribute, Boolean.toString(content));
     }
 
     /**
@@ -187,7 +187,19 @@ public class Xml extends XmlReader
      */
     public void writeByte(String attribute, byte content)
     {
-        write(attribute, String.valueOf(content));
+        write(attribute, Byte.toString(content));
+    }
+
+    /**
+     * Write a char.
+     * 
+     * @param attribute The attribute name (must not be <code>null</code>).
+     * @param content The char value.
+     * @throws LionEngineException If error when writing.
+     */
+    public void writeChar(String attribute, char content)
+    {
+        write(attribute, Character.toString(content));
     }
 
     /**
@@ -199,7 +211,7 @@ public class Xml extends XmlReader
      */
     public void writeShort(String attribute, short content)
     {
-        write(attribute, String.valueOf(content));
+        write(attribute, Short.toString(content));
     }
 
     /**
@@ -211,7 +223,7 @@ public class Xml extends XmlReader
      */
     public void writeInteger(String attribute, int content)
     {
-        write(attribute, String.valueOf(content));
+        write(attribute, Integer.toString(content));
     }
 
     /**
@@ -223,7 +235,7 @@ public class Xml extends XmlReader
      */
     public void writeLong(String attribute, long content)
     {
-        write(attribute, String.valueOf(content));
+        write(attribute, Long.toString(content));
     }
 
     /**
@@ -235,7 +247,7 @@ public class Xml extends XmlReader
      */
     public void writeFloat(String attribute, float content)
     {
-        write(attribute, String.valueOf(content));
+        write(attribute, Float.toString(content));
     }
 
     /**
@@ -247,7 +259,7 @@ public class Xml extends XmlReader
      */
     public void writeDouble(String attribute, double content)
     {
-        write(attribute, String.valueOf(content));
+        write(attribute, Double.toString(content));
     }
 
     /**

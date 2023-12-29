@@ -397,6 +397,18 @@ public final class UtilAssert
     }
 
     /**
+     * Asserts that {@code expected} and {@code actual} float arrays are equal. If both are <code>null</code>, they
+     * are considered equal.
+     * 
+     * @param expected The excepted int array.
+     * @param actual The actual int array.
+     */
+    public static void assertArrayEquals(float[] expected, float[] actual)
+    {
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    /**
      * Asserts that {@code expected} and {@code actual} objects arrays are equal. If both are <code>null</code>, they
      * are considered equal.
      * 

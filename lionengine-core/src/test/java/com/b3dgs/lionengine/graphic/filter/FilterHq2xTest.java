@@ -91,6 +91,7 @@ final class FilterHq2xTest
         assertEquals(image.getWidth() * 2, filtered.getWidth());
         assertEquals(image.getHeight() * 2, filtered.getHeight());
 
+        hq2x.close();
         image.dispose();
         filtered.dispose();
     }

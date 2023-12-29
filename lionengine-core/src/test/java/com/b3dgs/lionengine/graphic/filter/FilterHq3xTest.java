@@ -91,6 +91,7 @@ final class FilterHq3xTest
         assertEquals(image.getWidth() * 3, filtered.getWidth());
         assertEquals(image.getHeight() * 3, filtered.getHeight());
 
+        hq3x.close();
         image.dispose();
         filtered.dispose();
     }
