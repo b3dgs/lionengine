@@ -25,8 +25,6 @@
         <module>../lionengine-audio-adlmidi</module>
         <module>../lionengine-audio-adplug</module>
         <module>../lionengine-audio-sc68</module>
-        <module>../lionengine-examples</module>
-        <module>../lionengine-tutorials</module>
         <module>../com.b3dgs.lionengine.editor.target</module>
         <module>../com.b3dgs.lionengine.core.swt</module>
         <module>../com.b3dgs.lionengine.core.swt.test</module>
@@ -44,6 +42,9 @@
         <module>../com.b3dgs.lionengine.editor.pathfinding.test</module>
         <module>../com.b3dgs.lionengine.editor.repository</module>
         <module>../com.b3dgs.lionengine.editor.product</module>
+        <module>../lionengine-examples</module>
+        <module>../lionengine-tutorials</module>
+        <module>../lionengine-coverage</module>
     </modules>
     <scm>
         <url>https://github.com/b3dgs/lionengine</url>
@@ -53,6 +54,7 @@
     </scm>
     <properties>
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
+        <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../lionengine-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
     <repositories>
         <repository>
