@@ -36,27 +36,8 @@ jobs:
           restore-keys: |
             maven-${{ matrix.os }}-java${{ matrix.jdk }}-${{ hashFiles('**/pom.xml') }}-${{ hashFiles('**/app/build.gradle') }}
 
-     - name: Audio device
-       run: Get-CimInstance Win32_SoundDevice | fl *
-     - name: Install Scream
-       shell: powershell
-       run: |
-         Start-Service audio*
-         Invoke-WebRequest https://github.com/duncanthrax/scream/releases/download/4.0/Scream4.0.zip -OutFile C:\Scream4.0.zip
-         Expand-Archive -Path C:\Scream4.0.zip -DestinationPath C:\Scream
-         $cert = (Get-AuthenticodeSignature C:\Scream\Install\driver\x64\Scream.sys).SignerCertificate
-         $store = [System.Security.Cryptography.X509Certificates.X509Store]::new("TrustedPublisher", "LocalMachine")
-         $store.Open("ReadWrite")
-         $store.Add($cert)
-         $store.Close()
-         cd C:\Scream\Install\driver\x64
-         C:\Scream\Install\helpers\devcon-x64 install Scream.inf *Scream
-     - name: Audio device
-       run: Get-CimInstance Win32_SoundDevice | fl *
-
-     - name: Start Audio
-       run: |
-         net start audiosrv
+     - name: Audio
+       uses: LABSN/sound-ci-helpers@v1.0.1
 
      - name: Maven
        uses: stCarolas/setup-maven@v4.5
