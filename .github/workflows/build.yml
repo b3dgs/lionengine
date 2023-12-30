@@ -36,6 +36,9 @@ jobs:
           restore-keys: |
             maven-${{ matrix.os }}-java${{ matrix.jdk }}-${{ hashFiles('**/pom.xml') }}-${{ hashFiles('**/app/build.gradle') }}
 
+     - name: Start Audio
+       run: net start audiosrv
+
      - name: Maven
        uses: stCarolas/setup-maven@v4.5
        with:
