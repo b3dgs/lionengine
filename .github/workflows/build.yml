@@ -44,13 +44,13 @@ jobs:
          Start-Service audio*
          Invoke-WebRequest https://github.com/duncanthrax/scream/releases/download/4.0/Scream4.0.zip -OutFile C:\Scream4.0.zip
          Expand-Archive -Path C:\Scream4.0.zip -DestinationPath C:\Scream
-         $cert = (Get-AuthenticodeSignature C:\Scream\Install\driver\Scream.sys).SignerCertificate
+         $cert = (Get-AuthenticodeSignature C:\Scream\Install\driver\x64\Scream.sys).SignerCertificate
          $store = [System.Security.Cryptography.X509Certificates.X509Store]::new("TrustedPublisher", "LocalMachine")
          $store.Open("ReadWrite")
          $store.Add($cert)
          $store.Close()
-         cd C:\Scream\Install\driver
-         C:\Scream\Install\helpers\devcon install Scream.inf *Scream
+         cd C:\Scream\Install\driver\x64
+         C:\Scream\Install\helpers\devcon-x64 install Scream.inf *Scream
      - name: Audio device
        run: Get-CimInstance Win32_SoundDevice | fl *
 
