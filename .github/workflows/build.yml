@@ -20,7 +20,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       JDK_VERSION: ${{ matrix.jdk }}
-      AUDIODEV: "null"
 
     steps:
      - name: Checkout
@@ -36,8 +35,11 @@ jobs:
           restore-keys: |
             maven-${{ matrix.os }}-java${{ matrix.jdk }}-${{ hashFiles('**/pom.xml') }}-${{ hashFiles('**/app/build.gradle') }}
 
-     - name: Audio
+     - name: Audio Install
        uses: LABSN/sound-ci-helpers@v1.0.1
+
+     - name: Audio Start
+       run: net start audiosrv
 
      - name: Maven
        uses: stCarolas/setup-maven@v4.5
