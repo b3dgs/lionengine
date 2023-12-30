@@ -110,7 +110,10 @@ public class CollisionsMapEditDialog extends DialogAbstract
         if (map.hasFeature(MapTileCollision.class))
         {
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
-            mapCollision.loadCollisions(mapCollision.getFormulasConfig(), media);
+            if (mapCollision.getFormulasConfig() != null && mapCollision.getCollisionsConfig() != null)
+            {
+                mapCollision.loadCollisions(mapCollision.getFormulasConfig(), media);
+            }
         }
     }
 }

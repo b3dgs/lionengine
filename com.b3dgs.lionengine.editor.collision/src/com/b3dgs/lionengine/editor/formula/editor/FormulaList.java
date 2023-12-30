@@ -136,8 +136,11 @@ public class FormulaList extends ObjectListAbstract<CollisionFormula> implements
         {
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
             final Media formulasConfig = mapCollision.getFormulasConfig();
-            removeFormula(formulasConfig, formula);
-            mapCollision.loadCollisions(formulasConfig, mapCollision.getCollisionsConfig());
+            if (formulasConfig != null)
+            {
+                removeFormula(formulasConfig, formula);
+                mapCollision.loadCollisions(formulasConfig, mapCollision.getCollisionsConfig());
+            }
         }
         else if (config != null)
         {

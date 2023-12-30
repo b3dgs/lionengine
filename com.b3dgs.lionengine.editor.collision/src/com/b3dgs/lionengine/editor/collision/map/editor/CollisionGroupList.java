@@ -123,8 +123,11 @@ public class CollisionGroupList extends ObjectListAbstract<CollisionGroup> imple
         {
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
             final Media formulasConfig = mapCollision.getFormulasConfig();
-            removeCollision(formulasConfig, collision);
-            mapCollision.loadCollisions(formulasConfig, groupsConfig);
+            if (formulasConfig != null)
+            {
+                removeCollision(formulasConfig, collision);
+                mapCollision.loadCollisions(formulasConfig, groupsConfig);
+            }
         }
         else if (groupsConfig != null)
         {

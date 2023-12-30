@@ -33,6 +33,10 @@ public final class Messages extends NLS
     public static String ObjectProperties_Reset;
     /** Object list. */
     public static String ObjectList_List;
+    /** Object list add. */
+    public static String ObjectList_Add;
+    /** Object list add. */
+    public static String ObjectList_Remove;
     /** Object list add title. */
     public static String ObjectList_AddObject_Title;
     /** Object list add text. */

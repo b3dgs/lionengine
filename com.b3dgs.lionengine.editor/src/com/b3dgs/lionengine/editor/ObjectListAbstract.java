@@ -396,6 +396,7 @@ public abstract class ObjectListAbstract<T extends Nameable>
     private void createAddObjectToolItem(final ToolBar toolbar)
     {
         final ToolItem addObject = new ToolItem(toolbar, SWT.PUSH);
+        addObject.setToolTipText(Messages.ObjectList_Add);
         addObject.setImage(ObjectListAbstract.ICON_ADD);
         addObject.addSelectionListener(new SelectionAdapter()
         {
@@ -446,6 +447,7 @@ public abstract class ObjectListAbstract<T extends Nameable>
     private void createRemoveObjectToolItem(ToolBar toolbar)
     {
         final ToolItem removeObject = new ToolItem(toolbar, SWT.PUSH);
+        removeObject.setToolTipText(Messages.ObjectList_Remove);
         removeObject.setImage(ObjectListAbstract.ICON_REMOVE);
         removeObject.addSelectionListener(new SelectionAdapter()
         {
