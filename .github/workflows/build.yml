@@ -37,7 +37,16 @@ jobs:
             maven-${{ matrix.os }}-java${{ matrix.jdk }}-${{ hashFiles('**/pom.xml') }}-${{ hashFiles('**/app/build.gradle') }}
 
      - name: Start Audio
-       run: net start audiosrv
+       run: |
+         net start audiosrv
+
+     - name: Install Scream
+       shell: powershell
+       run: |
+         Invoke-WebRequest https://github.com/duncanthrax/scream/releases/download/4.0/Scream4.0.zip -OutFile Scream4.0.zip
+         Expand-Archive -Path Scream4.0.zip -DestinationPath Scream
+         Import-Certificate -FilePath Scream\Install\driver\x64\Scream.cat -CertStoreLocation Cert:\LocalMachine\TrustedPublisher 
+         Scream\Install\helpers\devcon-x64.exe install Scream\Install\driver\x64\Scream.inf *Scream
 
      - name: Maven
        uses: stCarolas/setup-maven@v4.5
