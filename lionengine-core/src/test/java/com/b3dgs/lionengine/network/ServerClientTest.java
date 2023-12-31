@@ -18,14 +18,18 @@ package com.b3dgs.lionengine.network;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.UtilTests;
+import com.b3dgs.lionengine.network.client.ClientListener;
 import com.b3dgs.lionengine.network.client.ClientUdp;
 import com.b3dgs.lionengine.network.server.ServerListener;
 import com.b3dgs.lionengine.network.server.ServerUdp;
@@ -35,6 +39,111 @@ import com.b3dgs.lionengine.network.server.ServerUdp;
  */
 final class ServerClientTest
 {
+    /**
+     * Test server start stop.
+     * 
+     * @throws IOException If error.
+     */
+    @Test
+    public void testDefault() throws IOException
+    {
+        final ChannelBuffer channel = new ChannelBuffer();
+        final ServerUdp server = new ServerUdp(channel);
+        final AtomicBoolean started = new AtomicBoolean();
+        server.addListener(new ServerListener()
+        {
+            @Override
+            public void notifyServerStarted(String ip, int port)
+            {
+                started.set(true);
+            }
+        });
+        server.start("127.0.0.1", 1000);
+
+        assertTimeout(1000L, () ->
+        {
+            while (!started.get())
+            {
+                UtilTests.pause(100L);
+            }
+        });
+
+        final ClientUdp client = new ClientUdp(channel);
+        final AtomicBoolean connected = new AtomicBoolean();
+        client.addListener(new ClientListener()
+        {
+            @Override
+            public void notifyConnected(String ip, int port, Integer id)
+            {
+                connected.set(true);
+            }
+        });
+        client.connect("127.0.0.1", 1000);
+        client.setName("name");
+
+        assertTimeout(1000L, () ->
+        {
+            while (!connected.get())
+            {
+                UtilTests.pause(100L);
+            }
+        });
+
+        client.disconnect();
+
+        assertTimeout(1000L, () ->
+        {
+            while (server.getClients() > 0)
+            {
+                UtilTests.pause(100L);
+            }
+        });
+
+        server.stop();
+    }
+
+    /**
+     * Test server with info.
+     * 
+     * @throws IOException If error.
+     */
+    @Test
+    public void testInfo() throws IOException
+    {
+        final ChannelBuffer channel = new ChannelBuffer();
+        final ServerUdp server = new ServerUdp(channel);
+        final AtomicBoolean started = new AtomicBoolean();
+        server.setInfoSupplier(() ->
+        {
+            final ByteBuffer buffer = ByteBuffer.allocate(1);
+            buffer.put((byte) 1);
+            return buffer;
+        });
+        server.addListener(new ServerListener()
+        {
+            @Override
+            public void notifyServerStarted(String ip, int port)
+            {
+                started.set(true);
+            }
+        });
+        server.start("127.0.0.1", 1000);
+
+        assertTimeout(1000L, () ->
+        {
+            while (!started.get())
+            {
+                UtilTests.pause(100L);
+            }
+        });
+
+        final ByteBuffer info = UtilNetwork.getInfo("127.0.0.1", 1000);
+
+        assertEquals(1, info.get());
+
+        server.stop();
+    }
+
     /**
      * Test client connect to server.
      * 
@@ -92,6 +201,22 @@ final class ServerClientTest
         assertEquals(1000, startedPort.get());
 
         final ClientUdp client = new ClientUdp(channel);
+        final AtomicReference<Integer> clientId = new AtomicReference<>();
+        final AtomicReference<Integer> other = new AtomicReference<>();
+        client.addListener(new ClientListener()
+        {
+            @Override
+            public void notifyConnected(String ip, int port, Integer id)
+            {
+                clientId.set(id);
+            }
+
+            @Override
+            public void notifyClientConnected(Integer id)
+            {
+                other.set(id);
+            }
+        });
         client.connect("127.0.0.1", 1000);
         client.setName("name");
 
@@ -106,7 +231,58 @@ final class ServerClientTest
 
         assertEquals(1, server.getClients());
 
+        final ClientUdp client2 = new ClientUdp(channel);
+        final AtomicReference<Integer> disconnected = new AtomicReference<>();
+        client2.addListener(new ClientListener()
+        {
+            @Override
+            public void notifyConnected(String ip, int port, Integer id)
+            {
+                // Skip
+            }
+
+            @Override
+            public void notifyClientDisconnected(Integer id)
+            {
+                disconnected.set(id);
+            }
+        });
+        client2.connect("127.0.0.1", 1000);
+        client2.setName("name2");
+
+        assertTimeout(1000L, () ->
+        {
+            while (server.getClients() < 2)
+            {
+                UtilTests.pause(100L);
+            }
+        });
+
+        assertTimeout(1000L, () ->
+        {
+            while (!client2.getClientId().equals(other.get()))
+            {
+                UtilTests.pause(100L);
+            }
+        });
+
         client.disconnect();
+
+        assertTimeout(1000L, () ->
+        {
+            while (!clientId.get().equals(disconnected.get()))
+            {
+                UtilTests.pause(100L);
+            }
+        });
+
+        assertTimeout(1000L, () ->
+        {
+            while (server.getClients() != 1)
+            {
+                UtilTests.pause(100L);
+            }
+        });
 
         assertTimeout(1000L, () ->
         {
@@ -116,7 +292,7 @@ final class ServerClientTest
             }
         });
 
-        assertEquals(0, server.getClients());
+        assertEquals(1, server.getClients());
 
         server.stop();
 
@@ -134,5 +310,129 @@ final class ServerClientTest
                 UtilTests.pause(100L);
             }
         });
+    }
+
+    /**
+     * Test ping.
+     * 
+     * @throws IOException If error.
+     */
+    @Test
+    public void testPing() throws IOException
+    {
+        final ChannelBuffer channel = new ChannelBuffer();
+        final ServerUdp server = new ServerUdp(channel);
+        final AtomicBoolean started = new AtomicBoolean();
+        server.addListener(new ServerListener()
+        {
+            @Override
+            public void notifyServerStarted(String ip, int port)
+            {
+                started.set(true);
+            }
+
+            @Override
+            public void notifyServerStopped()
+            {
+                started.set(false);
+            }
+        });
+        final ClientUdp client = new ClientUdp(channel);
+        final AtomicReference<Integer> connected = new AtomicReference<>();
+        client.addListener(new ClientListener()
+        {
+            @Override
+            public void notifyConnected(String ip, int port, Integer id)
+            {
+                connected.set(id);
+            }
+        });
+
+        server.start("127.0.0.1", 1000);
+
+        assertTimeout(1000, () ->
+        {
+            while (!started.get())
+            {
+                UtilTests.pause(100L);
+            }
+        });
+
+        client.connect("127.0.0.1", 1000);
+
+        assertTimeout(1000, () ->
+        {
+            while (connected.get() == null)
+            {
+                UtilTests.pause(100L);
+            }
+        });
+
+        assertTrue(client.ping() > -1);
+
+        server.stop();
+
+        assertTimeout(1000, () ->
+        {
+            while (started.get())
+            {
+                UtilTests.pause(100L);
+            }
+        });
+    }
+
+    /**
+     * Test alive.
+     * 
+     * @throws IOException If error.
+     */
+    @Test
+    public void testAlive() throws IOException
+    {
+        final ChannelBuffer channel = new ChannelBuffer();
+        final ServerUdp server = new ServerUdp(channel);
+        final AtomicBoolean started = new AtomicBoolean();
+        server.addListener(new ServerListener()
+        {
+            @Override
+            public void notifyServerStarted(String ip, int port)
+            {
+                started.set(true);
+            }
+        });
+        final ClientUdp client = new ClientUdp(channel);
+        final AtomicReference<Integer> connected = new AtomicReference<>();
+        client.addListener(new ClientListener()
+        {
+            @Override
+            public void notifyConnected(String ip, int port, Integer id)
+            {
+                connected.set(id);
+            }
+        });
+
+        server.start("127.0.0.1", 1000);
+
+        assertTimeout(1000, () ->
+        {
+            while (!started.get())
+            {
+                UtilTests.pause(100L);
+            }
+        });
+
+        client.connect("127.0.0.1", 1000);
+
+        assertTimeout(1000, () ->
+        {
+            while (connected.get() == null)
+            {
+                UtilTests.pause(100L);
+            }
+        });
+
+        UtilTests.pause(5000);
+
+        server.stop();
     }
 }

@@ -25,6 +25,7 @@ import java.nio.ByteBuffer;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilConversion;
+import com.b3dgs.lionengine.network.client.InfoGet;
 
 /**
  * Network utility.
@@ -108,6 +109,27 @@ public final class UtilNetwork
         buffer.put(data, HEADER_BYTES_NUMBER, size);
 
         return buffer;
+    }
+
+    /**
+     * Get the server info.
+     * 
+     * @param ip The server ip.
+     * @param port The server port.
+     * @return The info data.
+     * @throws IOException If error.
+     */
+    public static ByteBuffer getInfo(String ip, int port) throws IOException
+    {
+        try (DatagramSocket socket = new DatagramSocket())
+        {
+            final ByteBuffer buffer = ByteBuffer.allocate(1);
+            buffer.put(UtilNetwork.toByte(MessageType.INFO));
+            final ByteBuffer send = UtilNetwork.createPacket(buffer);
+            socket.send(new DatagramPacket(send.array(), send.capacity(), InetAddress.getByName(ip), port));
+
+            return InfoGet.decode(socket);
+        }
     }
 
     /**
