@@ -50,14 +50,7 @@ final class ServerClientTest
         final ChannelBuffer channel = new ChannelBuffer();
         final ServerUdp server = new ServerUdp(channel);
         final AtomicBoolean started = new AtomicBoolean();
-        server.addListener(new ServerListener()
-        {
-            @Override
-            public void notifyServerStarted(String ip, int port)
-            {
-                started.set(true);
-            }
-        });
+        server.addListener((ip, port) -> started.set(true));
         server.start("127.0.0.1", 1000);
 
         assertTimeout(1000L, () ->
@@ -70,14 +63,7 @@ final class ServerClientTest
 
         final ClientUdp client = new ClientUdp(channel);
         final AtomicBoolean connected = new AtomicBoolean();
-        client.addListener(new ClientListener()
-        {
-            @Override
-            public void notifyConnected(String ip, int port, Integer id)
-            {
-                connected.set(true);
-            }
-        });
+        client.addListener((ip, port, id) -> connected.set(true));
         client.connect("127.0.0.1", 1000);
         client.setName("name");
 
@@ -119,14 +105,7 @@ final class ServerClientTest
             buffer.put((byte) 1);
             return buffer;
         });
-        server.addListener(new ServerListener()
-        {
-            @Override
-            public void notifyServerStarted(String ip, int port)
-            {
-                started.set(true);
-            }
-        });
+        server.addListener((ip, port) -> started.set(true));
         server.start("127.0.0.1", 1000);
 
         assertTimeout(1000L, () ->
@@ -339,14 +318,7 @@ final class ServerClientTest
         });
         final ClientUdp client = new ClientUdp(channel);
         final AtomicReference<Integer> connected = new AtomicReference<>();
-        client.addListener(new ClientListener()
-        {
-            @Override
-            public void notifyConnected(String ip, int port, Integer id)
-            {
-                connected.set(id);
-            }
-        });
+        client.addListener((ip, port, id) -> connected.set(id));
 
         server.start("127.0.0.1", 1000);
 
@@ -392,24 +364,10 @@ final class ServerClientTest
         final ChannelBuffer channel = new ChannelBuffer();
         final ServerUdp server = new ServerUdp(channel);
         final AtomicBoolean started = new AtomicBoolean();
-        server.addListener(new ServerListener()
-        {
-            @Override
-            public void notifyServerStarted(String ip, int port)
-            {
-                started.set(true);
-            }
-        });
+        server.addListener((ip, port) -> started.set(true));
         final ClientUdp client = new ClientUdp(channel);
         final AtomicReference<Integer> connected = new AtomicReference<>();
-        client.addListener(new ClientListener()
-        {
-            @Override
-            public void notifyConnected(String ip, int port, Integer id)
-            {
-                connected.set(id);
-            }
-        });
+        client.addListener((ip, port, id) -> connected.set(id));
 
         server.start("127.0.0.1", 1000);
 

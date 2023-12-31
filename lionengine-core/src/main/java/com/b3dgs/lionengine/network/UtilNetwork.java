@@ -25,7 +25,6 @@ import java.nio.ByteBuffer;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilConversion;
-import com.b3dgs.lionengine.network.client.InfoGet;
 
 /**
  * Network utility.

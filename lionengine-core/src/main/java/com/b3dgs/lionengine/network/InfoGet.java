@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.lionengine.network.client;
+package com.b3dgs.lionengine.network;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -22,9 +22,6 @@ import java.net.DatagramSocket;
 import java.nio.ByteBuffer;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.network.MessageAbstract;
-import com.b3dgs.lionengine.network.MessageType;
-import com.b3dgs.lionengine.network.UtilNetwork;
 
 /**
  * Info get implementation.
