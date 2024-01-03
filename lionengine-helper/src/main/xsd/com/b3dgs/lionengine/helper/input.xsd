@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/10" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/10">
+    <xsd:complexType name="device">
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+            <xsd:element name="horizontal" type="lionengine:horizontal" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+            <xsd:element name="vertical" type="lionengine:horizontal" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+            <xsd:element name="fire" type="lionengine:fire" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="class" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="id" type="xsd:int" use="optional"></xsd:attribute>
+        <xsd:attribute name="index" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="disabled" type="xsd:boolean" use="optional"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="horizontal">
+        <xsd:attribute name="negative" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="positive" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="vertical">
+        <xsd:attribute name="negative" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="positive" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="fire">
+        <xsd:attribute name="index" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="positive" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="input">
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+            <xsd:element name="device" type="lionengine:device" maxOccurs="unbounded" minOccurs="1"></xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="mapping" type="xsd:string" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:element name="input" type="lionengine:input"></xsd:element>
+</xsd:schema>

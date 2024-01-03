@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<lionengine:tileSheets xmlns:lionengine="http://lionengine.b3dgs.com">
+<lionengine:tileSheets xmlns:lionengine="http://lionengine.b3dgs.com/xsd/10" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/10 http://lionengine.b3dgs.com/xsd/10/game/tile/map/tileSheets.xsd">
 	<lionengine:tileSheet>test</lionengine:tileSheet>
 </lionengine:tileSheets>

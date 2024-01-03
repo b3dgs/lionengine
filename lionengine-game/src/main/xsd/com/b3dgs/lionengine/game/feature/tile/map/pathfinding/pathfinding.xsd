@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/9" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9">
+<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/10" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/10">
     <xsd:complexType name="tilePath">
         <xsd:sequence>
             <xsd:element name="group" type="xsd:string" maxOccurs="unbounded" minOccurs="1"></xsd:element>

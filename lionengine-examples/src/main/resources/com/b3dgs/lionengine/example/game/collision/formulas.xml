@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<lionengine:formulas xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/tileFormulas.xsd">
+<lionengine:formulas xmlns:lionengine="http://lionengine.b3dgs.com/xsd/10" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/10 http://lionengine.b3dgs.com/xsd/10/game/feature/tile/map/collision/tileFormulas.xsd">
     <lionengine:formula name="ground">
         <lionengine:range maxX="16" maxY="0" minX="0" minY="0" output="Y"/>
         <lionengine:function a="0.0" b="0.0" type="LINEAR"/>

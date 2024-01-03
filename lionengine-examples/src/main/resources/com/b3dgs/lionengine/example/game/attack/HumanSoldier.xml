@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/featurable.xsd">
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/10" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/10 http://lionengine.b3dgs.com/xsd/10/game/feature/featurable.xsd">
     <lionengine:class>com.b3dgs.lionengine.helper.EntityHelper</lionengine:class>
     <lionengine:features>
         <lionengine:feature>com.b3dgs.lionengine.example.game.attack.Soldier</lionengine:feature>
@@ -7,6 +7,7 @@
     <lionengine:surface image="HumanSoldier.png"/>
     <lionengine:frames horizontal="24" vertical="8" offsetX="8" offsetY="8"/>
     <lionengine:size width="16" height="16"/>
+    <lionengine:origin>BOTTOM_LEFT</lionengine:origin>
     <lionengine:animations>
         <lionengine:animation name="idle" start="1" end="2" speed="0.05" reversed="false" repeat="true"/>
         <lionengine:animation name="walk" start="3" end="4" speed="0.125" reversed="false" repeat="true"/>
@@ -15,7 +16,6 @@
         <lionengine:animation name="die" start="21" end="23" speed="0.125" reversed="false" repeat="false"/>
         <lionengine:animation name="dead" start="24" end="24" speed="0.125" reversed="false" repeat="false"/>
     </lionengine:animations>
-    <lionengine:origin>BOTTOM_LEFT</lionengine:origin>
     <lionengine:layerable layerRefresh="2" layerDisplay="2"/>
     <lionengine:attacker delay="60" distanceMin="1" distanceMax="1" damagesMin="1" damagesMax="5"/>
     <lionengine:pathfindable>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/featurable.xsd">
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/10" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/10 http://lionengine.b3dgs.com/xsd/10/game/feature/featurable.xsd">
     <lionengine:class>com.b3dgs.lionengine.example.game.projectile.Weapon</lionengine:class>
     <lionengine:surface image="Pulse.png"/>
     <lionengine:size width="0" height="0"/>
-    <lionengine:launcher delay="50">
+    <lionengine:launcher delay="100">
         <lionengine:launchable media="Pulse.xml" delay="0">
             <lionengine:force velocity="8" sensibility="0" vx="8" vy="8"/>
         </lionengine:launchable>

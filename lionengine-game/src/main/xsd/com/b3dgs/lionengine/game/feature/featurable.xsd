@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/9" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9">
+<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/10" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/10">
     <xsd:element name="featurable" type="lionengine:featurable"></xsd:element>
     <xsd:complexType name="surface">
         <xsd:attribute name="image" type="xsd:string" use="required"></xsd:attribute>
@@ -13,6 +13,7 @@
         <xsd:attribute name="height" type="xsd:int" use="optional"></xsd:attribute>
         <xsd:attribute name="file" type="xsd:string" use="optional"></xsd:attribute>
         <xsd:attribute name="extern" type="xsd:boolean" use="optional"></xsd:attribute>
+        <xsd:attribute name="offset" type="xsd:int" use="optional"></xsd:attribute>
     </xsd:complexType>
     <xsd:complexType name="layerable">
         <xsd:attribute name="layerRefresh" type="xsd:int" use="required"></xsd:attribute>
@@ -165,8 +166,9 @@
             <xsd:element name="launchable" type="lionengine:launchable" maxOccurs="unbounded" minOccurs="0"></xsd:element>
         </xsd:sequence>
         <xsd:attribute name="level" type="xsd:int" use="optional"></xsd:attribute>
-        <xsd:attribute name="rate" type="xsd:int" use="optional"></xsd:attribute>
+        <xsd:attribute name="delay" type="xsd:int" use="optional"></xsd:attribute>
         <xsd:attribute name="mirrorable" type="xsd:boolean" use="optional"></xsd:attribute>
+        <xsd:attribute name="centered" type="xsd:boolean" use="optional"></xsd:attribute>
     </xsd:complexType>
     <xsd:complexType name="extractable">
         <xsd:attribute name="type" type="xsd:string" use="optional"></xsd:attribute>
@@ -220,6 +222,7 @@
             <xsd:element name="frames" type="lionengine:frames" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="size" type="lionengine:size" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="origin" type="xsd:string" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="force" type="lionengine:force" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="animations" type="lionengine:animations" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="collisions" type="lionengine:collisions" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="categories" type="lionengine:categories" maxOccurs="1" minOccurs="0"></xsd:element>
@@ -232,7 +235,7 @@
             <xsd:element name="body" type="lionengine:body" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="fovable" type="lionengine:fovable" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="attacker" type="lionengine:attacker" maxOccurs="1" minOccurs="0"></xsd:element>
-            <xsd:element name="launcher" type="lionengine:launcher" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="launcher" type="lionengine:launcher" maxOccurs="unbounded" minOccurs="0"></xsd:element>
             <xsd:element name="producible" type="lionengine:producible" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="extractable" type="lionengine:extractable" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="extractor" type="lionengine:extractor" maxOccurs="1" minOccurs="0"></xsd:element>

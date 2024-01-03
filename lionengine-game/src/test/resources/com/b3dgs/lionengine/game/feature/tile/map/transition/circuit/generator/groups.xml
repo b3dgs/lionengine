@@ -1,58 +1,58 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/tileGroups.xsd">
+<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com/xsd/10" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/10 http://lionengine.b3dgs.com/xsd/10/game/feature/tile/map/tileGroups.xsd">
     <lionengine:group name="grass" type="PLAIN">
-        <lionengine:tile number="0" sheet="0"/>
+        <lionengine:tile number="0"/>
     </lionengine:group>
     <lionengine:group name="road" type="CIRCUIT">
-        <lionengine:tile number="1" sheet="0"/>
-        <lionengine:tile number="24" sheet="0"/>
-        <lionengine:tile number="23" sheet="0"/>
-        <lionengine:tile number="22" sheet="0"/>
-        <lionengine:tile number="21" sheet="0"/>
-        <lionengine:tile number="17" sheet="0"/>
-        <lionengine:tile number="16" sheet="0"/>
-        <lionengine:tile number="15" sheet="0"/>
-        <lionengine:tile number="14" sheet="0"/>
-        <lionengine:tile number="10" sheet="0"/>
-        <lionengine:tile number="9" sheet="0"/>
-        <lionengine:tile number="5" sheet="0"/>
-        <lionengine:tile number="4" sheet="0"/>
-        <lionengine:tile number="3" sheet="0"/>
-        <lionengine:tile number="2" sheet="0"/>
+        <lionengine:tile number="1"/>
+        <lionengine:tile number="24"/>
+        <lionengine:tile number="23"/>
+        <lionengine:tile number="22"/>
+        <lionengine:tile number="21"/>
+        <lionengine:tile number="17"/>
+        <lionengine:tile number="16"/>
+        <lionengine:tile number="15"/>
+        <lionengine:tile number="14"/>
+        <lionengine:tile number="10"/>
+        <lionengine:tile number="9"/>
+        <lionengine:tile number="5"/>
+        <lionengine:tile number="4"/>
+        <lionengine:tile number="3"/>
+        <lionengine:tile number="2"/>
     </lionengine:group>
     <lionengine:group name="tree" type="PLAIN">
-        <lionengine:tile number="29" sheet="0"/>
+        <lionengine:tile number="29"/>
     </lionengine:group>
     <lionengine:group name="water" type="PLAIN">
-        <lionengine:tile number="12" sheet="0"/>
-        <lionengine:tile number="38" sheet="0"/>
+        <lionengine:tile number="12"/>
+        <lionengine:tile number="38"/>
     </lionengine:group>
     <lionengine:group name="transition2" type="TRANSITION">
-        <lionengine:tile number="33" sheet="0"/>
-        <lionengine:tile number="32" sheet="0"/>
-        <lionengine:tile number="31" sheet="0"/>
-        <lionengine:tile number="30" sheet="0"/>
-        <lionengine:tile number="28" sheet="0"/>
-        <lionengine:tile number="27" sheet="0"/>
-        <lionengine:tile number="26" sheet="0"/>
-        <lionengine:tile number="25" sheet="0"/>
-        <lionengine:tile number="37" sheet="0"/>
-        <lionengine:tile number="36" sheet="0"/>
-        <lionengine:tile number="35" sheet="0"/>
-        <lionengine:tile number="34" sheet="0"/>
+        <lionengine:tile number="33"/>
+        <lionengine:tile number="32"/>
+        <lionengine:tile number="31"/>
+        <lionengine:tile number="30"/>
+        <lionengine:tile number="28"/>
+        <lionengine:tile number="27"/>
+        <lionengine:tile number="26"/>
+        <lionengine:tile number="25"/>
+        <lionengine:tile number="37"/>
+        <lionengine:tile number="36"/>
+        <lionengine:tile number="35"/>
+        <lionengine:tile number="34"/>
     </lionengine:group>
     <lionengine:group name="transition" type="TRANSITION">
-        <lionengine:tile number="13" sheet="0"/>
-        <lionengine:tile number="11" sheet="0"/>
-        <lionengine:tile number="42" sheet="0"/>
-        <lionengine:tile number="41" sheet="0"/>
-        <lionengine:tile number="40" sheet="0"/>
-        <lionengine:tile number="8" sheet="0"/>
-        <lionengine:tile number="7" sheet="0"/>
-        <lionengine:tile number="39" sheet="0"/>
-        <lionengine:tile number="6" sheet="0"/>
-        <lionengine:tile number="20" sheet="0"/>
-        <lionengine:tile number="19" sheet="0"/>
-        <lionengine:tile number="18" sheet="0"/>
+        <lionengine:tile number="13"/>
+        <lionengine:tile number="11"/>
+        <lionengine:tile number="42"/>
+        <lionengine:tile number="41"/>
+        <lionengine:tile number="40"/>
+        <lionengine:tile number="8"/>
+        <lionengine:tile number="7"/>
+        <lionengine:tile number="39"/>
+        <lionengine:tile number="6"/>
+        <lionengine:tile number="20"/>
+        <lionengine:tile number="19"/>
+        <lionengine:tile number="18"/>
     </lionengine:group>
 </lionengine:groups>

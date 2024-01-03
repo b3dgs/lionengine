@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/9" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9">
+<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/10" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/10">
     <xsd:complexType name="tile">
         <xsd:attribute name="number" type="xsd:int" use="required"></xsd:attribute>
-        <xsd:attribute name="sheet" type="xsd:int" use="required"></xsd:attribute>
     </xsd:complexType>
     <xsd:complexType name="transition">
         <xsd:sequence maxOccurs="1" minOccurs="1">
