@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com/xsd/10" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/10 http://lionengine.b3dgs.com/xsd/10/game/feature/tile/map/tileGroups.xsd">
+    <lionengine:group name="none" type="NONE">
+        <lionengine:tile number="13"/>
+        <lionengine:tile number="14"/>
+        <lionengine:tile number="15"/>
+        <lionengine:tile number="16"/>
+        <lionengine:tile number="22"/>
+        <lionengine:tile number="23"/>
+        <lionengine:tile number="25"/>
+    </lionengine:group>
+    <lionengine:group name="block" type="NONE">
+        <lionengine:tile number="0"/>
+        <lionengine:tile number="1"/>
+        <lionengine:tile number="2"/>
+        <lionengine:tile number="3"/>
+        <lionengine:tile number="4"/>
+        <lionengine:tile number="5"/>
+        <lionengine:tile number="6"/>
+        <lionengine:tile number="7"/>
+        <lionengine:tile number="8"/>
+        <lionengine:tile number="9"/>
+        <lionengine:tile number="10"/>
+        <lionengine:tile number="11"/>
+        <lionengine:tile number="12"/>
+        <lionengine:tile number="17"/>
+        <lionengine:tile number="18"/>
+        <lionengine:tile number="19"/>
+        <lionengine:tile number="20"/>
+        <lionengine:tile number="21"/>
+        <lionengine:tile number="26"/>
+    </lionengine:group>
+</lionengine:groups>

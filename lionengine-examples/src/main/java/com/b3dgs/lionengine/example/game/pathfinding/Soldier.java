@@ -53,7 +53,7 @@ public final class Soldier extends FeatureModel implements Routine, Pathfindable
     private int frameOffsetOld;
 
     /**
-     * Create a peon.
+     * Create a soldier.
      * 
      * @param services The services reference.
      * @param setup The setup reference.

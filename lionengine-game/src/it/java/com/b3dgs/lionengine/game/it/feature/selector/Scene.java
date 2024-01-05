@@ -18,10 +18,11 @@ package com.b3dgs.lionengine.game.it.feature.selector;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
-import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
@@ -60,9 +61,7 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
  */
 public final class Scene extends Sequence
 {
-    private static final Resolution NATIVE = new Resolution(320, 200, 60);
-    private static final int VIEW_X = 72;
-    private static final int VIEW_Y = 12;
+    private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     private final Services services = new Services();
     private final Handler handler = services.create(Handler.class);
@@ -118,14 +117,13 @@ public final class Scene extends Sequence
     @Override
     public void load()
     {
-        map.create(Medias.create("forest.png"));
+        map.create(Medias.create("level.png"));
 
         final MapTileGroup mapGroup = map.addFeature(new MapTileGroupModel());
         final MapTilePath mapPath = map.addFeature(new MapTilePathModel());
 
-        camera.setView(VIEW_X, VIEW_Y, getWidth() - VIEW_X, getHeight() - VIEW_Y, getHeight());
+        camera.setView(0, 0, 320, 240, 240);
         camera.setLimits(map);
-        camera.setLocation(160, 96);
 
         map.addFeature(new MapTileViewerModel(services));
         handler.add(map);
@@ -145,16 +143,17 @@ public final class Scene extends Sequence
         final Hud hud = factory.create(media);
         handler.add(hud);
 
-        final Selector selector = services.get(Selector.class);
-        selector.addFeature(new LayerableModel(4));
+        final Selector selector = services.create(Selector.class);
+        selector.addFeature(new LayerableModel(3));
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
         selector.setClickSelection(MouseAwt.LEFT);
+        handler.add(selector);
 
-        final Featurable peon = factory.create(Medias.create("Peon.xml"));
-        peon.getFeature(Pathfindable.class).setLocation(20, 10);
-        handler.add(peon);
-        transformable = peon.getFeature(Transformable.class);
+        final Featurable soldier = factory.create(Medias.create("OrcSoldier.xml"));
+        soldier.getFeature(Pathfindable.class).setLocation(9, 6);
+        handler.add(soldier);
+        transformable = soldier.getFeature(Transformable.class);
 
         tick.start();
     }
@@ -167,9 +166,9 @@ public final class Scene extends Sequence
         handler.update(extrp);
         tick.update(extrp);
 
-        if (tick.elapsed(25L))
+        if (tick.elapsed(100L))
         {
-            end();
+            throw new LionEngineException("Timeout !");
         }
 
         switch (click)
@@ -188,14 +187,14 @@ public final class Scene extends Sequence
                 break;
             case 2:
                 click = 3;
-                assertEquals(4, handler.size());
+                assertEquals(6, handler.size());
                 break;
             case 3:
                 click = 4;
                 assertTrue(handler.get(Selectable.class).iterator().next().isSelected());
                 break;
             case 4: // Click build button
-                mouse.doClickAt(MouseAwt.LEFT, 16 * 2, 170 * 2);
+                mouse.doClickAt(MouseAwt.LEFT, 28 * 2, 190 * 2);
                 click = 5;
                 break;
             case 5:
@@ -208,10 +207,10 @@ public final class Scene extends Sequence
                 break;
             case 7:
                 click = 8;
-                assertEquals(8, handler.size());
+                assertEquals(6, handler.size());
                 break;
             case 8: // Click move button
-                mouse.doClickAt(MouseAwt.LEFT, 16 * 2, 125 * 2);
+                mouse.doClickAt(MouseAwt.LEFT, 28 * 2, 140 * 2);
                 click = 9;
                 break;
             case 9: // Assign destination
@@ -226,7 +225,7 @@ public final class Scene extends Sequence
                 break;
             case 11:
                 click = 12;
-                assertEquals(8, handler.size());
+                assertEquals(7, handler.size());
                 break;
             case 12:
                 mouse.doClick(MouseAwt.LEFT);
@@ -238,6 +237,7 @@ public final class Scene extends Sequence
             case 14:
                 assertFalse(handler.get(Selectable.class).iterator().next().isSelected());
                 click = 15;
+                end();
                 break;
             default:
                 break;

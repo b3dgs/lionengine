@@ -48,7 +48,7 @@ public final class Soldier extends FeatureModel implements Routine
     private final Selectable selectable;
 
     /**
-     * Create a peon.
+     * Create a soldier.
      * 
      * @param services The services reference.
      * @param setup The setup reference.

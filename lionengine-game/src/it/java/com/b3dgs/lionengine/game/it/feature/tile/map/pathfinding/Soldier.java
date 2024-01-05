@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 
 /**
- * Peon entity implementation.
+ * Soldier implementation.
  */
 public final class Soldier extends FeaturableModel
 {
@@ -44,7 +44,7 @@ public final class Soldier extends FeaturableModel
     public static final Media MEDIA = Medias.create("OrcSoldier.xml");
 
     /**
-     * Create a peon.
+     * Create a soldier.
      * 
      * @param services The services reference.
      * @param setup The setup reference.

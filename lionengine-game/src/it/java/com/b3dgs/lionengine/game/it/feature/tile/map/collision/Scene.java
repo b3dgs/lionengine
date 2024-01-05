@@ -50,7 +50,7 @@ public final class Scene extends Sequence
 {
     /** Native resolution. */
     static final Resolution NATIVE = new Resolution(320, 240, 60);
-    private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
+    private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(150, 190, 200);
 
     private final Services services = new Services();
     private final Handler handler = services.create(Handler.class);
@@ -102,12 +102,12 @@ public final class Scene extends Sequence
         mapViewer.prepare(map);
 
         final Factory factory = services.create(Factory.class);
-        final Mario mario = factory.create(Mario.MEDIA);
-        mario.getFeature(Transformable.class).teleport(400, 31);
-        handler.add(mario);
+        final Hero hero = factory.create(Hero.MEDIA);
+        hero.getFeature(Transformable.class).teleport(400, 54);
+        handler.add(hero);
 
         final CameraTracker tracker = new CameraTracker(services);
-        tracker.track(mario);
+        tracker.track(hero);
         handler.add(tracker);
 
         clear.start();

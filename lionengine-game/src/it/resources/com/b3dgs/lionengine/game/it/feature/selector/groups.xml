@@ -1,239 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com/xsd/10" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/10 http://lionengine.b3dgs.com/xsd/10/game/feature/tile/map/tileGroups.xsd">
-    <lionengine:group name="grassDark" type="NONE">
+    <lionengine:group name="grass" type="PLAIN">
         <lionengine:tile number="0"/>
         <lionengine:tile number="1"/>
-    </lionengine:group>
-    <lionengine:group name="grassDarkBorder" type="NONE">
         <lionengine:tile number="2"/>
         <lionengine:tile number="3"/>
         <lionengine:tile number="4"/>
-        <lionengine:tile number="5"/>
-        <lionengine:tile number="6"/>
-        <lionengine:tile number="7"/>
-        <lionengine:tile number="8"/>
-        <lionengine:tile number="9"/>
-        <lionengine:tile number="10"/>
-        <lionengine:tile number="11"/>
         <lionengine:tile number="12"/>
         <lionengine:tile number="13"/>
         <lionengine:tile number="14"/>
-        <lionengine:tile number="15"/>
-        <lionengine:tile number="16"/>
-        <lionengine:tile number="17"/>
-    </lionengine:group>
-    <lionengine:group name="grass" type="NONE">
-        <lionengine:tile number="18"/>
-        <lionengine:tile number="19"/>
-        <lionengine:tile number="20"/>
-        <lionengine:tile number="21"/>
-        <lionengine:tile number="22"/>
-        <lionengine:tile number="23"/>
         <lionengine:tile number="24"/>
         <lionengine:tile number="25"/>
         <lionengine:tile number="26"/>
-        <lionengine:tile number="27"/>
+        <lionengine:tile number="36"/>
+        <lionengine:tile number="37"/>
+        <lionengine:tile number="38"/>
+    </lionengine:group>
+    <lionengine:group name="road" type="CIRCUIT">
+        <lionengine:tile number="5"/>
+        <lionengine:tile number="6"/>
+        <lionengine:tile number="7"/>
+        <lionengine:tile number="16"/>
+        <lionengine:tile number="17"/>
+        <lionengine:tile number="18"/>
+        <lionengine:tile number="19"/>
         <lionengine:tile number="28"/>
         <lionengine:tile number="29"/>
         <lionengine:tile number="30"/>
         <lionengine:tile number="31"/>
-        <lionengine:tile number="32"/>
-    </lionengine:group>
-    <lionengine:group name="grassLightBorder" type="NONE">
-        <lionengine:tile number="33"/>
-        <lionengine:tile number="34"/>
-        <lionengine:tile number="35"/>
-        <lionengine:tile number="36"/>
-        <lionengine:tile number="37"/>
-        <lionengine:tile number="38"/>
-        <lionengine:tile number="39"/>
         <lionengine:tile number="40"/>
         <lionengine:tile number="41"/>
         <lionengine:tile number="42"/>
         <lionengine:tile number="43"/>
-        <lionengine:tile number="44"/>
-        <lionengine:tile number="45"/>
-        <lionengine:tile number="46"/>
-        <lionengine:tile number="47"/>
-        <lionengine:tile number="48"/>
     </lionengine:group>
-    <lionengine:group name="grassLight" type="NONE">
-        <lionengine:tile number="49"/>
-        <lionengine:tile number="50"/>
-    </lionengine:group>
-    <lionengine:group name="grassBrightBorder" type="NONE">
-        <lionengine:tile number="51"/>
-        <lionengine:tile number="52"/>
-        <lionengine:tile number="53"/>
-        <lionengine:tile number="54"/>
-        <lionengine:tile number="55"/>
-        <lionengine:tile number="56"/>
+    <lionengine:group name="treeBorder" type="TRANSITION">
         <lionengine:tile number="57"/>
         <lionengine:tile number="58"/>
         <lionengine:tile number="59"/>
-        <lionengine:tile number="60"/>
-        <lionengine:tile number="61"/>
-        <lionengine:tile number="62"/>
-        <lionengine:tile number="63"/>
-        <lionengine:tile number="64"/>
-        <lionengine:tile number="65"/>
-        <lionengine:tile number="66"/>
-    </lionengine:group>
-    <lionengine:group name="grassBright" type="NONE">
-        <lionengine:tile number="67"/>
-    </lionengine:group>
-    <lionengine:group name="road" type="NONE">
-        <lionengine:tile number="68"/>
         <lionengine:tile number="69"/>
         <lionengine:tile number="70"/>
         <lionengine:tile number="71"/>
-        <lionengine:tile number="72"/>
-        <lionengine:tile number="73"/>
-        <lionengine:tile number="74"/>
-        <lionengine:tile number="75"/>
-        <lionengine:tile number="76"/>
-        <lionengine:tile number="77"/>
-        <lionengine:tile number="78"/>
-        <lionengine:tile number="79"/>
-        <lionengine:tile number="80"/>
         <lionengine:tile number="81"/>
         <lionengine:tile number="82"/>
         <lionengine:tile number="83"/>
-        <lionengine:tile number="84"/>
-        <lionengine:tile number="85"/>
-        <lionengine:tile number="86"/>
-        <lionengine:tile number="87"/>
-        <lionengine:tile number="88"/>
-        <lionengine:tile number="89"/>
-        <lionengine:tile number="90"/>
-        <lionengine:tile number="91"/>
         <lionengine:tile number="92"/>
         <lionengine:tile number="93"/>
         <lionengine:tile number="94"/>
         <lionengine:tile number="95"/>
-    </lionengine:group>
-    <lionengine:group name="bridge" type="NONE">
-        <lionengine:tile number="96"/>
-        <lionengine:tile number="97"/>
-        <lionengine:tile number="98"/>
-        <lionengine:tile number="99"/>
-        <lionengine:tile number="100"/>
-        <lionengine:tile number="101"/>
-        <lionengine:tile number="102"/>
-        <lionengine:tile number="103"/>
         <lionengine:tile number="104"/>
         <lionengine:tile number="105"/>
         <lionengine:tile number="106"/>
-        <lionengine:tile number="107"/>
-        <lionengine:tile number="108"/>
-        <lionengine:tile number="109"/>
-        <lionengine:tile number="110"/>
-        <lionengine:tile number="111"/>
-        <lionengine:tile number="112"/>
-        <lionengine:tile number="113"/>
-        <lionengine:tile number="114"/>
-        <lionengine:tile number="115"/>
-        <lionengine:tile number="116"/>
-        <lionengine:tile number="117"/>
-        <lionengine:tile number="118"/>
-        <lionengine:tile number="119"/>
-        <lionengine:tile number="120"/>
-        <lionengine:tile number="121"/>
-        <lionengine:tile number="122"/>
-        <lionengine:tile number="123"/>
     </lionengine:group>
-    <lionengine:group name="treeCut" type="NONE">
-        <lionengine:tile number="124"/>
+    <lionengine:group name="tree" type="PLAIN">
+        <lionengine:tile number="70"/>
     </lionengine:group>
-    <lionengine:group name="treeBorder" type="NONE">
-        <lionengine:tile number="125"/>
-        <lionengine:tile number="126"/>
-        <lionengine:tile number="127"/>
-        <lionengine:tile number="128"/>
-        <lionengine:tile number="129"/>
-        <lionengine:tile number="130"/>
-        <lionengine:tile number="131"/>
-        <lionengine:tile number="132"/>
-        <lionengine:tile number="133"/>
-        <lionengine:tile number="134"/>
-        <lionengine:tile number="135"/>
-        <lionengine:tile number="136"/>
-        <lionengine:tile number="137"/>
-        <lionengine:tile number="138"/>
-        <lionengine:tile number="139"/>
-        <lionengine:tile number="140"/>
+    <lionengine:group name="waterBorder" type="TRANSITION">
+        <lionengine:tile number="48"/>
+        <lionengine:tile number="49"/>
+        <lionengine:tile number="50"/>
+        <lionengine:tile number="60"/>
+        <lionengine:tile number="61"/>
+        <lionengine:tile number="62"/>
+        <lionengine:tile number="72"/>
+        <lionengine:tile number="73"/>
+        <lionengine:tile number="74"/>
+        <lionengine:tile number="84"/>
+        <lionengine:tile number="85"/>
+        <lionengine:tile number="96"/>
+        <lionengine:tile number="97"/>
     </lionengine:group>
-    <lionengine:group name="tree" type="NONE">
-        <lionengine:tile number="141"/>
-        <lionengine:tile number="142"/>
-        <lionengine:tile number="143"/>
-        <lionengine:tile number="144"/>
-        <lionengine:tile number="145"/>
-    </lionengine:group>
-    <lionengine:group name="border" type="NONE">
-        <lionengine:tile number="146"/>
-        <lionengine:tile number="147"/>
-        <lionengine:tile number="148"/>
-        <lionengine:tile number="149"/>
-        <lionengine:tile number="150"/>
-        <lionengine:tile number="151"/>
-        <lionengine:tile number="152"/>
-        <lionengine:tile number="153"/>
-        <lionengine:tile number="154"/>
-        <lionengine:tile number="155"/>
-        <lionengine:tile number="156"/>
-        <lionengine:tile number="157"/>
-        <lionengine:tile number="158"/>
-        <lionengine:tile number="159"/>
-        <lionengine:tile number="160"/>
-        <lionengine:tile number="161"/>
-        <lionengine:tile number="162"/>
-        <lionengine:tile number="163"/>
-        <lionengine:tile number="164"/>
-        <lionengine:tile number="165"/>
-        <lionengine:tile number="166"/>
-        <lionengine:tile number="167"/>
-        <lionengine:tile number="168"/>
-        <lionengine:tile number="169"/>
-        <lionengine:tile number="170"/>
-        <lionengine:tile number="171"/>
-        <lionengine:tile number="172"/>
-        <lionengine:tile number="173"/>
-        <lionengine:tile number="174"/>
-        <lionengine:tile number="175"/>
-        <lionengine:tile number="176"/>
-        <lionengine:tile number="177"/>
-        <lionengine:tile number="178"/>
-        <lionengine:tile number="179"/>
-        <lionengine:tile number="180"/>
-        <lionengine:tile number="181"/>
-        <lionengine:tile number="182"/>
-        <lionengine:tile number="183"/>
-        <lionengine:tile number="184"/>
-    </lionengine:group>
-    <lionengine:group name="water" type="NONE">
-        <lionengine:tile number="185"/>
-        <lionengine:tile number="186"/>
-        <lionengine:tile number="187"/>
-        <lionengine:tile number="188"/>
-        <lionengine:tile number="189"/>
-        <lionengine:tile number="190"/>
-        <lionengine:tile number="191"/>
-        <lionengine:tile number="192"/>
-        <lionengine:tile number="193"/>
-        <lionengine:tile number="194"/>
-        <lionengine:tile number="195"/>
-        <lionengine:tile number="196"/>
-        <lionengine:tile number="197"/>
-        <lionengine:tile number="198"/>
-        <lionengine:tile number="199"/>
-        <lionengine:tile number="200"/>
-        <lionengine:tile number="201"/>
-        <lionengine:tile number="202"/>
-        <lionengine:tile number="203"/>
-        <lionengine:tile number="204"/>
-        <lionengine:tile number="205"/>
-        <lionengine:tile number="206"/>
-        <lionengine:tile number="207"/>
+    <lionengine:group name="water" type="PLAIN">
+        <lionengine:tile number="61"/>
     </lionengine:group>
 </lionengine:groups>

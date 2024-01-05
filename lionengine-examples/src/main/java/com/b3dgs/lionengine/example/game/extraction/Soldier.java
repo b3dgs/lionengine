@@ -61,7 +61,7 @@ public final class Soldier extends FeatureModel
     private int frameOffsetOld;
 
     /**
-     * Create a peon.
+     * Create a soldier.
      * 
      * @param services The services reference.
      * @param setup The setup reference.

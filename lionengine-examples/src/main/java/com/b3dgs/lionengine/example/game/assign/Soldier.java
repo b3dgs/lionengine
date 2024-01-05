@@ -60,7 +60,7 @@ public final class Soldier extends FeatureModel implements TransformableListener
     private int frameOffsetOld;
 
     /**
-     * Create grunt.
+     * Create soldier.
      * 
      * @param services The services reference.
      * @param setup The setup reference.

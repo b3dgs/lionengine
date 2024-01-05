@@ -2,5 +2,11 @@
 <lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/10" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/10 http://lionengine.b3dgs.com/xsd/10/game/feature/featurable.xsd">
     <lionengine:class>com.b3dgs.lionengine.game.feature.collidable.selector.Hud</lionengine:class>
     <lionengine:surface image="hud.png"/>
+    <lionengine:actions>
+        <lionengine:actionRef path="Move.xml"/>
+        <lionengine:actionRef path="Build.xml">
+            <lionengine:actionRef path="Cancel.xml" cancel="true"/>
+        </lionengine:actionRef>
+    </lionengine:actions>
     <lionengine:layerable layerRefresh="3" layerDisplay="5"/>
 </lionengine:featurable>

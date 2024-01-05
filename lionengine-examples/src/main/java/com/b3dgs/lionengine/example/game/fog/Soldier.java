@@ -41,7 +41,7 @@ public final class Soldier extends FeatureModel implements Routine
     private final Pathfindable pathfindable;
 
     /**
-     * Create a peon.
+     * Create a soldier.
      * 
      * @param services The services reference.
      * @param setup The setup reference.

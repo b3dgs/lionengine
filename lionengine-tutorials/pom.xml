@@ -130,7 +130,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.b3dgs.lionengine.tutorials.mario.d.AppMario</mainClass>
+                            <mainClass>com.b3dgs.lionengine.tutorials.platform.d.AppPlatform</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

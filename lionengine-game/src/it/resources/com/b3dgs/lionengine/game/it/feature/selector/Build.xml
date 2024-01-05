@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/10" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/10 http://lionengine.b3dgs.com/xsd/10/game/feature/featurable.xsd">
+    <lionengine:class>com.b3dgs.lionengine.game.it.feature.selector.ActionModel</lionengine:class>
+	<lionengine:surface image="Build.png"/>
+    <lionengine:action name="Build" description="BUILD" x="5" y="136" width="32" height="32"/>
+</lionengine:featurable>

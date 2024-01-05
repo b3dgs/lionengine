@@ -86,7 +86,7 @@ public final class Scene extends Sequence
             listenerArrived.set(true);
         }
     };
-    private Featurable peon2;
+    private Featurable soldier2;
     private boolean changed;
 
     /**
@@ -119,34 +119,34 @@ public final class Scene extends Sequence
         camera.setLimits(map);
         handler.add(map);
 
-        final Featurable peon1 = factory.create(Soldier.MEDIA);
-        peon1.getFeature(Pathfindable.class).setLocation(5, 5);
-        peon1.getFeature(Pathfindable.class).setDestination(10, 10);
-        peon1.getFeature(Pathfindable.class).pointTo(1, 2);
-        handler.add(peon1);
+        final Featurable soldier1 = factory.create(Soldier.MEDIA);
+        soldier1.getFeature(Pathfindable.class).setLocation(5, 5);
+        soldier1.getFeature(Pathfindable.class).setDestination(10, 10);
+        soldier1.getFeature(Pathfindable.class).pointTo(1, 2);
+        handler.add(soldier1);
 
-        peon2 = factory.create(Soldier.MEDIA);
-        peon2.getFeature(Pathfindable.class).setLocation(8, 8);
-        handler.add(peon2);
+        soldier2 = factory.create(Soldier.MEDIA);
+        soldier2.getFeature(Pathfindable.class).setLocation(8, 8);
+        handler.add(soldier2);
 
-        final Featurable peon3 = factory.create(Soldier.MEDIA);
-        peon3.getFeature(Pathfindable.class).setLocation(10, 5);
+        final Featurable soldier3 = factory.create(Soldier.MEDIA);
+        soldier3.getFeature(Pathfindable.class).setLocation(10, 5);
 
-        assertTrue(peon3.getFeature(Pathfindable.class).isPathAvailable(7, 7));
+        assertTrue(soldier3.getFeature(Pathfindable.class).isPathAvailable(7, 7));
 
-        peon3.getFeature(Pathfindable.class).setDestination(5, 10);
-        handler.add(peon3);
+        soldier3.getFeature(Pathfindable.class).setDestination(5, 10);
+        handler.add(soldier3);
 
-        peon2.getFeature(Pathfindable.class).setIgnoreId(peon3.getFeature(Identifiable.class).getId(), true);
-        peon2.getFeature(Pathfindable.class).pointTo(map.getTile(10, 10));
+        soldier2.getFeature(Pathfindable.class).setIgnoreId(soldier3.getFeature(Identifiable.class).getId(), true);
+        soldier2.getFeature(Pathfindable.class).pointTo(map.getTile(10, 10));
 
-        assertEquals(Orientation.NORTH_EAST, peon2.getFeature(Pathfindable.class).getOrientation());
+        assertEquals(Orientation.NORTH_EAST, soldier2.getFeature(Pathfindable.class).getOrientation());
 
-        peon2.getFeature(Pathfindable.class).setOrientation(Orientation.NORTH_WEST);
+        soldier2.getFeature(Pathfindable.class).setOrientation(Orientation.NORTH_WEST);
 
-        assertEquals(Orientation.NORTH_WEST, peon2.getFeature(Pathfindable.class).getOrientation());
+        assertEquals(Orientation.NORTH_WEST, soldier2.getFeature(Pathfindable.class).getOrientation());
 
-        peon2.getFeature(Pathfindable.class).addListener(listener);
+        soldier2.getFeature(Pathfindable.class).addListener(listener);
 
         tick.start();
     }
@@ -160,7 +160,7 @@ public final class Scene extends Sequence
         tick.update(extrp);
         if (!changed && tick.elapsed(15L))
         {
-            peon2.getFeature(Pathfindable.class).setDestination(7, 7);
+            soldier2.getFeature(Pathfindable.class).setDestination(7, 7);
             changed = true;
         }
         if (tick.elapsed(40L))
@@ -168,14 +168,14 @@ public final class Scene extends Sequence
             end();
         }
 
-        if (!peon2.getFeature(Pathfindable.class).isMoving())
+        if (!soldier2.getFeature(Pathfindable.class).isMoving())
         {
-            assertEquals(0.0, peon2.getFeature(Pathfindable.class).getMoveX());
-            assertEquals(0.0, peon2.getFeature(Pathfindable.class).getMoveY());
+            assertEquals(0.0, soldier2.getFeature(Pathfindable.class).getMoveX());
+            assertEquals(0.0, soldier2.getFeature(Pathfindable.class).getMoveY());
         }
 
-        assertEquals(6.0, peon2.getFeature(Pathfindable.class).getSpeedX());
-        assertEquals(6.0, peon2.getFeature(Pathfindable.class).getSpeedY());
+        assertEquals(6.0, soldier2.getFeature(Pathfindable.class).getSpeedX());
+        assertEquals(6.0, soldier2.getFeature(Pathfindable.class).getSpeedY());
     }
 
     @Override
@@ -190,7 +190,7 @@ public final class Scene extends Sequence
         assertTrue(listenerStartMove.get());
         assertTrue(listenerMove.get());
         assertTrue(listenerArrived.get());
-        assertTrue(peon2.getFeature(Pathfindable.class).isDestinationReached());
+        assertTrue(soldier2.getFeature(Pathfindable.class).isDestinationReached());
 
         Engine.terminate();
     }
