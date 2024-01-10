@@ -39,7 +39,6 @@ import com.b3dgs.lionengine.graphic.Transparency;
 /**
  * Graphic factory implementation.
  */
-// CHECKSTYLE IGNORE LINE: ClassDataAbstractionCoupling
 public final class FactoryGraphicAwt implements FactoryGraphic
 {
     /** Reading image message. */
@@ -60,16 +59,7 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     {
         Check.notNull(config);
 
-        final Screen screen;
-        if (config.isWindowed())
-        {
-            screen = new ScreenWindowedAwt(config);
-        }
-        else
-        {
-            screen = new ScreenFullAwt(config);
-        }
-        return screen;
+        return new ScreenAwt(config);
     }
 
     @Override

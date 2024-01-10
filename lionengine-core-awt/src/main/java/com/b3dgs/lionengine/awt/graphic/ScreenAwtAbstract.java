@@ -67,10 +67,18 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     protected Component componentForMouse;
     /** Component listener for cursor. */
     protected Component componentForCursor;
+
+    /** Keyboard component. */
+    private final KeyboardAwt keyboard = new KeyboardAwt();
+    /** Mouse component. */
+    private final MouseAwt mouse = new MouseAwt();
+
     /** Width. */
     private int width;
     /** Height. */
     private int height;
+    /** Last cursor visibility. */
+    private boolean hide;
 
     /**
      * Constructor base.
@@ -86,6 +94,9 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
         {
             throw new LionEngineException(ScreenAwtAbstract.ERROR_DISPLAY);
         }
+
+        devices.put(Keyboard.class, keyboard);
+        devices.put(Mouse.class, mouse);
     }
 
     /**
@@ -127,29 +138,9 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     }
 
     /**
-     * Add a keyboard device.
-     */
-    private void addDeviceKeyboard()
-    {
-        final KeyboardAwt keyboard = new KeyboardAwt();
-        addKeyboardListener(keyboard);
-        devices.put(Keyboard.class, keyboard);
-    }
-
-    /**
-     * Add a keyboard device.
-     */
-    private void addDeviceMouse()
-    {
-        final MouseAwt mouse = new MouseAwt();
-        addMouseListener(mouse);
-        devices.put(Mouse.class, mouse);
-    }
-
-    /**
      * Prepare the focus listener.
      */
-    private void prepareFocusListener()
+    protected void prepareFocusListener()
     {
         componentForMouse.addFocusListener(this);
     }
@@ -160,12 +151,23 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
         super.start();
         setResolution(config.getOutput());
         prepareFocusListener();
-        addDeviceMouse();
-        addDeviceKeyboard();
+        addMouseListener(mouse);
+        addKeyboardListener(keyboard);
+        if (hide)
+        {
+            hideCursor();
+        }
+        else
+        {
+            showCursor();
+        }
         buf.show();
         graphics.setGraphic(buf.getDrawGraphics());
     }
 
+    /**
+     * {@inheritDoc} Does nothing by default.
+     */
     @Override
     public void preUpdate()
     {
@@ -185,7 +187,10 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
         if (graphics.getGraphic() != null)
         {
             graphics.clear(0, 0, width, height);
-            update();
+            if (buf != null)
+            {
+                update();
+            }
         }
     }
 
@@ -199,12 +204,14 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     public void hideCursor()
     {
         componentForCursor.setCursor(ScreenAwtAbstract.CURSOR_HIDDEN);
+        hide = true;
     }
 
     @Override
     public void showCursor()
     {
         componentForCursor.setCursor(ScreenAwtAbstract.CURSOR_DEFAULT);
+        hide = false;
     }
 
     @Override

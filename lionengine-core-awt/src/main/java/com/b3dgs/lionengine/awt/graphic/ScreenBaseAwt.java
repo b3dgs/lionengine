@@ -136,7 +136,10 @@ class ScreenBaseAwt extends ScreenAwtAbstract
     public void dispose()
     {
         super.dispose();
-        buf.dispose();
+        if (buf != null)
+        {
+            buf.dispose();
+        }
         frame.dispose();
     }
 

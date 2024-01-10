@@ -48,7 +48,7 @@ import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.ScreenListener;
 
 /**
- * Test {@link ScreenAwtAbstract}, {@link ScreenWindowedAwt} and {@link ScreenFullAwt}.
+ * Test {@link ScreenAwt}.
  */
 final class ScreenAwtTest
 {
@@ -128,7 +128,7 @@ final class ScreenAwtTest
         catch (final LionEngineException exception)
         {
             // Skip test
-            if (!ScreenFullAwt.ERROR_SWITCH.equals(exception.getMessage()))
+            if (!ScreenAwt.ERROR_SWITCH.equals(exception.getMessage()))
             {
                 throw exception;
             }
@@ -146,7 +146,7 @@ final class ScreenAwtTest
         final Resolution resolution = new Resolution(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
         final Config config = new Config(resolution, 32, false);
 
-        assertThrowsPrefix(() -> testScreen(config), ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN);
+        assertThrowsPrefix(() -> testScreen(config), ScreenAwt.ERROR_UNSUPPORTED_FULLSCREEN);
     }
 
     /**

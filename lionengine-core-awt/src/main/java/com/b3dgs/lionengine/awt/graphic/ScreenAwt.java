@@ -16,9 +16,13 @@
  */
 package com.b3dgs.lionengine.awt.graphic;
 
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
@@ -27,22 +31,23 @@ import com.b3dgs.lionengine.Generated;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.awt.Keyboard;
+import com.b3dgs.lionengine.awt.KeyboardAwt;
 import com.b3dgs.lionengine.awt.Mouse;
 
 /**
- * Full screen implementation.
+ * Screen implementation.
  * 
  * @see Keyboard
  * @see Mouse
  */
-final class ScreenFullAwt extends ScreenBaseAwt
+final class ScreenAwt extends ScreenBaseAwt
 {
     /** Error message unsupported full screen. */
     static final String ERROR_UNSUPPORTED_FULLSCREEN = "Unsupported resolution: ";
     /** Unable to switch to full screen. */
     static final String ERROR_SWITCH = "Unable to switch to full screen mode !";
     /** Minimum length. */
-    private static final int MIN_LENGTH = 18;
+    private static final int MIN_LENGTH = 21;
 
     /**
      * Format resolution to string.
@@ -65,17 +70,28 @@ final class ScreenFullAwt extends ScreenBaseAwt
                                             .toString();
     }
 
+    /** Fullscreen mode. */
+    private java.awt.Window window;
+    /** Windowed mode. */
+    private Canvas canvas;
+    /** Flag to request switch. */
+    private boolean requestWindowed;
+    /** Flag to request switch release. */
+    private boolean requestAltEnter;
+    /** Flag to allow request. */
+    private boolean requestAllowed = true;
+
     /**
      * Internal constructor.
      * 
      * @param config The config reference.
      * @throws LionEngineException If renderer is <code>null</code> or no available display.
      */
-    ScreenFullAwt(Config config)
+    ScreenAwt(Config config)
     {
         super(config);
 
-        frame.setUndecorated(true);
+        requestWindowed = config.isWindowed();
     }
 
     /**
@@ -87,7 +103,7 @@ final class ScreenFullAwt extends ScreenBaseAwt
      */
     private void initFullscreen(Resolution output, int depth)
     {
-        final java.awt.Window window = new java.awt.Window(frame, conf);
+        window = new java.awt.Window(frame, conf);
         window.setBackground(Color.BLACK);
         window.setIgnoreRepaint(true);
         window.setPreferredSize(new Dimension(output.getWidth(), output.getHeight()));
@@ -99,8 +115,9 @@ final class ScreenFullAwt extends ScreenBaseAwt
                                                              output.getRate()));
         if (disp == null)
         {
-            throw new LionEngineException(ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN
+            throw new LionEngineException(ScreenAwt.ERROR_UNSUPPORTED_FULLSCREEN
                                           + formatResolution(output, depth)
+                                          + System.lineSeparator()
                                           + getSupportedResolutions());
         }
         checkDisplayChangeSupport();
@@ -116,6 +133,84 @@ final class ScreenFullAwt extends ScreenBaseAwt
         componentForMouse = window;
         componentForCursor = window;
         frame.validate();
+
+        // CHECKSTYLE IGNORE LINE: AnonInnerLength
+        componentForKeyboard.addKeyListener(new KeyAdapter()
+        {
+            @Override
+            public void keyPressed(KeyEvent event)
+            {
+                if (requestAllowed
+                    && event.getModifiersEx() == InputEvent.ALT_DOWN_MASK
+                    && event.getKeyCode() == KeyboardAwt.ENTER.intValue())
+                {
+                    requestAllowed = false;
+                    requestAltEnter = true;
+                    requestWindowed = true;
+                    dev.setFullScreenWindow(null);
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e)
+            {
+                requestAllowed = true;
+            }
+        });
+    }
+
+    /**
+     * Prepare windowed mode.
+     * 
+     * @param output The output resolution
+     * @throws LionEngineException If unable to initialize windowed mode.
+     */
+    private void initWindowed(Resolution output)
+    {
+        dev.setFullScreenWindow(null);
+
+        canvas = new Canvas(conf);
+        canvas.setBackground(Color.BLACK);
+        canvas.setEnabled(true);
+        canvas.setVisible(true);
+        canvas.setIgnoreRepaint(true);
+
+        frame.add(canvas, 0);
+
+        canvas.setPreferredSize(new Dimension(output.getWidth(), output.getHeight()));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+
+        ToolsAwt.createBufferStrategy(canvas, conf);
+        buf = canvas.getBufferStrategy();
+
+        // Set input listeners
+        componentForKeyboard = canvas;
+        componentForMouse = canvas;
+        componentForCursor = frame;
+        frame.validate();
+
+        componentForKeyboard.addKeyListener(new KeyAdapter()
+        {
+            @Override
+            public void keyPressed(KeyEvent event)
+            {
+                if (requestAllowed
+                    && event.getModifiersEx() == InputEvent.ALT_DOWN_MASK
+                    && event.getKeyCode() == KeyboardAwt.ENTER.intValue())
+                {
+                    requestAllowed = false;
+                    requestAltEnter = true;
+                    requestWindowed = false;
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e)
+            {
+                requestAllowed = true;
+            }
+        });
     }
 
     /**
@@ -126,7 +221,7 @@ final class ScreenFullAwt extends ScreenBaseAwt
     {
         if (!dev.isDisplayChangeSupported())
         {
-            throw new LionEngineException(ScreenFullAwt.ERROR_SWITCH);
+            throw new LionEngineException(ScreenAwt.ERROR_SWITCH);
         }
     }
 
@@ -137,7 +232,7 @@ final class ScreenFullAwt extends ScreenBaseAwt
      */
     private String getSupportedResolutions()
     {
-        final StringBuilder builder = new StringBuilder(Constant.HUNDRED);
+        final StringBuilder builder = new StringBuilder("Supported resolution(s):" + System.lineSeparator());
         int i = 0;
         for (final DisplayMode display : dev.getDisplayModes())
         {
@@ -151,7 +246,7 @@ final class ScreenFullAwt extends ScreenBaseAwt
             final int height = display.getHeight();
             if (height < Constant.THOUSAND)
             {
-                heightSpace.append(System.lineSeparator());
+                heightSpace.append(Constant.SPACE);
             }
             final StringBuilder freqSpace = new StringBuilder();
             final int freq = display.getRefreshRate();
@@ -159,9 +254,7 @@ final class ScreenFullAwt extends ScreenBaseAwt
             {
                 freqSpace.append(Constant.SPACE);
             }
-            builder.append("Supported display mode:")
-                   .append(System.lineSeparator())
-                   .append('[')
+            builder.append('[')
                    .append(widthSpace)
                    .append(width)
                    .append(Constant.STAR)
@@ -210,7 +303,14 @@ final class ScreenFullAwt extends ScreenBaseAwt
     {
         Check.notNull(output);
 
-        initFullscreen(output, config.getDepth());
+        if (requestWindowed)
+        {
+            initWindowed(output);
+        }
+        else
+        {
+            initFullscreen(output, config.getDepth());
+        }
         super.setResolution(output);
     }
 
@@ -220,5 +320,46 @@ final class ScreenFullAwt extends ScreenBaseAwt
         frame.setVisible(true);
 
         super.start();
+    }
+
+    @Override
+    public void preUpdate()
+    {
+        if (requestAltEnter)
+        {
+            if (buf != null)
+            {
+                buf.dispose();
+                buf = null;
+            }
+            while (!requestAllowed)
+            {
+                try
+                {
+                    Thread.sleep(Constant.DECADE);
+                }
+                catch (@SuppressWarnings("unused") final InterruptedException exception)
+                {
+                    Thread.currentThread().interrupt();
+                }
+            }
+            frame.removeNotify();
+            if (window != null)
+            {
+                window.dispose();
+            }
+            canvas = null;
+            try
+            {
+                Thread.sleep(Constant.HUNDRED);
+            }
+            catch (@SuppressWarnings("unused") final InterruptedException exception)
+            {
+                Thread.currentThread().interrupt();
+            }
+            frame.addNotify();
+            start();
+            requestAltEnter = false;
+        }
     }
 }
