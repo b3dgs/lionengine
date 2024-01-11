@@ -31,15 +31,17 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
  */
 public class ExtractableModel extends FeatureModel implements Extractable
 {
-    /** Resources count. */
-    private final Alterable resources = new Alterable(Integer.MAX_VALUE);
     /** Map reference. */
     private final MapTile map = services.get(MapTile.class);
-    /** Resource type. */
-    private String type;
 
     /** Transformable model. */
     private final Transformable transformable;
+
+    /** Resources count. */
+    private final Alterable resources = new Alterable(Integer.MAX_VALUE);
+
+    /** Resource type. */
+    private String type;
 
     /**
      * Create feature.

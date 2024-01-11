@@ -44,6 +44,8 @@ import org.w3c.dom.NodeList;
  */
 public class XmlReader implements AttributesReader
 {
+    /** Empty node. */
+    public static final XmlReader EMPTY = new XmlReader("empty");
     /** Attribute error. */
     public static final String ERROR_ATTRIBUTE = "The following attribute does not exist: ";
     /** Node error. */

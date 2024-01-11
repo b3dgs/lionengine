@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.producible;
 
 import java.util.List;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Media;
@@ -44,6 +45,7 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
     private final int width;
     /** Production height. */
     private final int height;
+
     /** Production location x. */
     private double x;
     /** Production location y. */
@@ -119,12 +121,16 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
     @Override
     public void addListener(ProducibleListener listener)
     {
+        Check.notNull(listener);
+
         listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(ProducibleListener listener)
     {
+        Check.notNull(listener);
+
         listenable.removeListener(listener);
     }
 

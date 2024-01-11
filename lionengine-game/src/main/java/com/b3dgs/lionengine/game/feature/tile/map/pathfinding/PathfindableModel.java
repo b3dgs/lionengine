@@ -20,20 +20,25 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Recyclable;
+import com.b3dgs.lionengine.game.feature.RoutineRender;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -71,28 +76,35 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         return s < 0 && Double.compare(v, d) <= 0 || Double.compare(s, 0) >= 0 && Double.compare(v, d) >= 0;
     }
 
-    /** Pathfindable listeners. */
-    private final ListenableModel<PathfindableListener> listenable = new ListenableModel<>();
-    /** List of shared path id. */
-    private final Collection<Integer> sharedPathIds = new HashSet<>(0);
-    /** List of ignored id. */
-    private final Collection<Integer> ignoredIds = new HashSet<>(0);
     /** Viewer reference. */
     private final Viewer viewer = services.get(Viewer.class);
     /** Map reference. */
     private final MapTile map = services.get(MapTile.class);
     /** Map path reference. */
     private final MapTilePath mapPath = map.getFeature(MapTilePath.class);
+
+    /** Transformable model. */
+    private final Transformable transformable;
+
+    /** Pathfindable listeners. */
+    private final ListenableModel<PathfindableListener> listenable = new ListenableModel<>();
+    /** List of shared path id. */
+    private final Collection<Integer> sharedPathIds = new HashSet<>(0);
+    /** List of ignored id. */
+    private final Collection<Integer> ignoredIds = new HashSet<>(0);
     /** Pathfinder reference. */
     private final PathFinder pathfinder;
     /** List of categories. */
     private final Map<String, PathData> categories;
-    /** Orientable model. */
-    private final OrientableModel orientable;
     /** Object id. */
     private final Integer id;
-    /** Transformable model. */
-    private final Transformable transformable;
+    /** Orientable model. */
+    private final OrientableModel orientable;
+    /** Update priority. */
+    private final int priorityUpdate;
+    /** Render priority. */
+    private final int priorityRender;
+
     /** Last valid path found. */
     private Path path;
     /** Text debug rendering. */
@@ -160,8 +172,52 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      */
     public PathfindableModel(Services services, Setup setup, Identifiable identifiable, Transformable transformable)
     {
+        this(services, setup, XmlReader.EMPTY, identifiable, transformable);
+    }
+
+    /**
+     * Create feature.
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link Identifiable}</li>
+     * <li>{@link Transformable}</li>
+     * </ul>
+     * <p>
+     * The {@link Configurer} owner must provide a valid {@link PathfindableConfig}.
+     * </p>
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link MapTile}</li>
+     * <li>{@link Viewer}</li>
+     * </ul>
+     * <p>
+     * If the {@link Featurable} is a {@link PathfindableListener}, it will automatically
+     * {@link #addListener(PathfindableListener)} on it.
+     * </p>
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @param identifiable The identifiable feature.
+     * @param transformable The transformable feature.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public PathfindableModel(Services services,
+                             Setup setup,
+                             XmlReader config,
+                             Identifiable identifiable,
+                             Transformable transformable)
+    {
         super(services, setup);
 
+        Check.notNull(config);
+
+        priorityUpdate = config.getInteger(RoutineUpdate.PATHFINDABLE, FeaturableConfig.ATT_PRIORITY_UPDATE);
+        priorityRender = config.getInteger(RoutineRender.PATHFINDABLE, FeaturableConfig.ATT_PRIORITY_RENDER);
         id = identifiable.getId();
         this.transformable = transformable;
 
@@ -585,12 +641,16 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     @Override
     public void addListener(PathfindableListener listener)
     {
+        Check.notNull(listener);
+
         listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(PathfindableListener listener)
     {
+        Check.notNull(listener);
+
         listenable.removeListener(listener);
     }
 
@@ -911,6 +971,18 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     public boolean isMoving()
     {
         return moving;
+    }
+
+    @Override
+    public int getPriotityUpdate()
+    {
+        return priorityUpdate;
+    }
+
+    @Override
+    public int getPriotityRender()
+    {
+        return priorityRender;
     }
 
     @Override

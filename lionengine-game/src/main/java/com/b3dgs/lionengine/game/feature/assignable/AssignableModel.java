@@ -16,13 +16,17 @@
  */
 package com.b3dgs.lionengine.game.feature.assignable;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 
@@ -35,6 +39,10 @@ public class AssignableModel extends FeatureModel implements Assignable
     private final Cursor cursor = services.get(Cursor.class);
     /** Viewer reference. */
     private final Viewer viewer = services.get(Viewer.class);
+
+    /** Update priority. */
+    private final int priorityUpdate;
+
     /** Mouse click number to assign action. */
     private Integer clickAssign;
     /** Assign used. */
@@ -59,7 +67,34 @@ public class AssignableModel extends FeatureModel implements Assignable
      */
     public AssignableModel(Services services, Setup setup)
     {
+        this(services, setup, XmlReader.EMPTY);
+    }
+
+    /**
+     * Create feature.
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link Cursor}</li>
+     * <li>{@link Viewer}</li>
+     * </ul>
+     * <p>
+     * If the {@link Featurable} is an {@link Assign}, it will automatically {@link #setAssign(Assign)} on it.
+     * </p>
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
+     */
+    public AssignableModel(Services services, Setup setup, XmlReader config)
+    {
         super(services, setup);
+
+        Check.notNull(config);
+
+        priorityUpdate = config.getInteger(RoutineUpdate.ASSIGNABLE, FeaturableConfig.ATT_PRIORITY_UPDATE);
     }
 
     @Override
@@ -99,5 +134,11 @@ public class AssignableModel extends FeatureModel implements Assignable
     public void setClickAssign(Integer click)
     {
         clickAssign = click;
+    }
+
+    @Override
+    public int getPriotityUpdate()
+    {
+        return priorityUpdate;
     }
 }

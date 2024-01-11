@@ -25,7 +25,8 @@ import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.Handler;
-import com.b3dgs.lionengine.game.feature.Routine;
+import com.b3dgs.lionengine.game.feature.RoutineRender;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.networkable.NetworkableModel;
@@ -38,7 +39,7 @@ import com.b3dgs.lionengine.network.Packet;
  * Player network representation.
  */
 @FeatureInterface
-public final class Player extends NetworkableModel implements Routine
+public final class Player extends NetworkableModel implements RoutineUpdate, RoutineRender
 {
     private final Text text = Graphics.createText(12);
     private final Timing timing = new Timing();

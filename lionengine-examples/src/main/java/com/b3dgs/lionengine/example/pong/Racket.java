@@ -21,7 +21,8 @@ import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.Routine;
+import com.b3dgs.lionengine.game.feature.RoutineRender;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -34,7 +35,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
  * Racket implementation.
  */
 @FeatureInterface
-public final class Racket extends FeatureModel implements Routine
+public final class Racket extends FeatureModel implements RoutineUpdate, RoutineRender
 {
     private final Viewer viewer = services.get(Viewer.class);
 

@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.Configurer;
 public class ActionerModel extends FeatureModel implements Actioner
 {
     /** Allowed actions name. */
-    private final List<ActionRef> actions;
+    private final List<ActionRef> actions = ActionsConfig.imports(setup, this::getFeature);
 
     /**
      * Create feature.
@@ -42,8 +42,6 @@ public class ActionerModel extends FeatureModel implements Actioner
     public ActionerModel(Services services, Setup setup)
     {
         super(services, setup);
-
-        actions = ActionsConfig.imports(setup, this::getFeature);
     }
 
     @Override

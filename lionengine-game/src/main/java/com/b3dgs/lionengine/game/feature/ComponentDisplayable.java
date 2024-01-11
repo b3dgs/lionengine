@@ -198,31 +198,13 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
     }
 
     /**
-     * Layer update data.
+     * Layer display data.
+     * 
+     * @param displayable The displayable reference.
+     * @param layerOld The old layer.
+     * @param layerNew The new layer.
      */
-    private static final class LayerUpdate
+    private record LayerUpdate(Displayable displayable, Integer layerOld, Integer layerNew)
     {
-        /** Displayable reference. */
-        private final Displayable displayable;
-        /** Old layer. */
-        private final Integer layerOld;
-        /** New layer. */
-        private final Integer layerNew;
-
-        /**
-         * Create data.
-         * 
-         * @param displayable The displayable reference.
-         * @param layerOld The old layer.
-         * @param layerNew The new layer.
-         */
-        private LayerUpdate(Displayable displayable, Integer layerOld, Integer layerNew)
-        {
-            super();
-
-            this.displayable = displayable;
-            this.layerOld = layerOld;
-            this.layerNew = layerNew;
-        }
     }
 }

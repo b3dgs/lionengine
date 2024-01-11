@@ -22,16 +22,15 @@ import java.util.List;
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Shape;
-import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
+import com.b3dgs.lionengine.game.feature.RoutineRender;
 import com.b3dgs.lionengine.geom.Rectangle;
-import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
  * Represents something which can enter in collision with another.
  */
 @FeatureInterface
-public interface Collidable extends Feature, Renderable, Shape, CollidableListener, CollisionChecker,
+public interface Collidable extends RoutineRender, Shape, CollidableListener, CollisionChecker,
                             Listenable<CollidableListener>
 {
     /**

@@ -20,8 +20,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Mirror;
-import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.UpdatableVoid;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Mirrorable model implementation.
@@ -30,10 +29,13 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
 {
     /** Listeners. */
     private final ListenableModel<MirrorableListener> listenable = new ListenableModel<>();
-    /** Update mirror. */
-    private Updatable updater = UpdatableVoid.getInstance();
+    /** Update priority. */
+    private final int priorityUpdate;
+
     /** Current mirror. */
     private Mirror mirror = Mirror.NONE;
+    /** Old mirror. */
+    private Mirror old = mirror;
     /** Next mirror to apply. */
     private Mirror nextState = mirror;
 
@@ -46,28 +48,24 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
      */
     public MirrorableModel(Services services, Setup setup)
     {
-        super(services, setup);
+        this(services, setup, XmlReader.EMPTY);
     }
 
     /**
-     * Apply next mirror.
+     * Create feature.
      * 
-     * @param extrp The extrapolation value.
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
-    private void updateMirror(double extrp)
+    public MirrorableModel(Services services, Setup setup, XmlReader config)
     {
-        final Mirror old = mirror;
-        mirror = nextState;
+        super(services, setup);
 
-        if (mirror != old)
-        {
-            final int n = listenable.size();
-            for (int i = 0; i < n; i++)
-            {
-                listenable.get(i).notifyMirrored(old, mirror);
-            }
-        }
-        updater = UpdatableVoid.getInstance();
+        Check.notNull(config);
+
+        priorityUpdate = config.getInteger(RoutineUpdate.MIRRORABLE, FeaturableConfig.ATT_PRIORITY_UPDATE);
     }
 
     @Override
@@ -84,12 +82,16 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
     @Override
     public void addListener(MirrorableListener listener)
     {
+        Check.notNull(listener);
+
         listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(MirrorableListener listener)
     {
+        Check.notNull(listener);
+
         listenable.removeListener(listener);
     }
 
@@ -99,13 +101,32 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
         Check.notNull(state);
 
         nextState = state;
-        updater = this::updateMirror;
+    }
+
+    @Override
+    public void updateBefore()
+    {
+        old = mirror;
     }
 
     @Override
     public void update(double extrp)
     {
-        updater.update(extrp);
+        mirror = nextState;
+    }
+
+    @Override
+    public void updateAfter()
+    {
+        if (mirror != old)
+        {
+            final int n = listenable.size();
+            for (int i = 0; i < n; i++)
+            {
+                listenable.get(i).notifyMirrored(old, mirror);
+            }
+            old = mirror;
+        }
     }
 
     @Override
@@ -121,10 +142,16 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
     }
 
     @Override
+    public int getPriotityUpdate()
+    {
+        return priorityUpdate;
+    }
+
+    @Override
     public void recycle()
     {
         mirror = Mirror.NONE;
+        old = mirror;
         nextState = mirror;
-        updater = UpdatableVoid.getInstance();
     }
 }

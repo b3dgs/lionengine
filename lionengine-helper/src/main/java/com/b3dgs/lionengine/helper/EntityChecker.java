@@ -33,6 +33,7 @@ public class EntityChecker extends FeatureAbstract implements Updatable, Listena
 {
     /** Listeners. */
     private final ListenableModel<EntityCheckerListener> listeners = new ListenableModel<>();
+
     /** Checker update. */
     private BooleanSupplier checkerUpdate = () -> true;
     /** Checker render. */
@@ -102,12 +103,16 @@ public class EntityChecker extends FeatureAbstract implements Updatable, Listena
     @Override
     public void addListener(EntityCheckerListener listener)
     {
+        Check.notNull(listener);
+
         listeners.addListener(listener);
     }
 
     @Override
     public void removeListener(EntityCheckerListener listener)
     {
+        Check.notNull(listener);
+
         listeners.removeListener(listener);
     }
 }

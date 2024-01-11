@@ -182,12 +182,16 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
     @Override
     public void addListener(MapTilePersisterListener listener)
     {
+        Check.notNull(listener);
+
         listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(MapTilePersisterListener listener)
     {
+        Check.notNull(listener);
+
         listenable.removeListener(listener);
     }
 

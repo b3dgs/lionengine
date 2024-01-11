@@ -24,11 +24,14 @@ import java.util.Queue;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Recyclable;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -38,12 +41,16 @@ import com.b3dgs.lionengine.game.feature.Transformable;
  */
 public class ProducerModel extends FeatureModel implements Producer, Recyclable
 {
+    /** Handler reference. */
+    private final Handler handler = services.get(Handler.class);
+
     /** Producer listeners. */
     private final ListenableModel<ProducerListener> listenable = new ListenableModel<>();
     /** Production queue. */
     private final Queue<Featurable> productions = new ArrayDeque<>();
-    /** Handler reference. */
-    private final Handler handler = services.get(Handler.class);
+    /** Update priority. */
+    private final int priorityUpdate;
+
     /** Production checker. */
     private ProducerChecker checker = featurable -> true;
     /** Steps per tick. */
@@ -79,7 +86,37 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
      */
     public ProducerModel(Services services, Setup setup)
     {
+        this(services, setup, XmlReader.EMPTY);
+    }
+
+    /**
+     * Create feature.
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link Handler}</li>
+     * </ul>
+     * <p>
+     * The {@link Featurable} can be a {@link ProducerChecker}.
+     * </p>
+     * <p>
+     * If the {@link Featurable} is a {@link ProducerListener}, it will automatically
+     * {@link #addListener(ProducerListener)} on it.
+     * </p>
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
+     */
+    public ProducerModel(Services services, Setup setup, XmlReader config)
+    {
         super(services, setup);
+
+        Check.notNull(config);
+
+        priorityUpdate = config.getInteger(RoutineUpdate.PRODUCER, FeaturableConfig.ATT_PRIORITY_UPDATE);
     }
 
     /**
@@ -226,12 +263,16 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     @Override
     public void addListener(ProducerListener listener)
     {
+        Check.notNull(listener);
+
         listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(ProducerListener listener)
     {
+        Check.notNull(listener);
+
         listenable.removeListener(listener);
     }
 
@@ -346,6 +387,12 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     public boolean isProducing()
     {
         return ProducerState.PRODUCING == state;
+    }
+
+    @Override
+    public int getPriotityUpdate()
+    {
+        return priorityUpdate;
     }
 
     @Override

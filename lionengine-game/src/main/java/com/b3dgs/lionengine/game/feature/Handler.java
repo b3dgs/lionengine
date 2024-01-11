@@ -176,7 +176,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
             {
                 final Transformable transformable = featurable.getFeature(Transformable.class);
                 transformable.teleport(transformable.getX(), transformable.getY());
-                transformable.check(true);
+                transformable.updateAfter();
             }
             if (featurable.hasFeature(Collidable.class))
             {

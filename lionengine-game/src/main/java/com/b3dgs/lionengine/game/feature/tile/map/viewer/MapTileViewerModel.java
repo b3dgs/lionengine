@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.viewer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -38,6 +39,7 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
 {
     /** Map tiles renderers. */
     private final List<MapTileRenderer> renderers = new ArrayList<>();
+
     /** Viewer reference. */
     private final Viewer viewer;
 
@@ -128,12 +130,16 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
     @Override
     public void addRenderer(MapTileRenderer renderer)
     {
+        Check.notNull(renderer);
+
         renderers.add(renderer);
     }
 
     @Override
     public void removeRenderer(MapTileRenderer renderer)
     {
+        Check.notNull(renderer);
+
         renderers.remove(renderer);
     }
 

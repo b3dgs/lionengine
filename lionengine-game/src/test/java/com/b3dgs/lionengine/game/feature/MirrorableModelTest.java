@@ -88,7 +88,9 @@ final class MirrorableModelTest
         assertNull(o.get());
         assertNull(n.get());
 
+        mirrorable.updateBefore();
         mirrorable.update(1.0);
+        mirrorable.updateAfter();
 
         assertEquals(Mirror.NONE, mirrorable.getMirror());
         assertNull(o.get());
@@ -100,7 +102,9 @@ final class MirrorableModelTest
         assertNull(o.get());
         assertNull(n.get());
 
+        mirrorable.updateBefore();
         mirrorable.update(1.0);
+        mirrorable.updateAfter();
 
         assertEquals(Mirror.HORIZONTAL, mirrorable.getMirror());
         assertTrue(mirrorable.is(Mirror.HORIZONTAL));
@@ -113,7 +117,9 @@ final class MirrorableModelTest
         assertEquals(Mirror.NONE, o.get());
         assertEquals(Mirror.HORIZONTAL, n.get());
 
+        mirrorable.updateBefore();
         mirrorable.update(1.0);
+        mirrorable.updateAfter();
 
         assertEquals(Mirror.VERTICAL, mirrorable.getMirror());
         assertTrue(mirrorable.is(Mirror.VERTICAL));

@@ -16,12 +16,16 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -31,13 +35,16 @@ import com.b3dgs.lionengine.game.feature.Transformable;
  */
 public class LaunchableModel extends FeatureModel implements Launchable, Recyclable
 {
-    /** Launcher listeners. */
-    private final ListenableModel<LaunchableListener> listenable = new ListenableModel<>();
-    /** Vector reference. */
-    private Force vector;
-
     /** Transformable reference. */
     private final Transformable transformable;
+
+    /** Launcher listeners. */
+    private final ListenableModel<LaunchableListener> listenable = new ListenableModel<>();
+    /** Update priority. */
+    private final int priorityUpdate;
+
+    /** Vector reference. */
+    private Force vector;
 
     /**
      * Create feature.
@@ -55,9 +62,32 @@ public class LaunchableModel extends FeatureModel implements Launchable, Recycla
      */
     public LaunchableModel(Services services, Setup setup, Transformable transformable)
     {
+        this(services, setup, XmlReader.EMPTY, transformable);
+    }
+
+    /**
+     * Create feature.
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * </ul>
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @param transformable The transformable feature.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public LaunchableModel(Services services, Setup setup, XmlReader config, Transformable transformable)
+    {
         super(services, setup);
 
+        Check.notNull(config);
+
         this.transformable = transformable;
+        priorityUpdate = config.getInteger(RoutineUpdate.LAUNCHABLE, FeaturableConfig.ATT_PRIORITY_UPDATE);
     }
 
     @Override
@@ -74,19 +104,24 @@ public class LaunchableModel extends FeatureModel implements Launchable, Recycla
     @Override
     public void addListener(LaunchableListener listener)
     {
+        Check.notNull(listener);
+
         listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(LaunchableListener listener)
     {
+        Check.notNull(listener);
+
         listenable.removeListener(listener);
     }
 
     @Override
     public void launch()
     {
-        for (int i = 0; i < listenable.size(); i++)
+        final int n = listenable.size();
+        for (int i = 0; i < n; i++)
         {
             listenable.get(i).notifyFired(this);
         }
@@ -118,6 +153,12 @@ public class LaunchableModel extends FeatureModel implements Launchable, Recycla
     public Force getDirection()
     {
         return vector;
+    }
+
+    @Override
+    public int getPriotityUpdate()
+    {
+        return priorityUpdate;
     }
 
     @Override

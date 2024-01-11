@@ -20,7 +20,7 @@ import com.b3dgs.lionengine.game.DirectionNone;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.Recyclable;
-import com.b3dgs.lionengine.game.feature.Routine;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.helper.EntityModelHelper;
  * Player model implementation.
  */
 @FeatureInterface
-public final class PlayerModel extends EntityModelHelper implements Routine, Recyclable
+public final class PlayerModel extends EntityModelHelper implements RoutineUpdate, Recyclable
 {
     private static final double SPEED = 1.0;
     private static final double JUMP = 8.0;

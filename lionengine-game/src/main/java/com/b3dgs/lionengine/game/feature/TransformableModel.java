@@ -16,8 +16,10 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Mover;
@@ -33,6 +35,9 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     private final ListenableModel<TransformableListener> listenable = new ListenableModel<>();
     /** Mover model. */
     private final Mover mover = new MoverModel();
+    /** Update priority. */
+    private final int priorityUpdate;
+
     /** Body width. */
     private int width;
     /** Body height. */
@@ -41,6 +46,8 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     private int oldWidth;
     /** Body old height. */
     private int oldHeight;
+    /** Dirty flag to force update. */
+    private boolean dirty;
 
     /**
      * Create feature.
@@ -54,8 +61,35 @@ public class TransformableModel extends FeatureModel implements Transformable, R
      */
     public TransformableModel(Services services, Setup setup)
     {
+        this(services, setup, XmlReader.EMPTY);
+    }
+
+    /**
+     * Create feature.
+     * <p>
+     * The {@link Configurer} can provide a valid {@link SizeConfig}.
+     * </p>
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
+     */
+    public TransformableModel(Services services, Setup setup, XmlReader config)
+    {
         super(services, setup);
 
+        Check.notNull(config);
+
+        priorityUpdate = config.getInteger(RoutineUpdate.TRANSFORMABLE, FeaturableConfig.ATT_PRIORITY_UPDATE);
+        readConfig();
+    }
+
+    /**
+     * Read configuration.
+     */
+    private void readConfig()
+    {
         if (setup.hasNode(SizeConfig.NODE_SIZE))
         {
             final SizeConfig config = SizeConfig.imports(setup);
@@ -80,12 +114,16 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     @Override
     public void addListener(TransformableListener listener)
     {
+        Check.notNull(listener);
+
         listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(TransformableListener listener)
     {
+        Check.notNull(listener);
+
         listenable.removeListener(listener);
     }
 
@@ -123,18 +161,21 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     public void teleport(double x, double y)
     {
         mover.teleport(x, y);
+        dirty = true;
     }
 
     @Override
     public void teleportX(double x)
     {
         mover.teleportX(x);
+        dirty = true;
     }
 
     @Override
     public void teleportY(double y)
     {
         mover.teleportY(y);
+        dirty = true;
     }
 
     @Override
@@ -159,17 +200,14 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     public void transform(double x, double y, int width, int height)
     {
         mover.teleport(x, y);
-        oldWidth = this.width;
-        oldHeight = this.height;
         this.width = width;
         this.height = height;
+        dirty = true;
     }
 
     @Override
     public void setSize(int width, int height)
     {
-        oldWidth = this.width;
-        oldHeight = this.height;
         this.width = width;
         this.height = height;
     }
@@ -178,18 +216,40 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     public void check(boolean force)
     {
         // CHECKSTYLE IGNORE LINE: BooleanExpressionComplexity
-        if (force
+        if (dirty
+            || force
             || mover.getOldX() != mover.getX()
             || mover.getOldY() != mover.getY()
             || oldWidth != width
             || oldHeight != height)
         {
+            dirty = false;
             final int n = listenable.size();
             for (int i = 0; i < n; i++)
             {
                 listenable.get(i).notifyTransformed(this);
             }
         }
+    }
+
+    @Override
+    public void updateBefore()
+    {
+        mover.backup();
+        oldWidth = width;
+        oldHeight = height;
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        // Nothing
+    }
+
+    @Override
+    public void updateAfter()
+    {
+        check(false);
     }
 
     @Override
@@ -241,8 +301,15 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     }
 
     @Override
+    public int getPriotityUpdate()
+    {
+        return priorityUpdate;
+    }
+
+    @Override
     public void recycle()
     {
         mover.teleport(0.0, 0.0);
+        readConfig();
     }
 }

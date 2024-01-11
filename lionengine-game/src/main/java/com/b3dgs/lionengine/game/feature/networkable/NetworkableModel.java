@@ -51,6 +51,7 @@ public class NetworkableModel extends FeatureModel implements Networkable
     protected final Client client = services.getOptional(Client.class).orElse(null);
     /** Feature mapping. */
     private final Map<Integer, Syncable> syncables = new HashMap<>();
+
     /** Client id (0 = default for server). */
     private Integer clientId;
     /** Data id. */

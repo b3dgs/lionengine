@@ -59,14 +59,10 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
     private final Set<Integer> indexsSet = new HashSet<>();
     /** Layers to render. */
     private final Map<Integer, List<Refreshable>> layers = new HashMap<>();
-    /** Layer to backup. */
-    private final List<Transformable> toBackup = new ArrayList<>();
     /** Layer to update. */
     private final List<LayerUpdate> toUpdate = new ArrayList<>();
     /** Update flag. */
     private boolean updateRequested;
-    /** To backup size. */
-    private int backupCount;
 
     /**
      * Create component.
@@ -118,11 +114,6 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
     @Override
     public void update(double extrp, Handlables featurables)
     {
-        for (int i = 0; i < backupCount; i++)
-        {
-            toBackup.get(i).backup();
-        }
-
         for (int l = 0; l < indexs.size(); l++)
         {
             final List<Refreshable> refreshable = layers.get(indexs.get(l));
@@ -173,11 +164,6 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
         {
             featurable.getFeature(Layerable.class).addListener(this);
         }
-        featurable.ifIs(Transformable.class, t ->
-        {
-            toBackup.add(t);
-            backupCount++;
-        });
     }
 
     @Override
@@ -193,11 +179,6 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
         {
             featurable.getFeature(Layerable.class).removeListener(this);
         }
-        featurable.ifIs(Transformable.class, t ->
-        {
-            toBackup.remove(t);
-            backupCount--;
-        });
     }
 
     @Override
@@ -217,30 +198,12 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
 
     /**
      * Layer update data.
+     * 
+     * @param refreshable The refreshable reference.
+     * @param layerOld The old layer.
+     * @param layerNew The new layer.
      */
-    private static final class LayerUpdate
+    private record LayerUpdate(Refreshable refreshable, Integer layerOld, Integer layerNew)
     {
-        /** Refreshable reference. */
-        private final Refreshable refreshable;
-        /** Old layer. */
-        private final Integer layerOld;
-        /** New layer. */
-        private final Integer layerNew;
-
-        /**
-         * Create data.
-         * 
-         * @param refreshable The refreshable reference.
-         * @param layerOld The old layer.
-         * @param layerNew The new layer.
-         */
-        private LayerUpdate(Refreshable refreshable, Integer layerOld, Integer layerNew)
-        {
-            super();
-
-            this.refreshable = refreshable;
-            this.layerOld = layerOld;
-            this.layerNew = layerNew;
-        }
     }
 }

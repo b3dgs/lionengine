@@ -18,14 +18,13 @@ package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Shape;
-import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Mover;
 
 /**
  * Represents something that can be transformed with a translation and size modification.
  */
 @FeatureInterface
-public interface Transformable extends Feature, Mover, Shape, Listenable<TransformableListener>
+public interface Transformable extends RoutineUpdate, Mover, Shape, Listenable<TransformableListener>
 {
     /**
      * Set current size.

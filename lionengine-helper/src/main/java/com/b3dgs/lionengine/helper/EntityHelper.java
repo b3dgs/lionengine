@@ -16,41 +16,36 @@
  */
 package com.b3dgs.lionengine.helper;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UpdatableVoid;
+import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.ActionerModel;
-import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
-import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
-import com.b3dgs.lionengine.game.feature.Routines;
+import com.b3dgs.lionengine.game.feature.RoutineRender;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
-import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerModel;
-import com.b3dgs.lionengine.game.feature.body.Body;
 import com.b3dgs.lionengine.game.feature.body.BodyModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
 import com.b3dgs.lionengine.game.feature.collidable.framed.CollidableFramedModel;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectableModel;
-import com.b3dgs.lionengine.game.feature.launchable.Launchable;
 import com.b3dgs.lionengine.game.feature.launchable.LaunchableModel;
-import com.b3dgs.lionengine.game.feature.launchable.Launcher;
 import com.b3dgs.lionengine.game.feature.launchable.LauncherModel;
 import com.b3dgs.lionengine.game.feature.networkable.NetworkableModel;
-import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.ProducerModel;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleModel;
-import com.b3dgs.lionengine.game.feature.rasterable.Rasterable;
 import com.b3dgs.lionengine.game.feature.rasterable.RasterableModel;
 import com.b3dgs.lionengine.game.feature.rasterable.SetupSurfaceRastered;
 import com.b3dgs.lionengine.game.feature.state.State;
@@ -58,9 +53,7 @@ import com.b3dgs.lionengine.game.feature.state.StateHandler;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidable;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractableModel;
-import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorModel;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FovableModel;
 import com.b3dgs.lionengine.graphic.Renderable;
@@ -69,7 +62,6 @@ import com.b3dgs.lionengine.graphic.RenderableVoid;
 /**
  * Entity helper base.
  */
-// CHECKSTYLE IGNORE LINE: DataAbstractionCoupling|FanOutComplexity
 public class EntityHelper extends FeaturableModel
 {
     private static final int PREFIX = State.class.getSimpleName().length();
@@ -85,26 +77,17 @@ public class EntityHelper extends FeaturableModel
         return state.getSimpleName().substring(PREFIX).toLowerCase(Locale.ENGLISH);
     }
 
-    private final EntityChecker checker;
-    private final Body body;
-    private final StateHandler state;
-    private final Mirrorable mirrorable;
-    private final Animatable animatable;
-    private final Rasterable rasterable;
-    private final Transformable transformable;
-    private final Collidable collidable;
-    private final TileCollidable tileCollidable;
-    private final Pathfindable pathfindable;
-    private final Attacker attacker;
-    private final Extractor extractor;
-    private final Producer producer;
-    private final Launchable launchable;
-    private final Launcher launcher;
-
-    private Updatable updating;
-    private Renderable rendering;
-
+    /** Updatable list. */
+    private final List<RoutineUpdate> updatables = new ArrayList<>();
+    /** Renderable list. */
+    private final List<RoutineRender> renderables = new ArrayList<>();
+    /** Updating routine. */
+    private final Updatable updating;
+    /** Rendering routine. */
+    private final Renderable rendering;
+    /** Current updating. */
     private Updatable updatingCurrent;
+    /** Current rendering. */
     private Renderable renderingCurrent;
 
     /**
@@ -113,36 +96,40 @@ public class EntityHelper extends FeaturableModel
      * @param services The services reference.
      * @param setup The setup reference.
      */
+    // CHECKSTYLE IGNORE LINE: C
     public EntityHelper(Services services, SetupSurfaceRastered setup)
     {
         super(services, setup);
 
-        addFeature(NetworkableModel.class, services, setup);
-        addFeature(LayerableModel.class, services, setup);
-        transformable = addFeature(TransformableModel.class, services, setup);
-        addFeature(FovableModel.class, services, setup);
-        addFeature(ActionerModel.class, services, setup);
+        updating = extrp ->
+        {
+            final int n = updatables.size();
+            for (int i = 0; i < n; i++)
+            {
+                updatables.get(i).updateBefore();
+            }
+            for (int i = 0; i < n; i++)
+            {
+                updatables.get(i).update(extrp);
+            }
+            for (int i = 0; i < n; i++)
+            {
+                updatables.get(i).updateAfter();
+            }
+        };
+        rendering = g ->
+        {
+            final int n = renderables.size();
+            for (int i = 0; i < n; i++)
+            {
+                renderables.get(i).render(g);
+            }
+        };
 
-        state = addFeature(new StateHandler(EntityHelper::getAnimationName, services, setup));
-        body = addFeature(BodyModel.class, services, setup);
-        mirrorable = addFeature(MirrorableModel.class, services, setup);
-        animatable = addFeature(AnimatableModel.class, services, setup);
-        rasterable = addFeature(RasterableModel.class, services, setup);
-        collidable = addFeature(CollidableModel.class, services, setup);
-        tileCollidable = addFeature(TileCollidableModel.class, services, setup);
-        pathfindable = addFeature(PathfindableModel.class, services, setup);
-        attacker = addFeature(AttackerModel.class, services, setup);
-        extractor = addFeature(ExtractorModel.class, services, setup);
-        producer = addFeature(ProducerModel.class, services, setup);
-        launchable = addFeature(LaunchableModel.class, services, setup);
-        launcher = addFeature(LauncherModel.class, services, setup);
+        updatingCurrent = updating;
+        renderingCurrent = rendering;
 
-        addFeature(ProducibleModel.class, services, setup);
-        addFeature(ExtractableModel.class, services, setup);
-        addFeature(CollidableFramedModel.class, services, setup);
-        addFeature(SelectableModel.class, services, setup);
-
-        checker = addFeature(new EntityChecker());
+        final EntityChecker checker = addFeature(new EntityChecker());
         checker.addListener(new EntityCheckerListener()
         {
             @Override
@@ -158,6 +145,34 @@ public class EntityHelper extends FeaturableModel
             }
         });
 
+        addFeature(new RefreshableModel(extrp ->
+        {
+            checker.update(extrp);
+            updatingCurrent.update(extrp);
+        }));
+        addFeature(new DisplayableModel(renderingCurrent::render));
+        addFeature(NetworkableModel.class, services, setup);
+        addFeature(LayerableModel.class, services, setup);
+        addFeature(TransformableModel.class, services, setup);
+        addFeature(FovableModel.class, services, setup);
+        addFeature(ActionerModel.class, services, setup);
+        addFeature(BodyModel.class, services, setup);
+        addFeature(MirrorableModel.class, services, setup);
+        addFeature(AnimatableModel.class, services, setup);
+        addFeature(RasterableModel.class, services, setup);
+        addFeature(PathfindableModel.class, services, setup);
+        addFeature(AttackerModel.class, services, setup);
+        addFeature(ExtractorModel.class, services, setup);
+        addFeature(ProducerModel.class, services, setup);
+        addFeature(LaunchableModel.class, services, setup);
+        addFeature(LauncherModel.class, services, setup);
+        addFeature(ProducibleModel.class, services, setup);
+        addFeature(ExtractableModel.class, services, setup);
+        addFeature(SelectableModel.class, services, setup);
+
+        final StateHandler state = addFeature(new StateHandler(EntityHelper::getAnimationName, services, setup));
+
+        final TileCollidable tileCollidable = addFeature(TileCollidableModel.class, services, setup);
         tileCollidable.addListener((r, c) ->
         {
             final State current = state.getCurrent();
@@ -166,6 +181,8 @@ public class EntityHelper extends FeaturableModel
                 s.notifyTileCollided(r, c);
             }
         });
+
+        final Collidable collidable = addFeature(CollidableModel.class, services, setup);
         collidable.addListener((c, w, b) ->
         {
             final State current = state.getCurrent();
@@ -174,6 +191,7 @@ public class EntityHelper extends FeaturableModel
                 s.notifyCollided(c, w, b);
             }
         });
+        addFeature(CollidableFramedModel.class, services, setup);
     }
 
     /**
@@ -211,45 +229,20 @@ public class EntityHelper extends FeaturableModel
     }
 
     @Override
-    public void addAfter(Services services, Setup setup)
+    public void prepare()
     {
-        final Routines routines = addFeature(Routines.class, services, setup);
-
-        updating = extrp ->
+        for (final Feature feature : getFeatures())
         {
-            state.update(extrp);
-            attacker.update(extrp);
-            extractor.update(extrp);
-            producer.update(extrp);
-            launchable.update(extrp);
-            launcher.update(extrp);
-            routines.update(extrp);
-            body.update(extrp);
-            pathfindable.update(extrp);
-            tileCollidable.update(extrp);
-            state.postUpdate();
-            mirrorable.update(extrp);
-            animatable.update(extrp);
-            rasterable.update(extrp);
-            transformable.check(false);
-        };
-
-        rendering = g ->
-        {
-            pathfindable.render(g);
-            rasterable.render(g);
-            collidable.render(g);
-            routines.render(g);
-        };
-
-        updatingCurrent = updating;
-        renderingCurrent = rendering;
-
-        addFeature(new RefreshableModel(extrp ->
-        {
-            checker.update(extrp);
-            updatingCurrent.update(extrp);
-        }));
-        addFeature(new DisplayableModel(renderingCurrent::render));
+            if (feature instanceof final RoutineUpdate routine)
+            {
+                updatables.add(routine);
+            }
+            if (feature instanceof final RoutineRender routine)
+            {
+                renderables.add(routine);
+            }
+        }
+        Collections.sort(updatables, RoutineUpdate::compare);
+        Collections.sort(renderables, RoutineRender::compare);
     }
 }

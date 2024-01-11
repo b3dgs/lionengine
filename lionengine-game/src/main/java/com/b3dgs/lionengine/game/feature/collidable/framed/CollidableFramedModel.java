@@ -37,11 +37,11 @@ import com.b3dgs.lionengine.game.feature.collidable.Collision;
  */
 public class CollidableFramedModel extends FeatureModel implements CollidableFramed, Recyclable
 {
-    /** Loaded collisions framed. */
-    private final CollidableFramedConfig config;
     /** Frame listener. */
     private final AnimatorFrameListener listener = new AnimListener();
-
+    /** Loaded collisions framed. */
+    private final CollidableFramedConfig config;
+    /** Collidable owner. */
     private final Collidable collidable;
 
     /**
@@ -110,6 +110,20 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
             super();
         }
 
+        /**
+         * Set enabled flag.
+         * 
+         * @param enabled The enabled flag.
+         */
+        private void setEnabled(boolean enabled)
+        {
+            final int n = last.size();
+            for (int i = 0; i < n; i++)
+            {
+                collidable.setEnabled(enabled, last.get(i));
+            }
+        }
+
         @Override
         public void notifyAnimFrame(int frame)
         {
@@ -122,15 +136,6 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
         public void notifyAnimPlayed(Animation anim)
         {
             collidable.forceUpdate();
-        }
-
-        private void setEnabled(boolean enabled)
-        {
-            final int n = last.size();
-            for (int i = 0; i < n; i++)
-            {
-                collidable.setEnabled(enabled, last.get(i));
-            }
         }
     }
 }

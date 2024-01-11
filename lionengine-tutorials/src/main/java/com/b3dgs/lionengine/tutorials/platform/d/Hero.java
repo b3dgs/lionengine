@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.Routine;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidable;
  * Hero specific implementation.
  */
 @FeatureInterface
-public final class Hero extends FeatureModel implements Routine, CollidableListener
+public final class Hero extends FeatureModel implements RoutineUpdate, CollidableListener
 {
     private static final long DEAD_TICK = 30L;
 

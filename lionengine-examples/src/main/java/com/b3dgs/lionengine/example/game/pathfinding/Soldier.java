@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.Routine;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.rasterable.Rasterable;
@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListen
  * Soldier entity implementation.
  */
 @FeatureInterface
-public final class Soldier extends FeatureModel implements Routine, PathfindableListener
+public final class Soldier extends FeatureModel implements RoutineUpdate, PathfindableListener
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("OrcSoldier.xml");

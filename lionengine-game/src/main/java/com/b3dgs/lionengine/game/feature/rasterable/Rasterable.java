@@ -22,17 +22,16 @@ import java.util.Optional;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
-import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.game.feature.RoutineRender;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 
 /**
  * Represents a surface that can be rastered.
  */
 @FeatureInterface
-public interface Rasterable extends Feature, Updatable, Renderable
+public interface Rasterable extends RoutineUpdate, RoutineRender
 {
     /**
      * Transform frame.

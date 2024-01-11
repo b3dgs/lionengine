@@ -130,6 +130,11 @@ public interface Featurable extends FeatureProvider
     void checkListener(Object listener);
 
     /**
+     * Prepare featurable.
+     */
+    void prepare();
+
+    /**
      * Get the associated media.
      * 
      * @return The associated media, <code>null</code> if none.

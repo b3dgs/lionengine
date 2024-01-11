@@ -17,16 +17,15 @@
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
 import com.b3dgs.lionengine.Listenable;
-import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 
 /**
  * This interface represents the ability of resource extraction.
  */
 @FeatureInterface
-public interface Extractor extends Feature, Updatable, Listenable<ExtractorListener>
+public interface Extractor extends RoutineUpdate, Listenable<ExtractorListener>
 {
     /**
      * Set the extractor checker.

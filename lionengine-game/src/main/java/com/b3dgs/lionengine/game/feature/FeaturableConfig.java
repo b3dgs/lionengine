@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +55,10 @@ public record FeaturableConfig(String clazz, String setup)
     public static final String NODE_FEATURES = Constant.XML_PREFIX + "features";
     /** Feature node. */
     public static final String NODE_FEATURE = Constant.XML_PREFIX + "feature";
+    /** Feature priority update attribute name. */
+    public static final String ATT_PRIORITY_UPDATE = "priorityUpdate";
+    /** Feature priority render attribute name. */
+    public static final String ATT_PRIORITY_RENDER = "priorityRender";
     /** Class not found error. */
     static final String ERROR_CLASS_PRESENCE = "Class not found: ";
     /** Constructor not found error. */
@@ -187,7 +190,7 @@ public record FeaturableConfig(String clazz, String setup)
                                    Setup setup,
                                    Class<?> filter)
     {
-        final Collection<XmlReader> children;
+        final List<XmlReader> children;
         final XmlReader root = setup.getRoot();
         if (root.hasNode(NODE_FEATURES))
         {
@@ -200,13 +203,15 @@ public record FeaturableConfig(String clazz, String setup)
             children = Collections.emptyList();
         }
 
-        for (final XmlReader featureNode : children)
+        final int n = children.size();
+        for (int i = 0; i < n; i++)
         {
-            final String className = featureNode.getText();
+            final XmlReader node = children.get(i);
+            final String className = node.getText();
             final Class<? extends Feature> clazz = getClass(loader, className);
             if (filter == null || filter.isAssignableFrom(clazz))
             {
-                createAndAdd(clazz, featurable, services, setup);
+                createAndAdd(clazz, featurable, services, setup, node);
             }
         }
         children.clear();
@@ -220,14 +225,19 @@ public record FeaturableConfig(String clazz, String setup)
      * @param featurable The featurable owner.
      * @param services The services reference.
      * @param setup The setup reference.
+     * @param config The feature configuration node.
      * @return The created feature.
      */
-    static <T extends Feature> T createAndAdd(Class<T> clazz, Featurable featurable, Services services, Setup setup)
+    static <T extends Feature> T createAndAdd(Class<T> clazz,
+                                              Featurable featurable,
+                                              Services services,
+                                              Setup setup,
+                                              XmlReader config)
     {
 
         try
         {
-            return checkConstructors(clazz, featurable, services, setup);
+            return checkConstructors(clazz, featurable, services, setup, config);
         }
         catch (final ReflectiveOperationException | IllegalArgumentException | LionEngineException exception)
         {
@@ -238,7 +248,8 @@ public record FeaturableConfig(String clazz, String setup)
     private static <T extends Feature> T checkConstructors(Class<T> clazz,
                                                            Featurable featurable,
                                                            Services services,
-                                                           Setup setup)
+                                                           Setup setup,
+                                                           XmlReader config)
             throws ReflectiveOperationException
     {
         final Constructor<?>[] constructors = clazz.getConstructors();
@@ -254,6 +265,12 @@ public record FeaturableConfig(String clazz, String setup)
                 final List<Object> args = new ArrayList<>();
                 args.add(services);
                 args.add(setup);
+                if (config != null
+                    && parameters.length > 2
+                    && XmlReader.class.isAssignableFrom(parameters[2].getType()))
+                {
+                    args.add(config);
+                }
 
                 addConstructorArgs(featurable, parameters, args);
 
@@ -269,8 +286,9 @@ public record FeaturableConfig(String clazz, String setup)
 
     private static void addConstructorArgs(Featurable featurable, Parameter[] parameters, List<Object> args)
     {
-        // Start after services and setup arguments
-        for (int j = 2; j < parameters.length; j++)
+        // Start after services setup and config arguments
+        final int standardArgsCount = args.size();
+        for (int j = standardArgsCount; j < parameters.length; j++)
         {
             final Class<?> type = parameters[j].getType();
             if (Feature.class.isAssignableFrom(type))

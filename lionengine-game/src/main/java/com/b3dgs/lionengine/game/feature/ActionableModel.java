@@ -16,7 +16,9 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Action;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Cursor;
@@ -31,10 +33,14 @@ public class ActionableModel extends FeatureModel implements Actionable
 {
     /** Cursor reference. */
     private final Cursor cursor = services.get(Cursor.class);
+
     /** Rectangle button area. */
     private final Area button;
     /** Action description. */
     private final String description;
+    /** Update priority. */
+    private final int priorityUpdate;
+
     /** Mouse click number to execute action. */
     private Integer clickAction;
     /** Action used. */
@@ -63,11 +69,40 @@ public class ActionableModel extends FeatureModel implements Actionable
      */
     public ActionableModel(Services services, Setup setup)
     {
+        this(services, setup, XmlReader.EMPTY);
+    }
+
+    /**
+     * Create feature.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link Cursor}</li>
+     * </ul>
+     * <p>
+     * The {@link Configurer} must provide a valid {@link ActionConfig}.
+     * </p>
+     * <p>
+     * If the {@link Featurable} owner is an {@link Action}, it will automatically {@link #setAction(Action)} on it.
+     * </p>
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
+     */
+    public ActionableModel(Services services, Setup setup, XmlReader config)
+    {
         super(services, setup);
 
-        final ActionConfig config = ActionConfig.imports(setup);
-        button = Geom.createArea(config.getX(), config.getY(), config.getWidth(), config.getHeight());
-        description = config.getDescription();
+        Check.notNull(config);
+
+        priorityUpdate = config.getInteger(RoutineUpdate.ACTIONABLE, FeaturableConfig.ATT_PRIORITY_UPDATE);
+
+        final ActionConfig ac = ActionConfig.imports(setup);
+        button = Geom.createArea(ac.getX(), ac.getY(), ac.getWidth(), ac.getHeight());
+        description = ac.getDescription();
     }
 
     @Override
@@ -130,5 +165,11 @@ public class ActionableModel extends FeatureModel implements Actionable
     public boolean isEnabled()
     {
         return enabled;
+    }
+
+    @Override
+    public int getPriotityUpdate()
+    {
+        return priorityUpdate;
     }
 }

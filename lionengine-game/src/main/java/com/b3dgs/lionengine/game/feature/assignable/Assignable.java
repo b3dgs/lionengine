@@ -16,15 +16,14 @@
  */
 package com.b3dgs.lionengine.game.feature.assignable;
 
-import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 
 /**
  * Represents an assignable action, allows to assign an action by click.
  */
 @FeatureInterface
-public interface Assignable extends Feature, Updatable
+public interface Assignable extends RoutineUpdate
 {
     /**
      * Set the executable assign.

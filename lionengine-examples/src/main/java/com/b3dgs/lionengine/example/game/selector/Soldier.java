@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.Routine;
+import com.b3dgs.lionengine.game.feature.RoutineRender;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
  * Soldier entity implementation.
  */
 @FeatureInterface
-public final class Soldier extends FeatureModel implements Routine
+public final class Soldier extends FeatureModel implements RoutineRender
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("OrcSoldier.xml");

@@ -26,13 +26,16 @@ import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -42,18 +45,22 @@ import com.b3dgs.lionengine.game.feature.Transformable;
  */
 public class AttackerModel extends FeatureModel implements Attacker, Recyclable
 {
+    /** Animatable reference. */
+    private final Animatable animatable;
+    /** Transformable reference. */
+    private final Transformable transformable;
+
     /** Listeners list. */
     private final ListenableModel<AttackerListener> listenable = new ListenableModel<>();
     /** Attack tick delay. */
     private final Tick tick = new Tick();
     /** Attack damages. */
     private final Damages damages = new Damages();
+    /** Update priority. */
+    private final int priorityUpdate;
+
     /** Attack distance allowed. */
     private Range distAttack = new Range(1, 1);
-    /** Animatable reference. */
-    private final Animatable animatable;
-    /** Transformable reference. */
-    private final Transformable transformable;
     /** Attacker checker. */
     private Predicate<Transformable> canAttack = t -> true;
     /** Attack distance computer. */
@@ -101,11 +108,51 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
      */
     public AttackerModel(Services services, Setup setup, Animatable animatable, Transformable transformable)
     {
+        this(services, setup, XmlReader.EMPTY, animatable, transformable);
+    }
+
+    /**
+     * Create feature.
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link Animatable}</li>
+     * <li>{@link Transformable}</li>
+     * </ul>
+     * <p>
+     * The {@link Configurer} can provide a valid {@link AttackerConfig}.
+     * </p>
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @param animatable The animatable feature.
+     * @param transformable The transformable feature.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public AttackerModel(Services services,
+                         Setup setup,
+                         XmlReader config,
+                         Animatable animatable,
+                         Transformable transformable)
+    {
         super(services, setup);
+
+        Check.notNull(config);
 
         this.animatable = animatable;
         this.transformable = transformable;
+        priorityUpdate = config.getInteger(RoutineUpdate.ATTACKER, FeaturableConfig.ATT_PRIORITY_UPDATE);
 
+        readConfig();
+    }
+
+    /**
+     * Read configuration.
+     */
+    private void readConfig()
+    {
         if (setup.hasNode(AttackerConfig.NODE_ATTACKER))
         {
             final AttackerConfig config = AttackerConfig.imports(setup);
@@ -244,12 +291,16 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     @Override
     public void addListener(AttackerListener listener)
     {
+        Check.notNull(listener);
+
         listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(AttackerListener listener)
     {
+        Check.notNull(listener);
+
         listenable.removeListener(listener);
     }
 
@@ -280,6 +331,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     public void update(double extrp)
     {
         tick.update(extrp);
+
         switch (state)
         {
             case NONE:
@@ -294,13 +346,20 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
             default:
                 throw new LionEngineException(state);
         }
+    }
+
+    @Override
+    public void updateAfter()
+    {
         if (stop)
         {
             attacking = false;
             state = AttackState.NONE;
             target = null;
             stop = false;
-            for (int i = 0; i < listenable.size(); i++)
+
+            final int n = listenable.size();
+            for (int i = 0; i < n; i++)
             {
                 listenable.get(i).notifyAttackStopped();
             }
@@ -375,6 +434,12 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     }
 
     @Override
+    public int getPriotityUpdate()
+    {
+        return priorityUpdate;
+    }
+
+    @Override
     public void recycle()
     {
         attacking = false;
@@ -382,5 +447,6 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         stop = false;
         target = null;
         state = AttackState.NONE;
+        readConfig();
     }
 }

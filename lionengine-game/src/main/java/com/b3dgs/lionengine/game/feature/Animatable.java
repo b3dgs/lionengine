@@ -18,13 +18,12 @@ package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animator;
-import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Animator feature wrapper.
  */
 @FeatureInterface
-public interface Animatable extends Feature, Animator
+public interface Animatable extends RoutineUpdate, Animator
 {
     /**
      * Check if is current animation state.

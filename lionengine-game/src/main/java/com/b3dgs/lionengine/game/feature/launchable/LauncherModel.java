@@ -35,6 +35,7 @@ import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.game.Direction;
@@ -43,11 +44,13 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Recyclable;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -59,6 +62,15 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 // CHECKSTYLE IGNORE LINE: FanOutComplexity
 public class LauncherModel extends FeatureModel implements Launcher, Recyclable
 {
+    /** Factory reference. */
+    private final Factory factory = services.get(Factory.class);
+    /** Handler reference. */
+    private final Handler handler = services.get(Handler.class);
+    /** Viewer reference. */
+    private final Viewer viewer = services.getOptional(Viewer.class).orElse(null);
+    /** Source reference. */
+    private final SourceResolutionProvider source = services.get(SourceResolutionProvider.class);
+
     /** Launcher listeners. */
     private final ListenableModel<LauncherListener> listenable = new ListenableModel<>();
     /** Launchable listeners. */
@@ -72,17 +84,12 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     /** Fire tick. */
     private final Tick fire = new Tick();
     /** Levels configuration. */
-    private final List<LauncherConfig> config;
-    /** Factory reference. */
-    private final Factory factory;
-    /** Handler reference. */
-    private final Handler handler;
-    /** Viewer reference. */
-    private final Viewer viewer;
-    /** Source reference. */
-    private final SourceResolutionProvider source;
+    private final List<LauncherConfig> configs;
     /** Audio player routine. */
     private final Consumer<String> audioPlayer;
+    /** Update priority. */
+    private final int priorityUpdate;
+
     /** Launchable configuration. */
     private Iterable<LaunchableConfig> launchables;
     /** Transformable model. */
@@ -136,12 +143,45 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
      */
     public LauncherModel(Services services, Setup setup)
     {
+        this(services, setup, XmlReader.EMPTY);
+    }
+
+    /**
+     * Create feature.
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link Factory}</li>
+     * <li>{@link Handler}</li>
+     * <li>{@link SourceResolutionProvider}</li>
+     * </ul>
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * </ul>
+     * <p>
+     * The {@link Setup} must provide a valid {@link LauncherConfig}.
+     * </p>
+     * <p>
+     * If the {@link Featurable} is a {@link LauncherListener}, it will automatically
+     * {@link #addListener(LauncherListener)} on it.
+     * </p>
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
+     */
+    public LauncherModel(Services services, Setup setup, XmlReader config)
+    {
         super(services, setup);
 
-        factory = services.get(Factory.class);
-        handler = services.get(Handler.class);
-        viewer = services.getOptional(Viewer.class).orElse(null);
-        source = services.get(SourceResolutionProvider.class);
+        Check.notNull(config);
+
+        priorityUpdate = config.getInteger(RoutineUpdate.LAUNCHER, FeaturableConfig.ATT_PRIORITY_UPDATE);
 
         if (viewer == null)
         {
@@ -152,18 +192,18 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
             audioPlayer = this::audioCacheAndPlayIfViewable;
         }
 
-        config = LauncherConfig.imports(setup);
-        if (config.isEmpty())
+        configs = LauncherConfig.imports(setup);
+        if (configs.isEmpty())
         {
             launchables = Collections.emptyList();
             delay = 0;
         }
         else
         {
-            launchables = config.get(0).getLaunchables();
-            delay = config.get(0).getDelay();
-            mirror = config.get(0).hasMirrorable();
-            centered = config.get(0).isCentered();
+            launchables = configs.get(0).getLaunchables();
+            delay = configs.get(0).getDelay();
+            mirror = configs.get(0).hasMirrorable();
+            centered = configs.get(0).isCentered();
         }
     }
 
@@ -387,18 +427,24 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     @Override
     public void addListener(LauncherListener listener)
     {
+        Check.notNull(listener);
+
         listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(LauncherListener listener)
     {
+        Check.notNull(listener);
+
         listenable.removeListener(listener);
     }
 
     @Override
     public void addListener(LaunchableListener listener)
     {
+        Check.notNull(listener);
+
         listenersLaunchable.add(listener);
     }
 
@@ -424,6 +470,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     public boolean fire(Direction initial, Localizable target)
     {
         this.target = target;
+
         if (fire.elapsedTime(source.getRate(), delay))
         {
             fired(initial);
@@ -437,11 +484,11 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     public void update(double extrp)
     {
         fire.update(extrp);
+
         final int n = delayed.size();
         for (int i = 0; i < n; i++)
         {
             final DelayedLaunch launch = delayed.get(i);
-
             launch.update(extrp);
             if (launch.isReady())
             {
@@ -469,10 +516,10 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         Check.superiorOrEqual(level, 0);
 
         this.level = level;
-        launchables = config.get(level).getLaunchables();
-        delay = config.get(level).getDelay();
-        mirror = config.get(level).hasMirrorable();
-        centered = config.get(level).isCentered();
+        launchables = configs.get(level).getLaunchables();
+        delay = configs.get(level).getDelay();
+        mirror = configs.get(level).hasMirrorable();
+        centered = configs.get(level).isCentered();
     }
 
     @Override
@@ -509,6 +556,12 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     public long getRate()
     {
         return delay;
+    }
+
+    @Override
+    public int getPriotityUpdate()
+    {
+        return priorityUpdate;
     }
 
     @Override

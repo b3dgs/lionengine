@@ -24,19 +24,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.OriginConfig;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.IdentifiableListener;
 import com.b3dgs.lionengine.game.feature.MirrorableListener;
 import com.b3dgs.lionengine.game.feature.Recyclable;
+import com.b3dgs.lionengine.game.feature.RoutineRender;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -51,6 +55,12 @@ import com.b3dgs.lionengine.graphic.Graphic;
 public class CollidableModel extends FeatureModel implements Collidable, Recyclable, TransformableListener,
                              MirrorableListener, IdentifiableListener
 {
+    /** The viewer reference. */
+    private final Viewer viewer = services.get(Viewer.class);
+
+    /** Transformable owning this model. */
+    private final Transformable transformable;
+
     /** Collision updater. */
     private final CollidableUpdater updater = new CollidableUpdater();
     /** The collision listener reference. */
@@ -61,15 +71,13 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
     private final Set<Integer> accepted = new HashSet<>();
     /** Bounding box cache for rendering. */
     private final Map<Collision, Rectangle> cacheRectRender = new HashMap<>();
-    /** The viewer reference. */
-    private final Viewer viewer = services.get(Viewer.class);
+    /** Priority render. */
+    private final int priorityRender;
 
     /** Associated group Id. */
     private Integer group = Integer.valueOf(0);
-    /** Transformable owning this model. */
-    private final Transformable transformable;
     /** Origin used. */
-    private Origin origin;
+    private Origin origin = OriginConfig.DEFAULT;
     /** Min offset X. */
     private int minWidth;
     /** Min width. */
@@ -110,13 +118,50 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
      */
     public CollidableModel(Services services, Setup setup, Transformable transformable)
     {
+        this(services, setup, XmlReader.EMPTY, transformable);
+    }
+
+    /**
+     * Create feature.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link Viewer}</li>
+     * </ul>
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * </ul>
+     * <p>
+     * The {@link Configurer} can provide a valid {@link CollidableConfig} and {@link CollisionConfig}.
+     * </p>
+     * <p>
+     * If the {@link Featurable} is a {@link CollidableListener}, it will automatically
+     * {@link #addListener(CollidableListener)} on it.
+     * </p>
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @param transformable The transformable feature.
+     * @throws LionEngineException If invalid argument.
+     */
+    public CollidableModel(Services services, Setup setup, XmlReader config, Transformable transformable)
+    {
         super(services, setup);
+
+        Check.notNull(config);
 
         this.transformable = transformable;
 
-        final CollidableConfig config = CollidableConfig.imports(setup);
-        group = config.getGroup();
-        accepted.addAll(config.getAccepted());
+        priorityRender = config.getInteger(RoutineRender.COLLIDABLE, FeaturableConfig.ATT_PRIORITY_RENDER);
+
+        final CollidableConfig cc = CollidableConfig.imports(setup);
+        group = cc.getGroup();
+        accepted.addAll(cc.getAccepted());
         collisions.addAll(CollisionConfig.imports(setup).getCollisions());
         updater.setEnabled(!collisions.isEmpty());
         origin = OriginConfig.imports(setup);
@@ -163,12 +208,16 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
     @Override
     public void addListener(CollidableListener listener)
     {
+        Check.notNull(listener);
+
         listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(CollidableListener listener)
     {
+        Check.notNull(listener);
+
         listenable.removeListener(listener);
     }
 
@@ -181,6 +230,8 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
     @Override
     public void addCollision(Collision collision)
     {
+        Check.notNull(collision);
+
         if (!collisions.contains(collision))
         {
             collisions.add(collision);
@@ -191,12 +242,16 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
     @Override
     public void addAccept(Integer group)
     {
+        Check.notNull(group);
+
         accepted.add(group);
     }
 
     @Override
     public void removeAccept(Integer group)
     {
+        Check.notNull(group);
+
         accepted.remove(group);
     }
 
@@ -234,12 +289,16 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
     @Override
     public void setGroup(Integer group)
     {
+        Check.notNull(group);
+
         this.group = group;
     }
 
     @Override
     public void setOrigin(Origin origin)
     {
+        Check.notNull(origin);
+
         this.origin = origin;
     }
 
@@ -353,6 +412,12 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
     public int getHeight()
     {
         return transformable.getHeight();
+    }
+
+    @Override
+    public int getPriotityRender()
+    {
+        return priorityRender;
     }
 
     @Override

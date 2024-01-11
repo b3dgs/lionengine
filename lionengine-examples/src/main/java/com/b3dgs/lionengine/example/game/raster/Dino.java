@@ -20,7 +20,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.Routine;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.feature.Transformable;
  * Dino implementation
  */
 @FeatureInterface
-public final class Dino extends FeatureModel implements Routine
+public final class Dino extends FeatureModel implements RoutineUpdate
 {
     private final Transformable transformable;
 

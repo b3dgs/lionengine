@@ -61,8 +61,6 @@ public record CollidableFramedConfig(Map<Integer, List<Collision>> collisions)
     public static final String ATT_HEIGHT = "height";
     /** Collision attribute mirror. */
     public static final String ATT_MIRROR = "mirror";
-    /** Error collision framed not found. */
-    static final String ERROR_COLLISION_NOT_FOUND = "Collision framed not found: ";
     /** Frame separator. */
     private static final String FRAME_SEPARATOR = Constant.PERCENT;
     /** Default mirror. */

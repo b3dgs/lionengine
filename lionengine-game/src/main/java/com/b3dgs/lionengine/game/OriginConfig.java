@@ -32,7 +32,8 @@ public final class OriginConfig
 {
     /** Rasterable root node. */
     public static final String NODE_ORIGIN = Constant.XML_PREFIX + "origin";
-    private static final Origin DEFAULT_ORIGIN = Origin.TOP_LEFT;
+    /** Default origin. */
+    public static final Origin DEFAULT = Origin.TOP_LEFT;
 
     /**
      * Create the data from configurer.
@@ -62,9 +63,9 @@ public final class OriginConfig
         if (root.hasNode(NODE_ORIGIN))
         {
             final XmlReader node = root.getChild(NODE_ORIGIN);
-            return Origin.valueOf(Optional.ofNullable(node.getText()).orElse(DEFAULT_ORIGIN.name()));
+            return Origin.valueOf(Optional.ofNullable(node.getText()).orElse(DEFAULT.name()));
         }
-        return DEFAULT_ORIGIN;
+        return DEFAULT;
     }
 
     /**

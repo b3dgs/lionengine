@@ -46,6 +46,7 @@ public class ComponentCollision implements ComponentUpdater, ComponentRenderer, 
 
     /** Mapping reduced by group as list index. */
     private final QuadTree collidables;
+
     /** Rendering. */
     private Renderable renderable = RenderableVoid.getInstance();
 

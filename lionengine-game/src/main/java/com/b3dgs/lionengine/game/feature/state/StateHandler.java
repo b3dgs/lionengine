@@ -29,16 +29,18 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.ListenableModel;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.AnimationConfig;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.IdentifiableListener;
 import com.b3dgs.lionengine.game.feature.Recyclable;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 
@@ -53,8 +55,8 @@ import com.b3dgs.lionengine.game.feature.Setup;
  * </ul>
  */
 @FeatureInterface
-public class StateHandler extends FeatureModel
-                          implements Updatable, Recyclable, IdentifiableListener, Listenable<StateTransitionListener>
+public class StateHandler extends FeatureModel implements RoutineUpdate, Recyclable, IdentifiableListener,
+                          Listenable<StateTransitionListener>
 {
     /** Feature parameter constructor index. */
     private static final int PARAM_FEATURE_INDEX = 0;
@@ -69,6 +71,8 @@ public class StateHandler extends FeatureModel
     private final ListenableModel<StateTransitionListener> listenable = new ListenableModel<>();
     /** Class loader. */
     private final ClassLoader classLoader;
+    /** Update priority. */
+    private final int priorityUpdate;
 
     /** Initial state. */
     private Class<? extends State> init;
@@ -91,7 +95,23 @@ public class StateHandler extends FeatureModel
      */
     public StateHandler(Services services, Setup setup)
     {
-        this(Class::getSimpleName, services, setup);
+        this(services, setup, XmlReader.EMPTY);
+    }
+
+    /**
+     * Create feature.
+     * <p>
+     * The {@link Configurer} can provide {@link Animation}.
+     * </p>
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
+     */
+    public StateHandler(Services services, Setup setup, XmlReader config)
+    {
+        this(Class::getSimpleName, services, setup, config);
     }
 
     /**
@@ -103,17 +123,38 @@ public class StateHandler extends FeatureModel
      * @param converter The animation name converter (must not be <code>null</code>).
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
+     */
+    public StateHandler(Function<Class<? extends State>, String> converter, Services services, Setup setup)
+    {
+        this(converter, services, setup, XmlReader.EMPTY);
+    }
+
+    /**
+     * Create feature.
+     * <p>
+     * The {@link Configurer} can provide {@link Animation}.
+     * </p>
      * 
+     * @param converter The animation name converter (must not be <code>null</code>).
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
     @SuppressWarnings("unchecked")
-    public StateHandler(Function<Class<? extends State>, String> converter, Services services, Setup setup)
+    private StateHandler(Function<Class<? extends State>, String> converter,
+                         Services services,
+                         Setup setup,
+                         XmlReader config)
     {
         super(services, setup);
 
         Check.notNull(converter);
+        Check.notNull(config);
 
         this.converter = converter;
+        priorityUpdate = config.getInteger(RoutineUpdate.STATE, FeaturableConfig.ATT_PRIORITY_UPDATE);
         classLoader = services.getOptional(ClassLoader.class).orElse(getClass().getClassLoader());
         StateConfig.imports(setup).ifPresent(state ->
         {
@@ -168,25 +209,6 @@ public class StateHandler extends FeatureModel
     }
 
     /**
-     * Post update checking next transition if has.
-     */
-    public void postUpdate()
-    {
-        if (current != null && next == null)
-        {
-            final Class<? extends State> state = current.checkTransitions(last);
-            if (state != null)
-            {
-                next = state;
-            }
-        }
-        if (next != null)
-        {
-            updateState();
-        }
-    }
-
-    /**
      * Update to next state defined and notify changes.
      */
     private void updateState()
@@ -208,7 +230,8 @@ public class StateHandler extends FeatureModel
         current = states.get(next);
         current.enter();
 
-        for (int i = 0; i < listenable.size(); i++)
+        final int n = listenable.size();
+        for (int i = 0; i < n; i++)
         {
             listenable.get(i).notifyStateTransition(from != null ? from.getClass() : null, next);
         }
@@ -226,6 +249,7 @@ public class StateHandler extends FeatureModel
     private State create(Class<? extends State> state)
     {
         Check.notNull(state);
+
         try
         {
             if (setup.hasNode(AnimationConfig.NODE_ANIMATIONS))
@@ -258,12 +282,16 @@ public class StateHandler extends FeatureModel
     @Override
     public void addListener(StateTransitionListener listener)
     {
+        Check.notNull(listener);
+
         listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(StateTransitionListener listener)
     {
+        Check.notNull(listener);
+
         listenable.removeListener(listener);
     }
 
@@ -274,6 +302,29 @@ public class StateHandler extends FeatureModel
         {
             current.update(extrp);
         }
+    }
+
+    @Override
+    public void updateAfter()
+    {
+        if (current != null && next == null)
+        {
+            final Class<? extends State> state = current.checkTransitions(last);
+            if (state != null)
+            {
+                next = state;
+            }
+        }
+        if (next != null)
+        {
+            updateState();
+        }
+    }
+
+    @Override
+    public int getPriotityUpdate()
+    {
+        return priorityUpdate;
     }
 
     @Override

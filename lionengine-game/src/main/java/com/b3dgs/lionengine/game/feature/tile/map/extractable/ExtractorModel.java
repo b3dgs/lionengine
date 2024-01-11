@@ -19,11 +19,14 @@ package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 
@@ -35,6 +38,9 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
 {
     /** Extractor listeners. */
     private final ListenableModel<ExtractorListener> listenable = new ListenableModel<>();
+    /** Update priority. */
+    private final int priorityUpdate;
+
     /** Resources location. */
     private ResourceLocation resourceLocation;
     /** Extractor checker reference. */
@@ -81,14 +87,32 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
      */
     public ExtractorModel(Services services, Setup setup)
     {
+        this(services, setup, XmlReader.EMPTY);
+    }
+
+    /**
+     * Create feature.
+     * <p>
+     * The {@link Configurer} can provide a valid {@link ExtractorConfig}.
+     * </p>
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
+     */
+    public ExtractorModel(Services services, Setup setup, XmlReader config)
+    {
         super(services, setup);
+
+        priorityUpdate = config.getInteger(RoutineUpdate.EXTRACTOR, FeaturableConfig.ATT_PRIORITY_UPDATE);
 
         if (setup.hasNode(ExtractorConfig.NODE_EXTRACTOR))
         {
-            final ExtractorConfig config = ExtractorConfig.imports(setup);
-            extractPerTick = config.getExtract();
-            dropOffPerTick = config.getDropOff();
-            extractionCapacity = config.getCapacity();
+            final ExtractorConfig ec = ExtractorConfig.imports(setup);
+            extractPerTick = ec.getExtract();
+            dropOffPerTick = ec.getDropOff();
+            extractionCapacity = ec.getCapacity();
         }
     }
 
@@ -226,12 +250,16 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     @Override
     public void addListener(ExtractorListener listener)
     {
+        Check.notNull(listener);
+
         listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(ExtractorListener listener)
     {
+        Check.notNull(listener);
+
         listenable.removeListener(listener);
     }
 
@@ -367,6 +395,12 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     public String getResourceType()
     {
         return resourceType;
+    }
+
+    @Override
+    public int getPriotityUpdate()
+    {
+        return priorityUpdate;
     }
 
     @Override

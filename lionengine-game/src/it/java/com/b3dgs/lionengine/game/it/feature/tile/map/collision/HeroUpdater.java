@@ -57,11 +57,11 @@ public final class HeroUpdater extends FeatureModel implements Refreshable, Tile
      * @param tileCollidable The tile collidable feature.
      */
     public HeroUpdater(Services services,
-                        Setup setup,
-                        Body body,
-                        Transformable transformable,
-                        Collidable collidable,
-                        TileCollidable tileCollidable)
+                       Setup setup,
+                       Body body,
+                       Transformable transformable,
+                       Collidable collidable,
+                       TileCollidable tileCollidable)
     {
         super(services, setup);
 

@@ -23,13 +23,17 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -40,6 +44,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
  */
 public class TileCollidableModel extends FeatureModel implements TileCollidable, Recyclable
 {
+    /** Transformable owning this model. */
+    private final Transformable transformable;
+
     /** Launcher listeners. */
     private final ListenableModel<TileCollidableListener> listenable = new ListenableModel<>();
     /** Computed results. */
@@ -50,11 +57,11 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     private final Map<Axis, Boolean> enabledAxis = new EnumMap<>(Axis.class);
     /** The collisions used. */
     private final List<CollisionCategory> categories;
+    /** Update priority. */
+    private final int priorityUpdate;
+
     /** Collision enabled. */
     private boolean enabled;
-
-    /** Transformable owning this model. */
-    private final Transformable transformable;
 
     /**
      * Create feature.
@@ -85,9 +92,46 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
      */
     public TileCollidableModel(Services services, Setup setup, Transformable transformable)
     {
+        this(services, setup, XmlReader.EMPTY, transformable);
+    }
+
+    /**
+     * Create feature.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link MapTileCollision}</li>
+     * </ul>
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * </ul>
+     * <p>
+     * The {@link Configurer} must provide a valid {@link CollisionCategoryConfig}.
+     * </p>
+     * <p>
+     * If the {@link Featurable} is a {@link TileCollidableListener}, it will automatically
+     * {@link #addListener(TileCollidableListener)} on it.
+     * </p>
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @param transformable The transformable feature.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public TileCollidableModel(Services services, Setup setup, XmlReader config, Transformable transformable)
+    {
         super(services, setup);
 
+        Check.notNull(config);
+
         this.transformable = transformable;
+
+        priorityUpdate = config.getInteger(RoutineUpdate.TILECOLLIDABLE, FeaturableConfig.ATT_PRIORITY_UPDATE);
 
         if (setup.hasNode(CollisionCategoryConfig.NODE_CATEGORIES))
         {
@@ -219,6 +263,12 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     public Collection<CollisionCategory> getCategories()
     {
         return Collections.unmodifiableCollection(categories);
+    }
+
+    @Override
+    public int getPriotityUpdate()
+    {
+        return priorityUpdate;
     }
 
     @Override

@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.game.Configurer;
@@ -27,6 +28,7 @@ public class LayerableModel extends FeatureAbstract implements Layerable
 {
     /** Layers listener. */
     private final ListenableModel<LayerableListener> listenable = new ListenableModel<>();
+
     /** Layer refresh value. */
     private Integer layerRefresh = Integer.valueOf(0);
     /** Layer display value. */
@@ -87,12 +89,16 @@ public class LayerableModel extends FeatureAbstract implements Layerable
     @Override
     public void addListener(LayerableListener listener)
     {
+        Check.notNull(listener);
+
         listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(LayerableListener listener)
     {
+        Check.notNull(listener);
+
         listenable.removeListener(listener);
     }
 

@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.regex.Pattern;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.ListenableModel;
@@ -53,7 +54,6 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 /**
  * Hud featurable implementation, containing a surface image, a {@link Selector} and menus handling.
  */
-// CHECKSTYLE IGNORE LINE: FanOutComplexity
 public class Hud extends FeaturableModel implements Listenable<HudListener>
 {
     /** Split with path. */
@@ -124,9 +124,15 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
     }
 
     /** Selector reference. */
-    protected final Selector selector;
+    protected final Selector selector = services.add(new Selector(services));
     /** Hud surface. */
     protected final SpriteAnimated surface;
+
+    /** Handler reference. */
+    private final Handler handler = services.get(Handler.class);
+    /** Factory reference. */
+    private final Factory factory = services.get(Factory.class);
+
     /** Listeners reference. */
     private final ListenableModel<HudListener> listenable = new ListenableModel<>();
     /** Created menus. */
@@ -137,10 +143,7 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
     private final Map<ActionRef, Collection<ActionRef>> previous = new HashMap<>();
     /** Last action. */
     private final List<Selectable> last = new ArrayList<>();
-    /** Handler reference. */
-    private final Handler handler = services.get(Handler.class);
-    /** Factory reference. */
-    private final Factory factory = services.get(Factory.class);
+
     /** Cancel shortcut provider. */
     private BooleanSupplier cancelShortcut = () -> false;
 
@@ -154,8 +157,6 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
     public Hud(Services services, Setup setup)
     {
         super(services, setup);
-
-        selector = services.add(new Selector(services));
 
         if (setup.hasNode(ActionsConfig.NODE_ACTIONS))
         {
@@ -185,7 +186,8 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
                 clearMenus();
                 createMenus(new ArrayList<>(0), getActionsInCommon(last));
 
-                for (int i = 0; i < listenable.size(); i++)
+                final int n = listenable.size();
+                for (int i = 0; i < n; i++)
                 {
                     listenable.get(i).notifyCanceled();
                 }
@@ -249,7 +251,8 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
         for (final ActionRef action : actions)
         {
             final Actionable menu = createMenu(action);
-            for (int i = 0; i < listenable.size(); i++)
+            final int n = listenable.size();
+            for (int i = 0; i < n; i++)
             {
                 listenable.get(i).notifyCreated(last, menu);
             }
@@ -313,10 +316,12 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
         menu.setAction(() ->
         {
             clearMenus();
+
             final Collection<ActionRef> parents = previous.get(action);
             createMenus(parents, parents);
 
-            for (int i = 0; i < listenable.size(); i++)
+            final int n = listenable.size();
+            for (int i = 0; i < n; i++)
             {
                 listenable.get(i).notifyCanceled();
             }
@@ -326,12 +331,16 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
     @Override
     public void addListener(HudListener listener)
     {
+        Check.notNull(listener);
+
         listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(HudListener listener)
     {
+        Check.notNull(listener);
+
         listenable.removeListener(listener);
     }
 

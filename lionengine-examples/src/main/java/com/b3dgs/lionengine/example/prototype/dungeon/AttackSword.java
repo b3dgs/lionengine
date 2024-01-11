@@ -24,7 +24,8 @@ import com.b3dgs.lionengine.game.Action;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
-import com.b3dgs.lionengine.game.feature.Routine;
+import com.b3dgs.lionengine.game.feature.RoutineRender;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -36,7 +37,7 @@ import com.b3dgs.lionengine.graphic.drawable.Sprite;
  * Sword attack implementation.
  */
 @FeatureInterface
-public final class AttackSword extends FeatureModel implements Trigger, Routine
+public final class AttackSword extends FeatureModel implements Trigger, RoutineUpdate, RoutineRender
 {
     private final Sprite surface = Drawable.loadSprite(Medias.create("item", "Sword1.png"));
     private final Viewer viewer;

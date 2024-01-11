@@ -16,16 +16,14 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Action;
-import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.geom.Area;
 
 /**
  * Represents a clickable action, allows to perform an action on click.
  */
 @FeatureInterface
-public interface Actionable extends Feature, Updatable
+public interface Actionable extends RoutineUpdate
 {
     /**
      * Set the executable action.

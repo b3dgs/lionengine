@@ -23,16 +23,15 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.Tick;
-import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
  * Represents something that can attack something at a defined rate, distance and damages.
  */
 @FeatureInterface
-public interface Attacker extends Feature, Updatable, Listenable<AttackerListener>
+public interface Attacker extends RoutineUpdate, Listenable<AttackerListener>
 {
     /**
      * Define a target to attack.

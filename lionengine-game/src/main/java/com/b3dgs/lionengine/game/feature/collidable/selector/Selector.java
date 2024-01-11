@@ -64,6 +64,7 @@ public class Selector extends FeaturableAbstract implements SelectorConfigurer, 
     private final SelectorRefresher refresher;
     /** Selector displayer. */
     private final SelectorDisplayer displayer;
+
     /** Accept selection filter. */
     private BiPredicate<List<Selectable>, Selectable> filter = (c, s) -> true;
 
@@ -73,8 +74,7 @@ public class Selector extends FeaturableAbstract implements SelectorConfigurer, 
      * The {@link Services} must provide:
      * </p>
      * <ul>
-     * <li>{@link Viewer}</li>
-     * <li>{@link Cursor}</li>
+     * <li>{@link ComponentCollision}</li>
      * </ul>
      * 
      * @param services The services reference (must not be <code>null</code>).

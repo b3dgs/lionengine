@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.AnimatorListener;
 import com.b3dgs.lionengine.AnimatorModel;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Animatable model implementation.
@@ -31,6 +32,8 @@ public class AnimatableModel extends FeatureModel implements Animatable, Recycla
 {
     /** Animator reference. */
     private final Animator animator;
+    /** Update priority. */
+    private final int priorityUpdate;
 
     /**
      * Create feature with internal {@link AnimatorModel}.
@@ -41,7 +44,20 @@ public class AnimatableModel extends FeatureModel implements Animatable, Recycla
      */
     public AnimatableModel(Services services, Setup setup)
     {
-        this(new AnimatorModel(), services, setup);
+        this(services, setup, XmlReader.EMPTY);
+    }
+
+    /**
+     * Create feature with internal {@link AnimatorModel}.
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
+     */
+    public AnimatableModel(Services services, Setup setup, XmlReader config)
+    {
+        this(new AnimatorModel(), services, setup, config);
     }
 
     /**
@@ -50,27 +66,46 @@ public class AnimatableModel extends FeatureModel implements Animatable, Recycla
      * @param animator The animator reference (must not be <code>null</code>).
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
-     * 
      * @throws LionEngineException If invalid arguments.
      */
     public AnimatableModel(Animator animator, Services services, Setup setup)
     {
+        this(animator, services, setup, XmlReader.EMPTY);
+    }
+
+    /**
+     * Create feature.
+     * 
+     * @param animator The animator reference (must not be <code>null</code>).
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
+     */
+    public AnimatableModel(Animator animator, Services services, Setup setup, XmlReader config)
+    {
         super(services, setup);
 
         Check.notNull(animator);
+        Check.notNull(config);
 
         this.animator = animator;
+        priorityUpdate = config.getInteger(RoutineUpdate.ANIMATABLE, FeaturableConfig.ATT_PRIORITY_UPDATE);
     }
 
     @Override
     public void addListener(AnimatorListener listener)
     {
+        Check.notNull(listener);
+
         animator.addListener(listener);
     }
 
     @Override
     public void removeListener(AnimatorListener listener)
     {
+        Check.notNull(listener);
+
         animator.removeListener(listener);
     }
 
@@ -150,6 +185,12 @@ public class AnimatableModel extends FeatureModel implements Animatable, Recycla
     public boolean is(AnimState state)
     {
         return animator.getAnimState() == state;
+    }
+
+    @Override
+    public int getPriotityUpdate()
+    {
+        return priorityUpdate;
     }
 
     @Override

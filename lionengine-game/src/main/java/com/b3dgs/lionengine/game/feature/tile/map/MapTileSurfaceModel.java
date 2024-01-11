@@ -48,6 +48,7 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
 
     /** Tile set listeners. */
     private final ListenableModel<TileSetListener> listenable = new ListenableModel<>();
+
     /** Sheet configuration file. */
     private Media sheetsConfig;
     /** Tile width. */

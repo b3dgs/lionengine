@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 
@@ -62,6 +63,7 @@ public class IdentifiableModel extends FeatureAbstract implements Identifiable, 
     private final ListenableModel<IdentifiableListener> listenable = new ListenableModel<>();
     /** Unique Id. */
     private final Integer id = getFreeId();
+
     /** Destroy request flag. */
     private boolean destroy;
     /** Destroyed flag. */
@@ -78,12 +80,16 @@ public class IdentifiableModel extends FeatureAbstract implements Identifiable, 
     @Override
     public void addListener(IdentifiableListener listener)
     {
+        Check.notNull(listener);
+
         listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(IdentifiableListener listener)
     {
+        Check.notNull(listener);
+
         listenable.removeListener(listener);
     }
 

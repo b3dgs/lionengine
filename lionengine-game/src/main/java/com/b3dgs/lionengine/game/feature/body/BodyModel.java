@@ -16,12 +16,16 @@
  */
 package com.b3dgs.lionengine.game.feature.body;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.DirectionNone;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 
@@ -34,6 +38,9 @@ public class BodyModel extends FeatureModel implements Body, Recyclable
     private final Force force = new Force();
     /** Maximum gravity value. */
     private final Force gravityMax = new Force();
+    /** Update priority. */
+    private final int priorityUpdate;
+
     /** Gravity used. */
     private double gravity = Constant.GRAVITY_EARTH;
     /** Body mass. */
@@ -48,8 +55,32 @@ public class BodyModel extends FeatureModel implements Body, Recyclable
      */
     public BodyModel(Services services, Setup setup)
     {
+        this(services, setup, XmlReader.EMPTY);
+    }
+
+    /**
+     * Create feature.
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
+     */
+    public BodyModel(Services services, Setup setup, XmlReader config)
+    {
         super(services, setup);
 
+        Check.notNull(config);
+
+        priorityUpdate = config.getInteger(RoutineUpdate.BODY, FeaturableConfig.ATT_PRIORITY_UPDATE);
+        readConfig();
+    }
+
+    /**
+     * Read configuration.
+     */
+    private void readConfig()
+    {
         final BodyConfig config = BodyConfig.imports(setup);
         gravity = config.getGravity();
         gravityMax.setDirection(0.0, -config.getGravityMax());
@@ -126,8 +157,15 @@ public class BodyModel extends FeatureModel implements Body, Recyclable
     }
 
     @Override
+    public int getPriotityUpdate()
+    {
+        return priorityUpdate;
+    }
+
+    @Override
     public void recycle()
     {
         resetGravity();
+        readConfig();
     }
 }

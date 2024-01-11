@@ -17,10 +17,9 @@
 package com.b3dgs.lionengine.game.feature.launchable;
 
 import com.b3dgs.lionengine.Listenable;
-import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 
 /**
  * Represents something which can be launched with a specified vector.
@@ -28,7 +27,7 @@ import com.b3dgs.lionengine.game.feature.FeatureInterface;
  * @see Launcher
  */
 @FeatureInterface
-public interface Launchable extends Feature, Updatable, Listenable<LaunchableListener>
+public interface Launchable extends RoutineUpdate, Listenable<LaunchableListener>
 {
     /**
      * Initiate launch by using the defined vector with {@link #setVector(Force)} starting at the location defined by

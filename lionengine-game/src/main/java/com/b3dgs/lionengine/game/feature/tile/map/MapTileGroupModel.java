@@ -44,6 +44,7 @@ public class MapTileGroupModel extends FeatureAbstract implements MapTileGroup
     private final Map<String, TileGroupType> groupTypes = new HashMap<>();
     /** Tiles group mapping. */
     private final Map<Integer, String> tilesGroup = new HashMap<>();
+
     /** Groups configuration file. */
     private Media groupsConfig;
 

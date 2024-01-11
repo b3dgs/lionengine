@@ -31,14 +31,18 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UpdatableVoid;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.OriginConfig;
 import com.b3dgs.lionengine.game.SurfaceConfig;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Recyclable;
+import com.b3dgs.lionengine.game.feature.RoutineRender;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -52,16 +56,29 @@ import com.b3dgs.lionengine.graphic.raster.RasterImage;
  */
 public class RasterableModel extends FeatureModel implements Rasterable, Recyclable
 {
+    /** The viewer reference. */
+    private final Viewer viewer = services.get(Viewer.class);
+
+    /** Transformable reference. */
+    private final Transformable transformable;
+    /** Mirrorable reference. */
+    private final Mirrorable mirrorable;
+    /** Animatable reference. */
+    private final Animatable animatable;
+
     /** List of rastered frames. */
     private final List<SpriteAnimated> rastersAnim = new ArrayList<>(RasterImage.MAX_RASTERS);
     /** Lines per raster. */
     private int linesPerRaster = RasterImage.LINES_PER_RASTER;
     /** Raster line offset. */
     private final int rasterLineOffset;
-    /** The viewer reference. */
-    private final Viewer viewer;
     /** Setup raster. */
     private final SetupSurfaceRastered setupRastered;
+    /** Update priority. */
+    private final int priorityUpdate;
+    /** Render priority. */
+    private final int priorityRender;
+
     /** Frame transform. */
     private FrameTransform transform;
     /** Raster media. */
@@ -89,13 +106,6 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     /** Visibility flag. */
     private boolean visible = true;
 
-    /** Transformable reference. */
-    private final Transformable transformable;
-    /** Mirrorable reference. */
-    private final Mirrorable mirrorable;
-    /** Animatable reference. */
-    private final Animatable animatable;
-
     /**
      * Create feature.
      * <p>
@@ -120,21 +130,59 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
      * @param animatable The animatable feature.
      * @throws LionEngineException If invalid arguments.
      */
-    // CHECKSTYLE IGNORE LINE: ExecutableStatementCount
     public RasterableModel(Services services,
                            SetupSurfaceRastered setup,
                            Transformable transformable,
                            Mirrorable mirrorable,
                            Animatable animatable)
     {
+        this(services, setup, XmlReader.EMPTY, transformable, mirrorable, animatable);
+    }
+
+    /**
+     * Create feature.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link Viewer}</li>
+     * </ul>
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * <li>{@link Mirrorable}</li>
+     * <li>{@link Animatable}</li>
+     * </ul>
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @param config The feature configuration node (must not be <code>null</code>).
+     * @param transformable The transformable feature.
+     * @param mirrorable The mirrorable feature.
+     * @param animatable The animatable feature.
+     * @throws LionEngineException If invalid arguments.
+     */
+    // CHECKSTYLE IGNORE LINE: ExecutableStatementCount
+    public RasterableModel(Services services,
+                           SetupSurfaceRastered setup,
+                           XmlReader config,
+                           Transformable transformable,
+                           Mirrorable mirrorable,
+                           Animatable animatable)
+    {
         super(services, setup);
+
+        Check.notNull(config);
 
         this.transformable = transformable;
         this.mirrorable = mirrorable;
         this.animatable = animatable;
 
+        priorityUpdate = config.getInteger(RoutineUpdate.RASTERABLE, FeaturableConfig.ATT_PRIORITY_UPDATE);
+        priorityRender = config.getInteger(RoutineRender.RASTERABLE, FeaturableConfig.ATT_PRIORITY_RENDER);
         setupRastered = setup;
-        viewer = services.get(Viewer.class);
 
         origin = OriginConfig.imports(setup);
 
@@ -374,6 +422,18 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     public boolean isVisible()
     {
         return visible;
+    }
+
+    @Override
+    public int getPriotityUpdate()
+    {
+        return priorityUpdate;
+    }
+
+    @Override
+    public int getPriotityRender()
+    {
+        return priorityRender;
     }
 
     @Override

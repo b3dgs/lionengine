@@ -32,6 +32,7 @@ public class SelectorModel extends FeatureAbstract implements SelectorConfigurer
     private final Rectangle selectionArea = new Rectangle();
     /** Clickable area. */
     private final Rectangle clickableArea = new Rectangle(0.0, 0.0, Integer.MAX_VALUE, Integer.MAX_VALUE);
+
     /** Mouse click number to start a selection. */
     private Integer selectionClick;
     /** Currently selecting flag. */

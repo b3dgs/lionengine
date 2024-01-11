@@ -74,7 +74,7 @@ final class StateHandlerTest
             assertFalse(StateBase.exited);
 
             handler.update(1.0);
-            handler.postUpdate();
+            handler.updateAfter();
 
             assertFalse(handler.isState(StateBase.class));
             assertFalse(StateBase.entered);
@@ -82,7 +82,7 @@ final class StateHandlerTest
             assertFalse(StateBase.exited);
 
             handler.changeState(StateBase.class);
-            handler.postUpdate();
+            handler.updateAfter();
 
             assertTrue(handler.isState(StateBase.class));
             assertTrue(StateBase.entered);
@@ -91,7 +91,7 @@ final class StateHandlerTest
 
             StateBase.reset();
             handler.update(1.0);
-            handler.postUpdate();
+            handler.updateAfter();
 
             assertFalse(StateBase.entered);
             assertTrue(StateBase.updated);
@@ -104,7 +104,7 @@ final class StateHandlerTest
             StateBase.reset();
             StateBase.check = true;
             handler.update(1.0);
-            handler.postUpdate();
+            handler.updateAfter();
 
             assertFalse(StateBase.entered);
             assertTrue(StateBase.updated);
@@ -116,7 +116,7 @@ final class StateHandlerTest
 
             StateBase.reset();
             handler.update(1.0);
-            handler.postUpdate();
+            handler.updateAfter();
 
             assertFalse(StateBase.entered);
             assertFalse(StateBase.updated);
@@ -149,7 +149,7 @@ final class StateHandlerTest
             handler.prepare(featurable);
             handler.changeState(StateIdle.class);
 
-            assertCause(() -> handler.postUpdate(), "Animation not found: " + StateIdle.class.getName());
+            assertCause(() -> handler.updateAfter(), "Animation not found: " + StateIdle.class.getName());
         }
         finally
         {
@@ -175,7 +175,7 @@ final class StateHandlerTest
 
             assertFalse(handler.isState(StateClear.class));
 
-            handler.postUpdate();
+            handler.updateAfter();
 
             assertTrue(handler.isState(StateClear.class));
             assertTrue(config.getFile().delete());
@@ -201,7 +201,7 @@ final class StateHandlerTest
             handler = featurable.addFeature(StateHandler.class, services, setup);
             handler.prepare(featurable);
             handler.changeState(StateIdle.class);
-            handler.postUpdate();
+            handler.updateAfter();
 
             assertEquals(new Animation(StateIdle.class.getSimpleName(), 1, 1, 0.125, false, false),
                          StateIdle.animation);
@@ -212,14 +212,14 @@ final class StateHandlerTest
 
             assertNull(StateWalk.animation);
 
-            handler.postUpdate();
+            handler.updateAfter();
 
             assertEquals(new Animation(StateWalk.class.getSimpleName(), 2, 2, 0.125, false, false),
                          StateWalk.animation);
             assertTrue(handler.isState(StateWalk.class));
 
             handler.update(1.0);
-            handler.postUpdate();
+            handler.updateAfter();
 
             assertTrue(handler.isState(StateIdle.class));
         }
@@ -267,7 +267,7 @@ final class StateHandlerTest
             final StateHandler handler = new StateHandler(services, setup);
             handler.changeState(State.class);
 
-            assertCause(() -> handler.postUpdate(), NoSuchMethodException.class);
+            assertCause(() -> handler.updateAfter(), NoSuchMethodException.class);
             assertTrue(config.getFile().delete());
         }
         finally
@@ -299,8 +299,8 @@ final class StateHandlerTest
             });
 
             handler.changeState(StateMock.class);
-            handler.postUpdate();
-            handler.postUpdate();
+            handler.updateAfter();
+            handler.updateAfter();
 
             assertNull(old.get());
             assertEquals(StateMock.class, next.get());
@@ -309,7 +309,7 @@ final class StateHandlerTest
             next.set(null);
 
             handler.changeState(StateMock.class);
-            handler.postUpdate();
+            handler.updateAfter();
 
             assertEquals(StateMock.class, old.get());
             assertEquals(StateMock.class, next.get());
@@ -359,13 +359,13 @@ final class StateHandlerTest
             handler.addListener(listener);
 
             handler.changeState(StateIdle.class);
-            handler.postUpdate();
+            handler.updateAfter();
 
             assertNull(old.get());
             assertEquals(StateIdle.class, next.get());
 
             handler.changeState(StateWalk.class);
-            handler.postUpdate();
+            handler.updateAfter();
 
             assertEquals(StateIdle.class, old.get());
             assertEquals(StateWalk.class, next.get());
@@ -374,7 +374,7 @@ final class StateHandlerTest
             old.set(null);
             next.set(null);
             handler.changeState(StateIdle.class);
-            handler.postUpdate();
+            handler.updateAfter();
 
             assertNull(old.get());
             assertNull(next.get());

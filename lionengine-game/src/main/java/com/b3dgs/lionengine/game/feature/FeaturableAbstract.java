@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Feature;
 
 /**
@@ -81,7 +82,16 @@ public abstract class FeaturableAbstract implements Featurable
     @Override
     public final <T extends Feature> T addFeature(Class<T> feature, Services services, Setup setup)
     {
-        return FeaturableConfig.createAndAdd(feature, this, services, setup);
+        return FeaturableConfig.createAndAdd(feature, this, services, setup, XmlReader.EMPTY);
+    }
+
+    /**
+     * {@inheritDoc} Does nothing by default.
+     */
+    @Override
+    public void prepare()
+    {
+        // Nothing
     }
 
     @Override

@@ -339,6 +339,7 @@ public class Factory implements HandlerListener
     {
         FeaturableConfig.addFeatures(classLoader, featurable, services, setup);
         featurable.addAfter(services, setup);
+        featurable.prepare();
     }
 
     @Override

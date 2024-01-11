@@ -393,9 +393,11 @@ final class AttackerModelTest
 
         assertFalse(preparing.get());
 
+        attacker.updateBefore();
         attacker.update(1.0);
         attacker.update(1.0);
         attacker.update(1.0);
+        attacker.updateAfter();
 
         assertTrue(preparing.get());
 
@@ -403,18 +405,25 @@ final class AttackerModelTest
         {
             while (!target.equals(started.get()))
             {
+                attacker.updateBefore();
                 attacker.update(1.0);
+                attacker.updateAfter();
             }
         });
         assertEquals(target, started.get());
         assertEquals(target, ended.get());
 
+        attacker.updateBefore();
         attacker.update(1.0);
+        attacker.updateAfter();
 
         assertTrue(attacker.isAttacking());
 
         object.getFeature(Animatable.class).update(1.0);
+
+        attacker.updateBefore();
         attacker.update(1.0);
+        attacker.updateAfter();
 
         assertTrue(anim.get());
         assertFalse(stopped.get());
@@ -423,7 +432,9 @@ final class AttackerModelTest
 
         assertFalse(stopped.get());
 
+        attacker.updateBefore();
         attacker.update(1.0);
+        attacker.updateAfter();
 
         assertTrue(stopped.get());
 
@@ -435,8 +446,12 @@ final class AttackerModelTest
         anim.set(false);
 
         attacker.attack(target);
+        attacker.updateBefore();
         attacker.update(1.0);
+        attacker.updateAfter();
+        attacker.updateBefore();
         attacker.update(1.0);
+        attacker.updateAfter();
 
         assertFalse(preparing.get());
         assertNull(reaching.get());
@@ -457,8 +472,14 @@ final class AttackerModelTest
         attacker.checkListener(object);
 
         attacker.attack(target);
+
+        attacker.updateBefore();
         attacker.update(1.0);
-        attacker.update(1.0); // 2 ticks for attack interval
+        attacker.updateAfter();
+
+        attacker.updateBefore();
+        attacker.update(1.0);
+        attacker.updateAfter(); // 2 ticks for attack interval
 
         assertTrue(object.flag.get());
     }

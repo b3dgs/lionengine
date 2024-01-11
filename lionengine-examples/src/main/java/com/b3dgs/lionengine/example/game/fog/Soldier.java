@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.Routine;
+import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.rasterable.SetupSurfaceRastered;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
  * Soldier implementation.
  */
 @FeatureInterface
-public final class Soldier extends FeatureModel implements Routine
+public final class Soldier extends FeatureModel implements RoutineUpdate
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("OrcSoldier.xml");
