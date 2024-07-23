@@ -18,8 +18,10 @@ package com.b3dgs.lionengine;
 
 /**
  * Represents something that can be designated by a unique name.
+ * 
+ * @param <T> The nameable type.
  */
-public interface Nameable
+public interface Nameable<T extends Nameable<T>> extends Comparable<T>
 {
     /**
      * Get the name.
@@ -27,4 +29,10 @@ public interface Nameable
      * @return The name value.
      */
     String getName();
+
+    @Override
+    default int compareTo(T nameable)
+    {
+        return getName().compareTo(nameable.getName());
+    }
 }

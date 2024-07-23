@@ -48,7 +48,7 @@ package com.b3dgs.lionengine;
  * @param repeat The repeat flag.
  */
 public record Animation(String name, int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
-                       implements Nameable
+                       implements Nameable<Animation>
 {
 
     /** Animation default name. */

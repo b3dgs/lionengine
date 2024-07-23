@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.editor.utility.control.UtilText;
  * 
  * @param <T> The object type handled by the properties.
  */
-public abstract class ObjectPropertiesAbstract<T extends Nameable>
+public abstract class ObjectPropertiesAbstract<T extends Nameable<T>>
 {
     /**
      * Create a text and its label.

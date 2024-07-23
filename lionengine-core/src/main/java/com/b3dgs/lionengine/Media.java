@@ -26,8 +26,15 @@ import java.util.Collection;
  * Represents a path to a resource located outside. This abstraction allows to load a resource from any kind of
  * location, such as external storage, <code>JAR</code>... Can point to a file or a directory.
  */
-public interface Media extends Nameable
+public interface Media
 {
+    /**
+     * Get the media name (excluding its path).
+     * 
+     * @return The media name without its path.
+     */
+    String getName();
+
     /**
      * Get the relative media path.
      * 
@@ -94,12 +101,4 @@ public interface Media extends Nameable
      * @return <code>true</code> if in jar, <code>false</code> else.
      */
     boolean isJar();
-
-    /**
-     * Get the media name (excluding its path).
-     * 
-     * @return The media name without its path.
-     */
-    @Override
-    String getName();
 }

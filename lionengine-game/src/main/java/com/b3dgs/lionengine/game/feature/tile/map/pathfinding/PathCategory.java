@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.Nameable;
  * @param name The category name.
  * @param groups The associated groups.
  */
-public record PathCategory(String name, Collection<String> groups) implements Nameable
+public record PathCategory(String name, Collection<String> groups) implements Nameable<PathCategory>
 {
     /**
      * Create category.

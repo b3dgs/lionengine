@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.Nameable;
  * @see ComponentCollision
  */
 public record Collision(String name, int offsetX, int offsetY, int width, int height, boolean mirror)
-                       implements Nameable
+                       implements Nameable<Collision>
 {
 
     /** Compute automatically collision by using the owner size. */

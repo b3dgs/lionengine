@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.Nameable;
  * 
  * @see com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig
  */
-public record TileGroup(String name, TileGroupType type, Set<Integer> tiles) implements Nameable
+public record TileGroup(String name, TileGroupType type, Set<Integer> tiles) implements Nameable<TileGroup>
 {
     /**
      * Create group.

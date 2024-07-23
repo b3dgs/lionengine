@@ -61,7 +61,7 @@ import com.b3dgs.lionengine.Nameable;
  * @see CollisionFormula
  */
 public record CollisionCategory(String name, Axis axis, int x, int y, boolean glue, List<CollisionGroup> groups)
-                               implements Nameable
+                               implements Nameable<CollisionCategory>
 {
     /**
      * Create category.

@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Nameable;
  * 
  * @param <T> The object type handled by the list.
  */
-public interface ObjectListListener<T extends Nameable>
+public interface ObjectListListener<T extends Nameable<T>>
 {
     /**
      * Notify when object has been selected from list.

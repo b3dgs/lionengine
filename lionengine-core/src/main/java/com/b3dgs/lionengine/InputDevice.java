@@ -19,7 +19,7 @@ package com.b3dgs.lionengine;
 /**
  * Represents an input device, such as mouse, keyboard, joypad...
  */
-public interface InputDevice extends Updatable, Nameable, Listenable<InputDeviceListener>
+public interface InputDevice extends Updatable, Nameable<InputDevice>, Listenable<InputDeviceListener>
 {
     /**
      * Set visibility.

@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.Nameable;
  * @param movements The allowed movements.
  */
 public record PathData(String category, double cost, boolean blocking, Collection<MovementTile> movements)
-                      implements Nameable
+                      implements Nameable<PathData>
 {
     /**
      * Create a path data.

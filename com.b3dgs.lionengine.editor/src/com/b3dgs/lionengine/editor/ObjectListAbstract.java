@@ -50,7 +50,7 @@ import com.b3dgs.lionengine.editor.validator.InputValidator;
  * @param <T> The object type handled by the list.
  */
 // CHECKSTYLE IGNORE LINE: DataAbstractionCoupling
-public abstract class ObjectListAbstract<T extends Nameable>
+public abstract class ObjectListAbstract<T extends Nameable<T>>
 {
     /** Icon add. */
     public static final Image ICON_ADD = UtilIcon.get("add.png");

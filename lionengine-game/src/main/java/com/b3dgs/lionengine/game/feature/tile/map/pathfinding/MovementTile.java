@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.UtilConversion;
 /**
  * Represents the possible movement from a tile.
  */
-public enum MovementTile implements Nameable
+public enum MovementTile implements Nameable<MovementTile>
 {
     /** Up movement. */
     UP(0, 1),

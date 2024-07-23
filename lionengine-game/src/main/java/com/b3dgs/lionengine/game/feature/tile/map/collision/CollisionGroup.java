@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.Nameable;
  * @see CollisionGroupConfig
  * @see CollisionFormula
  */
-public record CollisionGroup(String name, Collection<CollisionFormula> formulas) implements Nameable
+public record CollisionGroup(String name, Collection<CollisionFormula> formulas) implements Nameable<CollisionGroup>
 {
     /**
      * Check if tiles groups are same.

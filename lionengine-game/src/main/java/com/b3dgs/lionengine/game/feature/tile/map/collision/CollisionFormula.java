@@ -67,7 +67,7 @@ public record CollisionFormula(String name,
                                CollisionRange range,
                                CollisionFunction function,
                                CollisionConstraint constraint)
-                              implements Nameable
+                              implements Nameable<CollisionFormula>
 {
     /**
      * Create formula.
