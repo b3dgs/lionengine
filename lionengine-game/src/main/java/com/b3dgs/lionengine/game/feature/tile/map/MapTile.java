@@ -68,7 +68,7 @@ public interface MapTile extends FeatureProvider, SurfaceTile
     void loadSheets(Media sheetsConfig);
 
     /**
-     * Remove all tiles from map and clear internal data.
+     * Remove all tiles from map.
      */
     void clear();
 
@@ -185,6 +185,15 @@ public interface MapTile extends FeatureProvider, SurfaceTile
      * @throws LionEngineException If sheet not found.
      */
     SpriteTiled getSheet(int sheetId);
+
+    /**
+     * Get sheet from tile number.
+     * 
+     * @param tileNumber The tile number.
+     * @return The sheet found.
+     * @throws LionEngineException If sheet not found.
+     */
+    SpriteTiled getTileSheet(int tileNumber);
 
     /**
      * Get the number of used sheets.

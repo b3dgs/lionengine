@@ -239,13 +239,13 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
     {
         if (tiles != null)
         {
-            for (final List<TileGame> list : tiles)
+            for (int v = 0; v < heightInTile; v++)
             {
-                list.clear();
+                for (int h = 0; h < widthInTile; h++)
+                {
+                    tiles.get(v).set(h, null);
+                }
             }
-            tiles.clear();
-            widthInTile = 0;
-            heightInTile = 0;
         }
     }
 
@@ -397,6 +397,12 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
     public SpriteTiled getSheet(int sheetId)
     {
         return sheets[sheetId];
+    }
+
+    @Override
+    public SpriteTiled getTileSheet(int tileNumber)
+    {
+        return getSheet((int) Math.floor(tileNumber / (double) tilesPerSheet));
     }
 
     @Override

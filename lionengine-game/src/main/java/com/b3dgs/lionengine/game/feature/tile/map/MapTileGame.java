@@ -249,6 +249,12 @@ public class MapTileGame extends FeaturableAbstract implements MapTile, Listenab
     }
 
     @Override
+    public SpriteTiled getTileSheet(int tileNumber)
+    {
+        return mapSurface.getTileSheet(tileNumber);
+    }
+
+    @Override
     public int getSheetsNumber()
     {
         return mapSurface.getSheetsNumber();
