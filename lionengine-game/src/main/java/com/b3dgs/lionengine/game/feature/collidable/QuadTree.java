@@ -38,6 +38,8 @@ import com.b3dgs.lionengine.graphic.TextStyle;
  */
 public class QuadTree implements Renderable
 {
+    /** Default quad tree size. */
+    private static final int TREE_SIZE = 16384;
     private static final TextGame TEXT = new TextGame("System", 9, TextStyle.NORMAL);
     private static final int MAX_NODES = 4;
     private static final int MIN_SIZE = 64;
@@ -56,6 +58,16 @@ public class QuadTree implements Renderable
     private QuadTree[][] children;
     /** Current number of references. */
     private int count;
+
+    /**
+     * Create tree.
+     * 
+     * @param viewer The viewer reference (must not be <code>null</code>).
+     */
+    public QuadTree(Viewer viewer)
+    {
+        this(viewer, TREE_SIZE);
+    }
 
     /**
      * Create tree.
@@ -244,7 +256,7 @@ public class QuadTree implements Renderable
         final int n = refs.size();
         if (n > 0)
         {
-            g.drawRect(viewer, Origin.MIDDLE, x, y, n, n, false);
+            g.drawRect(viewer, Origin.MIDDLE, x, y, size, size, false);
 
             TEXT.update(viewer);
             TEXT.draw(g, x, y, Align.CENTER, Integer.toString(n));

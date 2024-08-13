@@ -42,8 +42,6 @@ import com.b3dgs.lionengine.graphic.RenderableVoid;
  */
 public class ComponentCollision implements ComponentUpdater, ComponentRenderer, HandlerListener, TransformableListener
 {
-    private static final int TREE_SIZE = 16384;
-
     /** Mapping reduced by group as list index. */
     private final QuadTree collidables;
 
@@ -61,7 +59,7 @@ public class ComponentCollision implements ComponentUpdater, ComponentRenderer, 
 
         Check.notNull(viewer);
 
-        collidables = new QuadTree(viewer, TREE_SIZE);
+        collidables = new QuadTree(viewer);
     }
 
     /**

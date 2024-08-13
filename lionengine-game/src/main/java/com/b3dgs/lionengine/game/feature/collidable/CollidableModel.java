@@ -78,13 +78,13 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
     private Integer group = Integer.valueOf(0);
     /** Origin used. */
     private Origin origin = OriginConfig.DEFAULT;
-    /** Min offset X. */
-    private int minWidth;
     /** Min width. */
+    private int minWidth;
+    /** Min height. */
     private int minHeight;
-    /** Max offset X. */
-    private int maxWidth;
     /** Max width. */
+    private int maxWidth;
+    /** Max height. */
     private int maxHeight;
     /** Show collision flag. */
     private boolean showCollision;
