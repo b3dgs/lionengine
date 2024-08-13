@@ -49,6 +49,17 @@ public interface Area extends Shape
     boolean contains(double x, double y);
 
     /**
+     * Check if the area contains the point.
+     * 
+     * @param point The point reference.
+     * @return <code>true</code> if contains, <code>false</code> else.
+     */
+    default boolean contains(Point point)
+    {
+        return contains(point.getX(), point.getY());
+    }
+
+    /**
      * Get the real width.
      * 
      * @return The real width.
