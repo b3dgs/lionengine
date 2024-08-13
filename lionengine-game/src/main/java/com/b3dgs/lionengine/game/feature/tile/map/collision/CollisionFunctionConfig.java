@@ -60,6 +60,7 @@ public final class CollisionFunctionConfig
         {
             return switch (type)
             {
+                case NONE -> null;
                 case LINEAR -> new CollisionFunctionLinear(node.getDouble(A), node.getDouble(B));
                 default -> throw new LionEngineException(type);
             };
