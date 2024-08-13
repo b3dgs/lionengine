@@ -104,6 +104,25 @@ public final class Geom
     }
 
     /**
+     * Get distance of two points.
+     * 
+     * @param a The first point (must not be <code>null</code>).
+     * @param b The second point (must not be <code>null</code>).
+     * @return The distance between them.
+     * @throws LionEngineException If invalid argument.
+     */
+    public static double getDistance(Point a, Point b)
+    {
+        Check.notNull(a);
+        Check.notNull(b);
+
+        final double x = b.getX() - a.getX();
+        final double y = b.getY() - a.getY();
+
+        return StrictMath.sqrt(x * x + y * y);
+    }
+
+    /**
      * Private constructor.
      */
     private Geom()
