@@ -16,10 +16,12 @@
  */
 package com.b3dgs.lionengine.geom;
 
+import com.b3dgs.lionengine.Check;
+
 /**
  * Represents a point using int precision.
  */
-public final class Point
+public class Point implements Comparable<Point>
 {
     /** Min to string size. */
     private static final int MIN_LENGHT = 17;
@@ -35,6 +37,16 @@ public final class Point
     public Point()
     {
         this(0, 0);
+    }
+
+    /**
+     * Create a point set to same point.
+     * 
+     * @param point The point location.
+     */
+    public Point(Point point)
+    {
+        this(point.x, point.y);
     }
 
     /**
@@ -64,7 +76,20 @@ public final class Point
     }
 
     /**
-     * Set the new int.
+     * Set the new location.
+     * 
+     * @param point The new point to use (must not be <code>null</code>).
+     */
+    public void set(Point point)
+    {
+        Check.notNull(point);
+
+        x = point.getX();
+        y = point.getY();
+    }
+
+    /**
+     * Set the new location.
      * 
      * @param x The new horizontal location.
      * @param y The new vertical location.
@@ -113,6 +138,33 @@ public final class Point
     public int getY()
     {
         return y;
+    }
+
+    @Override
+    public int compareTo(Point other)
+    {
+        final int result;
+        if (x > other.x)
+        {
+            result = 1;
+        }
+        else if (x < other.x)
+        {
+            result = -1;
+        }
+        else if (y > other.y)
+        {
+            result = 1;
+        }
+        else if (y < other.y)
+        {
+            result = -1;
+        }
+        else
+        {
+            result = 0;
+        }
+        return result;
     }
 
     @Override
