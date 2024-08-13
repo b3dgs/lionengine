@@ -116,8 +116,8 @@ public final class Geom
         Check.notNull(a);
         Check.notNull(b);
 
-        final double x = b.getX() - a.getX();
-        final double y = b.getY() - a.getY();
+        final double x = b.getX() - (double) a.getX();
+        final double y = b.getY() - (double) a.getY();
 
         return StrictMath.sqrt(x * x + y * y);
     }
