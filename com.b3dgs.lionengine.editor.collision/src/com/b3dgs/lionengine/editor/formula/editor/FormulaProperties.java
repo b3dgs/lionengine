@@ -193,11 +193,10 @@ public class FormulaProperties extends ObjectPropertiesAbstract<CollisionFormula
      */
     void selectFunctionPanel(CollisionFunctionType type, Composite parent)
     {
-        if (type != CollisionFunctionType.LINEAR)
+        if (type == CollisionFunctionType.LINEAR)
         {
-            throw new LionEngineException(type);
+            createCollisionFunctionLinear(parent);
         }
-        createCollisionFunctionLinear(parent);
     }
 
     /**
@@ -356,13 +355,12 @@ public class FormulaProperties extends ObjectPropertiesAbstract<CollisionFormula
      */
     private void loadFunction(CollisionFunction function)
     {
-        if (function.getType() != CollisionFunctionType.LINEAR)
+        if (function.getType() == CollisionFunctionType.LINEAR)
         {
-            throw new LionEngineException(function.getType());
+            final CollisionFunctionLinear linear = (CollisionFunctionLinear) function;
+            setValueDefault(linearA, Double.toString(linear.getA()));
+            setValueDefault(linearB, Double.toString(linear.getB()));
         }
-        final CollisionFunctionLinear linear = (CollisionFunctionLinear) function;
-        setValueDefault(linearA, Double.toString(linear.getA()));
-        setValueDefault(linearB, Double.toString(linear.getB()));
     }
 
     /**
@@ -480,8 +478,14 @@ public class FormulaProperties extends ObjectPropertiesAbstract<CollisionFormula
         setValueDefault(maxY, Constant.EMPTY_STRING);
         setValueDefault(type, Constant.EMPTY_STRING);
 
-        setValueDefault(linearA, Constant.EMPTY_STRING);
-        setValueDefault(linearB, Constant.EMPTY_STRING);
+        if (linearA != null)
+        {
+            setValueDefault(linearA, Constant.EMPTY_STRING);
+        }
+        if (linearB != null)
+        {
+            setValueDefault(linearB, Constant.EMPTY_STRING);
+        }
 
         output.setData(null);
         type.setData(null);

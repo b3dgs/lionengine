@@ -23,8 +23,8 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
  */
 public enum CollisionFunctionType
 {
-    /** No computation. */
-    NONE,
     /** Linear computation. */
-    LINEAR;
+    LINEAR,
+    /** No computation. */
+    NONE;
 }
