@@ -133,7 +133,7 @@ final class RectangleTest
         final Rectangle rectangle4 = new Rectangle(1.0, 4.0, 5.0, 5.0);
         final Rectangle rectangle5 = new Rectangle(6.0, 6.0, 5.0, 5.0);
 
-        assertFalse(rectangle1.contains(null));
+        assertFalse(rectangle1.contains((Area) null));
 
         assertTrue(rectangle1.contains(rectangle2));
 

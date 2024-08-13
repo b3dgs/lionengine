@@ -242,7 +242,7 @@ final class GeomTest
         final Area area4 = Geom.createArea(1.0, 4.0, 5.0, 5.0);
         final Area area5 = Geom.createArea(6.0, 6.0, 5.0, 5.0);
 
-        assertFalse(area1.contains(null));
+        assertFalse(area1.contains((Area) null));
 
         assertTrue(area1.contains(area2));
 
