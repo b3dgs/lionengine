@@ -107,7 +107,8 @@ public class Xml extends XmlReader
         {
             final Transformer transformer = DocumentFactory.createTransformer();
             normalize(NORMALIZE);
-            writeString(Constant.XML_HEADER, Constant.ENGINE_WEBSITE);
+            writeString(Constant.XML_HEADER, Constant.ENGINE_WEBSITE + "/xsd/10");
+            writeString("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
             final DOMSource source = new DOMSource(root);
             final StreamResult result = new StreamResult(output);
             final String yes = "yes";
