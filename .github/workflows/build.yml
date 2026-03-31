@@ -68,12 +68,10 @@ jobs:
      - name: Deploy
        uses: coactions/setup-xvfb@b6b4fcfb9f5a895edadc3bc76318fae0ac17c8b3
        with:
-         run: mvn clean deploy org.sonarsource.scanner.maven:sonar-maven-plugin:sonar --file lionengine-parent/pom.xml -U -Dgpg.passphrase="$GPG_PASS" -Psign -Dsonar.organization=b3dgs -Dsonar.host.url=https://sonarcloud.io -Dsonar.token="$SONAR_TOKEN" -Dsonar.projectKey=b3dgs_lionengine
-
+         run: mvn clean deploy org.sonarsource.scanner.maven:sonar-maven-plugin:sonar --file lionengine-parent/pom.xml -U -Dgpg.passphrase="$GPG_PASS" -Psign -Dsonar.organization=b3dgs -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.projectKey=b3dgs_lionengine
        env:
          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
-         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
          GPG_PASS: ${{ secrets.GPG_PASSPHRASE }}
 
      - name: Upload Editor Repository
