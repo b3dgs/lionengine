@@ -23,12 +23,12 @@ jobs:
 
     steps:
      - name: Checkout
-       uses: actions/checkout@v6.0.2
+       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
        with:
         fetch-depth: 0
 
      - name: Cache
-       uses: actions/cache@v5.0.4
+       uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7
        with:
           path: ~/.m2/repository
           key: maven-${{ matrix.os }}-java${{ matrix.jdk }}-${{ hashFiles('**/pom.xml') }}-${{ hashFiles('**/app/build.gradle') }}
@@ -36,12 +36,12 @@ jobs:
             maven-${{ matrix.os }}-java${{ matrix.jdk }}-${{ hashFiles('**/pom.xml') }}-${{ hashFiles('**/app/build.gradle') }}
 
      - name: Maven
-       uses: stCarolas/setup-maven@v5.1
+       uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
        with:
          maven-version: 3.9.14
 
      - name: JDK
-       uses: actions/setup-java@v5.2.0
+       uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654
        with:
          java-version: |
            ${{ matrix.jdk }}
@@ -53,30 +53,30 @@ jobs:
          server-password: MAVEN_PASSWORD
 
      - name: Decode Keystore
-       uses: timheuer/base64-to-file@v1.2.4
+       uses: timheuer/base64-to-file@784a1a4a994315802b7d8e2084e116e783d157be
        with:
          fileName: 'android.jks'
          fileDir: 'app/'
          encodedString: ${{ secrets.KEYSTORE_BASE64 }}
 
      - name: GPG
-       uses: crazy-max/ghaction-import-gpg@v7.0.0
+       uses: crazy-max/ghaction-import-gpg@2dc316deee8e90f13e1a351ab510b4d5bc0c82cd
        with:
          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
          passphrase: ${{ secrets.GPG_PASSPHRASE }}
 
      - name: Deploy
-       uses: coactions/setup-xvfb@v1.0.1
+       uses: coactions/setup-xvfb@b6b4fcfb9f5a895edadc3bc76318fae0ac17c8b3
        with:
-         run: mvn clean deploy org.sonarsource.scanner.maven:sonar-maven-plugin:sonar --file lionengine-parent/pom.xml -U -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} -Psign -Dsonar.organization=b3dgs -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.projectKey=b3dgs_lionengine
+         run: mvn clean deploy org.sonarsource.scanner.maven:sonar-maven-plugin:sonar --file lionengine-parent/pom.xml -U -Dgpg.passphrase="$GPG_PASS" -Psign -Dsonar.organization=b3dgs -Dsonar.host.url=https://sonarcloud.io -Dsonar.token="$SONAR_TOKEN" -Dsonar.projectKey=b3dgs_lionengine
 
        env:
          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
-         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+         GPG_PASS: ${{ secrets.GPG_PASSPHRASE }}
 
      - name: Upload Editor Repository
-       uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+       uses: SamKirkland/FTP-Deploy-Action@a51268f67f6605236975928ae28b0f7e9971d50a
        with:
          server: ftp.b3dgs.com
          username: ${{ secrets.FTP_USER }}
@@ -89,7 +89,7 @@ jobs:
        shell: cmd
 
      - name: Upload Editor Product
-       uses: dennisameling/ftp-upload-action@v1.0.16
+       uses: dennisameling/ftp-upload-action@f87b6437536013699f24c8674f7246a1e09e8f3d
        with:
          server: ftp.b3dgs.com
          username: ${{ secrets.FTP_USER }}
@@ -101,5 +101,14 @@ jobs:
      - name: Deploy Android
        run: |
          cd lionengine-core-android
-         gradlew publishAllPublicationsToMavenRepository -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} -PNEXUS_USERNAME=${{ secrets.NEXUS_USERNAME }} -PNEXUS_PASSWORD=${{ secrets.NEXUS_PASSWORD }} -PMAVEN_USERNAME=${{ secrets.MAVEN_USERNAME }} -PMAVEN_PASSWORD=${{ secrets.MAVEN_PASSWORD }} -Pkeystore=android.jks -Pkeystore.alias=${{ secrets.KEYSTORE_ALIAS }} -Pkeystore.storepassword=${{ secrets.KEYSTORE_STOREPASS }} -Pkeystore.password=${{ secrets.KEYSTORE_PASS }}
+         gradlew publishAllPublicationsToMavenRepository -Dgpg.passphrase="$GPG_PASS" -PNEXUS_USERNAME="$NEXUS_USERNAME" -PNEXUS_PASSWORD="$NEXUS_PASSWORD" -PMAVEN_USERNAME="$MAVEN_USERNAME" -PMAVEN_PASSWORD="$MAVEN_PASSWORD" -Pkeystore=android.jks -Pkeystore.alias="$KEYSTORE_ALIAS" -Pkeystore.storepassword="$KEYSTORE_STOREPASS" -Pkeystore.password="$KEYSTORE_PASS"
        shell: cmd
+       env:
+         MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+         MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+         NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+         NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+         KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+         KEYSTORE_STOREPASS: ${{ secrets.KEYSTORE_STOREPASS }}
+         KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+         GPG_PASS: ${{ secrets.GPG_PASSPHRASE }}
