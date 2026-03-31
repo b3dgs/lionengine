@@ -16,10 +16,10 @@ android {
             storePassword property('keystore.storepassword')
         }
     }
-    compileSdk 34
+    compileSdk 36
     defaultConfig {
         minSdkVersion 21
-        targetSdk 34
+        targetSdk 36
         signingConfig signingConfigs.app
         multiDexEnabled true
     }
@@ -93,7 +93,7 @@ afterEvaluate {
 }
 
 dependencies {
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 
     implementation 'com.b3dgs:b3dgs-parent:2.0.0-SNAPSHOT'
     implementation 'com.b3dgs.lionengine:lionengine-core:10.0.0-SNAPSHOT'
