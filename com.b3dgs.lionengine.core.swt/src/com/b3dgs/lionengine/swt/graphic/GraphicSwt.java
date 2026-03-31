@@ -51,7 +51,7 @@ final class GraphicSwt implements Graphic
     /** Last color. */
     private Color lastColor;
     /** Alpha. */
-    private int alpha;
+    private int alpha = 255;
 
     /**
      * Internal constructor.
@@ -101,7 +101,12 @@ final class GraphicSwt implements Graphic
     @Override
     public void drawImage(ImageSurface image, int x, int y)
     {
+        final int old = gc.getAlpha();
+        gc.setAlpha(alpha);
+
         gc.drawImage((Image) image.getSurface(), x, y);
+
+        gc.setAlpha(old);
     }
 
     @Override
