@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.UtilReflection;
 
 /**
  * Utilities related to sequence.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

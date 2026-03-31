@@ -31,6 +31,7 @@ public class ActionerModel extends FeatureModel implements Actioner
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Configurer} must provide a valid {@link ActionsConfig}.
      * </p>

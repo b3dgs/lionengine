@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 /**
  * Describe a map using tile for its representation. This is the lower level interface to describe a 2D map using tiles.
  * Each tiles are stored vertically and then horizontally.
+ * 
  * <p>
  * A sheet id represents a tilesheet number (surface number containing tiles). A map can have one or more
  * sheets. The map picks its resources from a sheets folder, which must contains the files images.
@@ -74,6 +75,7 @@ public interface MapTile extends FeatureProvider, SurfaceTile
 
     /**
      * Remove a tile at specified map location.
+     * 
      * <p>
      * The tile location must be between 0 and map size ({@link #getInTileWidth()}, {@link #getInTileHeight()}).
      * </p>
@@ -86,6 +88,7 @@ public interface MapTile extends FeatureProvider, SurfaceTile
 
     /**
      * Set a tile at specified map location.
+     * 
      * <p>
      * The tile location must be between 0 and map size ({@link #getInTileWidth()}, {@link #getInTileHeight()}).
      * </p>

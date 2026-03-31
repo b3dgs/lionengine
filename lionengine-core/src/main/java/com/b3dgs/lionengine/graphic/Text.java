@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Align;
 
 /**
  * The text allows to render any {@link String} on screen, at a specified location, using a specified font.
+ * 
  * <p>
  * A font is described by a:
  * </p>

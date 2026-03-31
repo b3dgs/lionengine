@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.graphic.Screen;
 
 /**
  * Locked loop. Update and render, waiting for expected frame rate.
+ * 
  * <p>
  * Max speed is capped, but can be slower than expected depending of running machine.
  * </p>

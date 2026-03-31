@@ -68,6 +68,7 @@ public class NetworkableModel extends FeatureModel implements Networkable
      * <ul>
      * <li>{@link Identifiable}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Services} must provide the following services:
      * </p>

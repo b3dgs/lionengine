@@ -32,9 +32,11 @@ public interface Preference extends Comparable<Preference>
 
     /**
      * Get the preference priority.
+     * 
      * <p>
      * Priority is used to apply preferences in the right order. A low value means a high priority, starting at 0.
      * </p>
+     * 
      * <p>
      * If there is many preferences with the same priority, they are applied in the order they where added.
      * </p>

@@ -89,6 +89,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
@@ -96,6 +97,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
      * <li>{@link Animatable}</li>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Configurer} can provide a valid {@link AttackerConfig}.
      * </p>
@@ -113,6 +115,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
@@ -120,6 +123,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
      * <li>{@link Animatable}</li>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Configurer} can provide a valid {@link AttackerConfig}.
      * </p>

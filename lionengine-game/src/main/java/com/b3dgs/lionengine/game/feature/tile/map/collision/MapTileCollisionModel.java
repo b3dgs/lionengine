@@ -47,6 +47,7 @@ public class MapTileCollisionModel extends FeatureAbstract implements MapTileCol
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>

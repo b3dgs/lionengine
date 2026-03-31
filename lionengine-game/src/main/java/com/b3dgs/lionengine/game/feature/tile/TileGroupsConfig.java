@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the tile groups data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

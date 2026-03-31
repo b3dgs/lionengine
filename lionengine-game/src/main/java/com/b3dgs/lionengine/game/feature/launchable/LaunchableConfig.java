@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.game.ForceConfig;
 
 /**
  * Represents the launchable data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

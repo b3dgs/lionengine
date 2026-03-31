@@ -50,15 +50,18 @@ public class ActionableModel extends FeatureModel implements Actionable
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>
      * <ul>
      * <li>{@link Cursor}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Configurer} must provide a valid {@link ActionConfig}.
      * </p>
+     * 
      * <p>
      * If the {@link Featurable} owner is an {@link Action}, it will automatically {@link #setAction(Action)} on it.
      * </p>
@@ -74,15 +77,18 @@ public class ActionableModel extends FeatureModel implements Actionable
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>
      * <ul>
      * <li>{@link Cursor}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Configurer} must provide a valid {@link ActionConfig}.
      * </p>
+     * 
      * <p>
      * If the {@link Featurable} owner is an {@link Action}, it will automatically {@link #setAction(Action)} on it.
      * </p>

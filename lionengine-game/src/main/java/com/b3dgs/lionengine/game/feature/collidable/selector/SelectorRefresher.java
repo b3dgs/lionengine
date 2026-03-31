@@ -68,6 +68,7 @@ public class SelectorRefresher extends FeatureAbstract implements Refreshable, L
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>

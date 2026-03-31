@@ -51,6 +51,7 @@ public class TransformableModel extends FeatureModel implements Transformable, R
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Configurer} can provide a valid {@link SizeConfig}.
      * </p>
@@ -66,6 +67,7 @@ public class TransformableModel extends FeatureModel implements Transformable, R
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Configurer} can provide a valid {@link SizeConfig}.
      * </p>

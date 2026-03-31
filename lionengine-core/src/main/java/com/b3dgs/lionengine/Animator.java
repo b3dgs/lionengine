@@ -18,6 +18,7 @@ package com.b3dgs.lionengine;
 
 /**
  * Animator can play an {@link Animation}.
+ * 
  * <p>
  * To play correctly an animation, it needs the following steps:
  * </p>
@@ -49,6 +50,7 @@ public interface Animator extends Updatable, Listenable<AnimatorListener>
 
     /**
      * Set the current animation speed. This function allows to change the current playing animation speed.
+     * 
      * <p>
      * Can be used to synchronize the movement speed to the walking animation speed for example.
      * </p>

@@ -35,11 +35,13 @@ import com.b3dgs.lionengine.game.Feature;
 /**
  * Performs a list of {@link Setup} considering their corresponding {@link Media} pointing to an XML file. This way it
  * is possible to create new featurable instances related to their {@link Setup} by sharing the same resources.
+ * 
  * <p>
  * Any featurable created by the factory from a {@link Media} must have a public constructor with a single argument
  * typed
  * (or sub type) of {@link Setup}.
  * </p>
+ * 
  * <p>
  * Destroyed {@link Featurable} can be cached to avoid {@link Featurable} creation if has {@link Recycler} and
  * {@link Recyclable} {@link Feature}s.
@@ -93,9 +95,11 @@ public class Factory implements HandlerListener
     /**
      * Create a {@link Featurable} from its {@link Media} using a generic way. The concerned class to instantiate and
      * its constructor must be public, and can have the following parameter: ({@link Setup}).
+     * 
      * <p>
      * Automatically add {@link IdentifiableModel} if feature does not have {@link Identifiable} feature.
      * </p>
+     * 
      * <p>
      * Destroyed {@link Featurable} can be cached to avoid {@link Featurable} creation if has {@link Recycler} and
      * {@link Recyclable} {@link Feature}s. If cache associated to media is available, it is
@@ -131,9 +135,11 @@ public class Factory implements HandlerListener
     /**
      * Create a featurable from its {@link Media} using a generic way. The concerned class to instantiate and its
      * constructor must be public, and can have the following parameter: ({@link Setup}).
+     * 
      * <p>
      * Automatically add {@link IdentifiableModel} if feature does not have {@link Identifiable} feature.
      * </p>
+     * 
      * <p>
      * Destroyed {@link Featurable} can be cached to avoid {@link Featurable} creation if has {@link Recycler} and
      * {@link Recyclable} {@link Feature}s. If cache associated to media is available, it is

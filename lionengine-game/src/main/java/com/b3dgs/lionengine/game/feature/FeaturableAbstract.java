@@ -55,6 +55,7 @@ public abstract class FeaturableAbstract implements Featurable
 
     /**
      * {@inheritDoc}
+     * 
      * <p>
      * Does nothing by default.
      * </p>

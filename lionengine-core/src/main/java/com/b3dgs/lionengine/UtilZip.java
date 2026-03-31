@@ -29,6 +29,7 @@ import java.util.zip.ZipFile;
 
 /**
  * Tools related to ZIP handling.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

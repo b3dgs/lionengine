@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Represents the featurable configuration data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

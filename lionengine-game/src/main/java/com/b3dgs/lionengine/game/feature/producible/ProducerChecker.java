@@ -25,6 +25,7 @@ public interface ProducerChecker
 {
     /**
      * Condition to start production.
+     * 
      * <p>
      * Example:
      * </p>

@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Implementation provider for the {@link FactoryGraphic}.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

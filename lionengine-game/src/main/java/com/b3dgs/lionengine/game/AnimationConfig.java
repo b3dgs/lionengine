@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the animations data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

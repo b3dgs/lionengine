@@ -91,21 +91,25 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>
      * <ul>
      * <li>{@link Viewer}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Configurer} can provide a valid {@link CollidableConfig} and {@link CollisionConfig}.
      * </p>
+     * 
      * <p>
      * If the {@link Featurable} is a {@link CollidableListener}, it will automatically
      * {@link #addListener(CollidableListener)} on it.
@@ -123,21 +127,25 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>
      * <ul>
      * <li>{@link Viewer}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Configurer} can provide a valid {@link CollidableConfig} and {@link CollisionConfig}.
      * </p>
+     * 
      * <p>
      * If the {@link Featurable} is a {@link CollidableListener}, it will automatically
      * {@link #addListener(CollidableListener)} on it.

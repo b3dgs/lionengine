@@ -18,6 +18,7 @@ package com.b3dgs.lionengine;
 
 /**
  * Utility class check.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

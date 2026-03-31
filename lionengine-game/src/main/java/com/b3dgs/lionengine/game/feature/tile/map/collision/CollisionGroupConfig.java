@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the collision group data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

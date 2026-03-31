@@ -18,6 +18,7 @@ package com.b3dgs.lionengine;
 
 /**
  * List of available alignments.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

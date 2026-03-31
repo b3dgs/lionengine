@@ -20,10 +20,12 @@ import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Recyclable marker.
+ * 
  * <p>
  * Allows to recycle a {@link Featurable} and all its {@link Feature} when using
  * {@link Factory#create(com.b3dgs.lionengine.Media)} or {@link Factory#create(com.b3dgs.lionengine.Media, Class)}.
  * </p>
+ * 
  * <p>
  * Should be used if object creation is too much time consuming, and only if reuse can be intensive (such as effects or
  * bullets).

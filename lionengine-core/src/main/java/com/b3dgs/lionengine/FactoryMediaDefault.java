@@ -18,6 +18,7 @@ package com.b3dgs.lionengine;
 
 /**
  * Default media factory implementation.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

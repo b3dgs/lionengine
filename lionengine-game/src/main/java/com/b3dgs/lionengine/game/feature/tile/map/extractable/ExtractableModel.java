@@ -45,18 +45,21 @@ public class ExtractableModel extends FeatureModel implements Extractable
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
      * <ul>
      * <li>{@link MapTile}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Configurer} can provide a valid {@link ExtractableConfig}.
      * </p>

@@ -44,6 +44,7 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
  * </ul>
  * Result can be retrieved by using {@link #addListener(SelectorListener)} to notify them the computed selection.
  * It will be then easy to check if objects are inside this area, and set them as <i>selected</i>.
+ * 
  * <p>
  * {@link Selectable} will be notified with {@link Selectable#onSelection(boolean)} when selection changed.
  * </p>
@@ -70,6 +71,7 @@ public class Selector extends FeaturableAbstract implements SelectorConfigurer, 
 
     /**
      * Create the selector.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>

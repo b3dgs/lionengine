@@ -18,6 +18,7 @@ package com.b3dgs.lionengine;
 
 /**
  * Represents a program version.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

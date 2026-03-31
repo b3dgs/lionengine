@@ -25,6 +25,7 @@ public interface Syncable
 {
     /**
      * Called on connected to network.
+     * 
      * <p>
      * Does nothing by default.
      * </p>
@@ -36,6 +37,7 @@ public interface Syncable
 
     /**
      * Called on disconnected from network.
+     * 
      * <p>
      * Does nothing by default.
      * </p>

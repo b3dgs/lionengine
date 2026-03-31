@@ -57,6 +57,7 @@ public class MapTileCircuitModel extends FeatureAbstract implements MapTileCircu
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>

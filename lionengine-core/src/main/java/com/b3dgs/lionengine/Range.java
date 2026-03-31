@@ -18,6 +18,7 @@ package com.b3dgs.lionengine;
 
 /**
  * Standard range description, with a minimum and a maximum.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

@@ -108,12 +108,14 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>
      * <ul>
      * <li>{@link Viewer}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
@@ -141,12 +143,14 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>
      * <ul>
      * <li>{@link Viewer}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>

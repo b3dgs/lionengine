@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.graphic;
 
 /**
  * List of text style types.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

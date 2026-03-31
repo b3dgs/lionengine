@@ -66,15 +66,18 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
      * <ul>
      * <li>{@link Handler}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Featurable} can be a {@link ProducerChecker}.
      * </p>
+     * 
      * <p>
      * If the {@link Featurable} is a {@link ProducerListener}, it will automatically
      * {@link #addListener(ProducerListener)} on it.
@@ -91,15 +94,18 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
      * <ul>
      * <li>{@link Handler}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Featurable} can be a {@link ProducerChecker}.
      * </p>
+     * 
      * <p>
      * If the {@link Featurable} is a {@link ProducerListener}, it will automatically
      * {@link #addListener(ProducerListener)} on it.

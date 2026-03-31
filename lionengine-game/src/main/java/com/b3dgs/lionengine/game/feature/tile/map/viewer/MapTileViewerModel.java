@@ -48,12 +48,14 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
      * <ul>
      * <li>{@link MapTileSurface}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>

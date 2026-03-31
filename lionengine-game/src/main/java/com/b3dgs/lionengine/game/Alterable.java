@@ -219,6 +219,7 @@ public class Alterable
 
     /**
      * Get the needed value from an input to a specified value. Basically, it will return the input value - current.
+     * 
      * <p>
      * Example: if current = 50; getNeeded(60) will return 10 (60 - 50).
      * </p>

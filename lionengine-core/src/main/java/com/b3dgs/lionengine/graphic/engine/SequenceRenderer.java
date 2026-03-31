@@ -424,7 +424,8 @@ public final class SequenceRenderer implements Rasterbar
     private void renderBuffer(Graphic g)
     {
         target.render(graphic);
-
+        // TODO if want double or triple buffering, next line must be called separately, and handle more than one
+        // internal buf
         g.drawImage(filter.filter(buf), transform, x, y);
     }
 

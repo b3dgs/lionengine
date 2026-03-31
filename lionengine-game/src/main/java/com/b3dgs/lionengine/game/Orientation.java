@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game;
 
 /**
  * List of available orientations.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

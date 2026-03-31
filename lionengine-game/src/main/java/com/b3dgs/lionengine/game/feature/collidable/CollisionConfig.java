@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Represents the collisions data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

@@ -60,12 +60,14 @@ public class LayerableModel extends FeatureAbstract implements Layerable
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>
      * <ul>
      * <li>{@link LayerableListener}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Configurer} can provide a valid {@link LayerableConfig}.
      * </p>

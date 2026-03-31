@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.audio;
 
 /**
  * Void audio implementation.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

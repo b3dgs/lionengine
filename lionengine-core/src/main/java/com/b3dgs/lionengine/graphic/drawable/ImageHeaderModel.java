@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.graphic.ImageFormat;
 
 /**
  * Image header model base.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

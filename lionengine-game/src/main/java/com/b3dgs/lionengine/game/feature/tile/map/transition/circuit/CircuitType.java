@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.UtilConversion;
 
 /**
  * Represents the list of supported circuit parts.
+ * 
  * <p>
  * <code>true</code> represents the existence of another circuit part, <code>false</code> no circuit part.
  * </p>

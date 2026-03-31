@@ -50,6 +50,7 @@ import com.b3dgs.lionengine.io.DevicePointer;
  * <li>
  * <code>surfaceId</code>: This is the current cursor surface that can be displayed ({@link #setSurfaceId(int)}).</li>
  * </ul>
+ * 
  * <p>
  * Usage example:
  * </p>

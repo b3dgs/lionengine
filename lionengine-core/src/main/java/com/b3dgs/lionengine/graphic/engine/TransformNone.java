@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.graphic.Transform;
 
 /**
  * No transform implementation.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

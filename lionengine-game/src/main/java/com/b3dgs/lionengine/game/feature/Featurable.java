@@ -22,26 +22,33 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
  * Represents something that can have a collection of {@link Feature}.
+ * 
  * <p>
  * Such a system allows to reduce direct complexity by splitting object implementation into different classes. Each will
  * provide a specific sub system, called a {@link Feature}. They will compose a complex system, called a
  * {@link Featurable}.
  * </p>
+ * 
  * <p>
  * <b>Problematic</b>
  * </p>
+ * 
  * <p>
  * Implementation of an object, which may move and can collide other objects which may not all move.
  * </p>
+ * 
  * <p>
  * <b>Naive solution</b>
  * </p>
+ * 
  * <p>
  * One big object, implementing moving and colliding.
  * </p>
+ * 
  * <p>
  * <b>Feature solution</b>
  * </p>
+ * 
  * <p>
  * Sub system implementation, sub system composition:
  * </p>
@@ -51,18 +58,22 @@ import com.b3dgs.lionengine.game.FeatureProvider;
  * <li>Colliding feature: <i>System dedicated to collision representation and detection</i></li>
  * <li>Little object: <i>Supporting moving and colliding feature independently</i></li>
  * </ul>
+ * 
  * <p>
  * This way, our object is now very simple, as it only declares its required features. Implementations are localized in
  * specific classes, which helps to avoid <i>god class</i> if our object want to also jump and throw something.
  * </p>
+ * 
  * <p>
  * <b>Caution</b>
  * </p>
+ * 
  * <p>
  * The counterpart of such a system is the low typing of our final object, as it is only known at runtime, even if they
  * are statically declared. An object is just a set of <i>something</i>, which can lead to undesired exceptions if not
  * used correctly. Documentation must explicit the required {@link Feature}, in order to use an object properly.
  * </p>
+ * 
  * <p>
  * An alternative could be direct {@link Feature} implementation, combined with simple delegate.
  * </p>

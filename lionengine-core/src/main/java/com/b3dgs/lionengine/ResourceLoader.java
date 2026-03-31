@@ -23,13 +23,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Aimed to load resources asynchronously from the main thread, in order to improve transition time between two parts.
+ * 
  * <p>
  * Add resources to load with {@link #add(Enum, Resource)}, and call {@link #start()} to begin loading in a separate
  * process.
  * </p>
+ * 
  * <p>
  * Call {@link #await()} where resources must be loaded, and access to them with {@link #get()}.
  * </p>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

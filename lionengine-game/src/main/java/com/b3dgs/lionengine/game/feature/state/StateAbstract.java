@@ -71,6 +71,7 @@ public abstract class StateAbstract implements State
 
     /**
      * {@inheritDoc}
+     * 
      * <p>
      * Does nothing by default. Can be overridden.
      * </p>

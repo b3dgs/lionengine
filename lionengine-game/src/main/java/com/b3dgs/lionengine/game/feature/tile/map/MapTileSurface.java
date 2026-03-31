@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.game.feature.FeatureInterface;
 /**
  * Describe a map using tile for its representation. This is the lower level interface to describe a 2D map using tiles.
  * Each tiles are stored vertically and then horizontally.
+ * 
  * <p>
  * A sheet id represents a tilesheet number (surface number containing tiles). A map can have one or more
  * sheets. The map picks its resources from a sheets folder, which must contains the files images.

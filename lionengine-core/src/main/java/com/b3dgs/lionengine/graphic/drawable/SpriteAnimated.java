@@ -20,15 +20,15 @@ import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.SurfaceTile;
 
 /**
- * <p>
  * SpriteAnimated is an extended sprite that allows to play it using {@link com.b3dgs.lionengine.Animation}. It
  * works like a sprite excepted that it renders only a part of it (current {@link Animator} frame).
- * </p>
+ * 
  * <p>
  * {@link com.b3dgs.lionengine.Animation} contains the first/last frame and the animation speed, considering the
  * main first frame is on the top-left sprite surface, and the last frame is on the down-right sprite surface, reading
  * it from left to right.
  * </p>
+ * 
  * <p>
  * The first frame number is {@link com.b3dgs.lionengine.Animation#MINIMUM_FRAME}.
  * </p>

@@ -26,6 +26,7 @@ package com.b3dgs.lionengine;
  * <li><code>rate</code> : represents the screen refresh rate (in frames per seconds)</li>
  * </ul>
  * This class is mainly used to describe the display resolution chosen.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

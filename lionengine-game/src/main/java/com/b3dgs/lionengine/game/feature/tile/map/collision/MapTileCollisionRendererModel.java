@@ -147,6 +147,7 @@ public class MapTileCollisionRendererModel extends FeatureAbstract implements Ma
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>

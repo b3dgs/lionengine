@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.UtilMath;
 
 /**
  * Color utility class.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

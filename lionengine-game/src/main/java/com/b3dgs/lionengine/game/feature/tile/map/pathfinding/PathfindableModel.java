@@ -142,6 +142,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
@@ -149,9 +150,11 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      * <li>{@link Identifiable}</li>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Configurer} owner must provide a valid {@link PathfindableConfig}.
      * </p>
+     * 
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -159,6 +162,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      * <li>{@link MapTile}</li>
      * <li>{@link Viewer}</li>
      * </ul>
+     * 
      * <p>
      * If the {@link Featurable} is a {@link PathfindableListener}, it will automatically
      * {@link #addListener(PathfindableListener)} on it.
@@ -177,6 +181,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
@@ -184,9 +189,11 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      * <li>{@link Identifiable}</li>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Configurer} owner must provide a valid {@link PathfindableConfig}.
      * </p>
+     * 
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -194,6 +201,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      * <li>{@link MapTile}</li>
      * <li>{@link Viewer}</li>
      * </ul>
+     * 
      * <p>
      * If the {@link Featurable} is a {@link PathfindableListener}, it will automatically
      * {@link #addListener(PathfindableListener)} on it.

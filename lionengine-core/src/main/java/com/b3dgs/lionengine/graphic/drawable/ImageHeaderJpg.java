@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.graphic.ImageFormat;
 
 /**
  * Read JPG image info.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

@@ -18,6 +18,7 @@ package com.b3dgs.lionengine;
 
 /**
  * List of animation states.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

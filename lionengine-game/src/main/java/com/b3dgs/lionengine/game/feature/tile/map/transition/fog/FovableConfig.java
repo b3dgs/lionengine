@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Represents the fovable data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

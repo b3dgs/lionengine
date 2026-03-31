@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Represents the {@link Attacker} data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

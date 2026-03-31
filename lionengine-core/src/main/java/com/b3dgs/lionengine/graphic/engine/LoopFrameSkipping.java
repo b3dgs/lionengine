@@ -25,9 +25,11 @@ import com.b3dgs.lionengine.graphic.Screen;
 
 /**
  * Frame skipping loop, prioritizing update over render in order to respect the expected frame rate.
+ * 
  * <p>
  * Speed is always the same, but frames may be skipped during rendering in order to not be late on update.
  * </p>
+ * 
  * <p>
  * If update takes more time than expected frame rate, rendering is performed at a minimum rate.
  * </p>

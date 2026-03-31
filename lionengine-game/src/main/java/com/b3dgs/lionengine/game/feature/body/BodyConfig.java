@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Xml;
 
 /**
  * Represents the body data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

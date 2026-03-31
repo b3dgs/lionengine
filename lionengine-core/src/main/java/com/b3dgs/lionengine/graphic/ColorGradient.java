@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Represents a gradient color.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

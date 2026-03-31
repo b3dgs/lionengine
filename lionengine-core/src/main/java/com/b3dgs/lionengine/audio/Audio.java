@@ -25,6 +25,7 @@ public interface Audio
 {
     /**
      * Play the audio.
+     * 
      * <p>
      * The audio will be played from the beginning until the end.
      * </p>

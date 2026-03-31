@@ -22,14 +22,14 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Filter;
 
 /**
- * <p>
  * Sprites work like images, but support modifications, such as scaling and filtering. They are recommended for dynamic
  * uses, such as menus, entities or backgrounds elements (which are not statics).
- * </p>
+ * 
  * <p>
  * For each modifications (scale, flip, rotate, filter...), the original surface is kept. So <code>rotate(1)</code>
  * followed by <code>rotate(-1)</code> will give the same sprite as before.
  * </p>
+ * 
  * <p>
  * There are two steps for the initialization:
  * </p>
@@ -37,6 +37,7 @@ import com.b3dgs.lionengine.graphic.Filter;
  * <li>Create the sprite.</li>
  * <li>Call {@link #load()} (this function will load the surface)</li>
  * </ul>
+ * 
  * <p>
  * A non loaded sprite can be displayed (nothing will be displayed), but the sprite information are available (size).
  * However, sprite manipulation will throw an exception as the surface is not available.

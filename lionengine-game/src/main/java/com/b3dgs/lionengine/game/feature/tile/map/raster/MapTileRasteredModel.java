@@ -56,6 +56,7 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>

@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.geom;
 
 /**
  * Area representation.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

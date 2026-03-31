@@ -23,6 +23,7 @@ public interface ExtractorChecker
 {
     /**
      * Check if extractor can extract (called while going to resources location).
+     * 
      * <p>
      * For example:
      * </p>

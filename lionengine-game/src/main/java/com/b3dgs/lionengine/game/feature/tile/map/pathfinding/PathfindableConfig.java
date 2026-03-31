@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Represents the pathfindable data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

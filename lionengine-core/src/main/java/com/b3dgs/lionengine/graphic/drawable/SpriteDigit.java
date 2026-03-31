@@ -17,9 +17,7 @@
 package com.b3dgs.lionengine.graphic.drawable;
 
 /**
- * <p>
  * SpriteDigit is an extended sprite that allows to handle a font based on a digit.
- * </p>
  */
 public interface SpriteDigit extends Sprite
 {

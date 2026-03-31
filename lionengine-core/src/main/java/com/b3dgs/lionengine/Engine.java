@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Engine base implementation. This class is intended to be inherited by an engine implementation depending of the
  * library used (as it is done for AWT, SWT and Android implementation).
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

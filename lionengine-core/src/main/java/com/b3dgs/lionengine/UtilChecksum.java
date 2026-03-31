@@ -23,6 +23,7 @@ import java.util.Arrays;
 
 /**
  * SHA-512 based checksum manipulation.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

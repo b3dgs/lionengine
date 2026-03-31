@@ -18,6 +18,7 @@ package com.b3dgs.lionengine;
 
 /**
  * Animation data.
+ * 
  * <p>
  * Defines the <code>first</code> and <code>last</code> animation frame number, the animation <code>speed</code>, a
  * <code>reverse</code> flag (for reversed animation), and a <code>repeat</code> flag (for looped animation).
@@ -29,6 +30,7 @@ package com.b3dgs.lionengine;
  * <li><code>reverse</code>: reverse flag (1 -&gt; 2 -&gt; 3 -&gt; 2 -&gt; 1).</li>
  * <li><code>repeat</code>: repeat flag (1 -&gt; 2 -&gt; 3 -&gt; 1 -&gt; 2 -&gt; 3...).</li>
  * </ul>
+ * 
  * <p>
  * Note: <code>reverse</code> and <code>repeat</code> can also be combined to play in loop an animation in reverse:
  * </p>
@@ -36,6 +38,7 @@ package com.b3dgs.lionengine;
  * <pre>
  * <code>1 -&gt; 2 -&gt; 3 -&gt; 2 -&gt; 1 -&gt; 2 -&gt; 3....</code>
  * </pre>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

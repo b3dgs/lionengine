@@ -47,6 +47,7 @@ public class HandlerPersister implements Persistable
 
     /**
      * Create a handler persister.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -54,6 +55,7 @@ public class HandlerPersister implements Persistable
      * <li>{@link Factory}</li>
      * <li>{@link Handler}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Services} may provide:
      * </p>

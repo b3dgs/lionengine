@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
 
 /**
  * Represents the minimap configuration.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

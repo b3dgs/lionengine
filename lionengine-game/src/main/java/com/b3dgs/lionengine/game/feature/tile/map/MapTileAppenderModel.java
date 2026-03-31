@@ -40,6 +40,7 @@ public class MapTileAppenderModel extends FeatureAbstract implements MapTileAppe
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>

@@ -36,6 +36,7 @@ import com.b3dgs.lionengine.io.FileWriting;
 
 /**
  * Default world model, designed to contain game elements ({@link Factory}, {@link Handler} ...).
+ * 
  * <p>
  * It contains the following configured fields:
  * </p>
@@ -52,6 +53,7 @@ import com.b3dgs.lionengine.io.FileWriting;
  * </ul>
  * </li>
  * </ul>
+ * 
  * <p>
  * The {@link Services} must provide:
  * </p>

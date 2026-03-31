@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.game.feature.tile.TileConfig;
 /**
  * Find all tiles transitions and extract them to an XML file.
  * It will check from an existing map all transitions combination.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

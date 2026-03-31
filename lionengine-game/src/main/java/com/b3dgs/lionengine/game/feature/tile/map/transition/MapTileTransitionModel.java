@@ -144,6 +144,7 @@ public class MapTileTransitionModel extends FeatureAbstract implements MapTileTr
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>

@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.SizeConfig;
 
 /**
  * Represents the producible data from a configurer compatible with {@link SizeConfig}.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

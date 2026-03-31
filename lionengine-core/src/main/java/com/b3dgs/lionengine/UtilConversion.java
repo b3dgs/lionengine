@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 
 /**
  * Conversion class utility.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

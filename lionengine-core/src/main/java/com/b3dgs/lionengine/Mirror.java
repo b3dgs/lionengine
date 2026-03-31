@@ -18,6 +18,7 @@ package com.b3dgs.lionengine;
 
 /**
  * Describes the different mirror types.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

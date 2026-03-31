@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.graphic.ScreenListener;
  * Sequence class is used for each derived sequence, such as Introduction, Menu, Scene... It contains a reference to the
  * screen used, the current configuration, input references ({@link #getInputDevice(Class)}), and it includes
  * a standard game loop ({@link #update(double)} and {@link #render(Graphic)}), synchronized to a specified frame rate.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

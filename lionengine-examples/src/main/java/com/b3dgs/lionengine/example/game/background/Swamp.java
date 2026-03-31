@@ -122,7 +122,7 @@ final class Swamp extends BackgroundAbstract
                                                  Medias.create("palette.png"),
                                                  Medias.create("raster.png"));
             mountainSprite = (Sprite) mountain.getRenderable();
-            w = (int) Math.ceil(screenWidth / (double) ((Sprite) mountain.getRenderable()).getWidth()) + 1;
+            w = (int) Math.ceil(screenWidth / (double) mountain.getRenderable().getWidth()) + 1;
         }
 
         /**
@@ -133,7 +133,7 @@ final class Swamp extends BackgroundAbstract
         private void setScreenWidth(int width)
         {
             backdrop.setScreenWidth(width);
-            w = (int) Math.ceil(width / (double) ((Sprite) mountain.getRenderable()).getWidth()) + 1;
+            w = (int) Math.ceil(width / (double) mountain.getRenderable().getWidth()) + 1;
         }
 
         /**

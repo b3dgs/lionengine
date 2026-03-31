@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Tools related to files and directories handling.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

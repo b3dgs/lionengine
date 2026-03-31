@@ -43,12 +43,14 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>
      * <ul>
      * <li>{@link MapTile}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>

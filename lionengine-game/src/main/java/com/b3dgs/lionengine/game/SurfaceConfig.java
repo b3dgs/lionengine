@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the surface data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

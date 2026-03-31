@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 /**
  * Abstract representation of a standard tile based map. This class uses a List of List to store tiles, a TreeMap to
  * store sheets references ({@link SpriteTiled}), and collisions.
+ * 
  * <p>
  * The way to prepare a map is the following:
  * </p>
@@ -100,6 +101,7 @@ public class MapTileGame extends FeaturableAbstract implements MapTile, Listenab
      * Create a map from a level rip which should be an image file (*.PNG, *.BMP) that represents the full map.
      * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created (
      * {@link #create(int, int, int, int)}).
+     * 
      * <p>
      * {@link TileSheetsConfig#FILENAME} and {@link com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig#FILENAME}
      * will be used as default, by calling {@link #create(Media, Media)}.

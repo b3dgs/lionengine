@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Character data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

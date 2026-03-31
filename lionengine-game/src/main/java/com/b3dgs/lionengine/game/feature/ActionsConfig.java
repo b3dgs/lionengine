@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Represents the action references data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

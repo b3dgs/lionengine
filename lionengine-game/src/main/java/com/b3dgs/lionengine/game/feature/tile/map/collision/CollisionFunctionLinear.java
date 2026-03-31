@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 /**
  * Linear collision function implementation. It simply represents the following function:
+ * 
  * <p>
  * <code>a * input + b</code>
  * </p>

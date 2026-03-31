@@ -35,6 +35,7 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
  * Standard camera, able to handle movement, and both vertical/horizontal interval. Camera can be used to move
  * easily, or just follow a specific {@link Localizable}. Also, a view can be set to avoid useless rendering when
  * objects are outside of the camera view.
+ * 
  * <p>
  * Camera construction order example:
  * </p>
@@ -272,6 +273,7 @@ public class Camera extends FeaturableAbstract implements Viewer
     /**
      * This represents the real position, between -interval and +interval. In other words, camera will move only when
      * the interval location is on its extremity.
+     * 
      * <p>
      * For example: if the camera is following an object and the camera horizontal interval is 16, anything that is
      * rendered using the camera view point will see its horizontal axis change when the object horizontal location will
@@ -292,6 +294,7 @@ public class Camera extends FeaturableAbstract implements Viewer
 
     /**
      * Define the rendering area. Useful to apply an offset during rendering, in order to avoid hiding part.
+     * 
      * <p>
      * For example:
      * </p>
@@ -303,10 +306,12 @@ public class Camera extends FeaturableAbstract implements Viewer
      * <code>15</code> horizontal tiles and <code>10</code> vertical tiles will be rendered from <code>64, 64</code>
      * (screen top-left).</li>
      * </ul>
+     * 
      * <p>
      * It is also compatible with object rendering (by using an {@link com.b3dgs.lionengine.game.feature.Handler}). The
      * object which is outside the camera view will not be rendered. This avoid useless rendering.
      * </p>
+     * 
      * <p>
      * Note: The rendering view is from the camera location. So <code>x</code> and <code>y</code> are an offset from
      * this location.
@@ -378,6 +383,7 @@ public class Camera extends FeaturableAbstract implements Viewer
     /**
      * Define the maximum view limit. This function will allow to let the camera know the max rendering size, and so,
      * know which part can be viewed without being outside the extremity.
+     * 
      * <p>
      * Note: Must be called after set view ({@link #setView(int, int, int, int, int)}).
      * </p>
@@ -393,6 +399,7 @@ public class Camera extends FeaturableAbstract implements Viewer
     /**
      * Define the maximum view limit. This function will allow to let the camera know the max rendering size, and so,
      * know which part can be viewed without being outside the extremity.
+     * 
      * <p>
      * Note: Must be called after set view ({@link #setView(int, int, int, int, int)}).
      * </p>

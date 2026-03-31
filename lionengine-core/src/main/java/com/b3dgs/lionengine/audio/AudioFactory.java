@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.UtilFile;
 
 /**
  * Allows to create audio player depending on format.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

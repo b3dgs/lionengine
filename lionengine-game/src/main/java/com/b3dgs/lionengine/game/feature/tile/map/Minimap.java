@@ -36,6 +36,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
 /**
  * Minimap representation of a map tile. This can be used to represent strategic view of a map.
+ * 
  * <p>
  * Usage:
  * </p>

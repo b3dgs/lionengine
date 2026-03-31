@@ -65,21 +65,25 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>
      * <ul>
      * <li>{@link MapTileCollision}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Configurer} must provide a valid {@link CollisionCategoryConfig}.
      * </p>
+     * 
      * <p>
      * If the {@link Featurable} is a {@link TileCollidableListener}, it will automatically
      * {@link #addListener(TileCollidableListener)} on it.
@@ -97,21 +101,25 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>
      * <ul>
      * <li>{@link MapTileCollision}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Configurer} must provide a valid {@link CollisionCategoryConfig}.
      * </p>
+     * 
      * <p>
      * If the {@link Featurable} is a {@link TileCollidableListener}, it will automatically
      * {@link #addListener(TileCollidableListener)} on it.

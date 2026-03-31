@@ -46,6 +46,7 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
@@ -53,6 +54,7 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
      * <li>{@link Collidable}</li>
      * <li>{@link Animatable}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Configurer} can provide a valid {@link CollidableFramedConfig}.
      * </p>

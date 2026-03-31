@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.graphic.Screen;
 
 /**
  * Unlocked loop. Update and render as fast as possible, does not sync to expected frame rate.
+ * 
  * <p>
  * Completely machine dependent (both faster or slower).
  * </p>

@@ -50,6 +50,7 @@ public class AssignableModel extends FeatureModel implements Assignable
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -57,6 +58,7 @@ public class AssignableModel extends FeatureModel implements Assignable
      * <li>{@link Cursor}</li>
      * <li>{@link Viewer}</li>
      * </ul>
+     * 
      * <p>
      * If the {@link Featurable} is an {@link Assign}, it will automatically {@link #setAssign(Assign)} on it.
      * </p>
@@ -72,6 +74,7 @@ public class AssignableModel extends FeatureModel implements Assignable
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -79,6 +82,7 @@ public class AssignableModel extends FeatureModel implements Assignable
      * <li>{@link Cursor}</li>
      * <li>{@link Viewer}</li>
      * </ul>
+     * 
      * <p>
      * If the {@link Featurable} is an {@link Assign}, it will automatically {@link #setAssign(Assign)} on it.
      * </p>

@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Tools related to directories handling.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

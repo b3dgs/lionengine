@@ -26,6 +26,7 @@ public interface Resource
     /**
      * Load resource. This function must be called if the resource is loaded from a file. It will only load data from
      * source to memory.
+     * 
      * <p>
      * Must be called only one time.
      * </p>

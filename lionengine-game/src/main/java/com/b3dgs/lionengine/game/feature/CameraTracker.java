@@ -45,6 +45,7 @@ public class CameraTracker extends FeaturableAbstract
 
     /**
      * Create tracker.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -62,6 +63,7 @@ public class CameraTracker extends FeaturableAbstract
 
     /**
      * Create tracker.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -198,6 +200,7 @@ public class CameraTracker extends FeaturableAbstract
 
     /**
      * Track the specified featurable.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>

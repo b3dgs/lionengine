@@ -34,14 +34,17 @@ import com.b3dgs.lionengine.game.Feature;
  * <li>{@link com.b3dgs.lionengine.game.Cursor}</li>
  * <li>...</li>
  * </ul>
+ * 
  * <p>
  * in order to access to them from the object instance, such as a {@link Featurable} or a {@link Feature}.
  * </p>
+ * 
  * <p>
  * Ensure to add any required services before creating an object with the factory, else it will fail with a
  * {@link LionEngineException} when calling
  * {@link com.b3dgs.lionengine.game.feature.Factory#create(com.b3dgs.lionengine.Media)}.
  * </p>
+ * 
  * <p>
  * Usage example:
  * </p>
@@ -75,10 +78,12 @@ public class Services
 
     /**
      * Create a service from its type, and automatically {@link #add(Object)} it.
+     * 
      * <p>
      * The service instance must provide a public constructor with {@link Services} as single argument, or the public
      * default constructor. Else, create manually the instance and use {@link #add(Object)} on it.
      * </p>
+     * 
      * <p>
      * The returned service will allow to keep its reference for an easy final initialization:
      * </p>
@@ -141,6 +146,7 @@ public class Services
 
     /**
      * Add a service.
+     * 
      * <p>
      * The returned service will allow to add a service and keep its reference for an easy final initialization:
      * </p>
@@ -185,6 +191,7 @@ public class Services
 
     /**
      * Get a service from its class.
+     * 
      * <p>
      * The first instance (previously added with {@link #add(Object)} or {@link #create(Class)}) which fit the required
      * type is returned.
@@ -214,6 +221,7 @@ public class Services
 
     /**
      * Get a service from its class.
+     * 
      * <p>
      * The first instance (previously added with {@link #add(Object)} or {@link #create(Class)}) which fit the required
      * type is returned.
@@ -231,6 +239,7 @@ public class Services
 
     /**
      * Get a service from its class.
+     * 
      * <p>
      * The first instance (previously added with {@link #add(Object)} or {@link #create(Class)}) which fit the required
      * type is returned.

@@ -88,6 +88,7 @@ public class MapTransitionExtractor
 
     /**
      * Create the extractor.
+     * 
      * <p>
      * The {@link MapTile} must provide the following features:
      * </p>

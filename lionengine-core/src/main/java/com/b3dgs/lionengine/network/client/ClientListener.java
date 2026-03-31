@@ -32,6 +32,7 @@ public interface ClientListener
 
     /**
      * Called on disconnected from specified server.
+     * 
      * <p>
      * Does nothing by default.
      * </p>
@@ -47,6 +48,7 @@ public interface ClientListener
 
     /**
      * Called on client connected on server.
+     * 
      * <p>
      * Does nothing by default.
      * </p>
@@ -60,6 +62,7 @@ public interface ClientListener
 
     /**
      * Called on client disconnected from server.
+     * 
      * <p>
      * Does nothing by default.
      * </p>
@@ -73,6 +76,7 @@ public interface ClientListener
 
     /**
      * Called on client set name.
+     * 
      * <p>
      * Does nothing by default.
      * </p>

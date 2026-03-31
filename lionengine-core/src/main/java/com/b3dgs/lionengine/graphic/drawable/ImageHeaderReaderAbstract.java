@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Image header reader interface.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

@@ -83,6 +83,7 @@ public class TransitiveGroup
 
     /**
      * Create the transitive group handler.
+     * 
      * <p>
      * The {@link MapTile} must provide the following features:
      * </p>

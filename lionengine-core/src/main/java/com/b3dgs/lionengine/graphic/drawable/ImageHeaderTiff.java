@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.graphic.ImageFormat;
 
 /**
  * Read TIFF image info.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

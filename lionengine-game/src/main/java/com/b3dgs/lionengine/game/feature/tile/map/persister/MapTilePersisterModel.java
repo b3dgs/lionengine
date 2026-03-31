@@ -46,6 +46,7 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
@@ -250,6 +251,7 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
 
     /**
      * Load a map from a specified file as binary data.
+     * 
      * <p>
      * Data are loaded this way (see {@link #save(FileWriting)} order):
      * </p>

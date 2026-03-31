@@ -25,6 +25,7 @@ import java.util.zip.ZipEntry;
 
 /**
  * Implementation provider for the {@link FactoryMedia}.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

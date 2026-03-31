@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
  * <li>{@link SpriteFont}</li>
  * <li>{@link SpriteDigit}</li>
  * </ul>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -50,6 +51,7 @@ public final class Drawable
 
     /**
      * Set the DPI to use. Computed automatically depending of the baseline resolution and the current configuration.
+     * 
      * <p>
      * Resources has to be suffixed with "_DPI" before the extension.
      * For example, baseline resources is "image.png", support for other DPI will need:
@@ -60,9 +62,11 @@ public final class Drawable
      * <li>image_hdpi.png - support for high resolution</li>
      * <li>image_xhdpi.png - support for very high resolution</li>
      * </ul>
+     * 
      * <p>
      * If there is not dedicated DPI resource, the baseline one will be use instead.
      * </p>
+     * 
      * <p>
      * <b>Must be set after engine started, before resource loading.</b>
      * </p>
@@ -81,6 +85,7 @@ public final class Drawable
 
     /**
      * Set the DPI to use.
+     * 
      * <p>
      * Resources has to be suffixed with "_DPI" before the extension.
      * For example, baseline resources is "image.png", support for other DPI will need:
@@ -91,9 +96,11 @@ public final class Drawable
      * <li>image_hdpi.png - support for high resolution</li>
      * <li>image_xhdpi.png - support for very high resolution</li>
      * </ul>
+     * 
      * <p>
      * If there is not dedicated DPI resource, the baseline one will be use instead.
      * </p>
+     * 
      * <p>
      * <b>Must be set after engine started, before resource loading.</b>
      * </p>
@@ -107,6 +114,7 @@ public final class Drawable
 
     /**
      * Load an image from a file.
+     * 
      * <p>
      * Once created, image must call {@link Image#load()} before any other operations.
      * </p>
@@ -122,6 +130,7 @@ public final class Drawable
 
     /**
      * Load an image from a java image (sharing the same surface). It may be useful in case of multiple images.
+     * 
      * <p>
      * {@link Image#load()} must not be called as surface has already been loaded.
      * </p>
@@ -137,6 +146,7 @@ public final class Drawable
 
     /**
      * Load a sprite from a file.
+     * 
      * <p>
      * Once created, sprite must call {@link Sprite#load()} before any other operations.
      * </p>
@@ -152,6 +162,7 @@ public final class Drawable
 
     /**
      * Load a sprite from a buffered image (sharing the same surface). It may be useful in case of multiple sprites.
+     * 
      * <p>
      * {@link Sprite#load()} must not be called as surface has already been loaded.
      * </p>
@@ -167,6 +178,7 @@ public final class Drawable
 
     /**
      * Load an animated sprite from a file, giving horizontal and vertical frames.
+     * 
      * <p>
      * Once created, sprite must call {@link SpriteAnimated#load()} before any other operations.
      * </p>
@@ -185,6 +197,7 @@ public final class Drawable
     /**
      * Load an animated sprite, giving horizontal and vertical frames (sharing the same surface). It may be useful in
      * case of multiple animated sprites.
+     * 
      * <p>
      * {@link SpriteAnimated#load()} must not be called as surface has already been loaded.
      * </p>
@@ -202,6 +215,7 @@ public final class Drawable
 
     /**
      * Load a tiled sprite from a file, giving tile dimension.
+     * 
      * <p>
      * Once created, sprite must call {@link SpriteTiled#load()} before any other operations.
      * </p>
@@ -220,6 +234,7 @@ public final class Drawable
     /**
      * Load a tiled sprite using an image reference, giving tile dimension (sharing the same surface). It may be
      * useful in case of multiple tiled sprites.
+     * 
      * <p>
      * {@link SpriteTiled#load()} must not be called as surface has already been loaded.
      * </p>
@@ -237,6 +252,7 @@ public final class Drawable
 
     /**
      * Load a parallaxed sprite, for parallax effect.
+     * 
      * <p>
      * Once created, sprite must call {@link SpriteParallaxed#load(boolean)} before any other operations.
      * </p>
@@ -255,6 +271,7 @@ public final class Drawable
 
     /**
      * Load a font based on an image.
+     * 
      * <p>
      * Once created, sprite must call {@link SpriteFont#load()} before any other operations.
      * </p>
@@ -288,6 +305,7 @@ public final class Drawable
 
     /**
      * Load a digit based on an image.
+     * 
      * <p>
      * {@link SpriteDigit#load()} must not be called as surface has already been loaded.
      * </p>
@@ -306,6 +324,7 @@ public final class Drawable
 
     /**
      * Load a digit based on a surface.
+     * 
      * <p>
      * {@link SpriteDigit#load()} must not be called as surface has already been loaded.
      * </p>

@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game;
 
 /**
  * No direction.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
  * It allows images loading and rendering. Images can't be resized and can't use any filters.
+ * 
  * <p>
  * Example:
  * </p>
@@ -45,9 +46,11 @@ public interface Image extends Resource, Shape, Renderable
     /**
      * Load surface. This function must be called if the surface is loaded from a file, else the surface will never be
      * prepared. It will only load data from source to memory.
+     * 
      * <p>
      * Must be called only one time. {@link #prepare()} must be then called.
      * </p>
+     * 
      * <p>
      * Images loaded with a reference of an existing {@link ImageBuffer}.
      * </p>

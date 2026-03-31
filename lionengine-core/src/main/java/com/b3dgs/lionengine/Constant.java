@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * List of common constants.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

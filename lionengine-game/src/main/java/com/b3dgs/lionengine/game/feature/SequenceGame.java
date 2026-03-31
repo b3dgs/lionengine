@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.graphic.engine.Zooming;
 
 /**
  * Sequence base dedicated to game module, supporting base tools by default.
+ * 
  * <p>
  * The following tools are included:
  * </p>

@@ -77,6 +77,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Configurer} can provide a valid {@link ExtractorConfig}.
      * </p>
@@ -92,6 +93,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Configurer} can provide a valid {@link ExtractorConfig}.
      * </p>

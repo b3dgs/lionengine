@@ -55,9 +55,11 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Configurer} can provide a valid {@link ProducibleConfig}.
      * </p>
+     * 
      * <p>
      * If the {@link Featurable} is a {@link ProducibleListener}, it will automatically
      * {@link #addListener(ProducibleListener)} on it.

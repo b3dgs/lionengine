@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Feature model implementation.
+ * 
  * <p>
  * Any feature can override {@link #checkListener(Object)} to automatically add listener on object if implements
  * it/them.

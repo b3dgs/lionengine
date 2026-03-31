@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.graphic.Screen;
 
 /**
  * Locked loop with extrapolation for computing, waiting for expected frame rate.
+ * 
  * <p>
  * Max speed is capped, compensate slow speed with extrapolation value. Loss of precision during computation.
  * </p>

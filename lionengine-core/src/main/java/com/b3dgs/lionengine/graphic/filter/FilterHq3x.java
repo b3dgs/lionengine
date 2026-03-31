@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.graphic.Transform;
 
 /**
  * HQ3X implementation.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

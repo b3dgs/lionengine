@@ -72,6 +72,7 @@ public class ComponentNetwork implements ComponentUpdater, HandlerListener
 
     /**
      * Create component.
+     * 
      * <p>
      * The {@link Services} must provide the following services:
      * </p>

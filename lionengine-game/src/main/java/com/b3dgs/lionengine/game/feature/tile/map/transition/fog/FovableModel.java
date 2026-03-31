@@ -45,18 +45,21 @@ public class FovableModel extends FeatureModel implements Fovable
 
     /**
      * Create model.
+     * 
      * <p>
      * The {@link Services} must provide:
      * </p>
      * <ul>
      * <li>{@link MapTile}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Configurer} can provide a valid {@link FovableConfig}.
      * </p>

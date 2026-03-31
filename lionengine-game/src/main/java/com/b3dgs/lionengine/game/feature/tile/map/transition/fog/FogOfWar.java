@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
 /**
  * Designed to handle a fog of war (discovering tile and hiding tile).
+ * 
  * <p>
  * Usage example:
  * </p>

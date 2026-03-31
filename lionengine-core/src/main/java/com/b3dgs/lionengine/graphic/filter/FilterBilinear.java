@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.graphic.Transform;
 
 /**
  * Bilinear filter implementation.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

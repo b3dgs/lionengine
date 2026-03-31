@@ -46,6 +46,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Handle the {@link State}.
+ * 
  * <p>
  * Usage example:
  * </p>
@@ -85,6 +86,7 @@ public class StateHandler extends FeatureModel implements RoutineUpdate, Recycla
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Configurer} can provide {@link Animation}.
      * </p>
@@ -100,6 +102,7 @@ public class StateHandler extends FeatureModel implements RoutineUpdate, Recycla
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Configurer} can provide {@link Animation}.
      * </p>
@@ -116,6 +119,7 @@ public class StateHandler extends FeatureModel implements RoutineUpdate, Recycla
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Configurer} can provide {@link Animation}.
      * </p>
@@ -132,6 +136,7 @@ public class StateHandler extends FeatureModel implements RoutineUpdate, Recycla
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Configurer} can provide {@link Animation}.
      * </p>

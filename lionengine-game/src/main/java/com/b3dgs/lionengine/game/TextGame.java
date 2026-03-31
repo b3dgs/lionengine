@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.graphic.TextStyle;
  * Game text implementation. This class enhance the text in order to use it in a game referential. It is perfect to
  * display text over an entity for example, or to give the impression that the text is in the world and not simply on
  * screen.
+ * 
  * <p>
  * The use is strictly the same as {@link Text}, just including an additional function which is
  * {@link TextGame#update(Viewer)}, needed to update the text location.

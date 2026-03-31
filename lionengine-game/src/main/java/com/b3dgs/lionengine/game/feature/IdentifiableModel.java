@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.ListenableModel;
 
 /**
  * Identifiable model implementation.
+ * 
  * <p>
  * Handle a list of unique Id, provide the next free Id, and recycle destroyed Id.
  * </p>

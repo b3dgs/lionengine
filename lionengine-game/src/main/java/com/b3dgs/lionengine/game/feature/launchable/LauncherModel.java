@@ -115,6 +115,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -123,15 +124,18 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
      * <li>{@link Handler}</li>
      * <li>{@link SourceResolutionProvider}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Setup} must provide a valid {@link LauncherConfig}.
      * </p>
+     * 
      * <p>
      * If the {@link Featurable} is a {@link LauncherListener}, it will automatically
      * {@link #addListener(LauncherListener)} on it.
@@ -148,6 +152,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -156,15 +161,18 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
      * <li>{@link Handler}</li>
      * <li>{@link SourceResolutionProvider}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
      * <p>
      * The {@link Setup} must provide a valid {@link LauncherConfig}.
      * </p>
+     * 
      * <p>
      * If the {@link Featurable} is a {@link LauncherListener}, it will automatically
      * {@link #addListener(LauncherListener)} on it.

@@ -17,6 +17,7 @@
 
 /**
  * State object representation which allows to represent a gameplay as a finite state machine.
+ * 
  * <p>
  * A {@link com.b3dgs.lionengine.game.feature.state.State} is created and handled by the
  * {@link com.b3dgs.lionengine.game.feature.state.StateHandler}.

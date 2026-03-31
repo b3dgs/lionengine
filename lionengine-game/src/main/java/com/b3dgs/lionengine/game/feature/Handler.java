@@ -112,6 +112,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
      * Add a featurable to the list. Will be added at the beginning of {@link #update(double)} call.
      * If this function is called during {@link #update(double)}, it will be delayed to next {@link #update(double)}
      * call.
+     * 
      * <p>
      * Automatically add {@link IdentifiableModel} if feature does not have {@link Identifiable} feature.
      * </p>

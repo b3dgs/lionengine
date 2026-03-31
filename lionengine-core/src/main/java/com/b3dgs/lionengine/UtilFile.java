@@ -28,6 +28,7 @@ import java.util.Optional;
 
 /**
  * Tools related to files handling.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -41,6 +42,7 @@ public final class UtilFile
 
     /**
      * Get the file name without its extension.
+     * 
      * <p>
      * Using <code>"image.png"</code> as argument returns <code>"image"</code>.
      * </p>

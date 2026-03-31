@@ -54,6 +54,7 @@ public class MapTilePathModel extends FeatureAbstract implements MapTilePath
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>

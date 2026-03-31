@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.graphic.Text;
 
 /**
  * Class representing a timed message handler.
+ * 
  * <p>
  * This allows to prepare a set of timed message that will disappear at the end of their timer.
  * </p>
@@ -114,6 +115,7 @@ public final class TimedMessage implements Updatable, Renderable
 
     /**
      * Message data class.
+     * 
      * <p>
      * This class is Thread-Safe.
      * </p>

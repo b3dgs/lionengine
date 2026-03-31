@@ -18,6 +18,7 @@ package com.b3dgs.lionengine;
 
 /**
  * Static functions around math manipulation.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

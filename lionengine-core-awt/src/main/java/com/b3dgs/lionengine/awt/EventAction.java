@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.awt;
 
 /**
  * Represents an action that will be triggered depending of the chosen state.
+ * 
  * <p>
  * As it is event based, there is no guarantees on which thread executes this function; be careful on the function code
  * content.

@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
 
 /**
  * Represents the pathfinding data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

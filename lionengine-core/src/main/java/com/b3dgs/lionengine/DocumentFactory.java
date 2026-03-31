@@ -33,6 +33,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Document factory implementation for DOM.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

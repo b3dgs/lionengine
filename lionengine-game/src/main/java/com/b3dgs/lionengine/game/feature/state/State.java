@@ -21,14 +21,17 @@ import com.b3dgs.lionengine.Updatable;
 
 /**
  * States are designed to implement easily a gameplay by reducing implementation complexity.
+ * 
  * <p>
  * In other word, gameplay can be represented as a finite state machine. This will ensure gameplay state validity,
  * instead of checking tons of boolean to catch the right state.
  * </p>
+ * 
  * <p>
  * The only counter part is the number of class, which is usually one class per state. So typically, for a simple
  * gameplay (<code>Idle, Walk, Jump</code>), it will need 3 state classes, plus the {@link StateHandler}.
  * </p>
+ * 
  * <p>
  * Usage is quite simple:
  * </p>

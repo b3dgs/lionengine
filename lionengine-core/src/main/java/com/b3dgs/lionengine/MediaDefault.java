@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Media implementation.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -275,6 +276,7 @@ final class MediaDefault implements Media
 
     /**
      * Get the first file descriptor found.
+     * 
      * <p>
      * Here the following order:
      * </p>
@@ -339,6 +341,7 @@ final class MediaDefault implements Media
 
     /**
      * Get the first input stream found.
+     * 
      * <p>
      * Here the following order:
      * </p>
@@ -377,6 +380,7 @@ final class MediaDefault implements Media
 
     /**
      * Get the first output stream available.
+     * 
      * <p>
      * Here the following order:
      * </p>

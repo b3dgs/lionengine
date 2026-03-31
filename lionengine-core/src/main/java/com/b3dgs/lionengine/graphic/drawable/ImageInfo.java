@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Get quick information from an image without reading all data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

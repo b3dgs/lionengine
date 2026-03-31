@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 /**
  * Map tile rastered representation. This will allow to apply a raster effect to map rendering, improving the number of
  * color variation depending of the height.
+ * 
  * <p>
  * Here the usage:
  * </p>

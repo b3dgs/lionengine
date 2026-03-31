@@ -31,9 +31,11 @@ import com.b3dgs.lionengine.game.feature.tile.TileConfig;
 
 /**
  * Find all tiles circuits and extract them to an XML file.
+ * 
  * <p>
  * It will check from an existing map all circuits.
  * </p>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

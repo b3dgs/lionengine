@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.game.Orientation;
 
 /**
  * Represents the collisions constraint.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

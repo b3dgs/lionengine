@@ -48,6 +48,7 @@ public class LaunchableModel extends FeatureModel implements Launchable, Recycla
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>
@@ -67,6 +68,7 @@ public class LaunchableModel extends FeatureModel implements Launchable, Recycla
 
     /**
      * Create feature.
+     * 
      * <p>
      * The {@link Featurable} must have:
      * </p>

@@ -35,6 +35,7 @@ import com.b3dgs.lionengine.game.feature.collidable.Collision;
 
 /**
  * Represents the collisions framed data.
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

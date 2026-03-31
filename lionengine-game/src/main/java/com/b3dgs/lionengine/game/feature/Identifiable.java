@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Represents something identified by a unique number.
+ * 
  * <p>
  * Can request to be removed in order to be reused.
  * </p>
