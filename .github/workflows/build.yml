@@ -73,6 +73,7 @@ jobs:
        env:
          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
          GPG_PASS: ${{ secrets.GPG_PASSPHRASE }}
 
      - name: Upload Editor Repository
