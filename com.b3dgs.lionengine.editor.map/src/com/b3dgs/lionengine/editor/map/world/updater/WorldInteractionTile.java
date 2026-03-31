@@ -50,7 +50,18 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     /** Tile selection listener. */
     private final Collection<TileSelectionListener> tileSelectionListeners = new ArrayList<>();
     /** Tile selection listener. */
-    private final TileSelectionListener listener = new TileSelectionListenerImpl();
+    private final TileSelectionListener listener = (int click, Tile tile) ->
+    {
+        final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
+        if (tile != null)
+        {
+            part.setInput(part.getTree(), tile);
+        }
+        else
+        {
+            part.clear();
+        }
+    };
     /** Camera reference. */
     private final Camera camera;
     /** Map reference. */
@@ -79,6 +90,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         mapGroup = map.getFeature(MapTileGroup.class);
         mapTransition = map.getFeature(MapTileTransition.class);
         mapCircuit = map.getFeature(MapTileCircuit.class);
+
         tileSelectionListeners.add(listener);
     }
 
@@ -259,40 +271,6 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         if (click > 0 && palette.isPalette(PaletteType.POINTER_TILE))
         {
             updatePointerTile(mx, my, click);
-        }
-    }
-
-    /**
-     * Listen to tile selection to show tile properties.
-     */
-    private static final class TileSelectionListenerImpl implements TileSelectionListener
-    {
-        /**
-         * Create listener.
-         */
-        TileSelectionListenerImpl()
-        {
-            super();
-        }
-
-        @Override
-        public void notifyTileSelected(int click, Tile tile)
-        {
-            final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
-            if (tile != null)
-            {
-                part.setInput(part.getTree(), tile);
-            }
-            else
-            {
-                part.clear();
-            }
-        }
-
-        @Override
-        public void notifyTileGroupSelected(String group)
-        {
-            // Nothing to do
         }
     }
 }

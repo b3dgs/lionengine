@@ -36,5 +36,8 @@ public interface TileSelectionListener
      * 
      * @param group The new tile group selection.
      */
-    void notifyTileGroupSelected(String group);
+    default void notifyTileGroupSelected(String group)
+    {
+        // Nothing
+    }
 }

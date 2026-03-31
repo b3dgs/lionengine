@@ -429,12 +429,6 @@ public class GroupsAssignDialog extends DialogAbstract implements WorldView, Foc
     }
 
     @Override
-    public void notifyTileGroupSelected(String group)
-    {
-        // Nothing to do
-    }
-
-    @Override
     public void notifyObjectSelected(TileGroup object)
     {
         services.get(WorldSelectedTiles.class).getListener().notifyTileGroupSelected(getSelectedGroup());
