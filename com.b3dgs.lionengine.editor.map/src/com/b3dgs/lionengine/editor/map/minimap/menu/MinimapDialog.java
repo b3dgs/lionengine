@@ -462,7 +462,16 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
     }
 
     @Override
-    public void onKeyPushed(Integer key)
+    public void onKeyPressed(Integer key)
+    {
+        if (active)
+        {
+            render();
+        }
+    }
+
+    @Override
+    public void onKeyReleased(Integer key)
     {
         if (active)
         {

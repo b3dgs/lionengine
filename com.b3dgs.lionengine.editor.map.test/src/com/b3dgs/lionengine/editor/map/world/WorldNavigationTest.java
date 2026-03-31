@@ -63,7 +63,7 @@ public class WorldNavigationTest
         final SWTBotCanvas canvas = BOT.canvas(1);
         canvas.setFocus();
 
-        WorldModel.INSTANCE.getServices().get(WorldNavigation.class).onKeyPushed(Integer.valueOf(SWT.ARROW_RIGHT));
+        WorldModel.INSTANCE.getServices().get(WorldNavigation.class).onKeyPressed(Integer.valueOf(SWT.ARROW_RIGHT));
         canvas.display.syncExec(canvas.widget::redraw);
 
         BOT.sleep(500);
@@ -71,7 +71,7 @@ public class WorldNavigationTest
         Assert.assertEquals(WorldNavigation.GRID_MOVEMENT_SENSIBILITY * 16.0, camera.getX(), 0.0);
         Assert.assertEquals(0.0, camera.getY(), 0.0);
 
-        WorldModel.INSTANCE.getServices().get(WorldNavigation.class).onKeyPushed(Integer.valueOf(SWT.ARROW_LEFT));
+        WorldModel.INSTANCE.getServices().get(WorldNavigation.class).onKeyPressed(Integer.valueOf(SWT.ARROW_LEFT));
         canvas.display.syncExec(canvas.widget::redraw);
 
         BOT.sleep(500);

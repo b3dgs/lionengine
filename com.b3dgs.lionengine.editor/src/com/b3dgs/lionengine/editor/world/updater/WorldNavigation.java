@@ -89,7 +89,7 @@ public class WorldNavigation implements WorldMouseMoveListener, WorldKeyboardLis
     }
 
     @Override
-    public void onKeyPushed(Integer key)
+    public void onKeyPressed(Integer key)
     {
         final double vx = getSpeed(KeyboardSwt.LEFT, KeyboardSwt.RIGHT, key);
         final double vy = getSpeed(KeyboardSwt.DOWN, KeyboardSwt.UP, key);
@@ -97,5 +97,11 @@ public class WorldNavigation implements WorldMouseMoveListener, WorldKeyboardLis
         final int speedX = map.getTileWidth() * GRID_MOVEMENT_SENSIBILITY;
         final int speedY = map.getTileHeight() * GRID_MOVEMENT_SENSIBILITY;
         camera.moveLocation(1.0, vx * speedX / scale, vy * speedY / scale);
+    }
+
+    @Override
+    public void onKeyReleased(Integer key)
+    {
+        // Skip
     }
 }
