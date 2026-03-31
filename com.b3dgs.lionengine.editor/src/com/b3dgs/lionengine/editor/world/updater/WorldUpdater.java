@@ -331,13 +331,16 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
     {
         for (final WorldKeyboardListener listener : keyListeners)
         {
-            listener.onKeyPushed(Integer.valueOf(keyEvent.keyCode));
+            listener.onKeyPressed(Integer.valueOf(keyEvent.keyCode));
         }
     }
 
     @Override
     public void keyReleased(KeyEvent keyEvent)
     {
-        // Nothing to do
+        for (final WorldKeyboardListener listener : keyListeners)
+        {
+            listener.onKeyReleased(Integer.valueOf(keyEvent.keyCode));
+        }
     }
 }
