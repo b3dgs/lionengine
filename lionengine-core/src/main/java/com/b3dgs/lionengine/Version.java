@@ -29,6 +29,9 @@ package com.b3dgs.lionengine;
  */
 public record Version(int major, int minor, int micro)
 {
+    private static final int LENGTH_MIN = 6;
+    private static final char DOT = '.';
+
     /**
      * Get the major number of the version.
      * 
@@ -62,6 +65,11 @@ public record Version(int major, int minor, int micro)
     @Override
     public String toString()
     {
-        return major + Constant.DOT + minor + Constant.DOT + micro;
+        return new StringBuilder(LENGTH_MIN).append(major)
+                                            .append(DOT)
+                                            .append(minor)
+                                            .append(DOT)
+                                            .append(micro)
+                                            .toString();
     }
 }

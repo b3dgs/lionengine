@@ -27,19 +27,17 @@ public final class LionEngineException extends RuntimeException
     static final String ERROR_UNKNOWN_ENUM = "Unknown enum: ";
     /** Null enum. */
     static final String NULL_ENUM = "null";
+    private static final int LENGTH_MIN = 32;
 
     /**
      * Get formatted message with media.
      * 
      * @param media The media reference (must not be <code>null</code>).
      * @return The formatted message.
-     * @throws LionEngineException If invalid argument.
      */
     private static String getMessage(Media media)
     {
-        Check.notNull(media);
-
-        return new StringBuilder(Constant.BYTE_4).append('[').append(media.getPath()).append("] ").toString();
+        return new StringBuilder(LENGTH_MIN).append('[').append(media.getPath()).append("] ").toString();
     }
 
     /**
@@ -48,12 +46,9 @@ public final class LionEngineException extends RuntimeException
      * @param media The media reference (must not be <code>null</code>).
      * @param message The message to concatenate (must not be <code>null</code>).
      * @return The formatted message.
-     * @throws LionEngineException If invalid arguments.
      */
     private static String getMessage(Media media, String message)
     {
-        Check.notNull(message);
-
         return new StringBuilder(getMessage(media)).append(message).toString();
     }
 
