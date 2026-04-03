@@ -133,7 +133,7 @@ final class SpriteFontImpl implements SpriteFont
         Check.notNull(surface);
         Check.notNull(mediaData);
 
-        this.surface = Drawable.loadSpriteTiled(surface, tw, th);
+        this.surface = new SpriteTiledImpl(surface, tw, th);
         media = null;
         this.tw = tw;
         lineHeight = th;
@@ -176,7 +176,7 @@ final class SpriteFontImpl implements SpriteFont
             }
             throw new LionEngineException(ERROR_ALREADY_LOADED);
         }
-        surface = Drawable.loadSpriteTiled(Graphics.getImageBuffer(media), tw, lineHeight);
+        surface = new SpriteTiledImpl(Graphics.getImageBuffer(media), tw, lineHeight);
     }
 
     @Override

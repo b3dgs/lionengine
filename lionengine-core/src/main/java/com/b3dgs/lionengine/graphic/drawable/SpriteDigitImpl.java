@@ -62,7 +62,7 @@ public class SpriteDigitImpl implements SpriteDigit
         digits = new SpriteTiled[digitNumber];
         for (int i = 0; i < digitNumber; i++)
         {
-            digits[i] = Drawable.loadSpriteTiled(sprite.getSurface(), tileWidth, tileHeight);
+            digits[i] = new SpriteTiledImpl(sprite.getSurface(), tileWidth, tileHeight);
         }
     }
 
@@ -81,11 +81,11 @@ public class SpriteDigitImpl implements SpriteDigit
         Check.superiorStrict(digitNumber, 0);
 
         this.digitNumber = digitNumber;
-        sprite = Drawable.loadSpriteTiled(surface, tileWidth, tileHeight);
+        sprite = new SpriteTiledImpl(surface, tileWidth, tileHeight);
         digits = new SpriteTiled[digitNumber];
         for (int i = 0; i < digitNumber; i++)
         {
-            digits[i] = Drawable.loadSpriteTiled(sprite.getSurface(), tileWidth, tileHeight);
+            digits[i] = new SpriteTiledImpl(sprite.getSurface(), tileWidth, tileHeight);
         }
     }
 
