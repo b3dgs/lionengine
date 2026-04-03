@@ -19,14 +19,26 @@ package com.b3dgs.lionengine.game.feature.state;
 /**
  * Last state marker. Must be used to return the last state instead of a specific one.
  */
-public final class StateLast extends StateAbstract
+public final class StateLast implements State
 {
     /**
-     * Private constructor.
+     * Constructor.
      */
     public StateLast()
     {
         super();
+    }
+
+    @Override
+    public void addTransition(Class<? extends State> next, StateChecker checker)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void clearTransitions()
+    {
+        // Nothing to do
     }
 
     @Override
@@ -39,5 +51,17 @@ public final class StateLast extends StateAbstract
     public void update(double extrp)
     {
         // Nothing to do
+    }
+
+    @Override
+    public void exit()
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public Class<? extends State> checkTransitions(Class<? extends State> last)
+    {
+        return null;
     }
 }
