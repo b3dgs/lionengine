@@ -65,6 +65,7 @@ public abstract class Engine
         LOGGER.info(ENGINE_STARTING, Constant.ENGINE_VERSION, engine.getName(), engine.getVersion());
 
         Medias.setFactoryMedia(new FactoryMediaDefault());
+        Medias.setTempDirectory(engine.getName());
 
         engine.open();
         Engine.engine = engine;

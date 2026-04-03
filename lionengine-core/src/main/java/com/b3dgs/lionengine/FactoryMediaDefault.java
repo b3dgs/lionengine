@@ -34,8 +34,12 @@ public class FactoryMediaDefault implements FactoryMedia
     }
 
     @Override
-    public Media create(String separator, String resourcesDir, Class<?> resourcesClass, String... path)
+    public Media create(String separator, String resourcesDir, Class<?> resourcesClass, String tempDir, String... path)
     {
-        return new MediaDefault(separator, resourcesDir, resourcesClass, UtilFolder.getPathSeparator(separator, path));
+        return new MediaDefault(separator,
+                                resourcesDir,
+                                resourcesClass,
+                                tempDir,
+                                UtilFolder.getPathSeparator(separator, path));
     }
 }

@@ -42,6 +42,8 @@ public final class Medias
     private static String resourcesDir = DEFAULT_RESOURCES_DIR + getSeparator();
     /** Class loader. */
     private static Class<?> loader = Medias.class;
+    /** Temporary directory name. */
+    private static String tempDir = Constant.ENGINE_NAME;
 
     /**
      * Create a media.
@@ -52,7 +54,7 @@ public final class Medias
      */
     public static synchronized Media create(String... path)
     {
-        return factoryMedia.create(SEPARATOR, resourcesDir, loader, path);
+        return factoryMedia.create(SEPARATOR, resourcesDir, loader, tempDir, path);
     }
 
     /**
@@ -99,6 +101,23 @@ public final class Medias
         else
         {
             loader = clazz;
+        }
+    }
+
+    /**
+     * Define temporary directory.
+     * 
+     * @param directory The temporary directory name (can be <code>null</code>).
+     */
+    public static synchronized void setTempDirectory(String directory)
+    {
+        if (directory == null)
+        {
+            resourcesDir = Constant.ENGINE_NAME + getSeparator();
+        }
+        else
+        {
+            resourcesDir = directory + getSeparator();
         }
     }
 

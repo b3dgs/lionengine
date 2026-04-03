@@ -52,7 +52,7 @@ public final class FactoryMediaAndroid implements FactoryMedia
      */
 
     @Override
-    public Media create(String separator, String resourcesDir, Class<?> resourcesClass, String... path)
+    public Media create(String separator, String resourcesDir, Class<?> resourcesClass, String tempDir, String... path)
     {
         return new MediaAndroid(assetManager,
                                 context,

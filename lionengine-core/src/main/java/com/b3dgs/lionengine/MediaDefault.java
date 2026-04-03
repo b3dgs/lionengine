@@ -83,6 +83,8 @@ final class MediaDefault implements Media
     private final String resourcesDir;
     /** Class loader. */
     private final Class<?> resourcesClass;
+    /** Temp dir name. */
+    private final String tempDir;
     /** Media path. */
     private final String path;
     /** Media parent path. */
@@ -96,10 +98,11 @@ final class MediaDefault implements Media
      * @param separator The separator used (must not be <code>null</code>).
      * @param resourcesDir The resources directory path (must not be <code>null</code>).
      * @param resourcesClass The class loader used (must not be <code>null</code>).
+     * @param tempDir The temporary root directory name.
      * @param path The media path (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    MediaDefault(String separator, String resourcesDir, Class<?> resourcesClass, String path)
+    MediaDefault(String separator, String resourcesDir, Class<?> resourcesClass, String tempDir, String path)
     {
         super();
 
@@ -111,6 +114,7 @@ final class MediaDefault implements Media
         this.separator = separator;
         this.resourcesDir = resourcesDir;
         this.resourcesClass = resourcesClass;
+        this.tempDir = tempDir;
         this.path = path;
         final int index = path.lastIndexOf(separator);
         if (index > -1)
@@ -139,6 +143,7 @@ final class MediaDefault implements Media
         return new MediaDefault(separator,
                                 resourcesDir,
                                 resourcesClass,
+                                tempDir,
                                 UtilFolder.getPathSeparator(separator, systemPath));
     }
 
@@ -187,6 +192,7 @@ final class MediaDefault implements Media
             final Media media = new MediaDefault(separator,
                                                  resourcesDir,
                                                  resourcesClass,
+                                                 tempDir,
                                                  entry.getName().replace(root, Constant.EMPTY_STRING));
             medias.add(media);
         }
@@ -242,11 +248,7 @@ final class MediaDefault implements Media
      */
     private String getPathFromTemp()
     {
-        return UtilFolder.getPathSeparator(separator,
-                                           TEMP,
-                                           UtilFolder.getPath(Engine.isStarted() ? Engine.getProgramName()
-                                                                                 : Constant.ENGINE_NAME,
-                                                              path));
+        return UtilFolder.getPathSeparator(separator, TEMP, UtilFolder.getPath(tempDir, path));
     }
 
     /**
