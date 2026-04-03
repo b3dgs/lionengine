@@ -55,7 +55,11 @@ final class FactoryMediaTest
     void testCreateMedia()
     {
         final FactoryMedia factory = new FactoryMediaDefault();
-        final Media media = factory.create(java.io.File.separator, "rsc", FactoryMediaTest.class, "test.txt");
+        final Media media = factory.create(java.io.File.separator,
+                                           "rsc",
+                                           FactoryMediaTest.class,
+                                           FactoryMediaTest.class.getSimpleName(),
+                                           "test.txt");
 
         assertEquals("", media.getParentPath());
         assertEquals("test.txt", media.getPath());

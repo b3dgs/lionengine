@@ -113,11 +113,11 @@ public final class Medias
     {
         if (directory == null)
         {
-            resourcesDir = Constant.ENGINE_NAME + getSeparator();
+            tempDir = Constant.ENGINE_NAME + getSeparator();
         }
         else
         {
-            resourcesDir = directory + getSeparator();
+            tempDir = directory + getSeparator();
         }
     }
 
