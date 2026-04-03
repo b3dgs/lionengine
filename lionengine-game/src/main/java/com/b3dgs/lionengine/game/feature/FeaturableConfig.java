@@ -24,11 +24,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Feature;
 
@@ -98,7 +98,7 @@ public record FeaturableConfig(String clazz, String setup)
      * @return The featurable data.
      * @throws LionEngineException If unable to read node.
      */
-    public static FeaturableConfig imports(XmlReader root)
+    public static FeaturableConfig imports(AttributesReader root)
     {
         Check.notNull(root);
 
@@ -191,8 +191,8 @@ public record FeaturableConfig(String clazz, String setup)
                                    Setup setup,
                                    Class<?> filter)
     {
-        final List<XmlReader> children;
-        final XmlReader root = setup.getRoot();
+        final List<? extends AttributesReader> children;
+        final AttributesReader root = setup.getRoot();
         if (root.hasNode(NODE_FEATURES))
         {
             children = setup.getRoot()
@@ -207,7 +207,7 @@ public record FeaturableConfig(String clazz, String setup)
         final int n = children.size();
         for (int i = 0; i < n; i++)
         {
-            final XmlReader node = children.get(i);
+            final AttributesReader node = children.get(i);
             final String className = node.getText();
             final Class<? extends Feature> clazz = getClass(loader, className);
             if (filter == null || filter.isAssignableFrom(clazz))
@@ -233,7 +233,7 @@ public record FeaturableConfig(String clazz, String setup)
                                               Featurable featurable,
                                               Services services,
                                               Setup setup,
-                                              XmlReader config)
+                                              AttributesReader config)
     {
 
         try
@@ -250,7 +250,7 @@ public record FeaturableConfig(String clazz, String setup)
                                                            Featurable featurable,
                                                            Services services,
                                                            Setup setup,
-                                                           XmlReader config)
+                                                           AttributesReader config)
             throws ReflectiveOperationException
     {
         final Constructor<?>[] constructors = clazz.getConstructors();
@@ -268,7 +268,7 @@ public record FeaturableConfig(String clazz, String setup)
                 args.add(setup);
                 if (config != null
                     && parameters.length > 2
-                    && XmlReader.class.isAssignableFrom(parameters[2].getType()))
+                    && AttributesReader.class.isAssignableFrom(parameters[2].getType()))
                 {
                     args.add(config);
                 }

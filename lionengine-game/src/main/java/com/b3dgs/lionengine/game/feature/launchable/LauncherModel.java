@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
@@ -183,7 +184,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
      * @param config The feature configuration node (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public LauncherModel(Services services, Setup setup, XmlReader config)
+    public LauncherModel(Services services, Setup setup, AttributesReader config)
     {
         super(services, setup);
 

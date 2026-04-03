@@ -21,11 +21,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the animations data.
@@ -80,7 +80,7 @@ public record AnimationConfig(Map<String, Animation> animations)
      * @return The animations configuration instance.
      * @throws LionEngineException If unable to read data.
      */
-    public static AnimationConfig imports(XmlReader root)
+    public static AnimationConfig imports(AttributesReader root)
     {
         Check.notNull(root);
 
@@ -88,8 +88,9 @@ public record AnimationConfig(Map<String, Animation> animations)
 
         if (root.hasNode(NODE_ANIMATIONS))
         {
-            final Collection<XmlReader> children = root.getChild(NODE_ANIMATIONS).getChildren(NODE_ANIMATION);
-            for (final XmlReader node : children)
+            final Collection<? extends AttributesReader> children = root.getChild(NODE_ANIMATIONS)
+                                                                        .getChildren(NODE_ANIMATION);
+            for (final AttributesReader node : children)
             {
                 final String anim = node.getString(ANIMATION_NAME);
                 final Animation animation = createAnimation(node);
@@ -108,7 +109,7 @@ public record AnimationConfig(Map<String, Animation> animations)
      * @return The animation instance.
      * @throws LionEngineException If error when reading animation data.
      */
-    public static Animation createAnimation(XmlReader node)
+    public static Animation createAnimation(AttributesReader node)
     {
         Check.notNull(node);
 

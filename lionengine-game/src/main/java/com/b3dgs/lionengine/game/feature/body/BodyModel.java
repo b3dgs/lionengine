@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature.body;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -66,7 +67,7 @@ public class BodyModel extends FeatureModel implements Body, Recyclable
      * @param config The feature configuration node (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public BodyModel(Services services, Setup setup, XmlReader config)
+    public BodyModel(Services services, Setup setup, AttributesReader config)
     {
         super(services, setup);
 

@@ -21,11 +21,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -83,13 +83,13 @@ public record CollisionConfig(Map<String, Collision> collisions)
      * @return The collisions data.
      * @throws LionEngineException If unable to read node.
      */
-    public static CollisionConfig imports(XmlReader root)
+    public static CollisionConfig imports(AttributesReader root)
     {
         Check.notNull(root);
 
         final Map<String, Collision> collisions = new HashMap<>(0);
 
-        final Collection<XmlReader> children;
+        final Collection<? extends AttributesReader> children;
         if (root.hasNode(NODE_COLLISIONS))
         {
             children = root.getChild(NODE_COLLISIONS).getChildren(NODE_COLLISION);
@@ -98,7 +98,7 @@ public record CollisionConfig(Map<String, Collision> collisions)
         {
             children = Collections.emptyList();
         }
-        for (final XmlReader node : children)
+        for (final AttributesReader node : children)
         {
             final String coll = node.getString(ATT_NAME);
             final Collision collision = createCollision(node);
@@ -116,7 +116,7 @@ public record CollisionConfig(Map<String, Collision> collisions)
      * @return The collision instance.
      * @throws LionEngineException If error when reading collision data.
      */
-    public static Collision createCollision(XmlReader node)
+    public static Collision createCollision(AttributesReader node)
     {
         Check.notNull(node);
 

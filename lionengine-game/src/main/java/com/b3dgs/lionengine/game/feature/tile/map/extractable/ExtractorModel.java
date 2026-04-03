@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
@@ -103,7 +104,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
      * @param config The feature configuration node (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public ExtractorModel(Services services, Setup setup, XmlReader config)
+    public ExtractorModel(Services services, Setup setup, AttributesReader config)
     {
         super(services, setup);
 

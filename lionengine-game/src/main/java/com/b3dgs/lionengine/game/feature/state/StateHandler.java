@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
@@ -112,7 +113,7 @@ public class StateHandler extends FeatureModel implements RoutineUpdate, Recycla
      * @param config The feature configuration node (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public StateHandler(Services services, Setup setup, XmlReader config)
+    public StateHandler(Services services, Setup setup, AttributesReader config)
     {
         this(Class::getSimpleName, services, setup, config);
     }
@@ -151,7 +152,7 @@ public class StateHandler extends FeatureModel implements RoutineUpdate, Recycla
     private StateHandler(Function<Class<? extends State>, String> converter,
                          Services services,
                          Setup setup,
-                         XmlReader config)
+                         AttributesReader config)
     {
         super(services, setup);
 

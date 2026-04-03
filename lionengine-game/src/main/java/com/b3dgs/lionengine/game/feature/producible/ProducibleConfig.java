@@ -16,11 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature.producible;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.SizeConfig;
 
@@ -64,11 +64,11 @@ public record ProducibleConfig(int steps, int width, int height)
      * @return The producible data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ProducibleConfig imports(XmlReader root)
+    public static ProducibleConfig imports(AttributesReader root)
     {
         Check.notNull(root);
 
-        final XmlReader node = root.getChild(NODE_PRODUCIBLE);
+        final AttributesReader node = root.getChild(NODE_PRODUCIBLE);
         final SizeConfig size = SizeConfig.imports(root);
         final int time = node.getInteger(ATT_STEPS);
 

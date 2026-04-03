@@ -22,11 +22,11 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -62,17 +62,17 @@ public final class PathfindableConfig
     {
         Check.notNull(configurer);
 
-        final XmlReader root = configurer.getRoot();
+        final AttributesReader root = configurer.getRoot();
         if (!root.hasNode(NODE_PATHFINDABLE))
         {
             return Collections.emptyMap();
         }
 
         final Map<String, PathData> categories = new HashMap<>(0);
-        final XmlReader nodePathfindable = root.getChild(NODE_PATHFINDABLE);
+        final AttributesReader nodePathfindable = root.getChild(NODE_PATHFINDABLE);
 
-        final Collection<XmlReader> children = nodePathfindable.getChildren(NODE_PATH);
-        for (final XmlReader nodePath : children)
+        final Collection<? extends AttributesReader> children = nodePathfindable.getChildren(NODE_PATH);
+        for (final AttributesReader nodePath : children)
         {
             final PathData data = importPathData(nodePath);
             categories.put(data.getName(), data);
@@ -109,7 +109,7 @@ public final class PathfindableConfig
      * @return The path data instance.
      * @throws LionEngineException If error when reading path data.
      */
-    public static PathData importPathData(XmlReader node)
+    public static PathData importPathData(AttributesReader node)
     {
         Check.notNull(node);
 
@@ -147,7 +147,7 @@ public final class PathfindableConfig
      * @return The allowed movements.
      * @throws LionEngineException If malformed movement name.
      */
-    private static Collection<MovementTile> importAllowedMovements(XmlReader node)
+    private static Collection<MovementTile> importAllowedMovements(AttributesReader node)
     {
         if (!node.hasNode(NODE_MOVEMENT))
         {
@@ -156,8 +156,8 @@ public final class PathfindableConfig
 
         final Collection<MovementTile> movements = EnumSet.noneOf(MovementTile.class);
 
-        final Collection<XmlReader> children = node.getChildren(NODE_MOVEMENT);
-        for (final XmlReader movementNode : children)
+        final Collection<? extends AttributesReader> children = node.getChildren(NODE_MOVEMENT);
+        for (final AttributesReader movementNode : children)
         {
             try
             {

@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.XmlReader;
@@ -98,7 +99,7 @@ public class ActionableModel extends FeatureModel implements Actionable
      * @param config The feature configuration node (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public ActionableModel(Services services, Setup setup, XmlReader config)
+    public ActionableModel(Services services, Setup setup, AttributesReader config)
     {
         super(services, setup);
 

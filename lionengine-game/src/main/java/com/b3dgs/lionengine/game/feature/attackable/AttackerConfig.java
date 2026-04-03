@@ -16,12 +16,12 @@
  */
 package com.b3dgs.lionengine.game.feature.attackable;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -74,11 +74,11 @@ public record AttackerConfig(int delay, int distanceMin, int distanceMax, int da
      * @return The attacker data.
      * @throws LionEngineException If unable to read node or invalid integer.
      */
-    public static AttackerConfig imports(XmlReader root)
+    public static AttackerConfig imports(AttributesReader root)
     {
         Check.notNull(root);
 
-        final XmlReader node = root.getChild(NODE_ATTACKER);
+        final AttributesReader node = root.getChild(NODE_ATTACKER);
         final int delay = node.getInteger(0, ATT_DELAY);
         final int distanceMin = node.getInteger(0, ATT_DISTANCE_MIN);
         final int distanceMax = node.getInteger(0, ATT_DISTANCE_MAX);

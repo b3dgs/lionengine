@@ -22,11 +22,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Feature;
 
@@ -73,7 +73,7 @@ public final class ActionsConfig
      * @return The allowed actions.
      * @throws LionEngineException If unable to read node.
      */
-    public static List<ActionRef> imports(XmlReader root, Function<Class<? extends Feature>, Feature> id)
+    public static List<ActionRef> imports(AttributesReader root, Function<Class<? extends Feature>, Feature> id)
     {
         Check.notNull(root);
 
@@ -81,7 +81,7 @@ public final class ActionsConfig
         {
             return Collections.emptyList();
         }
-        final XmlReader node = root.getChild(NODE_ACTIONS);
+        final AttributesReader node = root.getChild(NODE_ACTIONS);
 
         return getRefs(node, id);
     }
@@ -127,12 +127,12 @@ public final class ActionsConfig
      * @param id The id supplier to handle unique instance if needed (must not be <code>null</code>).
      * @return The actions found.
      */
-    private static List<ActionRef> getRefs(XmlReader node, Function<Class<? extends Feature>, Feature> id)
+    private static List<ActionRef> getRefs(AttributesReader node, Function<Class<? extends Feature>, Feature> id)
     {
-        final Collection<XmlReader> children = node.getChildren(NODE_ACTION_REF);
+        final Collection<? extends AttributesReader> children = node.getChildren(NODE_ACTION_REF);
         final List<ActionRef> actions = new ArrayList<>(children.size());
 
-        for (final XmlReader action : children)
+        for (final AttributesReader action : children)
         {
             final String path = action.getString(ATT_PATH);
             final boolean cancel = action.getBoolean(false, ATT_CANCEL);

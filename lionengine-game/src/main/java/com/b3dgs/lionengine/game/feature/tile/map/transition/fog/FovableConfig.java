@@ -16,11 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -60,13 +60,13 @@ public final class FovableConfig
      * @return The data.
      * @throws LionEngineException If unable to read node.
      */
-    public static int imports(XmlReader root)
+    public static int imports(AttributesReader root)
     {
         Check.notNull(root);
 
         if (root.hasNode(NODE_FOVABLE))
         {
-            final XmlReader node = root.getChild(NODE_FOVABLE);
+            final AttributesReader node = root.getChild(NODE_FOVABLE);
             return node.getInteger(DEFAULT_FOV, ATT_FOV);
         }
         return DEFAULT_FOV;

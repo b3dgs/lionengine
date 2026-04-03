@@ -16,11 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature.tile;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the tile configuration.
@@ -39,7 +39,7 @@ public final class TileConfig
      * @return The tile number.
      * @throws LionEngineException If <code>null</code> argument or error when reading.
      */
-    public static int imports(XmlReader nodeTile)
+    public static int imports(AttributesReader nodeTile)
     {
         Check.notNull(nodeTile);
 

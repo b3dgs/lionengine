@@ -335,6 +335,12 @@ public class Configurer implements AttributesReader
     }
 
     @Override
+    public List<XmlReader> getChildren()
+    {
+        return root.getChildren();
+    }
+
+    @Override
     public final boolean hasAttribute(String attribute, String... path)
     {
         return root.hasAttribute(attribute, path);

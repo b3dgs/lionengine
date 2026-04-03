@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -66,16 +67,16 @@ public final class MinimapConfig
         Check.notNull(configMinimap);
 
         final Map<Integer, ColorRgba> colors = new HashMap<>();
-        final XmlReader nodeMinimap = new XmlReader(configMinimap);
+        final AttributesReader nodeMinimap = new XmlReader(configMinimap);
 
-        final Collection<XmlReader> children = nodeMinimap.getChildren(NODE_COLOR);
-        for (final XmlReader nodeColor : children)
+        final Collection<? extends AttributesReader> children = nodeMinimap.getChildren(NODE_COLOR);
+        for (final AttributesReader nodeColor : children)
         {
             final ColorRgba color = new ColorRgba(nodeColor.getInteger(ATT_COLOR_RED),
                                                   nodeColor.getInteger(ATT_COLOR_GREEN),
                                                   nodeColor.getInteger(ATT_COLOR_BLUE));
 
-            for (final XmlReader nodeTile : nodeColor.getChildren(TileConfig.NODE_TILE))
+            for (final AttributesReader nodeTile : nodeColor.getChildren(TileConfig.NODE_TILE))
             {
                 final Integer tile = Integer.valueOf(TileConfig.imports(nodeTile));
                 colors.put(tile, color);

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -68,11 +69,11 @@ public final class CircuitsConfig
     {
         Check.notNull(circuitsConfig);
 
-        final XmlReader root = new XmlReader(circuitsConfig);
-        final Collection<XmlReader> nodesCircuit = root.getChildren(NODE_CIRCUIT);
+        final AttributesReader root = new XmlReader(circuitsConfig);
+        final Collection<? extends AttributesReader> nodesCircuit = root.getChildren(NODE_CIRCUIT);
         final Map<Circuit, Collection<Integer>> circuits = new HashMap<>(nodesCircuit.size());
 
-        for (final XmlReader nodeCircuit : nodesCircuit)
+        for (final AttributesReader nodeCircuit : nodesCircuit)
         {
             final String groupIn = nodeCircuit.getString(ATT_GROUP_IN);
             final String groupOut = nodeCircuit.getString(ATT_GROUP_OUT);
@@ -80,7 +81,7 @@ public final class CircuitsConfig
             final CircuitType type = CircuitType.from(circuitType);
             final Circuit circuit = new Circuit(type, groupIn, groupOut);
 
-            final Collection<XmlReader> nodesTile = nodeCircuit.getChildren(TileConfig.NODE_TILE);
+            final Collection<? extends AttributesReader> nodesTile = nodeCircuit.getChildren(TileConfig.NODE_TILE);
             final Collection<Integer> tiles = importTiles(nodesTile);
             nodesTile.clear();
 
@@ -146,10 +147,10 @@ public final class CircuitsConfig
      * @param nodesTile The tiles nodes (must not be <code>null</code>).
      * @return The imported tiles.
      */
-    private static Collection<Integer> importTiles(Collection<XmlReader> nodesTile)
+    private static Collection<Integer> importTiles(Collection<? extends AttributesReader> nodesTile)
     {
         final Collection<Integer> tiles = new HashSet<>(nodesTile.size());
-        for (final XmlReader nodeTile : nodesTile)
+        for (final AttributesReader nodeTile : nodesTile)
         {
             final Integer tile = Integer.valueOf(TileConfig.imports(nodeTile));
             tiles.add(tile);

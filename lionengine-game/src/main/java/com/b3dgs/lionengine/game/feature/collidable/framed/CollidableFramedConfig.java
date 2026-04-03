@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.AnimationConfig;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.feature.collidable.Collision;
@@ -88,7 +88,7 @@ public record CollidableFramedConfig(Map<Integer, List<Collision>> collisions)
      * @return The collisions data.
      * @throws LionEngineException If unable to read node.
      */
-    public static CollidableFramedConfig imports(XmlReader root)
+    public static CollidableFramedConfig imports(AttributesReader root)
     {
         Check.notNull(root);
 
@@ -96,12 +96,12 @@ public record CollidableFramedConfig(Map<Integer, List<Collision>> collisions)
 
         if (root.hasNode(AnimationConfig.NODE_ANIMATIONS))
         {
-            final Collection<XmlReader> children = root.getChild(AnimationConfig.NODE_ANIMATIONS)
-                                                       .getChildren(AnimationConfig.NODE_ANIMATION);
-            for (final XmlReader node : children)
+            final Collection<? extends AttributesReader> children = root.getChild(AnimationConfig.NODE_ANIMATIONS)
+                                                                        .getChildren(AnimationConfig.NODE_ANIMATION);
+            for (final AttributesReader node : children)
             {
                 final int start = node.getInteger(AnimationConfig.ANIMATION_START);
-                for (final XmlReader framed : node.getChildren(NODE_COLLISION_FRAMED))
+                for (final AttributesReader framed : node.getChildren(NODE_COLLISION_FRAMED))
                 {
                     importFrame(node, framed, start, collisions);
                 }
@@ -146,8 +146,8 @@ public record CollidableFramedConfig(Map<Integer, List<Collision>> collisions)
      * @param start The collision start number.
      * @param collisions The imported collisions.
      */
-    private static void importFrame(XmlReader node,
-                                    XmlReader framed,
+    private static void importFrame(AttributesReader node,
+                                    AttributesReader framed,
                                     int start,
                                     Map<Integer, List<Collision>> collisions)
     {
@@ -182,7 +182,7 @@ public record CollidableFramedConfig(Map<Integer, List<Collision>> collisions)
      * @param framed The framed node reference.
      * @return The frame name.
      */
-    private static String getFrameName(XmlReader node, XmlReader framed)
+    private static String getFrameName(AttributesReader node, AttributesReader framed)
     {
         final String anim = node.getString(AnimationConfig.ANIMATION_NAME);
         final String prefix = framed.getStringDefault(Constant.EMPTY_STRING, ATT_PREFIX);
@@ -202,7 +202,7 @@ public record CollidableFramedConfig(Map<Integer, List<Collision>> collisions)
      * @return The collision instance.
      * @throws LionEngineException If error when reading collision data.
      */
-    private static Collision createCollision(String name, XmlReader node, int number)
+    private static Collision createCollision(String name, AttributesReader node, int number)
     {
         Check.notNull(node);
 

@@ -16,11 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -63,11 +63,11 @@ public record ExtractorConfig(double extract, double dropoff, int capacity)
      * @return The extractor data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ExtractorConfig imports(XmlReader root)
+    public static ExtractorConfig imports(AttributesReader root)
     {
         Check.notNull(root);
 
-        final XmlReader node = root.getChild(NODE_EXTRACTOR);
+        final AttributesReader node = root.getChild(NODE_EXTRACTOR);
         final double extract = node.getDouble(0.0, ATT_EXTRACT);
         final double dropoff = node.getDouble(0.0, ATT_DROPOFF);
         final int capacity = node.getInteger(0, ATT_CAPACITY);

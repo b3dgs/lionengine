@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -63,12 +64,12 @@ public final class TileGroupsConfig
     {
         Check.notNull(groupsConfig);
 
-        final XmlReader nodeGroups = new XmlReader(groupsConfig);
+        final AttributesReader nodeGroups = new XmlReader(groupsConfig);
 
-        final Collection<XmlReader> children = nodeGroups.getChildren(NODE_GROUP);
+        final Collection<? extends AttributesReader> children = nodeGroups.getChildren(NODE_GROUP);
         final Collection<TileGroup> groups = new ArrayList<>(children.size());
 
-        for (final XmlReader nodeGroup : children)
+        for (final AttributesReader nodeGroup : children)
         {
             final TileGroup group = importGroup(nodeGroup);
             groups.add(group);
@@ -107,12 +108,12 @@ public final class TileGroupsConfig
      * @param nodeGroup The group node (must not be <code>null</code>).
      * @return The imported group.
      */
-    private static TileGroup importGroup(XmlReader nodeGroup)
+    private static TileGroup importGroup(AttributesReader nodeGroup)
     {
-        final Collection<XmlReader> children = nodeGroup.getChildren(TileConfig.NODE_TILE);
+        final Collection<? extends AttributesReader> children = nodeGroup.getChildren(TileConfig.NODE_TILE);
         final Set<Integer> tiles = new HashSet<>(children.size());
 
-        for (final XmlReader nodeTile : children)
+        for (final AttributesReader nodeTile : children)
         {
             final Integer tile = Integer.valueOf(TileConfig.imports(nodeTile));
             tiles.add(tile);

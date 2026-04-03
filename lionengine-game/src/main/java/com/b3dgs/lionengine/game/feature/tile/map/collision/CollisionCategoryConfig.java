@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
 
@@ -64,19 +64,20 @@ public final class CollisionCategoryConfig
      * @return The collisions category data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Collection<CollisionCategory> imports(XmlReader root)
+    public static Collection<CollisionCategory> imports(AttributesReader root)
     {
         Check.notNull(root);
 
         final Collection<CollisionCategory> categories = new ArrayList<>();
         if (root.hasNode(NODE_CATEGORIES))
         {
-            final List<XmlReader> childrenCategory = root.getChild(NODE_CATEGORIES).getChildren(NODE_CATEGORY);
+            final List<? extends AttributesReader> childrenCategory = root.getChild(NODE_CATEGORIES)
+                                                                          .getChildren(NODE_CATEGORY);
             final int n = childrenCategory.size();
             for (int i = 0; i < n; i++)
             {
-                final XmlReader node = childrenCategory.get(i);
-                final List<XmlReader> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
+                final AttributesReader node = childrenCategory.get(i);
+                final List<? extends AttributesReader> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
                 final List<CollisionGroup> groups = new ArrayList<>(childrenGroup.size());
 
                 final int k = childrenGroup.size();
@@ -115,7 +116,9 @@ public final class CollisionCategoryConfig
         Check.notNull(configurer);
         Check.notNull(map);
 
-        final List<XmlReader> children = configurer.getRoot().getChild(NODE_CATEGORIES).getChildren(NODE_CATEGORY);
+        final List<? extends AttributesReader> children = configurer.getRoot()
+                                                                    .getChild(NODE_CATEGORIES)
+                                                                    .getChildren(NODE_CATEGORY);
         final int n = children.size();
         final List<CollisionCategory> categories = new ArrayList<>(n);
 
@@ -137,12 +140,12 @@ public final class CollisionCategoryConfig
      * @return The category node instance.
      * @throws LionEngineException If unable to read node.
      */
-    public static CollisionCategory imports(XmlReader root, MapTileCollision map)
+    public static CollisionCategory imports(AttributesReader root, MapTileCollision map)
     {
         Check.notNull(root);
         Check.notNull(map);
 
-        final List<XmlReader> children = root.getChildren(TileGroupsConfig.NODE_GROUP);
+        final List<? extends AttributesReader> children = root.getChildren(TileGroupsConfig.NODE_GROUP);
         final int n = children.size();
         final List<CollisionGroup> groups = new ArrayList<>(n);
 

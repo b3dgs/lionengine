@@ -20,6 +20,7 @@ import java.util.function.Predicate;
 import java.util.function.ToDoubleBiFunction;
 
 import com.b3dgs.lionengine.AnimState;
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
@@ -137,7 +138,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
      */
     public AttackerModel(Services services,
                          Setup setup,
-                         XmlReader config,
+                         AttributesReader config,
                          Animatable animatable,
                          Transformable transformable)
     {

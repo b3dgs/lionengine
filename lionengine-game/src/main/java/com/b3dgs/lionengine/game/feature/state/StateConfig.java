@@ -18,11 +18,11 @@ package com.b3dgs.lionengine.game.feature.state;
 
 import java.util.Optional;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -54,13 +54,13 @@ public final class StateConfig
      * @return The state value.
      * @throws LionEngineException If unable to read node.
      */
-    public static Optional<String> imports(XmlReader root)
+    public static Optional<String> imports(AttributesReader root)
     {
         Check.notNull(root);
 
         if (root.hasNode(NODE_STATE))
         {
-            final XmlReader node = root.getChild(NODE_STATE);
+            final AttributesReader node = root.getChild(NODE_STATE);
             return Optional.of(node.getText());
         }
         return Optional.empty();

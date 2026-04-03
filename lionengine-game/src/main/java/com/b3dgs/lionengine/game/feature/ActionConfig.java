@@ -16,11 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -76,11 +76,11 @@ public record ActionConfig(String name, String description, int x, int y, int wi
      * @return The action data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ActionConfig imports(XmlReader root)
+    public static ActionConfig imports(AttributesReader root)
     {
         Check.notNull(root);
 
-        final XmlReader nodeAction = root.getChild(NODE_ACTION);
+        final AttributesReader nodeAction = root.getChild(NODE_ACTION);
         final String name = nodeAction.getString(ATT_NAME);
         final String description = nodeAction.getString(ATT_DESCRIPTION);
         final int x = nodeAction.getInteger(ATT_X);

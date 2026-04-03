@@ -16,11 +16,11 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the size data.
@@ -58,11 +58,11 @@ public record SizeConfig(int width, int height)
      * @return The size data.
      * @throws LionEngineException If unable to read node.
      */
-    public static SizeConfig imports(XmlReader root)
+    public static SizeConfig imports(AttributesReader root)
     {
         Check.notNull(root);
 
-        final XmlReader node = root.getChild(NODE_SIZE);
+        final AttributesReader node = root.getChild(NODE_SIZE);
         final int width = node.getInteger(ATT_WIDTH);
         final int height = node.getInteger(ATT_HEIGHT);
 

@@ -18,12 +18,12 @@ package com.b3dgs.lionengine.game;
 
 import java.util.Optional;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the origin data from a configurer.
@@ -56,13 +56,13 @@ public final class OriginConfig
      * @return The origin value.
      * @throws LionEngineException If unable to read node.
      */
-    public static Origin imports(XmlReader root)
+    public static Origin imports(AttributesReader root)
     {
         Check.notNull(root);
 
         if (root.hasNode(NODE_ORIGIN))
         {
-            final XmlReader node = root.getChild(NODE_ORIGIN);
+            final AttributesReader node = root.getChild(NODE_ORIGIN);
             return Origin.valueOf(Optional.ofNullable(node.getText()).orElse(DEFAULT.name()));
         }
         return DEFAULT;

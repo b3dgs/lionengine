@@ -16,11 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the collision range.
@@ -55,7 +55,7 @@ public final class CollisionRangeConfig
      * @return The collision range data.
      * @throws LionEngineException If error when reading node.
      */
-    public static CollisionRange imports(XmlReader node)
+    public static CollisionRange imports(AttributesReader node)
     {
         Check.notNull(node);
 

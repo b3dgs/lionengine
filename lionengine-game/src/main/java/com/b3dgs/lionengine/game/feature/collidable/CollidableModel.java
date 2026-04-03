@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
@@ -157,7 +158,7 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
      * @param transformable The transformable feature.
      * @throws LionEngineException If invalid argument.
      */
-    public CollidableModel(Services services, Setup setup, XmlReader config, Transformable transformable)
+    public CollidableModel(Services services, Setup setup, AttributesReader config, Transformable transformable)
     {
         super(services, setup);
 

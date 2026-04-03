@@ -16,11 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the collision function.
@@ -51,11 +51,11 @@ public final class CollisionFunctionConfig
      * @return The collision function data.
      * @throws LionEngineException If error when reading node.
      */
-    public static CollisionFunction imports(XmlReader parent)
+    public static CollisionFunction imports(AttributesReader parent)
     {
         Check.notNull(parent);
 
-        final XmlReader node = parent.getChild(FUNCTION);
+        final AttributesReader node = parent.getChild(FUNCTION);
         final CollisionFunctionType type = node.getEnum(CollisionFunctionType.class, TYPE);
         try
         {

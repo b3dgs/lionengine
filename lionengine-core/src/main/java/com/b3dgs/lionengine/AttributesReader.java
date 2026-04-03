@@ -413,7 +413,7 @@ public interface AttributesReader
      * @return The child node reference.
      * @throws LionEngineException If no node is found at this child name.
      */
-    XmlReader getChild(String name, String... path);
+    AttributesReader getChild(String name, String... path);
 
     /**
      * Get a child node from its name.
@@ -422,7 +422,7 @@ public interface AttributesReader
      * @param path The node path (child list).
      * @return The child node reference.
      */
-    Optional<XmlReader> getChildOptional(String name, String... path);
+    Optional<? extends AttributesReader> getChildOptional(String name, String... path);
 
     /**
      * Get the list of all children with this name.
@@ -432,7 +432,14 @@ public interface AttributesReader
      * @return The children list.
      * @throws LionEngineException If invalid argument.
      */
-    List<XmlReader> getChildren(String name, String... path);
+    List<? extends AttributesReader> getChildren(String name, String... path);
+
+    /**
+     * Get list of all children.
+     * 
+     * @return The children list.
+     */
+    List<? extends AttributesReader> getChildren();
 
     /**
      * Check if node has the following attribute.

@@ -16,11 +16,11 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the frames data.
@@ -69,13 +69,13 @@ public record FramesConfig(int horizontalFrames, int verticalFrames, int offsetX
      * @return The frames data.
      * @throws LionEngineException If unable to read node or invalid integer.
      */
-    public static FramesConfig imports(XmlReader root)
+    public static FramesConfig imports(AttributesReader root)
     {
         Check.notNull(root);
 
         if (root.hasNode(NODE_FRAMES))
         {
-            final XmlReader node = root.getChild(NODE_FRAMES);
+            final AttributesReader node = root.getChild(NODE_FRAMES);
             final int horizontals = node.getInteger(ATT_HORIZONTAL);
             final int verticals = node.getInteger(ATT_VERTICAL);
             final int offsetX = node.getInteger(0, ATT_OFFSET_X);

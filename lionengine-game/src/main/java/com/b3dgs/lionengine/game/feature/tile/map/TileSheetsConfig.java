@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -59,9 +60,9 @@ public record TileSheetsConfig(int tileWidth, int tileHeight, List<String> sheet
      */
     public static TileSheetsConfig imports(Media configSheets)
     {
-        final XmlReader nodeSheets = new XmlReader(configSheets);
+        final AttributesReader nodeSheets = new XmlReader(configSheets);
 
-        final XmlReader nodeTileSize = nodeSheets.getChild(NODE_TILE_SIZE);
+        final AttributesReader nodeTileSize = nodeSheets.getChild(NODE_TILE_SIZE);
         final int tileWidth = nodeTileSize.getInteger(ATT_TILE_WIDTH);
         final int tileHeight = nodeTileSize.getInteger(ATT_TILE_HEIGHT);
 
@@ -102,12 +103,12 @@ public record TileSheetsConfig(int tileWidth, int tileHeight, List<String> sheet
      * @param nodeSheets The sheets node (must not be <code>null</code>).
      * @return The sheets filename.
      */
-    private static List<String> importSheets(XmlReader nodeSheets)
+    private static List<String> importSheets(AttributesReader nodeSheets)
     {
-        final Collection<XmlReader> children = nodeSheets.getChildren(NODE_TILE_SHEET);
+        final Collection<? extends AttributesReader> children = nodeSheets.getChildren(NODE_TILE_SHEET);
         final List<String> sheets = new ArrayList<>(children.size());
 
-        for (final XmlReader nodeSheet : children)
+        for (final AttributesReader nodeSheet : children)
         {
             final String sheetFilename = nodeSheet.getText();
             sheets.add(sheetFilename);

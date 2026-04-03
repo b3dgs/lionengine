@@ -22,6 +22,7 @@ import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -147,11 +148,11 @@ final class SpriteFontImpl implements SpriteFont
      */
     private void loadData(Media mediaData)
     {
-        final XmlReader letters = new XmlReader(mediaData);
-        final Collection<XmlReader> children = letters.getChildren();
+        final AttributesReader letters = new XmlReader(mediaData);
+        final Collection<? extends AttributesReader> children = letters.getChildren();
         int id = 0;
 
-        for (final XmlReader node : children)
+        for (final AttributesReader node : children)
         {
             final double width = node.getDouble("width");
             final double height = node.getDouble("height");

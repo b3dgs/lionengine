@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.AnimatorListener;
 import com.b3dgs.lionengine.AnimatorModel;
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.XmlReader;
@@ -55,7 +56,7 @@ public class AnimatableModel extends FeatureModel implements Animatable, Recycla
      * @param config The feature configuration node (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public AnimatableModel(Services services, Setup setup, XmlReader config)
+    public AnimatableModel(Services services, Setup setup, AttributesReader config)
     {
         this(new AnimatorModel(), services, setup, config);
     }
@@ -82,7 +83,7 @@ public class AnimatableModel extends FeatureModel implements Animatable, Recycla
      * @param config The feature configuration node (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public AnimatableModel(Animator animator, Services services, Setup setup, XmlReader config)
+    public AnimatableModel(Animator animator, Services services, Setup setup, AttributesReader config)
     {
         super(services, setup);
 

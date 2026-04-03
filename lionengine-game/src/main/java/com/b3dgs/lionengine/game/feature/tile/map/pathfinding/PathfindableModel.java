@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
@@ -216,7 +217,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      */
     public PathfindableModel(Services services,
                              Setup setup,
-                             XmlReader config,
+                             AttributesReader config,
                              Identifiable identifiable,
                              Transformable transformable)
     {

@@ -682,11 +682,7 @@ public class XmlReader implements AttributesReader
         return nodes;
     }
 
-    /**
-     * Get list of all children.
-     * 
-     * @return The children list.
-     */
+    @Override
     public List<XmlReader> getChildren()
     {
         final List<XmlReader> nodes = new ArrayList<>(1);

@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
@@ -82,7 +83,7 @@ public class LaunchableModel extends FeatureModel implements Launchable, Recycla
      * @param transformable The transformable feature.
      * @throws LionEngineException If invalid arguments.
      */
-    public LaunchableModel(Services services, Setup setup, XmlReader config, Transformable transformable)
+    public LaunchableModel(Services services, Setup setup, AttributesReader config, Transformable transformable)
     {
         super(services, setup);
 

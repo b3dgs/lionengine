@@ -19,11 +19,11 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 import java.util.Collection;
 import java.util.Map.Entry;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Orientation;
 
 /**
@@ -51,7 +51,7 @@ public final class CollisionConstraintConfig
      * @return The collision constraint data.
      * @throws LionEngineException If error when reading node.
      */
-    public static CollisionConstraint imports(XmlReader node)
+    public static CollisionConstraint imports(AttributesReader node)
     {
         Check.notNull(node);
 
@@ -59,8 +59,8 @@ public final class CollisionConstraintConfig
 
         if (node.hasNode(NODE_CONSTRAINT))
         {
-            final Collection<XmlReader> children = node.getChildren(NODE_CONSTRAINT);
-            for (final XmlReader current : children)
+            final Collection<? extends AttributesReader> children = node.getChildren(NODE_CONSTRAINT);
+            for (final AttributesReader current : children)
             {
                 final Orientation orientation = current.getEnum(Orientation.class, ATT_ORIENTATION);
                 final String group = current.getString(ATT_GROUP);

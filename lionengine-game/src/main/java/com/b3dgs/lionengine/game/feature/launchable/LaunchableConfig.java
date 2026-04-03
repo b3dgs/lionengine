@@ -18,11 +18,11 @@ package com.b3dgs.lionengine.game.feature.launchable;
 
 import java.util.Optional;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.ForceConfig;
 
@@ -63,7 +63,7 @@ public record LaunchableConfig(String media, int delay, int ox, int oy, Force ve
      * @return The launchable data.
      * @throws LionEngineException If unable to read node.
      */
-    public static LaunchableConfig imports(XmlReader node)
+    public static LaunchableConfig imports(AttributesReader node)
     {
         Check.notNull(node);
 

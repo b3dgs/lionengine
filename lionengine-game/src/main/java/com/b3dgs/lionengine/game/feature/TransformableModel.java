@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
@@ -77,7 +78,7 @@ public class TransformableModel extends FeatureModel implements Transformable, R
      * @param config The feature configuration node (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public TransformableModel(Services services, Setup setup, XmlReader config)
+    public TransformableModel(Services services, Setup setup, AttributesReader config)
     {
         super(services, setup);
 

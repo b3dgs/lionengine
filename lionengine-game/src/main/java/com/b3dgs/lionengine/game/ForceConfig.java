@@ -16,11 +16,11 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the force data.
@@ -65,11 +65,11 @@ public final class ForceConfig
      * @return The force data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Force imports(XmlReader root)
+    public static Force imports(AttributesReader root)
     {
         Check.notNull(root);
 
-        final XmlReader node = root.getChild(NODE_FORCE);
+        final AttributesReader node = root.getChild(NODE_FORCE);
 
         final Force force = new Force(node.getDouble(ATT_VX), node.getDouble(ATT_VY));
         force.setVelocity(node.getDouble(0.0, ATT_VELOCITY));

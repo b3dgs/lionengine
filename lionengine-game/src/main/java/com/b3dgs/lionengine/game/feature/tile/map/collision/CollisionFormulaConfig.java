@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -58,11 +59,11 @@ public record CollisionFormulaConfig(Map<String, CollisionFormula> formulas)
      */
     public static CollisionFormulaConfig imports(Media config)
     {
-        final XmlReader root = new XmlReader(config);
+        final AttributesReader root = new XmlReader(config);
         final Map<String, CollisionFormula> collisions = new HashMap<>(0);
 
-        final Collection<XmlReader> children = root.getChildren(NODE_FORMULA);
-        for (final XmlReader node : children)
+        final Collection<? extends AttributesReader> children = root.getChildren(NODE_FORMULA);
+        for (final AttributesReader node : children)
         {
             final String name = node.getString(ATT_NAME);
             final CollisionFormula collision = createCollision(node);
@@ -100,7 +101,7 @@ public record CollisionFormulaConfig(Map<String, CollisionFormula> formulas)
      * @return The tile collision formula instance.
      * @throws LionEngineException If error when reading data.
      */
-    public static CollisionFormula createCollision(XmlReader node)
+    public static CollisionFormula createCollision(AttributesReader node)
     {
         Check.notNull(node);
 
@@ -143,14 +144,14 @@ public record CollisionFormulaConfig(Map<String, CollisionFormula> formulas)
      * @return <code>true</code> if has formula, <code>false</code> else.
      * @throws LionEngineException If invalid argument.
      */
-    public static boolean has(XmlReader root, String formula)
+    public static boolean has(AttributesReader root, String formula)
     {
         Check.notNull(root);
         Check.notNull(formula);
 
-        final Collection<XmlReader> children = root.getChildren(NODE_FORMULA);
+        final Collection<? extends AttributesReader> children = root.getChildren(NODE_FORMULA);
         boolean has = false;
-        for (final XmlReader node : children)
+        for (final AttributesReader node : children)
         {
             if (node.getString(ATT_NAME).equals(formula))
             {

@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -69,10 +69,10 @@ public record LauncherConfig(int level,
     {
         Check.notNull(configurer);
 
-        final Collection<XmlReader> children = configurer.getRoot().getChildren(NODE_LAUNCHER);
+        final Collection<? extends AttributesReader> children = configurer.getRoot().getChildren(NODE_LAUNCHER);
         final List<LauncherConfig> launchers = new ArrayList<>(children.size());
 
-        for (final XmlReader launcher : children)
+        for (final AttributesReader launcher : children)
         {
             launchers.add(imports(launcher));
         }
@@ -88,14 +88,14 @@ public record LauncherConfig(int level,
      * @return The launcher data.
      * @throws LionEngineException If unable to read node.
      */
-    public static LauncherConfig imports(XmlReader node)
+    public static LauncherConfig imports(AttributesReader node)
     {
         Check.notNull(node);
 
-        final Collection<XmlReader> children = node.getChildren(LaunchableConfig.NODE_LAUNCHABLE);
+        final Collection<? extends AttributesReader> children = node.getChildren(LaunchableConfig.NODE_LAUNCHABLE);
         final Collection<LaunchableConfig> launchables = new ArrayList<>(children.size());
 
-        for (final XmlReader launchable : children)
+        for (final AttributesReader launchable : children)
         {
             launchables.add(LaunchableConfig.imports(launchable));
         }

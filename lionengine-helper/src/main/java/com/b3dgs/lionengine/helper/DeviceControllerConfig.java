@@ -26,6 +26,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.IntFunction;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Context;
@@ -33,7 +34,6 @@ import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.io.DeviceActionModel;
@@ -190,7 +190,7 @@ public record DeviceControllerConfig(String name,
             final Class<Enum<? extends DeviceMapper>> mapping;
             mapping = (Class<Enum<? extends DeviceMapper>>) loader.loadClass(configurer.getString(ATT_MAPPING));
 
-            for (final XmlReader deviceNode : configurer.getChildren(NODE_DEVICE))
+            for (final AttributesReader deviceNode : configurer.getChildren(NODE_DEVICE))
             {
                 final int index = deviceNode.getInteger(ATT_INDEX);
                 final int id = deviceNode.getInteger(0, ATT_ID);
@@ -298,10 +298,11 @@ public record DeviceControllerConfig(String name,
      * @param node The node parent.
      * @return The fire data.
      */
-    private static Map<Integer, Set<Integer>> readFire(Class<Enum<? extends DeviceMapper>> mapping, XmlReader node)
+    private static Map<Integer, Set<Integer>> readFire(Class<Enum<? extends DeviceMapper>> mapping,
+                                                       AttributesReader node)
     {
         final Map<Integer, Set<Integer>> fire = new HashMap<>();
-        for (final XmlReader nodeFire : node.getChildren(NODE_FIRE))
+        for (final AttributesReader nodeFire : node.getChildren(NODE_FIRE))
         {
             final DeviceMapper mapper = findEnum(mapping, nodeFire.getString(ATT_INDEX));
             final Integer index = mapper.getIndex();
@@ -339,11 +340,11 @@ public record DeviceControllerConfig(String name,
      * @param nodeAxis The axis node name.
      * @return The axis data.
      */
-    private static List<DeviceAxis> readAxis(XmlReader node, String nodeAxis)
+    private static List<DeviceAxis> readAxis(AttributesReader node, String nodeAxis)
     {
         final List<DeviceAxis> axis = new ArrayList<>();
-        final Collection<XmlReader> children = node.getChildren(nodeAxis);
-        for (final XmlReader child : children)
+        final Collection<? extends AttributesReader> children = node.getChildren(nodeAxis);
+        for (final AttributesReader child : children)
         {
             final Integer positive = Integer.valueOf(child.getInteger(ATT_POSITIVE));
             final Integer negative = Integer.valueOf(child.getInteger(ATT_NEGATIVE));

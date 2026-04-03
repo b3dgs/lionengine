@@ -18,11 +18,11 @@ package com.b3dgs.lionengine.game;
 
 import java.util.Optional;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the surface data.
@@ -64,11 +64,11 @@ public record SurfaceConfig(String image, Optional<String> icon)
      * @return The surface data.
      * @throws LionEngineException If unable to read node.
      */
-    public static SurfaceConfig imports(XmlReader root)
+    public static SurfaceConfig imports(AttributesReader root)
     {
         Check.notNull(root);
 
-        final XmlReader node = root.getChild(NODE_SURFACE);
+        final AttributesReader node = root.getChild(NODE_SURFACE);
         final String surface = node.getString(ATT_IMAGE);
         final Optional<String> icon = node.getStringOptional(ATT_ICON);
 

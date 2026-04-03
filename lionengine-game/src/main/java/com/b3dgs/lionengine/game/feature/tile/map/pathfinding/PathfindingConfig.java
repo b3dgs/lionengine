@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -57,17 +58,17 @@ public final class PathfindingConfig
     {
         Check.notNull(configPathfinding);
 
-        final XmlReader nodeCategories = new XmlReader(configPathfinding);
-        final Collection<XmlReader> childrenTile = nodeCategories.getChildren(NODE_TILE_PATH);
+        final AttributesReader nodeCategories = new XmlReader(configPathfinding);
+        final Collection<? extends AttributesReader> childrenTile = nodeCategories.getChildren(NODE_TILE_PATH);
         final Collection<PathCategory> categories = new HashSet<>(childrenTile.size());
 
-        for (final XmlReader node : childrenTile)
+        for (final AttributesReader node : childrenTile)
         {
             final String name = node.getString(ATT_CATEGORY);
-            final Collection<XmlReader> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
+            final Collection<? extends AttributesReader> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
             final Collection<String> groups = new HashSet<>(childrenGroup.size());
 
-            for (final XmlReader groupNode : childrenGroup)
+            for (final AttributesReader groupNode : childrenGroup)
             {
                 groups.add(groupNode.getText());
             }

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -171,7 +172,7 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     // CHECKSTYLE IGNORE LINE: ExecutableStatementCount
     public RasterableModel(Services services,
                            SetupSurfaceRastered setup,
-                           XmlReader config,
+                           AttributesReader config,
                            Transformable transformable,
                            Mirrorable mirrorable,
                            Animatable animatable)
