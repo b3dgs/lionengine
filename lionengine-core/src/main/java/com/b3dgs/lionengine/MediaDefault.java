@@ -184,7 +184,10 @@ final class MediaDefault implements Media
 
         for (final ZipEntry entry : UtilZip.getEntries(zip, root + folder))
         {
-            final Media media = Medias.create(entry.getName().replace(root, Constant.EMPTY_STRING));
+            final Media media = new MediaDefault(separator,
+                                                 resourcesDir,
+                                                 resourcesClass,
+                                                 entry.getName().replace(root, Constant.EMPTY_STRING));
             medias.add(media);
         }
     }

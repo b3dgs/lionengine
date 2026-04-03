@@ -41,7 +41,7 @@ public final class Medias
     /** Resources directory. */
     private static String resourcesDir = DEFAULT_RESOURCES_DIR + getSeparator();
     /** Class loader. */
-    private static Class<?> loader = Engine.class;
+    private static Class<?> loader = Medias.class;
 
     /**
      * Create a media.
@@ -94,7 +94,7 @@ public final class Medias
     {
         if (clazz == null)
         {
-            loader = Engine.class;
+            loader = Medias.class;
         }
         else
         {
