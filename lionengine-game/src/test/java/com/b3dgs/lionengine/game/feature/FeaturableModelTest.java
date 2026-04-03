@@ -77,14 +77,14 @@ final class FeaturableModelTest
         assertTrue(featurable.hasFeature(MyFeature.class));
 
         assertEquals(feature, featurable.getFeature(MyFeature.class));
-        for (final Feature current : featurable.getFeatures())
+        for (final FeatureProvider current : featurable.getFeatures())
         {
             assertTrue(feature.getClass().equals(current.getClass())
                        || Identifiable.class.isAssignableFrom(current.getClass())
                        || Recycler.class.isAssignableFrom(current.getClass()),
                        current.getClass().getName());
         }
-        for (final Class<? extends Feature> type : featurable.getFeaturesType())
+        for (final Class<? extends FeatureProvider> type : featurable.getFeaturesType())
         {
             assertTrue(MyFeatureInterface.class.isAssignableFrom(type)
                        || Identifiable.class.isAssignableFrom(type)
@@ -106,14 +106,14 @@ final class FeaturableModelTest
         assertTrue(featurable.hasFeature(MyFeatureNotCompatible.class));
 
         assertEquals(feature, featurable.getFeature(MyFeatureNotCompatible.class));
-        for (final Feature current : featurable.getFeatures())
+        for (final FeatureProvider current : featurable.getFeatures())
         {
             assertTrue(feature.getClass().equals(current.getClass())
                        || Identifiable.class.isAssignableFrom(current.getClass())
                        || Recycler.class.isAssignableFrom(current.getClass()),
                        current.getClass().getName());
         }
-        for (final Class<? extends Feature> type : featurable.getFeaturesType())
+        for (final Class<? extends FeatureProvider> type : featurable.getFeaturesType())
         {
             assertTrue(MyFeatureNotCompatible.class.isAssignableFrom(type)
                        || Identifiable.class.isAssignableFrom(type)
@@ -169,7 +169,7 @@ final class FeaturableModelTest
 
         assertEquals(media, featurable.getMedia());
 
-        for (final Feature next : featurable.getFeatures())
+        for (final FeatureProvider next : featurable.getFeatures())
         {
             assertTrue(MyFeature.class.equals(next.getClass())
                        || Identifiable.class.isAssignableFrom(next.getClass())

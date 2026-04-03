@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
  * Test {@link FeatureModel}.
@@ -72,7 +73,7 @@ final class FeatureModelTest
         feature.prepare(new FeatureModel(services, setup)
         {
             @Override
-            public boolean hasFeature(Class<? extends Feature> feature)
+            public boolean hasFeature(Class<? extends FeatureProvider> feature)
             {
                 return false;
             }
@@ -82,13 +83,13 @@ final class FeatureModelTest
         assertEquals(featurable.getFeature(Transformable.class), feature.getFeature(Transformable.class));
         assertEquals(transformable, feature.getFeature(Transformable.class));
 
-        final Feature feature = featurable.getFeatures().iterator().next();
+        final FeatureProvider feature = featurable.getFeatures().iterator().next();
         assertTrue(feature.equals(featurable.getFeature(Recycler.class))
                    || feature.equals(featurable.getFeature(Identifiable.class))
                    || feature.equals(transformable),
                    feature.getClass().getName());
 
-        for (final Class<? extends Feature> type : feature.getFeaturesType())
+        for (final Class<? extends FeatureProvider> type : feature.getFeaturesType())
         {
             assertTrue(Recycler.class.isAssignableFrom(type)
                        || Identifiable.class.isAssignableFrom(type)

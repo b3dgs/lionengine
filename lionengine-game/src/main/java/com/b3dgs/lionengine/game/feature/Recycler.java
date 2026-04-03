@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
  * Recycler implementation, searching for {@link Recyclable} {@link Feature}s.
@@ -42,7 +43,7 @@ public class Recycler extends FeatureModel
      */
     public void recycle()
     {
-        for (final Feature feature : getFeatures())
+        for (final FeatureProvider feature : getFeatures())
         {
             if (feature instanceof final Recyclable recyclable)
             {

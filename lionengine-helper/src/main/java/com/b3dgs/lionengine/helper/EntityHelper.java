@@ -23,7 +23,7 @@ import java.util.Locale;
 
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UpdatableVoid;
-import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.ActionerModel;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
@@ -231,7 +231,7 @@ public class EntityHelper extends FeaturableModel
     @Override
     public void prepare()
     {
-        for (final Feature feature : getFeatures())
+        for (final FeatureProvider feature : getFeatures())
         {
             if (feature instanceof final RoutineUpdate routine)
             {

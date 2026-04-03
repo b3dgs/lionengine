@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
@@ -112,7 +112,7 @@ public class NetworkableModel extends FeatureModel implements Networkable
     @Override
     public void onConnected()
     {
-        for (final Feature feature : getFeatures())
+        for (final FeatureProvider feature : getFeatures())
         {
             if (feature != this && feature instanceof final Syncable syncable)
             {

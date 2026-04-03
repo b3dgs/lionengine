@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
  * Performs a list of {@link Setup} considering their corresponding {@link Media} pointing to an XML file. This way it
@@ -320,14 +321,14 @@ public class Factory implements HandlerListener
         {
             addFeatures(featurable, services, setup);
         }
-        for (final Feature feature : featurable.getFeatures())
+        for (final FeatureProvider feature : featurable.getFeatures())
         {
             featurable.checkListener(feature);
-            for (final Feature other : featurable.getFeatures())
+            for (final FeatureProvider other : featurable.getFeatures())
             {
-                if (feature != other)
+                if (feature != other && other instanceof final Feature f)
                 {
-                    other.checkListener(feature);
+                    f.checkListener(feature);
                 }
             }
         }

@@ -33,7 +33,7 @@ public interface FeatureProvider
      * @return The feature instance.
      * @throws LionEngineException If feature not found.
      */
-    <C extends Feature> C getFeature(Class<C> feature);
+    <C extends FeatureProvider> C getFeature(Class<C> feature);
 
     /**
      * Execute function with feature found if present. Does nothing else.
@@ -42,7 +42,7 @@ public interface FeatureProvider
      * @param feature The feature type.
      * @param function The function to execute.
      */
-    default <C extends Feature> void ifIs(Class<C> feature, Consumer<C> function)
+    default <C extends FeatureProvider> void ifIs(Class<C> feature, Consumer<C> function)
     {
         if (hasFeature(feature))
         {
@@ -56,14 +56,14 @@ public interface FeatureProvider
      * 
      * @return The supported features.
      */
-    Iterable<Feature> getFeatures();
+    Iterable<FeatureProvider> getFeatures();
 
     /**
      * Get the supported features type.
      * 
      * @return The supported features type.
      */
-    Iterable<Class<? extends Feature>> getFeaturesType();
+    Iterable<Class<? extends FeatureProvider>> getFeaturesType();
 
     /**
      * Check a feature existence from its type.
@@ -71,5 +71,5 @@ public interface FeatureProvider
      * @param feature The feature type.
      * @return <code>true</code> if feature exists, <code>false</code> else.
      */
-    boolean hasFeature(Class<? extends Feature> feature);
+    boolean hasFeature(Class<? extends FeatureProvider> feature);
 }

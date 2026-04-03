@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.feature.ActionRef;
 import com.b3dgs.lionengine.game.feature.Actionable;
@@ -197,7 +197,7 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
         {
             surface.render(g);
 
-            for (final Feature feature : getFeatures())
+            for (final FeatureProvider feature : getFeatures())
             {
                 if (feature instanceof final Renderable renderable && !(feature instanceof Displayable))
                 {

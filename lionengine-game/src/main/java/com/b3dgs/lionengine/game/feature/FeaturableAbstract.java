@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
  * Abstract featurable base.
@@ -96,25 +97,25 @@ public abstract class FeaturableAbstract implements Featurable
     }
 
     @Override
-    public final <C extends Feature> C getFeature(Class<C> feature)
+    public final <C extends FeatureProvider> C getFeature(Class<C> feature)
     {
         return features.get(feature);
     }
 
     @Override
-    public final Iterable<Feature> getFeatures()
+    public final Iterable<FeatureProvider> getFeatures()
     {
         return features.getFeatures();
     }
 
     @Override
-    public final Iterable<Class<? extends Feature>> getFeaturesType()
+    public final Iterable<Class<? extends FeatureProvider>> getFeaturesType()
     {
         return features.getFeaturesType();
     }
 
     @Override
-    public final boolean hasFeature(Class<? extends Feature> feature)
+    public final boolean hasFeature(Class<? extends FeatureProvider> feature)
     {
         return features.contains(feature);
     }

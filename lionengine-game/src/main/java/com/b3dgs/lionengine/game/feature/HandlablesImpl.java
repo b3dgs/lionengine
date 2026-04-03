@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.b3dgs.lionengine.UtilReflection;
-import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
  * Handlables implementation.
@@ -58,11 +58,11 @@ final class HandlablesImpl implements Handlables
             addType(type, featurable);
         }
 
-        for (final Class<? extends Feature> feature : featurable.getFeaturesType())
+        for (final Class<? extends FeatureProvider> feature : featurable.getFeaturesType())
         {
-            final Feature object = featurable.getFeature(feature);
+            final FeatureProvider object = featurable.getFeature(feature);
             addType(feature, object);
-            for (final Class<?> other : UtilReflection.getInterfaces(feature, Feature.class))
+            for (final Class<?> other : UtilReflection.getInterfaces(feature, FeatureProvider.class))
             {
                 addType(other, object);
             }
@@ -84,11 +84,11 @@ final class HandlablesImpl implements Handlables
             remove(type, featurable);
         }
 
-        for (final Class<? extends Feature> feature : featurable.getFeaturesType())
+        for (final Class<? extends FeatureProvider> feature : featurable.getFeaturesType())
         {
-            final Feature object = featurable.getFeature(feature);
+            final FeatureProvider object = featurable.getFeature(feature);
             remove(feature, object);
-            for (final Class<?> other : UtilReflection.getInterfaces(feature, Feature.class))
+            for (final Class<?> other : UtilReflection.getInterfaces(feature, FeatureProvider.class))
             {
                 remove(other, object);
             }

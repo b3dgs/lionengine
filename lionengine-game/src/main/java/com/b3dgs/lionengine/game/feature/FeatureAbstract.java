@@ -56,25 +56,25 @@ public class FeatureAbstract implements Feature
     }
 
     @Override
-    public <C extends Feature> C getFeature(Class<C> feature)
+    public <C extends FeatureProvider> C getFeature(Class<C> feature)
     {
         return provider.getFeature(feature);
     }
 
     @Override
-    public Iterable<Feature> getFeatures()
+    public Iterable<FeatureProvider> getFeatures()
     {
         return provider.getFeatures();
     }
 
     @Override
-    public Iterable<Class<? extends Feature>> getFeaturesType()
+    public Iterable<Class<? extends FeatureProvider>> getFeaturesType()
     {
         return provider.getFeaturesType();
     }
 
     @Override
-    public boolean hasFeature(Class<? extends Feature> feature)
+    public boolean hasFeature(Class<? extends FeatureProvider> feature)
     {
         return provider.hasFeature(feature);
     }

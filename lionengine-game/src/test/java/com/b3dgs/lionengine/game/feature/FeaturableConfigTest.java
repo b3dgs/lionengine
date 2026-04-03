@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
  * Test {@link FeaturableConfig}.
@@ -155,8 +156,8 @@ final class FeaturableConfigTest
         FeaturableConfig.addFeatures(loader, fa, services, setup);
         FeaturableConfig.addFeatures(loader, fb, services, setup);
 
-        final Iterable<Feature> a = fa.getFeatures();
-        final Iterable<Feature> b = fb.getFeatures();
+        final Iterable<FeatureProvider> a = fa.getFeatures();
+        final Iterable<FeatureProvider> b = fb.getFeatures();
 
         assertNotEquals(a.iterator().next(), b.iterator().next());
     }

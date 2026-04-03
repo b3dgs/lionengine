@@ -23,6 +23,7 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
  * Features handler representation. Store features by type (must be annotated by {@link FeatureInterface}), allowing
@@ -47,7 +48,7 @@ public class Features
      * @param feature The feature to check.
      * @return <code>true</code> if annotated, <code>false</code> else.
      */
-    private static boolean isAnnotated(Feature feature)
+    private static boolean isAnnotated(FeatureProvider feature)
     {
         for (final Class<?> current : feature.getClass().getInterfaces())
         {
@@ -60,9 +61,9 @@ public class Features
     }
 
     /** Features handled. */
-    private final Map<Class<? extends Feature>, Feature> typeToFeature = new HashMap<>();
+    private final Map<Class<? extends FeatureProvider>, FeatureProvider> typeToFeature = new HashMap<>();
     /** Unique features. */
-    private final Collection<Feature> features = new ArrayList<>();
+    private final Collection<FeatureProvider> features = new ArrayList<>();
 
     /**
      * Create features handler.
@@ -79,7 +80,7 @@ public class Features
      * @param feature The feature to add.
      * @throws LionEngineException If feature is not annotated by {@link FeatureInterface} or already referenced.
      */
-    public void add(Feature feature)
+    public void add(FeatureProvider feature)
     {
         add(feature, false);
     }
@@ -92,13 +93,13 @@ public class Features
      * @param overwrite <code>true</code> to overwrite existing feature, <code>false</code> else.
      * @throws LionEngineException If feature is not annotated by {@link FeatureInterface} or already referenced.
      */
-    public void add(Feature feature, boolean overwrite)
+    public void add(FeatureProvider feature, boolean overwrite)
     {
         if (!isAnnotated(feature))
         {
             throw new LionEngineException(ERROR_FEATURE_NOT_ANNOTATED + feature.getClass());
         }
-        final Feature old;
+        final FeatureProvider old;
         // CHECKSTYLE IGNORE LINE: InnerAssignment
         if ((old = typeToFeature.put(feature.getClass(), feature)) != null)
         {
@@ -116,9 +117,9 @@ public class Features
      * @return The feature instance.
      * @throws LionEngineException If the feature was not found.
      */
-    public <C extends Feature> C get(Class<C> feature)
+    public <C extends FeatureProvider> C get(Class<C> feature)
     {
-        final Feature found = typeToFeature.get(feature);
+        final FeatureProvider found = typeToFeature.get(feature);
         if (found != null)
         {
             return feature.cast(found);
@@ -133,7 +134,7 @@ public class Features
      * @param feature The feature to check.
      * @return <code>true</code> if contains, <code>false</code> else.
      */
-    public <C extends Feature> boolean contains(Class<C> feature)
+    public <C extends FeatureProvider> boolean contains(Class<C> feature)
     {
         return typeToFeature.containsKey(feature);
     }
@@ -143,7 +144,7 @@ public class Features
      * 
      * @return The features list.
      */
-    public Iterable<Feature> getFeatures()
+    public Iterable<FeatureProvider> getFeatures()
     {
         return features;
     }
@@ -153,7 +154,7 @@ public class Features
      * 
      * @return The features types.
      */
-    public Iterable<Class<? extends Feature>> getFeaturesType()
+    public Iterable<Class<? extends FeatureProvider>> getFeaturesType()
     {
         return typeToFeature.keySet();
     }
@@ -165,7 +166,7 @@ public class Features
      * @param current The current parent.
      * @param overwrite <code>true</code> to overwrite existing feature, <code>false</code> else.
      */
-    private void checkTypeDepth(Feature feature, Class<?> current, boolean overwrite)
+    private void checkTypeDepth(FeatureProvider feature, Class<?> current, boolean overwrite)
     {
         for (final Class<?> type : current.getInterfaces())
         {
@@ -193,11 +194,11 @@ public class Features
      * @param type The type to check.
      * @param overwrite <code>true</code> to overwrite existing feature, <code>false</code> else.
      */
-    private void checkAnnotation(Feature feature, Class<?> type, boolean overwrite)
+    private void checkAnnotation(FeatureProvider feature, Class<?> type, boolean overwrite)
     {
-        final Feature old;
+        final FeatureProvider old;
         // CHECKSTYLE IGNORE LINE: InnerAssignment
-        if ((old = typeToFeature.put(type.asSubclass(Feature.class), feature)) != null && !overwrite)
+        if ((old = typeToFeature.put(type.asSubclass(FeatureProvider.class), feature)) != null && !overwrite)
         {
             throw new LionEngineException(ERROR_FEATURE_EXISTS
                                           + feature.getClass()

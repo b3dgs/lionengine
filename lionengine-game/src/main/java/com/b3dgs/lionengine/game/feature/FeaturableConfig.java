@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
  * Represents the featurable configuration data.
@@ -292,9 +293,9 @@ public record FeaturableConfig(String clazz, String setup)
         for (int j = standardArgsCount; j < parameters.length; j++)
         {
             final Class<?> type = parameters[j].getType();
-            if (Feature.class.isAssignableFrom(type))
+            if (FeatureProvider.class.isAssignableFrom(type))
             {
-                args.add(featurable.getFeature(type.asSubclass(Feature.class)));
+                args.add(featurable.getFeature(type.asSubclass(FeatureProvider.class)));
             }
         }
     }

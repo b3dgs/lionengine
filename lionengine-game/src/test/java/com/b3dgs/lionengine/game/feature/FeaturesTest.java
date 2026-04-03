@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
  * Test {@link Features}.
@@ -77,7 +78,7 @@ final class FeaturesTest
     @Test
     void testFeatures()
     {
-        assertFalse(features.contains(Feature.class));
+        assertFalse(features.contains(FeatureProvider.class));
 
         final Identifiable identifiable = new IdentifiableModel();
         features.add(identifiable);
@@ -86,7 +87,7 @@ final class FeaturesTest
         assertEquals(identifiable, features.get(IdentifiableModel.class));
 
         int i = 0;
-        for (final Feature current : features.getFeatures())
+        for (final FeatureProvider current : features.getFeatures())
         {
             assertEquals(identifiable, current);
             i++;
@@ -94,9 +95,9 @@ final class FeaturesTest
         assertEquals(1, i);
 
         i = 0;
-        for (final Class<? extends Feature> type : features.getFeaturesType())
+        for (final Class<? extends FeatureProvider> type : features.getFeaturesType())
         {
-            assertTrue(Feature.class.isAssignableFrom(type));
+            assertTrue(FeatureProvider.class.isAssignableFrom(type));
             i++;
         }
         assertEquals(2, i);
@@ -108,7 +109,8 @@ final class FeaturesTest
     @Test
     void testFeatureNotFound()
     {
-        assertThrows(() -> features.get(Feature.class), "Feature not found: " + Feature.class.getName());
+        assertThrows(() -> features.get(FeatureProvider.class),
+                     "Feature not found: " + FeatureProvider.class.getName());
     }
 
     /**
