@@ -64,6 +64,24 @@ public record ColorRgba(int r, int g, int b, int a, int rgba)
     public static final ColorRgba OPAQUE = new ColorRgba(0, 0, 0, 255);
 
     /**
+     * Get color as integer value.
+     * 
+     * @param r The red value [0-255].
+     * @param g The green value [0-255].
+     * @param b The blue value [0-255].
+     * @param a The alpha value [0-255].
+     * @return The integer color.
+     */
+    public static int getValue(int r, int g, int b, int a)
+    {
+        // CHECKSTYLE IGNORE LINE: BooleanExpressionComplexity
+        return (a & 0xFF) << Constant.BYTE_4
+               | (r & 0xFF) << Constant.BYTE_3
+               | (g & 0xFF) << Constant.BYTE_2
+               | (b & 0xFF) << Constant.BYTE_1;
+    }
+
+    /**
      * Create an opaque color.
      * 
      * @param r The red value [0-255].
@@ -73,7 +91,7 @@ public record ColorRgba(int r, int g, int b, int a, int rgba)
      */
     public ColorRgba(int r, int g, int b)
     {
-        this(r, g, b, 255, UtilColor.getRgbaValue(r, g, b, 255));
+        this(r, g, b, 255, getValue(r, g, b, 255));
     }
 
     /**
@@ -87,7 +105,7 @@ public record ColorRgba(int r, int g, int b, int a, int rgba)
      */
     public ColorRgba(int r, int g, int b, int a)
     {
-        this(r, g, b, a, UtilColor.getRgbaValue(r, g, b, a));
+        this(r, g, b, a, getValue(r, g, b, a));
     }
 
     /**
@@ -128,7 +146,7 @@ public record ColorRgba(int r, int g, int b, int a, int rgba)
         Check.superiorOrEqual(a, 0);
         Check.inferiorOrEqual(a, 255);
 
-        Check.equality(UtilColor.getRgbaValue(r, g, b, a), rgba);
+        Check.equality(getValue(r, g, b, a), rgba);
     }
 
     /**

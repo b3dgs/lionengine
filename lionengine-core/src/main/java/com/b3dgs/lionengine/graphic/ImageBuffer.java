@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * 
  * @see com.b3dgs.lionengine.graphic.Graphics
  */
-public interface ImageBuffer extends ImageSurface
+public interface ImageBuffer extends ImageSurface, RgbSupplier
 {
     /**
      * Prepare loaded surface to be displayed. It will prepare memory data to be displayed.
@@ -65,15 +65,6 @@ public interface ImageBuffer extends ImageSurface
      * @param scansize scanline stride for the <code>rgbArray</code>
      */
     void setRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize);
-
-    /**
-     * Returns a pixel at the specified coordinate.
-     * 
-     * @param x the horizontal coordinate
-     * @param y the vertical coordinate
-     * @return The pixel color.
-     */
-    int getRgb(int x, int y);
 
     /**
      * Returns pixel data reference. Can cause unexpected rendering if called.
