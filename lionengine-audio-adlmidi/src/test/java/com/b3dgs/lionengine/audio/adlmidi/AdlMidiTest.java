@@ -185,7 +185,7 @@ final class AdlMidiTest
     @Test
     void testPlay()
     {
-        AdlMidiFormat.setDefaultBank(Integer.valueOf(43));
+        AdlMidiPlayer.setDefaultBank(Integer.valueOf(43));
         final AdlMidi adlmidi = createAdlMidi();
         try
         {
@@ -232,7 +232,7 @@ final class AdlMidiTest
         {
             adlmidi2.stop();
         }
-        AdlMidiFormat.setDefaultBank(null);
+        AdlMidiPlayer.setDefaultBank(null);
     }
 
     /**

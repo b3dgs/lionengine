@@ -26,6 +26,19 @@ import com.b3dgs.lionengine.audio.PlayerAbstract;
  */
 final class AdlMidiPlayer extends PlayerAbstract implements AdlMidi
 {
+    /** Default sound bank (<code>null</code> if not defined). */
+    private static Integer bank;
+
+    /**
+     * Set the default sound bank.
+     * 
+     * @param bank The bank id (<code>null</code> if none).
+     */
+    public static void setDefaultBank(Integer bank)
+    {
+        AdlMidiPlayer.bank = bank;
+    }
+
     /** Binding reference. */
     private final AdlMidiBinding binding;
 
@@ -44,7 +57,6 @@ final class AdlMidiPlayer extends PlayerAbstract implements AdlMidi
 
         this.binding = binding;
 
-        final Integer bank = AdlMidiFormat.getDefaultBank();
         if (bank != null)
         {
             binding.adlSetBank(bank.intValue());

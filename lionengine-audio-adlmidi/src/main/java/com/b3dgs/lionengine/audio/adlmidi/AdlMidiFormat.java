@@ -49,9 +49,6 @@ public final class AdlMidiFormat implements AudioFormat
     /** Logger. */
     private static final Logger LOGGER = LoggerFactory.getLogger(AdlMidiFormat.class);
 
-    /** Default sound bank (<code>null</code> if not defined). */
-    private static Integer bank;
-
     /**
      * Get the library, or void format if not found.
      * 
@@ -69,26 +66,6 @@ public final class AdlMidiFormat implements AudioFormat
             LOGGER.error(ERROR_LOAD_LIBRARY + "{}", LIBRARY_NAME, exception);
             return new AudioVoidFormat(FORMATS);
         }
-    }
-
-    /**
-     * Set the default sound bank.
-     * 
-     * @param bank The bank id (<code>null</code> if none).
-     */
-    public static void setDefaultBank(Integer bank)
-    {
-        AdlMidiFormat.bank = bank;
-    }
-
-    /**
-     * Get the default bank used.
-     * 
-     * @return The default bank id, <code>null</code> if not defined.
-     */
-    static Integer getDefaultBank()
-    {
-        return bank;
     }
 
     /**
