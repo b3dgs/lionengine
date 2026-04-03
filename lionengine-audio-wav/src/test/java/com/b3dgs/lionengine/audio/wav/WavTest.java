@@ -51,7 +51,7 @@ final class WavTest
         Engine.start(new EngineMock(WavTest.class.getSimpleName(), new Version(1, 0, 0)));
 
         Medias.setLoadFromJar(WavTest.class);
-        WavFormat.setMixer(null);
+        WavImpl.setMixer(null);
         AudioFactory.addFormat(new WavFormat());
     }
 

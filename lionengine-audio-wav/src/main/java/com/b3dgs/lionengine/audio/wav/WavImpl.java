@@ -34,6 +34,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.FloatControl.Type;
 import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.Mixer;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
@@ -54,6 +55,8 @@ import com.b3dgs.lionengine.audio.PlayerAbstract;
  */
 final class WavImpl implements Wav
 {
+    /** Custom mixer, <code>null</code> for default. */
+    private static volatile Mixer.Info mixer;
     /** Sound buffer size. */
     private static final int BUFFER = 4400;
     /** Minimum delay between same. */
@@ -62,6 +65,16 @@ final class WavImpl implements Wav
     private static final String ERROR_PLAY_SOUND = "Error on playing sound: ";
     /** Logger. */
     private static final Logger LOGGER = LoggerFactory.getLogger(WavImpl.class);
+
+    /**
+     * Set the mixer to use.
+     * 
+     * @param mixer The mixer to use.
+     */
+    public static void setMixer(Mixer.Info mixer)
+    {
+        WavImpl.mixer = mixer;
+    }
 
     /**
      * Play a sound.
@@ -110,9 +123,9 @@ final class WavImpl implements Wav
         final AudioFormat format = input.getFormat();
         try
         {
-            if (WavFormat.mixer != null)
+            if (mixer != null)
             {
-                return AudioSystem.getSourceDataLine(format, WavFormat.mixer);
+                return AudioSystem.getSourceDataLine(format, mixer);
             }
             return AudioSystem.getSourceDataLine(format);
         }
