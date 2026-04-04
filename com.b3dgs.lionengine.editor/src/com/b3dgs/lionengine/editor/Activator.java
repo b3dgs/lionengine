@@ -55,7 +55,9 @@ public class Activator implements BundleActivator
     private static void configureLog4j(Bundle bundle) throws IOException
     {
         final URL url = bundle.getResource("log4j2.xml");
-        final Path config = Files.createTempFile("log4j2", ".xml");
+        final Path folder = Files.createTempDirectory(Constant.ENGINE_NAME);
+        final Path config = Files.createTempFile(folder, "log4j2", ".xml");
+
         try (InputStream input = url.openStream())
         {
             Files.copy(input, config, StandardCopyOption.REPLACE_EXISTING);
