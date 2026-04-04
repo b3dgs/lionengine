@@ -27,6 +27,9 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Tools related to ZIP handling.
  * 
@@ -38,8 +41,12 @@ public final class UtilZip
 {
     /** Error opening ZIP. */
     static final String ERROR_OPEN_ZIP = "Unable to open ZIP : ";
+    /** Maximum jar entries. */
+    private static final int THRESHOLD_ENTRIES = 10_000_000;
     /** Pattern matcher. */
     private static final Pattern MATCHER = Pattern.compile("\\s", Pattern.UNICODE_CHARACTER_CLASS);
+    /** Logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(UtilZip.class);
 
     /**
      * Get all entries existing in the path.
@@ -92,6 +99,8 @@ public final class UtilZip
     {
         final Collection<ZipEntry> entries = new ArrayList<>();
         final Enumeration<? extends ZipEntry> zipEntries = zip.entries();
+        int totalEntryArchive = 0;
+
         while (zipEntries.hasMoreElements())
         {
             final ZipEntry entry = zipEntries.nextElement();
@@ -101,6 +110,12 @@ public final class UtilZip
                 && (extension == null || UtilFile.getExtension(name).equals(extension)))
             {
                 entries.add(entry);
+            }
+            totalEntryArchive++;
+            if (totalEntryArchive > THRESHOLD_ENTRIES)
+            {
+                LOGGER.warn("getImplementingJar too much entries !");
+                break;
             }
         }
         return entries;

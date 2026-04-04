@@ -45,6 +45,8 @@ import com.b3dgs.lionengine.editor.utility.UtilBundle;
  */
 public class ProjectClassLoader
 {
+    /** Maximum jar entries. */
+    private static final int THRESHOLD_ENTRIES = 10_000_000;
     /** Load class error. */
     private static final String ERROR_LOAD_CLASS = "Unable to load the class: ";
     /** Create class error. */
@@ -327,12 +329,21 @@ public class ProjectClassLoader
         try (JarFile jar = new JarFile(file))
         {
             final Enumeration<JarEntry> entries = jar.entries();
+            int totalEntryArchive = 0;
+
             while (entries.hasMoreElements())
             {
                 final JarEntry entry = entries.nextElement();
                 if (!entry.isDirectory())
                 {
                     checkAddClass(found, type, null, entry.getName());
+                }
+
+                totalEntryArchive++;
+                if (totalEntryArchive > THRESHOLD_ENTRIES)
+                {
+                    LOGGER.warn("getImplementingJar too much entries !");
+                    break;
                 }
             }
         }
