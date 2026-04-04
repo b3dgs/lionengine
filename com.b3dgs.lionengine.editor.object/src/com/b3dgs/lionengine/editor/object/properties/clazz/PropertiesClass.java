@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableConfig;
+import com.b3dgs.lionengine.game.feature.UtilFeaturable;
 
 /**
  * Element properties part.
@@ -52,7 +53,7 @@ public class PropertiesClass implements PropertiesProviderObject
     {
         final TreeItem classItem = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(classItem, Messages.Class, configObject.getClassName());
-        classItem.setData(FeaturableConfig.ATT_CLASS);
+        classItem.setData(UtilFeaturable.ATT_CLASS);
         classItem.setImage(ICON_CLASS);
     }
 
@@ -82,7 +83,7 @@ public class PropertiesClass implements PropertiesProviderObject
         if (clazz != null)
         {
             final Xml root = configurer.getRoot();
-            final Xml classeNode = root.getChildXml(FeaturableConfig.ATT_CLASS);
+            final Xml classeNode = root.getChildXml(UtilFeaturable.ATT_CLASS);
             classeNode.setText(clazz);
             item.setText(PropertiesPart.COLUMN_VALUE, clazz);
             return true;
@@ -102,7 +103,7 @@ public class PropertiesClass implements PropertiesProviderObject
     public void setInput(Tree properties, Configurer configurer)
     {
         final Xml root = configurer.getRoot();
-        if (root.hasNode(FeaturableConfig.ATT_CLASS))
+        if (root.hasNode(UtilFeaturable.ATT_CLASS))
         {
             createAttributeClass(properties, FeaturableConfig.imports(configurer));
         }
@@ -112,7 +113,7 @@ public class PropertiesClass implements PropertiesProviderObject
     public boolean updateProperties(TreeItem item, Configurer configurer)
     {
         final Object data = item.getData();
-        if (FeaturableConfig.ATT_CLASS.equals(data))
+        if (UtilFeaturable.ATT_CLASS.equals(data))
         {
             return updateClass(item, configurer);
         }

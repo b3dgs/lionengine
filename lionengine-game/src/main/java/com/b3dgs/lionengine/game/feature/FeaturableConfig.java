@@ -16,13 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Parameter;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
@@ -31,7 +26,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Feature;
-import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
  * Represents the featurable configuration data.
@@ -49,8 +43,6 @@ public record FeaturableConfig(String clazz, String setup)
     public static final String DEFAULT_FILENAME = "featurable.xml";
     /** Featurable node name. */
     public static final String NODE_FEATURABLE = Constant.XML_PREFIX + "featurable";
-    /** Class attribute name. */
-    public static final String ATT_CLASS = Constant.XML_PREFIX + "class";
     /** Setup attribute name. */
     public static final String ATT_SETUP = Constant.XML_PREFIX + "setup";
     /** Features node. */
@@ -61,22 +53,6 @@ public record FeaturableConfig(String clazz, String setup)
     public static final String ATT_PRIORITY_UPDATE = "priorityUpdate";
     /** Feature priority render attribute name. */
     public static final String ATT_PRIORITY_RENDER = "priorityRender";
-    /** Class not found error. */
-    static final String ERROR_CLASS_PRESENCE = "Class not found: ";
-    /** Constructor not found error. */
-    static final String ERROR_CONSTRUCTOR = "Constructor not found: ";
-    /** Default class name. */
-    private static final String DEFAULT_CLASS_NAME = FeaturableModel.class.getName();
-    /** Class cache. */
-    private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
-
-    /**
-     * Clear classes cache.
-     */
-    public static void clearCache()
-    {
-        CLASS_CACHE.clear();
-    }
 
     /**
      * Import the featurable data from configurer.
@@ -103,15 +79,7 @@ public record FeaturableConfig(String clazz, String setup)
     {
         Check.notNull(root);
 
-        final String clazz;
-        if (root.hasNode(ATT_CLASS))
-        {
-            clazz = root.getChild(ATT_CLASS).getText();
-        }
-        else
-        {
-            clazz = DEFAULT_CLASS_NAME;
-        }
+        final String clazz = UtilFeaturable.getClass(root);
 
         final String setup;
         if (root.hasNode(ATT_SETUP))
@@ -137,7 +105,7 @@ public record FeaturableConfig(String clazz, String setup)
     {
         Check.notNull(clazz);
 
-        final Xml node = new Xml(ATT_CLASS);
+        final Xml node = new Xml(UtilFeaturable.ATT_CLASS);
         node.setText(clazz);
 
         return node;
@@ -210,122 +178,13 @@ public record FeaturableConfig(String clazz, String setup)
         {
             final AttributesReader node = children.get(i);
             final String className = node.getText();
-            final Class<? extends Feature> clazz = getClass(loader, className);
+            final Class<? extends Feature> clazz = UtilFeaturable.getClass(loader, className);
             if (filter == null || filter.isAssignableFrom(clazz))
             {
-                createAndAdd(clazz, featurable, services, setup, node);
+                UtilFeaturable.createAndAdd(clazz, featurable, services, setup, node);
             }
         }
         children.clear();
-    }
-
-    /**
-     * Create and add feature to featurable.
-     * 
-     * @param <T> The feature type.
-     * @param clazz The feature class.
-     * @param featurable The featurable owner.
-     * @param services The services reference.
-     * @param setup The setup reference.
-     * @param config The feature configuration node.
-     * @return The created feature.
-     */
-    static <T extends Feature> T createAndAdd(Class<T> clazz,
-                                              Featurable featurable,
-                                              Services services,
-                                              Setup setup,
-                                              AttributesReader config)
-    {
-
-        try
-        {
-            return checkConstructors(clazz, featurable, services, setup, config);
-        }
-        catch (final ReflectiveOperationException | IllegalArgumentException | LionEngineException exception)
-        {
-            throw new LionEngineException(exception, setup.getMedia() + " for " + clazz);
-        }
-    }
-
-    private static <T extends Feature> T checkConstructors(Class<T> clazz,
-                                                           Featurable featurable,
-                                                           Services services,
-                                                           Setup setup,
-                                                           AttributesReader config)
-            throws ReflectiveOperationException
-    {
-        final Constructor<?>[] constructors = clazz.getConstructors();
-        for (int i = 0; i < constructors.length; i++)
-        {
-            final Parameter[] parameters = constructors[i].getParameters();
-
-            // At least services and setup arguments
-            if (parameters.length > 1
-                && Services.class.equals(parameters[0].getType())
-                && Setup.class.isAssignableFrom(parameters[1].getType()))
-            {
-                final List<Object> args = new ArrayList<>();
-                args.add(services);
-                args.add(setup);
-                if (config != null
-                    && parameters.length > 2
-                    && AttributesReader.class.isAssignableFrom(parameters[2].getType()))
-                {
-                    args.add(config);
-                }
-
-                addConstructorArgs(featurable, parameters, args);
-
-                @SuppressWarnings("unchecked")
-                final T feature = (T) constructors[i].newInstance(args.toArray());
-                featurable.addFeature(feature);
-
-                return feature;
-            }
-        }
-        throw new LionEngineException(ERROR_CONSTRUCTOR + setup.getMedia());
-    }
-
-    private static void addConstructorArgs(Featurable featurable, Parameter[] parameters, List<Object> args)
-    {
-        // Start after services setup and config arguments
-        final int standardArgsCount = args.size();
-        for (int j = standardArgsCount; j < parameters.length; j++)
-        {
-            final Class<?> type = parameters[j].getType();
-            if (FeatureProvider.class.isAssignableFrom(type))
-            {
-                args.add(featurable.getFeature(type.asSubclass(FeatureProvider.class)));
-            }
-        }
-    }
-
-    /**
-     * Get the class reference from its name using cache.
-     * 
-     * @param <T> The class type.
-     * @param loader The class loader reference.
-     * @param className The class name.
-     * @return The typed class instance.
-     * @throws LionEngineException If invalid class.
-     */
-    @SuppressWarnings("unchecked")
-    private static <T> Class<T> getClass(ClassLoader loader, String className)
-    {
-        if (CLASS_CACHE.containsKey(className))
-        {
-            return (Class<T>) CLASS_CACHE.get(className);
-        }
-        try
-        {
-            final Class<?> clazz = loader.loadClass(className);
-            CLASS_CACHE.put(className, clazz);
-            return (Class<T>) clazz;
-        }
-        catch (final ClassNotFoundException exception)
-        {
-            throw new LionEngineException(exception, ERROR_CLASS_PRESENCE + className);
-        }
     }
 
     /**
