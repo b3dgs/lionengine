@@ -99,7 +99,7 @@ final class FilterBlurTest
         blur.setEdgeMode(FilterBlur.WRAP_EDGES);
         assertNotNull(blur.filter(image));
 
-        blur.setRadius(1.0f);
+        blur.setRadius(1.0);
         assertNotNull(blur.filter(image));
 
         blur.close();

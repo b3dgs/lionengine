@@ -515,7 +515,7 @@ final class LoaderTest
         Loader.start(config, SequenceFilterMock.class, blur).await();
 
         blur.setAlpha(true);
-        blur.setRadius(0.5f);
+        blur.setRadius(0.5);
         Loader.start(config, SequenceFilterMock.class, blur).await();
     }
 

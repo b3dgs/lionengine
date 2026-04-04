@@ -22,6 +22,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 
@@ -32,6 +35,7 @@ final class CrtScale
 {
     private static final double QUART = Constant.QUART;
     private static final int COUNT = Math.max(1, Runtime.getRuntime().availableProcessors() / 2 - 1);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CrtScale.class);
 
     private static final ColorRgba C = new ColorRgba(100, 100, 100, 255);
     private static final ColorRgba C1 = new ColorRgba(100, 80, 80, 255);
@@ -186,7 +190,10 @@ final class CrtScale
         }
         try
         {
-            latch.await(1, TimeUnit.SECONDS);
+            if (!latch.await(1, TimeUnit.SECONDS))
+            {
+                LOGGER.warn("Latch timeout !");
+            }
         }
         catch (@SuppressWarnings("unused") final InterruptedException exception)
         {

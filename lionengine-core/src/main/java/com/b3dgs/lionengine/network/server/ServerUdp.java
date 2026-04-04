@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import org.slf4j.Logger;
@@ -88,9 +90,9 @@ public class ServerUdp implements Server
     private boolean running;
     private final AtomicInteger bandwidthUpSum = new AtomicInteger();
     private final AtomicInteger bandwidthDownSum = new AtomicInteger();
-    private volatile float bandwidthUp = -1;
-    private volatile float bandwidthDown = -1;
-    private volatile Supplier<ByteBuffer> info = () -> ByteBuffer.allocate(0);
+    private final AtomicLong bandwidthUp = new AtomicLong(-1);
+    private final AtomicLong bandwidthDown = new AtomicLong(-1);
+    private final AtomicReference<Supplier<ByteBuffer>> info = new AtomicReference<>(() -> ByteBuffer.allocate(0));
 
     private Integer getNextClientId()
     {
@@ -124,7 +126,7 @@ public class ServerUdp implements Server
     {
         Info.decode(buffer);
 
-        final ByteBuffer infoBuffer = info.get();
+        final ByteBuffer infoBuffer = info.get().get();
 
         final ByteBuffer answer = ByteBuffer.allocate(1 + infoBuffer.capacity());
         answer.put(UtilNetwork.toByte(MessageType.INFO));
@@ -459,12 +461,12 @@ public class ServerUdp implements Server
                 Thread.currentThread().interrupt();
                 break;
             }
-            final float elapsed = timing.elapsed() / (float) Constant.THOUSAND;
+            final double elapsed = timing.elapsed() / (double) Constant.THOUSAND;
             timing.restart();
 
-            final float factor = 1 / 1024F * elapsed;
-            bandwidthUp = bandwidthUpSum.getAndSet(0) * factor;
-            bandwidthDown = bandwidthDownSum.getAndSet(0) * factor;
+            final double factor = 1.0 / 1024.0 * elapsed;
+            bandwidthUp.set(Math.round(bandwidthUpSum.getAndSet(0) * factor));
+            bandwidthDown.set(Math.round(bandwidthDownSum.getAndSet(0) * factor));
         }
     }
 
@@ -539,8 +541,8 @@ public class ServerUdp implements Server
         UtilNetwork.await(threadBandwidth);
 
         clients.clear();
-        bandwidthUp = -1;
-        bandwidthDown = -1;
+        bandwidthUp.set(-1);
+        bandwidthDown.set(-1);
         threadReceive = null;
         threadAlive = null;
         socket = null;
@@ -586,7 +588,7 @@ public class ServerUdp implements Server
     {
         Check.notNull(info);
 
-        this.info = info;
+        this.info.set(info);
     }
 
     @Override
@@ -596,15 +598,15 @@ public class ServerUdp implements Server
     }
 
     @Override
-    public float getBandwidthUp()
+    public long getBandwidthUp()
     {
-        return bandwidthUp;
+        return bandwidthUp.get();
     }
 
     @Override
-    public float getBandwidthDown()
+    public long getBandwidthDown()
     {
-        return bandwidthDown;
+        return bandwidthDown.get();
     }
 
     @Override

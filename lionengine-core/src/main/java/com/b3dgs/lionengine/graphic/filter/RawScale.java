@@ -22,6 +22,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * The raw scale base.
  */
@@ -29,6 +32,7 @@ abstract class RawScale
 {
     private static final int MAX_PARALLEL = 4;
     private static final int COUNT = Runtime.getRuntime().availableProcessors() > MAX_PARALLEL ? MAX_PARALLEL : 1;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RawScale.class);
 
     /** Cache. */
     protected int[] dstImage = {};
@@ -172,7 +176,10 @@ abstract class RawScale
         }
         try
         {
-            latch.await(1, TimeUnit.SECONDS);
+            if (!latch.await(1, TimeUnit.SECONDS))
+            {
+                LOGGER.warn("Latch timeout !");
+            }
         }
         catch (@SuppressWarnings("unused") final InterruptedException exception)
         {

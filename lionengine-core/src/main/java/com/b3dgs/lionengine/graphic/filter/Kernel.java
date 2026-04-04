@@ -24,7 +24,7 @@ import java.util.Arrays;
  * @param width The kernel width.
  * @param matrix The kernel matrix.
  */
-record Kernel(int width, float[] matrix)
+record Kernel(int width, double[] matrix)
 {
     /**
      * Get the matrix width.
@@ -41,7 +41,7 @@ record Kernel(int width, float[] matrix)
      * 
      * @return The kernel matrix.
      */
-    float[] getMatrix()
+    double[] getMatrix()
     {
         return matrix;
     }

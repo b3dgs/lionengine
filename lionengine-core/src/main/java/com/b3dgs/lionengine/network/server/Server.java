@@ -78,12 +78,12 @@ public interface Server extends Listenable<ServerListener>
      * 
      * @return The upstream bandwidth (in kB/sec, negative if not updated).
      */
-    float getBandwidthUp();
+    long getBandwidthUp();
 
     /**
      * Get bandwidth downstream.
      * 
      * @return The downstream bandwidth (in kB/sec, negative if not updated).
      */
-    float getBandwidthDown();
+    long getBandwidthDown();
 }

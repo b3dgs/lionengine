@@ -35,15 +35,15 @@ final class KernelTest
     @Test
     void testGetters()
     {
-        final Kernel kernel = new Kernel(320, new float[]
+        final Kernel kernel = new Kernel(320, new double[]
         {
-            1.0F, 2.0F
+            1.0, 2.0
         });
 
         assertEquals(320, kernel.getWidth());
-        assertArrayEquals(new float[]
+        assertArrayEquals(new double[]
         {
-            1.0F, 2.0F
+            1.0, 2.0
         }, kernel.getMatrix());
     }
 
@@ -53,24 +53,24 @@ final class KernelTest
     @Test
     void testHashCode()
     {
-        final Kernel kernel = new Kernel(320, new float[]
+        final Kernel kernel = new Kernel(320, new double[]
         {
-            1.0F, 2.0F
+            1.0, 2.0
         });
 
         assertHashEquals(kernel, kernel);
-        assertHashEquals(kernel, new Kernel(320, new float[]
+        assertHashEquals(kernel, new Kernel(320, new double[]
         {
-            1.0F, 2.0F
+            1.0, 2.0
         }));
 
-        assertHashNotEquals(kernel, new Kernel(240, new float[]
+        assertHashNotEquals(kernel, new Kernel(240, new double[]
         {
-            1.0F, 2.0F
+            1.0, 2.0
         }));
-        assertHashNotEquals(kernel, new Kernel(320, new float[]
+        assertHashNotEquals(kernel, new Kernel(320, new double[]
         {
-            2.0F, 2.0F
+            2.0, 2.0
         }));
     }
 
@@ -80,26 +80,26 @@ final class KernelTest
     @Test
     void testEquals()
     {
-        final Kernel kernel = new Kernel(320, new float[]
+        final Kernel kernel = new Kernel(320, new double[]
         {
-            1.0F, 2.0F
+            1.0, 2.0
         });
 
         assertEquals(kernel, kernel);
-        assertEquals(kernel, new Kernel(320, new float[]
+        assertEquals(kernel, new Kernel(320, new double[]
         {
-            1.0F, 2.0F
+            1.0, 2.0
         }));
 
         assertNotEquals(kernel, null);
         assertNotEquals(kernel, new Object());
-        assertNotEquals(kernel, new Kernel(240, new float[]
+        assertNotEquals(kernel, new Kernel(240, new double[]
         {
-            1.0F, 2.0F
+            1.0, 2.0
         }));
-        assertNotEquals(kernel, new Kernel(320, new float[]
+        assertNotEquals(kernel, new Kernel(320, new double[]
         {
-            2.0F, 2.0F
+            2.0, 2.0
         }));
     }
 }

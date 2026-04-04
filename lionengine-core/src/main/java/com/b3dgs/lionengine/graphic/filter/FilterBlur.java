@@ -50,7 +50,7 @@ public class FilterBlur implements Filter
      */
     private static void compute(Kernel kernel, int[] in, int[] out, int width, int height, boolean alpha, int edge)
     {
-        final float[] matrix = kernel.getMatrix();
+        final double[] matrix = kernel.getMatrix();
         final int cols = kernel.getWidth();
         final int cols2 = cols / 2;
 
@@ -80,7 +80,7 @@ public class FilterBlur implements Filter
      * @param alpha The alpha flag.
      * @param edge The edge flag.
      */
-    private static void compute(float[] matrix,
+    private static void compute(double[] matrix,
                                 int[] in,
                                 int[] out,
                                 int x,
@@ -99,7 +99,7 @@ public class FilterBlur implements Filter
         final int moffset = cols2;
         for (int col = -cols2; col <= cols2; col++)
         {
-            final float f = matrix[moffset + col];
+            final double f = matrix[moffset + col];
             if (Double.doubleToRawLongBits(f) != 0L)
             {
                 final int ix = checkEdge(width, x, col, edge);
@@ -170,16 +170,16 @@ public class FilterBlur implements Filter
      * @param height The image height.
      * @return The blur kernel.
      */
-    private static Kernel createKernel(float radius, int width, int height)
+    private static Kernel createKernel(double radius, int width, int height)
     {
         final int r = (int) Math.ceil(radius);
         final int rows = r * 2 + 1;
-        final float[] matrix = new float[rows];
-        final float sigma = radius / 3;
-        final float sigma22 = 2 * sigma * sigma;
-        final float sigmaPi2 = (float) (2 * Math.PI * sigma);
-        final float sqrtSigmaPi2 = (float) Math.sqrt(sigmaPi2);
-        final float radius2 = radius * radius;
+        final double[] matrix = new double[rows];
+        final double sigma = radius / 3;
+        final double sigma22 = 2 * sigma * sigma;
+        final double sigmaPi2 = 2 * Math.PI * sigma;
+        final double sqrtSigmaPi2 = Math.sqrt(sigmaPi2);
+        final double radius2 = radius * radius;
         float total = 0.0F;
         int index = 0;
 
@@ -192,7 +192,7 @@ public class FilterBlur implements Filter
             }
             else
             {
-                matrix[index] = (float) Math.exp(-distance / sigma22) / sqrtSigmaPi2;
+                matrix[index] = Math.exp(-distance / sigma22) / sqrtSigmaPi2;
             }
             total += matrix[index];
             index++;
@@ -202,7 +202,7 @@ public class FilterBlur implements Filter
             matrix[i] /= total;
         }
 
-        final float[] data = new float[width * height];
+        final double[] data = new double[width * height];
         System.arraycopy(matrix, 0, data, 0, rows);
 
         return new Kernel(rows, data);
@@ -220,7 +220,7 @@ public class FilterBlur implements Filter
     }
 
     /** Current radius. */
-    private volatile float radius = RADIUS_DEFAULT;
+    private volatile double radius = RADIUS_DEFAULT;
     /** Alpha flag. */
     private volatile boolean alpha = true;
     /** Edge mode. */
@@ -252,7 +252,7 @@ public class FilterBlur implements Filter
      * 
      * @param radius The radius value.
      */
-    public void setRadius(float radius)
+    public void setRadius(double radius)
     {
         this.radius = radius;
     }
@@ -312,6 +312,7 @@ public class FilterBlur implements Filter
     {
         final Transform transform = Graphics.createTransform();
         transform.scale(scaleX, scaleY);
+
         return transform;
     }
 }

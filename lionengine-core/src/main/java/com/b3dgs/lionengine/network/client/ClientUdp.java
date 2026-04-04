@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,11 +67,11 @@ public class ClientUdp implements Client
     private final Set<Integer> clientsNew = new HashSet<>();
     private final Set<Integer> clientsConnected = new HashSet<>();
     private final List<Integer> toRemove = new ArrayList<>();
+    private final AtomicReference<InetAddress> address = new AtomicReference<>();
+    private final AtomicReference<DatagramSocket> socket = new AtomicReference<>();
 
     private Thread threadReceive;
     private Thread threadAlive;
-    private volatile InetAddress address;
-    private volatile DatagramSocket socket;
     private volatile int port;
     private volatile Integer clientId;
     private volatile boolean running;
@@ -96,7 +97,7 @@ public class ClientUdp implements Client
         {
             try
             {
-                final DatagramPacket packet = UtilNetwork.receive(socket);
+                final DatagramPacket packet = UtilNetwork.receive(socket.get());
                 final ByteBuffer buffer = UtilNetwork.getBuffer(packet);
                 final MessageType type = MessageType.from(buffer);
 
@@ -257,8 +258,8 @@ public class ClientUdp implements Client
     {
         try
         {
-            address = InetAddress.getByName(ip);
-            socket = new DatagramSocket();
+            address.set(InetAddress.getByName(ip));
+            socket.set(new DatagramSocket());
         }
         catch (final UnknownHostException | SocketException exception)
         {
@@ -268,7 +269,7 @@ public class ClientUdp implements Client
 
         final ByteBuffer send = Connect.encode();
         send(send, address, port);
-        clientId = Connect.decode(socket);
+        clientId = Connect.decode(socket.get());
 
         notifyConnected(ip, port, clientId);
 
@@ -293,9 +294,9 @@ public class ClientUdp implements Client
         }
     }
 
-    private void send(ByteBuffer buffer, InetAddress address, int port) throws IOException
+    private void send(ByteBuffer buffer, AtomicReference<InetAddress> address, int port) throws IOException
     {
-        socket.send(new DatagramPacket(buffer.array(), buffer.capacity(), address, port));
+        socket.get().send(new DatagramPacket(buffer.array(), buffer.capacity(), address.get(), port));
     }
 
     @Override
@@ -344,7 +345,7 @@ public class ClientUdp implements Client
     private void close()
     {
         running = false;
-        socket.close();
+        socket.get().close();
 
         threadReceive.interrupt();
         threadAlive.interrupt();
@@ -356,9 +357,9 @@ public class ClientUdp implements Client
 
         threadReceive = null;
         threadAlive = null;
-        socket = null;
         clientId = null;
-        address = null;
+        socket.set(null);
+        address.set(null);
         port = -1;
     }
 
