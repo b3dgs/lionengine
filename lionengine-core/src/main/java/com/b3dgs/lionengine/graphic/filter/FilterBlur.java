@@ -33,7 +33,7 @@ public class FilterBlur implements Filter
     /** Wrap edges. */
     public static final int WRAP_EDGES = 1;
     /** Default radius. */
-    private static final float RADIUS_DEFAULT = 1.5F;
+    private static final double RADIUS_DEFAULT = 1.5;
     /** Minimum size. */
     private static final int MIN_SIZE = 3;
 
@@ -91,10 +91,10 @@ public class FilterBlur implements Filter
                                 boolean alpha,
                                 int edge)
     {
-        float r = 0;
-        float g = 0;
-        float b = 0;
-        float a = 0;
+        double r = 0.0;
+        double g = 0.0;
+        double b = 0.0;
+        double a = 0.0;
 
         final int moffset = cols2;
         for (int col = -cols2; col <= cols2; col++)
@@ -180,12 +180,12 @@ public class FilterBlur implements Filter
         final double sigmaPi2 = 2 * Math.PI * sigma;
         final double sqrtSigmaPi2 = Math.sqrt(sigmaPi2);
         final double radius2 = radius * radius;
-        float total = 0.0F;
+        double total = 0.0;
         int index = 0;
 
         for (int row = -r; row <= r; row++)
         {
-            final float distance = row * (float) row;
+            final double distance = row * (double) row;
             if (distance > radius2)
             {
                 matrix[index] = 0;
