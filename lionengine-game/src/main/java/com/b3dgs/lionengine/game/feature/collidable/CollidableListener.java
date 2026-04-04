@@ -19,12 +19,12 @@ package com.b3dgs.lionengine.game.feature.collidable;
 import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
- * Notify collision events between two {@link Collidable}.
+ * Notify collision events between two {@link FeatureProvider}.
  */
 public interface CollidableListener
 {
     /**
-     * Notify when a collision occurred with another {@link Collidable}.
+     * Notify when a collision occurred with another {@link FeatureProvider}.
      * 
      * @param collidable The collidable reference.
      * @param with The collision collided with (source).
