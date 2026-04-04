@@ -205,11 +205,9 @@ final class Sc68Test
 
     /**
      * Test play sequence.
-     * 
-     * @throws InterruptedException If error.
      */
     @Test
-    void testPlayTwice() throws InterruptedException
+    void testPlayTwice()
     {
         final Sc68 sc68 = createSc68();
         try
@@ -260,11 +258,9 @@ final class Sc68Test
 
     /**
      * Test with missing media.
-     * 
-     * @throws IOException If error.
      */
     @Test
-    void testMissingMedia() throws IOException
+    void testMissingMedia()
     {
         final Media media = new MediaMock()
         {

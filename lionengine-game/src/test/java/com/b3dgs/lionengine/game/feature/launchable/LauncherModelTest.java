@@ -114,11 +114,9 @@ final class LauncherModelTest
 
     /**
      * Test the launcher.
-     * 
-     * @throws InterruptedException If error.
      */
     @Test
-    void testLauncher() throws InterruptedException
+    void testLauncher()
     {
         final AtomicBoolean fired = new AtomicBoolean();
         final AtomicReference<FeatureProvider> firedLaunchable = new AtomicReference<>();
@@ -181,11 +179,9 @@ final class LauncherModelTest
 
     /**
      * Test the launcher with initial speed.
-     * 
-     * @throws InterruptedException If error.
      */
     @Test
-    void testLauncherInitial() throws InterruptedException
+    void testLauncherInitial()
     {
         final AtomicBoolean fired = new AtomicBoolean();
         final AtomicReference<FeatureProvider> firedLaunchable = new AtomicReference<>();
@@ -222,11 +218,9 @@ final class LauncherModelTest
 
     /**
      * Test the launcher with delay.
-     * 
-     * @throws InterruptedException If error.
      */
     @Test
-    void testLauncherDelay() throws InterruptedException
+    void testLauncherDelay()
     {
         final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia, 100);
         final Setup setup = new Setup(launcherMedia);
@@ -272,11 +266,9 @@ final class LauncherModelTest
 
     /**
      * Test the launcher level.
-     * 
-     * @throws InterruptedException If error.
      */
     @Test
-    void testLauncherLevel() throws InterruptedException
+    void testLauncherLevel()
     {
         final AtomicBoolean fired = new AtomicBoolean();
         final AtomicReference<FeatureProvider> firedLaunchable = new AtomicReference<>();
@@ -333,11 +325,9 @@ final class LauncherModelTest
 
     /**
      * Test the launcher with listener itself.
-     * 
-     * @throws InterruptedException If error.
      */
     @Test
-    void testLauncherSelfListener() throws InterruptedException
+    void testLauncherSelfListener()
     {
         final LaunchableObjectSelf object = new LaunchableObjectSelf(services, setup);
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, object);
@@ -369,11 +359,9 @@ final class LauncherModelTest
 
     /**
      * Test the launcher with listener auto add.
-     * 
-     * @throws InterruptedException If error.
      */
     @Test
-    void testListenerAutoAdd() throws InterruptedException
+    void testListenerAutoAdd()
     {
         final LaunchableObjectSelf object = new LaunchableObjectSelf(services, setup);
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, object);

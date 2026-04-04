@@ -56,11 +56,9 @@ final class ScanlineHorizontalTest
 
     /**
      * Test filter.
-     * 
-     * @throws ReflectiveOperationException If error.
      */
     @Test
-    void testScanline() throws ReflectiveOperationException
+    void testScanline()
     {
         final Resolution source = new Resolution(320, 240, 60);
         final Scanline scanline = new ScanlineHorizontal(source, 1.0);

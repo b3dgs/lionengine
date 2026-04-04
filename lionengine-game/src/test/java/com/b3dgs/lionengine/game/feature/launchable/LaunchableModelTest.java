@@ -97,11 +97,9 @@ final class LaunchableModelTest
 
     /**
      * Test the launch.
-     * 
-     * @throws InterruptedException If error.
      */
     @Test
-    void testLaunch() throws InterruptedException
+    void testLaunch()
     {
         launchable.launch();
 
@@ -146,11 +144,9 @@ final class LaunchableModelTest
 
     /**
      * Test the launch without vector.
-     * 
-     * @throws InterruptedException If error.
      */
     @Test
-    void testLaunchNoVector() throws InterruptedException
+    void testLaunchNoVector()
     {
         launchable.setVector(null);
         launchable.launch();

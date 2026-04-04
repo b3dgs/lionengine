@@ -85,11 +85,9 @@ final class DocumentFactoryTest
 
     /**
      * Test create document with <code>null</code> stream.
-     * 
-     * @throws IOException If error.
      */
     @Test
-    void testCreateDocumentNullStream() throws IOException
+    void testCreateDocumentNullStream()
     {
         assertThrows(() -> DocumentFactory.createDocument(null), Check.ERROR_NULL);
     }

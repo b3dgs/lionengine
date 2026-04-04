@@ -20,7 +20,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -88,11 +87,9 @@ final class CircuitsConfigTest
 
     /**
      * Test exports imports.
-     * 
-     * @throws IOException If error.
      */
     @Test
-    void testExportsImports() throws IOException
+    void testExportsImports()
     {
         final Media config = UtilMapTransition.createTransitions();
 

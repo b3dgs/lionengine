@@ -68,11 +68,9 @@ final class ScreenHeadlessTest
 
     /**
      * Test windowed screen.
-     * 
-     * @throws Exception If error.
      */
     @Test
-    void testWindowed() throws Exception
+    void testWindowed()
     {
         final Config config = new Config(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240,
                                          32,
@@ -84,11 +82,9 @@ final class ScreenHeadlessTest
 
     /**
      * Test full screen.
-     * 
-     * @throws Exception If error.
      */
     @Test
-    void testFullscreen() throws Exception
+    void testFullscreen()
     {
         final Resolution resolution = com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240;
         final Config config = new Config(resolution, 32, false, Arrays.asList(Medias.create(IMAGE)));

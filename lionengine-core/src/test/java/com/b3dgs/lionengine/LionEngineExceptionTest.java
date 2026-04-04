@@ -20,7 +20,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
@@ -118,11 +117,9 @@ final class LionEngineExceptionTest
 
     /**
      * Test exception with a exception as argument.
-     * 
-     * @throws FileNotFoundException If error.
      */
     @Test
-    void testLionEngineExceptionWithException() throws FileNotFoundException
+    void testLionEngineExceptionWithException()
     {
         final LionEngineException exception = new LionEngineException(new IOException("error"));
 
@@ -132,11 +129,9 @@ final class LionEngineExceptionTest
 
     /**
      * Test exception with a {@link LionEngineException} as argument.
-     * 
-     * @throws FileNotFoundException If error.
      */
     @Test
-    void testLionEngineExceptionWithLionEngineException() throws FileNotFoundException
+    void testLionEngineExceptionWithLionEngineException()
     {
         final LionEngineException exception = new LionEngineException(new LionEngineException("reason"));
 
@@ -147,11 +142,9 @@ final class LionEngineExceptionTest
 
     /**
      * Test exception with a runtime exception as argument.
-     * 
-     * @throws FileNotFoundException If error.
      */
     @Test
-    void testLionEngineExceptionWithRuntimeException() throws FileNotFoundException
+    void testLionEngineExceptionWithRuntimeException()
     {
         final LionEngineException exception = new LionEngineException(new LionEngineException(new RuntimeException("sub")));
 
@@ -164,11 +157,9 @@ final class LionEngineExceptionTest
 
     /**
      * Test exception with a <code>null</code> reason.
-     * 
-     * @throws FileNotFoundException If error.
      */
     @Test
-    void testLionEngineExceptionWithNullReason() throws FileNotFoundException
+    void testLionEngineExceptionWithNullReason()
     {
         final LionEngineException exception = new LionEngineException((Throwable) null);
 

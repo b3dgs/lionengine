@@ -16,7 +16,6 @@
  */
 package com.b3dgs.lionengine.editor;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -56,13 +55,7 @@ public class Activator implements BundleActivator
     private static void configureLog4j(Bundle bundle) throws IOException
     {
         final URL url = bundle.getResource("log4j2.xml");
-        final Path config = Files.createTempFile(new File(Constant.ENGINE_NAME).toPath(), "log4j2", ".xml");
-        final File folder = config.toFile().getParentFile();
-        if (!folder.exists())
-        {
-            folder.mkdirs();
-        }
-
+        final Path config = Files.createTempFile("log4j2", ".xml");
         try (InputStream input = url.openStream())
         {
             Files.copy(input, config, StandardCopyOption.REPLACE_EXISTING);

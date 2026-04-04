@@ -191,22 +191,18 @@ final class UtilFileTest
 
     /**
      * Test get files with wrong path.
-     * 
-     * @throws IOException If error.
      */
     @Test
-    void testGetFilesError() throws IOException
+    void testGetFilesError()
     {
         assertThrows(() -> UtilFile.getFiles(new File("void")), UtilFile.ERROR_DIRECTORY + "void");
     }
 
     /**
      * Test get files with <code>null</code> returned.
-     * 
-     * @throws IOException If error.
      */
     @Test
-    void testGetFilesNull() throws IOException
+    void testGetFilesNull()
     {
         assertThrows(() -> UtilFile.getFiles(new File("void")
         {
@@ -301,11 +297,9 @@ final class UtilFileTest
 
     /**
      * Test delete file error.
-     * 
-     * @throws IOException If error.
      */
     @Test
-    void testDeleteFileError() throws IOException
+    void testDeleteFileError()
     {
         assertThrows(() -> UtilFile.deleteFile(new File("void")),
                      UtilFile.ERROR_DELETE_FILE + new File("void").getAbsolutePath());

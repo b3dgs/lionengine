@@ -20,7 +20,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -70,11 +69,9 @@ final class TransitionsConfigTest
 
     /**
      * Test exports and imports.
-     * 
-     * @throws IOException If error.
      */
     @Test
-    void testExportsImports() throws IOException
+    void testExportsImports()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, UtilMap.TILE_WATER);

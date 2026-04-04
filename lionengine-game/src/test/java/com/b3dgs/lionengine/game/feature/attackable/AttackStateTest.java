@@ -26,11 +26,9 @@ final class AttackStateTest
 {
     /**
      * Test the enum.
-     * 
-     * @throws Exception If error.
      */
     @Test
-    void testEnum() throws Exception
+    void testEnum()
     {
         for (final AttackState value : AttackState.values())
         {

@@ -26,11 +26,9 @@ final class ExtractorStateTest
 {
     /**
      * Test the enum.
-     * 
-     * @throws Exception If error.
      */
     @Test
-    void testEnum() throws Exception
+    void testEnum()
     {
         for (final ExtractorState value : ExtractorState.values())
         {

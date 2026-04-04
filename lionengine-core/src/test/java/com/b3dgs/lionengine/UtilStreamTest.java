@@ -122,11 +122,9 @@ final class UtilStreamTest
 
     /**
      * Test input stream copy with <code>null</code> media.
-     * 
-     * @throws IOException If error.
      */
     @Test
-    void testGetCopyNullMedia() throws IOException
+    void testGetCopyNullMedia()
     {
         assertThrows(() -> UtilStream.getCopy(null), Check.ERROR_NULL);
     }

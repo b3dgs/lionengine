@@ -78,11 +78,9 @@ final class WavTest
 
     /**
      * Test with invalid audio.
-     * 
-     * @throws InterruptedException If error.
      */
     @Test
-    void testInvalidAudio() throws InterruptedException
+    void testInvalidAudio()
     {
         LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
         final Audio wav = AudioFactory.loadAudio(Medias.create("invalid.wav"));

@@ -284,11 +284,9 @@ final class AdPlugTest
 
     /**
      * Test with missing media.
-     * 
-     * @throws IOException If error.
      */
     @Test
-    void testMissingMedia() throws IOException
+    void testMissingMedia()
     {
         final Media media = new MediaMock()
         {

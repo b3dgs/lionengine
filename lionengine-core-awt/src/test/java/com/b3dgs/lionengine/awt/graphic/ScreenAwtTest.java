@@ -137,11 +137,9 @@ final class ScreenAwtTest
 
     /**
      * Test full screen fail.
-     * 
-     * @throws ReflectiveOperationException If error.
      */
     @Test
-    void testFullscreenFail() throws ReflectiveOperationException
+    void testFullscreenFail()
     {
         final Resolution resolution = new Resolution(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
         final Config config = new Config(resolution, 32, false);

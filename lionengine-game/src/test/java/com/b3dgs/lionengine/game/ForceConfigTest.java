@@ -53,11 +53,9 @@ final class ForceConfigTest
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
     @Test
-    void testConstructor() throws Exception
+    void testConstructor()
     {
         assertPrivateConstructor(ForceConfig.class);
     }

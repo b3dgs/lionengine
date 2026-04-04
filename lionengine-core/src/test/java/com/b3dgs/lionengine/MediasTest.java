@@ -24,7 +24,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -197,11 +196,9 @@ final class MediasTest
 
     /**
      * Test get URL.
-     * 
-     * @throws MalformedURLException If error.
      */
     @Test
-    void testGetUrl() throws MalformedURLException
+    void testGetUrl()
     {
         Medias.setLoadFromJar(MediasTest.class);
         final Media media = Medias.create("file1.txt");

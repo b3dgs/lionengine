@@ -157,11 +157,9 @@ final class UtilFolderTest
 
     /**
      * Test the delete directory warning.
-     * 
-     * @throws IOException If error.
      */
     @Test
-    void testDeleteDirectoryWarning() throws IOException
+    void testDeleteDirectoryWarning()
     {
         LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
         UtilFolder.deleteDirectory(new File("void"));

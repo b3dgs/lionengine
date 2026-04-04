@@ -74,11 +74,9 @@ final class PlayerTest
 
     /**
      * Test player from JAR.
-     * 
-     * @throws IOException If error.
      */
     @Test
-    void testPlayerFromJar() throws IOException
+    void testPlayerFromJar()
     {
         Medias.setLoadFromJar(PlayerTest.class);
         final Media media = Medias.create("image.png");
@@ -97,11 +95,9 @@ final class PlayerTest
 
     /**
      * Test player with cached file.
-     * 
-     * @throws IOException If error.
      */
     @Test
-    void testPlayerCached() throws IOException
+    void testPlayerCached()
     {
         Medias.setLoadFromJar(PlayerTest.class);
         final Media media = Medias.create("image.png");
@@ -152,11 +148,9 @@ final class PlayerTest
 
     /**
      * Test player with invalid media.
-     * 
-     * @throws IOException If error.
      */
     // @Test
-    void testPlayerInvalidMedia() throws IOException
+    void testPlayerInvalidMedia()
     {
         Medias.setLoadFromJar(PlayerTest.class);
         final Media media = new MediaFail();

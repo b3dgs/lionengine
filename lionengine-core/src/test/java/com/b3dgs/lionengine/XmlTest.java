@@ -137,11 +137,9 @@ final class XmlTest
 
     /**
      * Test save with normalized output.
-     * 
-     * @throws IOException If error.
      */
     @Test
-    void testSaveNormalized() throws IOException
+    void testSaveNormalized()
     {
         final Media output = Medias.create("out.xml");
         new Xml(Medias.create("normalize.xml")).save(output);
@@ -187,12 +185,10 @@ final class XmlTest
     /**
      * Test transformer error.
      * 
-     * @throws IllegalArgumentException If error.
-     * @throws IllegalAccessException If error.
-     * @throws NoSuchFieldException If error.
+     * @throws ReflectiveOperationException If error.
      */
     @Test
-    void testTransformerError() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException
+    void testTransformerError() throws ReflectiveOperationException
     {
         final Field field = DocumentFactory.class.getDeclaredField("transformerFactory");
         field.setAccessible(true);
@@ -536,10 +532,8 @@ final class XmlTest
 
     /**
      * Test wrong write in xml file.
-     * 
-     * @throws IOException If error.
      */
-    private void testWrongWriteXml() throws IOException
+    private void testWrongWriteXml()
     {
         assertThrows(() -> new Xml("child").save(Medias.create(Constant.EMPTY_STRING)),
                      "[] " + MediaDefault.ERROR_OPEN_MEDIA);

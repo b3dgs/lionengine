@@ -340,11 +340,9 @@ final class AttackerModelTest
 
     /**
      * Test the attack.
-     * 
-     * @throws InterruptedException If error.
      */
     @Test
-    void testListener() throws InterruptedException
+    void testListener()
     {
         canAttack.set(true);
         attacker.setAttackChecker(t -> canAttack.get());
