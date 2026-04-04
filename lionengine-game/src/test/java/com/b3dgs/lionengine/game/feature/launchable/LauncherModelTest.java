@@ -37,6 +37,7 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -120,7 +121,7 @@ final class LauncherModelTest
     void testLauncher() throws InterruptedException
     {
         final AtomicBoolean fired = new AtomicBoolean();
-        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<>();
+        final AtomicReference<FeatureProvider> firedLaunchable = new AtomicReference<>();
         launcher.addListener(UtilLaunchable.createListener(fired));
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
@@ -187,7 +188,7 @@ final class LauncherModelTest
     void testLauncherInitial() throws InterruptedException
     {
         final AtomicBoolean fired = new AtomicBoolean();
-        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<>();
+        final AtomicReference<FeatureProvider> firedLaunchable = new AtomicReference<>();
         launcher.addListener(UtilLaunchable.createListener(fired));
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
@@ -232,7 +233,7 @@ final class LauncherModelTest
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, featurable);
 
         final AtomicBoolean fired = new AtomicBoolean();
-        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<>();
+        final AtomicReference<FeatureProvider> firedLaunchable = new AtomicReference<>();
         launcher.addListener(UtilLaunchable.createListener(fired));
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
@@ -278,7 +279,7 @@ final class LauncherModelTest
     void testLauncherLevel() throws InterruptedException
     {
         final AtomicBoolean fired = new AtomicBoolean();
-        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<>();
+        final AtomicReference<FeatureProvider> firedLaunchable = new AtomicReference<>();
         launcher.addListener(UtilLaunchable.createListener(fired));
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
@@ -510,7 +511,7 @@ final class LauncherModelTest
         assertFalse(launchableListener.get());
         assertFalse(launcherListener.get());
 
-        launcher.checkListener((LaunchableListener) l -> l.update(1.0));
+        launcher.checkListener((LaunchableListener) l -> launcher.update(1.0));
 
         assertTrue(launchableListener.get());
         assertFalse(launcherListener.get());

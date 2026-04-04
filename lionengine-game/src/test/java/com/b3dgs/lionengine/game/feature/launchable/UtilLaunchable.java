@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -161,7 +162,7 @@ final class UtilLaunchable
      * @param firedLaunchable The fired launchable flag.
      * @return The listener.
      */
-    public static LaunchableListener createListener(final AtomicReference<Launchable> firedLaunchable)
+    public static LaunchableListener createListener(final AtomicReference<FeatureProvider> firedLaunchable)
     {
         return launchable -> firedLaunchable.set(launchable);
     }

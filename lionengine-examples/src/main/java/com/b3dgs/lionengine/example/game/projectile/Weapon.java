@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.game.projectile;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -26,7 +27,6 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
-import com.b3dgs.lionengine.game.feature.launchable.Launchable;
 import com.b3dgs.lionengine.game.feature.launchable.LaunchableListener;
 import com.b3dgs.lionengine.game.feature.launchable.Launcher;
 import com.b3dgs.lionengine.game.feature.launchable.LauncherModel;
@@ -96,7 +96,7 @@ public final class Weapon extends FeaturableModel implements LaunchableListener
     }
 
     @Override
-    public void notifyFired(Launchable launchable)
+    public void notifyFired(FeatureProvider launchable)
     {
         launchable.getFeature(Collidable.class).setGroup(ownerCollidable.getGroup());
     }

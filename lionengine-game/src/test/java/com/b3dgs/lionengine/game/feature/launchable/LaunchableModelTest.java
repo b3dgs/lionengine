@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilTests;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -228,7 +229,7 @@ final class LaunchableModelTest
         }
 
         @Override
-        public void notifyFired(Launchable launchable)
+        public void notifyFired(FeatureProvider launchable)
         {
             fired.set(true);
         }

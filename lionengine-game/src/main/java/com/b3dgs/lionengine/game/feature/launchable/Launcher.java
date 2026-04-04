@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.game.Direction;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.RoutineUpdate;
 
@@ -41,8 +42,8 @@ public interface Launcher extends RoutineUpdate, Listenable<LauncherListener>
 
     /**
      * Fire with the specified configuration. {@link LauncherListener} will be notified with
-     * {@link LauncherListener#notifyFired()} first, and {@link LaunchableListener#notifyFired(Launchable)} for each
-     * launch.
+     * {@link LauncherListener#notifyFired()} first, and {@link LaunchableListener#notifyFired(FeatureProvider)} for
+     * each launch.
      * 
      * @return <code>true</code> if fired, <code>false</code> else.
      * @throws LionEngineException If the fired object is not a {@link Launchable}.
@@ -51,8 +52,8 @@ public interface Launcher extends RoutineUpdate, Listenable<LauncherListener>
 
     /**
      * Fire with the specified configuration. {@link LauncherListener} will be notified with
-     * {@link LauncherListener#notifyFired()} first, and {@link LaunchableListener#notifyFired(Launchable)} for each
-     * launch.
+     * {@link LauncherListener#notifyFired()} first, and {@link LaunchableListener#notifyFired(FeatureProvider)} for
+     * each launch.
      * 
      * @param initial The fire initial speed, used to transfer the initial force on launch.
      * @return <code>true</code> if fired, <code>false</code> else.
@@ -62,7 +63,8 @@ public interface Launcher extends RoutineUpdate, Listenable<LauncherListener>
 
     /**
      * Fire with the specified configuration. {@link LauncherListener} will be notified with
-     * {@link LauncherListener#notifyFired()} first, and {@link LaunchableListener#notifyFired(Launchable)} for each
+     * {@link LauncherListener#notifyFired()} first, and {@link LaunchableListener#notifyFired(FeatureProvider)} for
+     * each
      * launch.
      * 
      * @param target The launch target.
@@ -73,7 +75,8 @@ public interface Launcher extends RoutineUpdate, Listenable<LauncherListener>
 
     /**
      * Fire with the specified configuration. {@link LauncherListener} will be notified with
-     * {@link LauncherListener#notifyFired()} first, and {@link LaunchableListener#notifyFired(Launchable)} for each
+     * {@link LauncherListener#notifyFired()} first, and {@link LaunchableListener#notifyFired(FeatureProvider)} for
+     * each
      * launch.
      * 
      * @param initial The fire initial speed, used to transfer the initial force on launch.

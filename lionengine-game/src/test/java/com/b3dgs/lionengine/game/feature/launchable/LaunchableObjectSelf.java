@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.launchable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 
@@ -30,7 +31,7 @@ public final class LaunchableObjectSelf extends LaunchableObject implements Laun
     /** Fired flag. */
     final AtomicBoolean fired = new AtomicBoolean();
     /** Fired launchable flag. */
-    final AtomicReference<Launchable> firedLaunchable = new AtomicReference<>();
+    final AtomicReference<FeatureProvider> firedLaunchable = new AtomicReference<>();
 
     /**
      * Constructor.
@@ -50,7 +51,7 @@ public final class LaunchableObjectSelf extends LaunchableObject implements Laun
     }
 
     @Override
-    public void notifyFired(Launchable launchable)
+    public void notifyFired(FeatureProvider launchable)
     {
         firedLaunchable.set(launchable);
     }
