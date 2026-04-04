@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
@@ -148,19 +149,19 @@ public final class Soldier extends FeatureModel implements TransformableListener
     }
 
     @Override
-    public void notifyStartMove(Pathfindable pathfindable)
+    public void notifyStartMove(FeatureProvider pathfindable)
     {
         animatable.play(walk);
     }
 
     @Override
-    public void notifyMoving(Pathfindable pathfindable, int ox, int oy, int nx, int ny)
+    public void notifyMoving(FeatureProvider pathfindable, int ox, int oy, int nx, int ny)
     {
         // Void
     }
 
     @Override
-    public void notifyArrived(Pathfindable pathfindable)
+    public void notifyArrived(FeatureProvider pathfindable)
     {
         animatable.play(idle);
     }

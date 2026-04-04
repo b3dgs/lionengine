@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -214,7 +215,7 @@ public class MapTileHelper extends MapTileGame
         }
 
         @Override
-        public void notifyMoving(Pathfindable pathfindable, int ox, int oy, int nx, int ny)
+        public void notifyMoving(FeatureProvider pathfindable, int ox, int oy, int nx, int ny)
         {
             final Fovable fovable = pathfindable.getFeature(Fovable.class);
             fogOfWar.update(fovable, ox, oy, nx, ny);

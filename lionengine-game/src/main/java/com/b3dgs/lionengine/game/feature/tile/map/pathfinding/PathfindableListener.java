@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
+import com.b3dgs.lionengine.game.FeatureProvider;
+
 /**
  * Pathfindable events listener.
  */
@@ -26,7 +28,7 @@ public interface PathfindableListener
      * 
      * @param pathfindable The pathfindable reference.
      */
-    void notifyStartMove(Pathfindable pathfindable);
+    void notifyStartMove(FeatureProvider pathfindable);
 
     /**
      * Notify listener while mover is moving.
@@ -37,12 +39,12 @@ public interface PathfindableListener
      * @param nx The new horizontal location.
      * @param ny The new vertical location.
      */
-    void notifyMoving(Pathfindable pathfindable, int ox, int oy, int nx, int ny);
+    void notifyMoving(FeatureProvider pathfindable, int ox, int oy, int nx, int ny);
 
     /**
      * Notify listener when mover has arrived.
      * 
      * @param pathfindable The pathfindable reference.
      */
-    void notifyArrived(Pathfindable pathfindable);
+    void notifyArrived(FeatureProvider pathfindable);
 }

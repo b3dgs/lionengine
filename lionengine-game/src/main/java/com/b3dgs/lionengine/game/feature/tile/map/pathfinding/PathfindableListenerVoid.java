@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
+import com.b3dgs.lionengine.game.FeatureProvider;
+
 /**
  * Pathfindable listener void.
  */
@@ -30,19 +32,19 @@ public class PathfindableListenerVoid implements PathfindableListener
     }
 
     @Override
-    public void notifyStartMove(Pathfindable pathfindable)
+    public void notifyStartMove(FeatureProvider pathfindable)
     {
         // Nothing by default
     }
 
     @Override
-    public void notifyMoving(Pathfindable pathfindable, int ox, int oy, int nx, int ny)
+    public void notifyMoving(FeatureProvider pathfindable, int ox, int oy, int nx, int ny)
     {
         // Nothing by default
     }
 
     @Override
-    public void notifyArrived(Pathfindable pathfindable)
+    public void notifyArrived(FeatureProvider pathfindable)
     {
         // Nothing by default
     }

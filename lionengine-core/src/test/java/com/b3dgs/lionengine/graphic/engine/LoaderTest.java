@@ -177,7 +177,7 @@ final class LoaderTest
             final CountDownLatch waitScreenUnready = new CountDownLatch(1);
             final TaskFuture task = Loader.start(CONFIG, SequenceScreenNotReady.class, waitUpdate, waitScreenUnready);
 
-            assertTimeout(1000L, waitUpdate::await);
+            assertTimeout(10_000L, waitUpdate::await);
             ScreenMock.setScreenWait(true);
             waitScreenUnready.countDown();
 

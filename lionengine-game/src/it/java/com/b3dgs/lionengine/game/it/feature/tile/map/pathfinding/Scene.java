@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.awt.Mouse;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.feature.Camera;
@@ -69,19 +70,19 @@ public final class Scene extends Sequence
     private final PathfindableListener listener = new PathfindableListener()
     {
         @Override
-        public void notifyStartMove(Pathfindable pathfindable)
+        public void notifyStartMove(FeatureProvider pathfindable)
         {
             listenerStartMove.set(true);
         }
 
         @Override
-        public void notifyMoving(Pathfindable pathfindable, int ox, int oy, int nx, int ny)
+        public void notifyMoving(FeatureProvider pathfindable, int ox, int oy, int nx, int ny)
         {
             listenerMove.set(true);
         }
 
         @Override
-        public void notifyArrived(Pathfindable pathfindable)
+        public void notifyArrived(FeatureProvider pathfindable)
         {
             listenerArrived.set(true);
         }
