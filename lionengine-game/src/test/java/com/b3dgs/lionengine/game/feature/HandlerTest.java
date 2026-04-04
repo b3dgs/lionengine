@@ -50,7 +50,7 @@ final class HandlerTest
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig(HandlerTest.class);
+        config = UtilTestSetup.createConfig(HandlerTest.class);
     }
 
     /**

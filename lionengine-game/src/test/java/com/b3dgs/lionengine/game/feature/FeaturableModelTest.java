@@ -57,7 +57,7 @@ final class FeaturableModelTest
     {
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
-        UtilFeaturable.clearCache();
+        FeaturableConfig.clearCache();
     }
 
     private final Services services = new Services();

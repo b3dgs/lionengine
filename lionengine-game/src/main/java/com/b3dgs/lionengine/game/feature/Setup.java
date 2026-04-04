@@ -40,6 +40,8 @@ public class Setup extends Configurer
     static final String ERROR_SURFACE = "No surface found !";
     /** No icon. */
     static final String ERROR_ICON = "No icon found !";
+    /** Class not found error. */
+    static final String ERROR_CLASS_PRESENCE = "Class not defined: ";
 
     /**
      * Get icon if exists.
@@ -129,11 +131,11 @@ public class Setup extends Configurer
         {
             try
             {
-                clazz = classLoader.loadClass(UtilFeaturable.getClass(getRoot()));
+                clazz = classLoader.loadClass(UtilSetup.getClass(getRoot()));
             }
             catch (final ClassNotFoundException exception)
             {
-                throw new LionEngineException(exception, UtilFeaturable.ERROR_CLASS + getMedia().getPath());
+                throw new LionEngineException(exception, ERROR_CLASS_PRESENCE + getMedia().getPath());
             }
         }
         return (Class<T>) clazz;

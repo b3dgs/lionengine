@@ -130,7 +130,7 @@ final class FactoryTest
     {
         final Media media = Medias.create("ObjectUnknownFeature.xml");
 
-        assertThrows(() -> factory.create(media), UtilFeaturable.ERROR_CLASS + "Unknown");
+        assertThrows(() -> factory.create(media), FeaturableConfig.ERROR_CLASS + "Unknown");
     }
 
     /**
@@ -199,7 +199,7 @@ final class FactoryTest
 
         assertEquals(featurable, factory.create(Medias.create("Object.xml"), ObjectWithIdentifiable.class));
 
-        final Media media = UtilSetup.createMedia(ObjectWithIdentifiable.class);
+        final Media media = UtilTestSetup.createMedia(ObjectWithIdentifiable.class);
         final Featurable featurable2 = factory.create(media);
 
         factory.notifyHandlableRemoved(featurable2);

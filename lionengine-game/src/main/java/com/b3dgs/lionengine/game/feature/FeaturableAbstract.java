@@ -84,7 +84,7 @@ public abstract class FeaturableAbstract implements Featurable
     @Override
     public final <T extends Feature> T addFeature(Class<T> feature, Services services, Setup setup)
     {
-        return UtilFeaturable.createAndAdd(feature, this, services, setup, XmlReader.EMPTY);
+        return UtilFeature.createAndAdd(feature, this, services, setup, XmlReader.EMPTY);
     }
 
     /**

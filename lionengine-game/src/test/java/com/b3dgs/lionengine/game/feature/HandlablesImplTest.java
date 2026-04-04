@@ -46,7 +46,7 @@ final class HandlablesImplTest
     public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig(HandlablesImplTest.class);
+        config = UtilTestSetup.createConfig(HandlablesImplTest.class);
     }
 
     /**

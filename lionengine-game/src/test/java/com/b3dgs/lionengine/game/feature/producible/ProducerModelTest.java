@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.game.feature.UtilTestSetup;
 import com.b3dgs.lionengine.game.feature.UtilTransformable;
 import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
@@ -81,7 +81,7 @@ final class ProducerModelTest
      */
     private static Media createMedia()
     {
-        final Media media = UtilSetup.createMedia(Featurable.class);
+        final Media media = UtilTestSetup.createMedia(Featurable.class);
         final Xml root = new Xml("test");
         root.add(ActionsConfig.exports(Collections.emptyList()));
         root.save(media);

@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.Xml;
 /**
  * Setup configuration utility.
  */
-public final class UtilSetup
+public final class UtilTestSetup
 {
     /**
      * Create a test configuration.

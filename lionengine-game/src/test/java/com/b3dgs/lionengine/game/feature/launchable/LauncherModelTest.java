@@ -46,7 +46,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
-import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.game.feature.UtilTestSetup;
 import com.b3dgs.lionengine.graphic.engine.SourceResolutionDelegate;
 
 /**
@@ -72,7 +72,7 @@ final class LauncherModelTest
         Medias.setResourcesDirectory(null);
     }
 
-    private final Media launchableMedia = UtilSetup.createMedia(LaunchableObject.class);
+    private final Media launchableMedia = UtilTestSetup.createMedia(LaunchableObject.class);
     private final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);
     private final Services services = new Services();
     private final Setup setup = new Setup(launcherMedia);
@@ -415,7 +415,7 @@ final class LauncherModelTest
     @Test
     void testLauncherFailure()
     {
-        final Media launchableMedia = UtilSetup.createMedia(Featurable.class);
+        final Media launchableMedia = UtilTestSetup.createMedia(Featurable.class);
         final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);
         final Setup setup = new Setup(launcherMedia);
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, featurable);
@@ -447,7 +447,7 @@ final class LauncherModelTest
     @Test
     void testLauncherException()
     {
-        final Media launchableMedia = UtilSetup.createMedia(LaunchableObjectException.class);
+        final Media launchableMedia = UtilTestSetup.createMedia(LaunchableObjectException.class);
         final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);
         final Setup setup = new Setup(launcherMedia);
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, featurable);
@@ -479,7 +479,7 @@ final class LauncherModelTest
     @Test
     void testCheckListener()
     {
-        final Media launchableMedia = UtilSetup.createMedia(LaunchableObjectException.class);
+        final Media launchableMedia = UtilTestSetup.createMedia(LaunchableObjectException.class);
         final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);
         final Setup setup = new Setup(launcherMedia);
         services.add(new Factory(services));

@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
-import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.game.feature.UtilTestSetup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 
 /**
@@ -44,7 +44,7 @@ final class UtilExtractable
     {
         final ExtractableConfig config = new ExtractableConfig("gold", 10);
 
-        final Media media = UtilSetup.createMedia(Featurable.class);
+        final Media media = UtilTestSetup.createMedia(Featurable.class);
         final Xml root = new Xml("test");
         root.add(ExtractableConfig.exports(config));
         root.save(media);

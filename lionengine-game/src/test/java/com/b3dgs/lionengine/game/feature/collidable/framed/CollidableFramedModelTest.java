@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
-import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.game.feature.UtilTestSetup;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collision;
@@ -68,7 +68,7 @@ final class CollidableFramedModelTest
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig(CollidableFramedModelTest.class);
+        config = UtilTestSetup.createConfig(CollidableFramedModelTest.class);
 
         final Map<Integer, List<Collision>> collisions = new HashMap<>();
         collisions.put(Integer.valueOf(1), Arrays.asList(new Collision("anim%1", 0, 0, 2, 2, false)));

@@ -47,7 +47,7 @@ final class LayerableModelTest
     public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig(LayerableModelTest.class);
+        config = UtilTestSetup.createConfig(LayerableModelTest.class);
     }
 
     /**

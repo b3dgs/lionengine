@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
-import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.game.feature.UtilTestSetup;
 import com.b3dgs.lionengine.game.feature.UtilTransformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
@@ -115,7 +115,7 @@ final class ExtractorModelTest
         final ObjectExtractor object = new ObjectExtractor(services, setup, true, true);
         object.addFeature(TransformableModel.class, services, setup);
 
-        final Media media = UtilSetup.createConfig(ExtractorModelTest.class);
+        final Media media = UtilTestSetup.createConfig(ExtractorModelTest.class);
         final Xml xml = new Xml(media);
         xml.add(ExtractorConfig.exports(new ExtractorConfig(1.0, 2.0, 5)));
         xml.save(media);

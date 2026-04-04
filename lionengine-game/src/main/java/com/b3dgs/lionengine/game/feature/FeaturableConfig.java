@@ -17,7 +17,9 @@
 package com.b3dgs.lionengine.game.feature;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
@@ -53,6 +55,18 @@ public record FeaturableConfig(String clazz, String setup)
     public static final String ATT_PRIORITY_UPDATE = "priorityUpdate";
     /** Feature priority render attribute name. */
     public static final String ATT_PRIORITY_RENDER = "priorityRender";
+    /** Class not found error. */
+    static final String ERROR_CLASS = "Class not found: ";
+    /** Class cache. */
+    private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
+
+    /**
+     * Clear classes cache.
+     */
+    public static void clearCache()
+    {
+        CLASS_CACHE.clear();
+    }
 
     /**
      * Import the featurable data from configurer.
@@ -79,7 +93,7 @@ public record FeaturableConfig(String clazz, String setup)
     {
         Check.notNull(root);
 
-        final String clazz = UtilFeaturable.getClass(root);
+        final String clazz = UtilSetup.getClass(root);
 
         final String setup;
         if (root.hasNode(ATT_SETUP))
@@ -105,7 +119,7 @@ public record FeaturableConfig(String clazz, String setup)
     {
         Check.notNull(clazz);
 
-        final Xml node = new Xml(UtilFeaturable.ATT_CLASS);
+        final Xml node = new Xml(UtilSetup.ATT_CLASS);
         node.setText(clazz);
 
         return node;
@@ -178,13 +192,41 @@ public record FeaturableConfig(String clazz, String setup)
         {
             final AttributesReader node = children.get(i);
             final String className = node.getText();
-            final Class<? extends Feature> clazz = UtilFeaturable.getClass(loader, className);
+            final Class<? extends Feature> clazz = getClass(loader, className);
             if (filter == null || filter.isAssignableFrom(clazz))
             {
-                UtilFeaturable.createAndAdd(clazz, featurable, services, setup, node);
+                UtilFeature.createAndAdd(clazz, featurable, services, setup, node);
             }
         }
         children.clear();
+    }
+
+    /**
+     * Get the class reference from its name using cache.
+     * 
+     * @param <T> The class type.
+     * @param loader The class loader reference.
+     * @param className The class name.
+     * @return The typed class instance.
+     * @throws LionEngineException If invalid class.
+     */
+    @SuppressWarnings("unchecked")
+    static <T> Class<T> getClass(ClassLoader loader, String className)
+    {
+        if (CLASS_CACHE.containsKey(className))
+        {
+            return (Class<T>) CLASS_CACHE.get(className);
+        }
+        try
+        {
+            final Class<?> clazz = loader.loadClass(className);
+            CLASS_CACHE.put(className, clazz);
+            return (Class<T>) clazz;
+        }
+        catch (final ClassNotFoundException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CLASS + className);
+        }
     }
 
     /**

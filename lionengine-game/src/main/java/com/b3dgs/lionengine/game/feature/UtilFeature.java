@@ -19,12 +19,9 @@ package com.b3dgs.lionengine.game.feature;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.b3dgs.lionengine.AttributesReader;
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -32,41 +29,10 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 /**
  * Tools related to featurable.
  */
-public final class UtilFeaturable
+final class UtilFeature
 {
-    /** Class attribute name. */
-    public static final String ATT_CLASS = Constant.XML_PREFIX + "class";
-    /** Class cache. */
-    private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
     /** Constructor not found error. */
     static final String ERROR_CONSTRUCTOR = "Constructor not found: ";
-    /** Class not found error. */
-    static final String ERROR_CLASS = "Class not found: ";
-    /** Default class name. */
-    private static final String DEFAULT_CLASS_NAME = "com.b3dgs.lionengine.game.feature.FeaturableModel";
-
-    /**
-     * Clear classes cache.
-     */
-    public static void clearCache()
-    {
-        CLASS_CACHE.clear();
-    }
-
-    /**
-     * Get class attribute.
-     * 
-     * @param root The root node.
-     * @return The class name.
-     */
-    public static String getClass(AttributesReader root)
-    {
-        if (root.hasNode(ATT_CLASS))
-        {
-            return root.getChild(ATT_CLASS).getText();
-        }
-        return DEFAULT_CLASS_NAME;
-    }
 
     /**
      * Create and add feature to featurable.
@@ -150,37 +116,9 @@ public final class UtilFeaturable
     }
 
     /**
-     * Get the class reference from its name using cache.
-     * 
-     * @param <T> The class type.
-     * @param loader The class loader reference.
-     * @param className The class name.
-     * @return The typed class instance.
-     * @throws LionEngineException If invalid class.
-     */
-    @SuppressWarnings("unchecked")
-    static <T> Class<T> getClass(ClassLoader loader, String className)
-    {
-        if (CLASS_CACHE.containsKey(className))
-        {
-            return (Class<T>) CLASS_CACHE.get(className);
-        }
-        try
-        {
-            final Class<?> clazz = loader.loadClass(className);
-            CLASS_CACHE.put(className, clazz);
-            return (Class<T>) clazz;
-        }
-        catch (final ClassNotFoundException exception)
-        {
-            throw new LionEngineException(exception, ERROR_CLASS + className);
-        }
-    }
-
-    /**
      * Private constructor.
      */
-    private UtilFeaturable()
+    private UtilFeature()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

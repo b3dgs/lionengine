@@ -52,7 +52,7 @@ final class IdentifiableModelTest
     public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig(IdentifiableModelTest.class);
+        config = UtilTestSetup.createConfig(IdentifiableModelTest.class);
     }
 
     /**

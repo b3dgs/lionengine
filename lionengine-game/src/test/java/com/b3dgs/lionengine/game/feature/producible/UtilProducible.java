@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
-import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.game.feature.UtilTestSetup;
 
 /**
  * Utilities dedicated to producible test.
@@ -144,7 +144,7 @@ final class UtilProducible
     {
         final ProducibleConfig producibleConfig = new ProducibleConfig(1, 2, 3);
 
-        final Media media = UtilSetup.createMedia(Featurable.class);
+        final Media media = UtilTestSetup.createMedia(Featurable.class);
         final Xml root = new Xml("test");
         root.add(SizeConfig.exports(new SizeConfig(producibleConfig.getWidth(), producibleConfig.getHeight())));
         root.add(ProducibleConfig.exports(producibleConfig));

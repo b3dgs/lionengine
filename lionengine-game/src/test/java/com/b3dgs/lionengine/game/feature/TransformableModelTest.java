@@ -89,7 +89,7 @@ final class TransformableModelTest
     @Test
     void testDefaultSize()
     {
-        final Media media = UtilSetup.createConfig(TransformableModelTest.class);
+        final Media media = UtilTestSetup.createConfig(TransformableModelTest.class);
         final Transformable transformable = new TransformableModel(services, new Setup(media));
 
         assertEquals(0, transformable.getWidth());

@@ -46,7 +46,7 @@ final class MirrorableModelTest
     public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig(MirrorableModelTest.class);
+        config = UtilTestSetup.createConfig(MirrorableModelTest.class);
     }
 
     /**

@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.game.feature.UtilTestSetup;
 
 /**
  * Test {@link ProducibleModel}.
@@ -65,7 +65,7 @@ final class ProducibleModelTest
     @Test
     void testNoNode()
     {
-        final Media media = UtilSetup.createMedia(Featurable.class);
+        final Media media = UtilTestSetup.createMedia(Featurable.class);
         final Setup setup = new Setup(media);
         final Producible producible = new ProducibleModel(services, setup);
 
