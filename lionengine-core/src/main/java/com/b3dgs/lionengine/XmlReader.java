@@ -643,7 +643,7 @@ public class XmlReader implements AttributesReader
     }
 
     @Override
-    public Optional<XmlReader> getChildOptional(String name, String... path)
+    public Optional<AttributesReader> getChildOptional(String name, String... path)
     {
         final XmlReader xml = getNodeReader(path);
 
@@ -660,11 +660,11 @@ public class XmlReader implements AttributesReader
     }
 
     @Override
-    public List<XmlReader> getChildren(String name, String... path)
+    public List<AttributesReader> getChildren(String name, String... path)
     {
         Check.notNull(name);
 
-        final List<XmlReader> nodes = new ArrayList<>(1);
+        final List<AttributesReader> nodes = new ArrayList<>(1);
         if (hasNode(name, path))
         {
             final XmlReader xml = getNodeReader(path);
@@ -683,9 +683,9 @@ public class XmlReader implements AttributesReader
     }
 
     @Override
-    public List<XmlReader> getChildren()
+    public List<AttributesReader> getChildren()
     {
-        final List<XmlReader> nodes = new ArrayList<>(1);
+        final List<AttributesReader> nodes = new ArrayList<>(1);
         final NodeList list = root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
         {

@@ -340,8 +340,13 @@ public class Xml extends XmlReader
      */
     public void removeChildren(String children)
     {
-        final Collection<XmlReader> all = getChildren(children);
-        all.stream().map(XmlReader::getElement).forEach(root::removeChild);
+        final Collection<AttributesReader> all = getChildren(children);
+        all.stream()
+           .filter(XmlReader.class::isInstance)
+           .map(XmlReader.class::cast)
+           .map(XmlReader::getElement)
+           // CHECKSTYLE IGNORE LINE: Indentation
+           .forEach(root::removeChild);
         all.clear();
     }
 

@@ -323,19 +323,19 @@ public class Configurer implements AttributesReader
     }
 
     @Override
-    public final Optional<XmlReader> getChildOptional(String name, String... path)
+    public final Optional<AttributesReader> getChildOptional(String name, String... path)
     {
         return root.getChildOptional(name, path);
     }
 
     @Override
-    public final List<XmlReader> getChildren(String name, String... path)
+    public final List<AttributesReader> getChildren(String name, String... path)
     {
         return root.getChildren(name, path);
     }
 
     @Override
-    public List<XmlReader> getChildren()
+    public List<AttributesReader> getChildren()
     {
         return root.getChildren();
     }

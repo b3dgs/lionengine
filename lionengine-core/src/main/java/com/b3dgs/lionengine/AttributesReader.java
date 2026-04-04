@@ -422,7 +422,7 @@ public interface AttributesReader
      * @param path The node path (child list).
      * @return The child node reference.
      */
-    Optional<? extends AttributesReader> getChildOptional(String name, String... path);
+    Optional<AttributesReader> getChildOptional(String name, String... path);
 
     /**
      * Get the list of all children with this name.
@@ -432,14 +432,14 @@ public interface AttributesReader
      * @return The children list.
      * @throws LionEngineException If invalid argument.
      */
-    List<? extends AttributesReader> getChildren(String name, String... path);
+    List<AttributesReader> getChildren(String name, String... path);
 
     /**
      * Get list of all children.
      * 
      * @return The children list.
      */
-    List<? extends AttributesReader> getChildren();
+    List<AttributesReader> getChildren();
 
     /**
      * Check if node has the following attribute.

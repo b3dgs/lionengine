@@ -168,8 +168,9 @@ final class XmlTest
         final XmlReader reader = new XmlReader(media);
 
         assertEquals(reader.getChild("child").getNodeName(),
-                     reader.getChildren("child").iterator().next().getNodeName());
-        assertEquals(reader.getChild("child").getNodeName(), reader.getChildren().iterator().next().getNodeName());
+                     ((XmlReader) reader.getChildren("child").iterator().next()).getNodeName());
+        assertEquals(reader.getChild("child").getNodeName(),
+                     ((XmlReader) reader.getChildren().iterator().next()).getNodeName());
         assertEquals(1, reader.getChildren().size());
 
         Medias.setLoadFromJar(XmlTest.class);
@@ -302,11 +303,11 @@ final class XmlTest
 
         assertEquals(child1.getString("str"), root.getChild("child1").getString("str"));
 
-        for (final XmlReader child : root.getChildren())
+        for (final AttributesReader child : root.getChildren())
         {
             assertNotNull(child);
         }
-        for (final XmlReader child : root.getChildren("child1"))
+        for (final AttributesReader child : root.getChildren("child1"))
         {
             assertNotNull(child);
         }
