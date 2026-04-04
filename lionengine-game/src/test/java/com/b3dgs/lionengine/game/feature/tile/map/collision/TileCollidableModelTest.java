@@ -58,7 +58,7 @@ final class TileCollidableModelTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         config = UtilTestSetup.createConfig(TileCollidableModelTest.class);
@@ -68,7 +68,7 @@ final class TileCollidableModelTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);

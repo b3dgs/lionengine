@@ -67,7 +67,7 @@ final class PlayerTest
      * Clean up tests.
      */
     @AfterEach
-    public void afterTests()
+    void afterTests()
     {
         Medias.setLoadFromJar(null);
     }

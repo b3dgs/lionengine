@@ -52,7 +52,7 @@ final class MapTileGameTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
@@ -62,7 +62,7 @@ final class MapTileGameTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Medias.setResourcesDirectory(null);
         Graphics.setFactoryGraphic(null);

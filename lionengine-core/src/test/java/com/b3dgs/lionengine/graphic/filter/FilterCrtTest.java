@@ -39,7 +39,7 @@ final class FilterCrtTest
      * Prepare tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setLoadFromJar(FilterCrtTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
@@ -49,7 +49,7 @@ final class FilterCrtTest
      * Clean up tests.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);

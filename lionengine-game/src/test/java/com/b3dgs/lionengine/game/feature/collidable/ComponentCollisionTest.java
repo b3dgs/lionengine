@@ -59,7 +59,7 @@ final class ComponentCollisionTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
@@ -70,7 +70,7 @@ final class ComponentCollisionTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         assertTrue(config.getFile().delete());
         Graphics.setFactoryGraphic(null);

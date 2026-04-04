@@ -40,7 +40,7 @@ final class AudioFactoryTest
      * Prepare tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setLoadFromJar(AudioFactoryTest.class);
     }
@@ -49,7 +49,7 @@ final class AudioFactoryTest
      * Clean up tests.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Medias.setLoadFromJar(null);
     }

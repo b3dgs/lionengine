@@ -37,7 +37,7 @@ final class CollisionFunctionConfigTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }

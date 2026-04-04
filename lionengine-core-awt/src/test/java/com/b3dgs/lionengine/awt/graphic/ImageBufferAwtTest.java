@@ -39,7 +39,7 @@ final class ImageBufferAwtTest
      * Prepare tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicAwt());
     }
@@ -48,7 +48,7 @@ final class ImageBufferAwtTest
      * Clean tests.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
     }

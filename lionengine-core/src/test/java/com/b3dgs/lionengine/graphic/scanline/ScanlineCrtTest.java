@@ -42,7 +42,7 @@ final class ScanlineCrtTest
      * Prepare tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setLoadFromJar(ScanlineCrtTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
@@ -52,7 +52,7 @@ final class ScanlineCrtTest
      * Clean up tests.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Medias.create("scanline", "crt", "320_240.png").getFile().delete();
         Medias.setLoadFromJar(null);

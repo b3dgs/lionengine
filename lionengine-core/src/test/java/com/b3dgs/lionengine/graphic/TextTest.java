@@ -40,7 +40,7 @@ final class TextTest
      * Setup tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         prepare();
@@ -50,7 +50,7 @@ final class TextTest
      * Clean up tests.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         g.dispose();
         Graphics.setFactoryGraphic(null);

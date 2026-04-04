@@ -52,7 +52,7 @@ final class ScreenHeadlessTest
      * Prepare tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         EngineHeadless.start(ScreenHeadlessTest.class.getName(), new Version(1, 0, 0));
     }
@@ -61,7 +61,7 @@ final class ScreenHeadlessTest
      * Clean up tests.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Engine.terminate();
     }

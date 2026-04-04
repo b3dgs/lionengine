@@ -58,7 +58,7 @@ final class SpriteFontTest
      * Prepare tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(SpriteFontTest.class);
@@ -72,7 +72,7 @@ final class SpriteFontTest
      * Clean up tests.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
         Medias.setLoadFromJar(null);

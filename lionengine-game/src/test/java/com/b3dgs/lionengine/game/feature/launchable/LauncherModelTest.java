@@ -59,7 +59,7 @@ final class LauncherModelTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -68,7 +68,7 @@ final class LauncherModelTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }

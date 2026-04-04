@@ -43,7 +43,7 @@ final class SequenceGameTest
      * Prepare the test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
@@ -52,7 +52,7 @@ final class SequenceGameTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
     }

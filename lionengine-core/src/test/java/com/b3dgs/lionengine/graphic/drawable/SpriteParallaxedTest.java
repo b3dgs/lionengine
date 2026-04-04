@@ -47,7 +47,7 @@ final class SpriteParallaxedTest
      * Prepare tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setLoadFromJar(SpriteParallaxedTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
@@ -60,7 +60,7 @@ final class SpriteParallaxedTest
      * Clean up tests.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         g.dispose();
 

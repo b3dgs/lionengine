@@ -58,7 +58,7 @@ final class HudTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Engine.start(new EngineMock(HudTest.class.getSimpleName(), new Version(1, 0, 0)));
 
@@ -70,7 +70,7 @@ final class HudTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);

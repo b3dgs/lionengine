@@ -46,7 +46,7 @@ final class TextHeadlessTest
      * Setup tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicHeadless());
         final ImageBuffer buffer = Graphics.createImageBuffer(320, 240);
@@ -58,7 +58,7 @@ final class TextHeadlessTest
      * Clean up tests.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         g.dispose();
         Graphics.setFactoryGraphic(null);

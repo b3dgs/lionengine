@@ -60,7 +60,7 @@ final class MapTileGroupModelTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         config = UtilTransformable.createMedia(MapTileGroupModelTest.class);
@@ -70,7 +70,7 @@ final class MapTileGroupModelTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);

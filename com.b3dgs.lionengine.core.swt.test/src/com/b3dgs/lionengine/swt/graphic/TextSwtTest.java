@@ -46,7 +46,7 @@ final class TextSwtTest
      * Setup test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicSwt());
         final ImageBuffer buffer = Graphics.createImageBuffer(320, 240);
@@ -58,7 +58,7 @@ final class TextSwtTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         g.dispose();
         Graphics.setFactoryGraphic(null);

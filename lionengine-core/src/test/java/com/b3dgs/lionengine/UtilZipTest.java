@@ -37,7 +37,7 @@ final class UtilZipTest
      * Prepare tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setLoadFromJar(UtilZipTest.class);
     }
@@ -46,7 +46,7 @@ final class UtilZipTest
      * Clean up tests.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Medias.setLoadFromJar(null);
     }

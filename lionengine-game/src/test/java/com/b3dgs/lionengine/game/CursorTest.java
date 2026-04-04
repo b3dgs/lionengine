@@ -45,7 +45,7 @@ final class CursorTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setLoadFromJar(CursorTest.class);
@@ -55,7 +55,7 @@ final class CursorTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
         Medias.setLoadFromJar(null);

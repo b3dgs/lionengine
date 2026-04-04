@@ -57,6 +57,12 @@ public class Activator implements BundleActivator
     {
         final URL url = bundle.getResource("log4j2.xml");
         final Path config = Files.createTempFile(new File(Constant.ENGINE_NAME).toPath(), "log4j2", ".xml");
+        final File folder = config.toFile().getParentFile();
+        if (!folder.exists())
+        {
+            folder.mkdirs();
+        }
+
         try (InputStream input = url.openStream())
         {
             Files.copy(input, config, StandardCopyOption.REPLACE_EXISTING);

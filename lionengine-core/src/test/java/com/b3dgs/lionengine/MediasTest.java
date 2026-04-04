@@ -67,7 +67,7 @@ final class MediasTest
      * Prepare test.
      */
     @BeforeEach
-    public void beforeTest()
+    void beforeTest()
     {
         oldDir = Medias.getResourcesDirectory();
         oldLoader = Medias.getResourcesLoader();
@@ -78,7 +78,7 @@ final class MediasTest
      * Clean test.
      */
     @AfterEach
-    public void afterTest()
+    void afterTest()
     {
         Medias.setResourcesDirectory(oldDir);
         Medias.setLoadFromJar(oldLoader);

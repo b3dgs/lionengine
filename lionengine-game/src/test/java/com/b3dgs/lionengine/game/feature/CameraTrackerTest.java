@@ -39,7 +39,7 @@ final class CameraTrackerTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         config = UtilTransformable.createMedia(CameraTrackerTest.class);
@@ -49,7 +49,7 @@ final class CameraTrackerTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);

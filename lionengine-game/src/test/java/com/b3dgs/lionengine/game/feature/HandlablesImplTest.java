@@ -43,7 +43,7 @@ final class HandlablesImplTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         config = UtilTestSetup.createConfig(HandlablesImplTest.class);
@@ -53,7 +53,7 @@ final class HandlablesImplTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);

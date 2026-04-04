@@ -46,7 +46,7 @@ final class LoopHybridTest
      * Prepare tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
@@ -55,7 +55,7 @@ final class LoopHybridTest
      * Clean up tests.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
     }

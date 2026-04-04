@@ -72,7 +72,7 @@ public final class ScreenSwtTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         EngineSwt.start(ScreenSwtTest.class.getName(), new Version(1, 0, 0), ScreenSwtTest.class);
     }
@@ -81,7 +81,7 @@ public final class ScreenSwtTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Engine.terminate();
     }

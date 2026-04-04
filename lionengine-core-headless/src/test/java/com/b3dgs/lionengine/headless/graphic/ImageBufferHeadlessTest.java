@@ -40,7 +40,7 @@ final class ImageBufferHeadlessTest
      * Prepare tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicHeadless());
     }
@@ -49,7 +49,7 @@ final class ImageBufferHeadlessTest
      * Clean tests.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
     }

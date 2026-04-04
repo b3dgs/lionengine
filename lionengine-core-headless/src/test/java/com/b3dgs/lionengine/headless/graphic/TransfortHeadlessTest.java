@@ -30,7 +30,7 @@ final class TransfortHeadlessTest extends TransformTest
      * Prepare tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicHeadless());
     }

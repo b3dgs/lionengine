@@ -95,7 +95,7 @@ final class AdlMidiTest
      * Prepare test.
      */
     @BeforeEach
-    public void beforeTest()
+    void beforeTest()
     {
         try
         {
@@ -121,7 +121,7 @@ final class AdlMidiTest
      * Clean up test.
      */
     @AfterEach
-    public void afterTest()
+    void afterTest()
     {
         Medias.setLoadFromJar(null);
         AudioFactory.clearFormats();

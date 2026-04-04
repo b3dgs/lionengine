@@ -49,7 +49,7 @@ final class IdentifiableModelTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         config = UtilTestSetup.createConfig(IdentifiableModelTest.class);
@@ -59,7 +59,7 @@ final class IdentifiableModelTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);

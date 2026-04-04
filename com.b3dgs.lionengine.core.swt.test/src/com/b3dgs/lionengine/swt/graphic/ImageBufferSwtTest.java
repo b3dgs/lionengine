@@ -45,7 +45,7 @@ final class ImageBufferSwtTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicSwt());
     }
@@ -54,7 +54,7 @@ final class ImageBufferSwtTest
      * Clean test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
     }

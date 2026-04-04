@@ -52,7 +52,7 @@ final class ImageTest
      * Prepare tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setLoadFromJar(ImageTest.class);
@@ -64,7 +64,7 @@ final class ImageTest
      * Clean up tests.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
         Medias.setLoadFromJar(null);

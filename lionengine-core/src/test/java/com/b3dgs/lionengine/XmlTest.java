@@ -101,7 +101,7 @@ final class XmlTest
      * Prepare test.
      */
     @BeforeEach
-    public void beforeTest()
+    void beforeTest()
     {
         Medias.setResourcesDirectory(null);
         Medias.setFactoryMedia(new FactoryMediaDefault());
@@ -112,7 +112,7 @@ final class XmlTest
      * Clean up test.
      */
     @AfterEach
-    public void afterTest()
+    void afterTest()
     {
         Medias.setLoadFromJar(null);
     }

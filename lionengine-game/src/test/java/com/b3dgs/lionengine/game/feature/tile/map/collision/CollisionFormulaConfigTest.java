@@ -37,7 +37,7 @@ final class CollisionFormulaConfigTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -46,7 +46,7 @@ final class CollisionFormulaConfigTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }

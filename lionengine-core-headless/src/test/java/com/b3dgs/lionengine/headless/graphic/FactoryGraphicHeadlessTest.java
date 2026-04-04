@@ -38,7 +38,7 @@ final class FactoryGraphicHeadlessTest extends FactoryGraphicTest
      * Prepare tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(FactoryGraphicHeadlessTest.class);
@@ -49,7 +49,7 @@ final class FactoryGraphicHeadlessTest extends FactoryGraphicTest
      * Clean tests.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);

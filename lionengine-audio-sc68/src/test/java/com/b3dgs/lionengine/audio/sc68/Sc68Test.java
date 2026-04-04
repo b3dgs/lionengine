@@ -95,7 +95,7 @@ final class Sc68Test
      * Prepare test.
      */
     @BeforeEach
-    public void beforeTest()
+    void beforeTest()
     {
         try
         {
@@ -120,7 +120,7 @@ final class Sc68Test
      * Clean up test.
      */
     @AfterEach
-    public void afterTest()
+    void afterTest()
     {
         Medias.setLoadFromJar(null);
         AudioFactory.clearFormats();

@@ -74,7 +74,7 @@ final class LoaderTest
      * Prepare tests.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setLoadFromJar(LoaderTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
@@ -85,7 +85,7 @@ final class LoaderTest
      * Clean up tests.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
@@ -95,7 +95,7 @@ final class LoaderTest
      * Prepare test.
      */
     @BeforeEach
-    public void beforeTest()
+    void beforeTest()
     {
         Engine.start(new EngineMock("LoaderTest", new Version(1, 0, 0)));
     }
@@ -104,7 +104,7 @@ final class LoaderTest
      * Terminate test.
      */
     @AfterEach
-    public void afterTest()
+    void afterTest()
     {
         Engine.terminate();
     }

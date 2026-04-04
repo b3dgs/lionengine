@@ -53,7 +53,7 @@ final class ToolsSwtTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         EngineSwt.start(ToolsSwtTest.class.getSimpleName(), new Version(1, 0, 0), ToolsSwtTest.class);
     }
@@ -62,7 +62,7 @@ final class ToolsSwtTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         Engine.terminate();
     }

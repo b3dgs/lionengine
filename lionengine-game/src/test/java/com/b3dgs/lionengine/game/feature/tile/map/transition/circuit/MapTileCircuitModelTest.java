@@ -51,7 +51,7 @@ final class MapTileCircuitModelTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         configTransitions = UtilMapTransition.createTransitions();
@@ -62,7 +62,7 @@ final class MapTileCircuitModelTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterTests()
     {
         assertTrue(configTransitions.getFile().delete());
         assertTrue(configCircuits.getFile().delete());
