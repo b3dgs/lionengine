@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.UtilAssert;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -67,6 +68,9 @@ final class ScanlineHorizontalTest
         final ImageBuffer image = Graphics.createImageBuffer(320, 240);
         final Graphic g = image.createGraphic();
         scanline.render(g);
+
+        UtilAssert.assertEquals(320, image.getWidth());
+        UtilAssert.assertEquals(240, image.getHeight());
 
         image.dispose();
         g.dispose();

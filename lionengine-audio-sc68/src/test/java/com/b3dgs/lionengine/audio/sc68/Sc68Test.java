@@ -40,6 +40,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.MediaMock;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilAssert;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.UtilTests;
@@ -277,20 +278,8 @@ final class Sc68Test
             }
         };
         final Audio audio = createSc68(media);
-        try
-        {
-            audio.play();
-        }
-        finally
-        {
-            audio.stop();
-            final File file = new File(new File(System.getProperty("java.io.tmpdir"), getClass().getSimpleName()),
-                                       media.getPath());
-            if (file.exists())
-            {
-                UtilFile.deleteFile(file);
-            }
-        }
+
+        UtilAssert.assertThrows(audio::play, "[" + media.getPath() + "] ");
     }
 
     /**

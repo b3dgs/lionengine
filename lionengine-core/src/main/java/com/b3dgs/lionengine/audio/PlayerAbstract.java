@@ -51,6 +51,10 @@ public abstract class PlayerAbstract implements Audio
             final File file = UtilStream.getCopy(media);
             return file.getAbsolutePath();
         }
+        if (!media.getFile().exists())
+        {
+            throw new LionEngineException(media);
+        }
         return media.getFile().getAbsolutePath();
     }
 
