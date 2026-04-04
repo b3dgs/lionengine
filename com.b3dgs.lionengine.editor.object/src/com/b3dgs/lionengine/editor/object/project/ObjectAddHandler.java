@@ -64,7 +64,10 @@ public final class ObjectAddHandler
             root.add(SizeConfig.exports(new SizeConfig(16, 16)));
             try
             {
-                file.createNewFile();
+                if (!file.createNewFile())
+                {
+                    LOGGER.warn("Unable to create file: {}", file);
+                }
                 root.save(ProjectModel.INSTANCE.getProject().getResourceMedia(file));
             }
             catch (final IOException exception)

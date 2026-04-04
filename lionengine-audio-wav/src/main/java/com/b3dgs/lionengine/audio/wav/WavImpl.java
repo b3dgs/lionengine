@@ -26,6 +26,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -53,10 +55,11 @@ import com.b3dgs.lionengine.audio.PlayerAbstract;
 /**
  * Wav audio implementation.
  */
+// CHECKSTYLE IGNORE LINE: DataAbstractionCoupling
 final class WavImpl implements Wav
 {
     /** Custom mixer, <code>null</code> for default. */
-    private static volatile Mixer.Info mixer;
+    private static final AtomicReference<Mixer.Info> MIXER = new AtomicReference<>();
     /** Sound buffer size. */
     private static final int BUFFER = 4400;
     /** Minimum delay between same. */
@@ -73,7 +76,7 @@ final class WavImpl implements Wav
      */
     public static void setMixer(Mixer.Info mixer)
     {
-        WavImpl.mixer = mixer;
+        MIXER.set(mixer);
     }
 
     /**
@@ -123,6 +126,7 @@ final class WavImpl implements Wav
         final AudioFormat format = input.getFormat();
         try
         {
+            final Mixer.Info mixer = MIXER.get();
             if (mixer != null)
             {
                 return AudioSystem.getSourceDataLine(format, mixer);
@@ -235,6 +239,8 @@ final class WavImpl implements Wav
         input.close();
     }
 
+    /** Alive count. */
+    private final AtomicInteger count = new AtomicInteger();
     /** Opened playback. */
     private final Map<Media, Playback> opened = new ConcurrentHashMap<>();
     /** Tasks executor. */
@@ -247,8 +253,6 @@ final class WavImpl implements Wav
     private volatile int volume = PlayerAbstract.VOLUME_MAX;
     /** Exception flag. */
     private Exception last;
-    /** Alive count. */
-    private volatile int count;
     /** Last time. */
     private long time;
 
@@ -305,7 +309,7 @@ final class WavImpl implements Wav
             }
         }
 
-        count++;
+        count.incrementAndGet();
 
         try (Playback playback = createPlayback(cache))
         {
@@ -341,7 +345,7 @@ final class WavImpl implements Wav
         }
         finally
         {
-            count--;
+            count.decrementAndGet();
         }
     }
 
@@ -386,7 +390,7 @@ final class WavImpl implements Wav
         {
             executor.submit(() ->
             {
-                while (count > 0)
+                while (count.get() > 0)
                 {
                     try
                     {
@@ -395,7 +399,7 @@ final class WavImpl implements Wav
                     catch (@SuppressWarnings("unused") final InterruptedException exception)
                     {
                         Thread.currentThread().interrupt();
-                        count = 0;
+                        count.set(0);
                     }
                 }
             }).get(Constant.DECADE, TimeUnit.SECONDS);

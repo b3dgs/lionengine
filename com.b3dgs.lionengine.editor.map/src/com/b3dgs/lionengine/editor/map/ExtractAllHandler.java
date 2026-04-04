@@ -70,9 +70,21 @@ public final class ExtractAllHandler
             {
                 throw new IOException("Unable to create folders: " + root);
             }
-            new File(root, TileSheetsConfig.FILENAME).createNewFile();
-            new File(root, TileGroupsConfig.FILENAME).createNewFile();
-            new File(root, TransitionsConfig.FILENAME).createNewFile();
+            final File file1 = new File(root, TileSheetsConfig.FILENAME);
+            if (!file1.createNewFile())
+            {
+                LOGGER.warn("Unable to create file1: {}", file1);
+            }
+            final File file2 = new File(root, TileGroupsConfig.FILENAME);
+            if (!file2.createNewFile())
+            {
+                LOGGER.warn("Unable to create file2: {}", file2);
+            }
+            final File file3 = new File(root, TransitionsConfig.FILENAME);
+            if (!file3.createNewFile())
+            {
+                LOGGER.warn("Unable to create file3: {}", file3);
+            }
 
             sheetsExtractDialog.save();
             groupsAssignDialog.save();

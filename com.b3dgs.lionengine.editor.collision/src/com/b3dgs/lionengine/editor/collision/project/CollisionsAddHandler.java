@@ -58,7 +58,10 @@ public final class CollisionsAddHandler
             final Xml root = new Xml(UtilFile.removeExtension(CollisionGroupConfig.NODE_COLLISIONS));
             try
             {
-                file.createNewFile();
+                if (!file.createNewFile())
+                {
+                    LOGGER.warn("Unable to create file: {}", file);
+                }
                 root.save(ProjectModel.INSTANCE.getProject().getResourceMedia(file));
             }
             catch (final IOException exception)

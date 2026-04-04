@@ -155,8 +155,8 @@ public class ObjectControl
             try
             {
                 final Point point = UtilWorld.getPoint(camera, mx, my);
-                final int x = UtilMath.getRounded(point.getX(), map.isCreated() ? map.getTileWidth() : 1);
-                final int y = UtilMath.getRounded(point.getY(), map.isCreated() ? map.getTileHeight() : 1);
+                final double x = UtilMath.getRounded(point.getX(), map.isCreated() ? map.getTileWidth() : 1);
+                final double y = UtilMath.getRounded(point.getY(), map.isCreated() ? map.getTileHeight() : 1);
 
                 final Configurer configurer = new Configurer(media);
                 final SizeConfig size = SizeConfig.imports(configurer);

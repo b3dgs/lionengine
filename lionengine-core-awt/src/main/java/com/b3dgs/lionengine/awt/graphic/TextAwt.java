@@ -147,7 +147,7 @@ final class TextAwt implements Text
         g2d.setColor(colorCache.get(color));
 
         final GlyphVector glyphVector = textCache.computeIfAbsent(text, t -> font.createGlyphVector(context, t));
-        g2d.drawGlyphVector(glyphVector, tx, ty - size / 2.0F);
+        g2d.drawGlyphVector(glyphVector, tx, (float) (ty - size / 2.0));
         g2d.setColor(colorOld);
     }
 

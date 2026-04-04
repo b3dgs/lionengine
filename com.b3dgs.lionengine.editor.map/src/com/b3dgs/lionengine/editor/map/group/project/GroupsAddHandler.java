@@ -58,7 +58,10 @@ public final class GroupsAddHandler
             final Xml root = new Xml(UtilFile.removeExtension(TileGroupsConfig.NODE_GROUPS));
             try
             {
-                file.createNewFile();
+                if (!file.createNewFile())
+                {
+                    LOGGER.warn("Unable to create file: {}", file);
+                }
                 root.save(ProjectModel.INSTANCE.getProject().getResourceMedia(file));
             }
             catch (final IOException exception)

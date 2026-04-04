@@ -119,8 +119,8 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
     @Override
     protected void stretch(int newWidth, int newHeight)
     {
-        final int w = Math.round(newWidth / (float) getTilesHorizontal()) * getTilesHorizontal();
-        final int h = Math.round(newHeight / (float) getTilesVertical()) * getTilesVertical();
+        final int w = Math.round((float) (newWidth / (double) getTilesHorizontal())) * getTilesHorizontal();
+        final int h = Math.round((float) (newHeight / (double) getTilesVertical())) * getTilesVertical();
         super.stretch(w, h);
     }
 

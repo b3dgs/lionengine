@@ -23,15 +23,11 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Implementation provider for the {@link FactoryGraphic}.
- * 
- * <p>
- * This class is Thread-Safe.
- * </p>
  */
 public final class Graphics
 {
     /** Factory graphic implementation. */
-    private static volatile FactoryGraphic factoryGraphic;
+    private static FactoryGraphic factoryGraphic;
 
     /**
      * Set the graphic factory used.

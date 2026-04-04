@@ -182,8 +182,8 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
      */
     private void alignToGrid(Transformable transformable)
     {
-        final int x = UtilMath.getRounded(transformable.getX(), map.isCreated() ? map.getTileWidth() : 1);
-        final int y = UtilMath.getRoundedR(transformable.getY(), map.isCreated() ? map.getTileHeight() : 1);
+        final double x = UtilMath.getRounded(transformable.getX(), map.isCreated() ? map.getTileWidth() : 1);
+        final double y = UtilMath.getRoundedR(transformable.getY(), map.isCreated() ? map.getTileHeight() : 1);
 
         final double sx = x
                           + UtilMath.getRounded(transformable.getWidth(), map.getTileWidth()) / 2

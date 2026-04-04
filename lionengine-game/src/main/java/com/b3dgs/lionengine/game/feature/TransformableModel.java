@@ -221,8 +221,8 @@ public class TransformableModel extends FeatureModel implements Transformable, R
         // CHECKSTYLE IGNORE LINE: BooleanExpressionComplexity
         if (dirty
             || force
-            || mover.getOldX() != mover.getX()
-            || mover.getOldY() != mover.getY()
+            || Double.compare(mover.getOldX(), mover.getX()) != 0
+            || Double.compare(mover.getOldY(), mover.getY()) != 0
             || oldWidth != width
             || oldHeight != height)
         {
