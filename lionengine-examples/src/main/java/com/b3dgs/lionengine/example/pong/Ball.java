@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.pong;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -106,7 +107,7 @@ public final class Ball extends FeatureModel implements RoutineUpdate, RoutineRe
     }
 
     @Override
-    public void notifyCollided(Collidable other, Collision with, Collision by)
+    public void notifyCollided(FeatureProvider other, Collision with, Collision by)
     {
         final Transformable racket = other.getFeature(Transformable.class);
 

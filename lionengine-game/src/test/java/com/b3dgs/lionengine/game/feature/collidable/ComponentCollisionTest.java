@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.ViewerMock;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.ComponentUpdater;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -79,7 +80,7 @@ final class ComponentCollisionTest
     private final Services services = new Services();
     private final Handler handler = new Handler(services);
     private final Setup setup = new Setup(config);
-    private final AtomicReference<Collidable> collide = new AtomicReference<>();
+    private final AtomicReference<FeatureProvider> collide = new AtomicReference<>();
     private final Featurable nonCollidable = new FeaturableModel(services, setup);
     private final ComponentCollision component = new ComponentCollision(new ViewerMock());
 

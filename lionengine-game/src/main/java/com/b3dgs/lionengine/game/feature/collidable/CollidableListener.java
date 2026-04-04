@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable;
 
+import com.b3dgs.lionengine.game.FeatureProvider;
+
 /**
  * Notify collision events between two {@link Collidable}.
  */
@@ -28,5 +30,5 @@ public interface CollidableListener
      * @param with The collision collided with (source).
      * @param by The collision collided by (other).
      */
-    void notifyCollided(Collidable collidable, Collision with, Collision by);
+    void notifyCollided(FeatureProvider collidable, Collision with, Collision by);
 }

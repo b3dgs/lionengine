@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.tutorials.platform.d;
 
 import com.b3dgs.lionengine.Tick;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
@@ -114,7 +115,7 @@ public final class Patrol extends FeatureModel
     }
 
     @Override
-    public void notifyCollided(Collidable other, Collision with, Collision by)
+    public void notifyCollided(FeatureProvider other, Collision with, Collision by)
     {
         final Transformable collider = other.getFeature(Transformable.class);
         if (collider.getY() < collider.getOldY() && collider.getY() > transformable.getY())

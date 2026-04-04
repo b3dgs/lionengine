@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.collidable;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
@@ -28,7 +29,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 public final class ObjectSelf extends FeaturableModel implements CollidableListener
 {
     /** Called flag. */
-    final AtomicReference<Collidable> called = new AtomicReference<>();
+    final AtomicReference<FeatureProvider> called = new AtomicReference<>();
 
     /**
      * Create self.
@@ -42,7 +43,7 @@ public final class ObjectSelf extends FeaturableModel implements CollidableListe
     }
 
     @Override
-    public void notifyCollided(Collidable collidable, Collision with, Collision by)
+    public void notifyCollided(FeatureProvider collidable, Collision with, Collision by)
     {
         called.set(collidable);
     }

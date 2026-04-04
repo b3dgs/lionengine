@@ -348,7 +348,7 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
     }
 
     @Override
-    public void notifyCollided(Collidable collidable, Collision with, Collision by)
+    public void notifyCollided(FeatureProvider collidable, Collision with, Collision by)
     {
         final int n = listenable.size();
         for (int i = 0; i < n; i++)

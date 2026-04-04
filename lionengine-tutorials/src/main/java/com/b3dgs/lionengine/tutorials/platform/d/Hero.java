@@ -141,7 +141,7 @@ public final class Hero extends FeatureModel implements RoutineUpdate, Collidabl
     }
 
     @Override
-    public void notifyCollided(Collidable other, Collision with, Collision by)
+    public void notifyCollided(FeatureProvider other, Collision with, Collision by)
     {
         final Transformable collider = other.getFeature(Transformable.class);
         if (Double.compare(transformable.getY(), transformable.getOldY()) >= 0)
