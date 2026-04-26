@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.audio.wav;
 
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -31,7 +32,6 @@ import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
 
 /**
@@ -83,17 +83,18 @@ final class WavTest
     void testInvalidAudio()
     {
         LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
-        final Audio wav = AudioFactory.loadAudio(Medias.create("invalid.wav"));
+        final WavImpl wav = (WavImpl) AudioFactory.loadAudio(Medias.create("invalid.wav"));
         try
         {
             wav.play();
             UtilTests.pause(Constant.HUNDRED);
+
+            assertEquals("Stream of unsupported format", wav.getLastError().get().getCause().getMessage());
         }
         finally
         {
             wav.stop();
         }
-
         LOGGER.info("****************************************************************************************");
     }
 

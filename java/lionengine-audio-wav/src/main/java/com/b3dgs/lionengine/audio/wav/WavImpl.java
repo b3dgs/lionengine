@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -351,7 +352,10 @@ final class WavImpl implements Wav
     @Override
     public void play(Align alignment)
     {
-        if (volume > 0 && AudioFactory.getVolume() > 0 && System.nanoTime() - time > MIN_DELAY_NANO)
+        if (volume > 0
+            && AudioFactory.getVolume() > 0
+            && System.nanoTime() - time > MIN_DELAY_NANO
+            && !executor.isShutdown())
         {
             executor.execute(() -> play(media, alignment));
             time = System.nanoTime();
@@ -379,32 +383,40 @@ final class WavImpl implements Wav
     @Override
     public void await()
     {
-        try
+        if (!executor.isShutdown())
         {
-            executor.submit(() ->
+            try
             {
-                while (count.get() > 0)
-                {
-                    try
-                    {
-                        Thread.sleep(Constant.DECADE);
-                    }
-                    catch (@SuppressWarnings("unused") final InterruptedException exception)
-                    {
-                        Thread.currentThread().interrupt();
-                        count.set(0);
-                    }
-                }
-            }).get(Constant.DECADE, TimeUnit.SECONDS);
+                executor.submit(this::pauseUntilCountZero).get(Constant.DECADE, TimeUnit.SECONDS);
+            }
+            catch (final InterruptedException exception)
+            {
+                Thread.currentThread().interrupt();
+                LOGGER.error("Interrupted !", exception);
+            }
+            catch (final ExecutionException | TimeoutException exception)
+            {
+                LOGGER.error("Stopped !", exception);
+            }
         }
-        catch (final InterruptedException exception)
+    }
+
+    /**
+     * Pause until count reach zero.
+     */
+    private void pauseUntilCountZero()
+    {
+        while (count.get() > 0)
         {
-            Thread.currentThread().interrupt();
-            LOGGER.error("Interrupted !", exception);
-        }
-        catch (final ExecutionException | TimeoutException exception)
-        {
-            LOGGER.error("Stopped !", exception);
+            try
+            {
+                Thread.sleep(Constant.DECADE);
+            }
+            catch (@SuppressWarnings("unused") final InterruptedException exception)
+            {
+                Thread.currentThread().interrupt();
+                count.set(0);
+            }
         }
     }
 
@@ -421,5 +433,15 @@ final class WavImpl implements Wav
     public long getTicks()
     {
         return 0L;
+    }
+
+    /**
+     * Get last error.
+     * 
+     * @return The last error.
+     */
+    Optional<Exception> getLastError()
+    {
+        return Optional.ofNullable(last);
     }
 }
