@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.audio.wav;
 
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -138,7 +139,7 @@ final class WavTest
     @Test
     void testWav()
     {
-        final Wav wav = AudioFactory.loadAudio(Medias.create("sound.wav"), Wav.class);
+        final WavImpl wav = (WavImpl) AudioFactory.loadAudio(Medias.create("sound.wav"), Wav.class);
         try
         {
             wav.setVolume(50);
@@ -151,6 +152,8 @@ final class WavTest
 
             wav.play(Align.RIGHT);
             UtilTests.pause(Constant.HUNDRED);
+
+            assertTrue(wav.getLastError().isEmpty(), wav.getLastError().toString());
         }
         finally
         {
