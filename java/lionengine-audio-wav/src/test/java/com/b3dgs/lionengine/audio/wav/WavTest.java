@@ -20,6 +20,11 @@ import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Line;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -69,6 +74,24 @@ final class WavTest
     }
 
     /**
+     * Check if has audio.
+     * 
+     * @return <code>true</code> if available, <code>false</code> else.
+     */
+    private static boolean hasAudio()
+    {
+        final Line.Info info = new Line.Info(SourceDataLine.class);
+        try
+        {
+            return AudioSystem.getLine(info) != null;
+        }
+        catch (@SuppressWarnings("unused") final LineUnavailableException exception)
+        {
+            return false;
+        }
+    }
+
+    /**
      * Test with <code>null</code> argument.
      */
     @Test
@@ -90,7 +113,10 @@ final class WavTest
             wav.play();
             UtilTests.pause(Constant.HUNDRED);
 
-            assertEquals("Stream of unsupported format", wav.getLastError().get().getCause().getMessage());
+            if (hasAudio())
+            {
+                assertEquals("Stream of unsupported format", wav.getLastError().get().getCause().getMessage());
+            }
         }
         finally
         {
