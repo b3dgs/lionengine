@@ -56,7 +56,7 @@ import com.b3dgs.lionengine.audio.PlayerAbstract;
 /**
  * Wav audio implementation.
  */
-// CHECKSTYLE IGNORE LINE: DataAbstractionCoupling
+// CHECKSTYLE IGNORE LINE: DataAbstractionCoupling|FanOutComplexity
 final class WavImpl implements Wav
 {
     /** Custom mixer, <code>null</code> for default. */
@@ -122,17 +122,23 @@ final class WavImpl implements Wav
      * @return The audio source data.
      * @throws IOException If no audio line available (may be already opened).
      */
+    // CHECKSTYLE IGNORE LINE: ReturnCount
     private static SourceDataLine getDataLine(AudioInputStream input) throws IOException
     {
         final AudioFormat format = input.getFormat();
         try
         {
             final Mixer.Info mixer = MIXER.get();
-            if (mixer != null)
+            final DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+            if (AudioSystem.isLineSupported(info))
             {
-                return AudioSystem.getSourceDataLine(format, mixer);
+                if (mixer != null)
+                {
+                    return AudioSystem.getSourceDataLine(format, mixer);
+                }
+                return AudioSystem.getSourceDataLine(format);
             }
-            return AudioSystem.getSourceDataLine(format);
+            return new NullSourceDataLine();
         }
         catch (final LineUnavailableException | IllegalArgumentException exception)
         {
