@@ -85,7 +85,7 @@ final class WavTest
         {
             return AudioSystem.getLine(info) != null;
         }
-        catch (@SuppressWarnings("unused") final LineUnavailableException exception)
+        catch (@SuppressWarnings("unused") final LineUnavailableException | IllegalArgumentException exception)
         {
             return false;
         }
