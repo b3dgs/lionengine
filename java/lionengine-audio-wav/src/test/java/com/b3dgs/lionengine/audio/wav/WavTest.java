@@ -179,6 +179,8 @@ final class WavTest
             wav.play(Align.RIGHT);
             UtilTests.pause(Constant.HUNDRED);
 
+            wav.await();
+
             assertTrue(wav.getLastError().isEmpty(), wav.getLastError().toString());
         }
         finally

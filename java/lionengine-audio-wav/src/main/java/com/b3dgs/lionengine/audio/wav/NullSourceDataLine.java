@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.audio.wav;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.Control;
 import javax.sound.sampled.Control.Type;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
@@ -28,6 +29,33 @@ import javax.sound.sampled.SourceDataLine;
  */
 public final class NullSourceDataLine implements SourceDataLine
 {
+    private final FloatControl pan = new FloatControl(FloatControl.Type.PAN,
+                                                      -1.0f,
+                                                      1.0f,
+                                                      1.0f / 128.0f,
+                                                      -1,
+                                                      0.0f,
+                                                      "",
+                                                      "Left",
+                                                      "Center",
+                                                      "Right")
+    {
+        // Mock
+    };
+    private final FloatControl gain = new FloatControl(FloatControl.Type.MASTER_GAIN,
+                                                       -80f,
+                                                       6.0206f,
+                                                       80f / 128.0f,
+                                                       -1,
+                                                       0.0f,
+                                                       "dB",
+                                                       "Minimum",
+                                                       "",
+                                                       "Maximum")
+    {
+        // Mock
+    };
+
     /**
      * Create line.
      */
@@ -141,19 +169,35 @@ public final class NullSourceDataLine implements SourceDataLine
     @Override
     public Control[] getControls()
     {
-        return null;
+        return new Control[]
+        {
+            pan, gain
+        };
     }
 
     @Override
     public boolean isControlSupported(Type control)
     {
-        return false;
+        return control == FloatControl.Type.PAN || control == FloatControl.Type.MASTER_GAIN;
     }
 
     @Override
     public Control getControl(Type control)
     {
-        return null;
+        final Control found;
+        if (control == FloatControl.Type.PAN)
+        {
+            found = pan;
+        }
+        else if (control == FloatControl.Type.MASTER_GAIN)
+        {
+            found = gain;
+        }
+        else
+        {
+            found = null;
+        }
+        return found;
     }
 
     @Override
