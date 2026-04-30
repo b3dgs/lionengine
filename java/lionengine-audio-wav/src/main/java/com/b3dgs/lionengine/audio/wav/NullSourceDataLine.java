@@ -30,11 +30,11 @@ import javax.sound.sampled.SourceDataLine;
 public final class NullSourceDataLine implements SourceDataLine
 {
     private final FloatControl pan = new FloatControl(FloatControl.Type.PAN,
-                                                      -1.0f,
-                                                      1.0f,
-                                                      1.0f / 128.0f,
+                                                      -1.0F,
+                                                      1.0F,
+                                                      1.0F / 128.0F,
                                                       -1,
-                                                      0.0f,
+                                                      0.0F,
                                                       "",
                                                       "Left",
                                                       "Center",
@@ -43,11 +43,11 @@ public final class NullSourceDataLine implements SourceDataLine
         // Mock
     };
     private final FloatControl gain = new FloatControl(FloatControl.Type.MASTER_GAIN,
-                                                       -80f,
-                                                       6.0206f,
-                                                       80f / 128.0f,
+                                                       -80F,
+                                                       6.0206F,
+                                                       80f / 128.0F,
                                                        -1,
-                                                       0.0f,
+                                                       0.0F,
                                                        "dB",
                                                        "Minimum",
                                                        "",
