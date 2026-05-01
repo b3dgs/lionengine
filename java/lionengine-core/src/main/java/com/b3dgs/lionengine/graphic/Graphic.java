@@ -268,6 +268,13 @@ public interface Graphic
     void setAlpha(int alpha);
 
     /**
+     * Get last alpha.
+     * 
+     * @return The last alpha value.
+     */
+    int getAlpha();
+
+    /**
      * Set the graphic context.
      * 
      * @param graphic The graphic context.

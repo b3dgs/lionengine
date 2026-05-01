@@ -28,6 +28,8 @@ public class GraphicMock implements Graphic
     private ColorRgba color = ColorRgba.WHITE;
     /** Graphic used. */
     private Object g;
+    /** Alpha. */
+    private int lastAlpha;
 
     /**
      * Create mock.
@@ -153,7 +155,13 @@ public class GraphicMock implements Graphic
     @Override
     public void setAlpha(int alpha)
     {
-        // Mock
+        lastAlpha = alpha;
+    }
+
+    @Override
+    public int getAlpha()
+    {
+        return lastAlpha;
     }
 
     @Override

@@ -35,6 +35,8 @@ final class GraphicHeadless implements Graphic
     private ColorRgba color = ColorRgba.WHITE;
     /** Color gradient. */
     private ColorGradient gradient;
+    /** Alpha. */
+    private int lastAlpha = 255;
 
     /**
      * Internal constructor.
@@ -264,7 +266,13 @@ final class GraphicHeadless implements Graphic
     @Override
     public void setAlpha(int alpha)
     {
-        // Nothing to do
+        lastAlpha = alpha;
+    }
+
+    @Override
+    public int getAlpha()
+    {
+        return lastAlpha;
     }
 
     @Override

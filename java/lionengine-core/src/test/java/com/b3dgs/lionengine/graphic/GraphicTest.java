@@ -76,6 +76,9 @@ public class GraphicTest
         g.clear(0, 0, image.getWidth(), image.getHeight());
         g.copyArea(0, 0, image.getWidth(), image.getHeight(), 0, 0);
 
+        g.setAlpha(128);
+        assertEquals(128, g.getAlpha());
+
         g.drawImage(image, 0, 0);
 
         final Transform transform = Graphics.createTransform();

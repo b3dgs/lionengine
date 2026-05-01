@@ -55,6 +55,8 @@ final class GraphicAwt implements Graphic
     private AffineTransformOp op;
     /** First composite. */
     private Composite composite;
+    /** Alpha. */
+    private int lastAlpha = 255;
 
     /**
      * Internal constructor.
@@ -246,6 +248,7 @@ final class GraphicAwt implements Graphic
     @Override
     public void setAlpha(int alpha)
     {
+        lastAlpha = alpha;
         if (composite == null)
         {
             composite = g.getComposite();
@@ -258,6 +261,12 @@ final class GraphicAwt implements Graphic
         {
             g.setComposite(composite);
         }
+    }
+
+    @Override
+    public int getAlpha()
+    {
+        return lastAlpha;
     }
 
     @Override

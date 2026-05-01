@@ -267,6 +267,12 @@ final class GraphicSwt implements Graphic
     }
 
     @Override
+    public int getAlpha()
+    {
+        return alpha;
+    }
+
+    @Override
     public void setGraphic(Object graphic)
     {
         if (gc != null)
