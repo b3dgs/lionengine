@@ -54,6 +54,8 @@ final class GraphicAndroid implements Graphic
     private Canvas g;
     /** Linear gradient. */
     private LinearGradient linearGradient;
+    /** Alpha. */
+    private int alpha;
 
     /**
      * Internal constructor.
@@ -267,10 +269,17 @@ final class GraphicAndroid implements Graphic
         }
         linearGradient = colorGradients.get(cg);
     }
+    
+    @Override
+    public int getAlpha()
+    {
+        return alpha;
+    }
 
     @Override
     public void setAlpha(int alpha)
     {
+        this.alpha = alpha;
         paint.setAlpha(alpha);
     }
 
