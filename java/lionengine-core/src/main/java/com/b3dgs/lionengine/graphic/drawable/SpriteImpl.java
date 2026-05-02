@@ -126,6 +126,7 @@ class SpriteImpl implements Sprite
      */
     protected final void render(Graphic g, int x, int y, int w, int h, int ox, int oy)
     {
+        final int old = g.getAlpha();
         g.setAlpha(alpha);
         if (Mirror.HORIZONTAL == mirror)
         {
@@ -150,7 +151,7 @@ class SpriteImpl implements Sprite
         {
             g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h, ox * w + w, oy * h + h, angle, angleX, angleY);
         }
-        g.setAlpha(255);
+        g.setAlpha(old);
     }
 
     /**
