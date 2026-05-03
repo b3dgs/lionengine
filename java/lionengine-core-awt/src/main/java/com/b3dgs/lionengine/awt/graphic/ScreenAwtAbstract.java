@@ -20,6 +20,7 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.GraphicsEnvironment;
 import java.awt.IllegalComponentStateException;
+import java.awt.Toolkit;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferStrategy;
@@ -59,6 +60,32 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     /** Logger. */
     private static final Logger LOGGER = LoggerFactory.getLogger(ScreenAwtAbstract.class);
 
+    /**
+     * Get toolkit.
+     * 
+     * @param config The configuration reference.
+     * @return The toolkit.
+     */
+    private static Runnable getToolkit(Config config)
+    {
+        if (config.isWindowed())
+        {
+            try
+            {
+                return Toolkit.getDefaultToolkit()::sync;
+            }
+            // CHECKSTYLE IGNORE LINE: IllegalCatch
+            catch (final Throwable exception)
+            {
+                LOGGER.error("Toolkit error", exception);
+            }
+        }
+        return () ->
+        {
+            // Void
+        };
+    }
+
     /** Buffer strategy reference. */
     protected BufferStrategy buf;
     /** Component listener for keyboard inputs. */
@@ -72,6 +99,8 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     private final KeyboardAwt keyboard = new KeyboardAwt();
     /** Mouse component. */
     private final MouseAwt mouse = new MouseAwt();
+    /** Toolkit. */
+    private final Runnable sync = getToolkit(config);
 
     /** Width. */
     private int width;
@@ -161,8 +190,7 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
         {
             showCursor();
         }
-        buf.show();
-        graphics.setGraphic(buf.getDrawGraphics());
+        update();
     }
 
     /**
@@ -179,6 +207,7 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     {
         buf.show();
         graphics.setGraphic(buf.getDrawGraphics());
+        sync.run();
     }
 
     @Override
