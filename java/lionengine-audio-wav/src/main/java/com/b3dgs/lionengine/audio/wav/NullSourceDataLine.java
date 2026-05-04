@@ -32,7 +32,7 @@ public final class NullSourceDataLine implements SourceDataLine
     private final FloatControl pan = new FloatControl(FloatControl.Type.PAN,
                                                       -1.0F,
                                                       1.0F,
-                                                      1.0F / 128.0F,
+                                                      (float) (1.0 / 128.0),
                                                       -1,
                                                       0.0F,
                                                       "",
@@ -45,7 +45,7 @@ public final class NullSourceDataLine implements SourceDataLine
     private final FloatControl gain = new FloatControl(FloatControl.Type.MASTER_GAIN,
                                                        -80F,
                                                        6.0206F,
-                                                       80f / 128.0F,
+                                                       (float) (80.0 / 128.0),
                                                        -1,
                                                        0.0F,
                                                        "dB",
@@ -178,18 +178,18 @@ public final class NullSourceDataLine implements SourceDataLine
     @Override
     public boolean isControlSupported(Type control)
     {
-        return control == FloatControl.Type.PAN || control == FloatControl.Type.MASTER_GAIN;
+        return FloatControl.Type.PAN.equals(control) || FloatControl.Type.MASTER_GAIN.equals(control);
     }
 
     @Override
     public Control getControl(Type control)
     {
         final Control found;
-        if (control == FloatControl.Type.PAN)
+        if (FloatControl.Type.PAN.equals(control))
         {
             found = pan;
         }
-        else if (control == FloatControl.Type.MASTER_GAIN)
+        else if (FloatControl.Type.MASTER_GAIN.equals(control))
         {
             found = gain;
         }
