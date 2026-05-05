@@ -22,6 +22,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -86,7 +87,16 @@ final class EngineTest
     void testTerminate()
     {
         Engine.terminate();
-        Engine.terminate();
+        assertFalse(Engine.isStarted());
+        try
+        {
+            Engine.terminate();
+            assertFalse(Engine.isStarted());
+        }
+        catch (final Exception exception)
+        {
+            Assertions.fail(exception);
+        }
     }
 
     /**
