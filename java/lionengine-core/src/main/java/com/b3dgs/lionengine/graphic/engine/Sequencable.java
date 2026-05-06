@@ -82,6 +82,15 @@ public interface Sequencable extends Updatable, Renderable
     Sequencable getNextSequence();
 
     /**
+     * Terminate sequence, and set the next sequence.
+     * 
+     * @param nextSequenceClass The next sequence class reference, <code>null</code> for none.
+     * @param arguments The sequence arguments list if needed by its constructor.
+     * @throws LionEngineException If sequence cannot be created.
+     */
+    void end(Class<? extends Sequencable> nextSequenceClass, Object... arguments);
+
+    /**
      * Called when sequence is closing.
      * 
      * @param hasNextSequence <code>true</code> if there is a next sequence, <code>false</code> else (then application
