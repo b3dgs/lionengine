@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.graphic.engine;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.slf4j.Logger;
@@ -115,7 +116,8 @@ public final class Loader
         final Screen screen = Graphics.createScreen(config);
         try
         {
-            screen.addListener(Engine::terminate);
+            final AtomicReference<Sequencable> current = new AtomicReference<>();
+            screen.addListener(() -> Optional.ofNullable(current.get()).ifPresent(s -> s.end(null)));
             screen.start();
             screen.awaitReady();
 
@@ -124,8 +126,9 @@ public final class Loader
             while (nextSequence != null)
             {
                 final Sequencable sequence = nextSequence;
-                final String sequenceName = sequence.getClass().getName();
+                current.set(sequence);
 
+                final String sequenceName = sequence.getClass().getName();
                 LOGGER.info("Starting sequence: {}", sequenceName);
                 sequence.start(screen);
 
