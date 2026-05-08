@@ -36,6 +36,11 @@ public interface Rasterbar
     void addRasterbarColor(ImageBuffer buffer);
 
     /**
+     * Build raster data. Must be called once {@link #addRasterbarColor(ImageBuffer)} calls done.
+     */
+    void prepare();
+
+    /**
      * Set offset factor.
      * 
      * @param offsetY The vertical offset.

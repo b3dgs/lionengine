@@ -177,6 +177,24 @@ final class WorldTest
         services.add(new Rasterbar()
         {
             @Override
+            public void clearRasterbarColor()
+            {
+                // Mock
+            }
+
+            @Override
+            public void addRasterbarColor(ImageBuffer buffer)
+            {
+                // Mock
+            }
+
+            @Override
+            public void prepare()
+            {
+                // Mock
+            }
+
+            @Override
             public void setRasterbarY(int y1, int y2)
             {
                 // Mock
@@ -190,18 +208,6 @@ final class WorldTest
 
             @Override
             public void renderRasterbar()
-            {
-                // Mock
-            }
-
-            @Override
-            public void clearRasterbarColor()
-            {
-                // Mock
-            }
-
-            @Override
-            public void addRasterbarColor(ImageBuffer buffer)
             {
                 // Mock
             }

@@ -147,6 +147,12 @@ public abstract class SequenceGame<W extends WorldGame> extends Sequence
             }
 
             @Override
+            public void prepare()
+            {
+                SequenceGame.this.prepare();
+            }
+
+            @Override
             public void setRasterbarOffset(int offsetY, int factorY)
             {
                 SequenceGame.this.setRasterbarOffset(offsetY, factorY);

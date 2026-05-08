@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Renderable;
-import com.b3dgs.lionengine.graphic.RenderableVoid;
 import com.b3dgs.lionengine.graphic.Scanline;
 import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.Transform;
@@ -57,11 +56,11 @@ public final class SequenceRenderer implements Rasterbar
     static final int RENDERER_QUAD_BOTTOM_RIGHT = 3;
     /** Scaling precision. */
     private static final double SCALE_PRECISION = 0.01;
-    /** No alpha clamp. */
-    private static final int NO_ALPHA = 0x00FFFFFF;
 
     /** Filter graphic. */
-    private final Graphic graphic;
+    private final Graphic graphic = Graphics.createGraphic();
+    /** Rasterbar reference. */
+    private final RasterbarImpl rasterbar = new RasterbarImpl(graphic);
     /** Config reference. */
     private final Config config;
     /** Renderer target. */
@@ -87,18 +86,11 @@ public final class SequenceRenderer implements Rasterbar
     /** Pending cursor visibility. */
     private Boolean cursorVisibility = Boolean.TRUE;
 
-    private final IntMap<int[]> raster = new IntMap<>();
-    private Renderable rasterRenderer = RenderableVoid.getInstance();
-    private int[] bu;
     private int id;
     private int x;
     private int y;
     private int w;
     private int h;
-    private int y1;
-    private int marginY;
-    private int offsetY;
-    private int factorY;
     private final int scaleDivX;
     private final int scaleDivY;
 
@@ -126,7 +118,6 @@ public final class SequenceRenderer implements Rasterbar
         scaleDivY = dy;
 
         config = context.getConfig();
-        graphic = Graphics.createGraphic();
         this.target = target;
     }
 
@@ -162,7 +153,6 @@ public final class SequenceRenderer implements Rasterbar
         h = this.source.getHeight();
 
         buf = Graphics.createImageBuffer(w, h);
-        bu = new int[w * h];
         transform = getTransform();
 
         if (id == RENDERER_SPLIT_RIGHT || id == RENDERER_QUAD_TOP_RIGHT)
@@ -197,6 +187,8 @@ public final class SequenceRenderer implements Rasterbar
 
         setDirect(false);
         initFilter();
+
+        rasterbar.init(w, h, buf);
     }
 
     /**
@@ -392,37 +384,6 @@ public final class SequenceRenderer implements Rasterbar
     }
 
     /**
-     * Render.
-     * 
-     * @param g The graphic output.
-     */
-    private void renderRasterbar(Graphic g)
-    {
-        buf.getRgb(0, 0, w, h, bu, 0, w);
-
-        final int n = bu.length;
-        for (int i = 0; i < n; i++)
-        {
-            final int lineY = h - i / w;
-            final int[] k = raster.get(bu[i] & NO_ALPHA);
-            if (k != null)
-            {
-                final int r = UtilMath.clamp((y1 + lineY + offsetY) / factorY, 1, k.length - 1);
-                if (lineY < marginY)
-                {
-                    bu[i] = k[0];
-                }
-                else if (k.length > 1 && k[r] != Integer.MIN_VALUE)
-                {
-                    bu[i] = k[r];
-                }
-            }
-        }
-
-        buf.setRgb(0, 0, w, h, bu, 0, w);
-    }
-
-    /**
      * Direct rendering.
      * 
      * @param g The graphic output.
@@ -462,51 +423,36 @@ public final class SequenceRenderer implements Rasterbar
     @Override
     public void clearRasterbarColor()
     {
-        rasterRenderer = RenderableVoid.getInstance();
-        raster.clear();
+        rasterbar.clearRasterbarColor();
     }
 
     @Override
     public void addRasterbarColor(ImageBuffer buffer)
     {
-        rasterRenderer = this::renderRasterbar;
-        final int bw = buffer.getWidth();
-        final int bh = buffer.getHeight();
+        rasterbar.addRasterbarColor(buffer);
+    }
 
-        for (int bx = 0; bx < bw; bx++)
-        {
-            final int p = buffer.getRgb(bx, 0) & NO_ALPHA;
-            int[] v = raster.get(p);
-            if (v == null)
-            {
-                v = new int[bh - 1];
-                raster.put(p, v);
-            }
-
-            for (int by = 0; by < bh - 1; by++)
-            {
-                v[by] = buffer.getRgb(bx, by + 1);
-            }
-        }
+    @Override
+    public void prepare()
+    {
+        rasterbar.prepare();
     }
 
     @Override
     public void setRasterbarOffset(int offsetY, int factorY)
     {
-        this.offsetY = offsetY;
-        this.factorY = factorY;
+        rasterbar.setRasterbarOffset(offsetY, factorY);
     }
 
     @Override
     public void setRasterbarY(int y1, int y2)
     {
-        this.y1 = y1;
-        marginY = y2 - y1;
+        rasterbar.setRasterbarY(y1, y2);
     }
 
     @Override
     public void renderRasterbar()
     {
-        rasterRenderer.render(graphic);
+        rasterbar.renderRasterbar();
     }
 }

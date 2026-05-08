@@ -522,6 +522,12 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     }
 
     @Override
+    public void prepare()
+    {
+        renderer[split].prepare();
+    }
+
+    @Override
     public void renderRasterbar()
     {
         renderer[split].renderRasterbar();
