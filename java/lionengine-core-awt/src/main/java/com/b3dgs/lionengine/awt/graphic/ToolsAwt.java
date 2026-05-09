@@ -35,9 +35,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +60,7 @@ import com.b3dgs.lionengine.graphic.Transparency;
  * This class is Thread-Safe.
  * </p>
  */
+// CHECKSTYLE IGNORE LINE: FanOutComplexity
 public final class ToolsAwt
 {
     /** Graphics environment. */
@@ -155,7 +159,7 @@ public final class ToolsAwt
      */
     public static BufferedImage getImage(InputStream input) throws IOException
     {
-        final BufferedImage buffer = ImageIO.read(input);
+        final BufferedImage buffer = getImageFast(input);
         if (buffer == null)
         {
             throw new IOException("Invalid image !");
@@ -167,6 +171,28 @@ public final class ToolsAwt
             case LOW_MEMORY -> copyImage(buffer);
             default -> throw new LionEngineException(imageLoadStragegy);
         };
+    }
+
+    /**
+     * Load image from stream.
+     * 
+     * @param input The input stream.
+     * @return The loaded image, <code>null</code> if no reader.
+     * @throws IOException If error.
+     */
+    private static BufferedImage getImageFast(InputStream input) throws IOException
+    {
+        final ImageInputStream iis = ImageIO.createImageInputStream(input);
+        final Iterator<ImageReader> readers = ImageIO.getImageReaders(iis);
+
+        if (readers.hasNext())
+        {
+            final ImageReader reader = readers.next();
+            reader.setInput(iis, true, true);
+
+            return reader.read(0);
+        }
+        return null;
     }
 
     /**
