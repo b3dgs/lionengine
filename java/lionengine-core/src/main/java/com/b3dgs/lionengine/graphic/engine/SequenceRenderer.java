@@ -65,12 +65,21 @@ public final class SequenceRenderer implements Rasterbar
     private final Config config;
     /** Renderer target. */
     private final Renderable target;
+    /** Horizontal scale. */
+    private final int scaleDivX;
+    /** Vertical scale. */
+    private final int scaleDivY;
+
     /** Source resolution. */
     private Resolution source;
     /** Filter reference. */
     private Filter filter = FilterNone.INSTANCE;
     /** Scanline reference. */
     private Scanline scanline = ScanlineNone.INSTANCE;
+    /** Pending cursor visibility. */
+    private Boolean cursorVisibility = Boolean.TRUE;
+    /** Current renderer. */
+    private Renderable renderer = this::renderBuffer;
     /** Image buffer (can be <code>null</code> for direct rendering). */
     private ImageBuffer buf;
     /** Image buffer (can be <code>null</code> for direct rendering). */
@@ -83,18 +92,16 @@ public final class SequenceRenderer implements Rasterbar
     private Transform transform;
     /** Current screen used (<code>null</code> if not started). */
     private Screen screen;
-    /** Pending cursor visibility. */
-    private Boolean cursorVisibility = Boolean.TRUE;
-
+    /** Renderer id. */
     private int id;
+    /** Renderer horizontal location. */
     private int x;
+    /** Renderer vertical location. */
     private int y;
+    /** Renderer width size. */
     private int w;
+    /** Renderer height size. */
     private int h;
-    private final int scaleDivX;
-    private final int scaleDivY;
-
-    private Renderable renderer = this::renderBuffer;
 
     /**
      * Constructor base.
@@ -113,72 +120,35 @@ public final class SequenceRenderer implements Rasterbar
         Check.notNull(context);
         Check.notNull(resolution);
 
-        source = resolution;
-        scaleDivX = dx;
-        scaleDivY = dy;
+        this.target = target;
 
         config = context.getConfig();
-        this.target = target;
+        scaleDivX = dx;
+        scaleDivY = dy;
     }
 
     /**
      * Initialize resolution.
      * 
-     * @param source The resolution source (must not be <code>null</code>).
+     * @param resolution The resolution source (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    // CHECKSTYLE IGNORE LINE: CyclomaticComplexity
-    void initResolution(Resolution source)
+    void initResolution(Resolution resolution)
     {
-        Check.notNull(source);
+        Check.notNull(resolution);
 
         setSystemCursorVisible(cursorVisibility.booleanValue());
 
-        if (scaleDivX > 0 && scaleDivY > 0)
-        {
-            this.source = new Resolution(source.getWidth() * scaleDivY,
-                                         source.getHeight() * scaleDivX,
-                                         source.getRate());
-        }
-        else
-        {
-            this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
-        }
+        source = computeSource(resolution);
+        screen.onSourceChanged(source);
 
-        final double fw = config.getOutput().getWidth() / (double) this.source.getWidth();
-        final double fh = config.getOutput().getHeight() / (double) this.source.getHeight();
-
-        screen.onSourceChanged(this.source);
-        w = this.source.getWidth();
-        h = this.source.getHeight();
+        w = source.getWidth();
+        h = source.getHeight();
 
         buf = Graphics.createImageBuffer(w, h);
         transform = getTransform();
 
-        if (id == RENDERER_SPLIT_RIGHT || id == RENDERER_QUAD_TOP_RIGHT)
-        {
-            if (scaleDivX > 1)
-            {
-                x = (int) (w * fh);
-            }
-            else if (scaleDivY > 1)
-            {
-                y = (int) (h * fw);
-            }
-            else if (scaleDivX == 1 && scaleDivY == 1)
-            {
-                x = (int) (w * fh / 2);
-            }
-        }
-        if (id == RENDERER_QUAD_BOTTOM_LEFT)
-        {
-            y = (int) (h * fw / 2);
-        }
-        if (id == RENDERER_QUAD_BOTTOM_RIGHT)
-        {
-            x = (int) (w * fh / 2);
-            y = (int) (h * fw / 2);
-        }
+        computePosition();
 
         final Graphic gbuf = buf.createGraphic();
         graphic.setGraphic(gbuf.getGraphic());
@@ -324,6 +294,57 @@ public final class SequenceRenderer implements Rasterbar
     }
 
     /**
+     * Compute source resolution based on current scales.
+     * 
+     * @param resolution The base resolution.
+     * @return The computed source resolution.
+     */
+    private Resolution computeSource(Resolution resolution)
+    {
+        if (scaleDivX > 0 && scaleDivY > 0)
+        {
+            return new Resolution(resolution.getWidth() * scaleDivY,
+                                  resolution.getHeight() * scaleDivX,
+                                  resolution.getRate());
+        }
+        return new Resolution(resolution.getWidth(), resolution.getHeight(), resolution.getRate());
+    }
+
+    /**
+     * Compute rendering position on screen.
+     */
+    private void computePosition()
+    {
+        final double fw = config.getOutput().getWidth() / (double) source.getWidth();
+        final double fh = config.getOutput().getHeight() / (double) source.getHeight();
+
+        if (id == RENDERER_SPLIT_RIGHT || id == RENDERER_QUAD_TOP_RIGHT)
+        {
+            if (scaleDivX > 1)
+            {
+                x = (int) (w * fh);
+            }
+            else if (scaleDivY > 1)
+            {
+                y = (int) (h * fw);
+            }
+            else if (scaleDivX == 1 && scaleDivY == 1)
+            {
+                x = (int) (w * fh / 2);
+            }
+        }
+        else if (id == RENDERER_QUAD_BOTTOM_LEFT)
+        {
+            y = (int) (h * fw / 2);
+        }
+        else if (id == RENDERER_QUAD_BOTTOM_RIGHT)
+        {
+            x = (int) (w * fh / 2);
+            y = (int) (h * fw / 2);
+        }
+    }
+
+    /**
      * Init filter.
      */
     private void initFilter()
@@ -401,8 +422,6 @@ public final class SequenceRenderer implements Rasterbar
     private void renderBuffer(Graphic g)
     {
         target.render(graphic);
-        // TODO if want double or triple buffering, next line must be called separately, and handle more than one
-        // internal buf
         g.drawImage(filter.filter(buf), transform, x, y);
     }
 
@@ -414,9 +433,7 @@ public final class SequenceRenderer implements Rasterbar
     private void renderBufferScaled(Graphic g)
     {
         target.render(graphic);
-
         buf2g.drawImage(buf, transformbuf, x, y);
-
         g.drawImage(filter.filter(buf2), transform, x, y);
     }
 

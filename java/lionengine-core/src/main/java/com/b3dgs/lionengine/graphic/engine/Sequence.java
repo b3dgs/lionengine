@@ -54,15 +54,14 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     private static final int UPDATE_FPS_DELAY_MILLI = 500;
 
     /** Context reference. */
-    private final Context context;
-    /** Native resolution. */
-    private final Resolution resolution;
+    protected final Context context;
     /** Config reference. */
     private final Config config;
     /** Loop mode. */
     private final Loop loop;
-    /** Source resolution. */
-    private final Resolution source;
+
+    /** Native resolution. */
+    private Resolution resolution;
     /** Sequence renderer. */
     private SequenceRenderer[] renderer;
     /** Next sequence pointer. */
@@ -122,12 +121,29 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         this.context = context;
         this.resolution = resolution;
         this.loop = loop;
-        source = resolution;
         config = context.getConfig();
-        width = source.getWidth();
-        height = source.getHeight();
+        width = resolution.getWidth();
+        height = resolution.getHeight();
 
         setSplit0();
+    }
+
+    /**
+     * Set resolution source.
+     * 
+     * @param resolution The resolution source.
+     */
+    public void setSource(Resolution resolution)
+    {
+        Check.notNull(resolution);
+
+        this.resolution = resolution;
+
+        for (int i = 0; i < renderer.length; i++)
+        {
+            renderer[i].initResolution(resolution);
+        }
+        onResolutionChanged(resolution.getWidth(), resolution.getHeight());
     }
 
     @Override
@@ -411,6 +427,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         {
             nextSequence = UtilSequence.create(nextSequenceClass, context, arguments);
             nextSequence.preload();
+            loop.reset();
         }
     }
 
@@ -548,7 +565,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     @Override
     public final int getRate()
     {
-        return source.getRate();
+        return resolution.getRate();
     }
 
     /**
