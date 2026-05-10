@@ -123,6 +123,7 @@ public final class SequenceRenderer implements Rasterbar
         this.target = target;
 
         config = context.getConfig();
+        source = computeSource(resolution);
         scaleDivX = dx;
         scaleDivY = dy;
     }
