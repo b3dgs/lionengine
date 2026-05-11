@@ -34,6 +34,14 @@ public interface Loop
     void start(Screen screen, Frame frame);
 
     /**
+     * Reset internal states. Does nothing by default.
+     */
+    default void reset()
+    {
+        // Nothing
+    }
+
+    /**
      * Stop the loop.
      */
     void stop();

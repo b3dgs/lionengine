@@ -113,6 +113,8 @@ public final class Loader
      */
     private static void handle(Config config, Class<? extends Sequencable> sequenceClass, Object... arguments)
     {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
         final Screen screen = Graphics.createScreen(config);
         try
         {

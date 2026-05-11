@@ -16,117 +16,146 @@
  */
 package com.b3dgs.lionengine.graphic.engine;
 
+import java.util.concurrent.locks.LockSupport;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.graphic.Screen;
 
 /**
- * Hybrid loop with extrapolation when frame rate if higher than reference, and frame skipping when lower.
+ * Hybrid loop with extrapolation when frame rate is higher than reference, and frame skipping when lower.
  */
 public final class LoopHybrid implements Loop
 {
-    /** One second in nano. */
-    private static final double ONE_SECOND_IN_NANO = 1_000_000_000.0;
-    /** Maximum expected frame rate. */
+    /** Maximum expected frame rate used when rate is 0 (uncapped). */
     private static final int MAX_FRAME_RATE = 1000;
-    /** Nano margin. */
-    private static final int NANO_MARGIN = 60;
-
-    private static double computeFrameTime(int rate)
-    {
-        final double expectedRate;
-        if (rate == 0)
-        {
-            expectedRate = MAX_FRAME_RATE;
-        }
-        else
-        {
-            expectedRate = rate;
-        }
-        return Constant.ONE_SECOND_IN_MILLI / expectedRate * Constant.NANO_TO_MILLI - NANO_MARGIN;
-    }
-
-    /** Current rate in frame time nano. */
-    private final double frameNano;
-    /** Min frame time in nano. */
-    private final double minFrameTimeNano;
-    /** Max frame time in nano. */
-    private double maxFrameTimeNano;
-    /** Running flag. */
-    private boolean isRunning = true;
+    /** Small margin subtracted from computed frame times to avoid drifting over budget (ns). */
+    private static final int NANO_MARGIN = 100;
+    /** Maximum consecutive logic updates per rendered frame. */
+    private static final int MAX_UPDATES_PER_FRAME = 5;
+    /** Minimum remaining time for sleep. */
+    private static final long MINIMUM_REMAINING_TIME_FOR_SLEEP_NANO = 2_000_000L;
+    /** Park nano time. */
+    private static final long PARK_NANO = 1_000_000L;
 
     /**
-     * Create loop.
+     * Prepare with first pass update render.
      * 
-     * @param rateOriginal The original rate.
-     * @param rateDesired The desired rate.
+     * @param screen The screen reference.
+     * @param frame The frame reference.
      */
-    public LoopHybrid(int rateOriginal, int rateDesired)
+    private static void prepare(Screen screen, Frame frame)
     {
-        super();
-
-        frameNano = rateOriginal / ONE_SECOND_IN_NANO;
-        minFrameTimeNano = computeFrameTime(rateOriginal);
-        maxFrameTimeNano = computeFrameTime(rateDesired);
-    }
-
-    @Override
-    public void start(Screen screen, Frame frame)
-    {
-        Check.notNull(screen);
-        Check.notNull(frame);
-
-        double extrp = Constant.EXTRP;
-
-        frame.update(extrp);
+        frame.update(Constant.EXTRP);
         if (screen.isReady())
         {
             screen.preUpdate();
             frame.render();
             screen.update();
         }
+    }
 
-        long lastTimeNano = System.nanoTime() - Math.round(maxFrameTimeNano);
-        double acc = maxFrameTimeNano;
+    /**
+     * Compute the nanosecond budget for one frame at the given rate.
+     *
+     * @param rate The target rate in Hz (0 = uncapped, uses {@link #MAX_FRAME_RATE}).
+     * @return Frame time in nanoseconds minus {@link #NANO_MARGIN}.
+     */
+    private static double computeFrameTime(int rate)
+    {
+        final double effectiveRate = rate == 0 ? MAX_FRAME_RATE : rate;
+        return Constant.ONE_SECOND_IN_MILLI / effectiveRate * Constant.NANO_TO_MILLI - NANO_MARGIN;
+    }
+
+    /**
+     * Duration of one logic step in nanoseconds, derived from the original/native update rate.
+     * Used as the fixed timestep fed to {@code frame.update()} and as the accumulator threshold.
+     */
+    private final double logicStepNano;
+    /**
+     * Target render frame time in nanoseconds, derived from the desired display rate.
+     * Acts as the FPS cap: the busy-wait spin runs until this budget is exhausted.
+     */
+    private double renderFrameTimeNano;
+    /** Timestamp of the start of the current frame (nanoseconds). */
+    private long firstTimeNano;
+    /** Accumulator tracking unspent nanoseconds not yet consumed by logic updates. */
+    private double acc;
+    /** Running flag. */
+    private boolean isRunning = true;
+
+    /**
+     * Create a hybrid loop.
+     *
+     * @param rateOriginal The native logic update rate (UPS), e.g. 60.
+     * @param rateDesired The desired display/render rate (FPS), e.g. 144.
+     */
+    public LoopHybrid(int rateOriginal, int rateDesired)
+    {
+        super();
+
+        logicStepNano = computeFrameTime(rateOriginal);
+        renderFrameTimeNano = computeFrameTime(rateDesired);
+    }
+
+    // CHECKSTYLE IGNORE LINE: ExecutableStatementCount
+    @Override
+    public void start(Screen screen, Frame frame)
+    {
+        Check.notNull(screen);
+        Check.notNull(frame);
+
+        prepare(screen, frame);
+
+        double extrp = Constant.EXTRP;
+        long lastTimeNano = System.nanoTime() - Math.round(renderFrameTimeNano);
+        acc = renderFrameTimeNano;
+
+        final boolean windowed = screen.getConfig().isWindowed();
+        final Runnable action = windowed ? this::pause : () ->
+        {
+            // Void
+        };
 
         while (isRunning)
         {
             if (screen.isReady())
             {
-                final long firstTimeNano = System.nanoTime();
+                firstTimeNano = System.nanoTime();
                 frame.computeFrameRate(lastTimeNano, firstTimeNano);
 
                 final long elapsed = firstTimeNano - lastTimeNano;
-                if (elapsed > minFrameTimeNano)
+
+                if (elapsed >= logicStepNano)
                 {
                     extrp = Constant.EXTRP;
                 }
                 else
                 {
-                    extrp = frameNano * elapsed;
-
+                    extrp = elapsed / logicStepNano;
                     // CHECKSTYLE IGNORE LINE: NestedIfDepth
                     if (extrp > Constant.EXTRP)
                     {
                         extrp = Constant.EXTRP;
                     }
                 }
+
                 acc += elapsed;
+                int updates = 0;
                 do
                 {
                     frame.update(extrp);
-                    acc -= minFrameTimeNano;
+                    acc -= logicStepNano;
+                    updates++;
                 }
-                while (acc > minFrameTimeNano);
+                while (acc > logicStepNano && updates < MAX_UPDATES_PER_FRAME);
 
                 screen.preUpdate();
                 frame.render();
                 screen.update();
 
-                while (System.nanoTime() - firstTimeNano < maxFrameTimeNano)
-                {
-                    continue;
-                }
+                action.run();
+
                 lastTimeNano = firstTimeNano;
             }
             else
@@ -135,6 +164,32 @@ public final class LoopHybrid implements Loop
                 UtilSequence.pause(Constant.DECADE);
             }
         }
+    }
+
+    /**
+     * Park if enough time or spin wait for short remaining.
+     */
+    private void pause()
+    {
+        long remaining;
+        while ((remaining = System.nanoTime() - firstTimeNano) < renderFrameTimeNano)
+        {
+            if (remaining > MINIMUM_REMAINING_TIME_FOR_SLEEP_NANO)
+            {
+                LockSupport.parkNanos(PARK_NANO);
+            }
+            else
+            {
+                Thread.onSpinWait();
+            }
+        }
+    }
+
+    @Override
+    public void reset()
+    {
+        firstTimeNano = System.nanoTime();
+        acc = renderFrameTimeNano;
     }
 
     @Override
@@ -146,6 +201,6 @@ public final class LoopHybrid implements Loop
     @Override
     public void notifyRateChanged(int rate)
     {
-        maxFrameTimeNano = computeFrameTime(rate);
+        renderFrameTimeNano = computeFrameTime(rate);
     }
 }

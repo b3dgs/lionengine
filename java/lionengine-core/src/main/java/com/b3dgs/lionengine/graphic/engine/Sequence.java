@@ -427,6 +427,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         {
             nextSequence = UtilSequence.create(nextSequenceClass, context, arguments);
             nextSequence.preload();
+            loop.reset();
         }
     }
 
