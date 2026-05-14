@@ -247,7 +247,9 @@ public class MapTileHelper extends MapTileGame
         mapTransition = addFeature(new MapTileTransitionModel());
         mapCircuit = addFeature(new MapTileCircuitModel());
         mapRaster = addFeature(new MapTileRasteredModel());
-        mapViewer = addFeature(new MapTileViewerModel(services));
+        final MapTileViewerModel viewer = addFeature(new MapTileViewerModel(services));
+        addListener(viewer);
+        mapViewer = viewer;
 
         mapFow.addFeature(new LayerableModel(Constant.HUNDRED));
         fogOfWar = services.add(mapFow.addFeature(new FogOfWar()));

@@ -27,6 +27,13 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileRenderer;
 public interface MapTileViewer extends Displayable, MapTileRenderer
 {
     /**
+     * Allow to use chunks rendering.
+     * 
+     * @param enabled <code>true</code> to cache with chunks, <code>false</code> default tile by tile rendering.
+     */
+    void setChunksEnabled(boolean enabled);
+
+    /**
      * Add a map tile renderer.
      * 
      * @param renderer The map tile renderer reference.
