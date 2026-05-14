@@ -33,8 +33,11 @@ import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileRenderer;
+import com.b3dgs.lionengine.game.feature.tile.map.TileSetListener;
+import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.GraphicMock;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBufferMock;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 
@@ -50,6 +53,7 @@ final class MapTileViewerModelTest
     static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
@@ -59,13 +63,14 @@ final class MapTileViewerModelTest
     static void afterTests()
     {
         Medias.setResourcesDirectory(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     private final Services services = new Services();
     private final Graphic g = new GraphicMock();
     private ViewerMock viewer;
     private MapTileGame map;
-    private MapTileViewer mapViewer;
+    private MapTileViewerModel mapViewer;
 
     /**
      * Prepare test.
@@ -89,6 +94,7 @@ final class MapTileViewerModelTest
     void testViewer()
     {
         map.loadSheets(Arrays.asList(Drawable.loadSpriteTiled(new ImageBufferMock(80, 80), 40, 40)));
+        mapViewer.setChunksEnabled(false);
 
         mapViewer.render(g);
 
@@ -128,5 +134,32 @@ final class MapTileViewerModelTest
 
         map.clear();
         mapViewer.render(g);
+    }
+
+    /**
+     * Test the viewer functions.
+     */
+    @Test
+    void testViewerChunk()
+    {
+        map.loadSheets(Arrays.asList(Drawable.loadSpriteTiled(new ImageBufferMock(80, 80), 40, 40)));
+        mapViewer.setChunksEnabled(true);
+
+        final AtomicBoolean set = new AtomicBoolean();
+        final TileSetListener listener = t -> set.set(true);
+
+        map.create(40, 40, 2, 2);
+        map.setTile(0, 0, 0);
+        map.setTile(1, 1, 1);
+        map.addListener(mapViewer);
+        map.addListener(listener);
+        mapViewer.render(g);
+
+        assertFalse(set.get());
+
+        map.setTile(1, 1, 0);
+        mapViewer.render(g);
+
+        assertTrue(set.get());
     }
 }
