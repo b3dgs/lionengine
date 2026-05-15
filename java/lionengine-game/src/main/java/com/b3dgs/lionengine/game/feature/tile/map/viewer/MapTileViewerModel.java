@@ -256,8 +256,8 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
     private void renderTilesOnChunk(Graphic cg, int cy, int cx, int tw, int th)
     {
         final int inTileHeight = (int) Math.ceil(CHUNK_SIZE / (double) th);
-        final int sy = (int) Math.floor(cy * CHUNK_SIZE / th);
-        final double viewY = cy * CHUNK_SIZE + CHUNK_SIZE;
+        final int sy = (int) Math.floor(cy * CHUNK_SIZE / (double) th);
+        final double viewY = cy * CHUNK_SIZE + (double) CHUNK_SIZE;
 
         for (int v = 0; v <= inTileHeight; v++)
         {
@@ -281,8 +281,8 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
     private void renderHorizontalTilesOnChunk(Graphic cg, int cx, int tw, int ty, double viewY)
     {
         final int inTileWidth = (int) Math.ceil(CHUNK_SIZE / (double) tw);
-        final int sx = (int) Math.floor(cx * CHUNK_SIZE / tw);
-        final double viewX = cx * CHUNK_SIZE;
+        final int sx = (int) Math.floor(cx * CHUNK_SIZE / (double) tw);
+        final double viewX = cx * (double) CHUNK_SIZE;
 
         for (int h = 0; h <= inTileWidth; h++)
         {
