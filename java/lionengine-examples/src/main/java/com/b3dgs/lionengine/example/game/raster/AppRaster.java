@@ -35,7 +35,7 @@ public final class AppRaster
     public static void main(String[] args)
     {
         EngineAwt.start(AppRaster.class.getSimpleName(), new Version(1, 0, 0), AppRaster.class);
-        Loader.start(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
+        Loader.startAsync(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
     }
 
     /**

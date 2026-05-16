@@ -44,7 +44,7 @@ public final class AppJava
         // Final configuration (rendering will be scaled by 2 considering source and output resolution).
         // This is the final configuration container, including color depth and window mode.
         // Program starter, setup with our configuration. It just needs one sequence reference to start.
-        Loader.start(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
+        Loader.startAsync(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
     }
 
     /**

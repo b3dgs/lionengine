@@ -55,6 +55,7 @@ public final class World extends WorldHelper
         rasterbar.setRasterbarOffset(-24, 16);
         rasterbar.clearRasterbarColor();
         rasterbar.addRasterbarColor(Graphics.getImageBuffer(Medias.create("tiles.png")));
+        rasterbar.prepare();
     }
 
     @Override

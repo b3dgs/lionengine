@@ -35,7 +35,7 @@ public final class AppNetwork
     public static void main(String[] args)
     {
         EngineAwt.start(AppNetwork.class.getSimpleName(), new Version(1, 0, 0), AppNetwork.class);
-        Loader.start(Config.windowed(Scene.NATIVE.get2x()), Scene.class, Integer.valueOf(args[0]));
+        Loader.startAsync(Config.windowed(Scene.NATIVE.get2x()), Scene.class, Integer.valueOf(args[0]));
     }
 
     /**

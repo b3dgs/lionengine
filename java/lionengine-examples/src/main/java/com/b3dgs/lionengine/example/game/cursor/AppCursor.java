@@ -37,7 +37,7 @@ public final class AppCursor
     public static void main(String[] args)
     {
         EngineAwt.start(AppCursor.class.getSimpleName(), new Version(1, 0, 0), AppCursor.class);
-        Loader.start(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
+        Loader.startAsync(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
     }
 
     /**

@@ -34,7 +34,7 @@ public final class AppHelloWorld
     public static void main(String[] args)
     {
         // EngineOpenGl.start(AppHelloWorld.class.getSimpleName(), new Version(1, 0, 0), "resources");
-        Loader.start(Config.windowed(new Resolution(640, 480, 60)), Scene.class);
+        Loader.startAsync(Config.windowed(new Resolution(640, 480, 60)), Scene.class);
     }
 
     /**

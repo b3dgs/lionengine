@@ -38,7 +38,7 @@ public final class AppBackground
     public static void main(String[] args)
     {
         EngineAwt.start(AppBackground.class.getSimpleName(), new Version(1, 0, 0), AppBackground.class);
-        Loader.start(Config.windowed(new Resolution(640, 480, 60)), Scene.class);
+        Loader.startAsync(Config.windowed(new Resolution(640, 480, 60)), Scene.class);
     }
 
     /**

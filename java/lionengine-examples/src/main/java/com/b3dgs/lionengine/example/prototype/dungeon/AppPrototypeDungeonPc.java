@@ -37,7 +37,7 @@ public final class AppPrototypeDungeonPc
         EngineAwt.start(AppPrototypeDungeonPc.class.getSimpleName(),
                         Constant.ENGINE_VERSION,
                         AppPrototypeDungeonPc.class);
-        Loader.start(Config.windowed(Scene.NATIVE_RESOLUTION.get4x()), Scene.class);
+        Loader.startAsync(Config.windowed(Scene.NATIVE_RESOLUTION.get4x()), Scene.class);
     }
 
     /**

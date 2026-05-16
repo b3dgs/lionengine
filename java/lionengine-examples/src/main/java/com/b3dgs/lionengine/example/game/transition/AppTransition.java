@@ -37,7 +37,7 @@ public final class AppTransition
     public static void main(String[] args)
     {
         EngineAwt.start(AppTransition.class.getSimpleName(), new Version(1, 0, 0), AppTransition.class);
-        Loader.start(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
+        Loader.startAsync(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
     }
 
     /**

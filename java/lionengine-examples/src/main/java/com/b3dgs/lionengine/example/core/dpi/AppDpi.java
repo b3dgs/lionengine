@@ -54,7 +54,7 @@ public final class AppDpi
     private static void run(int width, int height)
     {
         final Resolution output = new Resolution(width, height, 60);
-        Loader.start(Config.windowed(output), Scene.class).await();
+        Loader.startAsync(Config.windowed(output), Scene.class).await();
     }
 
     /**

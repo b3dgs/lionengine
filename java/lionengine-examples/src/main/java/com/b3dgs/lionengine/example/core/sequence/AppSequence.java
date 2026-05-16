@@ -36,7 +36,7 @@ public final class AppSequence
     public static void main(String[] args)
     {
         EngineAwt.start(AppSequence.class.getSimpleName(), new Version(1, 0, 0), AppSequence.class);
-        Loader.start(Config.windowed(new Resolution(640, 480, 60)), SequenceFirst.class);
+        Loader.startAsync(Config.windowed(new Resolution(640, 480, 60)), SequenceFirst.class);
     }
 
     /**

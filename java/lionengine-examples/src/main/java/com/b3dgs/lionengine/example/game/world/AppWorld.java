@@ -35,7 +35,7 @@ public final class AppWorld
     public static void main(String[] args)
     {
         EngineAwt.start(AppWorld.class.getSimpleName(), new Version(1, 0, 0), AppWorld.class);
-        Loader.start(Config.windowed(Scene.NATIVE.get3x()), Scene.class);
+        Loader.startAsync(Config.windowed(Scene.NATIVE.get3x()), Scene.class);
     }
 
     /**

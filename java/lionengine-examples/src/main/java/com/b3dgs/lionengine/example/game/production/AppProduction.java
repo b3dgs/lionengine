@@ -37,7 +37,7 @@ public final class AppProduction
     public static void main(String[] args)
     {
         EngineAwt.start(AppProduction.class.getSimpleName(), new Version(1, 0, 0), AppProduction.class);
-        Loader.start(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
+        Loader.startAsync(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
     }
 
     /**

@@ -37,7 +37,7 @@ public final class AppPrototypeGameplayPc
         EngineAwt.start(AppPrototypeGameplayPc.class.getSimpleName(),
                         Constant.ENGINE_VERSION,
                         AppPrototypeGameplayPc.class);
-        Loader.start(Config.windowed(Scene.DEFAULT_RESOLUTION), Scene.class);
+        Loader.startAsync(Config.windowed(Scene.DEFAULT_RESOLUTION), Scene.class);
     }
 
     /**
