@@ -72,7 +72,7 @@ jobs:
             servers: |
                [
                  {
-                   "id": "ossrh",
+                   "id": "central",
                    "username": "${{ env.MAVEN_USERNAME }}",
                    "password": "${{ env.MAVEN_PASSWORD }}",
                    "passphrase": "${{ env.MAVEN_GPG_PASSPHRASE }}"
@@ -206,7 +206,7 @@ jobs:
             servers: |
                [
                  {
-                   "id": "ossrh",
+                   "id": "central",
                    "username": "${{ env.MAVEN_USERNAME }}",
                    "password": "${{ env.MAVEN_PASSWORD }}",
                    "passphrase": "${{ env.MAVEN_GPG_PASSPHRASE }}"
@@ -230,6 +230,9 @@ jobs:
 
    editor:
       runs-on: windows-latest
+      needs:
+      - core-deploy
+      
       steps:
 
       -  name: Checkout
@@ -270,7 +273,7 @@ jobs:
             servers: |
                [
                  {
-                   "id": "ossrh",
+                   "id": "central",
                    "username": "${{ env.MAVEN_USERNAME }}",
                    "password": "${{ env.MAVEN_PASSWORD }}",
                    "passphrase": "${{ env.MAVEN_GPG_PASSPHRASE }}"
