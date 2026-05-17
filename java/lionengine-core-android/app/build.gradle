@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
+
 plugins {
     id 'com.android.library'
     id 'com.vanniktech.maven.publish' version '0.36.0'
@@ -26,16 +28,6 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            signingConfig signingConfigs.app
-        }
-    }
-
-    signingConfigs {
-        app {
-            storeFile file(property('keystore'))
-            keyAlias property('keystore.alias')
-            keyPassword property('keystore.password')
-            storePassword property('keystore.storepassword')
         }
     }
 }
@@ -44,7 +36,7 @@ mavenPublishing {
     publishToMavenCentral()
     signAllPublications()
 
-    configure(new com.vanniktech.maven.publish.AndroidSingleVariantLibrary("release"))
+    configure(new AndroidSingleVariantLibrary("release"))
 
     coordinates(
         "com.b3dgs.lionengine",

@@ -189,11 +189,6 @@ jobs:
          with:
             maven-version: 3.9.14
 
-      -  name: Keystore
-         env:
-            KEYSTORE_BASE64: ${{ secrets.KEYSTORE_B64 }}
-         run: printf "%s" "$KEYSTORE_BASE64" | base64 -d > java/lionengine-core-android/keystore.jks
-
       -  name: GPG
          uses: crazy-max/ghaction-import-gpg@2dc316deee8e90f13e1a351ab510b4d5bc0c82cd
          with:
@@ -220,15 +215,12 @@ jobs:
          env:
             ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ env.MAVEN_USERNAME }}
             ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ env.MAVEN_PASSWORD }}
-            ORG_GRADLE_PROJECT_keystore.alias: ${{ secrets.KEYSTORE_ALIAS }}
-            ORG_GRADLE_PROJECT_keystore.storepassword: ${{ secrets.KEYSTORE_PASS }}
-            ORG_GRADLE_PROJECT_keystore.password: ${{ secrets.KEYSTORE_PASS }}
             ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_PRIVATE_KEY }}
             ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
          run: |
             cd java/lionengine-core-android
             chmod +x gradlew
-            ./gradlew publishAndReleaseToMavenCentral -Pkeystore=keystore.jks
+            ./gradlew publishAndReleaseToMavenCentral
 
    editor:
       runs-on: windows-latest
