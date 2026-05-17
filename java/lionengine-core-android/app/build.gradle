@@ -44,7 +44,7 @@ mavenPublishing {
     publishToMavenCentral()
     signAllPublications()
 
-    androidVariantToPublish("release")
+    configure(new com.vanniktech.maven.publish.AndroidSingleVariantLibrary("release"))
 
     coordinates(
         "com.b3dgs.lionengine",
