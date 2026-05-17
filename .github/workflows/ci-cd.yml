@@ -215,7 +215,7 @@ jobs:
          env:
             ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ env.MAVEN_USERNAME }}
             ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ env.MAVEN_PASSWORD }}
-            ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_B64 }}
+            ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_ASC }}
             ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
          run: |
             cd java/lionengine-core-android
