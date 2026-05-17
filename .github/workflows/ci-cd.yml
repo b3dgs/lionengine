@@ -223,6 +223,8 @@ jobs:
             ORG_GRADLE_PROJECT_keystore.alias: ${{ secrets.KEYSTORE_ALIAS }}
             ORG_GRADLE_PROJECT_keystore.storepassword: ${{ secrets.KEYSTORE_PASS }}
             ORG_GRADLE_PROJECT_keystore.password: ${{ secrets.KEYSTORE_PASS }}
+            ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_PRIVATE_KEY }}
+            ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
          run: |
             cd java/lionengine-core-android
             chmod +x gradlew

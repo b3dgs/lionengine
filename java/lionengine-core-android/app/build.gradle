@@ -8,6 +8,28 @@ group = 'com.b3dgs.lionengine'
 version = '10.0.0'
 
 android {
+    namespace 'com.b3dgs.lionengine.android'
+    compileSdk 37
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 37
+        multiDexEnabled true
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.app
+        }
+    }
+
     signingConfigs {
         app {
             storeFile file(property('keystore'))
@@ -16,67 +38,43 @@ android {
             storePassword property('keystore.storepassword')
         }
     }
-    compileSdk 37
-    defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 37
-        signingConfig signingConfigs.app
-        multiDexEnabled true
-    }
-
-    compileOptions {
-        coreLibraryDesugaringEnabled true
-
-        sourceCompatibility JavaVersion.VERSION_21
-        targetCompatibility JavaVersion.VERSION_21
-    }
-
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-        }
-    }
-    namespace 'com.b3dgs.lionengine.android'
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                from components.release
-                group = 'com.b3dgs.lionengine'
-                artifactId = 'lionengine-core-android'
-                version = '10.0.0'
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
 
-                pom {
-                    name = 'LionEngine Core Android'
-                    description = 'LionEngine Core Android implementation'
-                    url = 'https://github.com/b3dgs/lionengine'
-                    licenses {
-                        license {
-                            name = 'GNU General Public License (GPL) version 3.0'
-                            url = 'https://www.gnu.org/licenses/gpl-3.0.txt'
-                        }
-                    }
-                    developers {
-                        developer {
-                            id = 'DjThunder'
-                            name = 'Pierre-Alexandre'
-                            email = 'contact@b3dgs.com'
-                        }
-                    }
-                    scm {
-                        connection = 'scm:git:git@github.com:b3dgs/lionengine-core-android.git'
-                        developerConnection = 'scm:git:git@github.com:b3dgs/lionengine-core-android.git'
-                        url = 'https://github.com/b3dgs/lionengine-core-android'
-                    }
-                }
+    androidVariantToPublish("release")
+
+    coordinates(
+        "com.b3dgs.lionengine",
+        "lionengine-core-android",
+        version.toString()
+    )
+
+    pom {
+        name.set("LionEngine Core Android")
+        description.set("LionEngine Core Android implementation")
+        url.set("https://github.com/b3dgs/lionengine")
+
+        licenses {
+            license {
+                name.set("GNU General Public License (GPL) version 3.0")
+                url.set("https://www.gnu.org/licenses/gpl-3.0.txt")
             }
         }
-    }
-    signing {
-        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
-        sign configurations.archives
+
+        developers {
+            developer {
+                id.set("DjThunder")
+                name.set("Pierre-Alexandre")
+                email.set("contact@b3dgs.com")
+            }
+        }
+
+        scm {
+            url.set("https://github.com/b3dgs/lionengine-core-android")
+        }
     }
 }
 
