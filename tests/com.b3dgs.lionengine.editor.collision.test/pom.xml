@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.b3dgs.lionengine.editor</groupId>
         <artifactId>lionengine-editor-test-parent</artifactId>
-        <version>10.0.0-SNAPSHOT</version>
+        <version>10.0.0</version>
         <relativePath>../../releng/lionengine-editor-test-parent/pom.xml</relativePath>
     </parent>
     <artifactId>com.b3dgs.lionengine.editor.collision.test</artifactId>

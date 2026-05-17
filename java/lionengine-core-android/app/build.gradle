@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.b3dgs.lionengine'
-version = '10.0.0-SNAPSHOT'
+version = '10.0.0'
 
 android {
     signingConfigs {
@@ -46,7 +46,7 @@ afterEvaluate {
                 from components.release
                 group = 'com.b3dgs.lionengine'
                 artifactId = 'lionengine-core-android'
-                version = '10.0.0-SNAPSHOT'
+                version = '10.0.0'
 
                 pom {
                     name = 'LionEngine Core Android'
@@ -95,6 +95,6 @@ afterEvaluate {
 dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 
-    implementation 'com.b3dgs:b3dgs-parent:2.0.0-SNAPSHOT'
-    implementation 'com.b3dgs.lionengine:lionengine-core:10.0.0-SNAPSHOT'
+    implementation 'com.b3dgs:b3dgs-parent:2.0.0'
+    implementation 'com.b3dgs.lionengine:lionengine-core:10.0.0'
 }

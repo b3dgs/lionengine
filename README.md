@@ -87,7 +87,7 @@ Add LionEngine to your Maven project:
 <dependency>
     <groupId>com.b3dgs.lionengine</groupId>
     <artifactId>lionengine-core</artifactId>
-    <version>10.0.0-SNAPSHOT</version>
+    <version>10.0.0</version>
 </dependency>
 ```
 
