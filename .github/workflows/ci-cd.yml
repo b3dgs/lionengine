@@ -228,7 +228,7 @@ jobs:
          run: |
             cd java/lionengine-core-android
             chmod +x gradlew
-            ./gradlew publish -Pkeystore=keystore.jks
+            ./gradlew publishAndReleaseToMavenCentral -Pkeystore=keystore.jks
 
    editor:
       runs-on: windows-latest
