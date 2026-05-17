@@ -158,7 +158,7 @@ jobs:
             name: jacoco-linux
             path: jacoco-linux.zip
 
-   android:
+   core-android:
       runs-on: ubuntu-latest
       steps:
 
@@ -218,8 +218,8 @@ jobs:
 
       -  name: Gradle
          env:
-            ORG_GRADLE_PROJECT_mavenUsername: ${{ env.MAVEN_USERNAME }}
-            ORG_GRADLE_PROJECT_mavenPassword: ${{ env.MAVEN_PASSWORD }}
+            ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ env.MAVEN_USERNAME }}
+            ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ env.MAVEN_PASSWORD }}
             ORG_GRADLE_PROJECT_keystore.alias: ${{ secrets.KEYSTORE_ALIAS }}
             ORG_GRADLE_PROJECT_keystore.storepassword: ${{ secrets.KEYSTORE_PASS }}
             ORG_GRADLE_PROJECT_keystore.password: ${{ secrets.KEYSTORE_PASS }}
