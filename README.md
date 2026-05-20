@@ -8,7 +8,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=b3dgs_lionengine&metric=coverage)](https://sonarcloud.io/summary/new_code?id=b3dgs_lionengine)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=b3dgs_lionengine&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=b3dgs_lionengine)
 [![Maven Central](https://maven-badges.sml.io/maven-central/com.b3dgs.lionengine/lionengine-core/badge.svg)](https://maven-badges.sml.io/maven-central/com.b3dgs.lionengine/lionengine-core)
-[![Dev](https://img.shields.io/badge/dev-v10.0.0%20SNAPSHOT-yellow.svg)](https://github.com/b3dgs/lionengine/milestone/34)
+[![Dev](https://img.shields.io/badge/dev-v11.0.0%20SNAPSHOT-yellow.svg)](https://github.com/b3dgs/lionengine/milestone/34)
 [![License](https://img.shields.io/github/license/b3dgs/lionengine)](/LICENSE)
 
 [🌐 Website](https://www.b3dgs.com/v7/page.php?lang=en&section=lionengine) · [📦 Download](https://lionengine.b3dgs.com/v9-0/page.php?lang=en&section=downloads) · [📚 Tutorials](https://lionengine.b3dgs.com) · [🔍 Maven Central](https://search.maven.org/search?q=com.b3dgs.lionengine)
@@ -87,7 +87,7 @@ Add LionEngine to your Maven project:
 <dependency>
     <groupId>com.b3dgs.lionengine</groupId>
     <artifactId>lionengine-core</artifactId>
-    <version>10.0.0</version>
+    <version>11.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
