@@ -38,7 +38,6 @@ final class RasterbarImpl implements Rasterbar
 
     private final Graphic graphic;
 
-    private int phSize;
     private int phBits;
     private int[] phKeys;
     private int[][] phVals;
@@ -154,7 +153,7 @@ final class RasterbarImpl implements Rasterbar
         }
 
         // CHECKSTYLE IGNORE LINE: MagicNumber
-        phSize = Integer.highestOneBit(paletteSize * 4 - 1) << 1;
+        final int phSize = Integer.highestOneBit(paletteSize * 4 - 1) << 1;
         phBits = Integer.numberOfTrailingZeros(phSize);
         phKeys = new int[phSize];
         phVals = new int[phSize][];

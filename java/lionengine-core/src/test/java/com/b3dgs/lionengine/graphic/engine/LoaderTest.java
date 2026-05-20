@@ -156,7 +156,8 @@ final class LoaderTest
         {
             LOGGER.info("*********************************** EXPECTED VERBOSE ***********************************");
 
-            assertThrows(() -> Loader.startAsync(CONFIG, SequenceSingleMock.class).await(), "Unable to get screen ready !");
+            assertThrows(() -> Loader.startAsync(CONFIG, SequenceSingleMock.class).await(),
+                         "Unable to get screen ready !");
         }
         finally
         {
@@ -175,7 +176,10 @@ final class LoaderTest
         {
             final CountDownLatch waitUpdate = new CountDownLatch(1);
             final CountDownLatch waitScreenUnready = new CountDownLatch(1);
-            final TaskFuture task = Loader.startAsync(CONFIG, SequenceScreenNotReady.class, waitUpdate, waitScreenUnready);
+            final TaskFuture task = Loader.startAsync(CONFIG,
+                                                      SequenceScreenNotReady.class,
+                                                      waitUpdate,
+                                                      waitScreenUnready);
 
             assertTimeout(10_000L, waitUpdate::await);
             ScreenMock.setScreenWait(true);

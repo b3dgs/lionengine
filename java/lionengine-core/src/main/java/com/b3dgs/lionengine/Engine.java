@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * This class is Thread-Safe.
  * </p>
  * 
- * @version 10.0.0
+ * @version 11.0.0
  * @since 13 June 2010
  */
 public abstract class Engine
