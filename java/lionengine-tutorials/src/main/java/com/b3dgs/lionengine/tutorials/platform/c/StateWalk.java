@@ -51,7 +51,7 @@ public final class StateWalk extends StateHelper<EntityModel>
     {
         super.onCollided(result, category);
 
-        if (category.getAxis() == Axis.X)
+        if (category.axis() == Axis.X)
         {
             movement.zero();
         }

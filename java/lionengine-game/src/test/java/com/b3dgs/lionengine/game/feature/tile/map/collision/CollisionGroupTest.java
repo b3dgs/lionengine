@@ -62,7 +62,7 @@ final class CollisionGroupTest
     void testGroup()
     {
         assertEquals("group", group.getName());
-        assertEquals(formula, group.getFormulas().iterator().next());
+        assertEquals(formula, group.formulas().iterator().next());
     }
 
     /**

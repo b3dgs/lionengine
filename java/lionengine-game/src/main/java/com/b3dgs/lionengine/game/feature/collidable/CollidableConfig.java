@@ -119,24 +119,4 @@ public record CollidableConfig(Integer group, Collection<Integer> accepted)
         }
         node.writeString(ATT_ACCEPTED, accepted.toString());
     }
-
-    /**
-     * Get the defined group.
-     * 
-     * @return The defined group.
-     */
-    public Integer getGroup()
-    {
-        return group;
-    }
-
-    /**
-     * Get the accepted groups.
-     * 
-     * @return The accepted groups.
-     */
-    public Collection<Integer> getAccepted()
-    {
-        return accepted;
-    }
 }

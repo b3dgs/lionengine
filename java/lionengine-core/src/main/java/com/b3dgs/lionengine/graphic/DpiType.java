@@ -60,8 +60,8 @@ public enum DpiType
         Check.notNull(baseline);
         Check.notNull(target);
 
-        final double x = target.getWidth() / (double) baseline.getWidth();
-        final double y = target.getHeight() / (double) baseline.getHeight();
+        final double x = target.width() / (double) baseline.width();
+        final double y = target.height() / (double) baseline.height();
         final double factor = Math.min(x, y);
 
         final DpiType type;

@@ -107,10 +107,7 @@ public class FormulaList extends ObjectListAbstract<CollisionFormula> implements
     @Override
     protected CollisionFormula copyObject(CollisionFormula formula)
     {
-        return new CollisionFormula(formula.getName(),
-                                    formula.getRange(),
-                                    formula.getFunction(),
-                                    formula.getConstraint());
+        return new CollisionFormula(formula.getName(), formula.range(), formula.function(), formula.constraint());
     }
 
     @Override

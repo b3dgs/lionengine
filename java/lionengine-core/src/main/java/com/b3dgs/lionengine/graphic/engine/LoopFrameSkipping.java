@@ -66,8 +66,8 @@ public final class LoopFrameSkipping implements Loop
     private static boolean hasSync(Screen screen)
     {
         final Config config = screen.getConfig();
-        final Resolution output = config.getOutput();
-        return config.isWindowed() && output.getRate() > 0;
+        final Resolution output = config.output();
+        return config.windowed() && output.rate() > 0;
     }
 
     /** Extrapolation base. */
@@ -117,7 +117,7 @@ public final class LoopFrameSkipping implements Loop
         final boolean sync = hasSync(screen);
         if (maxFrameTimeNano < 0)
         {
-            notifyRateChanged(screen.getConfig().getOutput().getRate());
+            notifyRateChanged(screen.getConfig().output().rate());
         }
         long currentTimeNano = System.nanoTime();
         double acc = 0.0;

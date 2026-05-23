@@ -129,7 +129,7 @@ public final class ImageBufferSwt implements ImageBuffer
     public void setRgb(int x, int y, int rgb)
     {
         final ColorRgba rgba = new ColorRgba(rgb);
-        final RGB color = new RGB(rgba.getRed(), rgba.getGreen(), rgba.getBlue());
+        final RGB color = new RGB(rgba.red(), rgba.green(), rgba.blue());
         final int pixel = data.palette.getPixel(color);
         data.setPixel(x, y, pixel);
         image.dispose();
@@ -152,9 +152,9 @@ public final class ImageBufferSwt implements ImageBuffer
         final RGB rgb = data.palette.getRGB(pixel);
         if (alpha == 0)
         {
-            return new ColorRgba(rgb.red, rgb.green, rgb.blue, 255).getRgba();
+            return new ColorRgba(rgb.red, rgb.green, rgb.blue, 255).rgba();
         }
-        return new ColorRgba(rgb.red, rgb.green, rgb.blue, data.getAlpha(x, y)).getRgba();
+        return new ColorRgba(rgb.red, rgb.green, rgb.blue, data.getAlpha(x, y)).rgba();
     }
 
     @Override

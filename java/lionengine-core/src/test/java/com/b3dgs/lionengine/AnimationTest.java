@@ -85,11 +85,11 @@ final class AnimationTest
         final Animation animation = new Animation("name", 1, 2, 3.5, true, false);
 
         assertEquals("name", animation.getName());
-        assertEquals(1, animation.getFirst());
-        assertEquals(2, animation.getLast());
-        assertEquals(3.5, animation.getSpeed());
-        assertTrue(animation.hasReverse());
-        assertFalse(animation.hasRepeat());
+        assertEquals(1, animation.firstFrame());
+        assertEquals(2, animation.lastFrame());
+        assertEquals(3.5, animation.speed());
+        assertTrue(animation.reverse());
+        assertFalse(animation.repeat());
         assertEquals(2, animation.getFrames());
     }
 

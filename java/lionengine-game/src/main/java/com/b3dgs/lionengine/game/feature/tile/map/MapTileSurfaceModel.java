@@ -176,19 +176,17 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
         tilesPerSheet = -1;
 
         final TileSheetsConfig config = TileSheetsConfig.imports(sheetsConfig);
-        final List<String> configSheets = config.getSheets();
+        final List<String> configSheets = config.sheets();
         final int sheetsCount = configSheets.size();
         sheets = new SpriteTiled[sheetsCount];
-        tileWidth = config.getTileWidth();
-        tileHeight = config.getTileHeight();
+        tileWidth = config.tileWidth();
+        tileHeight = config.tileHeight();
 
         for (int sheetId = 0; sheetId < sheetsCount; sheetId++)
         {
             final String sheetFile = configSheets.get(sheetId);
             final Media sheetMedia = Medias.create(sheetsConfig.getParentPath(), sheetFile);
-            final SpriteTiled sheet = Drawable.loadSpriteTiled(sheetMedia,
-                                                               config.getTileWidth(),
-                                                               config.getTileHeight());
+            final SpriteTiled sheet = Drawable.loadSpriteTiled(sheetMedia, config.tileWidth(), config.tileHeight());
             sheet.load();
             sheet.prepare();
 

@@ -241,24 +241,4 @@ public record FeaturableConfig(String clazz, String setup)
         Check.notNull(clazz);
         Check.notNull(setup);
     }
-
-    /**
-     * Get the class name node value.
-     * 
-     * @return The class name node value.
-     */
-    public String getClassName()
-    {
-        return clazz;
-    }
-
-    /**
-     * Get the setup class name node value.
-     * 
-     * @return The setup class name node value, {@link Constant#EMPTY_STRING} if undefined.
-     */
-    public String getSetupName()
-    {
-        return setup;
-    }
 }

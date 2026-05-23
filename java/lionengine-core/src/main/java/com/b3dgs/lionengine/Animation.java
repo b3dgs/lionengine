@@ -53,7 +53,6 @@ package com.b3dgs.lionengine;
 public record Animation(String name, int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
                        implements Nameable<Animation>
 {
-
     /** Animation default name. */
     public static final String DEFAULT_NAME = "default_anim";
     /** The minimum frame number. */
@@ -81,26 +80,6 @@ public record Animation(String name, int firstFrame, int lastFrame, double speed
     }
 
     /**
-     * Get the first frame.
-     * 
-     * @return The first frame.
-     */
-    public int getFirst()
-    {
-        return firstFrame;
-    }
-
-    /**
-     * Get the last frame.
-     * 
-     * @return The last frame.
-     */
-    public int getLast()
-    {
-        return lastFrame;
-    }
-
-    /**
      * Get frames number.
      * 
      * @return The frames number.
@@ -108,36 +87,6 @@ public record Animation(String name, int firstFrame, int lastFrame, double speed
     public int getFrames()
     {
         return lastFrame - firstFrame + 1;
-    }
-
-    /**
-     * Get the animation speed.
-     * 
-     * @return The animation speed.
-     */
-    public double getSpeed()
-    {
-        return speed;
-    }
-
-    /**
-     * Get the reverse state.
-     * 
-     * @return The reverse state.
-     */
-    public boolean hasReverse()
-    {
-        return reverse;
-    }
-
-    /**
-     * Get the repeat state.
-     * 
-     * @return The repeat state.
-     */
-    public boolean hasRepeat()
-    {
-        return repeat;
     }
 
     @Override

@@ -366,7 +366,7 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
                 offset = 0;
             }
             final double b = (index + offset) * map.getTileHeight() / 2.0;
-            return new CollisionFunctionLinear(linear.getA() * -side, b);
+            return new CollisionFunctionLinear(linear.a() * -side, b);
         }
         return function;
     }

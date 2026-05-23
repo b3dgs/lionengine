@@ -89,7 +89,7 @@ public class ConstraintsExtractTest
         final Collection<Integer> expected = constraints.get(new Transition(TransitionType.CENTER, group, group));
         final Collection<TileGroup> groups = TileGroupsConfig.imports(UtilEditorTests.getMedia(TileGroupsConfig.FILENAME));
 
-        final Collection<Integer> all = groups.iterator().next().getTiles();
+        final Collection<Integer> all = groups.iterator().next().tiles();
         Assert.assertTrue(expected + " " + all, all.containsAll(expected));
     }
 

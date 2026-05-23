@@ -84,46 +84,6 @@ public record ActionRef(String path,
         Check.notNull(refs);
     }
 
-    /**
-     * Get media path.
-     * 
-     * @return The media path.
-     */
-    public String getPath()
-    {
-        return path;
-    }
-
-    /**
-     * Get the cancel flag.
-     * 
-     * @return The cancel flag.
-     */
-    public boolean hasCancel()
-    {
-        return cancel;
-    }
-
-    /**
-     * Get the unique flag.
-     * 
-     * @return The unique flag.
-     */
-    public boolean isUnique()
-    {
-        return unique;
-    }
-
-    /**
-     * Get the associated actions.
-     * 
-     * @return The associated actions.
-     */
-    public Collection<ActionRef> getRefs()
-    {
-        return refs;
-    }
-
     @Override
     public int hashCode()
     {

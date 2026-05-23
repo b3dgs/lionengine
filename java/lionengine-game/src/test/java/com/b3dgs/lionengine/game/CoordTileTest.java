@@ -38,8 +38,8 @@ final class CoordTileTest
     {
         final CoordTile coord = new CoordTile(1, 2);
 
-        assertEquals(1, coord.getX());
-        assertEquals(2, coord.getY());
+        assertEquals(1, coord.tx());
+        assertEquals(2, coord.ty());
     }
 
     /**

@@ -36,7 +36,7 @@ final class TransitionTest
     {
         final Transition transition = new Transition(TransitionType.CENTER, "a", "b");
 
-        assertEquals(TransitionType.CENTER, transition.getType());
+        assertEquals(TransitionType.CENTER, transition.type());
         assertEquals("a", transition.getIn());
         assertEquals("b", transition.getOut());
     }

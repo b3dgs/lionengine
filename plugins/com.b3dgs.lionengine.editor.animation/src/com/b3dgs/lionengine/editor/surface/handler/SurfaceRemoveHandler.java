@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationsConfig;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.SurfaceConfig;
@@ -52,7 +52,7 @@ public final class SurfaceRemoveHandler
         final Configurer configurer = (Configurer) properties.getData();
         final Xml root = configurer.getRoot();
         root.removeChild(SurfaceConfig.NODE_SURFACE);
-        root.removeChildren(AnimationConfig.NODE_ANIMATION);
+        root.removeChildren(AnimationsConfig.NODE_ANIMATION);
         configurer.save();
         for (final TreeItem item : properties.getItems())
         {
@@ -60,7 +60,7 @@ public final class SurfaceRemoveHandler
             if (SurfaceConfig.ATT_IMAGE.equals(data)
                 || SurfaceConfig.ATT_ICON.equals(data)
                 || FramesConfig.NODE_FRAMES.equals(data)
-                || AnimationConfig.NODE_ANIMATION.equals(data))
+                || AnimationsConfig.NODE_ANIMATION.equals(data))
             {
                 part.clear(item);
             }

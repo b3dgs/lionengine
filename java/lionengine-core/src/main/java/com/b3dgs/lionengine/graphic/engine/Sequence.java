@@ -80,14 +80,14 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     private int split;
 
     /**
-     * Constructor base. Resolution will be based on {@link Config#getOutput()}.
+     * Constructor base. Resolution will be based on {@link Config#output()}.
      * 
      * @param context The context reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
     protected Sequence(Context context)
     {
-        this(context, context.getConfig().getOutput());
+        this(context, context.getConfig().output());
     }
 
     /**
@@ -122,8 +122,8 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         this.resolution = resolution;
         this.loop = loop;
         config = context.getConfig();
-        width = resolution.getWidth();
-        height = resolution.getHeight();
+        width = resolution.width();
+        height = resolution.height();
 
         setSplit0();
     }
@@ -143,7 +143,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         {
             renderer[i].initResolution(resolution);
         }
-        onResolutionChanged(resolution.getWidth(), resolution.getHeight());
+        onResolutionChanged(resolution.width(), resolution.height());
     }
 
     @Override
@@ -353,7 +353,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
             renderer[i].setScreen(screen);
             renderer[i].initResolution(resolution);
         }
-        currentFrameRate = config.getOutput().getRate();
+        currentFrameRate = config.output().rate();
         screen.requestFocus();
 
         if (!loaded)
@@ -453,11 +453,11 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     public void setTime(double factor)
     {
         final double scale = UtilMath.clamp(factor, 0.1, 5.0);
-        final Resolution time = new Resolution(resolution.getWidth(),
-                                               resolution.getHeight(),
-                                               (int) (resolution.getRate() * scale));
-        loop.notifyRateChanged(time.getRate());
-        onRateChanged(time.getRate());
+        final Resolution time = new Resolution(resolution.width(),
+                                               resolution.height(),
+                                               (int) (resolution.rate() * scale));
+        loop.notifyRateChanged(time.rate());
+        onRateChanged(time.rate());
     }
 
     @Override
@@ -565,7 +565,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     @Override
     public final int getRate()
     {
-        return resolution.getRate();
+        return resolution.rate();
     }
 
     /**

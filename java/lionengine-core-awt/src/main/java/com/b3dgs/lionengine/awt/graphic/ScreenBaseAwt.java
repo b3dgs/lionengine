@@ -70,8 +70,7 @@ class ScreenBaseAwt extends ScreenAwtAbstract
         frame = initMainFrame();
 
         final java.awt.DisplayMode desktop = dev.getDisplayMode();
-        if (desktop.getWidth() == config.getOutput().getWidth()
-            && desktop.getHeight() == config.getOutput().getHeight())
+        if (desktop.getWidth() == config.output().width() && desktop.getHeight() == config.output().height())
         {
             frame.setUndecorated(true);
         }

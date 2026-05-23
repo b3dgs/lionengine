@@ -127,7 +127,7 @@ public class PathfindingEditDialog extends DialogAbstract
             final Xml nodeCategory = root.createChild(PathfindingConfig.NODE_TILE_PATH);
             nodeCategory.writeString(PathfindingConfig.ATT_CATEGORY, category.getName());
 
-            for (final String group : category.getGroups())
+            for (final String group : category.groups())
             {
                 final Xml nodeGroup = nodeCategory.createChild(TileGroupsConfig.NODE_GROUP);
                 nodeGroup.setText(group);

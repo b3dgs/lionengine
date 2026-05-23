@@ -118,13 +118,13 @@ public class AnimationProperties extends ObjectPropertiesAbstract<Animation> imp
     @Override
     public void notifyObjectSelected(Animation animation)
     {
-        setValueDefault(firstFrame, String.valueOf(animation.getFirst()));
-        setValueDefault(lastFrame, String.valueOf(animation.getLast()));
-        setValueDefault(speed, String.valueOf(animation.getSpeed()));
-        setButtonSelection(reverseAnim, animation.hasReverse());
-        setButtonSelection(repeatAnim, animation.hasRepeat());
+        setValueDefault(firstFrame, String.valueOf(animation.firstFrame()));
+        setValueDefault(lastFrame, String.valueOf(animation.lastFrame()));
+        setValueDefault(speed, String.valueOf(animation.speed()));
+        setButtonSelection(reverseAnim, animation.reverse());
+        setButtonSelection(repeatAnim, animation.repeat());
 
-        frameSelector.setSelectedFrames(animation.getFirst(), animation.getLast());
+        frameSelector.setSelectedFrames(animation.firstFrame(), animation.lastFrame());
     }
 
     @Override

@@ -51,10 +51,10 @@ public class PropertiesSurface implements PropertiesProviderObject
     {
         final SurfaceConfig surface = SurfaceConfig.imports(configurer);
         final TreeItem surfaceItem = new TreeItem(properties, SWT.NONE);
-        PropertiesPart.createLine(surfaceItem, Messages.Surface, surface.getImage());
+        PropertiesPart.createLine(surfaceItem, Messages.Surface, surface.image());
         surfaceItem.setData(SurfaceConfig.ATT_IMAGE);
         surfaceItem.setImage(ICON_SURFACE);
-        surface.getIcon().ifPresent(icon -> createAttributeIcon(properties, icon));
+        surface.icon().ifPresent(icon -> createAttributeIcon(properties, icon));
     }
 
     /**

@@ -73,8 +73,8 @@ final class BodyConfigTest
 
         final BodyConfig config = BodyConfig.imports(new Setup(media));
 
-        assertEquals(1.0, config.getGravity());
-        assertEquals(2.0, config.getGravityMax());
+        assertEquals(1.0, config.gravity());
+        assertEquals(2.0, config.gravityMax());
         assertTrue(media.getFile().delete());
     }
 

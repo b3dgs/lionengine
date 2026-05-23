@@ -83,8 +83,8 @@ public class BodyModel extends FeatureModel implements Body, Recyclable
     private void readConfig()
     {
         final BodyConfig config = BodyConfig.imports(setup);
-        gravity = config.getGravity();
-        gravityMax.setDirection(0.0, -config.getGravityMax());
+        gravity = config.gravity();
+        gravityMax.setDirection(0.0, -config.gravityMax());
         force.setDirectionMaximum(DirectionNone.INSTANCE);
         force.setDirectionMinimum(gravityMax);
     }

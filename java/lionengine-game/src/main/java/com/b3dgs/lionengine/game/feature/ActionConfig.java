@@ -39,7 +39,6 @@ import com.b3dgs.lionengine.game.Configurer;
  */
 public record ActionConfig(String name, String description, int x, int y, int width, int height)
 {
-
     /** Action node name. */
     public static final String NODE_ACTION = Constant.XML_PREFIX + "action";
     /** Action attribute name. */
@@ -103,12 +102,12 @@ public record ActionConfig(String name, String description, int x, int y, int wi
         Check.notNull(config);
 
         final Xml nodeAction = new Xml(NODE_ACTION);
-        nodeAction.writeString(ATT_NAME, config.getName());
-        nodeAction.writeString(ATT_DESCRIPTION, config.getDescription());
-        nodeAction.writeInteger(ATT_X, config.getX());
-        nodeAction.writeInteger(ATT_Y, config.getY());
-        nodeAction.writeInteger(ATT_WIDTH, config.getWidth());
-        nodeAction.writeInteger(ATT_HEIGHT, config.getHeight());
+        nodeAction.writeString(ATT_NAME, config.name());
+        nodeAction.writeString(ATT_DESCRIPTION, config.description());
+        nodeAction.writeInteger(ATT_X, config.x());
+        nodeAction.writeInteger(ATT_Y, config.y());
+        nodeAction.writeInteger(ATT_WIDTH, config.width());
+        nodeAction.writeInteger(ATT_HEIGHT, config.height());
 
         return nodeAction;
     }
@@ -128,65 +127,5 @@ public record ActionConfig(String name, String description, int x, int y, int wi
     {
         Check.notNull(name);
         Check.notNull(description);
-    }
-
-    /**
-     * Get the action name.
-     *
-     * @return The action name.
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-    /**
-     * Get the action description.
-     *
-     * @return The action description.
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-    /**
-     * Get the button horizontal location.
-     *
-     * @return The button horizontal location.
-     */
-    public int getX()
-    {
-        return x;
-    }
-
-    /**
-     * Get the button vertical location.
-     *
-     * @return The button vertical location.
-     */
-    public int getY()
-    {
-        return y;
-    }
-
-    /**
-     * Get the button width.
-     *
-     * @return The button width.
-     */
-    public int getWidth()
-    {
-        return width;
-    }
-
-    /**
-     * Get the button height.
-     *
-     * @return The button height.
-     */
-    public int getHeight()
-    {
-        return height;
     }
 }

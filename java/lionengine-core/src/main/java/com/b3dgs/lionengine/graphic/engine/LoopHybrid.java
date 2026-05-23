@@ -111,7 +111,7 @@ public final class LoopHybrid implements Loop
         long lastTimeNano = System.nanoTime() - Math.round(renderFrameTimeNano);
         acc = renderFrameTimeNano;
 
-        final boolean windowed = screen.getConfig().isWindowed();
+        final boolean windowed = screen.getConfig().windowed();
         final Runnable action = windowed ? this::pause : () ->
         {
             // Void

@@ -40,11 +40,11 @@ final class KernelTest
             1.0, 2.0
         });
 
-        assertEquals(320, kernel.getWidth());
+        assertEquals(320, kernel.width());
         assertArrayEquals(new double[]
         {
             1.0, 2.0
-        }, kernel.getMatrix());
+        }, kernel.matrix());
     }
 
     /**

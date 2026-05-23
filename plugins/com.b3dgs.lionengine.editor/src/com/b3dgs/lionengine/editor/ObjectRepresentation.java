@@ -69,7 +69,7 @@ public class ObjectRepresentation extends FeaturableModel
                 transformable.setSize(sprite.getTileWidth(), sprite.getTileHeight());
             }
             final FramesConfig frames = FramesConfig.imports(setup);
-            sprite.setFrameOffsets(frames.getOffsetX(), frames.getOffsetY());
+            sprite.setFrameOffsets(frames.offsetX(), frames.offsetY());
             return sprite;
         }
         catch (@SuppressWarnings("unused") final LionEngineException exception)
@@ -103,7 +103,7 @@ public class ObjectRepresentation extends FeaturableModel
         try
         {
             final FramesConfig frames = FramesConfig.imports(configurer);
-            return Drawable.loadSpriteAnimated(surface, frames.getHorizontal(), frames.getVertical());
+            return Drawable.loadSpriteAnimated(surface, frames.horizontals(), frames.verticals());
         }
         catch (final LionEngineException exception)
         {
@@ -138,8 +138,8 @@ public class ObjectRepresentation extends FeaturableModel
         final Sprite surface = getSprite(setup, transformable);
         origin = OriginConfig.imports(setup);
 
-        final FramesConfig framesData = FramesConfig.imports(setup);
-        surface.setFrameOffsets(framesData.getOffsetX(), framesData.getOffsetY());
+        final FramesConfig frames = FramesConfig.imports(setup);
+        surface.setFrameOffsets(frames.offsetX(), frames.offsetY());
         surface.setOrigin(origin);
 
         addFeature(new RefreshableModel(extrp ->

@@ -101,7 +101,7 @@ public final class Patrol extends FeatureModel
     @Override
     public void notifyTileCollided(CollisionResult result, CollisionCategory category)
     {
-        if (Axis.X == category.getAxis())
+        if (Axis.X == category.axis())
         {
             if (category.getName().startsWith("right"))
             {

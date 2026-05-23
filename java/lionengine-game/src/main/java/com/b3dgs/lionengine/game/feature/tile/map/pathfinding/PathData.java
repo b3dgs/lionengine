@@ -60,26 +60,6 @@ public record PathData(String category, double cost, boolean blocking, Collectio
     }
 
     /**
-     * Get the cost value.
-     * 
-     * @return The cost value.
-     */
-    public double getCost()
-    {
-        return cost;
-    }
-
-    /**
-     * Get the blocking state.
-     * 
-     * @return <code>true</code> if blocking, <code>false</code> else.
-     */
-    public boolean isBlocking()
-    {
-        return blocking;
-    }
-
-    /**
      * Check if the movement is allowed.
      * 
      * @param movement The movement to check.

@@ -46,7 +46,6 @@ public record LauncherConfig(int level,
                              boolean centered,
                              Collection<LaunchableConfig> launchables)
 {
-
     /** Launcher node name. */
     public static final String NODE_LAUNCHER = Constant.XML_PREFIX + "launcher";
     /** Level attribute name. */
@@ -121,65 +120,15 @@ public record LauncherConfig(int level,
         Check.notNull(config);
 
         final Xml node = new Xml(NODE_LAUNCHER);
-        node.writeInteger(ATT_LEVEL, config.getLevel());
-        node.writeInteger(ATT_DELAY, config.getDelay());
-        node.writeBoolean(ATT_MIRRORABLE, config.hasMirrorable());
+        node.writeInteger(ATT_LEVEL, config.level());
+        node.writeInteger(ATT_DELAY, config.delay());
+        node.writeBoolean(ATT_MIRRORABLE, config.mirrorable());
 
-        for (final LaunchableConfig launchable : config.getLaunchables())
+        for (final LaunchableConfig launchable : config.launchables())
         {
             node.add(LaunchableConfig.exports(launchable));
         }
 
         return node;
-    }
-
-    /**
-     * Get the associated level.
-     * 
-     * @return The associated level.
-     */
-    public int getLevel()
-    {
-        return level;
-    }
-
-    /**
-     * Get the launch delay value.
-     * 
-     * @return The launch delay value.
-     */
-    public int getDelay()
-    {
-        return delay;
-    }
-
-    /**
-     * Get the mirrorable flag.
-     * 
-     * @return <code>true</code> if apply mirror on fire if present, <code>false</code> else.
-     */
-    public boolean hasMirrorable()
-    {
-        return mirrorable;
-    }
-
-    /**
-     * Get the centered flag.
-     * 
-     * @return <code>true</code> if center on fire if present, <code>false</code> else.
-     */
-    public boolean isCentered()
-    {
-        return centered;
-    }
-
-    /**
-     * Get the launchables configuration as read only.
-     * 
-     * @return The launchables configuration.
-     */
-    public Iterable<LaunchableConfig> getLaunchables()
-    {
-        return launchables;
     }
 }

@@ -30,53 +30,5 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
  */
 public record CollisionRange(Axis output, int minX, int maxX, int minY, int maxY)
 {
-    /**
-     * Get the output target.
-     * 
-     * @return The output target.
-     */
-    public Axis getOutput()
-    {
-        return output;
-    }
-
-    /**
-     * Get the minimum horizontal accepted value.
-     * 
-     * @return The minimum horizontal accepted value.
-     */
-    public int getMinX()
-    {
-        return minX;
-    }
-
-    /**
-     * Get the maximum horizontal accepted value.
-     * 
-     * @return The maximum horizontal accepted value.
-     */
-    public int getMaxX()
-    {
-        return maxX;
-    }
-
-    /**
-     * Get the minimum vertical accepted value.
-     * 
-     * @return The minimum vertical accepted value.
-     */
-    public int getMinY()
-    {
-        return minY;
-    }
-
-    /**
-     * Get the maximum vertical accepted value.
-     * 
-     * @return The maximum vertical accepted value.
-     */
-    public int getMaxY()
-    {
-        return maxY;
-    }
+    // Record
 }

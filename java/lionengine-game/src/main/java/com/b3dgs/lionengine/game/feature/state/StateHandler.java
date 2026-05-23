@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.XmlReader;
-import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationsConfig;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -258,11 +258,11 @@ public class StateHandler extends FeatureModel implements RoutineUpdate, Recycla
 
         try
         {
-            if (setup.hasNode(AnimationConfig.NODE_ANIMATIONS))
+            if (setup.hasNode(AnimationsConfig.NODE_ANIMATIONS))
             {
-                final AnimationConfig configAnimations = AnimationConfig.imports(setup);
+                final AnimationsConfig animationsConfig = AnimationsConfig.imports(setup);
                 final String name = converter.apply(state);
-                final Animation animation = configAnimations.getAnimation(name);
+                final Animation animation = animationsConfig.get(name);
                 final Class<? extends Feature> feature;
                 final Constructor<? extends State> c = UtilReflection.getCompatibleConstructor(state,
                                                                                                FeatureProvider.class,

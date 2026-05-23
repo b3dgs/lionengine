@@ -77,9 +77,9 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
         {
             final ProducibleConfig configProducible = ProducibleConfig.imports(setup);
             media = setup.getMedia();
-            steps = configProducible.getSteps();
-            width = configProducible.getWidth();
-            height = configProducible.getHeight();
+            steps = configProducible.steps();
+            width = configProducible.width();
+            height = configProducible.height();
         }
         else
         {

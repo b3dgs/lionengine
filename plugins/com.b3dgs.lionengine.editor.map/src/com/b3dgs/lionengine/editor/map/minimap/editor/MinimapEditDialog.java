@@ -130,7 +130,7 @@ public class MinimapEditDialog extends DialogAbstract
             final int x = tile.intValue() % th;
             final int y = tile.intValue() / th;
             final ColorRgba c = current.getValue();
-            final Color color = new Color(device, c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
+            final Color color = new Color(device, c.red(), c.green(), c.blue(), c.alpha());
             data.get(tile).put(new Point(x, y), color);
         }
     }

@@ -83,36 +83,6 @@ public record CollisionFormula(String name,
         Check.notNull(name);
     }
 
-    /**
-     * Get the range used.
-     * 
-     * @return The range used.
-     */
-    public CollisionRange getRange()
-    {
-        return range;
-    }
-
-    /**
-     * Get the function used.
-     * 
-     * @return The function used.
-     */
-    public CollisionFunction getFunction()
-    {
-        return function;
-    }
-
-    /**
-     * Get the constraint defined.
-     * 
-     * @return The constraint defined.
-     */
-    public CollisionConstraint getConstraint()
-    {
-        return constraint;
-    }
-
     @Override
     public String getName()
     {

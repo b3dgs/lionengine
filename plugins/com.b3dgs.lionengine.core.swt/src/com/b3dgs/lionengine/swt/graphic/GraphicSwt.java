@@ -237,8 +237,8 @@ final class GraphicSwt implements Graphic
         {
             lastColor.dispose();
         }
-        lastColor = new Color(device, color.getRed(), color.getGreen(), color.getBlue());
-        gc.setAlpha(color.getAlpha());
+        lastColor = new Color(device, color.red(), color.green(), color.blue());
+        gc.setAlpha(color.alpha());
         gc.setBackground(lastColor);
         gc.setForeground(lastColor);
     }
@@ -246,8 +246,8 @@ final class GraphicSwt implements Graphic
     @Override
     public void setColorGradient(ColorGradient gc)
     {
-        final ColorRgba color1 = gc.getColor1();
-        final ColorRgba color2 = gc.getColor2();
+        final ColorRgba color1 = gc.color1();
+        final ColorRgba color2 = gc.color2();
         if (gradientColor1 != null)
         {
             gradientColor1.dispose();
@@ -256,8 +256,8 @@ final class GraphicSwt implements Graphic
         {
             gradientColor2.dispose();
         }
-        gradientColor1 = new Color(device, color1.getRed(), color1.getGreen(), color1.getBlue());
-        gradientColor2 = new Color(device, color2.getRed(), color2.getGreen(), color2.getBlue());
+        gradientColor1 = new Color(device, color1.red(), color1.green(), color1.blue());
+        gradientColor2 = new Color(device, color2.red(), color2.green(), color2.blue());
     }
 
     @Override

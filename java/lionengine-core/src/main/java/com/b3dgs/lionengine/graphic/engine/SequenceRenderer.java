@@ -143,8 +143,8 @@ public final class SequenceRenderer implements Rasterbar
         source = computeSource(resolution);
         screen.onSourceChanged(source);
 
-        w = source.getWidth();
-        h = source.getHeight();
+        w = source.width();
+        h = source.height();
 
         buf = Graphics.createImageBuffer(w, h);
         transform = getTransform();
@@ -304,11 +304,9 @@ public final class SequenceRenderer implements Rasterbar
     {
         if (scaleDivX > 0 && scaleDivY > 0)
         {
-            return new Resolution(resolution.getWidth() * scaleDivY,
-                                  resolution.getHeight() * scaleDivX,
-                                  resolution.getRate());
+            return new Resolution(resolution.width() * scaleDivY, resolution.height() * scaleDivX, resolution.rate());
         }
-        return new Resolution(resolution.getWidth(), resolution.getHeight(), resolution.getRate());
+        return new Resolution(resolution.width(), resolution.height(), resolution.rate());
     }
 
     /**
@@ -316,8 +314,8 @@ public final class SequenceRenderer implements Rasterbar
      */
     private void computePosition()
     {
-        final double fw = config.getOutput().getWidth() / (double) source.getWidth();
-        final double fh = config.getOutput().getHeight() / (double) source.getHeight();
+        final double fw = config.output().width() / (double) source.width();
+        final double fh = config.output().height() / (double) source.height();
 
         if (id == RENDERER_SPLIT_RIGHT || id == RENDERER_QUAD_TOP_RIGHT)
         {
@@ -372,15 +370,15 @@ public final class SequenceRenderer implements Rasterbar
      */
     private Transform getTransform()
     {
-        final Resolution output = config.getOutput();
+        final Resolution output = config.output();
         final int scale = filter.getScale();
 
-        double scaleY = output.getHeight() / ((double) source.getHeight() * scale);
+        double scaleY = output.height() / ((double) source.height() * scale);
 
         if (scaleDivX == 0
             && scaleDivY == 0
-            && UtilMath.equals(output.getWidth() / (double) output.getHeight(),
-                               source.getWidth() * 2 / ((double) source.getHeight() * scale),
+            && UtilMath.equals(output.width() / (double) output.height(),
+                               source.width() * 2 / ((double) source.height() * scale),
                                SCALE_PRECISION))
         {
             return filter.getTransform(scaleY, scaleY);
@@ -389,17 +387,17 @@ public final class SequenceRenderer implements Rasterbar
         final double scaleX;
         if (scaleDivX == 0 && scaleDivY == 0)
         {
-            scaleX = output.getWidth() / ((double) source.getWidth() * scale);
+            scaleX = output.width() / ((double) source.width() * scale);
         }
         else if (scaleDivX == 1 && scaleDivY == 1)
         {
-            scaleX = output.getWidth() / ((double) source.getWidth() * scale) / 2;
-            scaleY = output.getHeight() / ((double) source.getHeight() * scale) / 2;
+            scaleX = output.width() / ((double) source.width() * scale) / 2;
+            scaleY = output.height() / ((double) source.height() * scale) / 2;
         }
         else
         {
-            scaleX = output.getWidth() / ((double) source.getWidth() * scale) / scaleDivX;
-            scaleY = output.getHeight() / ((double) source.getHeight() * scale) / scaleDivY;
+            scaleX = output.width() / ((double) source.width() * scale) / scaleDivX;
+            scaleY = output.height() / ((double) source.height() * scale) / scaleDivY;
         }
 
         return filter.getTransform(scaleX, scaleY);

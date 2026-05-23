@@ -87,8 +87,8 @@ public record SurfaceConfig(String image, Optional<String> icon)
         Check.notNull(config);
 
         final Xml node = new Xml(NODE_SURFACE);
-        node.writeString(ATT_IMAGE, config.getImage());
-        config.getIcon().ifPresent(icon -> node.writeString(ATT_ICON, icon));
+        node.writeString(ATT_IMAGE, config.image());
+        config.icon().ifPresent(icon -> node.writeString(ATT_ICON, icon));
 
         return node;
     }
@@ -103,25 +103,5 @@ public record SurfaceConfig(String image, Optional<String> icon)
     public SurfaceConfig
     {
         Check.notNull(image);
-    }
-
-    /**
-     * Get the image descriptor.
-     * 
-     * @return The image descriptor.
-     */
-    public String getImage()
-    {
-        return image;
-    }
-
-    /**
-     * Get the icon descriptor.
-     * 
-     * @return The icon descriptor.
-     */
-    public Optional<String> getIcon()
-    {
-        return icon;
     }
 }

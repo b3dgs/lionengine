@@ -129,7 +129,7 @@ public final class TransitionsConfig
             final Transition transition = entry.getKey();
 
             final Xml nodeTransition = nodeTransitions.createChild(NODE_TRANSITION);
-            nodeTransition.writeEnum(ATTRIBUTE_TRANSITION_TYPE, transition.getType());
+            nodeTransition.writeEnum(ATTRIBUTE_TRANSITION_TYPE, transition.type());
             nodeTransition.writeString(ATTRIBUTE_GROUP_IN, transition.getIn());
             nodeTransition.writeString(ATTRIBUTE_GROUP_OUT, transition.getOut());
 

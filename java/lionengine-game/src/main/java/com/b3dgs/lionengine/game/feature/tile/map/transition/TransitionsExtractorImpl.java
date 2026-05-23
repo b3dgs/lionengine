@@ -74,7 +74,7 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
         {
             getTiles(transitions, transition).add(tile.getKey());
 
-            final Transition symetric = new Transition(transition.getType().getSymetric(),
+            final Transition symetric = new Transition(transition.type().getSymetric(),
                                                        transition.getOut(),
                                                        transition.getIn());
             getTiles(transitions, symetric).add(tile.getKey());

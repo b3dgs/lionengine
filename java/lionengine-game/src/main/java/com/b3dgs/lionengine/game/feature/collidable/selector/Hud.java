@@ -71,9 +71,9 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
         final int v;
         if (setup.hasNode(FramesConfig.NODE_FRAMES))
         {
-            final FramesConfig config = FramesConfig.imports(setup);
-            h = config.getHorizontal();
-            v = config.getVertical();
+            final FramesConfig frames = FramesConfig.imports(setup);
+            h = frames.horizontals();
+            v = frames.verticals();
         }
         else
         {
@@ -256,11 +256,11 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
             {
                 listenable.get(i).notifyCreated(last, menu);
             }
-            if (!action.getRefs().isEmpty())
+            if (!action.refs().isEmpty())
             {
                 generateSubMenu(actions, action, menu);
             }
-            else if (action.hasCancel())
+            else if (action.cancel())
             {
                 previous.put(action, parents);
                 generateCancel(action, menu);
@@ -279,7 +279,7 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
         Actionable menu = menus.get(action);
         if (menu == null)
         {
-            final Featurable featurable = factory.create(Medias.create(PATH.split(action.getPath())));
+            final Featurable featurable = factory.create(Medias.create(PATH.split(action.path())));
             handler.add(featurable);
             menu = featurable.getFeature(Actionable.class);
             menus.put(action, menu);
@@ -301,7 +301,7 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
         menu.setAction(() ->
         {
             clearMenus();
-            createMenus(parents, action.getRefs());
+            createMenus(parents, action.refs());
         });
     }
 

@@ -39,7 +39,6 @@ import com.b3dgs.lionengine.game.Configurer;
  */
 public record AttackerConfig(int delay, int distanceMin, int distanceMax, int damagesMin, int damagesMax)
 {
-
     /** Attacker node name. */
     public static final String NODE_ATTACKER = Constant.XML_PREFIX + "attacker";
     /** Attack delay attribute name. */
@@ -100,23 +99,13 @@ public record AttackerConfig(int delay, int distanceMin, int distanceMax, int da
         Check.notNull(config);
 
         final Xml node = new Xml(NODE_ATTACKER);
-        node.writeInteger(ATT_DELAY, config.getDelay());
-        node.writeInteger(ATT_DISTANCE_MIN, config.getDistance().getMin());
-        node.writeInteger(ATT_DISTANCE_MAX, config.getDistance().getMax());
-        node.writeInteger(ATT_DAMAGES_MIN, config.getDamages().getMin());
-        node.writeInteger(ATT_DAMAGES_MAX, config.getDamages().getMax());
+        node.writeInteger(ATT_DELAY, config.delay());
+        node.writeInteger(ATT_DISTANCE_MIN, config.getDistance().min());
+        node.writeInteger(ATT_DISTANCE_MAX, config.getDistance().max());
+        node.writeInteger(ATT_DAMAGES_MIN, config.getDamages().min());
+        node.writeInteger(ATT_DAMAGES_MAX, config.getDamages().max());
 
         return node;
-    }
-
-    /**
-     * Get delay between attacks in tick.
-     * 
-     * @return The delay between attacks in tick.
-     */
-    public int getDelay()
-    {
-        return delay;
     }
 
     /**

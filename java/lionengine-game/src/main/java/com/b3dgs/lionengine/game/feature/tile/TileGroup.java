@@ -84,26 +84,6 @@ public record TileGroup(String name, TileGroupType type, Set<Integer> tiles) imp
         return tiles.contains(number);
     }
 
-    /**
-     * Get the group type.
-     * 
-     * @return The group type.
-     */
-    public TileGroupType getType()
-    {
-        return type;
-    }
-
-    /**
-     * Get the tiles inside group.
-     * 
-     * @return The tiles inside group (as reference).
-     */
-    public Set<Integer> getTiles()
-    {
-        return tiles;
-    }
-
     @Override
     public String getName()
     {

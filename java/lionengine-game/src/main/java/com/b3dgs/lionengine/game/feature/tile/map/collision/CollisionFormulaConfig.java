@@ -89,9 +89,9 @@ public record CollisionFormulaConfig(Map<String, CollisionFormula> formulas)
         final Xml node = root.createChild(NODE_FORMULA);
         node.writeString(ATT_NAME, formula.getName());
 
-        CollisionRangeConfig.exports(node, formula.getRange());
-        CollisionFunctionConfig.exports(node, formula.getFunction());
-        CollisionConstraintConfig.exports(node, formula.getConstraint());
+        CollisionRangeConfig.exports(node, formula.range());
+        CollisionFunctionConfig.exports(node, formula.function());
+        CollisionConstraintConfig.exports(node, formula.constraint());
     }
 
     /**

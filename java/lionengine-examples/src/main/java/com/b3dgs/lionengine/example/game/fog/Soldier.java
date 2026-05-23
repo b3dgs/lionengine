@@ -61,7 +61,7 @@ public final class Soldier extends FeatureModel implements RoutineUpdate
     public void update(double extrp)
     {
         tick.update(extrp);
-        if (tick.elapsed(Scene.NATIVE.getRate()))
+        if (tick.elapsed(Scene.NATIVE.rate()))
         {
             pathfindable.setLocation(UtilRandom.getRandomInteger(19), UtilRandom.getRandomInteger(14));
             tick.restart();

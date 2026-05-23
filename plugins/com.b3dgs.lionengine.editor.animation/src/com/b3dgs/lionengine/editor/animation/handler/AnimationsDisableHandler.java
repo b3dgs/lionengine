@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationsConfig;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -47,13 +47,13 @@ public final class AnimationsDisableHandler
     {
         final Tree tree = PropertiesModel.INSTANCE.getTree();
         final Configurer configurer = (Configurer) tree.getData();
-        configurer.getRoot().removeChildren(AnimationConfig.NODE_ANIMATION);
+        configurer.getRoot().removeChildren(AnimationsConfig.NODE_ANIMATION);
         configurer.save();
 
         final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
         for (final TreeItem item : tree.getItems())
         {
-            if (AnimationConfig.NODE_ANIMATION.equals(item.getData()))
+            if (AnimationsConfig.NODE_ANIMATION.equals(item.getData()))
             {
                 part.clear(item);
             }

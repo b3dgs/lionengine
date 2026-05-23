@@ -74,10 +74,9 @@ public final class AnimationRenderer implements PaintListener
         this.parent = parent;
         animationRunner = new AnimationRunner(parent.getDisplay());
         g = Graphics.createGraphic();
-        final SurfaceConfig configSurface = SurfaceConfig.imports(configurer);
-        final Media media = Medias.get(new File(configurer.getPath(), configSurface.getImage()));
-        final FramesConfig framesData = FramesConfig.imports(configurer);
-        surface = Drawable.loadSpriteAnimated(media, framesData.getHorizontal(), framesData.getVertical());
+        final Media media = Medias.get(new File(configurer.getPath(), SurfaceConfig.imports(configurer).image()));
+        final FramesConfig frames = FramesConfig.imports(configurer);
+        surface = Drawable.loadSpriteAnimated(media, frames.horizontals(), frames.verticals());
         surface.load();
         surface.prepare();
 
@@ -122,7 +121,7 @@ public final class AnimationRenderer implements PaintListener
             surface.stop();
             surface.update(1.0);
             surface.play(animation);
-            lastFirstFrame = animation.getFirst();
+            lastFirstFrame = animation.firstFrame();
             parent.redraw();
         }
         parent.getDisplay().timerExec(AnimationRenderer.TIMER_INTERVAL_MILLI, animationRunner);

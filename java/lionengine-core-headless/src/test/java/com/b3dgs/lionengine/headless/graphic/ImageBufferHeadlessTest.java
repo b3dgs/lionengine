@@ -66,16 +66,16 @@ final class ImageBufferHeadlessTest
 
         image.prepare();
 
-        assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(0, 0));
+        assertEquals(ColorRgba.TRANSPARENT.rgba(), image.getRgb(0, 0));
         assertNotNull(image.getRgb(0, 0, 1, 1, new int[1], 0, 0));
         assertEquals(Transparency.OPAQUE, image.getTransparency());
         assertEquals(Transparency.OPAQUE, new ImageBufferHeadless(100, 100, Transparency.OPAQUE).getTransparency());
         assertEquals(100, image.getWidth());
         assertEquals(100, image.getHeight());
 
-        image.setRgb(0, 0, ColorRgba.BLUE.getRgba());
+        image.setRgb(0, 0, ColorRgba.BLUE.rgba());
 
-        assertEquals(ColorRgba.BLUE.getRgba(), image.getRgb(0, 0));
+        assertEquals(ColorRgba.BLUE.rgba(), image.getRgb(0, 0));
 
         image.setRgb(0, 0, 0, 0, new int[1], 0, 0);
 
@@ -102,21 +102,21 @@ final class ImageBufferHeadlessTest
     {
         final ImageBufferHeadless image = new ImageBufferHeadless(100, 200, Transparency.BITMASK);
         final int[] array = new int[3 * 3];
-        Arrays.fill(array, ColorRgba.BLUE.getRgba());
+        Arrays.fill(array, ColorRgba.BLUE.rgba());
 
-        assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(0, 0));
-        assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(1, 1));
-        assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(2, 2));
+        assertEquals(ColorRgba.TRANSPARENT.rgba(), image.getRgb(0, 0));
+        assertEquals(ColorRgba.TRANSPARENT.rgba(), image.getRgb(1, 1));
+        assertEquals(ColorRgba.TRANSPARENT.rgba(), image.getRgb(2, 2));
 
         image.setRgb(1, 1, 1, 1, array, 0, 1);
 
-        assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(0, 0));
-        assertEquals(ColorRgba.BLUE.getRgba(), image.getRgb(1, 1));
-        assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(2, 2));
+        assertEquals(ColorRgba.TRANSPARENT.rgba(), image.getRgb(0, 0));
+        assertEquals(ColorRgba.BLUE.rgba(), image.getRgb(1, 1));
+        assertEquals(ColorRgba.TRANSPARENT.rgba(), image.getRgb(2, 2));
 
-        Arrays.fill(array, ColorRgba.TRANSPARENT.getRgba());
+        Arrays.fill(array, ColorRgba.TRANSPARENT.rgba());
         final int[] expected = new int[3 * 3];
-        expected[0] = ColorRgba.BLUE.getRgba();
+        expected[0] = ColorRgba.BLUE.rgba();
         image.getRgb(1, 1, 1, 1, array, 0, 9);
 
         assertArrayEquals(expected, array);

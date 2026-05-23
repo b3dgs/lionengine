@@ -37,7 +37,6 @@ import com.b3dgs.lionengine.game.SizeConfig;
  */
 public record ProducibleConfig(int steps, int width, int height)
 {
-
     /** Producible root node. */
     public static final String NODE_PRODUCIBLE = Constant.XML_PREFIX + "producible";
     /** Production steps attribute name. */
@@ -72,7 +71,7 @@ public record ProducibleConfig(int steps, int width, int height)
         final SizeConfig size = SizeConfig.imports(root);
         final int time = node.getInteger(ATT_STEPS);
 
-        return new ProducibleConfig(time, size.getWidth(), size.getHeight());
+        return new ProducibleConfig(time, size.width(), size.height());
     }
 
     /**
@@ -87,38 +86,8 @@ public record ProducibleConfig(int steps, int width, int height)
         Check.notNull(config);
 
         final Xml node = new Xml(NODE_PRODUCIBLE);
-        node.writeInteger(ATT_STEPS, config.getSteps());
+        node.writeInteger(ATT_STEPS, config.steps());
 
         return node;
-    }
-
-    /**
-     * Get the production width.
-     *
-     * @return The production width.
-     */
-    public int getWidth()
-    {
-        return width;
-    }
-
-    /**
-     * Get the production height.
-     *
-     * @return The production height.
-     */
-    public int getHeight()
-    {
-        return height;
-    }
-
-    /**
-     * Get the production steps number.
-     *
-     * @return The production steps number.
-     */
-    public int getSteps()
-    {
-        return steps;
     }
 }

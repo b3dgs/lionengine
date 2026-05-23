@@ -88,13 +88,13 @@ public class MapTileCollisionRendererModel extends FeatureAbstract implements Ma
      */
     private static void renderCollision(Graphic g, CollisionFormula formula, int th, int x, int y)
     {
-        final CollisionFunction function = formula.getFunction();
-        final CollisionRange range = formula.getRange();
-        switch (range.getOutput())
+        final CollisionFunction function = formula.function();
+        final CollisionRange range = formula.range();
+        switch (range.output())
         {
             case X -> renderX(g, function, range, th, y);
             case Y -> renderY(g, function, range, th, x);
-            default -> throw new LionEngineException(range.getOutput());
+            default -> throw new LionEngineException(range.output());
         }
     }
 
@@ -109,7 +109,7 @@ public class MapTileCollisionRendererModel extends FeatureAbstract implements Ma
      */
     private static void renderX(Graphic g, CollisionFunction function, CollisionRange range, int th, int y)
     {
-        if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
+        if (UtilMath.isBetween(y, range.minY(), range.maxY()))
         {
             g.drawRect(function.getRenderX(y), th - y - 1, 0, 0, false);
         }
@@ -126,7 +126,7 @@ public class MapTileCollisionRendererModel extends FeatureAbstract implements Ma
      */
     private static void renderY(Graphic g, CollisionFunction function, CollisionRange range, int th, int x)
     {
-        if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
+        if (UtilMath.isBetween(x, range.minX(), range.maxX()))
         {
             g.drawRect(x, th - function.getRenderY(x) - 1, 0, 0, false);
         }

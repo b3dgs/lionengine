@@ -67,16 +67,16 @@ final class ImageBufferAwtTest
         image.prepare();
 
         assertEquals(buffer, image.getSurface());
-        assertEquals(ColorRgba.BLACK.getRgba(), image.getRgb(0, 0));
+        assertEquals(ColorRgba.BLACK.rgba(), image.getRgb(0, 0));
         assertNotNull(image.getRgb(0, 0, 1, 1, new int[1], 0, 0));
         assertEquals(Transparency.OPAQUE, image.getTransparency());
         assertEquals(Transparency.OPAQUE, ToolsAwt.getImageBuffer(ToolsAwt.copyImage(buffer)).getTransparency());
         assertEquals(buffer.getWidth(), image.getWidth());
         assertEquals(buffer.getHeight(), image.getHeight());
 
-        image.setRgb(0, 0, ColorRgba.BLUE.getRgba());
+        image.setRgb(0, 0, ColorRgba.BLUE.rgba());
 
-        assertEquals(ColorRgba.BLUE.getRgba(), image.getRgb(0, 0));
+        assertEquals(ColorRgba.BLUE.rgba(), image.getRgb(0, 0));
 
         image.setRgb(0, 0, 0, 0, new int[1], 0, 0);
         image.dispose();
@@ -93,8 +93,8 @@ final class ImageBufferAwtTest
         assertEquals(Transparency.BITMASK, image.getTransparency());
         assertEquals(ColorRgba.TRANSPARENT, image.getTransparentColor());
 
-        image.setRgb(0, 0, ColorRgba.TRANSPARENT.getRgba());
+        image.setRgb(0, 0, ColorRgba.TRANSPARENT.rgba());
 
-        assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(0, 0));
+        assertEquals(ColorRgba.TRANSPARENT.rgba(), image.getRgb(0, 0));
     }
 }

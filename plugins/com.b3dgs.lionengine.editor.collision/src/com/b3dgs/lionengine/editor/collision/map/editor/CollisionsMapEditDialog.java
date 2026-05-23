@@ -98,7 +98,7 @@ public class CollisionsMapEditDialog extends DialogAbstract
             final Xml nodeCollision = root.createChild(CollisionGroupConfig.NODE_COLLISION);
             nodeCollision.writeString(CollisionGroupConfig.ATT_GROUP, collisionGroup.getName());
 
-            for (final CollisionFormula formula : collisionGroup.getFormulas())
+            for (final CollisionFormula formula : collisionGroup.formulas())
             {
                 final Xml nodeFormula = nodeCollision.createChild(CollisionFormulaConfig.NODE_FORMULA);
                 nodeFormula.setText(formula.getName());

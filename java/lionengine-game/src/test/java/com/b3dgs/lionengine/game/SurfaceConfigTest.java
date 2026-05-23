@@ -114,8 +114,8 @@ final class SurfaceConfigTest
     {
         final SurfaceConfig config = new SurfaceConfig("image", Optional.empty());
 
-        assertEquals("image", config.getImage());
-        assertFalse(config.getIcon().isPresent());
+        assertEquals("image", config.image());
+        assertFalse(config.icon().isPresent());
     }
 
     /**

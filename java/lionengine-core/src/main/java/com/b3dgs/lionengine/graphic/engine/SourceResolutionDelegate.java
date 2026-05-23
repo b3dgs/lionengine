@@ -37,7 +37,7 @@ public record SourceResolutionDelegate(IntSupplier width, IntSupplier height, In
      */
     public SourceResolutionDelegate(Resolution resolution)
     {
-        this(resolution::getWidth, resolution::getHeight, resolution::getRate);
+        this(resolution::width, resolution::height, resolution::rate);
     }
 
     @Override

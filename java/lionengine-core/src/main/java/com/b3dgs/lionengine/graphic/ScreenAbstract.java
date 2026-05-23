@@ -60,7 +60,7 @@ public abstract class ScreenAbstract implements Screen
 
         this.config = config;
         this.readyTimeoutMilli = readyTimeoutMilli;
-        for (final InputDevice device : config.getDevices())
+        for (final InputDevice device : config.devices())
         {
             devices.put(device.getClass(), device);
         }
@@ -73,7 +73,7 @@ public abstract class ScreenAbstract implements Screen
     @Override
     public void start()
     {
-        setIcons(config.getIcons());
+        setIcons(config.icons());
     }
 
     @Override

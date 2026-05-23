@@ -63,9 +63,9 @@ final class TileSheetsConfigTest
 
         final TileSheetsConfig config = TileSheetsConfig.imports(media);
 
-        assertEquals(16, config.getTileWidth());
-        assertEquals(32, config.getTileHeight());
-        assertArrayEquals(Arrays.asList("sheet").toArray(), config.getSheets().toArray());
+        assertEquals(16, config.tileWidth());
+        assertEquals(32, config.tileHeight());
+        assertArrayEquals(Arrays.asList("sheet").toArray(), config.sheets().toArray());
 
         assertTrue(media.getFile().delete());
     }

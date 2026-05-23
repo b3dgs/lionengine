@@ -76,7 +76,7 @@ public final class PlayerModel extends EntityModelHelper implements RoutineUpdat
 
         tileCollidable.addListener((result, category) ->
         {
-            if (Axis.Y == category.getAxis() && transformable.getY() < transformable.getOldY())
+            if (Axis.Y == category.axis() && transformable.getY() < transformable.getOldY())
             {
                 body.resetGravity();
                 jump.setDirection(DirectionNone.INSTANCE);

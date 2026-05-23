@@ -68,10 +68,10 @@ public final class LoopExtrapolated implements Loop
         Check.notNull(frame);
 
         final Config config = screen.getConfig();
-        final Resolution output = config.getOutput();
-        final boolean sync = config.isWindowed() && output.getRate() > 0;
+        final Resolution output = config.output();
+        final boolean sync = config.windowed() && output.rate() > 0;
 
-        notifyRateChanged(output.getRate());
+        notifyRateChanged(output.rate());
 
         double extrp = 1.0;
         isRunning = true;

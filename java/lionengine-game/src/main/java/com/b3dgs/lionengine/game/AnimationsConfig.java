@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.Xml;
  * 
  * @see Animation
  */
-public record AnimationConfig(Map<String, Animation> animations)
+public record AnimationsConfig(Map<String, Animation> animations)
 {
     /** Animations node name. */
     public static final String NODE_ANIMATIONS = Constant.XML_PREFIX + "animations";
@@ -66,7 +66,7 @@ public record AnimationConfig(Map<String, Animation> animations)
      * @return The animations configuration instance.
      * @throws LionEngineException If unable to read data.
      */
-    public static AnimationConfig imports(Configurer configurer)
+    public static AnimationsConfig imports(Configurer configurer)
     {
         Check.notNull(configurer);
 
@@ -80,7 +80,7 @@ public record AnimationConfig(Map<String, Animation> animations)
      * @return The animations configuration instance.
      * @throws LionEngineException If unable to read data.
      */
-    public static AnimationConfig imports(AttributesReader root)
+    public static AnimationsConfig imports(AttributesReader root)
     {
         Check.notNull(root);
 
@@ -99,7 +99,7 @@ public record AnimationConfig(Map<String, Animation> animations)
             children.clear();
         }
 
-        return new AnimationConfig(animations);
+        return new AnimationsConfig(animations);
     }
 
     /**
@@ -147,11 +147,11 @@ public record AnimationConfig(Map<String, Animation> animations)
 
         final Xml node = animations.createChild(NODE_ANIMATION);
         node.writeString(ANIMATION_NAME, animation.getName());
-        node.writeInteger(ANIMATION_START, animation.getFirst());
-        node.writeInteger(ANIMATION_END, animation.getLast());
-        node.writeDouble(ANIMATION_SPEED, animation.getSpeed());
-        node.writeBoolean(ANIMATION_REVERSED, animation.hasReverse());
-        node.writeBoolean(ANIMATION_REPEAT, animation.hasRepeat());
+        node.writeInteger(ANIMATION_START, animation.firstFrame());
+        node.writeInteger(ANIMATION_END, animation.lastFrame());
+        node.writeDouble(ANIMATION_SPEED, animation.speed());
+        node.writeBoolean(ANIMATION_REVERSED, animation.reverse());
+        node.writeBoolean(ANIMATION_REPEAT, animation.repeat());
     }
 
     /**
@@ -160,7 +160,7 @@ public record AnimationConfig(Map<String, Animation> animations)
      * @param animations The animations mapping (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public AnimationConfig
+    public AnimationsConfig
     {
         Check.notNull(animations);
     }
@@ -172,7 +172,7 @@ public record AnimationConfig(Map<String, Animation> animations)
      * @return The animation reference.
      * @throws LionEngineException If the animation with the specified name is not found.
      */
-    public Animation getAnimation(String name)
+    public Animation get(String name)
     {
         final Animation animation = animations.get(name);
         if (animation == null)
@@ -188,7 +188,7 @@ public record AnimationConfig(Map<String, Animation> animations)
      * @param name The animation name.
      * @return <code>true</code> if exists, <code>false</code> else.
      */
-    public boolean hasAnimation(String name)
+    public boolean has(String name)
     {
         return animations.containsKey(name);
     }
@@ -198,7 +198,7 @@ public record AnimationConfig(Map<String, Animation> animations)
      * 
      * @return The animations list.
      */
-    public Collection<Animation> getAnimations()
+    public Collection<Animation> get()
     {
         return animations.values();
     }

@@ -36,8 +36,8 @@ final class StepTest
     {
         final Step step = new Step(0, 1);
 
-        assertEquals(0, step.getX());
-        assertEquals(1, step.getY());
+        assertEquals(0, step.x());
+        assertEquals(1, step.y());
     }
 
     /**

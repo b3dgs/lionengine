@@ -43,7 +43,7 @@ public final class StateAttack1 extends StateHelper<EntityModel>
 
         addTransition(StateLast.class, () -> is(AnimState.FINISHED));
         addTransition(StateAttack2.class,
-                      () -> animatable.getFrame() == animation.getLast() && isFireOnce(DeviceMapping.FIRE1));
+                      () -> animatable.getFrame() == animation.lastFrame() && isFireOnce(DeviceMapping.FIRE1));
         addTransition(StateDie.class, model.getHealth()::isEmpty);
     }
 

@@ -53,7 +53,7 @@ public class PathList extends ObjectListAbstract<PathData>
     @Override
     protected PathData copyObject(PathData path)
     {
-        return new PathData(path.getName(), path.getCost(), path.isBlocking(), path.getAllowedMovements());
+        return new PathData(path.getName(), path.cost(), path.blocking(), path.getAllowedMovements());
     }
 
     @Override

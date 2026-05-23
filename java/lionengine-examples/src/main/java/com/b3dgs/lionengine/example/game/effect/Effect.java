@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.AnimatorStateListener;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationsConfig;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -68,8 +68,7 @@ public final class Effect extends FeatureModel
         this.transformable = transformable;
         this.animatable = animatable;
 
-        final AnimationConfig configAnimations = AnimationConfig.imports(setup);
-        animExplode = configAnimations.getAnimation("explode");
+        animExplode = AnimationsConfig.imports(setup).get("explode");
 
         animatable.addListener((AnimatorStateListener) state ->
         {

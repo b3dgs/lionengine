@@ -58,8 +58,8 @@ public final class SequenceArgumentsMock extends Sequence
     @Override
     public void load()
     {
-        width = UtilTests.RESOLUTION_320_240.getWidth();
-        height = UtilTests.RESOLUTION_320_240.getHeight();
+        width = UtilTests.RESOLUTION_320_240.width();
+        height = UtilTests.RESOLUTION_320_240.height();
         config = getConfig();
         setZoom(2.0);
     }

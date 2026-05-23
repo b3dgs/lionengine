@@ -69,8 +69,8 @@ public class GroupProperties extends ObjectPropertiesAbstract<TileGroup> impleme
     public void notifyObjectSelected(TileGroup group)
     {
         tiles.clear();
-        tiles.addAll(group.getTiles());
-        setValueDefault(type, group.getType().name());
+        tiles.addAll(group.tiles());
+        setValueDefault(type, group.type().name());
     }
 
     @Override

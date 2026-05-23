@@ -158,7 +158,7 @@ final class ScreenHeadlessTest
         assertTrue(screen.getY() > -1);
         assertTrue(screen.isReady());
 
-        while (config.isWindowed() && !gained.get())
+        while (config.windowed() && !gained.get())
         {
             continue;
         }

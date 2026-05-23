@@ -186,7 +186,7 @@ final class TextAwt implements Text
     @Override
     public void setColor(ColorRgba color)
     {
-        colorCache.computeIfAbsent(color, c -> new Color(c.getRgba(), true));
+        colorCache.computeIfAbsent(color, c -> new Color(c.rgba(), true));
         this.color = color;
     }
 

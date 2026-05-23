@@ -67,7 +67,7 @@ public final class Racket extends FeatureModel implements RoutineUpdate, Routine
         collidable.setEnabled(true);
         collidable.setCollisionVisibility(false);
 
-        transformable.teleportY(Scene.NATIVE.getHeight() / 2
+        transformable.teleportY(Scene.NATIVE.height() / 2
                                 - transformable.getHeight() / 2
                                 + UtilRandom.getRandomInteger(10));
         speed = UtilRandom.getRandomDouble() + 0.5;

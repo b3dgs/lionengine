@@ -106,9 +106,9 @@ public final class MinimapConfig
         {
             final ColorRgba color = entry.getKey();
             final Xml nodeColor = nodeMinimap.createChild(NODE_COLOR);
-            nodeColor.writeInteger(ATT_COLOR_RED, color.getRed());
-            nodeColor.writeInteger(ATT_COLOR_GREEN, color.getGreen());
-            nodeColor.writeInteger(ATT_COLOR_BLUE, color.getBlue());
+            nodeColor.writeInteger(ATT_COLOR_RED, color.red());
+            nodeColor.writeInteger(ATT_COLOR_GREEN, color.green());
+            nodeColor.writeInteger(ATT_COLOR_BLUE, color.blue());
 
             for (final Integer number : entry.getValue())
             {

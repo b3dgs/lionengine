@@ -67,17 +67,17 @@ final class LauncherConfigTest
         final LaunchableConfig launchable = new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(1, 2, true, true, Arrays.asList(launchable));
 
-        assertEquals("media", launchable.getMedia());
-        assertEquals("sfx", launchable.getSfx().get());
-        assertEquals(10, launchable.getDelay());
-        assertEquals(1, launchable.getOffsetX());
-        assertEquals(2, launchable.getOffsetY());
-        assertEquals(new Force(1.0, 2.0), launchable.getVector());
+        assertEquals("media", launchable.media());
+        assertEquals("sfx", launchable.sfx().get());
+        assertEquals(10, launchable.delay());
+        assertEquals(1, launchable.ox());
+        assertEquals(2, launchable.oy());
+        assertEquals(new Force(1.0, 2.0), launchable.vector());
 
-        assertEquals(1, launcher.getLevel());
-        assertEquals(2, launcher.getDelay());
-        assertTrue(launcher.hasMirrorable());
-        assertTrue(launcher.isCentered());
+        assertEquals(1, launcher.level());
+        assertEquals(2, launcher.delay());
+        assertTrue(launcher.mirrorable());
+        assertTrue(launcher.centered());
     }
 
     /**

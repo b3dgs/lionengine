@@ -24,23 +24,5 @@ package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
  */
 public record CoordTile(int tx, int ty)
 {
-    /**
-     * Get the horizontal tile location.
-     * 
-     * @return The horizontal tile location.
-     */
-    public int getX()
-    {
-        return tx;
-    }
-
-    /**
-     * Get the vertical tile location.
-     * 
-     * @return The vertical tile location.
-     */
-    public int getY()
-    {
-        return ty;
-    }
+    // Record
 }

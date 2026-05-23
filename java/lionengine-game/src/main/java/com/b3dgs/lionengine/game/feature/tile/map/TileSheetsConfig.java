@@ -37,7 +37,6 @@ import com.b3dgs.lionengine.XmlReader;
  */
 public record TileSheetsConfig(int tileWidth, int tileHeight, List<String> sheets)
 {
-
     /** Configuration file name. */
     public static final String FILENAME = "sheets.xml";
     /** Tile sheets node. */
@@ -146,35 +145,5 @@ public record TileSheetsConfig(int tileWidth, int tileHeight, List<String> sheet
         Check.superiorStrict(tileWidth, 0);
         Check.superiorStrict(tileHeight, 0);
         Check.notNull(sheets);
-    }
-
-    /**
-     * Get the tile width.
-     * 
-     * @return The tile width.
-     */
-    public int getTileWidth()
-    {
-        return tileWidth;
-    }
-
-    /**
-     * Get the tile height.
-     * 
-     * @return The tile height.
-     */
-    public int getTileHeight()
-    {
-        return tileHeight;
-    }
-
-    /**
-     * Get the sheets filename defined.
-     * 
-     * @return The sheets filename defined (as reference).
-     */
-    public List<String> getSheets()
-    {
-        return sheets;
     }
 }

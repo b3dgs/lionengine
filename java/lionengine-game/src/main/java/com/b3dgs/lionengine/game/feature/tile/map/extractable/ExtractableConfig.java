@@ -82,29 +82,9 @@ public record ExtractableConfig(String type, int quantity)
         Check.notNull(config);
 
         final Xml node = new Xml(NODE_EXTRACTABLE);
-        node.writeString(ATT_TYPE, config.getType());
-        node.writeInteger(ATT_QUANTITY, config.getQuantity());
+        node.writeString(ATT_TYPE, config.type());
+        node.writeInteger(ATT_QUANTITY, config.quantity());
 
         return node;
-    }
-
-    /**
-     * Get the resource type.
-     * 
-     * @return The resource type.
-     */
-    public String getType()
-    {
-        return type;
-    }
-
-    /**
-     * Get the resource quantity.
-     * 
-     * @return The resource quantity.
-     */
-    public int getQuantity()
-    {
-        return quantity;
     }
 }

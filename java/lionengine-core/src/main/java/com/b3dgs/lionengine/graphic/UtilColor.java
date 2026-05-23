@@ -93,9 +93,9 @@ public final class UtilColor
         Check.notNull(a);
         Check.notNull(b);
 
-        final int dr = a.getRed() - b.getRed();
-        final int dg = a.getGreen() - b.getGreen();
-        final int db = a.getBlue() - b.getBlue();
+        final int dr = a.red() - b.red();
+        final int dg = a.green() - b.green();
+        final int db = a.blue() - b.blue();
 
         return Math.sqrt(dr * (double) dr + dg * (double) dg + db * (double) db);
     }
@@ -123,11 +123,11 @@ public final class UtilColor
             for (int y = 0; y < height; y++)
             {
                 final ColorRgba color = new ColorRgba(surface.getRgb(sx + x, sy + y));
-                if (color.getAlpha() > 0)
+                if (color.alpha() > 0)
                 {
-                    r += color.getRed();
-                    g += color.getGreen();
-                    b += color.getBlue();
+                    r += color.red();
+                    g += color.green();
+                    b += color.blue();
                     count++;
                 }
             }
@@ -155,7 +155,7 @@ public final class UtilColor
         Check.notNull(colorA);
         Check.notNull(colorB);
 
-        return isOpaqueTransparentExclusive(colorA.getRgba(), colorB.getRgba());
+        return isOpaqueTransparentExclusive(colorA.rgba(), colorB.rgba());
     }
 
     /**
@@ -168,8 +168,8 @@ public final class UtilColor
      */
     public static boolean isOpaqueTransparentExclusive(int colorA, int colorB)
     {
-        return colorA == ColorRgba.TRANSPARENT.getRgba() && colorB == ColorRgba.OPAQUE.getRgba()
-               || colorA == ColorRgba.OPAQUE.getRgba() && colorB == ColorRgba.TRANSPARENT.getRgba();
+        return colorA == ColorRgba.TRANSPARENT.rgba() && colorB == ColorRgba.OPAQUE.rgba()
+               || colorA == ColorRgba.OPAQUE.rgba() && colorB == ColorRgba.TRANSPARENT.rgba();
     }
 
     /**

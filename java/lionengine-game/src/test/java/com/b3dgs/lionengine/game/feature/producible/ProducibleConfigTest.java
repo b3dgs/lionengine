@@ -65,7 +65,7 @@ final class ProducibleConfigTest
         final ProducibleConfig producible = new ProducibleConfig(1, 2, 3);
 
         final Xml root = new Xml("test");
-        root.add(SizeConfig.exports(new SizeConfig(producible.getWidth(), producible.getHeight())));
+        root.add(SizeConfig.exports(new SizeConfig(producible.width(), producible.height())));
         root.add(ProducibleConfig.exports(producible));
 
         final Media media = Medias.create("producible.xml");

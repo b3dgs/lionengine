@@ -37,9 +37,9 @@ final class ResolutionTest
     {
         final Resolution resolution = new Resolution(320, 240, 60);
 
-        assertEquals(320, resolution.getWidth());
-        assertEquals(240, resolution.getHeight());
-        assertEquals(60, resolution.getRate());
+        assertEquals(320, resolution.width());
+        assertEquals(240, resolution.height());
+        assertEquals(60, resolution.rate());
     }
 
     /**

@@ -48,6 +48,6 @@ final class GraphicHeadlessTest extends GraphicTest
     {
         final ImageBuffer image = Graphics.createImageBuffer(10, 20);
 
-        assertEquals(ColorRgba.BLACK.getRgba(), Graphics.applyMask(image, ColorRgba.TRANSPARENT).getRgb(0, 0));
+        assertEquals(ColorRgba.BLACK.rgba(), Graphics.applyMask(image, ColorRgba.TRANSPARENT).getRgb(0, 0));
     }
 }

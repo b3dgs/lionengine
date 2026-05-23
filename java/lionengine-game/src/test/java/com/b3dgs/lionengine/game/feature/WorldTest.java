@@ -127,19 +127,19 @@ final class WorldTest
             @Override
             public int getWidth()
             {
-                return output.getWidth();
+                return output.width();
             }
 
             @Override
             public int getHeight()
             {
-                return output.getHeight();
+                return output.height();
             }
 
             @Override
             public int getRate()
             {
-                return output.getRate();
+                return output.rate();
             }
         });
         services.add(new Sequencer()

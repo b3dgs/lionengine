@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationsConfig;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.feature.collidable.Collision;
 
@@ -94,13 +94,13 @@ public record CollidableFramedConfig(Map<Integer, List<Collision>> collisions)
 
         final Map<Integer, List<Collision>> collisions = new HashMap<>(0);
 
-        if (root.hasNode(AnimationConfig.NODE_ANIMATIONS))
+        if (root.hasNode(AnimationsConfig.NODE_ANIMATIONS))
         {
-            final Collection<? extends AttributesReader> children = root.getChild(AnimationConfig.NODE_ANIMATIONS)
-                                                                        .getChildren(AnimationConfig.NODE_ANIMATION);
+            final Collection<? extends AttributesReader> children = root.getChild(AnimationsConfig.NODE_ANIMATIONS)
+                                                                        .getChildren(AnimationsConfig.NODE_ANIMATION);
             for (final AttributesReader node : children)
             {
-                final int start = node.getInteger(AnimationConfig.ANIMATION_START);
+                final int start = node.getInteger(AnimationsConfig.ANIMATION_START);
                 for (final AttributesReader framed : node.getChildren(NODE_COLLISION_FRAMED))
                 {
                     importFrame(node, framed, start, collisions);
@@ -163,7 +163,7 @@ public record CollidableFramedConfig(Map<Integer, List<Collision>> collisions)
         }
         else
         {
-            final int end = node.getInteger(AnimationConfig.ANIMATION_END);
+            final int end = node.getInteger(AnimationsConfig.ANIMATION_END);
             for (int number = start; number <= end; number++)
             {
                 final Collision collision = createCollision(name, framed, number - start + 1);
@@ -184,7 +184,7 @@ public record CollidableFramedConfig(Map<Integer, List<Collision>> collisions)
      */
     private static String getFrameName(AttributesReader node, AttributesReader framed)
     {
-        final String anim = node.getString(AnimationConfig.ANIMATION_NAME);
+        final String anim = node.getString(AnimationsConfig.ANIMATION_NAME);
         final String prefix = framed.getStringDefault(Constant.EMPTY_STRING, ATT_PREFIX);
         if (prefix.isEmpty())
         {

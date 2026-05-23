@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationsConfig;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FramesConfig;
 
@@ -55,7 +55,7 @@ public final class FramesRemoveHandler
         for (final TreeItem item : properties.getItems())
         {
             if (FramesConfig.NODE_FRAMES.equals(item.getData())
-                || AnimationConfig.NODE_ANIMATION.equals(item.getData()))
+                || AnimationsConfig.NODE_ANIMATION.equals(item.getData()))
             {
                 part.clear(item);
             }

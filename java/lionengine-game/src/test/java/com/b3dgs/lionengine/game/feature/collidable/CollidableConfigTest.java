@@ -78,8 +78,8 @@ final class CollidableConfigTest
         root.save(media);
 
         final CollidableConfig config = CollidableConfig.imports(new Configurer(media));
-        assertEquals(1, config.getGroup().intValue());
-        assertIterableEquals(Arrays.asList(Integer.valueOf(1), Integer.valueOf(2)), config.getAccepted());
+        assertEquals(1, config.group().intValue());
+        assertIterableEquals(Arrays.asList(Integer.valueOf(1), Integer.valueOf(2)), config.accepted());
         assertTrue(media.getFile().delete());
     }
 
@@ -109,7 +109,7 @@ final class CollidableConfigTest
         final Xml root = new Xml("test");
         root.save(media);
 
-        assertEquals(CollidableConfig.DEFAULT_GROUP, CollidableConfig.imports(new Configurer(media)).getGroup());
+        assertEquals(CollidableConfig.DEFAULT_GROUP, CollidableConfig.imports(new Configurer(media)).group());
         assertTrue(media.getFile().delete());
     }
 
@@ -135,8 +135,8 @@ final class CollidableConfigTest
         root.save(media);
 
         final CollidableConfig config = CollidableConfig.imports(new Configurer(media));
-        assertEquals(Integer.valueOf(1), config.getGroup());
-        assertTrue(config.getAccepted().isEmpty());
+        assertEquals(Integer.valueOf(1), config.group());
+        assertTrue(config.accepted().isEmpty());
         assertTrue(media.getFile().delete());
     }
 
@@ -164,8 +164,8 @@ final class CollidableConfigTest
         root.save(media);
 
         final CollidableConfig config = CollidableConfig.imports(new Configurer(media));
-        assertEquals(Integer.valueOf(1), config.getGroup());
-        assertIterableEquals(Arrays.asList(Integer.valueOf(2), Integer.valueOf(3)), config.getAccepted());
+        assertEquals(Integer.valueOf(1), config.group());
+        assertIterableEquals(Arrays.asList(Integer.valueOf(2), Integer.valueOf(3)), config.accepted());
         assertTrue(media.getFile().delete());
     }
 

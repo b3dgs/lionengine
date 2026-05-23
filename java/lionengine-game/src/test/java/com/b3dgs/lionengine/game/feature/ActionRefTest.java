@@ -97,17 +97,17 @@ final class ActionRefTest
     @Test
     void testGetter()
     {
-        assertEquals("path", actionRef1.getPath());
-        assertEquals("path2", actionRef2.getPath());
+        assertEquals("path", actionRef1.path());
+        assertEquals("path2", actionRef2.path());
 
-        assertFalse(actionRef1.hasCancel());
-        assertTrue(actionRef2.hasCancel());
+        assertFalse(actionRef1.cancel());
+        assertTrue(actionRef2.cancel());
 
-        assertFalse(actionRef1.isUnique());
-        assertTrue(actionRef2.isUnique());
+        assertFalse(actionRef1.unique());
+        assertTrue(actionRef2.unique());
 
-        assertTrue(actionRef1.getRefs().isEmpty());
-        assertEquals(actionRef1, actionRef2.getRefs().iterator().next());
+        assertTrue(actionRef1.refs().isEmpty());
+        assertEquals(actionRef1, actionRef2.refs().iterator().next());
     }
 
     /**

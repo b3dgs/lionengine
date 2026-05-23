@@ -163,7 +163,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
             final AttackerConfig config = AttackerConfig.imports(setup);
             damages.setDamages(config.getDamages());
             distAttack = config.getDistance();
-            attackPause = config.getDelay();
+            attackPause = config.delay();
             tick.set(attackPause);
         }
     }
@@ -417,7 +417,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     {
         Check.notNull(range);
 
-        damages.setDamages(range.getMin(), range.getMax());
+        damages.setDamages(range.min(), range.max());
     }
 
     @Override

@@ -30,7 +30,7 @@ public final class Scene extends SequenceGame<World>
     /** Original display. */
     public static final Resolution NATIVE_RESOLUTION = new Resolution(320, 180, 60);
     /** Default display. */
-    public static final Resolution DEFAULT_RESOLUTION = new Resolution(1280, 720, NATIVE_RESOLUTION.getRate());
+    public static final Resolution DEFAULT_RESOLUTION = new Resolution(1280, 720, NATIVE_RESOLUTION.rate());
 
     /**
      * Create the scene.

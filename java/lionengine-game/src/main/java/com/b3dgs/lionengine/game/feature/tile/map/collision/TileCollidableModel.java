@@ -164,7 +164,7 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     {
         final CollisionCategory category = result.getCategory();
         if ((!Double.isNaN(result.getX()) || !Double.isNaN(result.getY()))
-            && Boolean.TRUE.equals(enabledAxis.get(category.getAxis())))
+            && Boolean.TRUE.equals(enabledAxis.get(category.axis())))
         {
             onCollided(result, category);
         }

@@ -92,18 +92,18 @@ final class UtilColorTest
                     for (int a = 0; a < Constant.UNSIGNED_BYTE; a += step)
                     {
                         final ColorRgba color = new ColorRgba(r, g, b, a);
-                        final ColorRgba colorInc = new ColorRgba(UtilColor.inc(color.getRgba(), r, g, b));
+                        final ColorRgba colorInc = new ColorRgba(UtilColor.inc(color.rgba(), r, g, b));
 
                         if (r != 0 && g != 0 && b != 0 && r != 255 && g != 255 && b != 255)
                         {
-                            assertNotEquals(color.getRgba(), colorInc.getRgba());
+                            assertNotEquals(color.rgba(), colorInc.rgba());
                         }
                         if (a != 0 || r <= 0 && g <= 0 && b <= 0)
                         {
-                            assertEquals(color.getAlpha(), colorInc.getAlpha());
-                            assertEquals(UtilMath.clamp(color.getRed() + r, 0, 255), colorInc.getRed());
-                            assertEquals(UtilMath.clamp(color.getGreen() + g, 0, 255), colorInc.getGreen());
-                            assertEquals(UtilMath.clamp(color.getBlue() + b, 0, 255), colorInc.getBlue());
+                            assertEquals(color.alpha(), colorInc.alpha());
+                            assertEquals(UtilMath.clamp(color.red() + r, 0, 255), colorInc.red());
+                            assertEquals(UtilMath.clamp(color.green() + g, 0, 255), colorInc.green());
+                            assertEquals(UtilMath.clamp(color.blue() + b, 0, 255), colorInc.blue());
                         }
                     }
                 }
@@ -118,7 +118,7 @@ final class UtilColorTest
     void testOpaqueTransparentExclusive()
     {
         assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.BLACK, ColorRgba.WHITE));
-        assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.BLUE.getRgba(), ColorRgba.RED.getRgba()));
+        assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.BLUE.rgba(), ColorRgba.RED.rgba()));
 
         assertTrue(UtilColor.isOpaqueTransparentExclusive(ColorRgba.TRANSPARENT, ColorRgba.BLACK));
         assertTrue(UtilColor.isOpaqueTransparentExclusive(ColorRgba.TRANSPARENT, ColorRgba.OPAQUE));
@@ -135,10 +135,10 @@ final class UtilColorTest
     @Test
     void testFilterRgb()
     {
-        assertEquals(ColorRgba.BLACK.getRgba(), UtilColor.multiplyRgb(ColorRgba.WHITE.getRgba(), 0.0, 0.0, 0.0));
-        assertEquals(ColorRgba.BLUE.getRgba(), UtilColor.multiplyRgb(ColorRgba.CYAN.getRgba(), 1.0, 0.0, 1.0));
-        assertEquals(ColorRgba.GREEN.getRgba(), UtilColor.multiplyRgb(ColorRgba.YELLOW.getRgba(), 0.0, 1.0, 1.0));
-        assertEquals(ColorRgba.RED.getRgba(), UtilColor.multiplyRgb(ColorRgba.PURPLE.getRgba(), 1.0, 1.0, 0.0));
+        assertEquals(ColorRgba.BLACK.rgba(), UtilColor.multiplyRgb(ColorRgba.WHITE.rgba(), 0.0, 0.0, 0.0));
+        assertEquals(ColorRgba.BLUE.rgba(), UtilColor.multiplyRgb(ColorRgba.CYAN.rgba(), 1.0, 0.0, 1.0));
+        assertEquals(ColorRgba.GREEN.rgba(), UtilColor.multiplyRgb(ColorRgba.YELLOW.rgba(), 0.0, 1.0, 1.0));
+        assertEquals(ColorRgba.RED.rgba(), UtilColor.multiplyRgb(ColorRgba.PURPLE.rgba(), 1.0, 1.0, 0.0));
 
         assertTrue(UtilColor.multiplyRgb(0, -1, -1, -1) >= 0);
 
@@ -156,10 +156,10 @@ final class UtilColorTest
         assertEquals(ColorRgba.TRANSPARENT,
                      UtilColor.getWeightedColor(surface, 0, 0, surface.getWidth(), surface.getHeight()));
 
-        surface.setRgb(0, 0, ColorRgba.RED.getRgba());
-        surface.setRgb(0, 1, ColorRgba.BLUE.getRgba());
-        surface.setRgb(1, 0, ColorRgba.GREEN.getRgba());
-        surface.setRgb(1, 1, ColorRgba.WHITE.getRgba());
+        surface.setRgb(0, 0, ColorRgba.RED.rgba());
+        surface.setRgb(0, 1, ColorRgba.BLUE.rgba());
+        surface.setRgb(1, 0, ColorRgba.GREEN.rgba());
+        surface.setRgb(1, 1, ColorRgba.WHITE.rgba());
 
         assertEquals(new ColorRgba(127, 127, 127),
                      UtilColor.getWeightedColor(surface, 0, 0, surface.getWidth(), surface.getHeight()));

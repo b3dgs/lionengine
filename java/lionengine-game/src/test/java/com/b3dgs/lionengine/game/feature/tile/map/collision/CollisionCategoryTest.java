@@ -48,10 +48,10 @@ final class CollisionCategoryTest
     void testCategory()
     {
         assertEquals("name", category.getName());
-        assertEquals(Axis.X, category.getAxis());
-        assertEquals(1, category.getOffsetX());
-        assertEquals(2, category.getOffsetY());
-        assertEquals(group, category.getGroups().iterator().next());
+        assertEquals(Axis.X, category.axis());
+        assertEquals(1, category.x());
+        assertEquals(2, category.y());
+        assertEquals(group, category.groups().iterator().next());
     }
 
     /**

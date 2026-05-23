@@ -130,7 +130,7 @@ final class LoopHybridTest
         assertTrue(rendered.get() <= tick.get(), rendered.get() + " " + tick.get());
         assertTrue(extrapolation.get().doubleValue() > 0.0, String.valueOf(extrapolation.get().doubleValue()));
 
-        final int expectedRate = screen.getConfig().getOutput().getRate();
+        final int expectedRate = screen.getConfig().output().rate();
 
         assertTrue(computed.get() <= expectedRate, String.valueOf(computed.get()));
     }
@@ -157,7 +157,7 @@ final class LoopHybridTest
 
         assertTrue(min || max, tick.get() + " " + rendered.get());
 
-        final int expectedRate = screen.getConfig().getOutput().getRate();
+        final int expectedRate = screen.getConfig().output().rate();
 
         assertTrue(computed.get() < expectedRate / 2, String.valueOf(computed.get()));
         assertTrue(computed.get() > expectedRate / 2 - expectedRate, String.valueOf(computed.get()));
@@ -203,7 +203,7 @@ final class LoopHybridTest
 
         assertEquals(3, rendered.get());
 
-        final int expectedRate = screen.getConfig().getOutput().getRate();
+        final int expectedRate = screen.getConfig().output().rate();
 
         assertTrue(computed.get() < expectedRate, String.valueOf(computed.get()));
     }
@@ -226,7 +226,7 @@ final class LoopHybridTest
         assertTrue(rendered.get() <= tick.get(), rendered.get() + " " + tick.get());
         assertTrue(extrapolation.get().doubleValue() <= 1.0, String.valueOf(extrapolation.get()));
 
-        final int expectedRate = screen.getConfig().getOutput().getRate();
+        final int expectedRate = screen.getConfig().output().rate();
 
         assertTrue(computed.get() > expectedRate, String.valueOf(computed.get()));
     }
@@ -250,7 +250,7 @@ final class LoopHybridTest
         assertTrue(rendered.get() <= tick.get(), rendered.get() + " " + tick.get());
         assertTrue(extrapolation.get().doubleValue() > 0, String.valueOf(extrapolation.get()));
 
-        final int expectedRate = screen.getConfig().getOutput().getRate();
+        final int expectedRate = screen.getConfig().output().rate();
 
         assertTrue(computed.get() > expectedRate, String.valueOf(computed.get()));
     }

@@ -68,7 +68,7 @@ public class GroupList extends ObjectListAbstract<TileGroup> implements ObjectLi
     @Override
     protected TileGroup copyObject(TileGroup group)
     {
-        return new TileGroup(group.getName(), group.getType(), new TreeSet<>(group.getTiles()));
+        return new TileGroup(group.getName(), group.type(), new TreeSet<>(group.tiles()));
     }
 
     @Override

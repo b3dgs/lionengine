@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.editor.animation.properties.PropertiesAnimation;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationsConfig;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -52,7 +52,7 @@ public final class AnimationsEnableHandler
         final Configurer configurer = (Configurer) properties.getData();
         final int min = Animation.MINIMUM_FRAME;
         final Animation animation = new Animation(Animation.DEFAULT_NAME, min, min + 1, 0.1, false, false);
-        AnimationConfig.exports(configurer.getRoot(), animation);
+        AnimationsConfig.exports(configurer.getRoot(), animation);
 
         configurer.save();
         part.setInput(properties, configurer);

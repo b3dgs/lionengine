@@ -60,7 +60,7 @@ public abstract class SequenceGame<W extends WorldGame> extends Sequence
     protected final W world;
 
     /**
-     * Create sequence. Resolution will be based on {@link Config#getOutput()}.
+     * Create sequence. Resolution will be based on {@link Config#output()}.
      * 
      * @param context The context reference.
      * @param creator The world creator reference.
@@ -68,7 +68,7 @@ public abstract class SequenceGame<W extends WorldGame> extends Sequence
      */
     protected SequenceGame(Context context, Function<Services, W> creator)
     {
-        this(context, context.getConfig().getOutput(), creator);
+        this(context, context.getConfig().output(), creator);
     }
 
     /**

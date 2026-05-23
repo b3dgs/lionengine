@@ -65,12 +65,12 @@ public final class Entity extends FeaturableModel
         final Transformable transformable = addFeature(TransformableModel.class, services, setup);
         final Pathfindable pathfindable = addFeature(PathfindableModel.class, services, setup);
 
-        final FramesConfig config = FramesConfig.imports(setup);
+        final FramesConfig frames = FramesConfig.imports(setup);
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(),
-                                                                   config.getHorizontal(),
-                                                                   config.getVertical());
+                                                                   frames.horizontals(),
+                                                                   frames.verticals());
         surface.setOrigin(Origin.BOTTOM_LEFT);
-        surface.setFrameOffsets(config.getOffsetX(), config.getOffsetY());
+        surface.setFrameOffsets(frames.offsetX(), frames.offsetY());
 
         final Collidable collidable = addFeature(CollidableModel.class, services, setup);
         collidable.setGroup(Integer.valueOf(2));

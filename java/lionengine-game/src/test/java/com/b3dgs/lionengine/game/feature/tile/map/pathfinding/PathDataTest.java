@@ -41,8 +41,8 @@ final class PathDataTest
         final PathData data = new PathData("category", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN));
 
         assertEquals("category", data.getName());
-        assertEquals(1.0, data.getCost());
-        assertTrue(data.isBlocking());
+        assertEquals(1.0, data.cost());
+        assertTrue(data.blocking());
         assertArrayEquals(EnumSet.of(MovementTile.UP, MovementTile.DOWN).toArray(),
                           data.getAllowedMovements().toArray());
     }

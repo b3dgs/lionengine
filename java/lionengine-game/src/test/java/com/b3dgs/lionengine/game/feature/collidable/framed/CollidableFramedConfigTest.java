@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationsConfig;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.feature.collidable.Collision;
 
@@ -87,10 +87,10 @@ final class CollidableFramedConfigTest
 
         final Xml root = new Xml("test");
         final Animation animation = new Animation("anim", 1, 2, 3.0, false, true);
-        AnimationConfig.exports(root, animation);
+        AnimationsConfig.exports(root, animation);
 
-        final Xml framed = root.getChildXml(AnimationConfig.NODE_ANIMATIONS)
-                               .getChildXml(AnimationConfig.NODE_ANIMATION);
+        final Xml framed = root.getChildXml(AnimationsConfig.NODE_ANIMATIONS)
+                               .getChildXml(AnimationsConfig.NODE_ANIMATION);
         CollidableFramedConfig.exports(framed, collisions);
 
         final Media media = Medias.create("Object.xml");
@@ -114,10 +114,10 @@ final class CollidableFramedConfigTest
 
         final Xml root = new Xml("test");
         final Animation animation = new Animation("anim", 1, 2, 3.0, false, true);
-        AnimationConfig.exports(root, animation);
+        AnimationsConfig.exports(root, animation);
 
-        final Xml framed = root.getChildXml(AnimationConfig.NODE_ANIMATIONS)
-                               .getChildXml(AnimationConfig.NODE_ANIMATION);
+        final Xml framed = root.getChildXml(AnimationsConfig.NODE_ANIMATIONS)
+                               .getChildXml(AnimationsConfig.NODE_ANIMATION);
         CollidableFramedConfig.exports(framed, collisions);
         framed.getChildXml(CollidableFramedConfig.NODE_COLLISION_FRAMED)
               .removeAttribute(CollidableFramedConfig.ATT_NUMBER);

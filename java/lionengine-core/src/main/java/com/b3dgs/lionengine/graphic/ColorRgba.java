@@ -27,15 +27,14 @@ import com.b3dgs.lionengine.LionEngineException;
  * This class is Thread-Safe.
  * </p>
  * 
- * @param r The red value.
- * @param g The green value.
- * @param b The blue value.
- * @param a The alpha value.
+ * @param red The red value.
+ * @param green The green value.
+ * @param blue The blue value.
+ * @param alpha The alpha value.
  * @param rgba The rgba value.
  */
-public record ColorRgba(int r, int g, int b, int a, int rgba)
+public record ColorRgba(int red, int green, int blue, int alpha, int rgba)
 {
-
     /** Red color. */
     public static final ColorRgba RED = new ColorRgba(255, 0, 0);
     /** Green color. */
@@ -66,46 +65,46 @@ public record ColorRgba(int r, int g, int b, int a, int rgba)
     /**
      * Get color as integer value.
      * 
-     * @param r The red value [0-255].
-     * @param g The green value [0-255].
-     * @param b The blue value [0-255].
-     * @param a The alpha value [0-255].
+     * @param red The red value [0-255].
+     * @param green The green value [0-255].
+     * @param blue The blue value [0-255].
+     * @param alpha The alpha value [0-255].
      * @return The integer color.
      */
-    public static int getValue(int r, int g, int b, int a)
+    public static int getValue(int red, int green, int blue, int alpha)
     {
         // CHECKSTYLE IGNORE LINE: BooleanExpressionComplexity
-        return (a & 0xFF) << Constant.BYTE_4
-               | (r & 0xFF) << Constant.BYTE_3
-               | (g & 0xFF) << Constant.BYTE_2
-               | (b & 0xFF) << Constant.BYTE_1;
+        return (alpha & 0xFF) << Constant.BYTE_4
+               | (red & 0xFF) << Constant.BYTE_3
+               | (green & 0xFF) << Constant.BYTE_2
+               | (blue & 0xFF) << Constant.BYTE_1;
     }
 
     /**
      * Create an opaque color.
      * 
-     * @param r The red value [0-255].
-     * @param g The green value [0-255].
-     * @param b The blue value [0-255].
+     * @param red The red value [0-255].
+     * @param green The green value [0-255].
+     * @param blue The blue value [0-255].
      * @throws LionEngineException If color value is not in a valid range.
      */
-    public ColorRgba(int r, int g, int b)
+    public ColorRgba(int red, int green, int blue)
     {
-        this(r, g, b, 255, getValue(r, g, b, 255));
+        this(red, green, blue, 255, getValue(red, green, blue, 255));
     }
 
     /**
      * Create a transparent color.
      * 
-     * @param r The red value [0-255].
-     * @param g The green value [0-255].
-     * @param b The blue value [0-255].
-     * @param a The alpha value [0-255].
+     * @param red The red value [0-255].
+     * @param green The green value [0-255].
+     * @param blue The blue value [0-255].
+     * @param alpha The alpha value [0-255].
      * @throws LionEngineException If color value is not in a valid range.
      */
-    public ColorRgba(int r, int g, int b, int a)
+    public ColorRgba(int red, int green, int blue, int alpha)
     {
-        this(r, g, b, a, getValue(r, g, b, a));
+        this(red, green, blue, alpha, getValue(red, green, blue, alpha));
     }
 
     /**
@@ -125,77 +124,27 @@ public record ColorRgba(int r, int g, int b, int a, int rgba)
     /**
      * Create a 4 channels color.
      * 
-     * @param r The red value [0-255].
-     * @param g The green value [0-255].
-     * @param b The blue value [0-255].
-     * @param a The alpha value [0-255].
+     * @param red The red value [0-255].
+     * @param green The green value [0-255].
+     * @param blue The blue value [0-255].
+     * @param alpha The alpha value [0-255].
      * @param rgba The rgba value.
      * @throws LionEngineException If color value is not in a valid range.
      */
     public ColorRgba
     {
-        Check.superiorOrEqual(r, 0);
-        Check.inferiorOrEqual(r, 255);
+        Check.superiorOrEqual(red, 0);
+        Check.inferiorOrEqual(red, 255);
 
-        Check.superiorOrEqual(g, 0);
-        Check.inferiorOrEqual(g, 255);
+        Check.superiorOrEqual(green, 0);
+        Check.inferiorOrEqual(green, 255);
 
-        Check.superiorOrEqual(b, 0);
-        Check.inferiorOrEqual(b, 255);
+        Check.superiorOrEqual(blue, 0);
+        Check.inferiorOrEqual(blue, 255);
 
-        Check.superiorOrEqual(a, 0);
-        Check.inferiorOrEqual(a, 255);
+        Check.superiorOrEqual(alpha, 0);
+        Check.inferiorOrEqual(alpha, 255);
 
-        Check.equality(getValue(r, g, b, a), rgba);
-    }
-
-    /**
-     * Get the color value.
-     * 
-     * @return The color value.
-     */
-    public int getRgba()
-    {
-        return rgba;
-    }
-
-    /**
-     * Get red value.
-     * 
-     * @return The red value.
-     */
-    public int getRed()
-    {
-        return r;
-    }
-
-    /**
-     * Get green value.
-     * 
-     * @return The green value.
-     */
-    public int getGreen()
-    {
-        return g;
-    }
-
-    /**
-     * Get blue value.
-     * 
-     * @return The blue value.
-     */
-    public int getBlue()
-    {
-        return b;
-    }
-
-    /**
-     * Get alpha value.
-     * 
-     * @return The alpha value.
-     */
-    public int getAlpha()
-    {
-        return a;
+        Check.equality(getValue(red, green, blue, alpha), rgba);
     }
 }

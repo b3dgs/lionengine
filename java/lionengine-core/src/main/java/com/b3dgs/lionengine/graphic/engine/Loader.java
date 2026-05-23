@@ -143,7 +143,7 @@ public final class Loader
         finally
         {
             screen.dispose();
-            config.getDevices().forEach(InputDevice::close);
+            config.devices().forEach(InputDevice::close);
         }
     }
 

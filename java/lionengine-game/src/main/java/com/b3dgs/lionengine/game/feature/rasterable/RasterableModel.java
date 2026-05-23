@@ -191,9 +191,9 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
 
         origin = OriginConfig.imports(setup);
 
-        final FramesConfig framesData = FramesConfig.imports(setup);
-        final int hf = framesData.getHorizontal();
-        final int vf = framesData.getVertical();
+        final FramesConfig frames = FramesConfig.imports(setup);
+        final int hf = frames.horizontals();
+        final int vf = frames.verticals();
 
         if (setup.hasNode(SurfaceConfig.NODE_SURFACE))
         {
@@ -227,8 +227,8 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
         {
             updater = extrp -> updateRasterAnim();
         }
-        frameOffsetX = framesData.getOffsetX();
-        frameOffsetY = framesData.getOffsetY();
+        frameOffsetX = frames.offsetX();
+        frameOffsetY = frames.offsetY();
 
         if (visible)
         {

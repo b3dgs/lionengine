@@ -78,24 +78,4 @@ public record BodyConfig(double gravity, double gravityMax)
         node.writeDouble(ATT_GRAVITY, body.getGravity());
         node.writeDouble(ATT_GRAVITY_MAX, body.getGravityMax());
     }
-
-    /**
-     * Get the defined gravity.
-     * 
-     * @return The defined gravity.
-     */
-    public double getGravity()
-    {
-        return gravity;
-    }
-
-    /**
-     * Get the gravity max.
-     * 
-     * @return The gravity max.
-     */
-    public double getGravityMax()
-    {
-        return gravityMax;
-    }
 }

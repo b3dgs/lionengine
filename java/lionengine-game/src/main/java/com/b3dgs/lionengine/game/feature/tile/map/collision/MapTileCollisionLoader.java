@@ -286,7 +286,7 @@ final class MapTileCollisionLoader
     private void loadCollisionGroups(CollisionGroupConfig config)
     {
         groups.clear();
-        groups.putAll(config.getGroups());
+        groups.putAll(config.groups());
     }
 
     /**
@@ -355,7 +355,7 @@ final class MapTileCollisionLoader
             {
                 final List<CollisionFormula> currentList = tilesFormulasList.get(tile);
                 final Set<CollisionFormula> current = tilesFormulas.get(tile);
-                for (final CollisionFormula formula : collision.getFormulas())
+                for (final CollisionFormula formula : collision.formulas())
                 {
                     if (current.add(formula))
                     {
@@ -471,7 +471,7 @@ final class MapTileCollisionLoader
         {
             final CollisionFormula formula = list.get(i);
 
-            final CollisionConstraint constraint = formula.getConstraint();
+            final CollisionConstraint constraint = formula.constraint();
             if (checkConstraint(mapGroup, constraint.getConstraints(Orientation.NORTH), top)
                 || checkConstraint(mapGroup, constraint.getConstraints(Orientation.SOUTH), bottom)
                 || checkConstraint(mapGroup, constraint.getConstraints(Orientation.WEST), left)

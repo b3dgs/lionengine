@@ -100,7 +100,7 @@ public abstract class WorldGame implements Updatable, Renderable, Spawner
         context = services.get(Context.class);
         rasterbar = services.get(Rasterbar.class);
         config = context.getConfig();
-        output = config.getOutput();
+        output = config.output();
 
         source = services.get(SourceResolutionProvider.class);
         sequencer = services.get(Sequencer.class);

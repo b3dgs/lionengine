@@ -249,7 +249,7 @@ public class MapTilePathModel extends FeatureAbstract implements MapTilePath
     {
         for (final PathCategory category : categories.values())
         {
-            if (category.getGroups().contains(groupName))
+            if (category.groups().contains(groupName))
             {
                 return category.getName();
             }

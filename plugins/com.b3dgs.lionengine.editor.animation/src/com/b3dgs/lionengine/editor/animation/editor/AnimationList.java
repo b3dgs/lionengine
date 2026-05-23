@@ -20,7 +20,7 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.editor.ObjectListAbstract;
-import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationsConfig;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -51,8 +51,8 @@ public class AnimationList extends ObjectListAbstract<Animation>
      */
     public void loadAnimations()
     {
-        final AnimationConfig configAnimations = AnimationConfig.imports(configurer.getRoot());
-        final Collection<Animation> animations = configAnimations.getAnimations();
+        final AnimationsConfig configAnimations = AnimationsConfig.imports(configurer.getRoot());
+        final Collection<Animation> animations = configAnimations.get();
         loadObjects(animations);
     }
 
@@ -60,11 +60,11 @@ public class AnimationList extends ObjectListAbstract<Animation>
     protected Animation copyObject(Animation animation)
     {
         return new Animation(animation.getName(),
-                             animation.getFirst(),
-                             animation.getLast(),
-                             animation.getSpeed(),
-                             animation.hasReverse(),
-                             animation.hasRepeat());
+                             animation.firstFrame(),
+                             animation.lastFrame(),
+                             animation.speed(),
+                             animation.reverse(),
+                             animation.repeat());
     }
 
     @Override

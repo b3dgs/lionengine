@@ -72,7 +72,7 @@ final class DelayedLaunch implements Updatable
      */
     public boolean isReady()
     {
-        return tick.elapsedTime(source.getRate(), config.getDelay());
+        return tick.elapsedTime(source.getRate(), config.delay());
     }
 
     /**

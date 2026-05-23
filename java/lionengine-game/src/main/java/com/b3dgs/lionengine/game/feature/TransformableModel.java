@@ -95,9 +95,9 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     {
         if (setup.hasNode(SizeConfig.NODE_SIZE))
         {
-            final SizeConfig config = SizeConfig.imports(setup);
-            width = config.getWidth();
-            height = config.getHeight();
+            final SizeConfig size = SizeConfig.imports(setup);
+            width = size.width();
+            height = size.height();
             oldWidth = width;
             oldHeight = height;
         }

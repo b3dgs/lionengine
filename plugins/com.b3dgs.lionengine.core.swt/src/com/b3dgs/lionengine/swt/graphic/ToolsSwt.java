@@ -110,9 +110,7 @@ public final class ToolsSwt
         final int transparent;
         if (transparency != null)
         {
-            transparent = palette.getPixel(new RGB(transparency.getRed(),
-                                                   transparency.getGreen(),
-                                                   transparency.getBlue()));
+            transparent = palette.getPixel(new RGB(transparency.red(), transparency.green(), transparency.blue()));
         }
         else
         {
@@ -229,7 +227,7 @@ public final class ToolsSwt
 
         final ImageData newData = new ImageData(width, height, sourceData.depth, sourceData.palette);
         final ColorRgba mask = new ColorRgba(maskColor);
-        newData.transparentPixel = newData.palette.getPixel(new RGB(mask.getRed(), mask.getGreen(), mask.getBlue()));
+        newData.transparentPixel = newData.palette.getPixel(new RGB(mask.red(), mask.green(), mask.blue()));
 
         return new Image(image.getDevice(), newData);
     }
@@ -403,7 +401,7 @@ public final class ToolsSwt
             for (final RGB color : colors)
             {
                 final ColorRgba colorRgba = new ColorRgba(color.red, color.green, color.blue);
-                newColors.put(Integer.valueOf(colorRgba.getRgba()), color);
+                newColors.put(Integer.valueOf(colorRgba.rgba()), color);
                 newColorsPixel.put(color, Integer.valueOf(palette.getPixel(color)));
             }
         }
@@ -420,11 +418,11 @@ public final class ToolsSwt
                     final RGB rgb = palette.getRGB(pixel);
                     final ColorRgba colorRgba = new ColorRgba(rgb.red, rgb.green, rgb.blue);
 
-                    final int filter = UtilColor.multiplyRgb(colorRgba.getRgba(), fr, fg, fb);
+                    final int filter = UtilColor.multiplyRgb(colorRgba.rgba(), fr, fg, fb);
                     final ColorRgba output = new ColorRgba(filter);
 
-                    final Integer rasterRgba = Integer.valueOf(output.getRgba());
-                    final RGB rasterColor = new RGB(output.getRed(), output.getGreen(), output.getBlue());
+                    final Integer rasterRgba = Integer.valueOf(output.rgba());
+                    final RGB rasterColor = new RGB(output.red(), output.green(), output.blue());
                     if (!newColors.containsKey(rasterRgba))
                     {
                         newColors.put(rasterRgba, rasterColor);

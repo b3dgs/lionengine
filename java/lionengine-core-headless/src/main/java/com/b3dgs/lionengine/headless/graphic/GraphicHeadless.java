@@ -65,7 +65,7 @@ final class GraphicHeadless implements Graphic
         {
             for (int j = y; j < height; j++)
             {
-                g.setRgb(x, y, ColorRgba.BLACK.getRgba());
+                g.setRgb(x, y, ColorRgba.BLACK.rgba());
             }
         }
     }
@@ -140,7 +140,7 @@ final class GraphicHeadless implements Graphic
             {
                 for (int j = y; j < height; j++)
                 {
-                    g.setRgb(x, y, color.getRgba());
+                    g.setRgb(x, y, color.rgba());
                 }
             }
         }
@@ -148,13 +148,13 @@ final class GraphicHeadless implements Graphic
         {
             for (int i = x; i < width; i++)
             {
-                g.setRgb(i, y, color.getRgba());
-                g.setRgb(i, y + height - 1, color.getRgba());
+                g.setRgb(i, y, color.rgba());
+                g.setRgb(i, y + height - 1, color.rgba());
             }
             for (int j = y; j < height; j++)
             {
-                g.setRgb(x, j, color.getRgba());
-                g.setRgb(x + width - 1, j, color.getRgba());
+                g.setRgb(x, j, color.rgba());
+                g.setRgb(x + width - 1, j, color.rgba());
             }
         }
     }
@@ -174,7 +174,7 @@ final class GraphicHeadless implements Graphic
         {
             for (int j = y; j < height; j++)
             {
-                g.setRgb(x, y, gradient.getColor1().getRgba());
+                g.setRgb(x, y, gradient.color1().rgba());
             }
         }
     }
@@ -211,7 +211,7 @@ final class GraphicHeadless implements Graphic
 
         for (int count = 0; count < norm; count++)
         {
-            g.setRgb((int) Math.floor(x), (int) Math.floor(y), color.getRgba());
+            g.setRgb((int) Math.floor(x), (int) Math.floor(y), color.rgba());
             x += sx;
             y += sy;
         }

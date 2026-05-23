@@ -234,15 +234,15 @@ final class GraphicAwt implements Graphic
     @Override
     public void setColor(ColorRgba color)
     {
-        g.setColor(colorCache.computeIfAbsent(color, c -> new Color(c.getRgba(), true)));
+        g.setColor(colorCache.computeIfAbsent(color, c -> new Color(c.rgba(), true)));
     }
 
     @Override
     public void setColorGradient(ColorGradient gc)
     {
-        final Color color1 = new Color(gc.getColor1().getRgba());
-        final Color color2 = new Color(gc.getColor2().getRgba());
-        gradientPaint = new GradientPaint(gc.getX1(), gc.getY1(), color1, gc.getX2(), gc.getY2(), color2);
+        final Color color1 = new Color(gc.color1().rgba());
+        final Color color2 = new Color(gc.color2().rgba());
+        gradientPaint = new GradientPaint(gc.x1(), gc.y1(), color1, gc.x2(), gc.y2(), color2);
     }
 
     @Override

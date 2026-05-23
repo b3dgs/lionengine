@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.editor.dialog.EditorAbstract;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationsConfig;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -149,12 +149,12 @@ public class AnimationEditor extends EditorAbstract
         animationList.save();
 
         final Xml root = configurer.getRoot();
-        root.removeChild(AnimationConfig.NODE_ANIMATIONS);
+        root.removeChild(AnimationsConfig.NODE_ANIMATIONS);
 
         for (final TreeItem item : animationList.getTree().getItems())
         {
             final Animation animation = (Animation) item.getData();
-            AnimationConfig.exports(root, animation);
+            AnimationsConfig.exports(root, animation);
         }
         configurer.save();
     }

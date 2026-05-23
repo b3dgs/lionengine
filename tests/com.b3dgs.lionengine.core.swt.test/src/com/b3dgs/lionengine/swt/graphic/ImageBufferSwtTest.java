@@ -91,8 +91,8 @@ final class ImageBufferSwtTest
         assertEquals(data.width, image.getWidth());
         assertEquals(data.height, image.getHeight());
 
-        image.setRgb(0, 0, ColorRgba.BLUE.getRgba());
-        assertEquals(ColorRgba.BLUE.getRgba(), image.getRgb(0, 0));
+        image.setRgb(0, 0, ColorRgba.BLUE.rgba());
+        assertEquals(ColorRgba.BLUE.rgba(), image.getRgb(0, 0));
         image.setRgb(0, 0, 0, 0, new int[1], 0, 0);
 
         assertEquals(Transparency.BITMASK, ImageBufferSwt.getTransparency(SWT.TRANSPARENCY_MASK));

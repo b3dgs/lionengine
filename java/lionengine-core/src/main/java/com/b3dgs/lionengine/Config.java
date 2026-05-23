@@ -37,7 +37,6 @@ import java.util.List;
  */
 public record Config(Resolution output, int depth, boolean windowed, List<InputDevice> devices, Collection<Media> icons)
 {
-
     /** Default color depth. */
     private static final int DEPTH_DEFAULT = 32;
 
@@ -147,55 +146,5 @@ public record Config(Resolution output, int depth, boolean windowed, List<InputD
     {
         Check.notNull(output);
         Check.superiorOrEqual(depth, -1);
-    }
-
-    /**
-     * Get the resolution output.
-     * 
-     * @return The resolution output.
-     */
-    public Resolution getOutput()
-    {
-        return output;
-    }
-
-    /**
-     * Get the application icons.
-     * 
-     * @return The application icons.
-     */
-    public Collection<Media> getIcons()
-    {
-        return icons;
-    }
-
-    /**
-     * Get the display depth.
-     * 
-     * @return The display depth.
-     */
-    public int getDepth()
-    {
-        return depth;
-    }
-
-    /**
-     * Get the windowed mode.
-     * 
-     * @return <code>true</code> if windowed, <code>false</code> fullscreen.
-     */
-    public boolean isWindowed()
-    {
-        return windowed;
-    }
-
-    /**
-     * Get custom devices.
-     * 
-     * @return The custom devices.
-     */
-    public List<InputDevice> getDevices()
-    {
-        return devices;
     }
 }

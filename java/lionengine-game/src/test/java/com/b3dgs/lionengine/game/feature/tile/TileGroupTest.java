@@ -70,8 +70,8 @@ final class TileGroupTest
         final TileGroup tileGroup = new TileGroup("test", TileGroupType.PLAIN, tiles);
 
         assertEquals("test", tileGroup.getName());
-        assertEquals(TileGroupType.PLAIN, tileGroup.getType());
-        assertArrayEquals(tiles.toArray(), tileGroup.getTiles().toArray());
+        assertEquals(TileGroupType.PLAIN, tileGroup.type());
+        assertArrayEquals(tiles.toArray(), tileGroup.tiles().toArray());
     }
 
     /**

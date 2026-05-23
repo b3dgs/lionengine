@@ -88,11 +88,11 @@ public final class CollisionRangeConfig
         Check.notNull(range);
 
         final Xml node = root.createChild(NODE_RANGE);
-        node.writeEnum(ATT_AXIS, range.getOutput());
-        node.writeInteger(ATT_MIN_X, range.getMinX());
-        node.writeInteger(ATT_MIN_Y, range.getMinY());
-        node.writeInteger(ATT_MAX_X, range.getMaxX());
-        node.writeInteger(ATT_MAX_Y, range.getMaxY());
+        node.writeEnum(ATT_AXIS, range.output());
+        node.writeInteger(ATT_MIN_X, range.minX());
+        node.writeInteger(ATT_MIN_Y, range.minY());
+        node.writeInteger(ATT_MAX_X, range.maxX());
+        node.writeInteger(ATT_MAX_Y, range.maxY());
     }
 
     /**

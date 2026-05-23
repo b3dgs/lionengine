@@ -53,7 +53,7 @@ final class Gradient extends BackgroundAbstract
     @Override
     public void setScreenSize(int width, int height)
     {
-        setOffsetY(height - Scene.NATIVE.getHeight() + OFFSET_Y);
+        setOffsetY(height - Scene.NATIVE.height() + OFFSET_Y);
         backdrop.setScreenWidth(width);
     }
 

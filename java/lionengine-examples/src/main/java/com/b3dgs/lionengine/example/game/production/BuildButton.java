@@ -88,7 +88,7 @@ public final class BuildButton extends FeaturableModel
         {
             state = assignable;
             final SizeConfig size = SizeConfig.imports(new XmlReader(target));
-            area = new Rectangle(0, 0, size.getWidth(), size.getHeight());
+            area = new Rectangle(0, 0, size.width(), size.height());
             cursor.setVisible(false);
         });
 

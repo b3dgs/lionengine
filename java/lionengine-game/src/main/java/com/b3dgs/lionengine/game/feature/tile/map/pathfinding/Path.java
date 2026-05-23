@@ -65,7 +65,7 @@ public final class Path
      */
     public int getX(int index)
     {
-        return steps.get(index).getX();
+        return steps.get(index).x();
     }
 
     /**
@@ -76,7 +76,7 @@ public final class Path
      */
     public int getY(int index)
     {
-        return steps.get(index).getY();
+        return steps.get(index).y();
     }
 
     /**

@@ -164,7 +164,7 @@ public final class FactoryGraphicAwt implements FactoryGraphic
         Check.notNull(maskColor);
 
         final BufferedImage surface = image.getSurface();
-        return new ImageBufferAwt(ToolsAwt.applyMask(surface, maskColor.getRgba()));
+        return new ImageBufferAwt(ToolsAwt.applyMask(surface, maskColor.rgba()));
     }
 
     @Override

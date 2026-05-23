@@ -93,7 +93,7 @@ final class ImageBufferAwt implements ImageBuffer
         final int pixel = bufferedImage.getRGB(x, y);
         if (UtilConversion.mask(pixel >> Constant.BYTE_4) == 0)
         {
-            return ColorRgba.TRANSPARENT.getRgba();
+            return ColorRgba.TRANSPARENT.rgba();
         }
         return pixel;
     }

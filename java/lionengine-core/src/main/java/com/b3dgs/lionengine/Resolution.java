@@ -37,7 +37,6 @@ package com.b3dgs.lionengine;
  */
 public record Resolution(int width, int height, int rate)
 {
-
     /** Double factor. */
     private static final int FACTOR_2X = 2;
     /** Triple factor. */
@@ -122,35 +121,5 @@ public record Resolution(int width, int height, int rate)
         Check.superiorStrict(factorY, 0);
 
         return new Resolution((int) (width * factorX), (int) (height * factorY), rate);
-    }
-
-    /**
-     * Get the resolution width.
-     * 
-     * @return The resolution width.
-     */
-    public int getWidth()
-    {
-        return width;
-    }
-
-    /**
-     * Get the resolution height.
-     * 
-     * @return The resolution height.
-     */
-    public int getHeight()
-    {
-        return height;
-    }
-
-    /**
-     * Get the display rate.
-     * 
-     * @return The display rate.
-     */
-    public int getRate()
-    {
-        return rate;
     }
 }

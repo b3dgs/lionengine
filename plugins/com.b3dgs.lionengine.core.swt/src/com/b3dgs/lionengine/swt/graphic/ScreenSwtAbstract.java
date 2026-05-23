@@ -117,9 +117,9 @@ public abstract class ScreenSwtAbstract extends ScreenAbstract implements FocusL
         cursorDefault = display.getSystemCursor(0);
         frame = initMainFrame(config);
 
-        final Resolution output = config.getOutput();
-        width = output.getWidth();
-        height = output.getHeight();
+        final Resolution output = config.output();
+        width = output.width();
+        height = output.height();
     }
 
     /**
@@ -132,7 +132,7 @@ public abstract class ScreenSwtAbstract extends ScreenAbstract implements FocusL
     private Shell initMainFrame(Config config)
     {
         final Shell shell;
-        if (config.isWindowed())
+        if (config.windowed())
         {
             shell = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN | SWT.NO_BACKGROUND);
         }
@@ -217,8 +217,8 @@ public abstract class ScreenSwtAbstract extends ScreenAbstract implements FocusL
      */
     protected void setResolution(Resolution output)
     {
-        width = output.getWidth();
-        height = output.getHeight();
+        width = output.width();
+        height = output.height();
     }
 
     @Override
@@ -226,7 +226,7 @@ public abstract class ScreenSwtAbstract extends ScreenAbstract implements FocusL
     {
         super.start();
 
-        setResolution(config.getOutput());
+        setResolution(config.output());
         prepareFocusListener();
         addDeviceKeyboard();
         addDeviceMouse();
@@ -383,7 +383,7 @@ public abstract class ScreenSwtAbstract extends ScreenAbstract implements FocusL
     @Override
     public void onSourceChanged(Resolution source)
     {
-        ((MouseSwt) getInputDevice(Mouse.class)).setConfig(config.getOutput(), source);
+        ((MouseSwt) getInputDevice(Mouse.class)).setConfig(config.output(), source);
     }
 
     @Override

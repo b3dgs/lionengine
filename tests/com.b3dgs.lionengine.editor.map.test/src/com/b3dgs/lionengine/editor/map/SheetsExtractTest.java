@@ -78,10 +78,10 @@ public class SheetsExtractTest
         final Media media = UtilEditorTests.getMedia(TileSheetsConfig.FILENAME);
         final TileSheetsConfig config = TileSheetsConfig.imports(media);
 
-        Assert.assertEquals(16, config.getTileWidth());
-        Assert.assertEquals(16, config.getTileHeight());
-        Assert.assertTrue(config.getSheets().size() > 0);
-        for (final String sheet : config.getSheets())
+        Assert.assertEquals(16, config.tileWidth());
+        Assert.assertEquals(16, config.tileHeight());
+        Assert.assertTrue(config.sheets().size() > 0);
+        for (final String sheet : config.sheets())
         {
             Assert.assertTrue(UtilEditorTests.getMedia(sheet).exists());
         }

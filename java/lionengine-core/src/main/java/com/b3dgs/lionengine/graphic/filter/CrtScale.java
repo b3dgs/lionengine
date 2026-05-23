@@ -49,17 +49,17 @@ final class CrtScale
                               + (rgb2 >> Constant.BYTE_3 & 0xFF) * factor
                               + (rgb3 >> Constant.BYTE_3 & 0xFF) * factor
                               + (rgb4 >> Constant.BYTE_3 & 0xFF) * factor)
-                             * (color.getRed() / 100.0));
+                             * (color.red() / 100.0));
         final int g = (int) (((rgb1 >> Constant.BYTE_2 & 0xFF) * factor
                               + (rgb2 >> Constant.BYTE_2 & 0xFF) * factor
                               + (rgb3 >> Constant.BYTE_2 & 0xFF) * factor
                               + (rgb4 >> Constant.BYTE_2 & 0xFF) * factor)
-                             * (color.getGreen() / 100.0));
+                             * (color.green() / 100.0));
         final int b = (int) (((rgb1 >> Constant.BYTE_1 & 0xFF) * factor
                               + (rgb2 >> Constant.BYTE_1 & 0xFF) * factor
                               + (rgb3 >> Constant.BYTE_1 & 0xFF) * factor
                               + (rgb4 >> Constant.BYTE_1 & 0xFF) * factor)
-                             * (color.getBlue() / 100.0));
+                             * (color.blue() / 100.0));
 
         return -16_777_216
                | (r & 0xFF) << Constant.BYTE_3

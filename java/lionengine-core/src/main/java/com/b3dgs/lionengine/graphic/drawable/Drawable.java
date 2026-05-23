@@ -80,7 +80,7 @@ public final class Drawable
         Check.notNull(baseline);
         Check.notNull(config);
 
-        setDpi(DpiType.from(baseline, config.getOutput()));
+        setDpi(DpiType.from(baseline, config.output()));
     }
 
     /**

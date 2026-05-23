@@ -68,7 +68,7 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
      */
     private static Runnable getToolkit(Config config)
     {
-        if (config.isWindowed())
+        if (config.windowed())
         {
             try
             {
@@ -138,8 +138,8 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     {
         Check.notNull(output);
 
-        width = output.getWidth();
-        height = output.getHeight();
+        width = output.width();
+        height = output.height();
     }
 
     /**
@@ -178,7 +178,7 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     public void start()
     {
         super.start();
-        setResolution(config.getOutput());
+        setResolution(config.output());
         prepareFocusListener();
         addMouseListener(mouse);
         addKeyboardListener(keyboard);
@@ -298,7 +298,7 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     @Override
     public void onSourceChanged(Resolution source)
     {
-        ((MouseAwt) getInputDevice(Mouse.class)).setResolution(config.getOutput(), source);
+        ((MouseAwt) getInputDevice(Mouse.class)).setResolution(config.output(), source);
     }
 
     @Override

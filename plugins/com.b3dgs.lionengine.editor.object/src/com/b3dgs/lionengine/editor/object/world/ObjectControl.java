@@ -162,8 +162,8 @@ public class ObjectControl
                 final SizeConfig size = SizeConfig.imports(configurer);
 
                 final double sx = x
-                                  + UtilMath.getRounded(size.getWidth(), map.getTileWidth()) / 2
-                                  - UtilMath.getRounded(size.getWidth() / 2.0, map.getTileWidth());
+                                  + UtilMath.getRounded(size.width(), map.getTileWidth()) / 2
+                                  - UtilMath.getRounded(size.width() / 2.0, map.getTileWidth());
 
                 final Featurable featurable = services.get(Spawner.class).spawn(media, sx, y);
                 featurable.getFeature(Refreshable.class).update(1.0);

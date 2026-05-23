@@ -101,8 +101,8 @@ final class ToolsAwtTest
         assertNotNull(ToolsAwt.resize(image, 10, 10));
         assertNotNull(ToolsAwt.rotate(image, 90));
         assertNotNull(ToolsAwt.splitImage(image, 1, 1));
-        assertNotNull(ToolsAwt.applyMask(image, ColorRgba.BLACK.getRgba()));
-        assertNotNull(ToolsAwt.applyMask(image, ColorRgba.WHITE.getRgba()));
+        assertNotNull(ToolsAwt.applyMask(image, ColorRgba.BLACK.rgba()));
+        assertNotNull(ToolsAwt.applyMask(image, ColorRgba.WHITE.rgba()));
 
         final Media media = Medias.create("image.png");
         try (InputStream input = media.getInputStream())

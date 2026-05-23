@@ -107,10 +107,10 @@ final class MapTileCollisionComputer
                                         double x,
                                         double y)
     {
-        final CollisionRange range = formula.getRange();
-        if (Axis.X == category.getAxis() && Axis.X == range.getOutput() && containsCollisionFormula(category, formula))
+        final CollisionRange range = formula.range();
+        if (Axis.X == category.axis() && Axis.X == range.output() && containsCollisionFormula(category, formula))
         {
-            final double collisionX = getCollisionX(tile, range, formula.getFunction(), x, y, category.getOffsetX());
+            final double collisionX = getCollisionX(tile, range, formula.function(), x, y, category.x());
             if (!Double.isNaN(collisionX))
             {
                 return collisionX;
@@ -135,10 +135,10 @@ final class MapTileCollisionComputer
                                         double x,
                                         double y)
     {
-        final CollisionRange range = formula.getRange();
-        if (Axis.Y == category.getAxis() && Axis.Y == range.getOutput() && containsCollisionFormula(category, formula))
+        final CollisionRange range = formula.range();
+        if (Axis.Y == category.axis() && Axis.Y == range.output() && containsCollisionFormula(category, formula))
         {
-            final double collisionY = getCollisionY(tile, range, formula.getFunction(), x, y, category.getOffsetY());
+            final double collisionY = getCollisionY(tile, range, formula.function(), x, y, category.y());
             if (!Double.isNaN(collisionY))
             {
                 return collisionY;
@@ -156,12 +156,12 @@ final class MapTileCollisionComputer
      */
     private static boolean containsCollisionFormula(CollisionCategory category, CollisionFormula formula)
     {
-        final List<CollisionGroup> groups = category.getGroups();
+        final List<CollisionGroup> groups = category.groups();
         final int n = groups.size();
         for (int i = 0; i < n; i++)
         {
             final CollisionGroup group = groups.get(i);
-            if (group.getFormulas().contains(formula))
+            if (group.formulas().contains(formula))
             {
                 return true;
             }
@@ -188,12 +188,12 @@ final class MapTileCollisionComputer
                                         int offsetX)
     {
         final double yOnTile = getInputValue(tile, Axis.Y, x, y);
-        if (UtilMath.isBetween(yOnTile, range.getMinY(), range.getMaxY()))
+        if (UtilMath.isBetween(yOnTile, range.minY(), range.maxY()))
         {
             final double xOnTile = getInputValue(tile, Axis.X, x, y);
             final double result = Math.floor(function.compute(yOnTile));
 
-            if (UtilMath.isBetween(xOnTile, result + range.getMinX() - 1, result + range.getMaxX()))
+            if (UtilMath.isBetween(xOnTile, result + range.minX() - 1, result + range.maxX()))
             {
                 return Math.floor(tile.getX() + result - offsetX);
             }
@@ -220,13 +220,13 @@ final class MapTileCollisionComputer
                                         int offsetY)
     {
         final double xOnTile = getInputValue(tile, Axis.X, x, y);
-        if (UtilMath.isBetween(xOnTile, range.getMinX(), range.getMaxX()))
+        if (UtilMath.isBetween(xOnTile, range.minX(), range.maxX()))
         {
             final double yOnTile = getInputValue(tile, Axis.Y, x, y);
             final double result = Math.floor(function.compute(xOnTile));
             final double margin = Math.ceil(Math.abs(function.compute(1) - function.compute(0)));
 
-            if (UtilMath.isBetween(yOnTile, result + range.getMinY() - margin, result + range.getMaxY()))
+            if (UtilMath.isBetween(yOnTile, result + range.minY() - margin, result + range.maxY()))
             {
                 return Math.floor(tile.getY() + result - offsetY);
             }
@@ -298,11 +298,11 @@ final class MapTileCollisionComputer
                                             CollisionCategory category)
     {
         // Distance calculation
-        final double sh = transformable.getOldX() + category.getOffsetX();
-        final double sv = transformable.getOldY() + category.getOffsetY();
+        final double sh = transformable.getOldX() + category.x();
+        final double sv = transformable.getOldY() + category.y();
 
-        final double dh = transformable.getX() + category.getOffsetX() - sh;
-        final double dv = transformable.getY() + category.getOffsetY() - sv;
+        final double dh = transformable.getX() + category.x() - sh;
+        final double dv = transformable.getY() + category.y() - sv;
 
         final double nh = Math.abs(dh);
         final double nv = Math.abs(dv);
@@ -322,7 +322,7 @@ final class MapTileCollisionComputer
             sy = dv;
         }
 
-        if (category.isGlue() && transformable.getY() > transformable.getOldY())
+        if (category.glue() && transformable.getY() > transformable.getOldY())
         {
             lastFound.remove(transformable);
         }
@@ -434,7 +434,7 @@ final class MapTileCollisionComputer
             }
         }
 
-        if (category.isGlue())
+        if (category.glue())
         {
             if (last != null)
             {

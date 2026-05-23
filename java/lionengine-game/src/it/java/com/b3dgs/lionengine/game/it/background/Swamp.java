@@ -84,7 +84,7 @@ final class Swamp extends BackgroundAbstract
     public void setScreenSize(int width, int height)
     {
         moonOffsetX = width * MOON_SCALE_X;
-        setOffsetY(height - Scene.NATIVE.getHeight());
+        setOffsetY(height - Scene.NATIVE.height());
         backdrop.setScreenWidth(width);
         clouds.setScreenWidth(width);
         parallax.setScreenSize(width, height);

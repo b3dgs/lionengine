@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
- * Test {@link AnimationConfig}.
+ * Test {@link AnimationsConfig}.
  */
 final class AnimationConfigTest
 {
@@ -65,7 +65,7 @@ final class AnimationConfigTest
     {
         final Xml root = new Xml("test");
 
-        assertTrue(AnimationConfig.imports(root).getAnimations().isEmpty());
+        assertTrue(AnimationsConfig.imports(root).get().isEmpty());
     }
 
     /**
@@ -77,21 +77,21 @@ final class AnimationConfigTest
         final Xml root = new Xml("test");
         final Animation animation1 = new Animation("anim1", 1, 2, 3.0, false, true);
         final Animation animation2 = new Animation("anim2", 4, 5, 6.0, true, false);
-        AnimationConfig.exports(root, animation1);
-        AnimationConfig.exports(root, animation2);
+        AnimationsConfig.exports(root, animation1);
+        AnimationsConfig.exports(root, animation2);
 
         final Media media = Medias.create("animations.xml");
         root.save(media);
 
-        final AnimationConfig imported = AnimationConfig.imports(new Setup(media));
+        final AnimationsConfig animationsConfig = AnimationsConfig.imports(new Setup(media));
 
-        assertEquals(animation1, imported.getAnimation("anim1"));
-        assertEquals(animation2, imported.getAnimation("anim2"));
-        assertTrue(imported.getAnimations().containsAll(Arrays.asList(animation1, animation2)));
+        assertEquals(animation1, animationsConfig.get("anim1"));
+        assertEquals(animation2, animationsConfig.get("anim2"));
+        assertTrue(animationsConfig.get().containsAll(Arrays.asList(animation1, animation2)));
 
-        assertFalse(imported.hasAnimation("anim"));
-        assertTrue(imported.hasAnimation("anim1"));
-        assertTrue(imported.hasAnimation("anim2"));
+        assertFalse(animationsConfig.has("anim"));
+        assertTrue(animationsConfig.has("anim1"));
+        assertTrue(animationsConfig.has("anim2"));
 
         assertTrue(media.getFile().delete());
     }
@@ -102,8 +102,8 @@ final class AnimationConfigTest
     @Test
     void testGetUnknownAnimation()
     {
-        final AnimationConfig config = new AnimationConfig(new HashMap<>());
+        final AnimationsConfig config = new AnimationsConfig(new HashMap<>());
 
-        assertThrows(() -> config.getAnimation("void"), AnimationConfig.ERROR_NOT_FOUND + "void");
+        assertThrows(() -> config.get("void"), AnimationsConfig.ERROR_NOT_FOUND + "void");
     }
 }

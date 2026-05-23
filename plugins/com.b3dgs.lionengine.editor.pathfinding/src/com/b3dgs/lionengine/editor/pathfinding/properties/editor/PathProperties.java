@@ -87,8 +87,8 @@ public class PathProperties extends ObjectPropertiesAbstract<PathData> implement
     public void notifyObjectSelected(PathData path)
     {
         setValueDefault(category, path.getName());
-        setValueDefault(cost, String.valueOf(path.getCost()));
-        setValueDefault(block, String.valueOf(path.isBlocking()));
+        setValueDefault(cost, String.valueOf(path.cost()));
+        setValueDefault(block, String.valueOf(path.blocking()));
         movements.loadMovements(path.getAllowedMovements());
     }
 

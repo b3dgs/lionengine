@@ -209,10 +209,10 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         }
         else
         {
-            launchables = configs.get(0).getLaunchables();
-            delay = configs.get(0).getDelay();
-            mirror = configs.get(0).hasMirrorable();
-            centered = configs.get(0).isCentered();
+            launchables = configs.get(0).launchables();
+            delay = configs.get(0).delay();
+            mirror = configs.get(0).mirrorable();
+            centered = configs.get(0).centered();
         }
     }
 
@@ -230,12 +230,12 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         }
         for (final LaunchableConfig launchableConfig : launchables)
         {
-            final Media media = Medias.create(launchableConfig.getMedia());
+            final Media media = Medias.create(launchableConfig.media());
             final Featurable featurable = factory.create(media);
             try
             {
                 final Launchable launchable = featurable.getFeature(Launchable.class);
-                if (launchableConfig.getDelay() > 0)
+                if (launchableConfig.delay() > 0)
                 {
                     delayed.add(new DelayedLaunch(source, launchableConfig, initial, featurable, launchable));
                 }
@@ -278,13 +278,13 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         }
         final double x = transformable.getX()
                          + (centered ? transformable.getWidth() / 2.0 : 0.0)
-                         + (config.getOffsetX() + offsetX) * sideX;
+                         + (config.ox() + offsetX) * sideX;
         final double y = transformable.getY()
                          + (centered ? transformable.getHeight() / 2.0 : 0.0)
-                         + (config.getOffsetY() + offsetY) * sideY;
+                         + (config.oy() + offsetY) * sideY;
         launchable.setLocation(x, y);
 
-        final Force vector = new Force(config.getVector());
+        final Force vector = new Force(config.vector());
         vector.addDirection(1.0, initial);
 
         final Force v = computeVector(vector);
@@ -294,7 +294,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         }
         launchable.launch();
 
-        config.getSfx().ifPresent(audioPlayer);
+        config.sfx().ifPresent(audioPlayer);
 
         for (final LaunchableListener listener : listenersLaunchable)
         {
@@ -525,10 +525,10 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         Check.superiorOrEqual(level, 0);
 
         this.level = level;
-        launchables = configs.get(level).getLaunchables();
-        delay = configs.get(level).getDelay();
-        mirror = configs.get(level).hasMirrorable();
-        centered = configs.get(level).isCentered();
+        launchables = configs.get(level).launchables();
+        delay = configs.get(level).delay();
+        mirror = configs.get(level).mirrorable();
+        centered = configs.get(level).centered();
     }
 
     @Override

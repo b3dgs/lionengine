@@ -32,36 +32,6 @@ public record Version(int major, int minor, int micro)
     private static final int LENGTH_MIN = 6;
     private static final char DOT = '.';
 
-    /**
-     * Get the major number of the version.
-     * 
-     * @return The major number of the version.
-     */
-    public int getMajor()
-    {
-        return major;
-    }
-
-    /**
-     * Get the minor number of the version.
-     * 
-     * @return The minor number of the version.
-     */
-    public int getMinor()
-    {
-        return minor;
-    }
-
-    /**
-     * Get the micro number of the version.
-     * 
-     * @return The micro number of the version.
-     */
-    public int getMicro()
-    {
-        return micro;
-    }
-
     @Override
     public String toString()
     {

@@ -133,8 +133,8 @@ public final class PathfindableConfig
 
         final Xml node = new Xml(NODE_PATH);
         node.writeString(ATT_CATEGORY, data.getName());
-        node.writeDouble(ATT_COST, data.getCost());
-        node.writeBoolean(ATT_BLOCK, data.isBlocking());
+        node.writeDouble(ATT_COST, data.cost());
+        node.writeBoolean(ATT_BLOCK, data.blocking());
         exportAllowedMovements(node, data.getAllowedMovements());
 
         return node;

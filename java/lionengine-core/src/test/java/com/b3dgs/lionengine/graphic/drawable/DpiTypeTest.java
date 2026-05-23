@@ -38,7 +38,7 @@ final class DpiTypeTest
      */
     private static Resolution get(Resolution baseline, double factor)
     {
-        return new Resolution((int) (baseline.getWidth() * factor), (int) (baseline.getHeight() * factor), 60);
+        return new Resolution((int) (baseline.width() * factor), (int) (baseline.height() * factor), 60);
     }
 
     /**

@@ -289,7 +289,7 @@ final class PathFinderImpl implements PathFinder
             {
                 return null;
             }
-            return findPathRecursive(mover, tile.getX(), tile.getY(), ignoreRef, tile);
+            return findPathRecursive(mover, tile.tx(), tile.ty(), ignoreRef, tile);
         }
 
         nodes[sty][stx].setCost(0);

@@ -148,7 +148,7 @@ final class ImageBufferHeadless implements ImageBuffer
         final int pixel = buffer[y * width + x];
         if (UtilConversion.mask(pixel >> Constant.BYTE_4) == 0)
         {
-            return ColorRgba.TRANSPARENT.getRgba();
+            return ColorRgba.TRANSPARENT.rgba();
         }
         return pixel;
     }

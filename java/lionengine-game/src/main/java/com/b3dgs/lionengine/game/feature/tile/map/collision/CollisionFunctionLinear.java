@@ -28,26 +28,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
  */
 public record CollisionFunctionLinear(double a, double b) implements CollisionFunction
 {
-    /**
-     * Get the factor value.
-     * 
-     * @return The factor value.
-     */
-    public double getA()
-    {
-        return a;
-    }
-
-    /**
-     * Get the offset value.
-     * 
-     * @return The offset value.
-     */
-    public double getB()
-    {
-        return b;
-    }
-
     @Override
     public double compute(double input)
     {

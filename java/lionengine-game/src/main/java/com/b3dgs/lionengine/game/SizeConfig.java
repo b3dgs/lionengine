@@ -81,29 +81,9 @@ public record SizeConfig(int width, int height)
         Check.notNull(config);
 
         final Xml node = new Xml(NODE_SIZE);
-        node.writeInteger(ATT_WIDTH, config.getWidth());
-        node.writeInteger(ATT_HEIGHT, config.getHeight());
+        node.writeInteger(ATT_WIDTH, config.width());
+        node.writeInteger(ATT_HEIGHT, config.height());
 
         return node;
-    }
-
-    /**
-     * Get the width value.
-     * 
-     * @return The width value.
-     */
-    public int getWidth()
-    {
-        return width;
-    }
-
-    /**
-     * Get the height value.
-     * 
-     * @return The height value.
-     */
-    public int getHeight()
-    {
-        return height;
     }
 }

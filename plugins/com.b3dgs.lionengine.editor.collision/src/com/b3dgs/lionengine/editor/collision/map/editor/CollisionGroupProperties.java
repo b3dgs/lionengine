@@ -81,7 +81,7 @@ public class CollisionGroupProperties extends ObjectPropertiesAbstract<Collision
             item.setData(null);
             item.dispose();
         }
-        for (final CollisionFormula formula : collision.getFormulas())
+        for (final CollisionFormula formula : collision.formulas())
         {
             final TreeItem item = new TreeItem(tree.getTree(), SWT.NONE);
             item.setText(formula.getName());

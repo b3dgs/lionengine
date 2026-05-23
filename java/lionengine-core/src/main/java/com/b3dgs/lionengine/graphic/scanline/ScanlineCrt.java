@@ -117,7 +117,7 @@ public final class ScanlineCrt implements Scanline
         int y = 0;
         int c = 0;
         int i = 0;
-        final int size = Math.max(1, (int) Math.round(height / (double) source.getHeight() / factor));
+        final int size = Math.max(1, (int) Math.round(height / (double) source.height() / factor));
         while (y < height)
         {
             for (int x = 0; x < width; x += size)
@@ -144,20 +144,20 @@ public final class ScanlineCrt implements Scanline
     @Override
     public void prepare(Config config)
     {
-        final Resolution output = config.getOutput();
+        final Resolution output = config.output();
         scanline = cache.get(config);
         if (scanline == null)
         {
             final Media media = Medias.create(FOLDER_SCANLINE,
                                               FOLDER_CRT,
-                                              output.getWidth() + Constant.UNDERSCORE + output.getHeight() + ".png");
+                                              output.width() + Constant.UNDERSCORE + output.height() + ".png");
             if (media.exists())
             {
                 scanline = Graphics.getImageBuffer(media);
             }
             else
             {
-                scanline = Graphics.createImageBufferAlpha(output.getWidth(), output.getHeight());
+                scanline = Graphics.createImageBufferAlpha(output.width(), output.height());
                 final Graphic g2 = scanline.createGraphic();
                 create(g2, scanline.getWidth(), scanline.getHeight());
                 g2.dispose();

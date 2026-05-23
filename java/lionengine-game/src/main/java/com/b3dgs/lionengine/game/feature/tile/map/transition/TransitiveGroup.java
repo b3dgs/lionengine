@@ -174,7 +174,7 @@ public class TransitiveGroup
             return Collections.emptySet();
         }
         final GroupTransition groupTransition = currentTransitives.iterator().next();
-        return mapTransition.getTiles(new Transition(transition.getType(), groupTransition.getOut(), groupOut));
+        return mapTransition.getTiles(new Transition(transition.type(), groupTransition.getOut(), groupOut));
     }
 
     /**
@@ -318,7 +318,7 @@ public class TransitiveGroup
     private void checkTransitives(Tile neighbor, String group, GroupTransition current, Integer number)
     {
         if (!group.equals(current.getOut())
-            && TransitionType.CENTER == mapTransition.getTransition(number, current.getOut()).getType())
+            && TransitionType.CENTER == mapTransition.getTransition(number, current.getOut()).type())
         {
             map.setTile(neighbor.getInTileX(), neighbor.getInTileY(), number.intValue());
         }

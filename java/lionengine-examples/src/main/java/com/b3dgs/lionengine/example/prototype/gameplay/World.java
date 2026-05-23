@@ -39,7 +39,7 @@ public final class World extends WorldHelper
         super(services);
 
         services.add(DeviceControllerConfig.create(services, Medias.create("input.xml")));
-        spawn(Medias.create("Knight.xml"), Scene.NATIVE_RESOLUTION.getWidth() / 3, 0);
+        spawn(Medias.create("Knight.xml"), Scene.NATIVE_RESOLUTION.width() / 3, 0);
 
     }
 
@@ -51,7 +51,7 @@ public final class World extends WorldHelper
         if (UtilRandom.getRandomInteger(200) == 0)
         {
             spawn(Medias.create("Zombi.xml"),
-                  Scene.NATIVE_RESOLUTION.getWidth() / 2 + UtilRandom.getRandomInteger(-100, 100),
+                  Scene.NATIVE_RESOLUTION.width() / 2 + UtilRandom.getRandomInteger(-100, 100),
                   0);
         }
     }

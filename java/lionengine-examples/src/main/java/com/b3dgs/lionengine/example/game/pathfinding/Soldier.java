@@ -20,7 +20,7 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.awt.MouseAwt;
-import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationsConfig;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Animatable;
@@ -77,9 +77,9 @@ public final class Soldier extends FeatureModel implements RoutineUpdate, Pathfi
         pathfindable.setRenderDebug(true);
         pathfindable.setLocation(5, 5);
 
-        final AnimationConfig config = AnimationConfig.imports(setup);
-        idle = config.getAnimation("idle");
-        walk = config.getAnimation("walk");
+        final AnimationsConfig animationsConfig = AnimationsConfig.imports(setup);
+        idle = animationsConfig.get("idle");
+        walk = animationsConfig.get("walk");
     }
 
     /**

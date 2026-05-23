@@ -29,14 +29,13 @@ import com.b3dgs.lionengine.Xml;
  * This class is Thread-Safe.
  * </p>
  * 
- * @param horizontalFrames The horizontal frames value.
- * @param verticalFrames The vertical frames value.
+ * @param horizontals The horizontal frames value.
+ * @param verticals The vertical frames value.
  * @param offsetX The horizontal offset.
  * @param offsetY The vertical offset.
  */
-public record FramesConfig(int horizontalFrames, int verticalFrames, int offsetX, int offsetY)
+public record FramesConfig(int horizontals, int verticals, int offsetX, int offsetY)
 {
-
     /** Frames node name. */
     public static final String NODE_FRAMES = Constant.XML_PREFIX + "frames";
     /** Frames horizontal node name. */
@@ -98,51 +97,11 @@ public record FramesConfig(int horizontalFrames, int verticalFrames, int offsetX
         Check.notNull(config);
 
         final Xml node = new Xml(NODE_FRAMES);
-        node.writeInteger(ATT_HORIZONTAL, config.getHorizontal());
-        node.writeInteger(ATT_VERTICAL, config.getVertical());
-        node.writeInteger(ATT_OFFSET_X, config.getOffsetX());
-        node.writeInteger(ATT_OFFSET_Y, config.getOffsetY());
+        node.writeInteger(ATT_HORIZONTAL, config.horizontals());
+        node.writeInteger(ATT_VERTICAL, config.verticals());
+        node.writeInteger(ATT_OFFSET_X, config.offsetX());
+        node.writeInteger(ATT_OFFSET_Y, config.offsetY());
 
         return node;
-    }
-
-    /**
-     * Get the number of horizontal frames.
-     * 
-     * @return The number of horizontal frames.
-     */
-    public int getHorizontal()
-    {
-        return horizontalFrames;
-    }
-
-    /**
-     * Get the number of vertical frames.
-     * 
-     * @return The number of vertical frames.
-     */
-    public int getVertical()
-    {
-        return verticalFrames;
-    }
-
-    /**
-     * Get the horizontal offset.
-     * 
-     * @return The horizontal offset.
-     */
-    public int getOffsetX()
-    {
-        return offsetX;
-    }
-
-    /**
-     * Get the vertical offset.
-     * 
-     * @return The vertical offset.
-     */
-    public int getOffsetY()
-    {
-        return offsetY;
     }
 }

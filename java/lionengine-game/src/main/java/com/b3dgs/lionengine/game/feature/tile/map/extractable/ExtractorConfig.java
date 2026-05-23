@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.game.Configurer;
  */
 public record ExtractorConfig(double extract, double dropoff, int capacity)
 {
-
     /** Extractor node name. */
     public static final String NODE_EXTRACTOR = Constant.XML_PREFIX + "extractor";
     /** Extract speed attribute name. */
@@ -87,40 +86,10 @@ public record ExtractorConfig(double extract, double dropoff, int capacity)
         Check.notNull(config);
 
         final Xml node = new Xml(NODE_EXTRACTOR);
-        node.writeDouble(ATT_EXTRACT, config.getExtract());
-        node.writeDouble(ATT_DROPOFF, config.getDropOff());
-        node.writeInteger(ATT_CAPACITY, config.getCapacity());
+        node.writeDouble(ATT_EXTRACT, config.extract());
+        node.writeDouble(ATT_DROPOFF, config.dropoff());
+        node.writeInteger(ATT_CAPACITY, config.capacity());
 
         return node;
-    }
-
-    /**
-     * Get extraction unit per tick.
-     * 
-     * @return The extraction unit per tick.
-     */
-    public double getExtract()
-    {
-        return extract;
-    }
-
-    /**
-     * Get drop off unit per tick.
-     * 
-     * @return The drop off unit per tick.
-     */
-    public double getDropOff()
-    {
-        return dropoff;
-    }
-
-    /**
-     * Get extraction capacity.
-     * 
-     * @return The extraction capacity.
-     */
-    public int getCapacity()
-    {
-        return capacity;
     }
 }

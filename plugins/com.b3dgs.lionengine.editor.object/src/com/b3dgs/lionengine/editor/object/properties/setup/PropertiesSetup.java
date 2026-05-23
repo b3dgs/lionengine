@@ -51,7 +51,7 @@ public class PropertiesSetup implements PropertiesProviderObject
     private static void createAttributeSetup(Tree properties, FeaturableConfig configObject)
     {
         final TreeItem classItem = new TreeItem(properties, SWT.NONE);
-        PropertiesPart.createLine(classItem, Messages.Setup, configObject.getSetupName());
+        PropertiesPart.createLine(classItem, Messages.Setup, configObject.setup());
         classItem.setData(FeaturableConfig.ATT_SETUP);
         classItem.setImage(ICON_SETUP);
     }

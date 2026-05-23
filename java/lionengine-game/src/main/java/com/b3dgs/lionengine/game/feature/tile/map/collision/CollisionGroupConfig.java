@@ -138,7 +138,7 @@ public record CollisionGroupConfig(Map<String, CollisionGroup> groups)
         final Xml node = root.createChild(NODE_COLLISION);
         node.writeString(ATT_GROUP, group.getName());
 
-        for (final CollisionFormula formula : group.getFormulas())
+        for (final CollisionFormula formula : group.formulas())
         {
             final Xml nodeFormula = node.createChild(CollisionFormulaConfig.NODE_FORMULA);
             nodeFormula.setText(formula.getName());
@@ -221,15 +221,5 @@ public record CollisionGroupConfig(Map<String, CollisionGroup> groups)
         Check.notNull(group);
 
         return group;
-    }
-
-    /**
-     * Get all groups as read only.
-     * 
-     * @return The groups map, where key is the group name.
-     */
-    public Map<String, CollisionGroup> getGroups()
-    {
-        return groups;
     }
 }

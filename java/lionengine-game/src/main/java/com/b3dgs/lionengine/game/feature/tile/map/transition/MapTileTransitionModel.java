@@ -224,8 +224,8 @@ public class MapTileTransitionModel extends FeatureAbstract implements MapTileTr
 
         if (transitionA != null && transitionB != null)
         {
-            final TransitionType transitionTypeA = transitionA.getType();
-            final TransitionType transitionTypeB = transitionB.getType();
+            final TransitionType transitionTypeA = transitionA.type();
+            final TransitionType transitionTypeB = transitionB.type();
 
             final TransitionType newType = getTransition(transitionTypeA, transitionTypeB, ox, oy);
             if (newType != null)
@@ -388,7 +388,7 @@ public class MapTileTransitionModel extends FeatureAbstract implements MapTileTr
     {
         for (final Transition transition : tiles.get(tile.getKey()))
         {
-            if (TransitionType.CENTER == transition.getType())
+            if (TransitionType.CENTER == transition.type())
             {
                 return true;
             }

@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.editor.animation.editor.AnimationEditor;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationsConfig;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -45,7 +45,7 @@ public class PropertiesAnimation implements PropertiesProviderObject
     {
         final TreeItem animationsItem = new TreeItem(properties, SWT.NONE);
         animationsItem.setText(Messages.Animations);
-        animationsItem.setData(AnimationConfig.NODE_ANIMATIONS);
+        animationsItem.setData(AnimationsConfig.NODE_ANIMATIONS);
         animationsItem.setImage(ICON_ANIMATIONS);
     }
 
@@ -61,7 +61,7 @@ public class PropertiesAnimation implements PropertiesProviderObject
     public void setInput(Tree properties, Configurer configurer)
     {
         final Xml root = configurer.getRoot();
-        if (root.hasNode(AnimationConfig.NODE_ANIMATIONS))
+        if (root.hasNode(AnimationsConfig.NODE_ANIMATIONS))
         {
             createAttributeAnimations(properties);
         }
@@ -71,7 +71,7 @@ public class PropertiesAnimation implements PropertiesProviderObject
     public boolean updateProperties(TreeItem item, Configurer configurer)
     {
         final Object data = item.getData();
-        if (AnimationConfig.NODE_ANIMATIONS.equals(data))
+        if (AnimationsConfig.NODE_ANIMATIONS.equals(data))
         {
             final AnimationEditor animationEditor = new AnimationEditor(item.getParent(), configurer);
             animationEditor.create();

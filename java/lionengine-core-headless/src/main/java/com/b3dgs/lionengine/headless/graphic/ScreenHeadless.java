@@ -64,15 +64,15 @@ final class ScreenHeadless extends ScreenAbstract
     {
         Check.notNull(output);
 
-        width = output.getWidth();
-        height = output.getHeight();
+        width = output.width();
+        height = output.height();
     }
 
     @Override
     public void start()
     {
         super.start();
-        setResolution(config.getOutput());
+        setResolution(config.output());
         graphics.setGraphic(new ImageBufferHeadless(width, height, Transparency.BITMASK));
         ready = true;
     }

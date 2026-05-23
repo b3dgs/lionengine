@@ -169,8 +169,8 @@ public class CollidableModel extends FeatureModel implements Collidable, Recycla
         priorityRender = config.getInteger(RoutineRender.P_COLLIDABLE, FeaturableConfig.ATT_PRIORITY_RENDER);
 
         final CollidableConfig cc = CollidableConfig.imports(setup);
-        group = cc.getGroup();
-        accepted.addAll(cc.getAccepted());
+        group = cc.group();
+        accepted.addAll(cc.accepted());
         collisions.addAll(CollisionConfig.imports(setup).getCollisions());
         updater.setEnabled(!collisions.isEmpty());
         origin = OriginConfig.imports(setup);

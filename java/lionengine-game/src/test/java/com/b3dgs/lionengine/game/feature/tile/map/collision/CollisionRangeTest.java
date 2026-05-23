@@ -37,11 +37,11 @@ final class CollisionRangeTest
     @Test
     void testRange()
     {
-        assertEquals(Axis.X, range.getOutput());
-        assertEquals(0, range.getMinX());
-        assertEquals(1, range.getMaxX());
-        assertEquals(2, range.getMinY());
-        assertEquals(3, range.getMaxY());
+        assertEquals(Axis.X, range.output());
+        assertEquals(0, range.minX());
+        assertEquals(1, range.maxX());
+        assertEquals(2, range.minY());
+        assertEquals(3, range.maxY());
     }
 
     /**

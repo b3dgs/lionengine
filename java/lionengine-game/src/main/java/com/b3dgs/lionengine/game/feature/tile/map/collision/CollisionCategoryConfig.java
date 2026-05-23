@@ -199,12 +199,12 @@ public final class CollisionCategoryConfig
 
         final Xml node = categories.createChild(NODE_CATEGORY);
         node.writeString(ATT_NAME, category.getName());
-        node.writeEnum(ATT_AXIS, category.getAxis());
-        node.writeInteger(ATT_X, category.getOffsetX());
-        node.writeInteger(ATT_Y, category.getOffsetY());
-        node.writeBoolean(ATT_GLUE, category.isGlue());
+        node.writeEnum(ATT_AXIS, category.axis());
+        node.writeInteger(ATT_X, category.x());
+        node.writeInteger(ATT_Y, category.y());
+        node.writeBoolean(ATT_GLUE, category.glue());
 
-        final List<CollisionGroup> groups = category.getGroups();
+        final List<CollisionGroup> groups = category.groups();
         final int n = groups.size();
         for (int i = 0; i < n; i++)
         {

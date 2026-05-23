@@ -96,21 +96,21 @@ public enum FormulaTemplate
      */
     public CollisionFormula getFormula(SurfaceTile map)
     {
-        final CollisionRange original = formula.getRange();
+        final CollisionRange original = formula.range();
 
-        final int minX = getReplacedValue(original.getMinX(), map.getTileWidth());
-        final int maxX = getReplacedValue(original.getMaxX(), map.getTileWidth());
-        final int minY = getReplacedValue(original.getMinY(), map.getTileHeight());
-        final int maxY = getReplacedValue(original.getMaxY(), map.getTileHeight());
-        final CollisionRange range = new CollisionRange(original.getOutput(), minX, maxX, minY, maxY);
+        final int minX = getReplacedValue(original.minX(), map.getTileWidth());
+        final int maxX = getReplacedValue(original.maxX(), map.getTileWidth());
+        final int minY = getReplacedValue(original.minY(), map.getTileHeight());
+        final int maxY = getReplacedValue(original.maxY(), map.getTileHeight());
+        final CollisionRange range = new CollisionRange(original.output(), minX, maxX, minY, maxY);
 
-        CollisionFunction function = formula.getFunction();
+        CollisionFunction function = formula.function();
         if (function instanceof final CollisionFunctionLinear linear)
         {
-            final double b = getReplacedValue(linear.getB(), map.getTileWidth());
-            function = new CollisionFunctionLinear(linear.getA(), b);
+            final double b = getReplacedValue(linear.b(), map.getTileWidth());
+            function = new CollisionFunctionLinear(linear.a(), b);
         }
 
-        return new CollisionFormula(formula.getName(), range, function, formula.getConstraint());
+        return new CollisionFormula(formula.getName(), range, function, formula.constraint());
     }
 }

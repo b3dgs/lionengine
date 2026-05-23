@@ -49,7 +49,7 @@ public final class Scene extends Sequence
         Drawable.setDpi(NATIVE, getConfig());
         image = Drawable.loadImage(Medias.create("lionengine.png"));
         getInputDevice(Keyboard.class).addActionPressed(KeyboardAwt.ESCAPE, this::end);
-        tick.addAction(this::end, NATIVE.getRate());
+        tick.addAction(this::end, NATIVE.rate());
         tick.start();
     }
 

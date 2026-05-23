@@ -26,26 +26,6 @@ import java.util.Arrays;
  */
 record Kernel(int width, double[] matrix)
 {
-    /**
-     * Get the matrix width.
-     * 
-     * @return The matrix width.
-     */
-    int getWidth()
-    {
-        return width;
-    }
-
-    /**
-     * Get the kernel matrix.
-     * 
-     * @return The kernel matrix.
-     */
-    double[] getMatrix()
-    {
-        return matrix;
-    }
-
     @Override
     public int hashCode()
     {

@@ -163,7 +163,7 @@ public final class FactoryGraphicHeadless implements FactoryGraphic
         final ImageBuffer mask = new ImageBufferHeadless((ImageBufferHeadless) image);
         final int height = mask.getHeight();
         final int width = mask.getWidth();
-        final int rgba = maskColor.getRgba();
+        final int rgba = maskColor.rgba();
 
         for (int y = 0; y < height; y++)
         {

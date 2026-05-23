@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationsConfig;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.Camera;
@@ -74,10 +74,10 @@ final class CollidableFramedModelTest
         collisions.put(Integer.valueOf(1), Arrays.asList(new Collision("anim%1", 0, 0, 2, 2, false)));
 
         final Xml root = new Xml(config);
-        AnimationConfig.exports(root, new Animation("anim", 1, 2, 1.0, false, false));
+        AnimationsConfig.exports(root, new Animation("anim", 1, 2, 1.0, false, false));
 
-        final Xml framed = root.getChildXml(AnimationConfig.NODE_ANIMATIONS)
-                               .getChildXml(AnimationConfig.NODE_ANIMATION);
+        final Xml framed = root.getChildXml(AnimationsConfig.NODE_ANIMATIONS)
+                               .getChildXml(AnimationsConfig.NODE_ANIMATION);
         CollidableFramedConfig.exports(framed, collisions);
 
         root.save(config);

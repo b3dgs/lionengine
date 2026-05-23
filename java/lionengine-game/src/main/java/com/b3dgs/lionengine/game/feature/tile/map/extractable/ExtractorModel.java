@@ -113,9 +113,9 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
         if (setup.hasNode(ExtractorConfig.NODE_EXTRACTOR))
         {
             final ExtractorConfig ec = ExtractorConfig.imports(setup);
-            extractPerTick = ec.getExtract();
-            dropOffPerTick = ec.getDropOff();
-            extractionCapacity = ec.getCapacity();
+            extractPerTick = ec.extract();
+            dropOffPerTick = ec.dropoff();
+            extractionCapacity = ec.capacity();
         }
     }
 

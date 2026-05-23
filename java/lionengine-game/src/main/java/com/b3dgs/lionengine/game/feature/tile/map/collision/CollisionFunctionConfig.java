@@ -88,8 +88,8 @@ public final class CollisionFunctionConfig
         if (function instanceof final CollisionFunctionLinear linear)
         {
             node.writeEnum(TYPE, CollisionFunctionType.LINEAR);
-            node.writeDouble(A, linear.getA());
-            node.writeDouble(B, linear.getB());
+            node.writeDouble(A, linear.a());
+            node.writeDouble(B, linear.b());
         }
         else
         {

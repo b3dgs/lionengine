@@ -43,16 +43,6 @@ public record PathCategory(String name, Collection<String> groups) implements Na
         Check.notNull(groups);
     }
 
-    /**
-     * Get the associated groups name as read only.
-     * 
-     * @return The groups name.
-     */
-    public Collection<String> getGroups()
-    {
-        return groups;
-    }
-
     @Override
     public String getName()
     {

@@ -114,8 +114,8 @@ final class ToolsSwtTest
         assertNotNull(ToolsSwt.resize(image, 10, 10));
         assertNotNull(ToolsSwt.rotate(image, 90));
         assertNotNull(ToolsSwt.splitImage(image, 1, 1));
-        assertNotNull(ToolsSwt.applyMask(image, ColorRgba.BLACK.getRgba()));
-        assertNotNull(ToolsSwt.applyMask(image, ColorRgba.WHITE.getRgba()));
+        assertNotNull(ToolsSwt.applyMask(image, ColorRgba.BLACK.rgba()));
+        assertNotNull(ToolsSwt.applyMask(image, ColorRgba.WHITE.rgba()));
 
         image.dispose();
 

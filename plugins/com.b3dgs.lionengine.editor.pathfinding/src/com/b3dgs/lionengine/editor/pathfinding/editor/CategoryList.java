@@ -64,7 +64,7 @@ public class CategoryList extends ObjectListAbstract<PathCategory> implements Ob
     @Override
     protected PathCategory copyObject(PathCategory category)
     {
-        return new PathCategory(category.getName(), category.getGroups());
+        return new PathCategory(category.getName(), category.groups());
     }
 
     @Override

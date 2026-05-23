@@ -36,9 +36,9 @@ final class VersionTest
     {
         final Version version = new Version(3, 2, 1);
 
-        assertEquals(3, version.getMajor());
-        assertEquals(2, version.getMinor());
-        assertEquals(1, version.getMicro());
+        assertEquals(3, version.major());
+        assertEquals(2, version.minor());
+        assertEquals(1, version.micro());
     }
 
     /**

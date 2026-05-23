@@ -46,8 +46,8 @@ final class DamagesTest
 
         final Range range = damages.getDamages();
 
-        assertEquals(0, range.getMin());
-        assertEquals(0, range.getMax());
+        assertEquals(0, range.min());
+        assertEquals(0, range.max());
 
         for (int i = 0; i < 100; i++)
         {
@@ -69,8 +69,8 @@ final class DamagesTest
 
         final Range range = damages.getDamages();
 
-        assertEquals(1, range.getMin());
-        assertEquals(2, range.getMax());
+        assertEquals(1, range.min());
+        assertEquals(2, range.max());
 
         for (int i = 0; i < 100; i++)
         {

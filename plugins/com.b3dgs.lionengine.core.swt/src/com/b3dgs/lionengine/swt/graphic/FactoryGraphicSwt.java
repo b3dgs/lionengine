@@ -62,7 +62,7 @@ public final class FactoryGraphicSwt implements FactoryGraphic
     {
         Check.notNull(config);
 
-        if (config.isWindowed())
+        if (config.windowed())
         {
             return new ScreenWindowedSwt(config);
         }
@@ -159,7 +159,7 @@ public final class FactoryGraphicSwt implements FactoryGraphic
     @Override
     public ImageBuffer applyMask(ImageBuffer image, ColorRgba maskColor)
     {
-        return new ImageBufferSwt(ToolsSwt.applyMask((Image) image.getSurface(), maskColor.getRgba()));
+        return new ImageBufferSwt(ToolsSwt.applyMask((Image) image.getSurface(), maskColor.rgba()));
     }
 
     @Override

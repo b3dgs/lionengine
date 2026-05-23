@@ -55,13 +55,13 @@ final class ColorGradientTest
     {
         final ColorGradient color = new ColorGradient(1, 2, ColorRgba.BLACK, 3, 4, ColorRgba.WHITE);
 
-        assertEquals(1, color.getX1());
-        assertEquals(2, color.getY1());
-        assertEquals(ColorRgba.BLACK, color.getColor1());
+        assertEquals(1, color.x1());
+        assertEquals(2, color.y1());
+        assertEquals(ColorRgba.BLACK, color.color1());
 
-        assertEquals(3, color.getX2());
-        assertEquals(4, color.getY2());
-        assertEquals(ColorRgba.WHITE, color.getColor2());
+        assertEquals(3, color.x2());
+        assertEquals(4, color.y2());
+        assertEquals(ColorRgba.WHITE, color.color2());
     }
 
     /**

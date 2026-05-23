@@ -81,56 +81,6 @@ public record CollisionCategory(String name, Axis axis, int x, int y, boolean gl
         Check.notNull(groups);
     }
 
-    /**
-     * Get the designated axis to use.
-     * 
-     * @return The axis used.
-     */
-    public Axis getAxis()
-    {
-        return axis;
-    }
-
-    /**
-     * Get the horizontal offset relative to owner for collision checking.
-     * 
-     * @return The horizontal offset relative to owner for collision checking.
-     */
-    public int getOffsetX()
-    {
-        return x;
-    }
-
-    /**
-     * Get the vertical offset relative to owner for collision checking.
-     * 
-     * @return The vertical offset relative to owner for collision checking.
-     */
-    public int getOffsetY()
-    {
-        return y;
-    }
-
-    /**
-     * Get the defined groups as read only.
-     * 
-     * @return The defined groups.
-     */
-    public List<CollisionGroup> getGroups()
-    {
-        return groups;
-    }
-
-    /**
-     * Get the glue flag.
-     * 
-     * @return <code>true</code> if glue enabled, <code>false</code> else.
-     */
-    public boolean isGlue()
-    {
-        return glue;
-    }
-
     @Override
     public String getName()
     {

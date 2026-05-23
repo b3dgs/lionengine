@@ -93,11 +93,10 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
     {
         this.parent = parent;
         g = Graphics.createGraphic();
-        final SurfaceConfig configSurface = SurfaceConfig.imports(configurer);
-        final Media media = Medias.get(new File(configurer.getPath(), configSurface.getImage()));
-        final FramesConfig framesData = FramesConfig.imports(configurer);
-        horizontalFrames = framesData.getHorizontal();
-        verticalFrames = framesData.getVertical();
+        final Media media = Medias.get(new File(configurer.getPath(), SurfaceConfig.imports(configurer).image()));
+        final FramesConfig frames = FramesConfig.imports(configurer);
+        horizontalFrames = frames.horizontals();
+        verticalFrames = frames.verticals();
         surface = Drawable.loadSprite(media);
         frameWidth = surface.getWidth() / horizontalFrames;
         frameHeight = surface.getHeight() / verticalFrames;

@@ -66,11 +66,11 @@ final class ColorRgbaTest
         {
             final ColorRgba color = new ColorRgba(i);
 
-            assertEquals(i, color.getRgba());
-            assertEquals(i >> Constant.BYTE_4 & 0xFF, color.getAlpha());
-            assertEquals(i >> Constant.BYTE_3 & 0xFF, color.getRed());
-            assertEquals(i >> Constant.BYTE_2 & 0xFF, color.getGreen());
-            assertEquals(i >> Constant.BYTE_1 & 0xFF, color.getBlue());
+            assertEquals(i, color.rgba());
+            assertEquals(i >> Constant.BYTE_4 & 0xFF, color.alpha());
+            assertEquals(i >> Constant.BYTE_3 & 0xFF, color.red());
+            assertEquals(i >> Constant.BYTE_2 & 0xFF, color.green());
+            assertEquals(i >> Constant.BYTE_1 & 0xFF, color.blue());
         }
     }
 
@@ -88,10 +88,10 @@ final class ColorRgbaTest
                 {
                     final ColorRgba color = new ColorRgba(r, g, b);
 
-                    assertEquals(255, color.getAlpha());
-                    assertEquals(r, color.getRed());
-                    assertEquals(g, color.getGreen());
-                    assertEquals(b, color.getBlue());
+                    assertEquals(255, color.alpha());
+                    assertEquals(r, color.red());
+                    assertEquals(g, color.green());
+                    assertEquals(b, color.blue());
                 }
             }
         }
@@ -114,10 +114,10 @@ final class ColorRgbaTest
                     {
                         final ColorRgba color = new ColorRgba(r, g, b, a);
 
-                        assertEquals(a, color.getAlpha());
-                        assertEquals(r, color.getRed());
-                        assertEquals(g, color.getGreen());
-                        assertEquals(b, color.getBlue());
+                        assertEquals(a, color.alpha());
+                        assertEquals(r, color.red());
+                        assertEquals(g, color.green());
+                        assertEquals(b, color.blue());
                     }
                 }
             }

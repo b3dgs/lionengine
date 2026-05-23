@@ -24,23 +24,5 @@ package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
  */
 public record Step(int x, int y)
 {
-    /**
-     * Get location x.
-     * 
-     * @return The location x.
-     */
-    public int getX()
-    {
-        return x;
-    }
-
-    /**
-     * Get location y.
-     * 
-     * @return The location y.
-     */
-    public int getY()
-    {
-        return y;
-    }
+    // Record
 }

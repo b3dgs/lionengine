@@ -366,7 +366,7 @@ public class GroupsAssignDialog extends DialogAbstract implements WorldView, Foc
         for (final TreeItem item : groupList.getTree().getItems())
         {
             final TileGroup group = (TileGroup) item.getData();
-            groupsTypes.put(group.getName(), group.getType());
+            groupsTypes.put(group.getName(), group.type());
         }
     }
 

@@ -124,7 +124,7 @@ final class LoopExtrapolatedTest
         assertEquals(tick.get(), rendered.get());
         assertTrue(extrapolation.get().doubleValue() > 0.0, String.valueOf(extrapolation.get().doubleValue()));
 
-        final int expectedRate = screen.getConfig().getOutput().getRate();
+        final int expectedRate = screen.getConfig().output().rate();
 
         assertTrue(computed.get() <= expectedRate, String.valueOf(computed.get()));
     }
@@ -147,7 +147,7 @@ final class LoopExtrapolatedTest
         assertEquals(tick.get(), rendered.get());
         assertTrue(extrapolation.get().doubleValue() < 0.1, String.valueOf(extrapolation.get()));
 
-        final int expectedRate = screen.getConfig().getOutput().getRate();
+        final int expectedRate = screen.getConfig().output().rate();
 
         assertTrue(computed.get() > expectedRate, String.valueOf(computed.get()));
     }
@@ -171,7 +171,7 @@ final class LoopExtrapolatedTest
         assertEquals(tick.get(), rendered.get());
         assertTrue(extrapolation.get().doubleValue() > 0, String.valueOf(extrapolation.get()));
 
-        final int expectedRate = screen.getConfig().getOutput().getRate();
+        final int expectedRate = screen.getConfig().output().rate();
 
         assertTrue(computed.get() > expectedRate, String.valueOf(computed.get()));
     }

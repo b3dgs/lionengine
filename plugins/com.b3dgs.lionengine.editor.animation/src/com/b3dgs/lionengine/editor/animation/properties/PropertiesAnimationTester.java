@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.animation.properties;
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationsConfig;
 import com.b3dgs.lionengine.game.FramesConfig;
 
 /**
@@ -47,12 +47,12 @@ public final class PropertiesAnimationTester extends PropertyTester
         final boolean result;
         if (PROPERTY_ANIMATIONS_ENABLE.equals(property) && model.hasProperty(FramesConfig.NODE_FRAMES))
         {
-            result = !model.hasProperty(AnimationConfig.NODE_ANIMATION);
+            result = !model.hasProperty(AnimationsConfig.NODE_ANIMATION);
         }
-        else if (AnimationConfig.NODE_ANIMATION.equals(data)
+        else if (AnimationsConfig.NODE_ANIMATION.equals(data)
                  && (PROPERTY_ANIMATIONS_EDIT.equals(property) || PROPERTY_ANIMATIONS_DISABLE.equals(property)))
         {
-            result = model.hasProperty(AnimationConfig.NODE_ANIMATION);
+            result = model.hasProperty(AnimationsConfig.NODE_ANIMATION);
         }
         else
         {

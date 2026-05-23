@@ -135,9 +135,9 @@ public final class TileGroupsConfig
     {
         final Xml nodeGroup = nodeGroups.createChild(NODE_GROUP);
         nodeGroup.writeString(ATT_GROUP_NAME, group.getName());
-        nodeGroup.writeEnum(ATT_GROUP_TYPE, group.getType());
+        nodeGroup.writeEnum(ATT_GROUP_TYPE, group.type());
 
-        for (final Integer tile : group.getTiles())
+        for (final Integer tile : group.tiles())
         {
             final Xml nodeTileRef = TileConfig.exports(tile.intValue());
             nodeGroup.add(nodeTileRef);

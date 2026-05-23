@@ -401,7 +401,7 @@ public final class SheetsPaletteDialog implements Focusable
         final MapTileTransition mapTransition = map.getFeature(MapTileTransition.class);
         for (final Transition transition : mapTransition.getTransitions())
         {
-            if (TransitionType.CENTER == transition.getType())
+            if (TransitionType.CENTER == transition.type())
             {
                 centerTiles.addAll(mapTransition.getTiles(transition));
             }

@@ -823,7 +823,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     @Override
     public void setLocation(CoordTile coord)
     {
-        setLocation(coord.getX(), coord.getY());
+        setLocation(coord.tx(), coord.ty());
     }
 
     @Override
@@ -927,7 +927,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     {
         if (categories.containsKey(category))
         {
-            return categories.get(category).getCost();
+            return categories.get(category).cost();
         }
         throw new LionEngineException(ERROR_CATEGORY + category);
     }
@@ -959,7 +959,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     {
         if (categories.containsKey(category))
         {
-            return categories.get(category).isBlocking();
+            return categories.get(category).blocking();
         }
         return false;
     }

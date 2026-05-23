@@ -40,16 +40,6 @@ public record Transition(TransitionType type, GroupTransition groups)
     }
 
     /**
-     * Get the transition type.
-     * 
-     * @return The transition type.
-     */
-    public TransitionType getType()
-    {
-        return type;
-    }
-
-    /**
      * Get the group inside.
      * 
      * @return The group inside.

@@ -47,7 +47,7 @@ public final class StateUncrouch extends StateHelper<EntityModel>
     {
         super.enter();
 
-        animatable.setFrame(animation.getLast());
+        animatable.setFrame(animation.lastFrame());
         movement.zero();
     }
 }

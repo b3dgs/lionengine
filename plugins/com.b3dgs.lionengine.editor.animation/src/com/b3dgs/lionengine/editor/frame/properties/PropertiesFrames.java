@@ -60,14 +60,14 @@ public class PropertiesFrames implements PropertiesProviderObject
         iconItem.setData(FramesConfig.NODE_FRAMES);
         iconItem.setImage(PropertiesFrames.ICON_FRAMES);
 
-        final FramesConfig configFrames = FramesConfig.imports(configurer);
+        final FramesConfig frames = FramesConfig.imports(configurer);
 
         final TreeItem framesHorizontal = new TreeItem(iconItem, SWT.NONE);
-        PropertiesPart.createLine(framesHorizontal, Messages.Horizontal, String.valueOf(configFrames.getHorizontal()));
+        PropertiesPart.createLine(framesHorizontal, Messages.Horizontal, String.valueOf(frames.horizontals()));
         framesHorizontal.setData(FramesConfig.ATT_HORIZONTAL);
 
         final TreeItem framesVertical = new TreeItem(iconItem, SWT.NONE);
-        PropertiesPart.createLine(framesVertical, Messages.Vertical, String.valueOf(configFrames.getVertical()));
+        PropertiesPart.createLine(framesVertical, Messages.Vertical, String.valueOf(frames.verticals()));
         framesVertical.setData(FramesConfig.ATT_VERTICAL);
     }
 

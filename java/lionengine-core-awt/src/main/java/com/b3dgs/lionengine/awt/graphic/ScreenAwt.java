@@ -58,14 +58,14 @@ final class ScreenAwt extends ScreenBaseAwt
      */
     private static String formatResolution(Resolution resolution, int depth)
     {
-        return new StringBuilder(MIN_LENGTH).append(String.valueOf(resolution.getWidth()))
+        return new StringBuilder(MIN_LENGTH).append(String.valueOf(resolution.width()))
                                             .append(Constant.STAR)
-                                            .append(String.valueOf(resolution.getHeight()))
+                                            .append(String.valueOf(resolution.height()))
                                             .append(Constant.STAR)
                                             .append(depth)
                                             .append(Constant.SPACE)
                                             .append(Constant.AT)
-                                            .append(String.valueOf(resolution.getRate()))
+                                            .append(String.valueOf(resolution.rate()))
                                             .append(Constant.UNIT_RATE)
                                             .toString();
     }
@@ -91,7 +91,7 @@ final class ScreenAwt extends ScreenBaseAwt
     {
         super(config);
 
-        requestWindowed = config.isWindowed();
+        requestWindowed = config.windowed();
     }
 
     /**
@@ -106,13 +106,10 @@ final class ScreenAwt extends ScreenBaseAwt
         window = new java.awt.Window(frame, conf);
         window.setBackground(Color.BLACK);
         window.setIgnoreRepaint(true);
-        window.setPreferredSize(new Dimension(output.getWidth(), output.getHeight()));
+        window.setPreferredSize(new Dimension(output.width(), output.height()));
         dev.setFullScreenWindow(window);
 
-        final DisplayMode disp = isSupported(new DisplayMode(output.getWidth(),
-                                                             output.getHeight(),
-                                                             depth,
-                                                             output.getRate()));
+        final DisplayMode disp = isSupported(new DisplayMode(output.width(), output.height(), depth, output.rate()));
         if (disp == null)
         {
             throw new LionEngineException(ScreenAwt.ERROR_UNSUPPORTED_FULLSCREEN
@@ -177,7 +174,7 @@ final class ScreenAwt extends ScreenBaseAwt
 
         frame.add(canvas, 0);
 
-        canvas.setPreferredSize(new Dimension(output.getWidth(), output.getHeight()));
+        canvas.setPreferredSize(new Dimension(output.width(), output.height()));
         frame.pack();
         frame.setLocationRelativeTo(null);
 
@@ -309,7 +306,7 @@ final class ScreenAwt extends ScreenBaseAwt
         }
         else
         {
-            initFullscreen(output, config.getDepth());
+            initFullscreen(output, config.depth());
         }
         super.setResolution(output);
     }

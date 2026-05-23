@@ -80,9 +80,9 @@ final class ConfigTest
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = new Config(output, 32, true);
 
-        assertEquals(32, config.getDepth());
-        assertTrue(config.isWindowed());
-        assertEquals(output, config.getOutput());
+        assertEquals(32, config.depth());
+        assertTrue(config.windowed());
+        assertEquals(output, config.output());
     }
 
     /**
@@ -91,14 +91,12 @@ final class ConfigTest
     @Test
     void testIcons()
     {
-        assertTrue(Config.windowed(new Resolution(320, 240, 60)).getIcons().isEmpty());
+        assertTrue(Config.windowed(new Resolution(320, 240, 60)).icons().isEmpty());
 
         final Media icon = Medias.create("image.png");
 
         assertEquals(icon,
-                     new Config(new Resolution(320, 240, 60), 32, true, Arrays.asList(icon)).getIcons()
-                                                                                            .iterator()
-                                                                                            .next());
+                     new Config(new Resolution(320, 240, 60), 32, true, Arrays.asList(icon)).icons().iterator().next());
     }
 
     /**
@@ -110,9 +108,9 @@ final class ConfigTest
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = Config.windowed(output);
 
-        assertTrue(config.isWindowed());
-        assertEquals(output, config.getOutput());
-        assertEquals(32, config.getDepth());
+        assertTrue(config.windowed());
+        assertEquals(output, config.output());
+        assertEquals(32, config.depth());
     }
 
     /**
@@ -124,9 +122,9 @@ final class ConfigTest
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = Config.windowed(output, Collections.emptyList());
 
-        assertTrue(config.isWindowed());
-        assertEquals(output, config.getOutput());
-        assertEquals(32, config.getDepth());
+        assertTrue(config.windowed());
+        assertEquals(output, config.output());
+        assertEquals(32, config.depth());
     }
 
     /**
@@ -138,8 +136,8 @@ final class ConfigTest
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = Config.fullscreen(output);
 
-        assertFalse(config.isWindowed());
-        assertEquals(output, config.getOutput());
-        assertEquals(32, config.getDepth());
+        assertFalse(config.windowed());
+        assertEquals(output, config.output());
+        assertEquals(32, config.depth());
     }
 }

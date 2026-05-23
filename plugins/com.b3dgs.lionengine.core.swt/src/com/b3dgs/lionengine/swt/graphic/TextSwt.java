@@ -136,7 +136,7 @@ final class TextSwt implements Text
             throw new LionEngineException(alignment);
         }
 
-        final Color c = new Color(device, color.getRed(), color.getGreen(), color.getBlue());
+        final Color c = new Color(device, color.red(), color.green(), color.blue());
         gc.setForeground(c);
         gc.drawString(text, tx, y, true);
         c.dispose();

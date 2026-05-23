@@ -42,7 +42,6 @@ import com.b3dgs.lionengine.game.ForceConfig;
  */
 public record LaunchableConfig(String media, int delay, int ox, int oy, Force vector, Optional<String> sfx)
 {
-
     /** Launchable node name. */
     public static final String NODE_LAUNCHABLE = Constant.XML_PREFIX + "launchable";
     /** Media attribute. */
@@ -88,12 +87,12 @@ public record LaunchableConfig(String media, int delay, int ox, int oy, Force ve
         Check.notNull(config);
 
         final Xml node = new Xml(NODE_LAUNCHABLE);
-        node.writeString(ATT_MEDIA, config.getMedia());
-        config.getSfx().ifPresent(sfx -> node.writeString(ATT_SFX, sfx));
-        node.writeInteger(ATT_DELAY, config.getDelay());
-        node.writeInteger(ATT_OFFSET_X, config.getOffsetX());
-        node.writeInteger(ATT_OFFSET_Y, config.getOffsetY());
-        node.add(ForceConfig.exports(config.getVector()));
+        node.writeString(ATT_MEDIA, config.media());
+        config.sfx().ifPresent(sfx -> node.writeString(ATT_SFX, sfx));
+        node.writeInteger(ATT_DELAY, config.delay());
+        node.writeInteger(ATT_OFFSET_X, config.ox());
+        node.writeInteger(ATT_OFFSET_Y, config.oy());
+        node.add(ForceConfig.exports(config.vector()));
 
         return node;
     }
@@ -129,65 +128,5 @@ public record LaunchableConfig(String media, int delay, int ox, int oy, Force ve
     {
         Check.notNull(media);
         Check.notNull(vector);
-    }
-
-    /**
-     * Get the media.
-     * 
-     * @return The launchable media.
-     */
-    public String getMedia()
-    {
-        return media;
-    }
-
-    /**
-     * Get the sfx.
-     * 
-     * @return The launchable sfx.
-     */
-    public Optional<String> getSfx()
-    {
-        return sfx;
-    }
-
-    /**
-     * Get the launch delay value.
-     * 
-     * @return The launch delay value.
-     */
-    public int getDelay()
-    {
-        return delay;
-    }
-
-    /**
-     * Get the horizontal offset.
-     * 
-     * @return The horizontal offset.
-     */
-    public int getOffsetX()
-    {
-        return ox;
-    }
-
-    /**
-     * Get the vertical offset.
-     * 
-     * @return The vertical offset.
-     */
-    public int getOffsetY()
-    {
-        return oy;
-    }
-
-    /**
-     * Get the vector value.
-     * 
-     * @return The vector value.
-     */
-    public Force getVector()
-    {
-        return vector;
     }
 }

@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationsConfig;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.Animatable;
@@ -84,9 +84,9 @@ public final class Soldier extends FeatureModel
         this.pathfindable = pathfindable;
         this.animatable = animatable;
 
-        final AnimationConfig config = AnimationConfig.imports(setup);
-        idle = config.getAnimation("idle");
-        walk = config.getAnimation("walk");
+        final AnimationsConfig animationsConfig = AnimationsConfig.imports(setup);
+        idle = animationsConfig.get("idle");
+        walk = animationsConfig.get("walk");
         animatable.play(idle);
 
         extractor.setChecker(new ExtractorChecker()

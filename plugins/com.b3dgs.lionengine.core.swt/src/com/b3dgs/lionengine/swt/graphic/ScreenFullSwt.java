@@ -66,8 +66,8 @@ final class ScreenFullSwt extends ScreenSwtAbstract
                 canvas.setEnabled(true);
                 canvas.setVisible(true);
             }
-            canvas.setSize(output.getWidth(), output.getHeight());
-            buffer = (ImageBufferSwt) Graphics.createImageBuffer(output.getWidth(), output.getHeight());
+            canvas.setSize(output.width(), output.height());
+            buffer = (ImageBufferSwt) Graphics.createImageBuffer(output.width(), output.height());
             frame.pack();
 
             buf = canvas;

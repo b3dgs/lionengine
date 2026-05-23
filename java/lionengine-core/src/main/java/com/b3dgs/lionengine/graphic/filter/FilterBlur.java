@@ -50,8 +50,8 @@ public class FilterBlur implements Filter
      */
     private static void compute(Kernel kernel, int[] in, int[] out, int width, int height, boolean alpha, int edge)
     {
-        final double[] matrix = kernel.getMatrix();
-        final int cols = kernel.getWidth();
+        final double[] matrix = kernel.matrix();
+        final int cols = kernel.width();
         final int cols2 = cols / 2;
 
         for (int y = 0; y < height; y++)

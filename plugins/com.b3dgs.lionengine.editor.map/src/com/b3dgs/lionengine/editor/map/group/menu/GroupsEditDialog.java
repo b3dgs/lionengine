@@ -62,9 +62,9 @@ public class GroupsEditDialog extends DialogAbstract
      */
     public static List<SpriteTiled> loadSheets(TileSheetsConfig config, String folder)
     {
-        final int tw = config.getTileWidth();
-        final int th = config.getTileHeight();
-        final List<String> configSheets = config.getSheets();
+        final int tw = config.tileWidth();
+        final int th = config.tileHeight();
+        final List<String> configSheets = config.sheets();
         final List<SpriteTiled> sheets = new ArrayList<>(configSheets.size());
         for (final String sheet : configSheets)
         {

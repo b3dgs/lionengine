@@ -109,17 +109,17 @@ public class CollisionCategoryProperties extends ObjectPropertiesAbstract<Collis
     @Override
     public void notifyObjectSelected(CollisionCategory category)
     {
-        axis.setText(category.getAxis().name());
-        offsetX.setText(String.valueOf(category.getOffsetX()));
-        offsetY.setText(String.valueOf(category.getOffsetY()));
-        glue.setSelection(category.isGlue());
+        axis.setText(category.axis().name());
+        offsetX.setText(String.valueOf(category.x()));
+        offsetY.setText(String.valueOf(category.y()));
+        glue.setSelection(category.glue());
 
         for (final TreeItem item : groups.getTree().getItems())
         {
             item.setData(null);
             item.dispose();
         }
-        for (final CollisionGroup group : category.getGroups())
+        for (final CollisionGroup group : category.groups())
         {
             final TreeItem item = new TreeItem(groups.getTree(), SWT.NONE);
             item.setText(group.getName());

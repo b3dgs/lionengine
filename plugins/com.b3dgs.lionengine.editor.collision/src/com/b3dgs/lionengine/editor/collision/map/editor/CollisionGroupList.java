@@ -94,13 +94,13 @@ public class CollisionGroupList extends ObjectListAbstract<CollisionGroup> imple
     {
         this.groupsConfig = groupsConfig;
         final CollisionGroupConfig groups = CollisionGroupConfig.imports(groupsConfig);
-        loadObjects(groups.getGroups().values());
+        loadObjects(groups.groups().values());
     }
 
     @Override
     protected CollisionGroup copyObject(CollisionGroup collision)
     {
-        return new CollisionGroup(collision.getName(), collision.getFormulas());
+        return new CollisionGroup(collision.getName(), collision.formulas());
     }
 
     @Override

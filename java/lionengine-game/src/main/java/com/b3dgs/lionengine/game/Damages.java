@@ -97,7 +97,7 @@ public class Damages
      */
     public void setDamages(Range range)
     {
-        setDamages(range.getMin(), range.getMax());
+        setDamages(range.min(), range.max());
     }
 
     /**

@@ -84,16 +84,6 @@ public record CollisionGroup(String name, Collection<CollisionFormula> formulas)
         Check.notNull(formulas);
     }
 
-    /**
-     * Get collision formulas reference as read only..
-     * 
-     * @return The collision formulas reference.
-     */
-    public Collection<CollisionFormula> getFormulas()
-    {
-        return formulas;
-    }
-
     @Override
     public String getName()
     {

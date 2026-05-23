@@ -116,7 +116,7 @@ final class LoopLockedTest
         assertEquals(maxTick.get(), tick.get());
         assertEquals(tick.get(), rendered.get());
 
-        final int expectedRate = screen.getConfig().getOutput().getRate();
+        final int expectedRate = screen.getConfig().output().rate();
 
         assertTrue(computed.get() <= expectedRate, String.valueOf(computed.get()));
     }
@@ -138,7 +138,7 @@ final class LoopLockedTest
         assertEquals(maxTick.get(), tick.get());
         assertEquals(tick.get(), rendered.get());
 
-        final int expectedRate = screen.getConfig().getOutput().getRate();
+        final int expectedRate = screen.getConfig().output().rate();
 
         assertTrue(computed.get() > expectedRate, String.valueOf(computed.get()));
     }
@@ -161,7 +161,7 @@ final class LoopLockedTest
         assertEquals(maxTick.get(), tick.get());
         assertEquals(tick.get(), rendered.get());
 
-        final int expectedRate = screen.getConfig().getOutput().getRate();
+        final int expectedRate = screen.getConfig().output().rate();
 
         assertTrue(computed.get() > expectedRate, String.valueOf(computed.get()));
     }

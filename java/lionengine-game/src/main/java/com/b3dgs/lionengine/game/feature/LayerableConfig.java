@@ -86,29 +86,9 @@ public record LayerableConfig(int layerRefresh, int layerDisplay)
         Check.notNull(config);
 
         final Xml node = new Xml(NODE_LAYERABLE);
-        node.writeInteger(ATT_REFRESH, config.getLayerRefresh());
-        node.writeInteger(ATT_DISPLAY, config.getLayerDisplay());
+        node.writeInteger(ATT_REFRESH, config.layerRefresh());
+        node.writeInteger(ATT_DISPLAY, config.layerDisplay());
 
         return node;
-    }
-
-    /**
-     * Get the layer refresh.
-     * 
-     * @return The layer refresh.
-     */
-    public int getLayerRefresh()
-    {
-        return layerRefresh;
-    }
-
-    /**
-     * Get the layer display.
-     * 
-     * @return The layer display.
-     */
-    public int getLayerDisplay()
-    {
-        return layerDisplay;
     }
 }

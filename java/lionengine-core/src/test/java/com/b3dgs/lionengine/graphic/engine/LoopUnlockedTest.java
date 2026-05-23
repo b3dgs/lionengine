@@ -115,7 +115,7 @@ final class LoopUnlockedTest
         assertTimeout(1000L, thread::join);
         assertEquals(maxTick.get(), tick.get());
         assertEquals(tick.get(), rendered.get());
-        assertTrue(computed.get() >= screen.getConfig().getOutput().getRate(), String.valueOf(computed.get()));
+        assertTrue(computed.get() >= screen.getConfig().output().rate(), String.valueOf(computed.get()));
     }
 
     /**

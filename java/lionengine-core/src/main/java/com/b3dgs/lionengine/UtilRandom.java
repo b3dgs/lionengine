@@ -68,7 +68,7 @@ public final class UtilRandom
     {
         Check.notNull(range);
 
-        return getRandomInteger(range.getMin(), range.getMax());
+        return getRandomInteger(range.min(), range.max());
     }
 
     /**

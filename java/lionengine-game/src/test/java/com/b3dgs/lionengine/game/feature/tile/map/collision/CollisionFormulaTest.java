@@ -44,9 +44,9 @@ final class CollisionFormulaTest
     void testFormula()
     {
         assertEquals("formula", formula.getName());
-        assertEquals(range, formula.getRange());
-        assertEquals(function, formula.getFunction());
-        assertEquals(constaint, formula.getConstraint());
+        assertEquals(range, formula.range());
+        assertEquals(function, formula.function());
+        assertEquals(constaint, formula.constraint());
     }
 
     /**

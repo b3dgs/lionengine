@@ -399,7 +399,7 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract
     public void notifyTileCollided(CollisionResult result, CollisionCategory category)
     {
         final String name = category.getName();
-        if (Axis.X == category.getAxis())
+        if (Axis.X == category.axis())
         {
             if (collideSide(name, "left", "right", transformable.getX(), transformable.getOldX()))
             {
@@ -408,7 +408,7 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract
                 onCollided(result, category);
             }
         }
-        else if (Axis.Y == category.getAxis()
+        else if (Axis.Y == category.axis()
                  && collideSide(name, "bottom", "top", transformable.getY(), transformable.getOldY()))
         {
             tileCollidable.apply(result);

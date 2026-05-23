@@ -90,7 +90,7 @@ final class CollisionGroupConfigTest
 
         final CollisionGroupConfig imported = CollisionGroupConfig.imports(config);
 
-        assertEquals(group.getName(), imported.getGroups().values().iterator().next().getName());
+        assertEquals(group.getName(), imported.groups().values().iterator().next().getName());
         assertEquals(group.getName(), imported.getGroup("group").getName());
 
         assertTrue(config.getFile().delete());
@@ -114,7 +114,7 @@ final class CollisionGroupConfigTest
 
         final CollisionGroupConfig groups = CollisionGroupConfig.imports(new XmlReader(groupsConfig), mapCollision);
 
-        assertEquals(group, groups.getGroups().values().iterator().next());
+        assertEquals(group, groups.groups().values().iterator().next());
 
         assertTrue(groupsConfig.getFile().delete());
         assertTrue(formulasConfig.getFile().delete());

@@ -71,7 +71,7 @@ public class CategoryProperties extends ObjectPropertiesAbstract<PathCategory>
             item.setData(null);
             item.dispose();
         }
-        for (final String group : category.getGroups())
+        for (final String group : category.groups())
         {
             final TreeItem item = new TreeItem(groups.getTree(), SWT.NONE);
             item.setText(group);

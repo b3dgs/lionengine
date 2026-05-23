@@ -52,7 +52,7 @@ public class PropertiesClass implements PropertiesProviderObject
     private static void createAttributeClass(Tree properties, FeaturableConfig configObject)
     {
         final TreeItem classItem = new TreeItem(properties, SWT.NONE);
-        PropertiesPart.createLine(classItem, Messages.Class, configObject.getClassName());
+        PropertiesPart.createLine(classItem, Messages.Class, configObject.clazz());
         classItem.setData(UtilSetup.ATT_CLASS);
         classItem.setImage(ICON_CLASS);
     }

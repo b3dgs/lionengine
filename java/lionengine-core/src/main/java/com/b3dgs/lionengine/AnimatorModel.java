@@ -190,11 +190,11 @@ public final class AnimatorModel implements Animator
         Check.notNull(anim);
 
         this.anim = anim;
-        first = anim.getFirst();
-        last = anim.getLast();
-        speed = anim.getSpeed();
-        reverse = anim.hasReverse();
-        repeat = anim.hasRepeat();
+        first = anim.firstFrame();
+        last = anim.lastFrame();
+        speed = anim.speed();
+        reverse = anim.reverse();
+        repeat = anim.repeat();
         current = first;
         state = AnimState.PLAYING;
 

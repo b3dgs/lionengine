@@ -48,8 +48,8 @@ final class RangeTest
     {
         final Range range = new Range();
 
-        assertEquals(0, range.getMin());
-        assertEquals(0, range.getMax());
+        assertEquals(0, range.min());
+        assertEquals(0, range.max());
     }
 
     /**
@@ -60,8 +60,8 @@ final class RangeTest
     {
         final Range range = new Range(1, 2);
 
-        assertEquals(1, range.getMin());
-        assertEquals(2, range.getMax());
+        assertEquals(1, range.min());
+        assertEquals(2, range.max());
     }
 
     /**
@@ -76,21 +76,21 @@ final class RangeTest
         assertTrue(range.includes(0.0));
         assertTrue(range.includes(Double.MIN_NORMAL));
 
-        assertTrue(range.includes(range.getMin()));
-        assertTrue(range.includes(range.getMax()));
-        assertTrue(range.includes(range.getMin() + 1));
-        assertTrue(range.includes(range.getMax() - 1));
+        assertTrue(range.includes(range.min()));
+        assertTrue(range.includes(range.max()));
+        assertTrue(range.includes(range.min() + 1));
+        assertTrue(range.includes(range.max() - 1));
 
-        assertFalse(range.includes(range.getMax() + 1));
-        assertFalse(range.includes(range.getMin() - 1));
+        assertFalse(range.includes(range.max() + 1));
+        assertFalse(range.includes(range.min() - 1));
 
-        assertTrue(range.includes((double) range.getMin()));
-        assertTrue(range.includes((double) range.getMax()));
-        assertTrue(range.includes(range.getMin() + 0.000000000000001));
-        assertTrue(range.includes(range.getMax() - 0.000000000000001));
+        assertTrue(range.includes((double) range.min()));
+        assertTrue(range.includes((double) range.max()));
+        assertTrue(range.includes(range.min() + 0.000000000000001));
+        assertTrue(range.includes(range.max() - 0.000000000000001));
 
-        assertFalse(range.includes(range.getMax() + 0.000000000000001));
-        assertFalse(range.includes(range.getMin() - 0.000000000000001));
+        assertFalse(range.includes(range.max() + 0.000000000000001));
+        assertFalse(range.includes(range.min() - 0.000000000000001));
     }
 
     /**

@@ -54,26 +54,6 @@ public record Range(int min, int max)
     }
 
     /**
-     * Get minimum value.
-     * 
-     * @return The minimum value.
-     */
-    public int getMin()
-    {
-        return min;
-    }
-
-    /**
-     * Get maximum value.
-     * 
-     * @return The maximum value.
-     */
-    public int getMax()
-    {
-        return max;
-    }
-
-    /**
      * Check if value is inside range, min and max included.
      * 
      * @param value The value to check.

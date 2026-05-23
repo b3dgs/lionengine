@@ -78,8 +78,8 @@ public class ExtractableModel extends FeatureModel implements Extractable
         if (setup.hasNode(ExtractableConfig.NODE_EXTRACTABLE))
         {
             final ExtractableConfig config = ExtractableConfig.imports(setup);
-            type = config.getType();
-            resources.setMax(config.getQuantity());
+            type = config.type();
+            resources.setMax(config.quantity());
             resources.fill();
         }
     }

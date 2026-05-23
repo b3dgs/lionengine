@@ -93,11 +93,11 @@ public final class HeroUpdater extends FeatureModel implements Refreshable, Tile
     @Override
     public void notifyTileCollided(CollisionResult result, CollisionCategory category)
     {
-        if (Axis.X == category.getAxis())
+        if (Axis.X == category.axis())
         {
             tileCollidable.apply(result);
         }
-        else if (Axis.Y == category.getAxis() && transformable.getY() < transformable.getOldY())
+        else if (Axis.Y == category.axis() && transformable.getY() < transformable.getOldY())
         {
             tileCollidable.apply(result);
             body.resetGravity();

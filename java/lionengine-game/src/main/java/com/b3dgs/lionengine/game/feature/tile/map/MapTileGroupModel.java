@@ -69,10 +69,10 @@ public class MapTileGroupModel extends FeatureAbstract implements MapTileGroup
         for (final TileGroup group : groups)
         {
             final String name = group.getName();
-            groupTiles.put(name, group.getTiles());
-            groupTypes.put(name, group.getType());
+            groupTiles.put(name, group.tiles());
+            groupTypes.put(name, group.type());
 
-            for (final Integer tile : group.getTiles())
+            for (final Integer tile : group.tiles())
             {
                 tilesGroup.put(tile, name);
             }

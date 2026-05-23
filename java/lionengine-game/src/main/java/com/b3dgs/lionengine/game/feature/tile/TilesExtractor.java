@@ -42,7 +42,7 @@ public final class TilesExtractor
     /** Ignored color. */
     public static final ColorRgba IGNORED_COLOR = new ColorRgba(0, 128, 128);
     /** Ignored color. */
-    public static final int IGNORED_COLOR_VALUE = IGNORED_COLOR.getRgba();
+    public static final int IGNORED_COLOR_VALUE = IGNORED_COLOR.rgba();
 
     /**
      * Compare two tiles by checking all pixels.

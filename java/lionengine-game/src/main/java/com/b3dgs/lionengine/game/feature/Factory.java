@@ -271,7 +271,7 @@ public class Factory implements HandlerListener
         try
         {
             final FeaturableConfig config = FeaturableConfig.imports(configurer);
-            final String setup = config.getSetupName();
+            final String setup = config.setup();
             final Class<? extends Setup> setupClass;
             if (standard)
             {
@@ -279,7 +279,7 @@ public class Factory implements HandlerListener
             }
             else if (setup.isEmpty())
             {
-                final Class<?> clazz = classLoader.loadClass(config.getClassName());
+                final Class<?> clazz = classLoader.loadClass(config.clazz());
                 final Constructor<?> constructor = UtilReflection.getCompatibleConstructorParent(clazz, new Class<?>[]
                 {
                     Services.class, Setup.class
@@ -288,7 +288,7 @@ public class Factory implements HandlerListener
             }
             else
             {
-                setupClass = (Class<? extends Setup>) classLoader.loadClass(config.getSetupName());
+                setupClass = (Class<? extends Setup>) classLoader.loadClass(config.setup());
             }
             return UtilReflection.create(setupClass, new Class<?>[]
             {

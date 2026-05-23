@@ -163,9 +163,9 @@ final class FactoryGraphicSwtTest
         final String info = imageBuffer.getTransparency() + " " + imageBuffer.getTransparentColor();
 
         assertTrue(imageBuffer.getTransparency() == Transparency.BITMASK
-                   && imageBuffer.getTransparentColor().getRed() == 0
-                   && imageBuffer.getTransparentColor().getGreen() == 0
-                   && imageBuffer.getTransparentColor().getBlue() == 0
+                   && imageBuffer.getTransparentColor().red() == 0
+                   && imageBuffer.getTransparentColor().green() == 0
+                   && imageBuffer.getTransparentColor().blue() == 0
                    || imageBuffer.getTransparency() == Transparency.TRANSLUCENT
                       && imageBuffer.getTransparentColor() == null,
                    info);

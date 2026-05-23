@@ -215,7 +215,7 @@ final class ScreenAwtTest
 
         assertTimeout(10_000L, () ->
         {
-            while (config.isWindowed() && !gained.get())
+            while (config.windowed() && !gained.get())
             {
                 // continue
             }
@@ -228,7 +228,7 @@ final class ScreenAwtTest
 
         assertTimeout(10_000L, () ->
         {
-            while (config.isWindowed() && !gained.get())
+            while (config.windowed() && !gained.get())
             {
                 // continue
             }

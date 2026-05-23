@@ -92,10 +92,10 @@ public class Setup extends Configurer
             {
                 prefix = conf.substring(0, conf.lastIndexOf(File.separator) + 1);
             }
-            final Media surfaceMedia = Medias.create(prefix + surfaceData.getImage());
-            if (surfaceData.getIcon().isPresent())
+            final Media surfaceMedia = Medias.create(prefix + surfaceData.image());
+            if (surfaceData.icon().isPresent())
             {
-                final Media iconMedia = Medias.create(prefix + surfaceData.getIcon().get());
+                final Media iconMedia = Medias.create(prefix + surfaceData.icon().get());
                 iconFile = Optional.of(iconMedia);
                 icon = getIcon(iconMedia);
             }

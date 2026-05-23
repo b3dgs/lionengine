@@ -102,16 +102,16 @@ public final class ActionsConfig
         for (final ActionRef action : actions)
         {
             final Xml nodeAction = node.createChild(NODE_ACTION_REF);
-            nodeAction.writeString(ATT_PATH, action.getPath());
-            if (action.hasCancel())
+            nodeAction.writeString(ATT_PATH, action.path());
+            if (action.cancel())
             {
                 nodeAction.writeBoolean(ATT_CANCEL, true);
             }
-            if (action.hasCancel())
+            if (action.cancel())
             {
                 nodeAction.writeBoolean(ATT_UNIQUE, true);
             }
-            for (final ActionRef ref : action.getRefs())
+            for (final ActionRef ref : action.refs())
             {
                 exports(nodeAction, ref);
             }
@@ -154,9 +154,9 @@ public final class ActionsConfig
     private static void exports(Xml node, ActionRef action)
     {
         final Xml nodeAction = node.createChild(NODE_ACTION_REF);
-        nodeAction.writeString(ATT_PATH, action.getPath());
+        nodeAction.writeString(ATT_PATH, action.path());
 
-        for (final ActionRef ref : action.getRefs())
+        for (final ActionRef ref : action.refs())
         {
             exports(nodeAction, ref);
         }

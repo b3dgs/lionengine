@@ -358,8 +358,8 @@ public class FormulaProperties extends ObjectPropertiesAbstract<CollisionFormula
         if (function.getType() == CollisionFunctionType.LINEAR)
         {
             final CollisionFunctionLinear linear = (CollisionFunctionLinear) function;
-            setValueDefault(linearA, Double.toString(linear.getA()));
-            setValueDefault(linearB, Double.toString(linear.getB()));
+            setValueDefault(linearA, Double.toString(linear.a()));
+            setValueDefault(linearB, Double.toString(linear.b()));
         }
     }
 
@@ -448,20 +448,20 @@ public class FormulaProperties extends ObjectPropertiesAbstract<CollisionFormula
     @Override
     public void notifyObjectSelected(CollisionFormula formula)
     {
-        final CollisionRange range = formula.getRange();
-        output.setText(range.getOutput().name());
-        output.setData(range.getOutput());
-        setValueDefault(minX, Integer.toString(range.getMinX()));
-        setValueDefault(maxX, Integer.toString(range.getMaxX()));
-        setValueDefault(minY, Integer.toString(range.getMinY()));
-        setValueDefault(maxY, Integer.toString(range.getMaxY()));
+        final CollisionRange range = formula.range();
+        output.setText(range.output().name());
+        output.setData(range.output());
+        setValueDefault(minX, Integer.toString(range.minX()));
+        setValueDefault(maxX, Integer.toString(range.maxX()));
+        setValueDefault(minY, Integer.toString(range.minY()));
+        setValueDefault(maxY, Integer.toString(range.maxY()));
 
-        final CollisionFunction function = formula.getFunction();
+        final CollisionFunction function = formula.function();
         UtilCombo.setDefaultValue(type, function.getType().name());
         type.setData(function.getType());
         loadFunction(function);
 
-        final CollisionConstraint constraint = formula.getConstraint();
+        final CollisionConstraint constraint = formula.constraint();
         readConstraints(constraint, constraintsTop, Orientation.NORTH);
         readConstraints(constraint, constraintsBottom, Orientation.SOUTH);
         readConstraints(constraint, constraintsLeft, Orientation.WEST);

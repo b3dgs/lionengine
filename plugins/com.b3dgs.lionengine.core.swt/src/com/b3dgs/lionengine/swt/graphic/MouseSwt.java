@@ -67,8 +67,8 @@ public final class MouseSwt implements Mouse
         Check.notNull(output);
         Check.notNull(source);
 
-        xRatio = output.getWidth() / (double) source.getWidth();
-        yRatio = output.getHeight() / (double) source.getHeight();
+        xRatio = output.width() / (double) source.width();
+        yRatio = output.height() / (double) source.height();
     }
 
     /**

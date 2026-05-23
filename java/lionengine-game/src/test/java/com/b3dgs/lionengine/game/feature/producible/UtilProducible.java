@@ -146,7 +146,7 @@ final class UtilProducible
 
         final Media media = UtilTestSetup.createMedia(Featurable.class);
         final Xml root = new Xml("test");
-        root.add(SizeConfig.exports(new SizeConfig(producibleConfig.getWidth(), producibleConfig.getHeight())));
+        root.add(SizeConfig.exports(new SizeConfig(producibleConfig.width(), producibleConfig.height())));
         root.add(ProducibleConfig.exports(producibleConfig));
         root.save(media);
 

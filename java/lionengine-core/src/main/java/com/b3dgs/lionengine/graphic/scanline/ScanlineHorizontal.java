@@ -52,7 +52,7 @@ public final class ScanlineHorizontal implements Scanline
 
     private void create(Graphic g2, int width, int height)
     {
-        final int size = Math.max(1, (int) Math.round(height / (double) source.getHeight() / factor));
+        final int size = Math.max(1, (int) Math.round(height / (double) source.height() / factor));
 
         for (int y = 0; y < height; y += size * 2)
         {
@@ -63,8 +63,8 @@ public final class ScanlineHorizontal implements Scanline
     @Override
     public void prepare(Config config)
     {
-        final Resolution output = config.getOutput();
-        scanline = Graphics.createImageBufferAlpha(output.getWidth(), output.getHeight());
+        final Resolution output = config.output();
+        scanline = Graphics.createImageBufferAlpha(output.width(), output.height());
         final Graphic g2 = scanline.createGraphic();
         g2.setColor(COLOR);
         create(g2, scanline.getWidth(), scanline.getHeight());
