@@ -70,7 +70,7 @@ public final class ScreenAndroid extends ScreenAbstract implements SurfaceHolder
      */
     public static synchronized void setSize(Config config)
     {
-        holder.setFixedSize(config.getOutput().width(), config.getOutput().height());
+        holder.setFixedSize(config.output().width(), config.output().height());
     }
     
     /**

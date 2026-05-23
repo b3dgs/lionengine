@@ -256,8 +256,8 @@ final class GraphicAndroid implements Graphic
     {
         if (!colorGradients.containsKey(cg))
         {
-            final int c1 = cg.getColor1().rgba();
-            final int c2 = cg.getColor2().rgba();
+            final int c1 = cg.color1().rgba();
+            final int c2 = cg.color2().rgba();
             final LinearGradient gradient = new LinearGradient(cg.x1(),
                                                                cg.y1(),
                                                                cg.x2(),
