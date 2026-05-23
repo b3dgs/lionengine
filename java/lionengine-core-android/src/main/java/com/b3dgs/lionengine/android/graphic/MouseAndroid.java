@@ -217,8 +217,8 @@ public final class MouseAndroid implements Mouse
      */
     void setConfig(int width, int height, Resolution source)
     {
-        xRatio = width / (double) source.getWidth();
-        yRatio = height / (double) source.getHeight();
+        xRatio = width / (double) source.width();
+        yRatio = height / (double) source.height();
     }
 
     /*

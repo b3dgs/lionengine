@@ -248,7 +248,7 @@ final class GraphicAndroid implements Graphic
     @Override
     public void setColor(ColorRgba color)
     {
-        paint.setColor(color.getRgba());
+        paint.setColor(color.rgba());
     }
 
     @Override
@@ -256,12 +256,12 @@ final class GraphicAndroid implements Graphic
     {
         if (!colorGradients.containsKey(cg))
         {
-            final int c1 = cg.getColor1().getRgba();
-            final int c2 = cg.getColor2().getRgba();
-            final LinearGradient gradient = new LinearGradient(cg.getX1(),
-                                                               cg.getY1(),
-                                                               cg.getX2(),
-                                                               cg.getY2(),
+            final int c1 = cg.getColor1().rgba();
+            final int c2 = cg.getColor2().rgba();
+            final LinearGradient gradient = new LinearGradient(cg.x1(),
+                                                               cg.y1(),
+                                                               cg.x2(),
+                                                               cg.y2(),
                                                                c1,
                                                                c2,
                                                                TileMode.CLAMP);

@@ -89,7 +89,7 @@ public final class UtilImage
      */
     static ImageBuffer applyMask(ImageBuffer image, ColorRgba maskColor)
     {
-        return new ImageBufferAndroid(ToolsAndroid.applyMask((Bitmap) image.getSurface(), maskColor.getRgba()));
+        return new ImageBufferAndroid(ToolsAndroid.applyMask((Bitmap) image.getSurface(), maskColor.rgba()));
     }
 
     /**

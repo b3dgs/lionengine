@@ -70,7 +70,7 @@ public final class ScreenAndroid extends ScreenAbstract implements SurfaceHolder
      */
     public static synchronized void setSize(Config config)
     {
-        holder.setFixedSize(config.getOutput().getWidth(), config.getOutput().getHeight());
+        holder.setFixedSize(config.getOutput().width(), config.getOutput().height());
     }
     
     /**
@@ -255,7 +255,7 @@ public final class ScreenAndroid extends ScreenAbstract implements SurfaceHolder
     public void onSourceChanged(Resolution source)
     {
         ((MouseAndroid) getInputDevice(Mouse.class)).setConfig(size.getWidth(), size.getHeight(), source);
-        keyboard.setScale(config.getOutput().getHeight() / (double) source.getHeight());
+        keyboard.setScale(config.output().height() / (double) source.height());
     }
 
     /*

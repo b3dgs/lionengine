@@ -97,7 +97,7 @@ final class TextAndroid implements Text
         align = Align.LEFT;
         color = ColorRgba.WHITE;
         paint.setTextSize(this.size);
-        paint.setColor(color.getRgba());
+        paint.setColor(color.rgba());
         paint.setTypeface(Typeface.create(fontName, TextAndroid.getStyle(style)));
     }
 
@@ -155,7 +155,7 @@ final class TextAndroid implements Text
     public void setColor(ColorRgba color)
     {
         this.color = color;
-        paint.setColor(color.getRgba());
+        paint.setColor(color.rgba());
     }
 
     @Override
