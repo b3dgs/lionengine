@@ -15,9 +15,6 @@
     <name>LionEngine</name>
     <description>Java 2D Game Engine</description>
     <url>https://github.com/b3dgs/lionengine</url>
-    <modules>
-        <module>java/lionengine-core</module>
-    </modules>
     <scm>
         <url>https://github.com/b3dgs/lionengine</url>
         <connection>scm:git:git@github.com:b3dgs/lionengine.git</connection>
@@ -45,88 +42,9 @@
                 <groupId>com.b3dgs.radialencapsulation</groupId>
                 <artifactId>radial-encapsulation-maven-plugin</artifactId>
                 <configuration>
-                    <maxViolations>2</maxViolations> <!-- TODO To be removed -->
+                    <maxViolations>0</maxViolations>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-    <profiles>
-        <profile>
-            <id>core</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>java/lionengine-core-headless</module>
-                <module>java/lionengine-core-awt</module>
-                <module>java/lionengine-game</module>
-                <module>java/lionengine-helper</module>
-                <module>java/lionengine-audio-wav</module>
-                <module>java/lionengine-audio-adlmidi</module>
-                <module>java/lionengine-audio-adplug</module>
-                <module>java/lionengine-audio-sc68</module>
-                <module>coverage</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>android</id>
-            <properties>
-                <maven.source.skip>true</maven.source.skip>
-                <maven.javadoc.skip>true</maven.javadoc.skip>
-                <maven.test.skip>true</maven.test.skip>
-            </properties>
-        </profile>
-        <profile>
-            <id>editor</id>
-            <properties>
-                <maven.source.skip>true</maven.source.skip>
-                <maven.javadoc.skip>true</maven.javadoc.skip>
-            </properties>
-            <modules>
-                <module>java/lionengine-game</module>
-                <module>java/lionengine-helper</module>
-                <module>releng/aggregator</module>
-                <module>coverage</module>
-            </modules>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>extra</id>
-            <modules>
-                <module>java/lionengine-examples</module>
-                <module>java/lionengine-tutorials</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>sonar</id>
-            <modules>
-                <module>java/lionengine-core-headless</module>
-                <module>java/lionengine-core-awt</module>
-                <module>java/lionengine-game</module>
-                <module>java/lionengine-helper</module>
-                <module>java/lionengine-audio-wav</module>
-                <module>java/lionengine-audio-adlmidi</module>
-                <module>java/lionengine-audio-adplug</module>
-                <module>java/lionengine-audio-sc68</module>
-                <module>releng/aggregator</module>
-            </modules>
-        </profile>
-    </profiles>
 </project>
