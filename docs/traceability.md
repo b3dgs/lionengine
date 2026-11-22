@@ -48,6 +48,12 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-LOOP-008 | Must | PROPOSED | ADR-0017 | OQ-151 | — | no test yet |
 | REQ-LOOP-009 | Must | PROPOSED | ADR-0017 | OQ-151 | — | no test yet |
 | REQ-LOOP-010 | Must | PROPOSED | ADR-0017 | OQ-030 | — | no test yet |
+| REQ-RT-001 | Must | PROPOSED | ADR-0018 | OQ-153 | — | no test yet |
+| REQ-RT-002 | Must | PROPOSED | ADR-0018 | OQ-153 | — | no test yet |
+| REQ-RT-003 | Must | PROPOSED | ADR-0018, ADR-0007 | — | — | no test yet |
+| REQ-RT-004 | Should | PROPOSED | ADR-0019, ADR-0018 | OQ-153 | — | no test yet |
+| REQ-RT-005 | Must | PROPOSED | ADR-0019 | OQ-101, OQ-110 | — | no test yet |
+| REQ-RT-006 | Must | PROPOSED | ADR-0019 | OQ-070, OQ-139 | — | no test yet |
 | REQ-RES-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-RES-002 | Should | PROPOSED | — | — | — | no test yet |
 | REQ-RES-003 | Must | PROPOSED | ADR-0005 | OQ-032, OQ-118 | — | no test yet |

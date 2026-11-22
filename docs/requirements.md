@@ -90,6 +90,19 @@ Note: the packet placeholder `REQ-RENDER-FILTER-NNN` is numbered `REQ-FILTER-NNN
 
 "VALIDATED (principle)": the principle is binding (ADR-0001); the formula, step duration, bounds and policies are defined by [ADR-0017](decisions/0017-fixed-step-game-loop.md) (REQ-LOOP-007 to REQ-LOOP-010). The text of REQ-LOOP-004 to REQ-LOOP-006 is unchanged.
 
+## Runtime
+
+Source: [ADR-0018](decisions/0018-runtime-thread-events-and-cache-thread-safety.md) and [ADR-0019](decisions/0019-loading-resource-policy-and-memory.md) (ACCEPTED), issue #877.
+
+| ID | Requirement | Priority | Status | Expected verification |
+|---|---|---|---|---|
+| REQ-RT-001 | One runtime thread owns the loop, the update phase, the world, the caches and, by default, the render phase; every public type documents its thread; the engine starts no thread by itself; the platform runs the loop on the thread it requires. | Must | PROPOSED | Contract tests on a test platform; review of Javadoc thread tags. |
+| REQ-RT-002 | Platform-originated events are posted from any thread to a FIFO inbox and delivered on the runtime thread at the start of an iteration, before the update steps; internal events stay synchronous in the update phase; listener registration during a dispatch takes effect after it. | Must | PROPOSED | Tests with a controllable clock and injected events: order, boundary, registration during dispatch. |
+| REQ-RT-003 | Cache operations run only on the runtime thread; decoded data are immutable; worker threads never touch a cache. | Must | PROPOSED | Contract tests of the consuming modules; thread-confinement assertion tests. |
+| REQ-RT-004 | Resources can be loaded synchronously; an opt-in asynchronous request returns a handle (pending, ready, failed, progress) completed through the inbox, never blocking the update step; workers only decode. | Should | PROPOSED | Tests with a fake worker pool and a controllable clock: completion at the frame boundary, failure, cancellation. |
+| REQ-RT-005 | Caches use explicit reference counting and explicit release, with no weak references or automatic eviction by default; reloading happens only for context-loss recovery and as an explicit frame-boundary reload. | Must | PROPOSED | Contract tests of release, scope release and reload at a frame boundary. |
+| REQ-RT-006 | Per-step and per-frame paths allocate nothing in steady state; no finalizers or `Cleaner`; native memory is released explicitly. | Must | PROPOSED | JVM allocation tests in the headless suite; review. |
+
 ## Resources and media
 
 | ID | Requirement | Priority | Status | Expected verification |

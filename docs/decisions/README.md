@@ -38,6 +38,8 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 - [`ADR-0015`](0015-single-version-and-package-dependency-rule.md) — One version for all modules; package dependency rule of `radial-encapsulation-maven-plugin` (accepted 2026-11-22, issue #875).
 - [`ADR-0016`](0016-angle-range-and-normalization.md) — Angle range: absolute angles in `[0, 360)`, signed differences in `(-180, 180]` (accepted 2026-11-22, issue #875).
 - [`ADR-0017`](0017-fixed-step-game-loop.md) — Fixed-step game loop with accumulator, interpolation by default, lag cap, pause and time scale, fail-fast (accepted 2026-11-22, issue #876).
+- [`ADR-0018`](0018-runtime-thread-events-and-cache-thread-safety.md) — One runtime thread, platform event inbox, cache thread confinement (accepted 2026-11-22, issue #877).
+- [`ADR-0019`](0019-loading-resource-policy-and-memory.md) — Synchronous-first loading with opt-in asynchronous contract, explicit reference-counted resources, hot-path memory policy (accepted 2026-11-22, issue #877).
 
 ## Proposed decisions
 

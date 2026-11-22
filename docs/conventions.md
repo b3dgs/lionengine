@@ -28,7 +28,8 @@
 
 - The owner of every closable resource is documented; the owner closes it.
 - Closing is idempotent unless the Javadoc says otherwise.
-- Policy for caching and reloading: **TO BE DEFINED** (OQ-032).
+- Caches use explicit reference counting and release, no weak references, no automatic eviction by default; reloading only for context loss and explicit development reload (ADR-0019).
+- No allocation in per-step and per-frame paths in steady state; no finalizers or `Cleaner` (ADR-0019).
 
 ## Performance (game engine specifics)
 
@@ -39,7 +40,7 @@
 
 ## Concurrency
 
-- Thread ownership of runtime and rendering: **TO BE DEFINED** (OQ-030). Until decided, every public type documents its thread-safety (`not thread-safe` is a valid answer) and does not start threads on its own.
+- One runtime thread owns the loop, the update phase, the world, the caches and by default the render phase; the platform runs the loop on the thread it requires (ADR-0018). Every public type documents its thread; the default is "not thread-safe, owned by the runtime thread". The engine starts no thread by itself. Platform events reach the runtime thread through an inbox at the start of an iteration.
 
 ## Java language and APIs
 
