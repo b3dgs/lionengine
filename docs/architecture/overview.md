@@ -71,7 +71,7 @@ Each implementation must respect the same contract or explicitly declare its cap
 
 **PROPOSED:** platforms may announce their capabilities (gamepad, audio, acceleration, shaders, etc.). The engine must not assume that a capability exists everywhere.
 
-The form of this mechanism (interface, registry, configuration) is **TO BE DEFINED** (OQ-034).
+**ACCEPTED (ADR-0020):** a typed optional lookup on an explicit platform object, without class-name lookup or reflection.
 
 **ACCEPTED (ADR-0002):** screen modes, display-mode selection and output filtering follow this capability model: best-effort requests, with the effective result reported. They are presentation concerns: the logical resolution is decoupled from the output resolution and nothing here changes world units or simulation state.
 

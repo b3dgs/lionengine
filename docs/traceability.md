@@ -54,6 +54,8 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-RT-004 | Should | PROPOSED | ADR-0019, ADR-0018 | OQ-153 | — | no test yet |
 | REQ-RT-005 | Must | PROPOSED | ADR-0019 | OQ-101, OQ-110 | — | no test yet |
 | REQ-RT-006 | Must | PROPOSED | ADR-0019 | OQ-070, OQ-139 | — | no test yet |
+| REQ-RT-007 | Must | PROPOSED | ADR-0020, ADR-0011 | OQ-154 | — | no test yet |
+| REQ-RT-008 | Must | PROPOSED | ADR-0020 | — | — | no test yet |
 | REQ-RES-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-RES-002 | Should | PROPOSED | — | — | — | no test yet |
 | REQ-RES-003 | Must | PROPOSED | ADR-0005 | OQ-032, OQ-118 | — | no test yet |

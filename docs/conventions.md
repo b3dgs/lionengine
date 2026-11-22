@@ -38,6 +38,8 @@
 - World quantities are `double`; `float` only at the render boundary (ADR-0014). Rotation is counter-clockwise positive, `0°` along `+X`. Absolute angles are in `[0, 360)`, signed differences in `(-180, 180]` (ADR-0016).
 - One version number for all modules; a package never depends on a descendant package (ADR-0015).
 
+- No reflection, `ServiceLoader` or class scanning in the engine; data-driven instantiation uses an explicit registry of ids and factories (ADR-0020).
+
 ## Concurrency
 
 - One runtime thread owns the loop, the update phase, the world, the caches and by default the render phase; the platform runs the loop on the thread it requires (ADR-0018). Every public type documents its thread; the default is "not thread-safe, owned by the runtime thread". The engine starts no thread by itself. Platform events reach the runtime thread through an inbox at the start of an iteration.
