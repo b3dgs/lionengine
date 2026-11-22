@@ -47,13 +47,13 @@ Rules:
 
 | ID | Question | Needed by |
 |---|---|---|
-| OQ-030 | Owning thread of rendering and runtime; overall concurrency model and thread rules. | Phase 1 |
-| OQ-031 | Asynchronous loading policy. | Phase 2 |
-| OQ-032 | Resource ownership, closing, caching and reloading policy. Cache key and release convention of the consuming modules: OQ-118 (ADR-0005). | Phase 1 |
-| OQ-033 | Memory management policy (allocation in hot paths, release of resources). | Phase 1 |
-| OQ-034 | Platform capability mechanism (interface, registry or configuration). | Phase 1 |
-| OQ-121 | Thread-safety rule shared by the caches of the modules handling resources (ADR-0005, ADR-0007): which threads may load, read and release. Split from OQ-118 by issue #859. Asynchronous loading stays OQ-031; reloading stays OQ-032. | Phase 2 (before the first consuming module) |
-| OQ-122 | `core` event contract: how engine events (such as the effective result of a display or filter change, ADR-0006) are delivered, on which thread, and in which order relative to the update step. Raised by issue #859. | Phase 1 |
+| OQ-030 | Owning thread of rendering and runtime; overall concurrency model and thread rules. *Recommendation, awaiting owner confirmation (issue #877): one runtime thread owns all state, the platform runs the loop on its required thread, few documented thread-safe entry points, render thread deferred.* | Phase 1 |
+| OQ-031 | Asynchronous loading policy. *Recommendation, awaiting owner confirmation (issue #877): synchronous loading first, then opt-in asynchronous loading with completion posted to the runtime thread; workers never touch caches.* | Phase 2 |
+| OQ-032 | Resource ownership, closing, caching and reloading policy. Cache key and release convention of the consuming modules: OQ-118 (ADR-0005). *Recommendation, awaiting owner confirmation (issue #877): explicit reference counting and release, no weak references or automatic eviction; reload only for context loss and development.* | Phase 1 |
+| OQ-033 | Memory management policy (allocation in hot paths, release of resources). *Recommendation, awaiting owner confirmation (issue #877): no allocation in hot paths in steady state, explicit release, no finalizers or `Cleaner`.* | Phase 1 |
+| OQ-034 | Platform capability mechanism (interface, registry or configuration). *Recommendation, awaiting owner confirmation (issue #877): typed optional capability lookup on an explicit platform object; no `ServiceLoader`, reflection or global registry.* | Phase 1 |
+| OQ-121 | Thread-safety rule shared by the caches of the modules handling resources (ADR-0005, ADR-0007): which threads may load, read and release. Split from OQ-118 by issue #859. Asynchronous loading stays OQ-031; reloading stays OQ-032. *Recommendation, awaiting owner confirmation (issue #877): cache operations on the runtime thread only; decoded data are immutable; workers never touch caches.* | Phase 2 (before the first consuming module) |
+| OQ-122 | `core` event contract: how engine events (such as the effective result of a display or filter change, ADR-0006) are delivered, on which thread, and in which order relative to the update step. Raised by issue #859. *Recommendation, awaiting owner confirmation (issue #877): platform events posted to a thread-safe FIFO inbox and delivered on the runtime thread at the start of an iteration; internal events synchronous in the update phase.* | Phase 1 |
 
 ## World and objects
 
