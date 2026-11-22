@@ -6,7 +6,8 @@
 
 - Names carry the unit when the type does not (`deltaSeconds`, `speedMetersPerSecond`, `positionX`).
 - No `ms`, `px` or unit-less `time`/`speed`/`size` in world-facing APIs.
-- Base package name, group and artifact identifiers: **TO BE DEFINED** (OQ-003).
+- Group `com.b3dgs.lionengine`, artifacts `lionengine-XXX` (`XXX` = module name), base package `com.b3dgs.lionengine` (ADR-0012).
+- World: origin `(0, 0)`, Y up; screen: origin top left, Y down; angles in degrees in public APIs (ADR-0013). Name angle parameters with the unit (`angleDegrees`).
 
 ## API design
 
@@ -33,7 +34,7 @@
 
 - Avoid allocation in the per-step update and per-frame render paths; this matters for garbage-collection pauses on Android.
 - Measure before optimizing; record the measurement method in the test (see `testing.md`, performance level).
-- Numeric type for world quantities (`float` or `double`): **TO BE DEFINED** (OQ-013).
+- Numeric type for world quantities (`float` or `double`): **TO BE DEFINED** (OQ-013; recommendation `double`, awaiting owner confirmation).
 
 ## Concurrency
 

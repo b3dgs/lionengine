@@ -57,4 +57,4 @@
 
 ## Test tooling
 
-Framework, version and build configuration: **TO BE DEFINED** (OQ-004). JUnit 5 is a candidate option, to be confirmed with the choice of build and Java version.
+Framework: **JUnit 5** (ADR-0012); coverage with JaCoCo merged for SonarCloud. Exact versions and build configuration are set with the build skeleton (OQ-149).

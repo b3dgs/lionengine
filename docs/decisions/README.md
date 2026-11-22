@@ -32,6 +32,8 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 - [`ADR-0009`](0009-tile-map-contracts-in-tilemap.md) — Tile map contracts in `tilemap` (accepted 2026-11-22, issue #865).
 
 - [`ADR-0011`](0011-ecs-dynamic-objects-traits-and-standard-traits.md) — ECS: dynamic objects and traits, cached queries, deferred structural changes, system order and standard traits in `ecs` and `traits` (accepted 2026-11-22).
+- [`ADR-0012`](0012-platform-and-build-baseline.md) — Platform and build baseline: Android API 21, DEX through a separate Gradle module, Maven layout, JUnit 5, GPL-3.0, semantic versioning, GitHub Actions (accepted 2026-11-22, issue #875).
+- [`ADR-0013`](0013-world-coordinates-and-angles.md) — World coordinate system and angles: origin (0, 0), Y up, degrees (accepted 2026-11-22, issue #875).
 
 ## Proposed decisions
 

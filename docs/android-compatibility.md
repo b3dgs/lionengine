@@ -1,6 +1,6 @@
 # Android/DEX compatibility checklist
 
-**Status: PROPOSED — operational procedure applying the VALIDATED requirements REQ-TECH-006 and REQ-TECH-007 (ADR-0001). Versions are `TO BE DEFINED` (OQ-001, OQ-002); do not assume them.**
+**Status: PROPOSED — operational procedure applying the VALIDATED requirements REQ-TECH-006 and REQ-TECH-007 (ADR-0001). Baseline of ADR-0012 (ACCEPTED): minimum API 21, DEX through a separate Gradle module. Java 25 support on that baseline is not verified (OQ-147).**
 
 Java compilation alone is not proof of DEX compatibility. Verification is continuous, not a final step.
 
@@ -17,7 +17,27 @@ Java compilation alone is not proof of DEX compatibility. Verification is contin
 - A CI job builds the Android-targeted modules through D8/R8 and produces the expected DEX artifacts (REQ-TECH-006, REQ-TECH-007).
 - A verification build covers APIs requiring desugaring.
 - Tests run on the targeted Android versions (devices or emulators); these are platform tests and are kept separate from the headless unit tests.
-- Pipeline design with a Maven-based build: **TO BE DEFINED** (OQ-002).
+- Pipeline design (ADR-0012): Maven builds and tests the modules; a separate Gradle module consumes the Maven artifacts. An Android *library* (AAR) build does not run D8, so the job also needs a verification module that dexes the artifacts (OQ-147).
+- Games must enable core library desugaring on the application side too.
+
+## Baseline (ADR-0012)
+
+Observed in `master` `java/lionengine-core-android/build.gradle` on 2026-11-22: Android Gradle Plugin 9.2.1, `compileSdk`/`targetSdk` 37, `minSdk` 21, Java 21 source/target, `desugar_jdk_libs:2.1.5`. Proven in `master`: Java 21 bytecode. Not verified: Java 25 class files and APIs (OQ-147).
+
+## Java features and APIs at API 21 (working list, NOT verified)
+
+General knowledge of D8/ART, to be confirmed by the Android CI job (OQ-147). Until confirmed, each item is **not compatible yet** in shared code (procedure above).
+
+| Area | Expectation at API 21 |
+|---|---|
+| `java.desktop` (AWT, Swing, ImageIO, `javax.sound`, `java.beans`) | absent on every Android level: platform module only |
+| `java.lang.foreign`, virtual threads, structured concurrency, scoped values, `java.net.http`, module system (`module-info` ignored) | unavailable |
+| `java.time`, streams, `Optional`, `java.util.function`, much of `java.util.concurrent` (about JDK 11 level) | through core library desugaring only |
+| APIs added after about JDK 11 (sequenced collections, `Math.clamp`, `HexFormat`, `Cleaner`, `VarHandle`, `MethodHandles`, record reflection) | only on recent Android levels, not desugared: avoid in shared code |
+| Records, sealed types, switch expressions, text blocks, `instanceof` patterns | compile-time, handled by D8; verify |
+| Pattern matching for `switch`, record patterns, Java 22 to 25 language features | rely on `invokedynamic` bootstraps or new class file versions: verify one by one |
+| Preview features | forbidden in shared code |
+| Class file version 69 (Java 25) | unknown; proven path is `--release 21` |
 
 ## Pending checks of ADR-0002 to ADR-0004
 

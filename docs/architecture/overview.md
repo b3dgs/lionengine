@@ -30,7 +30,7 @@ Layered architecture with dependency inversion: the core defines the contracts; 
                  OS / native libraries
 ```
 
-The diagram is conceptual: the exact split into Maven modules and the allowed dependencies remain to be decided (OQ-003). The Android toolchain is not Maven-native: see OQ-002.
+The diagram is conceptual: modules are named `lionengine-XXX` under group `com.b3dgs.lionengine` (ADR-0012); the exact module list and the allowed dependencies are set at the build skeleton (OQ-149). The Android toolchain is not Maven-native: DEX is produced by a separate Gradle module consuming the Maven artifacts (ADR-0012).
 
 ## 2. Boundaries
 
@@ -82,7 +82,7 @@ The form of this mechanism (interface, registry, configuration) is **TO BE DEFIN
 - Time, durations and time deltas are expressed in **seconds**.
 - Speeds are expressed in **meters per second (`m/s`)**; accelerations in `m/s²`.
 - Conversions to pixels are a responsibility of the presentation layer (camera/viewport/rendering, see [ADR-0010](../decisions/0010-camera-system-in-camera.md)), never a change to the world units.
-- The origin, the positive direction of the Y axis, angle conventions and the screen coordinate system remain to be specified (OQ-010 to OQ-013).
+- The world origin is `(0, 0)` with Y up; the screen has its origin at the top left with Y down; angles are in degrees (ADR-0013). The meters-to-pixels conversion (OQ-012), the numeric type (OQ-013) and the rotation direction (OQ-150) remain to be decided.
 
 APIs must make units explicit in their Javadoc. Do not implicitly mix meters and pixels, or seconds and milliseconds. Parameter and method names should avoid ambiguous units (`deltaSeconds`, `speedMetersPerSecond`, etc.) where this improves readability.
 
