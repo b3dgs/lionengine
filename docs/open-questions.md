@@ -37,10 +37,11 @@ Rules:
 
 | ID | Question | Needed by |
 |---|---|---|
-| OQ-020 | Simulation step duration, monotonic clock, catch-up strategy and maximum tolerated lag. *Recommendation, awaiting owner confirmation (issue #876): fixed step (default 60 Hz) with an accumulator, abstract monotonic clock, catch-up with a lag cap (proposed 0.25 s per iteration) and excess dropped and reported.* | Phase 0 |
-| OQ-021 | Exact mathematical definition of the extrapolation factor, its bounds, and the behavior under extreme lag (factor greater than 1). *Recommendation, awaiting owner confirmation (issue #876): the factor is `accumulator / step`, always in `[0, 1)`; the late case is handled by catch-up, so a factor above 1 never exists.* | Phase 0 |
-| OQ-022 | Interpolation: whether it is offered, how it differs from extrapolation, and the limits of prediction. *Recommendation, awaiting owner confirmation (issue #876): interpolation (previous to current state) by default, extrapolation as opt-in, both with the factor in `[0, 1)` and never fed back.* | Phase 2 |
-| OQ-023 | Pause, slow motion, exceptions during a step, and shutdown policy. *Recommendation, awaiting owner confirmation (issue #876): pause by clock reset without catch-up, slow motion by a time scale on the accumulator, fail-fast on exceptions, shutdown at a frame boundary.* | Phase 1 |
+| OQ-020 | **RESOLVED** by [ADR-0017](decisions/0017-fixed-step-game-loop.md): fixed step (default 60 Hz, configurable), abstract monotonic clock, accumulator with catch-up, lag cap with excess dropped and reported (cap value: OQ-151). Original question: Simulation step duration, monotonic clock, catch-up strategy and maximum tolerated lag. | Phase 0 |
+| OQ-021 | **RESOLVED** by [ADR-0017](decisions/0017-fixed-step-game-loop.md): the factor is `accumulator / step`, always in `[0, 1)`; lateness is absorbed by catch-up, a factor above 1 never exists. Original question: Exact mathematical definition of the extrapolation factor, its bounds, and the behavior under extreme lag (factor greater than 1). | Phase 0 |
+| OQ-022 | **RESOLVED** by [ADR-0017](decisions/0017-fixed-step-game-loop.md): interpolation by default, extrapolation opt-in; both presentation-only. Original question: Interpolation: whether it is offered, how it differs from extrapolation, and the limits of prediction. | Phase 2 |
+| OQ-023 | **RESOLVED** by [ADR-0017](decisions/0017-fixed-step-game-loop.md): pause by clock reset without catch-up, slow motion by a time scale on the accumulator, fail-fast on exceptions, shutdown at a frame boundary (thread: OQ-030). Original question: Pause, slow motion, exceptions during a step, and shutdown policy. | Phase 1 |
+| OQ-151 | Game loop follow-ups of ADR-0017: calibrated value of the lag cap (proposed 0.25 s) and of the default step; bounds of the time scale; form of the lag report; snap tolerance of `alpha` when the render rate equals the update rate; separate unscaled time domain for UI and menus; integer accumulator details. | Before the loop batch |
 
 ## Runtime
 

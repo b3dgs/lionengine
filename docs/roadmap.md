@@ -6,7 +6,7 @@
 
 - apply the validated choices: Java 25+, Maven 3+, X/Y coordinates in meters and time in seconds (ADR-0001);
 - specify the coordinate system (origin, direction of Y), meters/pixels conversions and angle conventions (OQ-010 to OQ-013);
-- formalize the game loop model mathematically: simulation step, frameskipping, extrapolation and factor greater than 1 (OQ-020, OQ-021);
+- game loop model: fixed step, accumulator, interpolation, lag cap (ADR-0017, follow-ups OQ-151);
 - decide the place of ECS: core model or optional module (OQ-041);
 - set package conventions, versioning, thread rules and physical module layout (OQ-003, OQ-030);
 - define the Android build strategy with Maven (OQ-002) and the project license (OQ-006);

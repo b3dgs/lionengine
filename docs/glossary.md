@@ -37,7 +37,7 @@
 | Resource key | Normalized logical path string identifying a resource for every origin (`/` separator, case-sensitive, no leading `/`, no `.` or `..`); used by every module cache (ADR-0007). |
 | Runtime | Orchestration of the engine lifecycle and execution. |
 | Screen mode | How the application occupies the screen: `WINDOWED`, `FULL_WINDOW` or `FULL_SCREEN`. |
-| Simulation step | Fixed duration, in seconds, by which the simulation advances in one update (value `TO BE DEFINED`, OQ-020). |
+| Simulation step | Fixed duration, in seconds, by which the simulation advances in one update (default 60 Hz, configurable, ADR-0017). |
 | Split-screen | Simultaneous presentation of several views/players on one screen. |
 | Sprite | Displayable graphic element, possibly tied to an image region. In ADR-0003: a lightweight instance (transform, color transform, location, alpha) over a shared immutable source (image + region). |
 | Animation | Ordered frames with durations in seconds and a loop mode; advanced from the simulation update step only (ADR-0003). |

@@ -47,7 +47,7 @@ Conceptual contract:
 
 **Mandatory invariant:** an extrapolated state never becomes the source state of the next simulation update. Extrapolation, including with a factor greater than `1`, must not introduce cumulative error in world calculations.
 
-To define before implementation (OQ-020 to OQ-023): simulation step duration, monotonic clock, target render cadence, extrapolation formula and factor, maximum tolerated lag, catch-up strategy, pause, slow motion, exceptions and shutdown policy. The test loop must allow time to be advanced artificially and exact states to be verified.
+Defined by [ADR-0017](../decisions/0017-fixed-step-game-loop.md): fixed step, monotonic clock, accumulator and catch-up, factor in `[0, 1)`, lag cap, interpolation by default, pause, time scale, fail-fast and shutdown at a frame boundary; calibration details in OQ-151. The test loop must allow time to be advanced artificially and exact states to be verified.
 
 ## Resources
 

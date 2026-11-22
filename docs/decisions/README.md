@@ -37,6 +37,7 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 - [`ADR-0014`](0014-meters-to-pixels-numeric-type-and-rotation.md) — Meters-to-pixels conversion in the camera, `double` world quantities, counter-clockwise rotation (accepted 2026-11-22, issue #875).
 - [`ADR-0015`](0015-single-version-and-package-dependency-rule.md) — One version for all modules; package dependency rule of `radial-encapsulation-maven-plugin` (accepted 2026-11-22, issue #875).
 - [`ADR-0016`](0016-angle-range-and-normalization.md) — Angle range: absolute angles in `[0, 360)`, signed differences in `(-180, 180]` (accepted 2026-11-22, issue #875).
+- [`ADR-0017`](0017-fixed-step-game-loop.md) — Fixed-step game loop with accumulator, interpolation by default, lag cap, pause and time scale, fail-fast (accepted 2026-11-22, issue #876).
 
 ## Proposed decisions
 

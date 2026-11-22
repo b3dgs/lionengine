@@ -94,7 +94,9 @@ The default loop must be **independent of machine performance** for the simulati
 
 Simulation and presentation must be separated. Extrapolation is a presentation operation: it must never feed its result back into the simulation state. An extrapolation greater than `1` therefore must not degrade calculation accuracy or cause cumulative drift. Gameplay calculations must remain based on the reference simulation time.
 
-**Important:** "extrapolation greater than 1" here means an extrapolation factor greater than the normalized interval between two reference states. The exact mathematical definition of this factor, its bounds and the behavior under extreme lag must be specified before implementation (OQ-020 to OQ-022).
+**Refined by [ADR-0017](../decisions/0017-fixed-step-game-loop.md):** fixed step with an accumulator and catch-up; the presentation factor is `accumulator / step`, always in `[0, 1)`; interpolation is the default and extrapolation is opt-in; lag is capped and the excess dropped; pause and a time scale are supported; exceptions are fail-fast.
+
+**Historical note (ADR-0001):** "extrapolation greater than 1" meant an extrapolation factor greater than the normalized interval between two reference states. With ADR-0017 that case no longer reaches the renderer.
 
 ## 8. Open architectural questions
 

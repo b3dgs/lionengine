@@ -41,9 +41,13 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-LOOP-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-LOOP-002 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-LOOP-003 | Should | PROPOSED | — | — | — | no test yet |
-| REQ-LOOP-004 | Must | VALIDATED (principle) | ADR-0001 | OQ-020 | — | no test yet |
-| REQ-LOOP-005 | Must | VALIDATED (principle) | ADR-0001 | OQ-021 | — | no test yet |
-| REQ-LOOP-006 | Must | VALIDATED (principle) | ADR-0001 | OQ-021 | — | no test yet |
+| REQ-LOOP-004 | Must | VALIDATED (principle) | ADR-0001, ADR-0017 | — | — | no test yet |
+| REQ-LOOP-005 | Must | VALIDATED (principle) | ADR-0001, ADR-0017 | — | — | no test yet |
+| REQ-LOOP-006 | Must | VALIDATED (principle) | ADR-0001, ADR-0017 | — | — | no test yet |
+| REQ-LOOP-007 | Must | PROPOSED | ADR-0017 | OQ-151 | — | no test yet |
+| REQ-LOOP-008 | Must | PROPOSED | ADR-0017 | OQ-151 | — | no test yet |
+| REQ-LOOP-009 | Must | PROPOSED | ADR-0017 | OQ-151 | — | no test yet |
+| REQ-LOOP-010 | Must | PROPOSED | ADR-0017 | OQ-030 | — | no test yet |
 | REQ-RES-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-RES-002 | Should | PROPOSED | — | — | — | no test yet |
 | REQ-RES-003 | Must | PROPOSED | ADR-0005 | OQ-032, OQ-118 | — | no test yet |
