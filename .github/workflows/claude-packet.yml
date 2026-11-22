@@ -60,11 +60,23 @@ jobs:
             --max-turns 15
             --allowedTools "Read,Glob,Grep,Bash(gh issue comment:*)"
 
+      - name: Prepare work branch (no new commit, so no signature needed)
+        if: startsWith(github.event.comment.body, '@claude apply')
+        run: |
+          branch="packet/issue-${{ github.event.issue.number }}"
+          if git fetch --depth=1 origin "$branch" 2>/dev/null; then
+            git checkout -B "$branch" FETCH_HEAD
+          else
+            git checkout -b "$branch"
+            git push origin "$branch"
+          fi
+
       - name: Apply (edit, check, open PR)
         if: startsWith(github.event.comment.body, '@claude apply')
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          use_commit_signing: true
           prompt: |
             Read AGENTS.md and docs/change-process.md. The decision packet is the body of issue #${{ github.event.issue.number }}:
 
@@ -80,9 +92,11 @@ jobs:
             "Taken" column does not state. Keep the ADR PROPOSED. Never reuse an existing REQ/OQ/ADR identifier;
             never delete an open-question row.
             Then run `python3 -I scripts/check-docs.py` and fix what it reports.
-            Work on branch packet/issue-${{ github.event.issue.number }}, commit, and open a pull request
-            referencing the issue with `gh pr create`. Comment on the issue with files changed, checks run
-            (real results only) and any point left TO BE DEFINED.
+            You are already on branch packet/issue-${{ github.event.issue.number }}. The repository requires verified
+            signatures: commit ONLY with the commit_files tool (signed through the GitHub API); never run
+            `git commit` or `git push`. Then open a pull request from that branch referencing the issue with
+            `gh pr create --head packet/issue-${{ github.event.issue.number }}`. Comment on the issue with files changed,
+            checks run (real results only) and any point left TO BE DEFINED.
           claude_args: >-
             --max-turns 40
-            --allowedTools "Read,Glob,Grep,Edit,Write,Bash(git:*),Bash(python3 -I scripts/check-docs.py),Bash(gh pr create:*),Bash(gh issue comment:*)"
+            --allowedTools "Read,Glob,Grep,Edit,Write,mcp__github_file_ops__commit_files,mcp__github_file_ops__delete_files,Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(python3 -I scripts/check-docs.py),Bash(gh pr create:*),Bash(gh issue comment:*)"
