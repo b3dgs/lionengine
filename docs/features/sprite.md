@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 2, see `roadmap.md` (batch order: sprite sheet, sprite, animated sprite)
 - Affected modules: `graphics`, `render-api` (sprite only), `resources`, `test-support`, `examples`
 - Requirements: `REQ-SPRITE-001` to `REQ-SPRITE-008`
-- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md) (ACCEPTED), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md) (PROPOSED)
+- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md) (ACCEPTED), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md) (ACCEPTED)
 - Open questions involved: `OQ-100`, `OQ-101`, `OQ-102`, `OQ-103`, `OQ-104`, `OQ-107`, `OQ-108`, `OQ-121` (`OQ-118` resolved; `OQ-011`, `OQ-012` touched)
 
 ## Objective

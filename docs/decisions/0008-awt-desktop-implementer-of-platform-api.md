@@ -1,10 +1,10 @@
 # ADR-0008 — AWT desktop implementer of platform-api
 
-- Status: PROPOSED
+- Status: ACCEPTED
 - Date: 2026-11-22
-- Decision makers: project owner (decisions of issue #861, 2026-11-22); module definition proposed by the agent, to be validated by the owner. This ADR stays `PROPOSED` until explicitly approved.
+- Decision makers: project owner (decisions of issue #861, 2026-11-22); module definition proposed by the agent and validated by the owner's acceptance on 2026-11-22.
 - Related requirements: `REQ-PLATFORM-001`, `REQ-FE-002`, `REQ-FE-003`, `REQ-DISPLAY-001` to `REQ-DISPLAY-008`, `REQ-CORE-002`, `REQ-CORE-005`, `REQ-TECH-006`, `REQ-TECH-007`
-- Open questions resolved: none while `PROPOSED`; it answers `OQ-119` once accepted (touches `OQ-055`, `OQ-096`, `OQ-030`; creates `OQ-123`, `OQ-124`)
+- Open questions resolved: `OQ-119` (touches `OQ-055`, `OQ-096`, `OQ-030`; creates `OQ-123`, `OQ-124`)
 - Supersedes / superseded by: none
 
 ## Context
@@ -19,7 +19,7 @@ Decisions taken by the owner (issue #861):
 2. Reason: AWT `DisplayMode` exposes size, refresh rate and bit depth, which matches the display-mode value of ADR-0002.
 3. An LWJGL/GLFW implementer is not decided now. It is revisited as a `render-api` question if GPU filters (`HQ2X`, CRT) require it.
 
-Module definition (proposal by the agent, to be validated with this ADR):
+Module definition (proposed by the agent, validated by acceptance):
 
 - **Name:** `platform-awt`.
 - **Responsibility:** implement `platform-api` on desktop with the JDK AWT: window and surface lifecycle, screen modes, display-mode enumeration and selection, and the effective-result report of ADR-0006.
@@ -45,4 +45,4 @@ Not decided (stay `TO BE DEFINED`): the render-side implementer and how the AWT 
 
 ## Validation
 
-Not approved yet. The decisions were given by the owner on issue #861; the module definition is an agent proposal. The ADR remains `PROPOSED` until the owner explicitly accepts it.
+Accepted by the project owner on 2026-11-22 (explicit request in the review session that followed PR #862). The decisions were given by the owner on issue #861; acceptance also validates the module definition, including the name `platform-awt`. Acceptance resolves `OQ-119`; `OQ-123` and `OQ-124` stay open.

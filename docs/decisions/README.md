@@ -24,11 +24,12 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 - [`ADR-0003`](0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md) — Sprite, animation and sprite sheet contracts in `graphics` (accepted 2026-11-22).
 - [`ADR-0004`](0004-audio-contracts-short-and-long-sounds.md) — Audio contracts: short and long sounds, variant sets and playlists (accepted 2026-11-22).
 - [`ADR-0005`](0005-common-convention-for-modules-handling-resources.md) — Common convention for modules handling resources: `resources` media-agnostic, decoded caches in consuming modules, one key and release convention (accepted 2026-11-22).
+- [`ADR-0006`](0006-display-scaling-effective-result-and-fallback-orders.md) — Display scaling policy, effective-result report and fallback orders; extends ADR-0002 (accepted 2026-11-22).
+- [`ADR-0007`](0007-resource-convention-keys-release-and-errors.md) — Resource convention: keys, release and errors; extends ADR-0005 (accepted 2026-11-22).
+- [`ADR-0008`](0008-awt-desktop-implementer-of-platform-api.md) — AWT desktop implementer of `platform-api` (`platform-awt`) (accepted 2026-11-22).
 
 ## Proposed decisions
 
-- [`ADR-0006`](0006-display-scaling-effective-result-and-fallback-orders.md) — Display scaling policy, effective-result report and fallback orders; extends ADR-0002 (PROPOSED).
-- [`ADR-0007`](0007-resource-convention-keys-release-and-errors.md) — Resource convention: keys, release and errors; extends ADR-0005 (PROPOSED).
-- [`ADR-0008`](0008-awt-desktop-implementer-of-platform-api.md) — AWT desktop implementer of `platform-api` (`platform-awt`) (PROPOSED).
+None at the moment.
 
 Other likely candidates are listed in [`../open-questions.md`](../open-questions.md) (see items needed by Phase 0).

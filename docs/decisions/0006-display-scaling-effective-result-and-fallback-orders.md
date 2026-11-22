@@ -1,8 +1,8 @@
 # ADR-0006 — Display scaling policy, effective-result report and fallback orders
 
-- Status: PROPOSED
+- Status: ACCEPTED
 - Date: 2026-11-22
-- Decision makers: project owner (decisions of issue #859, 2026-11-22). This ADR stays `PROPOSED` until explicitly approved.
+- Decision makers: project owner (decisions of issue #859, 2026-11-22); accepted on 2026-11-22.
 - Related requirements: `REQ-DISPLAY-002`, `REQ-DISPLAY-004`, `REQ-DISPLAY-005`, `REQ-DISPLAY-007`, `REQ-DISPLAY-008`, `REQ-FILTER-001`, `REQ-FILTER-002`, `REQ-LOOP-006`
 - Open questions resolved: `OQ-091`, `OQ-120` (creates `OQ-122`)
 - Supersedes / superseded by: none. Extends [ADR-0002](0002-display-modes-resolution-and-output-filtering.md) (ACCEPTED), which left these points `TO BE DEFINED`; ADR-0002 is not modified.
@@ -47,4 +47,4 @@ Not decided (stay `TO BE DEFINED`): the `core` event contract (`OQ-122`); the di
 
 ## Validation
 
-Not approved yet. The decisions were given by the owner on issue #859; the ADR remains `PROPOSED` until the owner explicitly accepts it.
+Accepted by the project owner on 2026-11-22 (explicit request in the review session that followed PR #862). The decisions were given by the owner on issue #859. Acceptance confirms the resolution of `OQ-091` and `OQ-120`.

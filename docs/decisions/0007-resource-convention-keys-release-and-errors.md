@@ -1,8 +1,8 @@
 # ADR-0007 — Resource convention: keys, release and errors
 
-- Status: PROPOSED
+- Status: ACCEPTED
 - Date: 2026-11-22
-- Decision makers: project owner (decision 6 of issue #859, 2026-11-22). This ADR stays `PROPOSED` until explicitly approved.
+- Decision makers: project owner (decision 6 of issue #859, 2026-11-22); accepted on 2026-11-22.
 - Related requirements: `REQ-RES-001`, `REQ-RES-002`, `REQ-RES-003`, `REQ-RES-004`, `REQ-RES-005`, `REQ-SPRITE-002`, `REQ-SPRITE-005`, `REQ-AUDIO-003`, `REQ-AUDIO-006`, `REQ-SHEET-002`
 - Open questions resolved: `OQ-118` (except thread safety, moved to `OQ-121`)
 - Supersedes / superseded by: none. Extends [ADR-0005](0005-common-convention-for-modules-handling-resources.md) (ACCEPTED), which fixed the rule and its location but left its content `TO BE DEFINED`; ADR-0005 is not modified.
@@ -44,4 +44,4 @@ Not decided (stay `TO BE DEFINED`): the thread-safety rule shared by module cach
 
 ## Validation
 
-Not approved yet. The decisions were given by the owner on issue #859; the ADR remains `PROPOSED` until the owner explicitly accepts it.
+Accepted by the project owner on 2026-11-22 (explicit request in the review session that followed PR #862). The decisions were given by the owner on issue #859. Acceptance confirms the resolution of `OQ-118`; thread safety stays `OQ-121`.

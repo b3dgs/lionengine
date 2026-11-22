@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 2, see `roadmap.md` (batches: contracts + fake backend + contract tests; short sounds with cache and variants; long sounds with preload/release and playlist; first desktop backend; Android backend)
 - Affected modules: `audio-api`, `audio-*`, `resources`, `test-support`, `examples`
 - Requirements: `REQ-AUDIO-003` to `REQ-AUDIO-009`, `REQ-RES-004` (refines `REQ-AUDIO-001`, `REQ-AUDIO-002`)
-- Applicable ADRs: [`ADR-0004`](../decisions/0004-audio-contracts-short-and-long-sounds.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md) (ACCEPTED), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md) (PROPOSED)
+- Applicable ADRs: [`ADR-0004`](../decisions/0004-audio-contracts-short-and-long-sounds.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md) (ACCEPTED), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md) (ACCEPTED)
 - Open questions involved: `OQ-110` to `OQ-118` (`OQ-053`, `OQ-032` touched)
 
 ## Objective
