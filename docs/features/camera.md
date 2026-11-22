@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 3, see `roadmap.md`
 - Affected modules: `camera`, `core`, `test-support`, `examples`
 - Requirements: `REQ-CAM-001` to `REQ-CAM-008`
-- Applicable ADRs: [`ADR-0010`](../decisions/0010-camera-system-in-camera.md) (PROPOSED), [`ADR-0001`](../decisions/0001-technical-baseline-and-conventions.md)
+- Applicable ADRs: [`ADR-0010`](../decisions/0010-camera-system-in-camera.md) (ACCEPTED), [`ADR-0001`](../decisions/0001-technical-baseline-and-conventions.md)
 - Open questions involved: `OQ-010`, `OQ-012`, `OQ-013`, `OQ-021`, `OQ-040`, `OQ-041`, `OQ-042`, `OQ-108`, `OQ-130` to `OQ-136`
 
 ## Objective

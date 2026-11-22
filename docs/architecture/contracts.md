@@ -134,7 +134,7 @@ Still to specify: layers (candidate), chunks and render cache (OQ-129), collisio
 
 ## Camera
 
-Decisions of [ADR-0010](../decisions/0010-camera-system-in-camera.md) (PROPOSED; owner decisions of issue #868):
+Decisions of [ADR-0010](../decisions/0010-camera-system-in-camera.md) (ACCEPTED; owner decisions of issue #868):
 
 - **Placement:** single `camera` module depending on `core` only.
 - **View:** a plain view rectangle in world units (meters, ADR-0001), no `Camera` type seen by rendering (`REQ-CAM-001`); consumer contract OQ-131. World-to-screen and screen-to-world conversion (`REQ-CAM-007`; factor OQ-012).

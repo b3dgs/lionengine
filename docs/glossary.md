@@ -52,4 +52,4 @@
 | Auto-tiling | Rule-based update of a cell's tile from its neighborhood, applied to neighbors when a tile is destroyed; rule format `TO BE DEFINED` (OQ-127). |
 | Viewport culling | Drawing only the tiles that intersect the viewport rectangle (plus a margin). |
 | Trait | Composable capability or behavior attached to an object/entity. |
-| Viewport | Region where a view of the world is presented on a surface. |
+| Viewport | Region where a view of the world is presented on a surface; the view rectangle of a camera is its world-side counterpart (ADR-0010). |
