@@ -1,0 +1,109 @@
+# Requirements
+
+**Status: PROPOSED — requirements to be refined and prioritized, except rows explicitly marked VALIDATED.**
+
+Each requirement has a stable identifier. Agents must reference these identifiers in their plans, commits and reports. Identifiers are never reused: removed requirements are listed under [Retired identifiers](#retired-identifiers).
+
+Priorities follow MoSCoW: **Must**, **Should**, **Could**. "Won't (for now)" items belong in `docs/vision.md` as non-goals.
+
+The traceability matrix (requirement → decision → test) is in [`traceability.md`](traceability.md). Unresolved points are in [`open-questions.md`](open-questions.md).
+
+## Technical baseline
+
+Source: [ADR-0001](decisions/0001-technical-baseline-and-conventions.md).
+
+| ID | Requirement | Priority | Status | Expected verification |
+|---|---|---|---|---|
+| REQ-TECH-001 | The Java target is Java 25 or higher. | Must | VALIDATED | Compilation and tests on Java 25+. |
+| REQ-TECH-002 | The build system is Maven 3 or higher. | Must | VALIDATED | Reproducible build with Maven 3+. |
+| REQ-TECH-003 | World coordinates are two-dimensional, X and Y, expressed in meters. | Must | VALIDATED | Unit tests and coordinate-transformation tests. |
+| REQ-TECH-004 | Engine time and durations are expressed in seconds. | Must | VALIDATED | Tests of time conversions and calculations. |
+| REQ-TECH-005 | Speeds are expressed in meters per second (m/s) and accelerations in m/s². | Must | VALIDATED | Dimensional and movement tests. |
+| REQ-TECH-006 | The code must remain compatible with the Android/DEX toolchain, despite a Java 25+ development baseline. | Must | VALIDATED | Android modules compiled to DEX; tests on the selected Android targets. |
+| REQ-TECH-007 | No Java API, language feature or dependency may be considered Android-compatible without explicit verification. | Must | VALIDATED | Documented compatibility check ([`android-compatibility.md`](android-compatibility.md)) and automated Android build. |
+| REQ-TECH-008 | Public APIs document their units and avoid implicit unit conversions. | Must | VALIDATED | Javadoc review; unit-conversion tests. |
+
+## Core
+
+| ID | Requirement | Priority | Status | Expected verification |
+|---|---|---|---|---|
+| REQ-CORE-002 | The core does not depend on a concrete frontend. | Must | PROPOSED | Dependency check + headless tests. |
+| REQ-CORE-003 | Public APIs are documented in Javadoc, tags included. | Must | PROPOSED | Javadoc generation with doclint enabled, without warnings on public APIs (configuration `TO BE DEFINED`). |
+| REQ-CORE-004 | Modules expose explicit, testable contracts. | Must | PROPOSED | Contract tests. |
+| REQ-CORE-005 | Module dependency rules (no cycles, core independent of frontends) are verified automatically by the build. | Must | PROPOSED | Failing build on a forbidden dependency (tool: OQ-005). |
+| REQ-TEST-001 | A controllable clock and a headless frontend are provided for tests. | Must | PROPOSED | Used by the contract and integration tests of REQ-LOOP-* and REQ-FE-001. |
+
+## Documentation and usability
+
+Goal: a developer or an AI agent that has never seen the engine can write a game from the repository alone (see [`game-development-guide.md`](game-development-guide.md)).
+
+| ID | Requirement | Priority | Status | Expected verification |
+|---|---|---|---|---|
+| REQ-DOC-001 | Every public feature ships with a minimal runnable example in the `examples` module; examples are compiled and executed (headless where possible) by the build, so they cannot drift from the API. | Must | PROPOSED | CI job that compiles and runs all examples; failing example fails the build. |
+| REQ-DOC-002 | The API index lists, by task, the public entry-point types and the example to copy, and stays consistent with the code. | Should | PROPOSED | Consistency check between [`api-index.md`](api-index.md) and the public API (method: OQ-083). |
+| REQ-DOC-003 | Code snippets in the game development guide are included from compiled examples, never written by hand. | Should | PROPOSED | Check that the guide contains no snippet absent from `examples`. |
+| REQ-DOC-004 | Engine sources and Javadoc are published as artifacts so that a game repository (and its agents) can read them at the pinned engine version. | Should | PROPOSED | Build produces sources and Javadoc artifacts; game repository can resolve them (OQ-080). |
+
+## Frontends and rendering
+
+| ID | Requirement | Priority | Status | Expected verification |
+|---|---|---|---|---|
+| REQ-FE-001 | The engine can be used with several frontends. | Must | PROPOSED | The same logical scenario runs with two test adapters. |
+| REQ-FE-002 | AWT, OpenGL and Android are envisaged targets. | Should | PROPOSED | Capability matrix per frontend. |
+| REQ-FE-003 | The frontend provides the concrete display and presentation capabilities. | Must | PROPOSED | No native type in the core API. |
+
+## Game loop
+
+| ID | Requirement | Priority | Status | Expected verification |
+|---|---|---|---|---|
+| REQ-LOOP-001 | The game loop has a contract independent of its implementation. | Must | PROPOSED | Contract tests. |
+| REQ-LOOP-002 | Several loop implementations can be provided. | Must | PROPOSED | Tests with a controllable clock and scheduler. |
+| REQ-LOOP-003 | Update and render are distinct concepts. | Should | PROPOSED | Execution order verified by test. |
+| REQ-LOOP-004 | The default implementation is independent of machine power and frequency. | Must | VALIDATED (principle) | Same simulation and same final state for an identical simulated time. |
+| REQ-LOOP-005 | The default loop combines frameskipping and extrapolation to adapt presentation to the available time. Frameskipping may drop a presentation, never arbitrary simulation computations. | Must | VALIDATED (principle) | Tests of cadence, render skipping and extrapolation. |
+| REQ-LOOP-006 | An extrapolation greater than 1 must not reduce simulation accuracy; an extrapolated state is never reused as input of the next simulation step. | Must | VALIDATED (principle) | Tests showing the simulated state is always computed from the reference simulation time/scheme, without integrating the extrapolated state. |
+
+"VALIDATED (principle)": the principle is binding (ADR-0001); the formula, step duration and bounds remain `TO BE DEFINED` (OQ-020 to OQ-023).
+
+## Resources and media
+
+| ID | Requirement | Priority | Status | Expected verification |
+|---|---|---|---|---|
+| REQ-RES-001 | Resource access is independent of the resource origin. | Must | PROPOSED | Same contract tested on several providers. |
+| REQ-RES-002 | Relative, Android, temporary, archive and stream origins are envisaged. | Should | PROPOSED | Tests per provider and error cases. |
+| REQ-RES-003 | Resource ownership and closing rules are explicit; a resource is never assumed to be a `File`. | Must | PROPOSED | Tests of closing, double closing and non-filesystem providers. |
+| REQ-AUDIO-001 | The engine exposes a backend-independent audio API. | Should | PROPOSED | Testable fake backend. |
+| REQ-AUDIO-002 | WAV, MP3 and OGG are target formats. | Should | PROPOSED | Codec/backend/platform matrix. |
+| REQ-SPR-001 | The engine handles modifiable images/sprites. | Must | PROPOSED | Mutation and lifecycle tests. |
+| REQ-SPR-002 | The engine handles animations and spritesheets. | Must | PROPOSED | Deterministic animation-progress tests. |
+
+## World and objects
+
+| ID | Requirement | Priority | Status | Expected verification |
+|---|---|---|---|---|
+| REQ-MAP-001 | The engine represents tilesets and tile maps. | Should | PROPOSED | Coordinate and cell-access tests. |
+| REQ-MAP-002 | Maps can distinguish static and dynamic content. | Should | PROPOSED | Modification and rendering tests. |
+| REQ-OBJ-001 | The engine allows managing game objects. | Must | PROPOSED | Creation, update and deletion tests. |
+| REQ-OBJ-002 | Several management strategies are possible, including simple and ECS. | Could | PROPOSED | Common contract or justification for distinct APIs (OQ-041). |
+| REQ-TRAIT-001 | Objects can receive composable behaviors. | Should | PROPOSED | Attach, detach and interaction tests. |
+| REQ-TRAIT-002 | Collision, gravity and mobility are envisaged traits/capabilities. | Should | PROPOSED | Unit tests of the behaviors. |
+
+## Input and multiplayer
+
+| ID | Requirement | Priority | Status | Expected verification |
+|---|---|---|---|---|
+| REQ-IN-001 | Inputs are abstracted from physical devices. | Must | PROPOSED | Tests with simulated devices. |
+| REQ-IN-002 | Keyboard, mouse and gamepad are supported. | Should | PROPOSED | Support matrix per frontend. |
+| REQ-MP-001 | The model must be able to support several views/players in split-screen. | Could | PROPOSED | Demonstrator with two independent views. |
+| REQ-MP-002 | The architecture must not block a later network mode. | Could | PROPOSED | Analysis of boundaries and state model. |
+
+## Non-functional requirements
+
+Non-functional constraints (Android versions and DEX toolchain, CPU/memory budgets, concurrency model, memory management, API compatibility policy, licenses, determinism level) are not requirements yet: they are `TO BE DEFINED` and tracked in [`open-questions.md`](open-questions.md) (OQ-001 to OQ-008, OQ-030 to OQ-033, OQ-070, OQ-071). Each one becomes a `REQ-*` once decided.
+
+## Retired identifiers
+
+| ID | Reason |
+|---|---|
+| REQ-CORE-001 | Duplicate of REQ-TECH-001 (Java as implementation language is already covered by the Java target). |
+| REQ-MP-003 | Not a requirement: network protocol, synchronization and authority are an open question (OQ-060). |
