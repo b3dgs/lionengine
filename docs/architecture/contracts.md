@@ -154,6 +154,19 @@ An object must have an explicit lifecycle. A trait represents a composable capab
 
 Envisaged examples: `Movable`, `Gravity`, `Collision`. Their names and semantics remain to be defined. Avoid circular dependencies between traits.
 
+### ECS objects, traits and standard traits
+
+Accepted by [ADR-0011](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (ACCEPTED; `OQ-041` and `OQ-042` stay open). Responsibilities only; signatures are not fixed.
+
+- **Object:** an opaque ID (index plus generation). Indices are recycled; a stale ID is detected. Accessors fail fast on a stale or never-valid ID; a liveness check never throws (`REQ-ECS-001`, `REQ-ECS-002`). A consumer that must tolerate a missing object, such as the camera follow lookup (`REQ-CAM-004`), uses the liveness check.
+- **Trait:** data only, registered once with an `int` type ID, without reflection or class scanning (`REQ-ECS-004`). Logic lives in systems.
+- **Storage and query:** one sparse set per trait type; a query selects objects with all of a set of trait types and none of an exclusion set, is cached and updated incrementally, and iterates without allocation (`REQ-ECS-005`).
+- **Structural changes:** object and trait add/remove are recorded and applied at one flush per simulation step; iterating a query is always safe (`REQ-ECS-003`, `REQ-ECS-006`; semantics `OQ-138`). Data inside traits may change at any time during the update.
+- **Events:** `onAdded`/`onRemoved` per trait type and object created/destroyed, synchronous at the flush in the update phase (`REQ-ECS-007`; `OQ-122`).
+- **Systems:** run in a fixed, deterministic order during the update phase; rendering is read-only (`REQ-ECS-008`, `REQ-ECS-010`, `REQ-LOOP-003`, `REQ-LOOP-006`).
+- **Standard traits** (`traits`): `Transformable`, `Movable`, `Gravity`, `Jumpable`, `Collidable`, `Lifetime`, with their systems; meters, m/s, m/s², seconds (`REQ-STD-001` to `REQ-STD-008`).
+- **Not allowed:** a platform type in `ecs` or `traits`, a singleton world, an allocation per step in the query, system and flush paths, an ECS dependency of `core` or of an `*-api` module.
+
 ## Input
 
 Normalize physical inputs into events and/or logical states. Distinguish device (keyboard/mouse/gamepad), game action and player.

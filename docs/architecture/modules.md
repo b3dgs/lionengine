@@ -22,8 +22,8 @@
 | `input-api` | Normalized actions, states and input events | `core` |
 | `input-*` | Keyboard, mouse and gamepad adapters per platform | `input-api`, `platform-api` |
 | `world` | Scenes, objects, lifecycle, queries | `core` |
-| `traits` | Composable capabilities: mobility, gravity, collision, etc. | `world` and physics contracts (location: OQ-043) |
-| `ecs` | Optional ECS storage/systems strategy (core model or optional module: OQ-041) | `core`; contracts shared with `world` to be defined |
+| `traits` | Composable capabilities: mobility, gravity, collision, etc. ADR-0011 (ACCEPTED): the standard traits and systems (`Transformable`, `Movable`, `Gravity`, `Jumpable`, `Collidable`, `Lifetime`) | `world` and physics contracts (location: OQ-043); under ADR-0011 `ecs` instead of `world` (OQ-146) |
+| `ecs` | ECS storage and systems strategy; ADR-0011 (ACCEPTED): object IDs, trait registry and sparse-set storage, cached queries, command buffer, events, system ordering (core model or optional module: OQ-041 stays open) | `core`; contracts shared with `world` to be defined (OQ-146) |
 | `multiplayer` | Player, view, session and network transport abstractions | `world`, `input-api`, network contracts to be defined |
 | `test-support` | Controllable clock, manually driven loop, headless frontend, fake backends, reusable contract-test suites (REQ-TEST-001) | Contracts of the modules it tests; used in `test` scope only |
 | `examples` | Minimal and demonstration applications, headless first | Public APIs only; never depended upon |
@@ -36,7 +36,7 @@ render-awt / render-opengl / platform-awt / platform-android / resources-* / aud
         └──────────────► *-api modules ──────────────► core
 runtime, world, graphics, tilemap, camera ───────────────► core (+ resources / render-api where listed)
 audio-api, audio-* ──────────────────────────────────► resources (ADR-0004, ADR-0005)
-traits ─► world        multiplayer ─► world, input-api       test-support ─► (test scope)
+traits ─► world (ADR-0011 ACCEPTED: traits ─► ecs ─► core)        multiplayer ─► world, input-api       test-support ─► (test scope)
 ```
 
 Arrows always point from the dependent module to its dependency. A cycle, or an arrow from `core` or an `*-api` module to an implementation module, is a violation (REQ-CORE-005).

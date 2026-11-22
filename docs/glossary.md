@@ -8,7 +8,12 @@
 | Backend | Concrete implementation of an abstract service (rendering, audio, resource...). |
 | Batch | A small, verifiable unit of work (one contract, its tests, its example), specified with the feature template before implementation. |
 | Capability | A feature a platform may or may not provide (gamepad, shaders, audio...), announced rather than assumed. |
-| Component | In ECS, a plain data holder attached to an entity. |
+| Component | In ECS, a plain data holder attached to an entity. In this engine a component is called a trait (ADR-0011). |
+| Command buffer | List of deferred structural changes (object and trait add/remove) applied at the flush of a simulation step (ADR-0011). |
+| Flush | Single point per simulation step where the command buffer is applied and events are delivered (ADR-0011). |
+| Object ID | Opaque ID of an ECS object (entity): index plus generation, so that a recycled index is distinguishable from a stale ID (ADR-0011). |
+| Query | Cached view of the objects having all of a set of trait types and none of an exclusion set (ADR-0011). |
+| Sparse set | Storage giving O(1) add, remove and membership and dense iteration; one per trait type (ADR-0011). |
 | Core library desugaring | Android build feature that makes some newer Java library APIs available on older Android versions. |
 | D8 / R8 | Android tools that convert Java bytecode to DEX (D8) and shrink/optimize it (R8). |
 | DEX | Dalvik Executable: the bytecode format run by Android. |
