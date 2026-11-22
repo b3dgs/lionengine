@@ -34,6 +34,8 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 - [`ADR-0011`](0011-ecs-dynamic-objects-traits-and-standard-traits.md) — ECS: dynamic objects and traits, cached queries, deferred structural changes, system order and standard traits in `ecs` and `traits` (accepted 2026-11-22).
 - [`ADR-0012`](0012-platform-and-build-baseline.md) — Platform and build baseline: Android API 21, DEX through a separate Gradle module, Maven layout, JUnit 5, GPL-3.0, semantic versioning, GitHub Actions (accepted 2026-11-22, issue #875).
 - [`ADR-0013`](0013-world-coordinates-and-angles.md) — World coordinate system and angles: origin (0, 0), Y up, degrees (accepted 2026-11-22, issue #875).
+- [`ADR-0014`](0014-meters-to-pixels-numeric-type-and-rotation.md) — Meters-to-pixels conversion in the camera, `double` world quantities, counter-clockwise rotation (accepted 2026-11-22, issue #875).
+- [`ADR-0015`](0015-single-version-and-package-dependency-rule.md) — One version for all modules; package dependency rule of `radial-encapsulation-maven-plugin` (accepted 2026-11-22, issue #875).
 
 ## Proposed decisions
 

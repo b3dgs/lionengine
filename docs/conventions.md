@@ -34,7 +34,8 @@
 
 - Avoid allocation in the per-step update and per-frame render paths; this matters for garbage-collection pauses on Android.
 - Measure before optimizing; record the measurement method in the test (see `testing.md`, performance level).
-- Numeric type for world quantities (`float` or `double`): **TO BE DEFINED** (OQ-013; recommendation `double`, awaiting owner confirmation).
+- World quantities are `double`; `float` only at the render boundary (ADR-0014). Rotation is counter-clockwise positive, `0°` along `+X`.
+- One version number for all modules; a package never depends on a descendant package (ADR-0015).
 
 ## Concurrency
 
