@@ -95,6 +95,28 @@ Note: the packet placeholder `REQ-RENDER-FILTER-NNN` is numbered `REQ-FILTER-NNN
 | REQ-SPR-001 | The engine handles modifiable images/sprites. | Must | PROPOSED | Mutation and lifecycle tests. |
 | REQ-SPR-002 | The engine handles animations and spritesheets. | Must | PROPOSED | Deterministic animation-progress tests. |
 
+## Sprites, animations and sprite sheets
+
+Source: [ADR-0003](decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md) (PROPOSED), issue #852. Features: [`features/sprite-sheet.md`](features/sprite-sheet.md), [`features/sprite.md`](features/sprite.md), [`features/animated-sprite.md`](features/animated-sprite.md). Owner decisions given on issue #852: 1C (hybrid color transform), 2 (template palette mapping), 3B (render commands), 4 (shared immutable source plus lightweight instance); the ADR itself stays PROPOSED. These requirements refine the broader REQ-SPR-001 and REQ-SPR-002, which are kept unchanged.
+
+Note: the packet placeholders `REQ-GFX-SPR-NNN`, `REQ-GFX-ANI-NNN` and `REQ-GFX-SHT-NNN` are numbered `REQ-SPRITE-NNN`, `REQ-ANIM-NNN` and `REQ-SHEET-NNN` because `scripts/check-docs.py` recognizes identifiers made of one upper-case word and a number.
+
+| ID | Requirement | Priority | Status | Expected verification |
+|---|---|---|---|---|
+| REQ-SPRITE-001 | A sprite can be loaded from a resource identifier through `resources`, with defined errors for missing or invalid data. | Must | PROPOSED | Unit and integration tests: load, missing resource, invalid data (headless). |
+| REQ-SPRITE-002 | Loaded images are cached with a defined key, ownership and release policy; a cache hit shares the immutable source. | Must | PROPOSED | Unit tests of key, hit/miss, release and double release; contract tests of the cache. |
+| REQ-SPRITE-003 | A sprite supports resize (scale), translation and rotation, with documented units, order and pivot. | Must | PROPOSED | Unit tests of transforms and composition order (unit and order: OQ-104). |
+| REQ-SPRITE-004 | A sprite supports color transformation: fade (alpha), mask, grading. Per ADR-0003 (decision 1C), the transform is a backend-independent description; per-frame effects (fade, tint, alpha) go through `render-api` draw parameters, static transforms (palette swap, grading, mask bake) are applied on the CPU and cached, and a backend can always fall back to the CPU path. | Must | PROPOSED | Unit tests of the description and of CPU transforms; contract tests of capability query and CPU fallback; platform parity tests (AWT, OpenGL, Android). |
+| REQ-SPRITE-005 | A template-based color mapping (source color to target color, or indexed channel to target) yields multiple color variants of one sprite (e.g. team colors), sharing the source and caching variants keyed by (source image, mapping). | Should | PROPOSED | Unit tests of the palette mapping and of variant caching; authoring convention: OQ-103. |
+| REQ-SPRITE-006 | A sprite has an internal location (origin/pivot) used for placement, rotation and scaling. | Must | PROPOSED | Unit tests of placement, rotation and scaling around the pivot (semantics: OQ-104). |
+| REQ-SPRITE-007 | A sprite renders by emitting `render-api` commands, never by drawing directly, and no frontend or platform type appears in its public API. | Must | PROPOSED | Contract tests of command emission on a fake backend; dependency check (REQ-CORE-005) and API review. |
+| REQ-SPRITE-008 | Sprite rendering does not prevent later batching of draw commands (batching itself is a later optimization behind the command abstraction). | Could | PROPOSED | To be defined with the render command contract (OQ-108). |
+| REQ-ANIM-001 | Animations (frames, durations in seconds, loop mode) can be defined in code and loaded from a resource. | Must | PROPOSED | Unit tests of definition and loading, including invalid data (format: OQ-105). |
+| REQ-ANIM-002 | An animated sprite supports play, pause, resume and stop with specified state transitions. | Must | PROPOSED | Unit tests of the animation state machine, including invalid transitions. |
+| REQ-ANIM-003 | Animation time advances only from the simulation update step; render-time extrapolation or interpolation is never fed back. | Must | PROPOSED | Deterministic tests with a controllable clock; test that rendering does not alter animation state (REQ-LOOP-006). |
+| REQ-SHEET-001 | A sprite sheet represents a tileset as a grid (cell size, columns, rows, optional margin/spacing) and gives access to cells by index. | Must | PROPOSED | Unit tests of grid index math, margins, spacing and out-of-range indexes. |
+| REQ-SHEET-002 | Sprite sheets are grouped and retrieved by a unique id, with defined behavior for duplicate or unknown ids. | Should | PROPOSED | Unit tests of duplicate and unknown ids; id type and group lifecycle: OQ-106. |
+
 ## World and objects
 
 | ID | Requirement | Priority | Status | Expected verification |

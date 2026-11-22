@@ -16,7 +16,7 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
 2. **Hello engine** — the smallest headless application: start, update, stop. *Example: to be created in Phase 1.*
 3. **Concepts, in order of use** — runtime and game loop, resources, graphics (sprite, animation), world (objects, traits or ECS: OQ-041), tilemap, input, audio.
 4. **Recipes** — one short, tested recipe per common task:
-   - display and animate a sprite;
+   - display and animate a sprite, including two color variants of one sprite and a sprite sheet (ADR-0003, PROPOSED; example to be created);
    - load a map and scroll the camera;
    - read player input;
    - detect a collision;
@@ -27,6 +27,7 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
    - An extrapolated state is never reused as simulation input.
    - Closing and ownership of resources (REQ-RES-003).
    - Not every capability exists on every platform (OQ-034); check before using.
+   - Animation time advances in the update step only; a sprite emits render commands and never draws directly (ADR-0003, PROPOSED).
    - Screen mode, display mode and filter requests are best-effort: read the effective result instead of assuming it (ADR-0002, PROPOSED).
    - Android compatibility of any added dependency or Java API ([`android-compatibility.md`](android-compatibility.md)).
 6. **Differences from earlier LionEngine versions** — a table of renamed/removed concepts, so that agents do not reuse the old API from memory. *Filled when the v11 API exists.*

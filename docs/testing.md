@@ -35,6 +35,7 @@
 | Tilemap | coordinates, layers, editing | map model | map rendering |
 | Objects | lifecycle, order | management strategy | complete scene |
 | Traits | isolated behavior, interactions | trait contract if defined | object composition |
+| Sprites, animations, sprite sheets | grid index math, transforms, palette mapping, animation state machine | sprite render and cache suites (`test-support`) | headless load, cache, render; AWT/OpenGL/Android color-transform parity; cache and batching performance |
 | Display and filtering | value types, scaling, fallback, filter chain | effective result and reason, no throw on missing capability, frame-boundary application (`test-support`) | headless with fake capabilities; golden-image tests on AWT/OpenGL (none, bilinear, `HQ2X`), CRT on OpenGL |
 | Input | mapping, states, events | normalized adapter | keyboard/mouse/gamepad |
 | Multiplayer | player/session logic | to be defined | split-screen then network |

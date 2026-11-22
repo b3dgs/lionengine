@@ -92,6 +92,22 @@ Raised by issue #850 and [ADR-0002](decisions/0002-display-modes-resolution-and-
 | OQ-095 | Persistence of user display settings: engine responsibility or game responsibility. | Roadmap (before Phase 4) |
 | OQ-096 | Multi-monitor and HiDPI. Owner choice (decision 4A of issue #850): out of the first batch. Open until it is scheduled; the contracts must not preclude it. | Before the display feature is extended |
 
+## Sprites, animations and sprite sheets
+
+Raised by issue #852 and [ADR-0003](decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md) (PROPOSED). OQ-051 is touched, not resolved: the ADR assumes `graphics` emits `render-api` commands (owner decision 3B), which implies a `graphics` to `render-api` dependency, but the ADR is not accepted, so OQ-051 stays open. OQ-031 and OQ-032 are related to OQ-107 and OQ-101. All rows below are open.
+
+| ID | Question | Needed by |
+|---|---|---|
+| OQ-100 | Backend-neutral image / pixel-buffer abstraction in `graphics` (no `java.awt` type in the API; Android/DEX compatibility of image decoding). | First implementation batch (sprite sheet) |
+| OQ-101 | Image cache policy: key, scope, eviction, ownership relative to the `resources` lifecycle, thread safety (related to OQ-032). | First implementation batch (sprite sheet) |
+| OQ-102 | Color-transform capability model and CPU fallback. Owner choice (decision 1C of issue #852): backend-independent description, per-frame effects through `render-api` parameters, static transforms on the CPU with cache; the capability query and the fallback rules remain `TO BE DEFINED`. Open until ADR-0003 is `ACCEPTED`. | Sprite batch |
+| OQ-103 | Template authoring convention: key colors vs mask layer. Owner choice (decision 2): a template palette mapping applied as a static transform, cached per (source image, mapping); the authoring convention is not fixed. | Sprite batch |
+| OQ-104 | Rotation unit (radians vs degrees), pivot semantics, transform composition order, sprite instance mutability. | Sprite batch |
+| OQ-105 | Animation definition format and loader (own format vs reuse of an existing file format); frame timing in seconds. | Animated sprite batch |
+| OQ-106 | Sprite sheet id type (string vs typed id) and group lifecycle (who owns and closes sheets). | Sprite sheet batch |
+| OQ-107 | Loading thread (synchronous vs asynchronous) and where GPU upload occurs (related to OQ-031). | Before platform tests |
+| OQ-108 | Render command contract in `render-api` for sprites. Owner choice (decision 3B): sprites emit commands, never draw directly; batching is a later optimization behind the command abstraction (related to OQ-054). | Before batch work |
+
 ## Network and budgets
 
 | ID | Question | Needed by |

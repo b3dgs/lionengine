@@ -36,7 +36,7 @@
 
 - rendering contract;
 - images and sprites;
-- spritesheet and animation;
+- spritesheet and animation; sprite, animated sprite and sprite sheet contracts in `graphics` (ADR-0003, REQ-SPRITE-*, REQ-ANIM-*, REQ-SHEET-*), in three batches: sprite sheet (foundation), sprite, animated sprite; batching stays a note inside the sprite feature;
 - first rendering backend;
 - audio API and first backend if prioritized;
 - screen modes, display-mode selection and logical-resolution scaling, then output filtering (ADR-0002, REQ-DISPLAY-*, REQ-FILTER-*), after the first backend exists; `HQ2X`/CRT sources and licenses (OQ-093) and shaders (OQ-094) before filter implementation; persistence of user display settings (OQ-095) to be placed.

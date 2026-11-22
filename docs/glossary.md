@@ -30,7 +30,11 @@
 | Screen mode | How the application occupies the screen: `WINDOWED`, `FULL_WINDOW` or `FULL_SCREEN`. |
 | Simulation step | Fixed duration, in seconds, by which the simulation advances in one update (value `TO BE DEFINED`, OQ-020). |
 | Split-screen | Simultaneous presentation of several views/players on one screen. |
-| Sprite | Displayable graphic element, possibly tied to an image region. |
+| Sprite | Displayable graphic element, possibly tied to an image region. In ADR-0003: a lightweight instance (transform, color transform, location, alpha) over a shared immutable source (image + region). |
+| Animation | Ordered frames with durations in seconds and a loop mode; advanced from the simulation update step only (ADR-0003, PROPOSED). |
+| Pivot | Internal location (origin) of a sprite, used for placement, rotation and scaling. |
+| Sprite sheet | Grid-based tileset image (cell size, columns, rows, optional margin/spacing) giving access to cells by index; sheets are grouped by unique id. |
+| Template color mapping | Static transform mapping source colors (or an indexed channel) to target colors, producing a cached color variant of one sprite (e.g. team colors). |
 | Spritesheet | Image grouping several sprite regions. |
 | System | In ECS, logic that processes entities having a given set of components. |
 | Tile | Cell or graphic element of a tileset. |

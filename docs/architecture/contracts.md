@@ -27,6 +27,18 @@ Capability-based best-effort negotiation: the game requests, the platform applie
 
 Java signatures are not fixed. Details: [`features/display-modes.md`](../features/display-modes.md), [`features/output-filtering.md`](../features/output-filtering.md).
 
+### Sprites, animations and sprite sheets (PROPOSED, ADR-0003)
+
+Owner decisions of issue #852 (the ADR stays PROPOSED):
+
+- **Sprite model (decision 4):** a shared immutable **source** (image + region, cached, resource-owned) is separate from a lightweight **sprite instance** (transform, color transform, location, alpha). Animated sprites and sheet cells produce instances or regions from the same source.
+- **Color transformation (decision 1C):** a backend-independent color-transform *description* lives in `graphics`; per-frame effects (fade, tint, alpha) go through `render-api` draw parameters; static transforms (palette swap, grading, mask bake) run on the CPU and are cached. A backend can always fall back to the CPU path; capability query and fallback rules: OQ-102.
+- **Template color variants (decision 2):** a template palette mapping yields variants cached by (source image, mapping); authoring convention: OQ-103.
+- **Rendering (decision 3B):** sprites emit `render-api` commands and never draw directly; batching is a later optimization behind the command abstraction (OQ-108).
+- Animation time advances only from the simulation update step (REQ-ANIM-003, REQ-LOOP-006). Durations in seconds, sizes in pixels, no frontend type in the API (REQ-SPRITE-007).
+
+Java signatures are not fixed. Details: [`features/sprite-sheet.md`](../features/sprite-sheet.md), [`features/sprite.md`](../features/sprite.md), [`features/animated-sprite.md`](../features/animated-sprite.md).
+
 ## Unit conventions
 
 The world uses `(x, y)` in meters. Durations are in seconds. Speeds are in `m/s`, accelerations in `m/s²`. Any API that converts to pixels must belong to the presentation boundary and state the conversion factor explicitly.

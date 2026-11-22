@@ -24,5 +24,6 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 ## Proposed decisions
 
 - [`ADR-0002`](0002-display-modes-resolution-and-output-filtering.md) — Display modes, resolution selection and output filtering contracts (PROPOSED).
+- [`ADR-0003`](0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md) — Sprite, animation and sprite sheet contracts in `graphics` (PROPOSED).
 
 Other likely candidates are listed in [`../open-questions.md`](../open-questions.md) (see items needed by Phase 0).

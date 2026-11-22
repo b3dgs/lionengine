@@ -17,7 +17,7 @@ Purpose: let a developer or an AI agent find, by **task**, which public types to
 |---|---|---|---|---|---|
 | Start, update and stop an application | `runtime` | *(to be filled)* | *(to be created)* | — | Loop model: ADR-0001 |
 | Load a resource | `resources` | *(to be filled)* | *(to be created)* | — | Closing rules: REQ-RES-003 |
-| Display and animate a sprite | `graphics` | *(to be filled)* | *(to be created)* | — | World in meters; pixels at presentation only |
+| Display and animate a sprite | `graphics` | *(to be filled; ADR-0003 PROPOSED)* | *(to be created: headless example loading a sprite sheet, animating a sprite and rendering two color variants of one sprite)* | — | Pixels for images and cells, seconds for animation; world in meters, pixels at presentation only (REQ-SPRITE-*, REQ-ANIM-*, REQ-SHEET-*) |
 | Read player input | `input-api` | *(to be filled)* | *(to be created)* | — | Capability may be absent (OQ-034) |
 | Create objects and attach behaviors | `world` / `traits` / `ecs` | *(to be filled)* | *(to be created)* | — | Model: OQ-041 |
 | Load a tile map | `tilemap` | *(to be filled)* | *(to be created)* | — | |
