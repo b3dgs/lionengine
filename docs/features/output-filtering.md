@@ -6,8 +6,8 @@
 - Roadmap phase: Phase 2, after screen and display modes
 - Affected modules: `render-api`, `render-awt`, `render-opengl`, `test-support`, `examples`
 - Requirements: `REQ-FILTER-001` to `REQ-FILTER-003`, `REQ-DISPLAY-004`, `REQ-DISPLAY-005`
-- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md) (ACCEPTED)
-- Open questions involved: `OQ-093`, `OQ-094`, `OQ-120` (`OQ-006` related)
+- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md) (ACCEPTED), [`ADR-0006`](../decisions/0006-display-scaling-effective-result-and-fallback-orders.md) (PROPOSED)
+- Open questions involved: `OQ-093`, `OQ-094`, `OQ-122` (`OQ-006` related; `OQ-120` resolved)
 
 ## Objective
 
@@ -21,6 +21,8 @@ Per-layer filtering (decision 3A); screen and display modes (see [`display-modes
 
 - Standard identifiers: `NONE`, bilinear, `HQ2X`, CRT, with a capability query. `NONE` samples nearest-neighbor when the logical frame is scaled; there is no separate nearest identifier.
 - Filters form an ordered chain; an unsupported filter is skipped or replaced per a documented fallback, and this is reported.
+- Scaling filters (`NONE`, bilinear, `HQ2X`) resample the logical frame; post filters (CRT) run on the scaled output; no filter changes the scaling policy (ADR-0006).
+- Fallback per filter: CRT skipped; `HQ2X` → bilinear → `NONE`; each fallback is reported.
 - Changes are applied at a frame boundary and signaled by an event; simulation state untouched.
 - An extension point for custom filters or shaders exists; its form is not fixed.
 

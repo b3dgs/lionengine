@@ -29,14 +29,14 @@
 | Domain | Unit tests | Contract | Integration / platform |
 |---|---|---|---|
 | Game loop | clock, time step, pause | each implementation | frontend lifecycle |
-| Resources | resolution, errors, streams | each provider | archive/Android/filesystem |
+| Resources | resolution, errors, streams, key normalization, idempotent release | each provider; key and release suite run by each consuming module (REQ-RES-005) | archive/Android/filesystem |
 | Audio | playback state, commands, seeded variant selection, playlist advance, cache hit and miss | short and long sound suites in `test-support`, run on every backend (REQ-AUDIO-009) | headless fake backend with controllable clock; codec, latency and Android on device (platform tests, later) |
 | Sprites | slicing, animation, mutation | data API | upload and rendering |
 | Tilemap | coordinates, layers, editing | map model | map rendering |
 | Objects | lifecycle, order | management strategy | complete scene |
 | Traits | isolated behavior, interactions | trait contract if defined | object composition |
 | Sprites, animations, sprite sheets | grid index math, transforms, palette mapping, animation state machine | sprite render and cache suites (`test-support`) | headless load, cache, render; AWT/OpenGL/Android color-transform parity; cache and batching performance |
-| Display and filtering | value types, scaling, fallback, filter chain | effective result and reason, no throw on missing capability, frame-boundary application (`test-support`) | headless with fake capabilities; golden-image tests on AWT/OpenGL (none, bilinear, `HQ2X`), CRT on OpenGL |
+| Display and filtering | value types, scaling policies (including the `INTEGER` fallback), fallback orders, filter chain | effective result and reason, no throw on missing capability, frame-boundary application (`test-support`) | headless with fake capabilities; golden-image tests on AWT/OpenGL (none, bilinear, `HQ2X`), CRT on OpenGL |
 | Input | mapping, states, events | normalized adapter | keyboard/mouse/gamepad |
 | Multiplayer | player/session logic | to be defined | split-screen then network |
 | Java/Android compatibility | check of the APIs used | — | D8/R8 compilation, DEX and device/emulator tests |
