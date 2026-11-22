@@ -52,6 +52,24 @@ Goal: a developer or an AI agent that has never seen the engine can write a game
 | REQ-FE-002 | AWT, OpenGL and Android are envisaged targets. | Should | PROPOSED | Capability matrix per frontend. |
 | REQ-FE-003 | The frontend provides the concrete display and presentation capabilities. | Must | PROPOSED | No native type in the core API. |
 
+## Display and output filtering
+
+Source: [ADR-0002](decisions/0002-display-modes-resolution-and-output-filtering.md) (PROPOSED). Features: [`features/display-modes.md`](features/display-modes.md), [`features/output-filtering.md`](features/output-filtering.md). Placement: screen and display modes in `platform-api`, output filtering in `render-api`. Requests are best-effort and the effective result is reported (owner decisions 1B, 2A, 3A, 4A of issue #850; the ADR itself stays PROPOSED). Multi-monitor and HiDPI are outside the first batch (OQ-096).
+
+| ID | Requirement | Priority | Status | Expected verification |
+|---|---|---|---|---|
+| REQ-DISPLAY-001 | The platform API offers the screen modes `WINDOWED`, `FULL_WINDOW` and `FULL_SCREEN`, with a query telling which ones the platform supports. | Must | PROPOSED | Contract tests on each platform and on a fake-capability platform. |
+| REQ-DISPLAY-002 | A request for an unsupported screen mode falls back following a documented order and reports the effective mode, without failing. | Must | PROPOSED | Contract tests: effective result and reason reported, no exception on a missing capability. |
+| REQ-DISPLAY-003 | Display modes (width and height in pixels, refresh rate in Hz, color depth in bits) can be enumerated and selected through engine-defined types. | Must | PROPOSED | Unit tests of the value types; contract tests of enumeration and selection. |
+| REQ-DISPLAY-004 | The logical resolution is independent of the output display mode; a scaling policy governs presentation and never changes world units (m, m/s, m/s²). | Must | PROPOSED | Unit tests of scaling (stretch, aspect-preserving, integer scale); policy set and owner: OQ-091. |
+| REQ-DISPLAY-005 | Screen mode, display mode, resolution and filter changes are applied at a frame boundary and signaled by an event; they never alter simulation state. | Must | PROPOSED | Contract tests of frame-boundary application and event; simulation-state invariance test (REQ-LOOP-006). |
+| REQ-DISPLAY-006 | No AWT, OpenGL or Android type appears in `core`, `platform-api` or `render-api` display and filter contracts. | Must | PROPOSED | Dependency check (REQ-CORE-005) and API review. |
+| REQ-FILTER-001 | Output filtering offers at least `NONE`, bilinear, `HQ2X` and CRT as standard identifiers, with a capability query. Filtering applies to the logical frame presented on the output surface only. | Must | PROPOSED | Unit tests of identifiers and capability query; platform golden-image tests (none, bilinear, `HQ2X` on AWT and OpenGL; CRT on OpenGL). |
+| REQ-FILTER-002 | Filters are composable as an ordered chain; an unsupported filter is skipped or replaced following a documented fallback, and this is reported. | Should | PROPOSED | Unit tests of the chain; contract tests of fallback and report. |
+| REQ-FILTER-003 | An extension point allows custom filters or shaders; its form is not fixed before validation. | Could | PROPOSED | To be defined with the extension design (OQ-092, OQ-094). |
+
+Note: the packet placeholder `REQ-RENDER-FILTER-NNN` is numbered `REQ-FILTER-NNN` because `scripts/check-docs.py` recognizes identifiers made of one upper-case word and a number.
+
 ## Game loop
 
 | ID | Requirement | Priority | Status | Expected verification |

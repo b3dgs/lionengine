@@ -6,8 +6,8 @@
 |---|---|---|
 | `core` | Common types, lifecycle, errors, events, cross-cutting contracts | No frontend dependency |
 | `runtime` | Orchestration, game loop, clock, scheduling | `core` |
-| `platform-api` | Window/surface contracts, platform capabilities, frontend lifecycle | `core` |
-| `render-api` | Rendering contracts, textures, commands, viewport | `core` |
+| `platform-api` | Window/surface contracts, platform capabilities, frontend lifecycle, screen modes and display-mode selection (ADR-0002, PROPOSED) | `core` |
+| `render-api` | Rendering contracts, textures, commands, viewport, output filtering (ADR-0002, PROPOSED) | `core` |
 | `render-awt` | AWT implementation | `render-api`, `platform-api` |
 | `render-opengl` | OpenGL implementation | `render-api`, `platform-api` |
 | `platform-android` | Android lifecycle, surface, resources and input adaptation | `platform-api` and the `*-api` modules it implements |
@@ -48,4 +48,4 @@ Arrows always point from the dependent module to its dependency. A cycle, or an 
 
 ## Open points
 
-Module-related open points (OQ-041, OQ-043, OQ-044, OQ-050 to OQ-053) are tracked in [`../open-questions.md`](../open-questions.md).
+Module-related open points (OQ-041, OQ-043, OQ-044, OQ-050 to OQ-053, and OQ-091 for the owner of the scaling policy) are tracked in [`../open-questions.md`](../open-questions.md).

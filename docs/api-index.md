@@ -21,6 +21,7 @@ Purpose: let a developer or an AI agent find, by **task**, which public types to
 | Read player input | `input-api` | *(to be filled)* | *(to be created)* | — | Capability may be absent (OQ-034) |
 | Create objects and attach behaviors | `world` / `traits` / `ecs` | *(to be filled)* | *(to be created)* | — | Model: OQ-041 |
 | Load a tile map | `tilemap` | *(to be filled)* | *(to be created)* | — | |
+| Query and request screen mode, display mode and output filter | `platform-api` / `render-api` | *(to be filled; ADR-0002 PROPOSED)* | *(to be created: headless example listing capabilities, requesting a mode and a filter, printing the effective result)* | — | Pixels, Hz, bits; scaling never changes world units; effective result reported (REQ-DISPLAY-*, REQ-FILTER-*) |
 | Play a sound | `audio-api` | *(to be filled)* | *(to be created)* | — | Formats depend on backend |
 
 ## Removed or renamed APIs

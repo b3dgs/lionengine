@@ -17,13 +17,17 @@
 | Entity | In ECS, an identifier grouping components. |
 | Extrapolation | Presentation-only prediction of a visual state beyond the last known simulation state; never fed back into the simulation. |
 | Frameskipping | Dropping a presentation (render) when the machine cannot keep up, without dropping simulation computations. |
+| Display mode | A combination of width and height in pixels, refresh rate in Hz and color depth in bits supported by a display (ADR-0002, PROPOSED). |
 | Frontend | Adapter to a runtime environment (AWT, OpenGL, Android...). |
+| Logical resolution | Resolution in pixels of the frame the game renders, independent of the output display mode. |
 | Game loop | Mechanism that paces updates and/or rendering. |
 | Headless | Execution without a window or real graphics device. |
 | Interpolation | Presentation-only blend between two known simulation states (distinct from extrapolation). |
+| Output filter | Presentation-time image filter (nearest, bilinear, `HQ2X`, CRT...) applied from the logical frame to the output surface. |
 | Provider | A resource source implementation (filesystem, archive, memory, Android assets, stream). |
 | Resource | Data identified logically, independently of its location. |
 | Runtime | Orchestration of the engine lifecycle and execution. |
+| Screen mode | How the application occupies the screen: `WINDOWED`, `FULL_WINDOW` or `FULL_SCREEN`. |
 | Simulation step | Fixed duration, in seconds, by which the simulation advances in one update (value `TO BE DEFINED`, OQ-020). |
 | Split-screen | Simultaneous presentation of several views/players on one screen. |
 | Sprite | Displayable graphic element, possibly tied to an image region. |
