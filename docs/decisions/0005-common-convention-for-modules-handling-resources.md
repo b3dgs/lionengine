@@ -1,10 +1,10 @@
 # ADR-0005 — Common convention for modules handling resources
 
-- Status: PROPOSED
+- Status: ACCEPTED
 - Date: 2026-11-22
-- Decision makers: project owner (rule stated with decision 3B of issue #853); the placement of the convention was chosen by the agent under the owner's delegation of 2026-11-22 (joint review of packets #850, #852 and #853). This ADR stays `PROPOSED` until explicitly approved.
+- Decision makers: project owner (rule stated with decision 3B of issue #853); the placement of the convention was chosen by the agent under the owner's delegation of 2026-11-22 (joint review of packets #850, #852 and #853). Accepted on 2026-11-22.
 - Related requirements: `REQ-RES-003`, `REQ-RES-004`, `REQ-SPRITE-002`, `REQ-SPRITE-005`, `REQ-AUDIO-003`, `REQ-AUDIO-006`, `REQ-CORE-005`
-- Open questions resolved: none (touches `OQ-032`, `OQ-094`, `OQ-101`, `OQ-106`, `OQ-110`, `OQ-118`)
+- Open questions resolved: the location part of `OQ-118` (its content stays open; touches `OQ-032`, `OQ-094`, `OQ-101`, `OQ-106`, `OQ-110`)
 - Supersedes / superseded by: none. It takes over the general rule first recorded inside [ADR-0004](0004-audio-contracts-short-and-long-sounds.md) (decision 3B), which now covers audio only.
 
 ## Context
@@ -39,4 +39,4 @@ Not decided (stays `TO BE DEFINED`, `OQ-118`): the key form, the release rule, t
 
 ## Validation
 
-Not approved yet. The rule comes from the owner (issue #853, decision 3B); its placement was chosen by the agent under the owner's delegation. The ADR remains `PROPOSED` until the owner explicitly accepts it.
+Accepted by the project owner on 2026-11-22 (explicit request in the review session that followed PR #856). The rule comes from the owner (issue #853, decision 3B); its placement, chosen by the agent under the owner's delegation, is part of the accepted decision. The content of the convention stays `TO BE DEFINED` (`OQ-118`).

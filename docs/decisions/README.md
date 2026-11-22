@@ -20,12 +20,13 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 ## Accepted decisions
 
 - [`ADR-0001`](0001-technical-baseline-and-conventions.md) — Java 25+, Maven 3+, Android/DEX compatibility, world units and principles of the default game loop.
+- [`ADR-0002`](0002-display-modes-resolution-and-output-filtering.md) — Display modes, resolution selection and output filtering contracts (accepted 2026-11-22).
+- [`ADR-0003`](0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md) — Sprite, animation and sprite sheet contracts in `graphics` (accepted 2026-11-22).
+- [`ADR-0004`](0004-audio-contracts-short-and-long-sounds.md) — Audio contracts: short and long sounds, variant sets and playlists (accepted 2026-11-22).
+- [`ADR-0005`](0005-common-convention-for-modules-handling-resources.md) — Common convention for modules handling resources: `resources` media-agnostic, decoded caches in consuming modules, one key and release convention (accepted 2026-11-22).
 
 ## Proposed decisions
 
-- [`ADR-0002`](0002-display-modes-resolution-and-output-filtering.md) — Display modes, resolution selection and output filtering contracts (PROPOSED).
-- [`ADR-0003`](0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md) — Sprite, animation and sprite sheet contracts in `graphics` (PROPOSED).
-- [`ADR-0004`](0004-audio-contracts-short-and-long-sounds.md) — Audio contracts: short and long sounds, variant sets and playlists (PROPOSED).
-- [`ADR-0005`](0005-common-convention-for-modules-handling-resources.md) — Common convention for modules handling resources: `resources` media-agnostic, decoded caches in consuming modules, one key and release convention (PROPOSED).
+None at the moment.
 
 Other likely candidates are listed in [`../open-questions.md`](../open-questions.md) (see items needed by Phase 0).

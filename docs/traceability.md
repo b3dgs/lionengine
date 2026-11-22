@@ -27,13 +27,13 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-FE-002 | Should | PROPOSED | — | — | — | no test yet |
 | REQ-FE-003 | Must | PROPOSED | ADR-0002 | — | — | no test yet |
 | REQ-DISPLAY-001 | Must | PROPOSED | ADR-0002 | OQ-050, OQ-096, OQ-119 | — | no test yet |
-| REQ-DISPLAY-002 | Must | PROPOSED | ADR-0002 | OQ-090 | — | no test yet |
+| REQ-DISPLAY-002 | Must | PROPOSED | ADR-0002 | OQ-090, OQ-120 | — | no test yet |
 | REQ-DISPLAY-003 | Must | PROPOSED | ADR-0002 | OQ-096 | — | no test yet |
 | REQ-DISPLAY-004 | Must | PROPOSED | ADR-0002 | OQ-091, OQ-012 | — | no test yet |
 | REQ-DISPLAY-005 | Must | PROPOSED | ADR-0002 | OQ-020, OQ-030 | — | no test yet |
 | REQ-DISPLAY-006 | Must | PROPOSED | ADR-0002 | OQ-050 | — | no test yet |
 | REQ-FILTER-001 | Must | PROPOSED | ADR-0002 | OQ-092, OQ-093 | — | no test yet |
-| REQ-FILTER-002 | Should | PROPOSED | ADR-0002 | OQ-092 | — | no test yet |
+| REQ-FILTER-002 | Should | PROPOSED | ADR-0002 | OQ-092, OQ-120 | — | no test yet |
 | REQ-FILTER-003 | Could | PROPOSED | ADR-0002 | OQ-092, OQ-094 | — | no test yet |
 | REQ-LOOP-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-LOOP-002 | Must | PROPOSED | — | — | — | no test yet |
