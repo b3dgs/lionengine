@@ -13,12 +13,12 @@ on:
 
 jobs:
   packet:
-    # Only the repository owner, on issues (not PRs), authored by the owner.
-    # For an organization repository, replace the two owner checks with an explicit allow-list of logins.
+    # Only the repository owner comments, on issues (not PRs), and only on issues authored by an allowed login.
+    # Edit the allow-list in the fromJSON line below to add or remove authors.
     if: >
       !github.event.issue.pull_request &&
       github.event.comment.author_association == 'OWNER' &&
-      github.event.issue.user.login == github.repository_owner &&
+      contains(fromJSON('["b3dgs", "DjThunder"]'), github.event.issue.user.login) &&
       (startsWith(github.event.comment.body, '@claude plan') ||
        startsWith(github.event.comment.body, '@claude apply'))
     runs-on: ubuntu-latest
