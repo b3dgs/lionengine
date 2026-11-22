@@ -21,12 +21,15 @@
 | Display mode | A combination of width and height in pixels, refresh rate in Hz and color depth in bits supported by a display (ADR-0002). |
 | Frontend | Adapter to a runtime environment (AWT, OpenGL, Android...). |
 | Logical resolution | Resolution in pixels of the frame the game renders, independent of the output display mode. |
+| Scaling policy | How the logical frame is scaled to the output surface: `FIT` (aspect-preserving, default), `INTEGER` (integer factors only, opt-in) or `STRETCH` (ADR-0006, PROPOSED). |
+| Effective result | Immutable value reporting, per field, the requested and the actually applied value of a display or filter request, with a `degraded` flag and a reason (ADR-0006, PROPOSED). |
 | Game loop | Mechanism that paces updates and/or rendering. |
 | Headless | Execution without a window or real graphics device. |
 | Interpolation | Presentation-only blend between two known simulation states (distinct from extrapolation). |
 | Output filter | Presentation-time image filter (`NONE`, bilinear, `HQ2X`, CRT...) applied from the logical frame to the output surface; `NONE` samples nearest-neighbor when the frame is scaled. |
 | Provider | A resource source implementation (filesystem, archive, memory, Android assets, stream). |
 | Resource | Data identified logically, independently of its location. |
+| Resource key | Normalized logical path string identifying a resource for every origin (`/` separator, case-sensitive, no leading `/`, no `.` or `..`); used by every module cache (ADR-0007, PROPOSED). |
 | Runtime | Orchestration of the engine lifecycle and execution. |
 | Screen mode | How the application occupies the screen: `WINDOWED`, `FULL_WINDOW` or `FULL_SCREEN`. |
 | Simulation step | Fixed duration, in seconds, by which the simulation advances in one update (value `TO BE DEFINED`, OQ-020). |

@@ -5,9 +5,9 @@
 - Owner: to be filled in
 - Roadmap phase: Phase 2 (after the first rendering backend), see `roadmap.md`
 - Affected modules: `platform-api`, `render-awt`, `render-opengl`, `platform-android`, `test-support`, `examples`
-- Requirements: `REQ-DISPLAY-001` to `REQ-DISPLAY-006`
-- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md) (ACCEPTED)
-- Open questions involved: `OQ-090`, `OQ-091`, `OQ-095`, `OQ-096`, `OQ-119`, `OQ-120`
+- Requirements: `REQ-DISPLAY-001` to `REQ-DISPLAY-008`
+- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md) (ACCEPTED), [`ADR-0006`](../decisions/0006-display-scaling-effective-result-and-fallback-orders.md) (PROPOSED)
+- Open questions involved: `OQ-095`, `OQ-096`, `OQ-119`, `OQ-122` (`OQ-090`, `OQ-091`, `OQ-120` resolved)
 
 ## Objective
 
@@ -20,9 +20,10 @@ Output filtering (see [`output-filtering.md`](output-filtering.md)); multi-monit
 ## Expected behavior
 
 - Capability query for `WINDOWED`, `FULL_WINDOW`, `FULL_SCREEN`.
-- Unsupported screen mode: documented fallback order (proposal in `OQ-120`), effective mode reported, no failure.
+- Unsupported screen mode: documented fallback order (ADR-0006), effective mode reported, no failure.
 - Enumerate and select display modes (width, height in pixels; refresh rate in Hz; color depth in bits).
-- Logical resolution independent of the display mode; scaling policy per `OQ-091`.
+- Logical resolution independent of the display mode; scaling policy `FIT` (default), `INTEGER` (opt-in) or `STRETCH` (ADR-0006).
+- Apply returns the accepted request without blocking; the effective result is delivered at the frame boundary and readable as current state (`REQ-DISPLAY-008`).
 - Changes applied at a frame boundary and signaled by an event; simulation state untouched.
 
 ## Envisaged APIs / contracts

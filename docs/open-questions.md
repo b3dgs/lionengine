@@ -47,6 +47,8 @@ Rules:
 | OQ-032 | Resource ownership, closing, caching and reloading policy. Cache key and release convention of the consuming modules: OQ-118 (ADR-0005). | Phase 1 |
 | OQ-033 | Memory management policy (allocation in hot paths, release of resources). | Phase 1 |
 | OQ-034 | Platform capability mechanism (interface, registry or configuration). | Phase 1 |
+| OQ-121 | Thread-safety rule shared by the caches of the modules handling resources (ADR-0005, ADR-0007): which threads may load, read and release. Split from OQ-118 by issue #859. Asynchronous loading stays OQ-031; reloading stays OQ-032. | Phase 2 (before the first consuming module) |
+| OQ-122 | `core` event contract: how engine events (such as the effective result of a display or filter change, ADR-0006) are delivered, on which thread, and in which order relative to the update step. Raised by issue #859. | Phase 1 |
 
 ## World and objects
 
@@ -68,7 +70,7 @@ Rules:
 | OQ-053 | Are audio backends split by library, codec or platform? Touched by issue #853 (see OQ-115), not resolved. | Phase 2 |
 | OQ-054 | **RESOLVED** by [ADR-0003](decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md): abstract commands (owner decision 3B of issue #852); the command contract itself is OQ-108. Original question: rendering API style: abstract commands, drawing context, or specialized interface. | Phase 2 |
 | OQ-055 | Which frontend is the first reference frontend? (A headless frontend for tests is already required by REQ-TEST-001.) | Phase 1 |
-| OQ-120 | Form of the effective-result report (effective value and reason) for display and filter requests, and the documented fallback orders for screen modes (REQ-DISPLAY-002) and filter chains (REQ-FILTER-002). Split from OQ-090 and OQ-092 when ADR-0002 was accepted. Proposed screen-mode order (review of 2026-11-22, to confirm with the first platform implementations): `FULL_SCREEN` then `FULL_WINDOW` then `WINDOWED`; `WINDOWED` then `FULL_WINDOW` then `FULL_SCREEN`; `FULL_WINDOW` then `WINDOWED` then `FULL_SCREEN`. | Phase 2 |
+| OQ-120 | **RESOLVED** by [ADR-0006](decisions/0006-display-scaling-effective-result-and-fallback-orders.md) (PROPOSED): effective result as an immutable value (requested vs effective per field, `degraded` flag, reason) delivered at the frame boundary and readable as current state; apply never blocks; fallback orders for screen modes, display modes and filters fixed in the ADR (issue #859). Delivery mechanism: OQ-122. Original question: form of the effective-result report and the documented fallback orders for screen modes (REQ-DISPLAY-002) and filter chains (REQ-FILTER-002). | Phase 2 |
 | OQ-119 | Which module implements `platform-api` on desktop (AWT, OpenGL): `render-awt` / `render-opengl`, or separate desktop platform modules? Needed by the screen and display modes of ADR-0002. Raised by the joint review of packets #850, #852 and #853. | Phase 1 |
 
 ## Game development and workflow
@@ -87,7 +89,7 @@ Raised by issue #850 and [ADR-0002](decisions/0002-display-modes-resolution-and-
 | ID | Question | Needed by |
 |---|---|---|
 | OQ-090 | **RESOLVED** by [ADR-0002](decisions/0002-display-modes-resolution-and-output-filtering.md): pure best-effort, the effective result is reported; no "required" flag in the first batch (owner decision 2A of issue #850). The form of the report and the fallback orders moved to OQ-120. Original question: request exactness. | Phase 2 (before display contracts) |
-| OQ-091 | Scaling policy set (stretch, aspect-preserving, integer scale), its default, and whether it is owned by `platform-api` or `render-api`. | Phase 2 (before display contracts; ADR-0002 was accepted with this question still open) |
+| OQ-091 | **RESOLVED** by [ADR-0006](decisions/0006-display-scaling-effective-result-and-fallback-orders.md) (PROPOSED): `FIT` (default), `INTEGER` (opt-in, falls back to `FIT` when the surface is smaller than the logical frame), `STRETCH`; policy type in `render-api`, surface size from `platform-api` (issue #859). Original question: scaling policy set, its default, and whether it is owned by `platform-api` or `render-api`. | Phase 2 (before display contracts) |
 | OQ-092 | **RESOLVED** by [ADR-0002](decisions/0002-display-modes-resolution-and-output-filtering.md): filtering applies from the logical frame to the output surface only, no per-layer filtering (owner decision 3A of issue #850). Chain fallback details moved to OQ-120. Original question: filter scope. | Phase 2 (before the filter feature) |
 | OQ-093 | Source and license of the `HQ2X` and CRT algorithms (own implementation or third-party library; license and Android/DEX compatibility to be recorded, see OQ-006). | Phase 2 (before filter implementation) |
 | OQ-094 | Shader portability (GLSL vs GLSL ES) and delivery of shader assets through `resources` (needed by CRT and custom filters); if confirmed, rendering backends follow the common resource convention (ADR-0005). | Phase 2 (before CRT) |
@@ -101,12 +103,12 @@ Raised by issue #852 and [ADR-0003](decisions/0003-sprite-animation-and-sprite-s
 | ID | Question | Needed by |
 |---|---|---|
 | OQ-100 | Backend-neutral image / pixel-buffer abstraction in `graphics` (no `java.awt` type in the API; Android/DEX compatibility of image decoding). Also: module placement of the platform-specific image decoders (no `java.awt` or `javax.imageio` on Android), and where modifiable pixel data lives relative to the immutable cached source (REQ-SPR-001, ADR-0003). | Phase 2 (sprite sheet batch) |
-| OQ-101 | Image cache policy: scope, eviction, thread safety (related to OQ-032). The cache is owned by `graphics`, not by `resources`; its key form and release rule come from OQ-118 (ADR-0005). | Phase 2 (sprite sheet batch, after OQ-118) |
+| OQ-101 | Image cache policy: scope, eviction, thread safety (related to OQ-032). The cache is owned by `graphics`, not by `resources`; its key form and release rule are fixed by ADR-0007 (OQ-118); thread safety follows OQ-121. | Phase 2 (sprite sheet batch) |
 | OQ-102 | Color-transform capability model and CPU fallback. Owner choice (decision 1C of issue #852): backend-independent description, per-frame effects through `render-api` parameters, static transforms on the CPU with cache; the capability query and the fallback rules remain `TO BE DEFINED`. | Phase 2 (sprite batch) |
 | OQ-103 | Template authoring convention: key colors vs mask layer. Owner choice (decision 2): a template palette mapping applied as a static transform, cached per (source image, mapping); the authoring convention is not fixed. | Phase 2 (sprite batch) |
 | OQ-104 | Pivot semantics, transform composition order, sprite instance mutability. The rotation unit and direction are not decided here: they follow the engine-wide angle convention (OQ-011). | Phase 2 (sprite batch) |
 | OQ-105 | Animation definition format and loader (own format vs reuse of an existing file format); frame timing in seconds. | Phase 2 (animated sprite batch) |
-| OQ-106 | Sprite sheet id type (string vs typed id) and group lifecycle (who owns and closes sheets). The id form must be consistent with the key form of OQ-118. | Phase 2 (sprite sheet batch) |
+| OQ-106 | Sprite sheet id type (string vs typed id) and group lifecycle (who owns and closes sheets). The id form must be consistent with the key form of ADR-0007 (OQ-118). | Phase 2 (sprite sheet batch) |
 | OQ-107 | Loading thread (synchronous vs asynchronous) and where GPU upload occurs (related to OQ-031). | Phase 2 (before platform tests) |
 | OQ-108 | Render command contract in `render-api` for sprites. Owner choice (decision 3B): sprites emit commands, never draw directly; batching is a later optimization behind the command abstraction (related to OQ-054). | Phase 2 (before batch work) |
 
@@ -116,7 +118,7 @@ Raised by issue #853 and [ADR-0004](decisions/0004-audio-contracts-short-and-lon
 
 | ID | Question | Needed by |
 |---|---|---|
-| OQ-110 | Short-sound cache policy: size, eviction, preload vs lazy. The key form and release rule come from OQ-118 (ADR-0005). | Phase 2 (before short-sound implementation, after OQ-118) |
+| OQ-110 | Short-sound cache policy: size, eviction, preload vs lazy. The key form and release rule are fixed by ADR-0007 (OQ-118); thread safety follows OQ-121. | Phase 2 (before short-sound implementation) |
 | OQ-111 | Maximum simultaneous short voices and overflow behavior (drop, steal oldest, refuse). | Phase 2 (before short-sound implementation) |
 | OQ-112 | Variant selection policy (pure random, no immediate repeat, weighted) and meaning of "composed" (simultaneous layers or offsets). | Phase 2 (before variant batch) |
 | OQ-113 | Long-sound strategy: fully decoded preload vs streamed, and Android memory budget (related to OQ-033). | Phase 2 (before long-sound implementation) |
@@ -124,7 +126,7 @@ Raised by issue #853 and [ADR-0004](decisions/0004-audio-contracts-short-and-lon
 | OQ-115 | Supported formats and decoders per platform (REQ-AUDIO-002), decoder licenses and Android compatibility (OQ-006, `android-compatibility.md`); touches OQ-053. | Phase 2 (before first real backend) |
 | OQ-116 | Android latency target and the threshold meant by "low latency". | Phase 2 (before Android backend) |
 | OQ-117 | Audio features out of scope of issue #853, listed as candidates only: pause/resume, volume, looping, fades, spatial audio, mixer channels. | Phase 6 (first game), or earlier if one is requested |
-| OQ-118 | Content of the common resource convention (owner statement of decision 3B of issue #853): key form, release rule, double-release behavior, thread safety. Location settled by [ADR-0005](decisions/0005-common-convention-for-modules-handling-resources.md) (ACCEPTED on 2026-11-22): the ADR plus a summary in `architecture/contracts.md` (Resources); the content stays open. OQ-101, OQ-106 and OQ-110 depend on it. | Phase 2 (before the first consuming module: sprite sheet or short-sound batch) |
+| OQ-118 | **RESOLVED** by [ADR-0007](decisions/0007-resource-convention-keys-release-and-errors.md) (PROPOSED): key = normalized logical path string (`/`, case-sensitive, no leading `/`, no `.` or `..`) for every origin; derived caches key on (resource key, module discriminator); release owned by the consuming module and idempotent; one unchecked exception type for missing or unreadable resources (issue #859). Thread safety moved to OQ-121. Original question: content of the common resource convention of ADR-0005 (key form, release rule, double-release behavior, thread safety). | Phase 2 (before the first consuming module: sprite sheet or short-sound batch) |
 
 ## Network and budgets
 

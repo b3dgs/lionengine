@@ -25,11 +25,11 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
 5. **Pitfalls**
    - World units are meters and seconds; pixels exist only at presentation (ADR-0001).
    - An extrapolated state is never reused as simulation input.
-   - Closing and ownership of resources (REQ-RES-003); modules handling resources follow one convention for keys and release (REQ-RES-004, PROPOSED).
+   - Closing and ownership of resources (REQ-RES-003); modules handling resources follow one convention for keys and release: normalized logical path keys, idempotent release (REQ-RES-004, REQ-RES-005, ADR-0007).
    - Audio completion callbacks (playlist advance) must not mutate simulation state from the audio thread (ADR-0004).
    - Not every capability exists on every platform (OQ-034); check before using.
    - Animation time advances in the update step only; a sprite emits render commands and never draws directly (ADR-0003).
-   - Screen mode, display mode and filter requests are best-effort: read the effective result instead of assuming it (ADR-0002).
+   - Screen mode, display mode and filter requests are best-effort: read the effective result, delivered at the frame boundary, instead of assuming it (ADR-0002, ADR-0006).
    - Android compatibility of any added dependency or Java API ([`android-compatibility.md`](android-compatibility.md)).
 6. **Differences from earlier LionEngine versions** — a table of renamed/removed concepts, so that agents do not reuse the old API from memory. *Filled when the v11 API exists.*
 7. **Where to look next** — [`api-index.md`](api-index.md), Javadoc, `examples`.
