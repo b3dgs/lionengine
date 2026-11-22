@@ -132,6 +132,20 @@ Decisions of [ADR-0009](../decisions/0009-tile-map-contracts-in-tilemap.md) (PRO
 
 Still to specify: layers (candidate), chunks and render cache (OQ-129), collisions static and dynamic (OQ-125, OQ-043).
 
+## Camera
+
+Decisions of [ADR-0010](../decisions/0010-camera-system-in-camera.md) (PROPOSED; owner decisions of issue #868):
+
+- **Placement:** single `camera` module depending on `core` only.
+- **View:** a plain view rectangle in world units (meters, ADR-0001), no `Camera` type seen by rendering (`REQ-CAM-001`); consumer contract OQ-131. World-to-screen and screen-to-world conversion (`REQ-CAM-007`; factor OQ-012).
+- **Zoom and translation:** zoom dimensionless, clamped, animated, applied from the next frame; absolute and relative translation (`REQ-CAM-002`, `REQ-CAM-003`).
+- **Follow:** an entity-ID lookup contract defined by `camera`; the ECS system or adapter lives outside, no dependency on `ecs`; a missing entity is safe (`REQ-CAM-004`; OQ-132).
+- **Delay:** exponential smoothing, time constant in seconds, 0 is rigid, frame-rate independent (`REQ-CAM-005`; OQ-133).
+- **Shake:** amplitude, duration, frequency; per-camera seeded noise, deterministic (`REQ-CAM-006`; OQ-130, OQ-134).
+- **Lifecycle:** update phase only; rendering reads only; no singleton (`REQ-CAM-008`).
+
+Still to specify: zoom details (OQ-135), out-of-scope candidates (OQ-136).
+
 ## Objects and traits
 
 The simple model and the ECS model are candidate strategies, not necessarily a single common API (OQ-041, OQ-042).

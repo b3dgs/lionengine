@@ -157,3 +157,15 @@ Numbers announced in issue plan comments with another meaning and never assigned
 | OQ-127 | Auto-tiling rule format and neighborhood (4 or 8 neighbors) (decision 2A). | Before the destroy batch |
 | OQ-128 | Tileset reference form in a map file and tileset lifecycle: who owns and releases the sprite sheet; consistent with OQ-106 and the ADR-0007 keys. | Before the loader batch |
 | OQ-129 | Chunking and render cache strategy beyond viewport culling, and cell storage layout for large maps (Android memory). | Phase 3 (before large-map tests) |
+
+## Camera (issue #868, ADR-0010)
+
+| ID | Question | Needed by |
+|---|---|---|
+| OQ-130 | Shake randomness detail (decision 5A, per-camera seeded noise): noise algorithm, default seed and reseeding, behavior when several shakes overlap. | Before the shake batch |
+| OQ-131 | Rendering consumer contract of the view rectangle (decision 6A): how `render-api` and `tilemap` receive it and apply the world-to-screen transform; related to OQ-108 and ADR-0009 decision 1A. | Phase 3 (before the first camera consumer) |
+| OQ-132 | Placement details and ECS adapter: entity ID type of the lookup contract, and the module hosting the adapter that implements it (decisions 1A, 2A); related to OQ-041 and OQ-042. | Before the follow batch |
+| OQ-133 | Follow delay details (decision 4A): default time constant, behavior on target switch or teleport, snap threshold, sampling of the target in the update step; related to OQ-021. | Before the follow batch |
+| OQ-134 | Shake units and picking: amplitude in meters or fraction of the view, frequency in Hz, decay curve, effect on screen-to-world picking. | Before the shake batch |
+| OQ-135 | Zoom details: default range, animation curve and duration, zoom anchor point (center or cursor), meaning of zoom values. | Before the zoom batch |
+| OQ-136 | Features out of scope of issue #868, listed as candidates only: multi-camera and split screen, bounds clamp, rotation, parallax, dead zone, follow offset. | When one is requested |
