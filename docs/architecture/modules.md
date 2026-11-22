@@ -17,7 +17,7 @@
 | `audio-api` | Backend-independent audio contracts: short sounds, long sounds, variant sets, playlists (ADR-0004) | `core`, `resources` (ADR-0004, decision 3B) |
 | `audio-*` | Audio backends and decoders; own the decoded caches (ADR-0004, ADR-0005) | `audio-api`, `resources` |
 | `graphics` | Images, logical textures, sprites, spritesheets, animations (ADR-0003); owns its decoded image cache (ADR-0005); image decoders are platform-specific (OQ-100) | `core`, `resources`, `render-api` (ADR-0003: sprites emit `render-api` commands; OQ-051 resolved) |
-| `tilemap` | Tilesets, grids, layers, static/dynamic maps (single layer first, collision deferred: ADR-0009, PROPOSED) | `core`, graphics contracts; `resources` if map files are loaded through it (candidate under ADR-0005) |
+| `tilemap` | Tilesets, grids, layers, static/dynamic maps (single layer first, collision deferred: ADR-0009, ACCEPTED) | `core`, graphics contracts; `resources` if map files are loaded through it (candidate under ADR-0005) |
 | `camera` | Camera: view rectangle in world units, zoom, translation, follow through a lookup contract, smoothing, shake; single module, headless, no ECS or platform dependency (ADR-0010) | `core` only; the ECS adapter lives outside (OQ-132) |
 | `input-api` | Normalized actions, states and input events | `core` |
 | `input-*` | Keyboard, mouse and gamepad adapters per platform | `input-api`, `platform-api` |
