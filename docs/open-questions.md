@@ -171,3 +171,20 @@ Raised by issue #868 and [ADR-0010](decisions/0010-camera-system-in-camera.md) (
 | OQ-134 | Shake units and picking: amplitude in meters or fraction of the view, frequency in Hz, decay curve, effect on screen-to-world picking. | Before the shake batch |
 | OQ-135 | Zoom details: default range, animation curve and duration, anchor point other than the camera center (the default pivot is the center, REQ-CAM-002), meaning of zoom values. | Before the zoom batch |
 | OQ-136 | Features out of scope of issue #868, listed as candidates only: multi-camera and split screen, bounds clamp, rotation, parallax, dead zone, follow offset. | When one is requested |
+
+## ECS: dynamic objects, traits and standard traits (ADR-0011)
+
+Raised by the owner packet "ECS dynamic objects, traits & standard trait package" and [ADR-0011](decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (PROPOSED). Touched, not resolved: OQ-010, OQ-013, OQ-020, OQ-022, OQ-030, OQ-033, OQ-041, OQ-042, OQ-043, OQ-070, OQ-122, OQ-125, OQ-132. All rows below are open. The packet placeholder `OQ-NEW-1` (links to existing ECS identifiers) is answered by the inventory in the ADR context and by OQ-137; `OQ-NEW-2` (tile collision with a tile map, separate packet) is the existing OQ-125.
+
+| ID | Question | Needed by |
+|---|---|---|
+| OQ-137 | Java representation of the object ID (packed `int` or `long`, bits for index and generation, maximum live objects, value type vs primitive); shared with the camera lookup contract (OQ-132). | Before the first ECS batch |
+| OQ-138 | Deferred-change semantics: whether an ID returned by a deferred create is usable at once with the command buffer, behavior of operations on a not-yet-applied object, order of commands inside one flush, conflicting commands (add then remove), explicit flush outside the loop, and where the flush sits relative to the update step (OQ-020). | Before the first ECS batch |
+| OQ-139 | Benchmark and budget: reference JVM and hardware, the Android reference device, how the 1,000 × 4 target (REQ-ECS-009) and allocation-free steady state are measured in CI without fragile wall-clock assertions, and the benchmark tool (a library needs a license and Android record, AGENTS.md); related to OQ-004, OQ-070. | Before the benchmark batch |
+| OQ-140 | Trait storage layout and lifecycle: pooled instances in dense arrays vs primitive arrays per field for hot standard traits, reset on removal, growth policy and memory on Android (OQ-033). | Before the storage batch |
+| OQ-141 | System scheduling: form of the ordering slot, dependencies between systems, enabling and disabling, how systems are driven by the `runtime` loop, fixed step vs variable delta (OQ-020), and exception policy during a step (OQ-023). | Before the systems batch |
+| OQ-142 | Collision details: uniform-grid cell size (fixed or derived), shapes beyond axis-aligned boxes, detection only vs response, layer/mask semantics, trigger event delivery, fast-object tunneling, and where the physics contracts live (OQ-043); tile collision is OQ-125. | Before the collision batch |
+| OQ-143 | Jump and ground details: how `grounded` is set (collision contact or game code), default coyote and buffer durations, variable jump height, and the sign of the jump impulse and gravity given the Y direction (OQ-010). | Before the jump batch |
+| OQ-144 | Further standard traits (friction/drag, health, parent link, controller intent, render link, tag) and the numeric type and interpolation use of `Transformable` (OQ-013, OQ-022): which are standard and in which batch. | When one is requested |
+| OQ-145 | Iteration-order guarantee: swap-removal reorders dense arrays; whether the order must be stable and reproducible for deterministic simulation or replay, and its consequence for any later network mode (OQ-060). | Before the query batch |
+| OQ-146 | Relation of `world` (scenes, objects, queries) to `ecs`: wrapper, shared contract or replacement, and whether classic objects and ECS objects share a contract (OQ-041, OQ-042, OQ-044). | Phase 3 |

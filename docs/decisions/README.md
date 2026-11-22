@@ -32,5 +32,6 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 ## Proposed decisions
 
 - [`ADR-0009`](0009-tile-map-contracts-in-tilemap.md) — Tile map contracts in `tilemap` (PROPOSED, issue #865).
+- [`ADR-0011`](0011-ecs-dynamic-objects-traits-and-standard-traits.md) — ECS: dynamic objects and traits, cached queries, deferred structural changes, system order and standard traits in `ecs` and `traits` (PROPOSED).
 
 Other likely candidates are listed in [`../open-questions.md`](../open-questions.md) (see items needed by Phase 0).

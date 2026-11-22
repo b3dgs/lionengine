@@ -35,8 +35,8 @@
 | Sprites | slicing, animation, mutation | data API | upload and rendering |
 | Tilemap | coordinates, bounds, set/get/clear, viewport-to-tile-range math, neighbor rules | loader suite in `test-support` (REQ-MAP-004) | headless: load, render commands only for visible tiles, destroy then render |
 | Camera | zoom clamp, translation, follow incl. missing entity, smoothing at several frame rates, seeded shake, conversions | lookup-contract fake (`test-support`) | headless: follow an entity, then render with the view rectangle |
-| Objects | lifecycle, order | management strategy | complete scene |
-| Traits | isolated behavior, interactions | trait contract if defined | object composition |
+| Objects | lifecycle, order; ECS (ADR-0011): ID recycling and stale detection, trait add/remove, include/exclude queries, deferred changes during iteration, events, system order | management strategy | complete scene |
+| Traits | isolated behavior, interactions; standard traits (ADR-0011): movement, gravity, jump with coyote and buffer, collision broad phase vs brute force, lifetime, at several step durations | trait and system conventions (`test-support`) | headless world with the standard pipeline and a controllable clock; benchmark 1,000 objects × 4 traits and allocation check (REQ-ECS-009, OQ-139) |
 | Sprites, animations, sprite sheets | grid index math, transforms, palette mapping, animation state machine | sprite render and cache suites (`test-support`) | headless load, cache, render; AWT/OpenGL/Android color-transform parity; cache and batching performance |
 | Display and filtering | value types, scaling policies (including the `INTEGER` fallback), fallback orders, filter chain | effective result and reason, no throw on missing capability, frame-boundary application (`test-support`) | headless with fake capabilities; golden-image tests on AWT/OpenGL (none, bilinear, `HQ2X`), CRT on OpenGL |
 | Input | mapping, states, events | normalized adapter | keyboard/mouse/gamepad |
