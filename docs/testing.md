@@ -29,6 +29,7 @@
 | Domain | Unit tests | Contract | Integration / platform |
 |---|---|---|---|
 | Game loop | clock, time step, pause | each implementation | frontend lifecycle |
+| Desktop platform (`platform-awt`) | mapping of AWT display modes to neutral values, fallback order | `platform-api` suites from `test-support` (REQ-PLATFORM-001) | real display required: platform tests, kept apart from headless tests |
 | Resources | resolution, errors, streams, key normalization, idempotent release | each provider; key and release suite run by each consuming module (REQ-RES-005) | archive/Android/filesystem |
 | Audio | playback state, commands, seeded variant selection, playlist advance, cache hit and miss | short and long sound suites in `test-support`, run on every backend (REQ-AUDIO-009) | headless fake backend with controllable clock; codec, latency and Android on device (platform tests, later) |
 | Sprites | slicing, animation, mutation | data API | upload and rendering |

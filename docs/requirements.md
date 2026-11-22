@@ -51,6 +51,7 @@ Goal: a developer or an AI agent that has never seen the engine can write a game
 | REQ-FE-001 | The engine can be used with several frontends. | Must | PROPOSED | The same logical scenario runs with two test adapters. |
 | REQ-FE-002 | AWT, OpenGL and Android are envisaged targets. | Should | PROPOSED | Capability matrix per frontend. |
 | REQ-FE-003 | The frontend provides the concrete display and presentation capabilities. | Must | PROPOSED | No native type in the core API. |
+| REQ-PLATFORM-001 | A desktop module (`platform-awt`) implements `platform-api` with the JDK AWT only (no third-party library); it is excluded from every Android build, and no AWT type leaves the module (ADR-0008). | Must | PROPOSED | The `platform-api` contract suites of `test-support` pass on it (platform tests, real display); dependency check (REQ-CORE-005); Android build contains no `java.desktop` dependency. |
 
 ## Display and output filtering
 

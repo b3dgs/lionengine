@@ -29,5 +29,6 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 
 - [`ADR-0006`](0006-display-scaling-effective-result-and-fallback-orders.md) — Display scaling policy, effective-result report and fallback orders; extends ADR-0002 (PROPOSED).
 - [`ADR-0007`](0007-resource-convention-keys-release-and-errors.md) — Resource convention: keys, release and errors; extends ADR-0005 (PROPOSED).
+- [`ADR-0008`](0008-awt-desktop-implementer-of-platform-api.md) — AWT desktop implementer of `platform-api` (`platform-awt`) (PROPOSED).
 
 Other likely candidates are listed in [`../open-questions.md`](../open-questions.md) (see items needed by Phase 0).

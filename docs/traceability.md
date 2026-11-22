@@ -25,7 +25,8 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-DOC-004 | Should | PROPOSED | — | OQ-080 | — | no test yet |
 | REQ-FE-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-FE-002 | Should | PROPOSED | — | — | — | no test yet |
-| REQ-FE-003 | Must | PROPOSED | ADR-0002 | — | — | no test yet |
+| REQ-FE-003 | Must | PROPOSED | ADR-0002, ADR-0008 | — | — | no test yet |
+| REQ-PLATFORM-001 | Must | PROPOSED | ADR-0008 | OQ-119, OQ-123, OQ-124 | — | no test yet |
 | REQ-DISPLAY-001 | Must | PROPOSED | ADR-0002 | OQ-050, OQ-096, OQ-119 | — | no test yet |
 | REQ-DISPLAY-002 | Must | PROPOSED | ADR-0002, ADR-0006 | OQ-090, OQ-120 | — | no test yet |
 | REQ-DISPLAY-003 | Must | PROPOSED | ADR-0002 | OQ-096 | — | no test yet |
