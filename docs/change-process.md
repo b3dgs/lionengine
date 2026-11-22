@@ -66,6 +66,10 @@ A new module is an architecture change: it always goes through a proposal and an
 8. **Add the example and index entries**, then verify (tests, dependency-rule check, Android/DEX job, `scripts/check-docs.py`).
 9. **Merge** with the ADR set to `ACCEPTED`, referencing it in the pull request.
 
+## Mobile flow (optional automation)
+
+From a phone, the same process can run without a terminal. In a chat of the claude.ai project, describe the change; the chat answers with a compact packet ([`templates/DECISION-PACKET-COMPACT.md`](templates/DECISION-PACKET-COMPACT.md)) and a decision card to answer in one line. The chat instructions are kept in [`templates/PROJECT-INSTRUCTIONS.md`](templates/PROJECT-INSTRUCTIONS.md). Paste the final packet as a GitHub issue titled `[packet] ...`, comment `@claude plan` to get the list of files to change (nothing is modified), then `@claude apply` once the plan is approved: the workflow `.github/workflows/claude-packet.yml` applies the packet, runs `scripts/check-docs.py` and opens a pull request. The owner still decides and reviews; the agent never turns a proposal into a decision.
+
 ## Prompts to give the agent
 
 Propagation of a packet (both flows):

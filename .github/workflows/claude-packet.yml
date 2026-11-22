@@ -1,0 +1,76 @@
+# .github/workflows/claude-packet.yml
+# Usage (from the GitHub mobile app):
+#   1. Create an issue titled "[packet] ..." with the final packet as body.
+#   2. Comment "@claude plan"  -> Claude posts the list of files to change (nothing is modified).
+#   3. Read it, then comment "@claude apply" -> Claude edits, runs the check, opens a PR.
+# Requires the repository secret ANTHROPIC_API_KEY and the Claude GitHub app / action setup.
+
+name: Decision packet
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  packet:
+    # Only the repository owner, on issues (not PRs), authored by the owner.
+    # For an organization repository, replace the two owner checks with an explicit allow-list of logins.
+    if: >
+      !github.event.issue.pull_request &&
+      github.event.comment.author_association == 'OWNER' &&
+      github.event.issue.user.login == github.repository_owner &&
+      (startsWith(github.event.comment.body, '@claude plan') ||
+       startsWith(github.event.comment.body, '@claude apply'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Plan (read-only)
+        if: startsWith(github.event.comment.body, '@claude plan')
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Read AGENTS.md and docs/change-process.md. The decision packet is the body of issue #${{ github.event.issue.number }}:
+
+            ${{ github.event.issue.body }}
+
+            Do NOT modify any file. List every file that must change to apply the packet consistently
+            (requirements, traceability, open questions, modules, contracts, ADR and its index, glossary,
+            roadmap, tests, API index, feature files). Assign real REQ/OQ/ADR numbers without reusing existing ones.
+            Flag anything the packet leaves as a proposal rather than a decision.
+            Post the result as a comment on issue #${{ github.event.issue.number }} with `gh issue comment`.
+          claude_args: >-
+            --max-turns 15
+            --allowedTools "Read,Glob,Grep,Bash(gh issue comment:*)"
+
+      - name: Apply (edit, check, open PR)
+        if: startsWith(github.event.comment.body, '@claude apply')
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Read AGENTS.md and docs/change-process.md. The decision packet is the body of issue #${{ github.event.issue.number }}:
+
+            ${{ github.event.issue.body }}
+
+            Owner note with this approval: ${{ github.event.comment.body }}
+
+            Apply the packet consistently across the repository. Never turn a proposal into a decision that the
+            "Taken" column does not state. Keep the ADR PROPOSED. Never reuse an existing REQ/OQ/ADR identifier;
+            never delete an open-question row.
+            Then run `python3 -I scripts/check-docs.py` and fix what it reports.
+            Work on branch packet/issue-${{ github.event.issue.number }}, commit, and open a pull request
+            referencing the issue with `gh pr create`. Comment on the issue with files changed, checks run
+            (real results only) and any point left TO BE DEFINED.
+          claude_args: >-
+            --max-turns 40
+            --allowedTools "Read,Glob,Grep,Edit,Write,Bash(git:*),Bash(python3 -I scripts/check-docs.py),Bash(gh pr create:*),Bash(gh issue comment:*)"
