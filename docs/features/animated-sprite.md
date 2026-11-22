@@ -30,7 +30,7 @@ Responsibilities only; signatures are not fixed. See `architecture/contracts.md`
 
 ## Lifecycle and concurrency
 
-An animated sprite holds playback state only; images stay owned by the cache. Update on the runtime thread (`OQ-030`).
+An animated sprite holds playback state only; images stay owned by the `graphics` cache (ADR-0005). Update on the runtime thread (`OQ-030`).
 
 ## Units and Android/DEX compatibility
 

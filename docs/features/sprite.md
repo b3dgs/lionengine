@@ -6,8 +6,8 @@
 - Roadmap phase: Phase 2, see `roadmap.md` (batch order: sprite sheet, sprite, animated sprite)
 - Affected modules: `graphics`, `render-api` (sprite only), `resources`, `test-support`, `examples`
 - Requirements: `REQ-SPRITE-001` to `REQ-SPRITE-008`
-- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md) (PROPOSED)
-- Open questions involved: `OQ-100`, `OQ-101`, `OQ-102`, `OQ-103`, `OQ-104`, `OQ-107`, `OQ-108` (`OQ-051` touched)
+- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md) (PROPOSED)
+- Open questions involved: `OQ-100`, `OQ-101`, `OQ-102`, `OQ-103`, `OQ-104`, `OQ-107`, `OQ-108`, `OQ-118` (`OQ-011`, `OQ-012`, `OQ-051`, `OQ-054` touched)
 
 ## Objective
 
@@ -32,11 +32,11 @@ Responsibilities only; signatures are not fixed. See `architecture/contracts.md`
 
 ## Lifecycle and concurrency
 
-Sources are cached and resource-owned (`OQ-101`); instances are lightweight and own no image. Loading thread and GPU upload: `OQ-107`.
+Sources are loaded through `resources` and held by the `graphics` cache, following the common convention (ADR-0005, `REQ-RES-004`, `OQ-118`, `OQ-101`); instances are lightweight and own no image. Loading thread and GPU upload: `OQ-107`.
 
 ## Units and Android/DEX compatibility
 
-Pixels for images; rotation unit `OQ-104`. No frontend type in the API (`REQ-SPRITE-007`). Any decoding API or dependency needs its purpose, license and DEX compatibility recorded first (`docs/android-compatibility.md`).
+Pixels for images, and pixels of the logical frame for location, translation and pivot (conversion from meters: `OQ-012`); rotation follows the engine angle convention (`OQ-011`). Image decoders are platform-specific (`OQ-100`). No frontend type in the API (`REQ-SPRITE-007`). Any decoding API or dependency needs its purpose, license and DEX compatibility recorded first (`docs/android-compatibility.md`).
 
 ## Dependencies
 

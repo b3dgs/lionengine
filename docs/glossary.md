@@ -17,13 +17,14 @@
 | Entity | In ECS, an identifier grouping components. |
 | Extrapolation | Presentation-only prediction of a visual state beyond the last known simulation state; never fed back into the simulation. |
 | Frameskipping | Dropping a presentation (render) when the machine cannot keep up, without dropping simulation computations. |
+| Frame boundary | Point between two presentations, outside any simulation update; a display or filter change requested while presentations are skipped applies at the next presentation (ADR-0002, PROPOSED). |
 | Display mode | A combination of width and height in pixels, refresh rate in Hz and color depth in bits supported by a display (ADR-0002, PROPOSED). |
 | Frontend | Adapter to a runtime environment (AWT, OpenGL, Android...). |
 | Logical resolution | Resolution in pixels of the frame the game renders, independent of the output display mode. |
 | Game loop | Mechanism that paces updates and/or rendering. |
 | Headless | Execution without a window or real graphics device. |
 | Interpolation | Presentation-only blend between two known simulation states (distinct from extrapolation). |
-| Output filter | Presentation-time image filter (nearest, bilinear, `HQ2X`, CRT...) applied from the logical frame to the output surface. |
+| Output filter | Presentation-time image filter (`NONE`, bilinear, `HQ2X`, CRT...) applied from the logical frame to the output surface; `NONE` samples nearest-neighbor when the frame is scaled. |
 | Provider | A resource source implementation (filesystem, archive, memory, Android assets, stream). |
 | Resource | Data identified logically, independently of its location. |
 | Runtime | Orchestration of the engine lifecycle and execution. |
@@ -37,9 +38,9 @@
 | Variant set | Group of short-sound files; playing it selects one variant or plays several at once (composed sound); policies `TO BE DEFINED` (OQ-112). |
 | Playlist | Predefined sequence of long sounds; the next starts when the current terminates (ADR-0004, PROPOSED). |
 | Pivot | Internal location (origin) of a sprite, used for placement, rotation and scaling. |
-| Sprite sheet | Grid-based tileset image (cell size, columns, rows, optional margin/spacing) giving access to cells by index; sheets are grouped by unique id. |
+| Sprite sheet | Image grouping several sprite regions as a grid (cell size, columns, rows, optional margin/spacing), giving access to cells by index; sheets are grouped by unique id (ADR-0003, PROPOSED). |
 | Template color mapping | Static transform mapping source colors (or an indexed channel) to target colors, producing a cached color variant of one sprite (e.g. team colors). |
-| Spritesheet | Image grouping several sprite regions. |
+| Spritesheet | Same as sprite sheet. |
 | System | In ECS, logic that processes entities having a given set of components. |
 | Tile | Cell or graphic element of a tileset. |
 | Tilemap | Map organized in cells and layers. |

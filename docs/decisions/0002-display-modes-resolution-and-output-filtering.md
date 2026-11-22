@@ -4,8 +4,10 @@
 - Date: 2026-11-22
 - Decision makers: project owner (decisions 1B, 2A, 3A, 4A of issue #850 given; this ADR stays `PROPOSED` until explicitly approved)
 - Related requirements: `REQ-DISPLAY-001` to `REQ-DISPLAY-006`, `REQ-FILTER-001` to `REQ-FILTER-003`, `REQ-FE-003`, `REQ-LOOP-006`, `REQ-TECH-006`
-- Open questions resolved: none (touches `OQ-050`, `OQ-051`; creates `OQ-090` to `OQ-096`)
+- Open questions resolved: none (touches `OQ-050`, `OQ-020`; creates `OQ-090` to `OQ-096`; `OQ-119` raised by the review)
 - Supersedes / superseded by: none
+
+> Revision note (joint review of packets #850, #852 and #853, under the owner's delegation of 2026-11-22): `OQ-051` removed from the touched questions (it concerns `graphics`, not display); the choices below were added. The ADR stays `PROPOSED`.
 
 ## Context
 
@@ -27,6 +29,13 @@ Decisions taken by the owner (issue #850):
 - **Request exactness (2A):** pure best-effort, the effective result is reported; no "required" flag that fails when unsatisfiable.
 - **Filter scope (3A):** filtering applies from the logical frame to the output surface only, not per layer.
 - **Multi-monitor and HiDPI (4A):** outside the first batch (`OQ-096`); the contracts must not preclude them.
+
+Choices made during the joint review of packets #850, #852 and #853, under the owner's delegation of 2026-11-22:
+
+- **`NONE` and nearest:** the standard identifiers are those of `REQ-FILTER-001` (`NONE`, bilinear, `HQ2X`, CRT). `NONE` means no output filter: when the logical frame is scaled, pixels are sampled nearest-neighbor (pixel-exact). There is no separate "nearest" identifier.
+- **Frame boundary:** the point between two presentations, outside any simulation update. A change requested while presentations are skipped (frameskipping, `REQ-LOOP-005`) applies at the next presentation.
+- **Fallback order:** a proposed order is recorded in `OQ-090`, to be confirmed with the first platform implementations.
+- **Desktop implementer of `platform-api`:** not defined by `modules.md`; tracked as `OQ-119`.
 
 Not decided (stay `TO BE DEFINED`): scaling policy set, default and owner (`OQ-091`); `HQ2X`/CRT sources and licenses (`OQ-093`); shader portability and assets (`OQ-094`); persistence of user settings (`OQ-095`); Java signatures; the form of the extension point and of the effective-result report.
 

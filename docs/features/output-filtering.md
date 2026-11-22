@@ -19,7 +19,7 @@ Per-layer filtering (decision 3A); screen and display modes (see [`display-modes
 
 ## Expected behavior
 
-- Standard identifiers: `NONE`, nearest, bilinear, `HQ2X`, CRT, with a capability query.
+- Standard identifiers: `NONE`, bilinear, `HQ2X`, CRT, with a capability query. `NONE` samples nearest-neighbor when the logical frame is scaled; there is no separate nearest identifier.
 - Filters form an ordered chain; an unsupported filter is skipped or replaced per a documented fallback, and this is reported.
 - Changes are applied at a frame boundary and signaled by an event; simulation state untouched.
 - An extension point for custom filters or shaders exists; its form is not fixed.
@@ -38,7 +38,7 @@ Pixels only. `HQ2X`/CRT sources and licenses: `OQ-093`; shader portability GLSL 
 
 ## Dependencies
 
-Allowed: `core`. Forbidden: AWT, OpenGL or Android types in `render-api`.
+Allowed: `core`; `resources` for backends that load shader assets, if confirmed (`OQ-094`, ADR-0005). Forbidden: AWT, OpenGL or Android types in `render-api`.
 
 ## Tests
 

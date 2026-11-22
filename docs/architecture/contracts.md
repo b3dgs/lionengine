@@ -21,23 +21,11 @@ Capability-based best-effort negotiation: the game requests, the platform applie
 
 - **Screen mode** (`WINDOWED`, `FULL_WINDOW`, `FULL_SCREEN`) and **display mode** (width and height in pixels, refresh rate in Hz, color depth in bits): `platform-api`, with engine-defined neutral value types and a capability query. Unsupported requests fall back in a documented order (REQ-DISPLAY-001 to REQ-DISPLAY-003).
 - **Logical resolution** is independent of the output display mode; a scaling policy (stretch, aspect-preserving, integer scale) governs presentation. Scaling never changes world units (REQ-DISPLAY-004, OQ-091).
-- **Output filtering** (`NONE`, nearest, bilinear, `HQ2X`, CRT; extensible): `render-api`, an ordered chain applied from the logical frame to the output surface only, not per layer (REQ-FILTER-001 to REQ-FILTER-003).
-- Changes are applied at a frame boundary and signaled by an event; they never alter simulation state, and an extrapolated state is never reused as simulation input (REQ-DISPLAY-005, REQ-LOOP-006).
-- No AWT, OpenGL or Android type in these contracts (REQ-DISPLAY-006). Multi-monitor and HiDPI are outside the first batch (OQ-096).
+- **Output filtering** (`NONE`, bilinear, `HQ2X`, CRT; extensible; `NONE` samples nearest-neighbor when the logical frame is scaled): `render-api`, an ordered chain applied from the logical frame to the output surface only, not per layer (REQ-FILTER-001 to REQ-FILTER-003).
+- Changes are applied at a frame boundary (between two presentations, outside any simulation update) and signaled by an event; they never alter simulation state, and an extrapolated state is never reused as simulation input (REQ-DISPLAY-005, REQ-LOOP-006).
+- No AWT, OpenGL or Android type in these contracts (REQ-DISPLAY-006). Multi-monitor and HiDPI are outside the first batch (OQ-096). The module implementing `platform-api` on desktop is open (OQ-119); the fallback order is tracked in OQ-090.
 
 Java signatures are not fixed. Details: [`features/display-modes.md`](../features/display-modes.md), [`features/output-filtering.md`](../features/output-filtering.md).
-
-### Sprites, animations and sprite sheets (PROPOSED, ADR-0003)
-
-Owner decisions of issue #852 (the ADR stays PROPOSED):
-
-- **Sprite model (decision 4):** a shared immutable **source** (image + region, cached, resource-owned) is separate from a lightweight **sprite instance** (transform, color transform, location, alpha). Animated sprites and sheet cells produce instances or regions from the same source.
-- **Color transformation (decision 1C):** a backend-independent color-transform *description* lives in `graphics`; per-frame effects (fade, tint, alpha) go through `render-api` draw parameters; static transforms (palette swap, grading, mask bake) run on the CPU and are cached. A backend can always fall back to the CPU path; capability query and fallback rules: OQ-102.
-- **Template color variants (decision 2):** a template palette mapping yields variants cached by (source image, mapping); authoring convention: OQ-103.
-- **Rendering (decision 3B):** sprites emit `render-api` commands and never draw directly; batching is a later optimization behind the command abstraction (OQ-108).
-- Animation time advances only from the simulation update step (REQ-ANIM-003, REQ-LOOP-006). Durations in seconds, sizes in pixels, no frontend type in the API (REQ-SPRITE-007).
-
-Java signatures are not fixed. Details: [`features/sprite-sheet.md`](../features/sprite-sheet.md), [`features/sprite.md`](../features/sprite.md), [`features/animated-sprite.md`](../features/animated-sprite.md).
 
 ## Unit conventions
 
@@ -83,7 +71,7 @@ To specify:
 
 Do not assume that a resource is a `File`: a resource in an archive or an Android asset may have no filesystem path.
 
-**Common convention for modules handling resources (PROPOSED, ADR-0004, owner decision 3B of issue #853):** `resources` stays media-agnostic and holds no decoded cache. Every module that handles a resource (an item reachable from a path: audio, graphics, ...) depends on `resources`, keeps its own decoded cache, and follows one common convention for keys and release, to limit divergence between implementations (REQ-RES-004). The content of the convention (key form, release and double-release rule) is `TO BE DEFINED` (OQ-118, OQ-032); it must be consistent with REQ-RES-003 and OQ-101 and OQ-110.
+**Common convention for modules handling resources (PROPOSED, ADR-0005; owner rule stated with decision 3B of issue #853):** `resources` stays media-agnostic and holds no decoded cache. Every module that loads or decodes resource content (today `graphics` and the audio modules; candidates `tilemap` for map files and rendering backends for shader assets, OQ-094) depends on `resources`, keeps its own decoded cache, and follows one common convention for keys and release, to limit divergence between implementations (REQ-RES-004). The content of the convention (key form, release and double-release rule) is `TO BE DEFINED` (OQ-118, OQ-032); it must be consistent with REQ-RES-003, and the module cache policies (OQ-101, OQ-110) and the sprite sheet id (OQ-106) use the key form it defines.
 
 ## Audio
 
@@ -95,7 +83,7 @@ Owner decisions of issue #853 (the ADR stays PROPOSED):
 
 - **Two families (decision 1A):** short sounds (low-latency effects, cached for heavy reuse, play, stop, variant sets) and long sounds (music/ambient, preloadable and releasable, play, stop, playlists) are separate contract families with distinct handles and lifecycles.
 - **Backend-independent logic (decision 2A):** variant selection and playlist advance live in `audio-api` (or a shared helper); backends only expose play, stop and end-of-track.
-- **Resources (decision 3B):** `audio-api` and `audio-*` depend on `resources`; decoded caches exist only inside the audio modules (REQ-RES-004).
+- **Resources (decision 3B):** `audio-api` and `audio-*` depend on `resources`; decoded caches exist only inside the audio modules (REQ-RES-004, ADR-0005).
 - Durations and positions in seconds, sample rate in Hz; no platform or concrete audio library type in the API (REQ-AUDIO-009). Playlist-advance callbacks must not mutate simulation state from the audio thread (OQ-114).
 
 Not decided: cache policy (OQ-110), voice limit (OQ-111), variant policies (OQ-112), long-sound strategy (OQ-113), playlist end, failure and thread (OQ-114), formats and decoders (OQ-115), latency target (OQ-116). Java signatures are not fixed. Details: [`features/audio-short-and-long-sounds.md`](../features/audio-short-and-long-sounds.md).
@@ -111,7 +99,20 @@ Separate as much as necessary:
 - spritesheet (slicing);
 - animation (sequence, duration, loop, state).
 
-To specify: pixel format, alpha, mutation, copy/sharing, dimensions, origin, filtering, CPU/GPU synchronization and release.
+To specify: pixel format, alpha, mutation, copy/sharing, dimensions, origin, texture sampling (distinct from output filtering, ADR-0002), CPU/GPU synchronization and release.
+
+### Sprites, animations and sprite sheets (PROPOSED, ADR-0003)
+
+Owner decisions of issue #852 (the ADR stays PROPOSED):
+
+- **Sprite model (decision 4):** a shared immutable **source** (image + region, loaded through `resources`, held by the `graphics` cache per ADR-0005) is separate from a lightweight **sprite instance** (transform, color transform, location, alpha). Animated sprites and sheet cells produce instances or regions from the same source.
+- **Color transformation (decision 1C):** a backend-independent color-transform *description* lives in `graphics`; per-frame effects (fade, tint, alpha) go through `render-api` draw parameters; static transforms (palette swap, grading, mask bake) run on the CPU and are cached. A backend can always fall back to the CPU path; capability query and fallback rules: OQ-102.
+- **Template color variants (decision 2):** a template palette mapping yields variants cached by (source image, mapping); authoring convention: OQ-103.
+- **Rendering (decision 3B):** sprites emit `render-api` commands and never draw directly; batching is a later optimization behind the command abstraction (OQ-108). This assumes the abstract-command style of OQ-054, still open.
+- **Units (review choice, ADR-0003):** sprite location, translation, pivot and size are in pixels of the logical frame; rotation follows the engine angle convention (OQ-011); the conversion from world meters belongs to the camera/viewport (OQ-012).
+- Animation time advances only from the simulation update step (REQ-ANIM-003, REQ-LOOP-006). Durations in seconds, sizes in pixels, no frontend type in the API (REQ-SPRITE-007).
+
+Java signatures are not fixed. Details: [`features/sprite-sheet.md`](../features/sprite-sheet.md), [`features/sprite.md`](../features/sprite.md), [`features/animated-sprite.md`](../features/animated-sprite.md).
 
 ## Tilemap
 
