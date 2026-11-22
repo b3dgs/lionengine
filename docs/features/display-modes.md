@@ -6,8 +6,8 @@
 - Roadmap phase: Phase 2 (after the first rendering backend), see `roadmap.md`
 - Affected modules: `platform-api`, `render-awt`, `render-opengl`, `platform-android`, `test-support`, `examples`
 - Requirements: `REQ-DISPLAY-001` to `REQ-DISPLAY-006`
-- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md) (PROPOSED)
-- Open questions involved: `OQ-090`, `OQ-091`, `OQ-095`, `OQ-096`, `OQ-119` (`OQ-050` touched)
+- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md) (ACCEPTED)
+- Open questions involved: `OQ-090`, `OQ-091`, `OQ-095`, `OQ-096`, `OQ-119`, `OQ-120`
 
 ## Objective
 
@@ -20,7 +20,7 @@ Output filtering (see [`output-filtering.md`](output-filtering.md)); multi-monit
 ## Expected behavior
 
 - Capability query for `WINDOWED`, `FULL_WINDOW`, `FULL_SCREEN`.
-- Unsupported screen mode: documented fallback order (proposal in `OQ-090`), effective mode reported, no failure.
+- Unsupported screen mode: documented fallback order (proposal in `OQ-120`), effective mode reported, no failure.
 - Enumerate and select display modes (width, height in pixels; refresh rate in Hz; color depth in bits).
 - Logical resolution independent of the display mode; scaling policy per `OQ-091`.
 - Changes applied at a frame boundary and signaled by an event; simulation state untouched.

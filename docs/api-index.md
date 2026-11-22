@@ -17,12 +17,12 @@ Purpose: let a developer or an AI agent find, by **task**, which public types to
 |---|---|---|---|---|---|
 | Start, update and stop an application | `runtime` | *(to be filled)* | *(to be created)* | — | Loop model: ADR-0001 |
 | Load a resource | `resources` | *(to be filled)* | *(to be created)* | — | Closing rules: REQ-RES-003 |
-| Display and animate a sprite | `graphics` | *(to be filled; ADR-0003 PROPOSED)* | *(to be created: headless example loading a sprite sheet, animating a sprite and rendering two color variants of one sprite)* | — | Pixels for images and cells, seconds for animation; world in meters, pixels at presentation only (REQ-SPRITE-*, REQ-ANIM-*, REQ-SHEET-*) |
+| Display and animate a sprite | `graphics` | *(to be filled; ADR-0003 ACCEPTED)* | *(to be created: headless example loading a sprite sheet, animating a sprite and rendering two color variants of one sprite)* | — | Pixels for images and cells, seconds for animation; world in meters, pixels at presentation only (REQ-SPRITE-*, REQ-ANIM-*, REQ-SHEET-*) |
 | Read player input | `input-api` | *(to be filled)* | *(to be created)* | — | Capability may be absent (OQ-034) |
 | Create objects and attach behaviors | `world` / `traits` / `ecs` | *(to be filled)* | *(to be created)* | — | Model: OQ-041 |
 | Load a tile map | `tilemap` | *(to be filled)* | *(to be created)* | — | |
-| Query and request screen mode, display mode and output filter | `platform-api` / `render-api` | *(to be filled; ADR-0002 PROPOSED)* | *(to be created: headless example listing capabilities, requesting a mode and a filter, printing the effective result)* | — | Pixels, Hz, bits; scaling never changes world units; effective result reported (REQ-DISPLAY-*, REQ-FILTER-*) |
-| Play a short sound, a variant set, a long sound or a playlist | `audio-api` | *(to be filled; ADR-0004 PROPOSED)* | *(to be created: headless example with a fake backend playing a short sound, a variant set and a two-track playlist)* | — | Seconds and Hz; formats depend on backend (OQ-115); completion callbacks never mutate simulation state (REQ-AUDIO-003 to REQ-AUDIO-009) |
+| Query and request screen mode, display mode and output filter | `platform-api` / `render-api` | *(to be filled; ADR-0002 ACCEPTED)* | *(to be created: headless example listing capabilities, requesting a mode and a filter, printing the effective result)* | — | Pixels, Hz, bits; scaling never changes world units; effective result reported (REQ-DISPLAY-*, REQ-FILTER-*) |
+| Play a short sound, a variant set, a long sound or a playlist | `audio-api` | *(to be filled; ADR-0004 ACCEPTED)* | *(to be created: headless example with a fake backend playing a short sound, a variant set and a two-track playlist)* | — | Seconds and Hz; formats depend on backend (OQ-115); completion callbacks never mutate simulation state (REQ-AUDIO-003 to REQ-AUDIO-009) |
 
 ## Removed or renamed APIs
 

@@ -1,13 +1,13 @@
 # ADR-0002 — Display modes, resolution selection and output filtering contracts
 
-- Status: PROPOSED
+- Status: ACCEPTED
 - Date: 2026-11-22
-- Decision makers: project owner (decisions 1B, 2A, 3A, 4A of issue #850 given; this ADR stays `PROPOSED` until explicitly approved)
+- Decision makers: project owner (decisions 1B, 2A, 3A, 4A of issue #850; accepted on 2026-11-22)
 - Related requirements: `REQ-DISPLAY-001` to `REQ-DISPLAY-006`, `REQ-FILTER-001` to `REQ-FILTER-003`, `REQ-FE-003`, `REQ-LOOP-006`, `REQ-TECH-006`
-- Open questions resolved: none (touches `OQ-050`, `OQ-020`; creates `OQ-090` to `OQ-096`; `OQ-119` raised by the review)
+- Open questions resolved: `OQ-050`, `OQ-090`, `OQ-092` (touches `OQ-020`; creates `OQ-090` to `OQ-096`; `OQ-119` raised by the review, `OQ-120` at acceptance)
 - Supersedes / superseded by: none
 
-> Revision note (joint review of packets #850, #852 and #853, under the owner's delegation of 2026-11-22): `OQ-051` removed from the touched questions (it concerns `graphics`, not display); the choices below were added. The ADR stays `PROPOSED`.
+> Revision note (joint review of packets #850, #852 and #853, under the owner's delegation of 2026-11-22): `OQ-051` removed from the touched questions (it concerns `graphics`, not display); the choices below were added. The ADR was still `PROPOSED` then.
 
 ## Context
 
@@ -15,7 +15,7 @@ Games need to choose how they occupy the screen (windowed, full window, full scr
 
 ## Decision
 
-Principles (proposals, recorded here; the ADR is not accepted yet):
+Principles (part of the decision):
 
 1. **Capability-based best-effort negotiation** with a documented fallback: a request is applied as far as the platform can, and the effective result (and reason) is reported. A missing capability never throws.
 2. **Own neutral value types** for screen mode, display mode and filter identifiers; no AWT, OpenGL or Android type in `core`, `platform-api` or `render-api` contracts.
@@ -34,10 +34,10 @@ Choices made during the joint review of packets #850, #852 and #853, under the o
 
 - **`NONE` and nearest:** the standard identifiers are those of `REQ-FILTER-001` (`NONE`, bilinear, `HQ2X`, CRT). `NONE` means no output filter: when the logical frame is scaled, pixels are sampled nearest-neighbor (pixel-exact). There is no separate "nearest" identifier.
 - **Frame boundary:** the point between two presentations, outside any simulation update. A change requested while presentations are skipped (frameskipping, `REQ-LOOP-005`) applies at the next presentation.
-- **Fallback order:** a proposed order is recorded in `OQ-090`, to be confirmed with the first platform implementations.
+- **Fallback order:** a proposed order is recorded in `OQ-120`, to be confirmed with the first platform implementations.
 - **Desktop implementer of `platform-api`:** not defined by `modules.md`; tracked as `OQ-119`.
 
-Not decided (stay `TO BE DEFINED`): scaling policy set, default and owner (`OQ-091`); `HQ2X`/CRT sources and licenses (`OQ-093`); shader portability and assets (`OQ-094`); persistence of user settings (`OQ-095`); Java signatures; the form of the extension point and of the effective-result report.
+Not decided (stay `TO BE DEFINED`): scaling policy set, default and owner (`OQ-091`); `HQ2X`/CRT sources and licenses (`OQ-093`); shader portability and assets (`OQ-094`); persistence of user settings (`OQ-095`); Java signatures; the form of the extension point; the form of the effective-result report and the fallback orders (`OQ-120`).
 
 ## Options considered
 
@@ -71,4 +71,4 @@ Not decided (stay `TO BE DEFINED`): scaling policy set, default and owner (`OQ-0
 
 ## Validation
 
-Not approved yet. Owner decisions 1B, 2A, 3A, 4A were given on issue #850; the ADR remains `PROPOSED` until the owner explicitly accepts it.
+Accepted by the project owner on 2026-11-22 (explicit request in the review session that followed PR #856). Owner decisions 1B, 2A, 3A, 4A were given on issue #850; the choices added by the joint review under the owner's delegation are part of the accepted decision. Acceptance resolves `OQ-050` (separate `platform-api` and `render-api`), `OQ-090` and `OQ-092`. `OQ-091` (scaling policy) was still open at acceptance and stays `TO BE DEFINED`.

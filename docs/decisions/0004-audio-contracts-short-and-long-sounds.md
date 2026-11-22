@@ -1,13 +1,13 @@
 # ADR-0004 — Audio contracts: short and long sounds, variant sets and playlists
 
-- Status: PROPOSED
+- Status: ACCEPTED
 - Date: 2026-11-22
-- Decision makers: project owner (decisions 1A, 2A, 3B of issue #853 given; this ADR stays `PROPOSED` until explicitly approved)
+- Decision makers: project owner (decisions 1A, 2A, 3B of issue #853; accepted on 2026-11-22)
 - Related requirements: `REQ-AUDIO-001` to `REQ-AUDIO-009`, `REQ-RES-003`, `REQ-RES-004`, `REQ-CORE-002`, `REQ-CORE-005`, `REQ-TEST-001`, `REQ-DOC-001`, `REQ-DOC-002`
 - Open questions resolved: none (touches `OQ-053`, `OQ-032`; creates `OQ-110` to `OQ-118`; `OQ-118` is now tracked by ADR-0005)
 - Supersedes / superseded by: none
 
-> Revision note (joint review of packets #850, #852 and #853, under the owner's delegation of 2026-11-22): the general rule for every module handling a resource, and its common convention, moved to [ADR-0005](0005-common-convention-for-modules-handling-resources.md) to keep this ADR atomic. The `audio-api` to `resources` dependency is firm only once this ADR is `ACCEPTED`. The ADR stays `PROPOSED`.
+> Revision note (joint review of packets #850, #852 and #853, under the owner's delegation of 2026-11-22): the general rule for every module handling a resource, and its common convention, moved to [ADR-0005](0005-common-convention-for-modules-handling-resources.md) to keep this ADR atomic. The `audio-api` to `resources` dependency is firm only once this ADR is `ACCEPTED`. The ADR was still `PROPOSED` then.
 
 ## Context
 
@@ -41,9 +41,9 @@ Not decided (stay `TO BE DEFINED`): cache policy (`OQ-110`); voice limit and ove
 
 - Positive consequences: clear lifecycles; selection and advance testable without a device; no platform type in `audio-api`; `resources` stays small and media-agnostic.
 - Costs / constraints: two families to document and test; each media module owns a cache and must follow the common convention (ADR-0005); completion callbacks need a thread rule so the audio thread never mutates simulation state (game-loop invariant unchanged).
-- Impact on modules and APIs: new public contracts in `audio-api`; dependency `audio-api` to `resources` becomes firm once this ADR is `ACCEPTED` (`audio-api` depends on `core` and `resources` only); no concrete audio library type in any API. Decoder dependencies need purpose, license and Android/DEX compatibility recorded first ([`../android-compatibility.md`](../android-compatibility.md), `OQ-115`); no `javax.sound` in `audio-api`.
+- Impact on modules and APIs: new public contracts in `audio-api`; dependency `audio-api` to `resources` becomes firm (`audio-api` depends on `core` and `resources` only); no concrete audio library type in any API. Decoder dependencies need purpose, license and Android/DEX compatibility recorded first ([`../android-compatibility.md`](../android-compatibility.md), `OQ-115`); no `javax.sound` in `audio-api`.
 - Impact on tests and documentation: unit tests (seeded variant selection, playlist advance, cache hit and miss); contract suites in `test-support` for every backend; headless integration with a fake backend and controllable clock; platform tests (latency, Android) later. Documents updated: requirements, traceability, open questions, modules, contracts, glossary, roadmap, testing, API index, game development guide, feature file.
 
 ## Validation
 
-Not approved yet. Owner decisions 1A, 2A, 3B were given on issue #853; the ADR remains `PROPOSED` until the owner explicitly accepts it.
+Accepted by the project owner on 2026-11-22 (explicit request in the review session that followed PR #856). Owner decisions 1A, 2A, 3B were given on issue #853; the split of the general resource rule into ADR-0005 is part of the accepted decision.

@@ -6,8 +6,8 @@
 - Roadmap phase: Phase 2, see `roadmap.md` (batch order: sprite sheet, sprite, animated sprite)
 - Affected modules: `graphics`, `render-api` (sprite only), `resources`, `test-support`, `examples`
 - Requirements: `REQ-ANIM-001` to `REQ-ANIM-003`
-- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md) (PROPOSED)
-- Open questions involved: `OQ-105` (`OQ-051` touched)
+- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md) (ACCEPTED)
+- Open questions involved: `OQ-105`
 
 ## Objective
 
@@ -38,7 +38,7 @@ Seconds for durations; pixels for frames. Any decoding API or dependency needs i
 
 ## Dependencies
 
-Allowed: `core`, `resources`, `render-api` (`OQ-051`). Forbidden: AWT, OpenGL or Android types in `graphics` APIs.
+Allowed: `core`, `resources`, `render-api` (ADR-0003; `OQ-051` resolved). Forbidden: AWT, OpenGL or Android types in `graphics` APIs.
 
 ## Tests
 

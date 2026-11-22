@@ -17,8 +17,8 @@
 | Entity | In ECS, an identifier grouping components. |
 | Extrapolation | Presentation-only prediction of a visual state beyond the last known simulation state; never fed back into the simulation. |
 | Frameskipping | Dropping a presentation (render) when the machine cannot keep up, without dropping simulation computations. |
-| Frame boundary | Point between two presentations, outside any simulation update; a display or filter change requested while presentations are skipped applies at the next presentation (ADR-0002, PROPOSED). |
-| Display mode | A combination of width and height in pixels, refresh rate in Hz and color depth in bits supported by a display (ADR-0002, PROPOSED). |
+| Frame boundary | Point between two presentations, outside any simulation update; a display or filter change requested while presentations are skipped applies at the next presentation (ADR-0002). |
+| Display mode | A combination of width and height in pixels, refresh rate in Hz and color depth in bits supported by a display (ADR-0002). |
 | Frontend | Adapter to a runtime environment (AWT, OpenGL, Android...). |
 | Logical resolution | Resolution in pixels of the frame the game renders, independent of the output display mode. |
 | Game loop | Mechanism that paces updates and/or rendering. |
@@ -32,13 +32,13 @@
 | Simulation step | Fixed duration, in seconds, by which the simulation advances in one update (value `TO BE DEFINED`, OQ-020). |
 | Split-screen | Simultaneous presentation of several views/players on one screen. |
 | Sprite | Displayable graphic element, possibly tied to an image region. In ADR-0003: a lightweight instance (transform, color transform, location, alpha) over a shared immutable source (image + region). |
-| Animation | Ordered frames with durations in seconds and a loop mode; advanced from the simulation update step only (ADR-0003, PROPOSED). |
-| Short sound | Low-latency sound effect, cached for heavy reuse; can be played individually and stopped (ADR-0004, PROPOSED). |
-| Long sound | Music or ambient sound, preloaded for direct use and released when no longer needed (ADR-0004, PROPOSED). |
+| Animation | Ordered frames with durations in seconds and a loop mode; advanced from the simulation update step only (ADR-0003). |
+| Short sound | Low-latency sound effect, cached for heavy reuse; can be played individually and stopped (ADR-0004). |
+| Long sound | Music or ambient sound, preloaded for direct use and released when no longer needed (ADR-0004). |
 | Variant set | Group of short-sound files; playing it selects one variant or plays several at once (composed sound); policies `TO BE DEFINED` (OQ-112). |
-| Playlist | Predefined sequence of long sounds; the next starts when the current terminates (ADR-0004, PROPOSED). |
+| Playlist | Predefined sequence of long sounds; the next starts when the current terminates (ADR-0004). |
 | Pivot | Internal location (origin) of a sprite, used for placement, rotation and scaling. |
-| Sprite sheet | Image grouping several sprite regions as a grid (cell size, columns, rows, optional margin/spacing), giving access to cells by index; sheets are grouped by unique id (ADR-0003, PROPOSED). |
+| Sprite sheet | Image grouping several sprite regions as a grid (cell size, columns, rows, optional margin/spacing), giving access to cells by index; sheets are grouped by unique id (ADR-0003). |
 | Template color mapping | Static transform mapping source colors (or an indexed channel) to target colors, producing a cached color variant of one sprite (e.g. team colors). |
 | Spritesheet | Same as sprite sheet. |
 | System | In ECS, logic that processes entities having a given set of components. |

@@ -73,7 +73,7 @@ Each implementation must respect the same contract or explicitly declare its cap
 
 The form of this mechanism (interface, registry, configuration) is **TO BE DEFINED** (OQ-034).
 
-**PROPOSED (ADR-0002):** screen modes, display-mode selection and output filtering follow this capability model: best-effort requests, with the effective result reported. They are presentation concerns: the logical resolution is decoupled from the output resolution and nothing here changes world units or simulation state.
+**ACCEPTED (ADR-0002):** screen modes, display-mode selection and output filtering follow this capability model: best-effort requests, with the effective result reported. They are presentation concerns: the logical resolution is decoupled from the output resolution and nothing here changes world units or simulation state.
 
 ## 6. Physical and temporal conventions — VALIDATED
 

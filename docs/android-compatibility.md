@@ -19,9 +19,9 @@ Java compilation alone is not proof of DEX compatibility. Verification is contin
 - Tests run on the targeted Android versions (devices or emulators); these are platform tests and are kept separate from the headless unit tests.
 - Pipeline design with a Maven-based build: **TO BE DEFINED** (OQ-002).
 
-## Pending checks of the proposed ADRs
+## Pending checks of ADR-0002 to ADR-0004
 
-Recorded for the proposed decisions; nothing here is verified yet, so every item is **not compatible yet** until it is checked with the procedure above.
+Recorded for the accepted decisions; nothing here is verified yet, so every item is **not compatible yet** until it is checked with the procedure above.
 
 | Feature | Item to verify | Status |
 |---|---|---|
