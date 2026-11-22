@@ -7,6 +7,24 @@ Rules:
 - When a question is answered, record the answer in an ADR (or a `REQ-*`), then mark the row `RESOLVED` with a link. Never delete a row; identifiers are stable.
 - "Needed by" is the roadmap phase before which the question must be settled.
 
+## Resolution log
+
+Summary of the answers recorded so far, by decision. Details are in the rows below and in the ADRs. Follow-up questions created by a decision stay open in their own rows.
+
+| Decision | Resolved | Follow-ups opened | Issue |
+|---|---|---|---|
+| [ADR-0012](decisions/0012-platform-and-build-baseline.md) platform and build baseline | OQ-001 to OQ-008 | OQ-147, OQ-148, OQ-149 | #875 |
+| [ADR-0013](decisions/0013-world-coordinates-and-angles.md) coordinates and angles | OQ-010, OQ-011 | — | #875 |
+| [ADR-0014](decisions/0014-meters-to-pixels-numeric-type-and-rotation.md) meters to pixels, numeric type, rotation | OQ-012, OQ-013 | — | #875 |
+| [ADR-0015](decisions/0015-single-version-and-package-dependency-rule.md) single version, package rule | narrows OQ-005, OQ-149 | — | #875 |
+| [ADR-0016](decisions/0016-angle-range-and-normalization.md) angle range | OQ-150 | — | #875 |
+| [ADR-0017](decisions/0017-fixed-step-game-loop.md) fixed-step game loop | OQ-020 to OQ-023 | OQ-151 | #876 |
+| [ADR-0018](decisions/0018-runtime-thread-events-and-cache-thread-safety.md) runtime thread, events, cache thread safety | OQ-030, OQ-121, OQ-122 | OQ-153 | #877 |
+| [ADR-0019](decisions/0019-loading-resource-policy-and-memory.md) loading, resource policy, memory | OQ-031, OQ-032, OQ-033 | OQ-153 | #877 |
+| [ADR-0020](decisions/0020-no-reflection-factory-registry-and-capability-lookup.md) no reflection, factory registry, capabilities | OQ-034, OQ-152 | OQ-154 | #877 |
+
+Sections "Platform and build", "Coordinates and units", "Game loop" and "Runtime" have no unresolved original question left. Next section to treat: "World and objects" (OQ-040 to OQ-044).
+
 ## Platform and build
 
 | ID | Question | Needed by |
@@ -28,7 +46,7 @@ Rules:
 | ID | Question | Needed by |
 |---|---|---|
 | OQ-010 | **RESOLVED** by [ADR-0013](decisions/0013-world-coordinates-and-angles.md): origin `(0, 0)`, Y up in the world; the screen is Y down, converted in the camera. Original question: Origin of the coordinate system and positive direction of the Y axis. | Phase 0 |
-| OQ-011 | **RESOLVED** by [ADR-0013](decisions/0013-world-coordinates-and-angles.md): degrees in every public API. Rotation direction and reference axis: OQ-150. Original question: Angle conventions (radians/degrees, rotation direction). Also governs sprite rotation (ADR-0003, OQ-104). | Phase 0 |
+| OQ-011 | **RESOLVED** by [ADR-0013](decisions/0013-world-coordinates-and-angles.md): degrees in every public API. Rotation direction by [ADR-0014](decisions/0014-meters-to-pixels-numeric-type-and-rotation.md), range by OQ-150. Original question: Angle conventions (radians/degrees, rotation direction). Also governs sprite rotation (ADR-0003, OQ-104). | Phase 0 |
 | OQ-012 | **RESOLVED** by [ADR-0014](decisions/0014-meters-to-pixels-numeric-type-and-rotation.md): conversion in the camera only, `pixelsPerMeter` = logical frame width in pixels / view width in meters x zoom, no global constant; screen space top-left origin, Y down, flipped in the camera. Original question: Meters-to-pixels conversion: pixels per meter, camera, zoom, viewport, screen coordinate system. Sprites are placed in pixels of the logical frame (ADR-0003, ADR-0002); this question owns the conversion from meters. | Phase 2 |
 | OQ-013 | **RESOLVED** by [ADR-0014](decisions/0014-meters-to-pixels-numeric-type-and-rotation.md): `double` for world quantities, `float` only at the render boundary. Original question: Numeric type and precision for world quantities (`float` vs `double`), including on Android. | Phase 0 |
 | OQ-150 | **RESOLVED** by [ADR-0016](decisions/0016-angle-range-and-normalization.md): absolute angles in `[0, 360)`, signed differences in `(-180, 180]`; direction by ADR-0014. Original question: rotation direction, reference axis and angle range. | Phase 0 |
