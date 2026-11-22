@@ -1,0 +1,52 @@
+# Tuning phase only: pull requests opened by the agents are squash-merged automatically once
+# docs-check passes on the merge result, so that the owner is never a bottleneck.
+# To stop: delete this file (or restrict the allow-lists below). See docs/change-process.md.
+#
+# Notes:
+# - The branch ruleset requires signed commits and has no required status check, so this workflow
+#   runs the check itself and only squash-merges (GitHub signs the resulting commit).
+# - A pull request that adds an ADR line "- Status: ACCEPTED", a header "**Status: VALIDATED" or a table
+#   row with a VALIDATED cell is left open: only the owner validates a decision. Only lines that start
+#   with those patterns count, so the text of this file and of the docs does not trigger it.
+name: auto-merge-agent-prs
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, synchronize]
+    branches: [rewrite/v11]
+
+# One merge at a time, so that each check runs on the result of the previous merge.
+concurrency:
+  group: auto-merge-agent-prs
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  merge:
+    if: >
+      !github.event.pull_request.draft &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      (startsWith(github.head_ref, 'packet/') || startsWith(github.head_ref, 'claude/')) &&
+      contains(fromJSON('["claude[bot]", "DjThunder", "b3dgs"]'), github.event.pull_request.user.login)
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      URL: ${{ github.event.pull_request.html_url }}
+      SHA: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check documentation on the merge result
+        run: python3 -I scripts/check-docs.py
+      - name: Leave to the owner if a decision is being validated
+        id: guard
+        run: |
+          if gh pr diff "$URL" | grep -qE '^\+(- Status: ACCEPTED|\*\*Status: VALIDATED|\|.*\| VALIDATED)'; then
+            echo "needs_owner=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::This pull request validates a decision: left open for the owner."
+          fi
+      - name: Squash-merge
+        if: steps.guard.outputs.needs_owner != 'true'
+        run: gh pr merge "$URL" --squash --match-head-commit "$SHA"
