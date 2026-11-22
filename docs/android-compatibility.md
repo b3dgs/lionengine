@@ -19,6 +19,17 @@ Java compilation alone is not proof of DEX compatibility. Verification is contin
 - Tests run on the targeted Android versions (devices or emulators); these are platform tests and are kept separate from the headless unit tests.
 - Pipeline design with a Maven-based build: **TO BE DEFINED** (OQ-002).
 
+## Pending checks of the proposed ADRs
+
+Recorded for the proposed decisions; nothing here is verified yet, so every item is **not compatible yet** until it is checked with the procedure above.
+
+| Feature | Item to verify | Status |
+|---|---|---|
+| Screen and display modes (ADR-0002) | Mode selection through Android APIs, isolated in `platform-android`; refresh-rate and color-depth selection may be unavailable and is then reported through the effective result | not compatible yet |
+| Output filtering (ADR-0002) | GLSL ES portability of shader filters (OQ-094); license and DEX check of any `HQ2X` or CRT library (OQ-093) | not compatible yet |
+| Sprites and sprite sheets (ADR-0003) | Image decoding without `java.awt` or `javax.imageio` in shared code; placement of the platform-specific decoders (OQ-100) | not compatible yet |
+| Audio (ADR-0004) | No `javax.sound` in `audio-api`; decoder libraries, licenses and desugaring (OQ-115); latency target (OQ-116) | not compatible yet |
+
 ## What to record once decided
 
 Minimum Android API level, Android Gradle Plugin version (if used), D8/R8 version, desugaring library and its version, list of Java language features and APIs verified. Put them in an ADR and reference it here.

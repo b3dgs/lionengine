@@ -25,8 +25,8 @@ Rules:
 | ID | Question | Needed by |
 |---|---|---|
 | OQ-010 | Origin of the coordinate system and positive direction of the Y axis. | Phase 0 |
-| OQ-011 | Angle conventions (radians/degrees, rotation direction). | Phase 0 |
-| OQ-012 | Meters-to-pixels conversion: pixels per meter, camera, zoom, viewport, screen coordinate system. | Phase 2 |
+| OQ-011 | Angle conventions (radians/degrees, rotation direction). Also governs sprite rotation (ADR-0003, OQ-104). | Phase 0 |
+| OQ-012 | Meters-to-pixels conversion: pixels per meter, camera, zoom, viewport, screen coordinate system. Sprites are placed in pixels of the logical frame (ADR-0003, ADR-0002); this question owns the conversion from meters. | Phase 2 |
 | OQ-013 | Numeric type and precision for world quantities (`float` vs `double`), including on Android. | Phase 0 |
 
 ## Game loop
@@ -44,7 +44,7 @@ Rules:
 |---|---|---|
 | OQ-030 | Owning thread of rendering and runtime; overall concurrency model and thread rules. | Phase 1 |
 | OQ-031 | Asynchronous loading policy. | Phase 2 |
-| OQ-032 | Resource ownership, closing, caching and reloading policy. | Phase 1 |
+| OQ-032 | Resource ownership, closing, caching and reloading policy. Cache key and release convention of the consuming modules: OQ-118 (ADR-0005). | Phase 1 |
 | OQ-033 | Memory management policy (allocation in hot paths, release of resources). | Phase 1 |
 | OQ-034 | Platform capability mechanism (interface, registry or configuration). | Phase 1 |
 
@@ -62,12 +62,13 @@ Rules:
 
 | ID | Question | Needed by |
 |---|---|---|
-| OQ-050 | Are `platform-api` and `render-api` separate or merged? | Phase 1 |
-| OQ-051 | Does `graphics` depend on `render-api`, or does it only describe image/sprite data? | Phase 2 |
+| OQ-050 | Are `platform-api` and `render-api` separate or merged? Touched by ADR-0002 (assumes separate modules, owner decision 1B of issue #850), not resolved. Desktop implementer of `platform-api`: OQ-119. | Phase 1 |
+| OQ-051 | Does `graphics` depend on `render-api`, or does it only describe image/sprite data? Touched by ADR-0003 (assumes sprites emit `render-api` commands, owner decision 3B of issue #852), not resolved. | Phase 2 |
 | OQ-052 | Is `multiplayer` a base module or an optional extension? | Phase 5 |
 | OQ-053 | Are audio backends split by library, codec or platform? Touched by issue #853 (see OQ-115), not resolved. | Phase 2 |
-| OQ-054 | Rendering API style: abstract commands, drawing context, or specialized interface. | Phase 2 |
+| OQ-054 | Rendering API style: abstract commands, drawing context, or specialized interface. Touched by ADR-0003: decision 3B of issue #852 assumes the abstract-command style for sprites (OQ-108); not resolved. | Phase 2 |
 | OQ-055 | Which frontend is the first reference frontend? (A headless frontend for tests is already required by REQ-TEST-001.) | Phase 1 |
+| OQ-119 | Which module implements `platform-api` on desktop (AWT, OpenGL): `render-awt` / `render-opengl`, or separate desktop platform modules? Needed by the screen and display modes of ADR-0002. Raised by the joint review of packets #850, #852 and #853. | Phase 1 |
 
 ## Game development and workflow
 
@@ -80,49 +81,49 @@ Rules:
 
 ## Display and output filtering
 
-Raised by issue #850 and [ADR-0002](decisions/0002-display-modes-resolution-and-output-filtering.md) (PROPOSED). OQ-050 and OQ-051 are touched, not resolved: ADR-0002 assumes `platform-api` and `render-api` stay separate (owner decision 1B of issue #850) while the ADR is PROPOSED. Decisions 2A, 3A and 4A below are owner choices recorded in the ADR; the rows stay open until the ADR is `ACCEPTED`.
+Raised by issue #850 and [ADR-0002](decisions/0002-display-modes-resolution-and-output-filtering.md) (PROPOSED). OQ-050 is touched, not resolved: ADR-0002 assumes `platform-api` and `render-api` stay separate (owner decision 1B of issue #850) while the ADR is PROPOSED. Decisions 2A, 3A and 4A below are owner choices recorded in the ADR; the rows stay open until the ADR is `ACCEPTED`. Packet placeholders `OQ-NEW-1` to `OQ-NEW-7` of issue #850 map to OQ-090 to OQ-096, in order.
 
 | ID | Question | Needed by |
 |---|---|---|
-| OQ-090 | Request exactness. Owner choice (decision 2A of issue #850): pure best-effort, the effective result is reported; no "required" flag in the first batch. Open until ADR-0002 is `ACCEPTED`; the form of the report (effective value and reason) remains `TO BE DEFINED`. | Before display contracts |
-| OQ-091 | Scaling policy set (stretch, aspect-preserving, integer scale), its default, and whether it is owned by `platform-api` or `render-api`. | Before ADR-0002 is `ACCEPTED` |
-| OQ-092 | Filter scope. Owner choice (decision 3A of issue #850): logical frame to output surface only, no per-layer filtering. Open until ADR-0002 is `ACCEPTED`; chain composition and fallback details remain `TO BE DEFINED`. | Before the filter feature |
-| OQ-093 | Source and license of the `HQ2X` and CRT algorithms (own implementation or third-party library; license and Android/DEX compatibility to be recorded, see OQ-006). | Before filter implementation |
-| OQ-094 | Shader portability (GLSL vs GLSL ES) and delivery of shader assets through `resources` (needed by CRT and custom filters). | Before CRT |
-| OQ-095 | Persistence of user display settings: engine responsibility or game responsibility. | Roadmap (before Phase 4) |
-| OQ-096 | Multi-monitor and HiDPI. Owner choice (decision 4A of issue #850): out of the first batch. Open until it is scheduled; the contracts must not preclude it. | Before the display feature is extended |
+| OQ-090 | Request exactness. Owner choice (decision 2A of issue #850): pure best-effort, the effective result is reported; no "required" flag in the first batch. Open until ADR-0002 is `ACCEPTED`; the form of the report (effective value and reason) remains `TO BE DEFINED`. Also tracks the documented fallback order of REQ-DISPLAY-002. Proposed order (review of 2026-11-22, to confirm with the first platform implementations): `FULL_SCREEN` then `FULL_WINDOW` then `WINDOWED`; `WINDOWED` then `FULL_WINDOW` then `FULL_SCREEN`; `FULL_WINDOW` then `WINDOWED` then `FULL_SCREEN`. | Phase 2 (before display contracts) |
+| OQ-091 | Scaling policy set (stretch, aspect-preserving, integer scale), its default, and whether it is owned by `platform-api` or `render-api`. | Phase 2 (before ADR-0002 is `ACCEPTED`) |
+| OQ-092 | Filter scope. Owner choice (decision 3A of issue #850): logical frame to output surface only, no per-layer filtering. Open until ADR-0002 is `ACCEPTED`; chain composition and fallback details remain `TO BE DEFINED`. | Phase 2 (before the filter feature) |
+| OQ-093 | Source and license of the `HQ2X` and CRT algorithms (own implementation or third-party library; license and Android/DEX compatibility to be recorded, see OQ-006). | Phase 2 (before filter implementation) |
+| OQ-094 | Shader portability (GLSL vs GLSL ES) and delivery of shader assets through `resources` (needed by CRT and custom filters); if confirmed, rendering backends follow the common resource convention (ADR-0005). | Phase 2 (before CRT) |
+| OQ-095 | Persistence of user display settings: engine responsibility or game responsibility. | Phase 4 |
+| OQ-096 | Multi-monitor and HiDPI. Owner choice (decision 4A of issue #850): out of the first batch. Open until it is scheduled; the contracts must not preclude it. | Phase 4 (before the display feature is extended) |
 
 ## Sprites, animations and sprite sheets
 
-Raised by issue #852 and [ADR-0003](decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md) (PROPOSED). OQ-051 is touched, not resolved: the ADR assumes `graphics` emits `render-api` commands (owner decision 3B), which implies a `graphics` to `render-api` dependency, but the ADR is not accepted, so OQ-051 stays open. OQ-031 and OQ-032 are related to OQ-107 and OQ-101. All rows below are open.
+Raised by issue #852 and [ADR-0003](decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md) (PROPOSED). OQ-051 is touched, not resolved: the ADR assumes `graphics` emits `render-api` commands (owner decision 3B), which implies a `graphics` to `render-api` dependency, but the ADR is not accepted, so OQ-051 stays open. OQ-031 and OQ-032 are related to OQ-107 and OQ-101. All rows below are open. Packet placeholders `OQ-NEW-1` to `OQ-NEW-9` of issue #852 map to OQ-100 to OQ-108, in order; the numbers announced in the #852 plan comments are not valid (see [Unassigned identifiers](#unassigned-identifiers)).
 
 | ID | Question | Needed by |
 |---|---|---|
-| OQ-100 | Backend-neutral image / pixel-buffer abstraction in `graphics` (no `java.awt` type in the API; Android/DEX compatibility of image decoding). | First implementation batch (sprite sheet) |
-| OQ-101 | Image cache policy: key, scope, eviction, ownership relative to the `resources` lifecycle, thread safety (related to OQ-032). | First implementation batch (sprite sheet) |
-| OQ-102 | Color-transform capability model and CPU fallback. Owner choice (decision 1C of issue #852): backend-independent description, per-frame effects through `render-api` parameters, static transforms on the CPU with cache; the capability query and the fallback rules remain `TO BE DEFINED`. Open until ADR-0003 is `ACCEPTED`. | Sprite batch |
-| OQ-103 | Template authoring convention: key colors vs mask layer. Owner choice (decision 2): a template palette mapping applied as a static transform, cached per (source image, mapping); the authoring convention is not fixed. | Sprite batch |
-| OQ-104 | Rotation unit (radians vs degrees), pivot semantics, transform composition order, sprite instance mutability. | Sprite batch |
-| OQ-105 | Animation definition format and loader (own format vs reuse of an existing file format); frame timing in seconds. | Animated sprite batch |
-| OQ-106 | Sprite sheet id type (string vs typed id) and group lifecycle (who owns and closes sheets). | Sprite sheet batch |
-| OQ-107 | Loading thread (synchronous vs asynchronous) and where GPU upload occurs (related to OQ-031). | Before platform tests |
-| OQ-108 | Render command contract in `render-api` for sprites. Owner choice (decision 3B): sprites emit commands, never draw directly; batching is a later optimization behind the command abstraction (related to OQ-054). | Before batch work |
+| OQ-100 | Backend-neutral image / pixel-buffer abstraction in `graphics` (no `java.awt` type in the API; Android/DEX compatibility of image decoding). Also: module placement of the platform-specific image decoders (no `java.awt` or `javax.imageio` on Android), and where modifiable pixel data lives relative to the immutable cached source (REQ-SPR-001, ADR-0003). | Phase 2 (sprite sheet batch) |
+| OQ-101 | Image cache policy: scope, eviction, thread safety (related to OQ-032). The cache is owned by `graphics`, not by `resources`; its key form and release rule come from OQ-118 (ADR-0005). | Phase 2 (sprite sheet batch, after OQ-118) |
+| OQ-102 | Color-transform capability model and CPU fallback. Owner choice (decision 1C of issue #852): backend-independent description, per-frame effects through `render-api` parameters, static transforms on the CPU with cache; the capability query and the fallback rules remain `TO BE DEFINED`. Open until ADR-0003 is `ACCEPTED`. | Phase 2 (sprite batch) |
+| OQ-103 | Template authoring convention: key colors vs mask layer. Owner choice (decision 2): a template palette mapping applied as a static transform, cached per (source image, mapping); the authoring convention is not fixed. | Phase 2 (sprite batch) |
+| OQ-104 | Pivot semantics, transform composition order, sprite instance mutability. The rotation unit and direction are not decided here: they follow the engine-wide angle convention (OQ-011). | Phase 2 (sprite batch) |
+| OQ-105 | Animation definition format and loader (own format vs reuse of an existing file format); frame timing in seconds. | Phase 2 (animated sprite batch) |
+| OQ-106 | Sprite sheet id type (string vs typed id) and group lifecycle (who owns and closes sheets). The id form must be consistent with the key form of OQ-118. | Phase 2 (sprite sheet batch) |
+| OQ-107 | Loading thread (synchronous vs asynchronous) and where GPU upload occurs (related to OQ-031). | Phase 2 (before platform tests) |
+| OQ-108 | Render command contract in `render-api` for sprites. Owner choice (decision 3B): sprites emit commands, never draw directly; batching is a later optimization behind the command abstraction (related to OQ-054). | Phase 2 (before batch work) |
 
 ## Audio
 
-Raised by issue #853 and [ADR-0004](decisions/0004-audio-contracts-short-and-long-sounds.md) (PROPOSED). OQ-053 is touched, not resolved. All rows below are open.
+Raised by issue #853 and [ADR-0004](decisions/0004-audio-contracts-short-and-long-sounds.md) (PROPOSED). OQ-053 is touched, not resolved. All rows below are open. Packet placeholders `OQ-NEW-1` to `OQ-NEW-7` of issue #853 map to OQ-110 to OQ-116; OQ-117 and OQ-118 were added when the packet was applied, and OQ-118 is now tracked by [ADR-0005](decisions/0005-common-convention-for-modules-handling-resources.md). The #853 plan comment announced OQ-100 to OQ-108, ADR-0003 and ADR-0004 with other meanings; those numbers were reassigned before merge and the plan numbers are not valid.
 
 | ID | Question | Needed by |
 |---|---|---|
-| OQ-110 | Short-sound cache policy: key, size, eviction, preload vs lazy, within the common resource convention (OQ-118). | Before short-sound implementation |
-| OQ-111 | Maximum simultaneous short voices and overflow behavior (drop, steal oldest, refuse). | Before short-sound implementation |
-| OQ-112 | Variant selection policy (pure random, no immediate repeat, weighted) and meaning of "composed" (simultaneous layers or offsets). | Before variant batch |
-| OQ-113 | Long-sound strategy: fully decoded preload vs streamed, and Android memory budget (related to OQ-033). | Before long-sound implementation |
-| OQ-114 | Playlist end behavior (stop vs loop), failing track (skip vs abort), and which thread triggers "next" (related to OQ-030; the callback must not mutate simulation state from the audio thread). | Before playlist batch |
-| OQ-115 | Supported formats and decoders per platform (REQ-AUDIO-002), decoder licenses and Android compatibility (OQ-006, `android-compatibility.md`); touches OQ-053. | Before first real backend |
-| OQ-116 | Android latency target and the threshold meant by "low latency". | Before Android backend |
-| OQ-117 | Audio features out of scope of issue #853, listed as candidates only: pause/resume, volume, looping, fades, spatial audio, mixer channels. | Before any of these is requested |
-| OQ-118 | Where the common resource convention (keys and release, owner statement of decision 3B) is documented: `resources` documentation, an ADR, or both. ADR-0004 proposes `contracts.md` (Resources section) plus ADR-0004; its content (key form, release rule) is not fixed. | Before the first consuming module implementation |
+| OQ-110 | Short-sound cache policy: size, eviction, preload vs lazy. The key form and release rule come from OQ-118 (ADR-0005). | Phase 2 (before short-sound implementation, after OQ-118) |
+| OQ-111 | Maximum simultaneous short voices and overflow behavior (drop, steal oldest, refuse). | Phase 2 (before short-sound implementation) |
+| OQ-112 | Variant selection policy (pure random, no immediate repeat, weighted) and meaning of "composed" (simultaneous layers or offsets). | Phase 2 (before variant batch) |
+| OQ-113 | Long-sound strategy: fully decoded preload vs streamed, and Android memory budget (related to OQ-033). | Phase 2 (before long-sound implementation) |
+| OQ-114 | Playlist end behavior (stop vs loop), failing track (skip vs abort), and which thread triggers "next" (related to OQ-030; the callback must not mutate simulation state from the audio thread). | Phase 2 (before playlist batch) |
+| OQ-115 | Supported formats and decoders per platform (REQ-AUDIO-002), decoder licenses and Android compatibility (OQ-006, `android-compatibility.md`); touches OQ-053. | Phase 2 (before first real backend) |
+| OQ-116 | Android latency target and the threshold meant by "low latency". | Phase 2 (before Android backend) |
+| OQ-117 | Audio features out of scope of issue #853, listed as candidates only: pause/resume, volume, looping, fades, spatial audio, mixer channels. | Phase 6 (first game), or earlier if one is requested |
+| OQ-118 | Content of the common resource convention (owner statement of decision 3B of issue #853): key form, release rule, double-release behavior, thread safety. Location chosen during the joint review, under the owner's delegation: [ADR-0005](decisions/0005-common-convention-for-modules-handling-resources.md) plus a summary in `architecture/contracts.md` (Resources); this part stays open until ADR-0005 is `ACCEPTED`. OQ-101, OQ-106 and OQ-110 depend on it. | Phase 2 (before the first consuming module: sprite sheet or short-sound batch) |
 
 ## Network and budgets
 
@@ -131,3 +132,13 @@ Raised by issue #853 and [ADR-0004](decisions/0004-audio-contracts-short-and-lon
 | OQ-060 | Network protocol, synchronization, authority, prediction, rollback; actual need for replay/rollback determinism. | Phase 5 |
 | OQ-070 | CPU/memory budget and target frame rates. | Phase 2 |
 | OQ-071 | Supported desktop platforms and minimum versions. | Phase 1 |
+
+## Unassigned identifiers
+
+Numbers announced in issue plan comments with another meaning and never assigned in this register. They are reserved, never to be used, so that an old plan comment cannot be mistaken for a current question.
+
+| ID | Question | Needed by |
+|---|---|---|
+| OQ-097 | UNASSIGNED, not a question. Announced in the #852 plan for the pixel-buffer abstraction, merged as OQ-100. | — |
+| OQ-098 | UNASSIGNED, not a question. Announced in the #852 plan for the image cache policy, merged as OQ-101. | — |
+| OQ-099 | UNASSIGNED, not a question. Announced in the #852 plan for the color-transform capability model, merged as OQ-102. | — |

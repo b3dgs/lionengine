@@ -25,16 +25,16 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-DOC-004 | Should | PROPOSED | — | OQ-080 | — | no test yet |
 | REQ-FE-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-FE-002 | Should | PROPOSED | — | — | — | no test yet |
-| REQ-FE-003 | Must | PROPOSED | — | — | — | no test yet |
-| REQ-DISPLAY-001 | Must | PROPOSED | ADR-0002 | OQ-050, OQ-096 | — | no test yet |
+| REQ-FE-003 | Must | PROPOSED | ADR-0002 | — | — | no test yet |
+| REQ-DISPLAY-001 | Must | PROPOSED | ADR-0002 | OQ-050, OQ-096, OQ-119 | — | no test yet |
 | REQ-DISPLAY-002 | Must | PROPOSED | ADR-0002 | OQ-090 | — | no test yet |
 | REQ-DISPLAY-003 | Must | PROPOSED | ADR-0002 | OQ-096 | — | no test yet |
 | REQ-DISPLAY-004 | Must | PROPOSED | ADR-0002 | OQ-091, OQ-012 | — | no test yet |
-| REQ-DISPLAY-005 | Must | PROPOSED | ADR-0002 | OQ-030 | — | no test yet |
-| REQ-DISPLAY-006 | Must | PROPOSED | ADR-0002 | OQ-050, OQ-051 | — | no test yet |
+| REQ-DISPLAY-005 | Must | PROPOSED | ADR-0002 | OQ-020, OQ-030 | — | no test yet |
+| REQ-DISPLAY-006 | Must | PROPOSED | ADR-0002 | OQ-050 | — | no test yet |
 | REQ-FILTER-001 | Must | PROPOSED | ADR-0002 | OQ-092, OQ-093 | — | no test yet |
 | REQ-FILTER-002 | Should | PROPOSED | ADR-0002 | OQ-092 | — | no test yet |
-| REQ-FILTER-003 | Could | PROPOSED | ADR-0002 | OQ-094 | — | no test yet |
+| REQ-FILTER-003 | Could | PROPOSED | ADR-0002 | OQ-092, OQ-094 | — | no test yet |
 | REQ-LOOP-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-LOOP-002 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-LOOP-003 | Should | PROPOSED | — | — | — | no test yet |
@@ -43,30 +43,30 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-LOOP-006 | Must | VALIDATED (principle) | ADR-0001 | OQ-021 | — | no test yet |
 | REQ-RES-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-RES-002 | Should | PROPOSED | — | — | — | no test yet |
-| REQ-RES-003 | Must | PROPOSED | — | — | — | no test yet |
-| REQ-RES-004 | Should | PROPOSED | ADR-0004 | OQ-032, OQ-118 | — | no test yet |
+| REQ-RES-003 | Must | PROPOSED | ADR-0005 | OQ-032, OQ-118 | — | no test yet |
+| REQ-RES-004 | Must | PROPOSED | ADR-0005 | OQ-032, OQ-118 | — | no test yet |
 | REQ-AUDIO-001 | Should | PROPOSED | ADR-0004 | OQ-053 | — | no test yet |
 | REQ-AUDIO-002 | Should | PROPOSED | ADR-0004 | OQ-115 | — | no test yet |
-| REQ-AUDIO-003 | Must | PROPOSED | ADR-0004 | OQ-110, OQ-111, OQ-116 | — | no test yet |
+| REQ-AUDIO-003 | Must | PROPOSED | ADR-0004 | OQ-110, OQ-111, OQ-116, OQ-118 | — | no test yet |
 | REQ-AUDIO-004 | Must | PROPOSED | ADR-0004 | OQ-111 | — | no test yet |
 | REQ-AUDIO-005 | Must | PROPOSED | ADR-0004 | OQ-112 | — | no test yet |
-| REQ-AUDIO-006 | Must | PROPOSED | ADR-0004 | OQ-113 | — | no test yet |
+| REQ-AUDIO-006 | Must | PROPOSED | ADR-0004 | OQ-113, OQ-118 | — | no test yet |
 | REQ-AUDIO-007 | Must | PROPOSED | ADR-0004 | OQ-113 | — | no test yet |
 | REQ-AUDIO-008 | Must | PROPOSED | ADR-0004 | OQ-114 | — | no test yet |
 | REQ-AUDIO-009 | Must | PROPOSED | ADR-0004 | OQ-115 | — | no test yet |
-| REQ-SPR-001 | Must | PROPOSED | — | — | — | no test yet |
-| REQ-SPR-002 | Must | PROPOSED | — | — | — | no test yet |
+| REQ-SPR-001 | Must | PROPOSED | ADR-0003 | OQ-100, OQ-104 | — | no test yet |
+| REQ-SPR-002 | Must | PROPOSED | ADR-0003 | OQ-105, OQ-106 | — | no test yet |
 | REQ-SPRITE-001 | Must | PROPOSED | ADR-0003 | OQ-100, OQ-107 | — | no test yet |
-| REQ-SPRITE-002 | Must | PROPOSED | ADR-0003 | OQ-101 | — | no test yet |
-| REQ-SPRITE-003 | Must | PROPOSED | ADR-0003 | OQ-104 | — | no test yet |
+| REQ-SPRITE-002 | Must | PROPOSED | ADR-0003, ADR-0005 | OQ-101, OQ-118 | — | no test yet |
+| REQ-SPRITE-003 | Must | PROPOSED | ADR-0003 | OQ-011, OQ-012, OQ-104 | — | no test yet |
 | REQ-SPRITE-004 | Must | PROPOSED | ADR-0003 | OQ-100, OQ-102 | — | no test yet |
-| REQ-SPRITE-005 | Should | PROPOSED | ADR-0003 | OQ-102, OQ-103 | — | no test yet |
-| REQ-SPRITE-006 | Must | PROPOSED | ADR-0003 | OQ-104 | — | no test yet |
-| REQ-SPRITE-007 | Must | PROPOSED | ADR-0003 | OQ-100, OQ-108 | — | no test yet |
+| REQ-SPRITE-005 | Should | PROPOSED | ADR-0003 | OQ-102, OQ-103, OQ-118 | — | no test yet |
+| REQ-SPRITE-006 | Must | PROPOSED | ADR-0003 | OQ-012, OQ-104 | — | no test yet |
+| REQ-SPRITE-007 | Must | PROPOSED | ADR-0003 | OQ-054, OQ-100, OQ-108 | — | no test yet |
 | REQ-SPRITE-008 | Could | PROPOSED | ADR-0003 | OQ-108 | — | no test yet |
 | REQ-ANIM-001 | Must | PROPOSED | ADR-0003 | OQ-105 | — | no test yet |
 | REQ-ANIM-002 | Must | PROPOSED | ADR-0003 | — | — | no test yet |
-| REQ-ANIM-003 | Must | PROPOSED | ADR-0003 | — | — | no test yet |
+| REQ-ANIM-003 | Must | PROPOSED | ADR-0003 | OQ-020, OQ-022 | — | no test yet |
 | REQ-SHEET-001 | Must | PROPOSED | ADR-0003 | OQ-100 | — | no test yet |
 | REQ-SHEET-002 | Should | PROPOSED | ADR-0003 | OQ-106 | — | no test yet |
 | REQ-MAP-001 | Should | PROPOSED | — | — | — | no test yet |

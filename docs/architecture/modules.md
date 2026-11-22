@@ -9,14 +9,14 @@
 | `platform-api` | Window/surface contracts, platform capabilities, frontend lifecycle, screen modes and display-mode selection (ADR-0002, PROPOSED) | `core` |
 | `render-api` | Rendering contracts, textures, commands, viewport, output filtering (ADR-0002, PROPOSED) | `core` |
 | `render-awt` | AWT implementation | `render-api`, `platform-api` |
-| `render-opengl` | OpenGL implementation | `render-api`, `platform-api` |
+| `render-opengl` | OpenGL implementation | `render-api`, `platform-api`; `resources` if shader assets are delivered through it (OQ-094, candidate under ADR-0005, PROPOSED) |
 | `platform-android` | Android lifecycle, surface, resources and input adaptation | `platform-api` and the `*-api` modules it implements |
-| `resources` | Resolution, opening, metadata and lifecycle of resources; media-agnostic, no decoded cache (ADR-0004) | `core` |
+| `resources` | Resolution, opening, metadata and lifecycle of resources; media-agnostic, no decoded cache (ADR-0005, PROPOSED) | `core` |
 | `resources-*` | Filesystem, archive, memory/temporary, Android and stream providers | `resources` |
-| `audio-api` | Backend-independent audio contracts: short sounds, long sounds, variant sets, playlists (ADR-0004, PROPOSED) | `core`, `resources` (ADR-0004, decision 3B) |
-| `audio-*` | Audio backends and decoders; own the decoded caches (ADR-0004) | `audio-api`, `resources` |
-| `graphics` | Images, logical textures, sprites, spritesheets, animations (ADR-0003, PROPOSED) | `core`, `resources`, `render-api` depending on the separation to be defined (OQ-051; ADR-0003 assumes sprites emit `render-api` commands) |
-| `tilemap` | Tilesets, grids, layers, static/dynamic maps | `core`, graphics contracts |
+| `audio-api` | Backend-independent audio contracts: short sounds, long sounds, variant sets, playlists (ADR-0004, PROPOSED) | `core`, `resources` (ADR-0004 decision 3B, PROPOSED; firm once ADR-0004 is accepted) |
+| `audio-*` | Audio backends and decoders; own the decoded caches (ADR-0004, ADR-0005, PROPOSED) | `audio-api`, `resources` |
+| `graphics` | Images, logical textures, sprites, spritesheets, animations (ADR-0003, PROPOSED); owns its decoded image cache (ADR-0005, PROPOSED); image decoders are platform-specific (OQ-100) | `core`, `resources`, `render-api` depending on the separation to be defined (OQ-051; ADR-0003 assumes sprites emit `render-api` commands) |
+| `tilemap` | Tilesets, grids, layers, static/dynamic maps | `core`, graphics contracts; `resources` if map files are loaded through it (candidate under ADR-0005, PROPOSED) |
 | `input-api` | Normalized actions, states and input events | `core` |
 | `input-*` | Keyboard, mouse and gamepad adapters per platform | `input-api`, `platform-api` |
 | `world` | Scenes, objects, lifecycle, queries | `core` |
@@ -33,6 +33,7 @@ examples ─────────────► public APIs of all modules
 render-awt / render-opengl / platform-android / resources-* / audio-* / input-*
         └──────────────► *-api modules ──────────────► core
 runtime, world, graphics, tilemap ───────────────────► core (+ resources / render-api where listed)
+audio-api, audio-* ──────────────────────────────────► resources (ADR-0004, ADR-0005, PROPOSED)
 traits ─► world        multiplayer ─► world, input-api       test-support ─► (test scope)
 ```
 
@@ -48,4 +49,4 @@ Arrows always point from the dependent module to its dependency. A cycle, or an 
 
 ## Open points
 
-Module-related open points (OQ-041, OQ-043, OQ-044, OQ-050 to OQ-053, and OQ-091 for the owner of the scaling policy) are tracked in [`../open-questions.md`](../open-questions.md).
+Module-related open points (OQ-041, OQ-043, OQ-044, OQ-050 to OQ-053, OQ-091 for the owner of the scaling policy, OQ-118 for the common resource convention and OQ-119 for the desktop implementer of `platform-api`) are tracked in [`../open-questions.md`](../open-questions.md).

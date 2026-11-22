@@ -6,8 +6,8 @@
 - Roadmap phase: Phase 2, see `roadmap.md` (batch order: sprite sheet, sprite, animated sprite)
 - Affected modules: `graphics`, `render-api` (sprite only), `resources`, `test-support`, `examples`
 - Requirements: `REQ-SHEET-001`, `REQ-SHEET-002`
-- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md) (PROPOSED)
-- Open questions involved: `OQ-100`, `OQ-101`, `OQ-106` (`OQ-051` touched)
+- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md) (PROPOSED)
+- Open questions involved: `OQ-100`, `OQ-101`, `OQ-106`, `OQ-118` (`OQ-051` touched)
 
 ## Objective
 
@@ -30,7 +30,7 @@ Responsibilities only; signatures are not fixed. See `architecture/contracts.md`
 
 ## Lifecycle and concurrency
 
-Sheet ownership and closing follow `resources` rules (`OQ-106`, `OQ-101`). Calling thread: `OQ-030`.
+Sheets and their images are held by the `graphics` cache under the common resource convention (ADR-0005, `OQ-118`, `OQ-101`); group lifecycle and id form: `OQ-106`. Calling thread: `OQ-030`.
 
 ## Units and Android/DEX compatibility
 
