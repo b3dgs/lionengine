@@ -74,7 +74,7 @@ From a phone, the same process can run without a terminal. In a chat of the clau
 
 While the architecture has no code yet, the owner should not be a bottleneck: `.github/workflows/auto-merge-agent-prs.yml` squash-merges pull requests opened by the agents (branches `packet/*` and `claude/*`, authors in the allow-list) once `scripts/check-docs.py` passes on the merge result.
 
-- **Merging is not validating.** Packets stay `PROPOSED`. A pull request that adds `Status: ACCEPTED` or a `| VALIDATED` table cell is left open: only the owner validates a decision.
+- **Only the owner validates.** Packets stay `PROPOSED`. An agent opens a pull request that adds `Status: ACCEPTED` or a `| VALIDATED` cell only when the owner explicitly asks for it (in a session or on the issue); since the owner's request is the validation, such a pull request is merged automatically like the others (owner decision of 2026-11-22). The run log flags it, and reverting the squash commit undoes it.
 - **Why the workflow runs the check itself.** The branch ruleset requires signed commits (hence squash only: GitHub signs the squash commit) and has no required status check; without one, GitHub's own auto-merge would merge immediately. Adding `docs-check` as a required check is an optional second safety net.
 - **Number collisions.** Merges run one at a time and the check runs on the merge result, so two pull requests taking the same `REQ-*`/`OQ-*`/`ADR-*` number are caught, except in a rare race; the check also runs after each push.
 - **Keep the integrated review.** After a few merges, or before a roadmap phase starts, run the read-only review with the strongest model (see the prompt below) and tag the commit beforehand so that reverting is easy.

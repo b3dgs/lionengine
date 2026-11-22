@@ -5,9 +5,9 @@
 # Notes:
 # - The branch ruleset requires signed commits and has no required status check, so this workflow
 #   runs the check itself and only squash-merges (GitHub signs the resulting commit).
-# - A pull request that adds an ADR line "- Status: ACCEPTED", a header "**Status: VALIDATED" or a table
-#   row with a VALIDATED cell is left open: only the owner validates a decision. Only lines that start
-#   with those patterns count, so the text of this file and of the docs does not trigger it.
+# - Pull requests that accept an ADR or validate a requirement are merged too (owner decision of
+#   2026-11-22): an agent opens such a pull request only on the owner's explicit request. They are
+#   flagged with a notice in the run log, so they stay easy to find and revert.
 name: auto-merge-agent-prs
 
 on:
@@ -40,13 +40,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check documentation on the merge result
         run: python3 -I scripts/check-docs.py
-      - name: Leave to the owner if a decision is being validated
-        id: guard
+      - name: Flag pull requests that validate a decision
         run: |
           if gh pr diff "$URL" | grep -qE '^\+(- Status: ACCEPTED|\*\*Status: VALIDATED|\|.*\| VALIDATED)'; then
-            echo "needs_owner=true" >> "$GITHUB_OUTPUT"
-            echo "::notice::This pull request validates a decision: left open for the owner."
+            echo "::notice::This pull request accepts an ADR or validates a requirement (owner request); merging it."
           fi
       - name: Squash-merge
-        if: steps.guard.outputs.needs_owner != 'true'
         run: gh pr merge "$URL" --squash --match-head-commit "$SHA"
