@@ -1,8 +1,8 @@
 # ADR-0009 — Tile map contracts in `tilemap`
 
-- Status: PROPOSED
+- Status: ACCEPTED
 - Date: 2026-11-22
-- Decision makers: project owner (decisions 1 to 6 of issue #865, comment `@claude apply 1A 2A 3A 4A 5A 6A`); the ADR stays PROPOSED until the owner accepts it.
+- Decision makers: project owner (decisions 1 to 6 of issue #865, comment `@claude apply 1A 2A 3A 4A 5A 6A`; accepted on 2026-11-22).
 - Related requirements: `REQ-MAP-001`, `REQ-MAP-003`, `REQ-MAP-004`, `REQ-MAP-005`, `REQ-MAP-006`, `REQ-MAP-007`, `REQ-SHEET-001`, `REQ-SPRITE-007`, `REQ-RES-004`, `REQ-RES-005`
 - Open questions resolved: none. Touched: `OQ-012`, `OQ-040`, `OQ-043`, `OQ-044`, `OQ-122`, `OQ-101`. Created: `OQ-125` to `OQ-129`.
 - Supersedes / superseded by: none. Builds on [ADR-0003](0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [ADR-0005](0005-common-convention-for-modules-handling-resources.md) and [ADR-0007](0007-resource-convention-keys-release-and-errors.md) (all ACCEPTED, not modified).
@@ -63,4 +63,4 @@ Not decided: Java types and signatures, collision, the map format, the rule form
 
 ## Validation
 
-Not yet approved. Status stays PROPOSED until the owner accepts it.
+Accepted by the project owner on 2026-11-22 (explicit request to accept ADR-0009 in the repository, after issue #865 was accepted and closed). Owner decisions 1A to 6A were given on issue #865. Acceptance does not resolve any open question: `OQ-125` to `OQ-129` stay `TO BE DEFINED`, and `OQ-012`, `OQ-040` and `OQ-122` stay open. The requirements `REQ-MAP-003` to `REQ-MAP-007` stay PROPOSED in the requirements register, as for ADR-0002 and ADR-0003.

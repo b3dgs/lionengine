@@ -123,7 +123,7 @@ Distinguish:
 - layers: order, visibility, properties;
 - static content and dynamic modifications.
 
-Decisions of [ADR-0009](../decisions/0009-tile-map-contracts-in-tilemap.md) (PROPOSED; owner decisions of issue #865):
+Decisions of [ADR-0009](../decisions/0009-tile-map-contracts-in-tilemap.md) (ACCEPTED 2026-11-22; owner decisions of issue #865):
 
 - **Model:** single-layer grid of cells, each empty or a tileset cell index (`REQ-SHEET-001`); tile coordinates are `int` tile indices; tile size in pixels of the logical frame; `set`, `get`, `clear` with bounds checking and defined errors (`REQ-MAP-003`). A per-tile properties hook exists, with no collision type.
 - **Loading:** through an abstract loader contract over `resources`; keys and release per ADR-0007 (`REQ-MAP-004`). File format: OQ-126; tileset reference and ownership: OQ-128.
