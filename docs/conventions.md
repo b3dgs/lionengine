@@ -34,7 +34,7 @@
 
 - Avoid allocation in the per-step update and per-frame render paths; this matters for garbage-collection pauses on Android.
 - Measure before optimizing; record the measurement method in the test (see `testing.md`, performance level).
-- World quantities are `double`; `float` only at the render boundary (ADR-0014). Rotation is counter-clockwise positive, `0°` along `+X`.
+- World quantities are `double`; `float` only at the render boundary (ADR-0014). Rotation is counter-clockwise positive, `0°` along `+X`. Absolute angles are in `[0, 360)`, signed differences in `(-180, 180]` (ADR-0016).
 - One version number for all modules; a package never depends on a descendant package (ADR-0015).
 
 ## Concurrency
