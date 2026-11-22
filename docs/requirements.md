@@ -145,6 +145,21 @@ Note: the packet placeholders `REQ-GFX-SPR-NNN`, `REQ-GFX-ANI-NNN` and `REQ-GFX-
 | REQ-TRAIT-001 | Objects can receive composable behaviors. | Should | PROPOSED | Attach, detach and interaction tests. |
 | REQ-TRAIT-002 | Collision, gravity and mobility are envisaged traits/capabilities. | Should | PROPOSED | Unit tests of the behaviors. |
 
+## Camera
+
+Source: [ADR-0010](decisions/0010-camera-system.md) (PROPOSED), decision packet "Camera system". Feature: [`features/camera.md`](features/camera.md). The packet placeholders `REQ-CAM-NNN` are numbered `REQ-CAM-001` to `REQ-CAM-008`. All requirements stay PROPOSED: the packet states "Decision taken: pending". The packet expressed the world in pixels; ADR-0001 (meters) prevails, so the view is in world units and the conversion factor is `OQ-012`.
+
+| ID | Requirement | Priority | Status | Expected verification |
+|---|---|---|---|---|
+| REQ-CAM-001 | A camera represents the view area on the world and exposes its view rectangle in world units (meters, ADR-0001); the size is the logical frame size (ADR-0002) converted to world units and divided by the zoom. | Must | PROPOSED | Unit tests of the view rectangle for several zoom factors and frame sizes (conversion factor: OQ-012). |
+| REQ-CAM-002 | The zoom factor can be set and animated over a duration in seconds, is clamped to a `[min, max]` range, pivots on the camera center by default, and a change applies on the next presented frame. | Must | PROPOSED | Unit tests of clamping, animation progress with a controllable clock and pivot invariance (easing and other pivots: OQ-135). |
+| REQ-CAM-003 | The camera supports translation, absolute (`moveTo`) and relative (`moveBy`), in world units. | Must | PROPOSED | Unit tests of absolute and relative moves and of the resulting view rectangle. |
+| REQ-CAM-004 | The camera can follow an entity by its identifier through a lookup contract defined by `camera`, called from an ECS system; it never depends on ECS types. When the entity is missing or removed, following stops, the last position is kept and no error is raised. | Must | PROPOSED | Unit and headless integration tests with a fake lookup: follow, target removed, unknown identifier (adapter location and identifier type: OQ-132, OQ-041). |
+| REQ-CAM-005 | The follow movement delay is configurable (time constant in seconds, `0` = rigid) and frame-rate independent: the same simulated time gives the same camera state whatever the update step size (REQ-LOOP-004). | Must | PROPOSED | Unit tests running the same simulated duration with several step sizes (semantics, default and extrapolation: OQ-133). |
+| REQ-CAM-006 | The camera supports a shake effect with amplitude, duration and frequency; the amplitude decays linearly to zero; the offset is deterministic for a given seed and is held apart from the logical position, which it never changes. | Should | PROPOSED | Unit tests of decay, end of effect, seed determinism and logical-position invariance (randomness source: OQ-131; units and direction: OQ-134). |
+| REQ-CAM-007 | The camera converts world to screen and screen to world, including zoom and shake, so that input and map culling can use it; a plain view rectangle can be handed to rendering consumers (REQ-MAP-005) without exposing a camera type. | Must | PROPOSED | Round-trip conversion tests; headless test that a tile map consumer receives the expected rectangle (consumer contract: OQ-130; picking with shake: OQ-134). |
+| REQ-CAM-008 | Camera state changes (follow, delay, zoom animation, shake) happen in the update phase only, driven by the simulation step in seconds; rendering only reads the state (REQ-LOOP-003, REQ-LOOP-006); the camera is testable headless and exposes no frontend or platform type; a camera is an instance, so several cameras remain possible (REQ-MP-001). | Must | PROPOSED | Test that reading the view does not alter state; dependency check (REQ-CORE-005) and API review; two independent cameras in one test. |
+
 ## Input and multiplayer
 
 | ID | Requirement | Priority | Status | Expected verification |

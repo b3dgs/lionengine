@@ -48,6 +48,7 @@
 - objects/scenes;
 - basic traits;
 - tilemap and tilesets (tile maps: ADR-0009 PROPOSED, [`features/tile-map.md`](features/tile-map.md));
+- camera: view, zoom, translation, follow by entity identifier, movement delay, shake (ADR-0010 PROPOSED, [`features/camera.md`](features/camera.md), REQ-CAM-*); the meters-to-pixels factor (OQ-012) and the placement (OQ-132) come first;
 - collisions according to the retained scope.
 
 **Expected output:** a simple 2D game demonstrator.

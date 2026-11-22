@@ -130,6 +130,20 @@ Raised by issue #853 and [ADR-0004](decisions/0004-audio-contracts-short-and-lon
 | OQ-117 | Audio features out of scope of issue #853, listed as candidates only: pause/resume, volume, looping, fades, spatial audio, mixer channels. | Phase 6 (first game), or earlier if one is requested |
 | OQ-118 | **RESOLVED** by [ADR-0007](decisions/0007-resource-convention-keys-release-and-errors.md) (ACCEPTED): key = normalized logical path string (`/`, case-sensitive, no leading `/`, no `.` or `..`) for every origin; derived caches key on (resource key, module discriminator); release owned by the consuming module and idempotent; one unchecked exception type for missing or unreadable resources (issue #859). Thread safety moved to OQ-121. Original question: content of the common resource convention of ADR-0005 (key form, release rule, double-release behavior, thread safety). | Phase 2 (before the first consuming module: sprite sheet or short-sound batch) |
 
+## Camera (ADR-0010)
+
+Raised by the decision packet "Camera system" and [ADR-0010](decisions/0010-camera-system.md) (PROPOSED). Packet placeholders `OQ-NEW-1` and `OQ-NEW-2` map to OQ-130 and OQ-131, in order. All rows below are open. OQ-012 and OQ-040 are touched, not resolved.
+
+| ID | Question | Needed by |
+|---|---|---|
+| OQ-130 | What rendering consumers take from the camera: a plain view rectangle (proposed, consistent with ADR-0009 decision 1A) or a `Camera` type; relation with the render command contract (OQ-108) and with the viewport definition (OQ-040). | Phase 3 (before the camera batch) |
+| OQ-131 | Shake randomness: per-camera seeded noise (proposed) or an engine random source (none exists yet); determinism expected for replays. | Phase 3 (before the shake batch) |
+| OQ-132 | Physical placement of the camera: single `camera` module (proposed) or `camera-api` plus implementation (packet proposal); location of the ECS follow system and adapter; entity identifier type and position access (depends on OQ-041, OQ-042); where geometry value types live (`core` or `camera`). Touches OQ-003. | Phase 3 (before the camera skeleton) |
+| OQ-133 | Follow delay semantics: exponential smoothing with a time constant (proposed) versus fixed lag or dead zone; default value; behavior when zoom changes during a follow; render-time extrapolation of the camera (OQ-021, OQ-022) to avoid jitter, without feeding back (REQ-LOOP-006). | Phase 3 (before the follow batch) |
+| OQ-134 | Shake details: unit of the amplitude (world meters or screen pixels), per-axis behavior, and whether screen-to-world conversion for input and picking includes the shake offset or ignores it. Depends on OQ-010 (Y axis) and OQ-012. | Phase 3 (before the shake batch) |
+| OQ-135 | Zoom details: default `min` and `max`, easing of an animated zoom (linear proposed), pivots other than the center, interplay with `INTEGER` scaling (ADR-0006) and pixel snapping of the camera position to avoid sub-pixel shimmer. | Phase 3 (before the zoom batch) |
+| OQ-136 | Camera features out of scope of the packet, listed as candidates only: multi-camera and split-screen (REQ-MP-001), clamping to map bounds, rotation, parallax, dead zone and look-ahead, follow offset. | Phase 5 (split-screen), or earlier if one is requested |
+
 ## Network and budgets
 
 | ID | Question | Needed by |

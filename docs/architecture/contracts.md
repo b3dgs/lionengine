@@ -132,6 +132,19 @@ Decisions of [ADR-0009](../decisions/0009-tile-map-contracts-in-tilemap.md) (PRO
 
 Still to specify: layers (candidate), chunks and render cache (OQ-129), collisions static and dynamic (OQ-125, OQ-043).
 
+## Camera
+
+Decisions proposed by [ADR-0010](../decisions/0010-camera-system.md) (PROPOSED; nothing is decided until the owner accepts it). Details: [`features/camera.md`](../features/camera.md).
+
+- **View:** the camera exposes a view rectangle in world units (meters, ADR-0001): position, size = logical frame size (ADR-0002) converted to world units / zoom, shake offset included (`REQ-CAM-001`).
+- **Zoom and translation:** clamped zoom factor with an optional animation over seconds, pivot on the camera center; absolute and relative moves (`REQ-CAM-002`, `REQ-CAM-003`; details OQ-135).
+- **Follow:** by entity identifier through a lookup contract defined by `camera`, called by an ECS system; a missing target stops following and keeps the last position (`REQ-CAM-004`; placement and identifier type OQ-132, OQ-041).
+- **Delay and shake:** smoothing with a time constant in seconds, frame-rate independent (`REQ-CAM-005`, OQ-133); shake with amplitude, duration and frequency, linear decay, seeded per camera, separate from the logical position (`REQ-CAM-006`, OQ-131, OQ-134).
+- **Conversion:** world to screen and screen to world; rendering consumers receive a plain view rectangle, never a camera type (`REQ-CAM-007`, OQ-130).
+- **Lifecycle:** state changes in the update phase only, rendering reads (`REQ-CAM-008`, `REQ-LOOP-003`, `REQ-LOOP-006`); one instance per camera, no singleton.
+
+Not decided: Java signatures, geometry types, default values, bounds, rotation, parallax, multi-camera (OQ-136).
+
 ## Objects and traits
 
 The simple model and the ECS model are candidate strategies, not necessarily a single common API (OQ-041, OQ-042).
@@ -150,7 +163,7 @@ To specify: mapping, key repeat, analog axes, dead zone, hot-plug, focus/loss of
 
 Clearly distinguish:
 - several local players;
-- split-screen (several viewports/cameras);
+- split-screen (several viewports/cameras; the camera of ADR-0010 is an instance, so several remain possible);
 - network (transport, session, replication/synchronization).
 
 Split-screen must not be confused with networking. Protocol, authority, prediction, rollback and synchronization are outside the contract until decided (OQ-060).

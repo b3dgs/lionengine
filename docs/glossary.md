@@ -49,6 +49,9 @@
 | Tilemap | Map organized in cells and layers (single layer first, ADR-0009). |
 | Tileset | Sprite sheet whose cells are the tiles of a tile map (`REQ-SHEET-001`). |
 | Auto-tiling | Rule-based update of a cell's tile from its neighborhood, applied to neighbors when a tile is destroyed; rule format `TO BE DEFINED` (OQ-127). |
+| Camera | View on the world: position, zoom, delay and shake, with world/screen conversion; exposes a view rectangle in world units (ADR-0010, PROPOSED). |
+| Follow delay | Time constant in seconds of the smoothing applied when the camera follows a target; `0` means a rigid follow (ADR-0010, OQ-133). |
+| Shake | Temporary camera offset with amplitude, duration and frequency, decaying linearly; separate from the logical camera position (ADR-0010). |
 | Viewport culling | Drawing only the tiles that intersect the viewport rectangle (plus a margin). |
 | Trait | Composable capability or behavior attached to an object/entity. |
 | Viewport | Region where a view of the world is presented on a surface. |
