@@ -11,6 +11,7 @@ One or two sentences: what and why.
 Seen: files provided in the chat. Not seen: everything else; Claude Code must check it.
 
 ## Decisions
+Fill "Taken" here, or give the decisions in the `@claude apply` comment (`1B 2A 3ok`: number then letter, `ok` = the Reco).
 | # | Question | Options | Reco | Taken |
 |---|---|---|---|---|
 | 1 | | A: ... / B: ... | B | |

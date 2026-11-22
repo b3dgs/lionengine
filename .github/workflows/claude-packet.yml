@@ -2,7 +2,9 @@
 # Usage (from the GitHub mobile app):
 #   1. Create an issue titled "[packet] ..." with the final packet as body.
 #   2. Comment "@claude plan"  -> Claude posts the list of files to change (nothing is modified).
-#   3. Read it, then comment "@claude apply" -> Claude edits, runs the check, opens a PR.
+#   3. Read it, then comment "@claude apply 1B 2A 3ok" -> Claude edits, runs the check, opens a PR.
+#      Decisions can be given in the comment: decision number then letter (1B), or number then "ok" (3ok)
+#      to accept the packet's recommendation. They fill the "Taken" column; any decision not stated stays a proposal.
 # Requires the repository secret CLAUDE_CODE_OAUTH_TOKEN (generated with `claude setup-token`) and the Claude GitHub app / action setup.
 
 name: Decision packet
@@ -43,6 +45,12 @@ jobs:
 
             ${{ github.event.issue.body }}
 
+            Owner comment: ${{ github.event.comment.body }}
+
+            Decisions given by the owner in this comment (format: decision number then option letter, e.g. 1B,
+            or number then "ok", e.g. 3ok, meaning the option marked in the "Reco" column) fill the "Taken"
+            column of the packet's Decisions table. A decision with no value in "Taken" or in this comment stays a proposal.
+
             Do NOT modify any file. List every file that must change to apply the packet consistently
             (requirements, traceability, open questions, modules, contracts, ADR and its index, glossary,
             roadmap, tests, API index, feature files). Assign real REQ/OQ/ADR numbers without reusing existing ones.
@@ -62,7 +70,11 @@ jobs:
 
             ${{ github.event.issue.body }}
 
-            Owner note with this approval: ${{ github.event.comment.body }}
+            Owner comment with this approval: ${{ github.event.comment.body }}
+
+            Decisions given by the owner in this comment (format: decision number then option letter, e.g. 1B,
+            or number then "ok", e.g. 3ok, meaning the option marked in the "Reco" column) fill the "Taken"
+            column of the packet's Decisions table. A decision with no value in "Taken" or in this comment stays a proposal.
 
             Apply the packet consistently across the repository. Never turn a proposal into a decision that the
             "Taken" column does not state. Keep the ADR PROPOSED. Never reuse an existing REQ/OQ/ADR identifier;

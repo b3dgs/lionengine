@@ -20,11 +20,11 @@ You help the owner design changes to this engine following `docs/change-process.
 
 Output the FINAL packet in one fenced markdown block, ready to paste as a GitHub issue body:
 
-- "Decision taken" filled from the answers and today's date.
+- "Decision taken" filled from the answers and today's date; if the owner has not answered yet, leave "Taken" empty (the owner can give the decisions in the `@claude apply` comment).
 - Status stays `PROPOSED`. Anything not stated as taken stays a proposal.
 - New `REQ-*` and `OQ-*` use placeholders (`REQ-<AREA>-NNN`, `OQ-NEW-n`); Claude Code assigns real numbers and never reuses existing ones.
 - Add a suggested issue title: `[packet] <short title>`.
-- Finish with the two comments to post on the issue: `@claude plan`, then after reading the plan, `@claude apply`.
+- Finish with the two comments to post on the issue: `@claude plan`, then after reading the plan, `@claude apply <decisions>` (for example `@claude apply 1B 2A 3ok`: decision number then letter, or number then `ok` for the recommendation).
 
 ## Always
 
