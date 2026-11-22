@@ -5,8 +5,9 @@
 # Notes:
 # - The branch ruleset requires signed commits and has no required status check, so this workflow
 #   runs the check itself and only squash-merges (GitHub signs the resulting commit).
-# - A pull request that adds "Status: ACCEPTED" or a "| VALIDATED" table cell is left open: only the
-#   owner validates a decision.
+# - A pull request that adds an ADR line "- Status: ACCEPTED", a header "**Status: VALIDATED" or a table
+#   row with a VALIDATED cell is left open: only the owner validates a decision. Only lines that start
+#   with those patterns count, so the text of this file and of the docs does not trigger it.
 name: auto-merge-agent-prs
 
 on:
@@ -42,7 +43,7 @@ jobs:
       - name: Leave to the owner if a decision is being validated
         id: guard
         run: |
-          if gh pr diff "$URL" | grep -qE '^\+.*(Status: ACCEPTED|\| VALIDATED)'; then
+          if gh pr diff "$URL" | grep -qE '^\+(- Status: ACCEPTED|\*\*Status: VALIDATED|\|.*\| VALIDATED)'; then
             echo "needs_owner=true" >> "$GITHUB_OUTPUT"
             echo "::notice::This pull request validates a decision: left open for the owner."
           fi
