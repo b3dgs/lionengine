@@ -17,7 +17,7 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
 3. **Concepts, in order of use** — runtime and game loop, resources, graphics (sprite, animation), world (objects, traits or ECS: OQ-041), tilemap, input, audio.
 4. **Recipes** — one short, tested recipe per common task:
    - display and animate a sprite, including two color variants of one sprite and a sprite sheet (ADR-0003; example to be created);
-   - load a map and scroll the camera;
+   - load a map and scroll the camera (camera contract: [`features/camera.md`](features/camera.md), ADR-0010);
    - read player input;
    - detect a collision;
    - play a sound: short sound, variant set, long sound, playlist (ADR-0004; example to be created);

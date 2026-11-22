@@ -160,6 +160,8 @@ Numbers announced in issue plan comments with another meaning and never assigned
 
 ## Camera (issue #868, ADR-0010)
 
+Raised by issue #868 and [ADR-0010](decisions/0010-camera-system-in-camera.md) (ACCEPTED on 2026-11-22). OQ-012 and OQ-040 are touched, not resolved. All rows below are open. The packet placeholders `OQ-NEW-1` (rendering consumer) and `OQ-NEW-2` (shake randomness) map to OQ-131 and OQ-130.
+
 | ID | Question | Needed by |
 |---|---|---|
 | OQ-130 | Shake randomness detail (decision 5A, per-camera seeded noise): noise algorithm, default seed and reseeding, behavior when several shakes overlap. | Before the shake batch |
@@ -167,5 +169,5 @@ Numbers announced in issue plan comments with another meaning and never assigned
 | OQ-132 | Placement details and ECS adapter: entity ID type of the lookup contract, and the module hosting the adapter that implements it (decisions 1A, 2A); related to OQ-041 and OQ-042. | Before the follow batch |
 | OQ-133 | Follow delay details (decision 4A): default time constant, behavior on target switch or teleport, snap threshold, sampling of the target in the update step; related to OQ-021. | Before the follow batch |
 | OQ-134 | Shake units and picking: amplitude in meters or fraction of the view, frequency in Hz, decay curve, effect on screen-to-world picking. | Before the shake batch |
-| OQ-135 | Zoom details: default range, animation curve and duration, zoom anchor point (center or cursor), meaning of zoom values. | Before the zoom batch |
+| OQ-135 | Zoom details: default range, animation curve and duration, anchor point other than the camera center (the default pivot is the center, REQ-CAM-002), meaning of zoom values. | Before the zoom batch |
 | OQ-136 | Features out of scope of issue #868, listed as candidates only: multi-camera and split screen, bounds clamp, rotation, parallax, dead zone, follow offset. | When one is requested |

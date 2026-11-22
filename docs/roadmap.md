@@ -48,7 +48,7 @@
 - objects/scenes;
 - basic traits;
 - tilemap and tilesets (tile maps: ADR-0009 PROPOSED, [`features/tile-map.md`](features/tile-map.md));
-- camera: view rectangle, zoom, follow, smoothing and shake (ADR-0010 PROPOSED, [`features/camera.md`](features/camera.md));
+- camera: view rectangle, zoom, follow, smoothing and shake (ADR-0010 ACCEPTED, [`features/camera.md`](features/camera.md));
 - collisions according to the retained scope.
 
 **Expected output:** a simple 2D game demonstrator.

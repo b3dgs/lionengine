@@ -1,8 +1,8 @@
 # ADR-0010 — Camera system in `camera`
 
-- Status: PROPOSED
+- Status: ACCEPTED
 - Date: 2026-11-22
-- Decision makers: project owner (decisions 1 to 6 of issue #868, comment `@claude apply 1A 2A 3A 4A 5A 6A`). The issue also asks for ACCEPTED, but the apply instructions say to keep the ADR PROPOSED; it stays PROPOSED until the owner confirms the status change (see the pull request).
+- Decision makers: project owner (decisions 1 to 6 of issue #868, comment `@claude apply 1A 2A 3A 4A 5A 6A`; acceptance requested in the same comment and confirmed in the review session that followed PR #869).
 - Related requirements: `REQ-CAM-001` to `REQ-CAM-008`, `REQ-LOOP-003`, `REQ-LOOP-006`
 - Open questions resolved: none. Touched: `OQ-010`, `OQ-012`, `OQ-013`, `OQ-021`, `OQ-040`, `OQ-041`, `OQ-042`, `OQ-108`. Created: `OQ-130` to `OQ-136`.
 - Supersedes / superseded by: none. Builds on [ADR-0001](0001-technical-baseline-and-conventions.md), [ADR-0003](0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md) and [ADR-0009](0009-tile-map-contracts-in-tilemap.md) (not modified).
@@ -65,4 +65,4 @@ Not decided: Java types and signatures, zoom details (`OQ-135`), the origin and 
 
 ## Validation
 
-Not yet approved as ACCEPTED in this change. Status stays PROPOSED until the owner confirms it.
+Accepted by the project owner on 2026-11-22 (explicit request on issue #868, confirmed after the review of PR #869, which had merged it as PROPOSED). Acceptance resolves no open question; `OQ-130` to `OQ-136` stay open. The related requirements `REQ-CAM-001` to `REQ-CAM-008` stay PROPOSED until validated.

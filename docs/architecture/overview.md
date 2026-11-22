@@ -81,7 +81,7 @@ The form of this mechanism (interface, registry, configuration) is **TO BE DEFIN
 - World coordinates and distances are expressed in **meters**.
 - Time, durations and time deltas are expressed in **seconds**.
 - Speeds are expressed in **meters per second (`m/s`)**; accelerations in `m/s²`.
-- Conversions to pixels are a responsibility of the presentation layer (camera/viewport/rendering), never a change to the world units.
+- Conversions to pixels are a responsibility of the presentation layer (camera/viewport/rendering, see [ADR-0010](../decisions/0010-camera-system-in-camera.md)), never a change to the world units.
 - The origin, the positive direction of the Y axis, angle conventions and the screen coordinate system remain to be specified (OQ-010 to OQ-013).
 
 APIs must make units explicit in their Javadoc. Do not implicitly mix meters and pixels, or seconds and milliseconds. Parameter and method names should avoid ambiguous units (`deltaSeconds`, `speedMetersPerSecond`, etc.) where this improves readability.
