@@ -20,12 +20,13 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
    - load a map and scroll the camera;
    - read player input;
    - detect a collision;
-   - play a sound;
+   - play a sound: short sound, variant set, long sound, playlist (ADR-0004, PROPOSED; example to be created);
    - run the game headless in a test.
 5. **Pitfalls**
    - World units are meters and seconds; pixels exist only at presentation (ADR-0001).
    - An extrapolated state is never reused as simulation input.
-   - Closing and ownership of resources (REQ-RES-003).
+   - Closing and ownership of resources (REQ-RES-003); modules handling resources follow one convention for keys and release (REQ-RES-004, PROPOSED).
+   - Audio completion callbacks (playlist advance) must not mutate simulation state from the audio thread (ADR-0004, PROPOSED).
    - Not every capability exists on every platform (OQ-034); check before using.
    - Animation time advances in the update step only; a sprite emits render commands and never draws directly (ADR-0003, PROPOSED).
    - Screen mode, display mode and filter requests are best-effort: read the effective result instead of assuming it (ADR-0002, PROPOSED).

@@ -22,7 +22,7 @@ Purpose: let a developer or an AI agent find, by **task**, which public types to
 | Create objects and attach behaviors | `world` / `traits` / `ecs` | *(to be filled)* | *(to be created)* | — | Model: OQ-041 |
 | Load a tile map | `tilemap` | *(to be filled)* | *(to be created)* | — | |
 | Query and request screen mode, display mode and output filter | `platform-api` / `render-api` | *(to be filled; ADR-0002 PROPOSED)* | *(to be created: headless example listing capabilities, requesting a mode and a filter, printing the effective result)* | — | Pixels, Hz, bits; scaling never changes world units; effective result reported (REQ-DISPLAY-*, REQ-FILTER-*) |
-| Play a sound | `audio-api` | *(to be filled)* | *(to be created)* | — | Formats depend on backend |
+| Play a short sound, a variant set, a long sound or a playlist | `audio-api` | *(to be filled; ADR-0004 PROPOSED)* | *(to be created: headless example with a fake backend playing a short sound, a variant set and a two-track playlist)* | — | Seconds and Hz; formats depend on backend (OQ-115); completion callbacks never mutate simulation state (REQ-AUDIO-003 to REQ-AUDIO-009) |
 
 ## Removed or renamed APIs
 

@@ -83,11 +83,24 @@ To specify:
 
 Do not assume that a resource is a `File`: a resource in an archive or an Android asset may have no filesystem path.
 
+**Common convention for modules handling resources (PROPOSED, ADR-0004, owner decision 3B of issue #853):** `resources` stays media-agnostic and holds no decoded cache. Every module that handles a resource (an item reachable from a path: audio, graphics, ...) depends on `resources`, keeps its own decoded cache, and follows one common convention for keys and release, to limit divergence between implementations (REQ-RES-004). The content of the convention (key form, release and double-release rule) is `TO BE DEFINED` (OQ-118, OQ-032); it must be consistent with REQ-RES-003 and OQ-101 and OQ-110.
+
 ## Audio
 
 The audio API describes operations and their lifecycle, not the concrete audio engine.
 
-To specify: play, pause, resume, stop, volume, looping, possible spatialization, streaming, latency, codecs and capabilities per backend. WAV/MP3/OGG are target formats, not a guarantee of universal decoding on every platform.
+### Short and long sounds (PROPOSED, ADR-0004)
+
+Owner decisions of issue #853 (the ADR stays PROPOSED):
+
+- **Two families (decision 1A):** short sounds (low-latency effects, cached for heavy reuse, play, stop, variant sets) and long sounds (music/ambient, preloadable and releasable, play, stop, playlists) are separate contract families with distinct handles and lifecycles.
+- **Backend-independent logic (decision 2A):** variant selection and playlist advance live in `audio-api` (or a shared helper); backends only expose play, stop and end-of-track.
+- **Resources (decision 3B):** `audio-api` and `audio-*` depend on `resources`; decoded caches exist only inside the audio modules (REQ-RES-004).
+- Durations and positions in seconds, sample rate in Hz; no platform or concrete audio library type in the API (REQ-AUDIO-009). Playlist-advance callbacks must not mutate simulation state from the audio thread (OQ-114).
+
+Not decided: cache policy (OQ-110), voice limit (OQ-111), variant policies (OQ-112), long-sound strategy (OQ-113), playlist end, failure and thread (OQ-114), formats and decoders (OQ-115), latency target (OQ-116). Java signatures are not fixed. Details: [`features/audio-short-and-long-sounds.md`](../features/audio-short-and-long-sounds.md).
+
+Out of this scope, to specify later (OQ-117): pause, resume, volume, looping, fades, possible spatialization, mixer channels. WAV/MP3/OGG are target formats, not a guarantee of universal decoding on every platform.
 
 ## Images, sprites and animations
 

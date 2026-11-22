@@ -11,10 +11,10 @@
 | `render-awt` | AWT implementation | `render-api`, `platform-api` |
 | `render-opengl` | OpenGL implementation | `render-api`, `platform-api` |
 | `platform-android` | Android lifecycle, surface, resources and input adaptation | `platform-api` and the `*-api` modules it implements |
-| `resources` | Resolution, opening, metadata and lifecycle of resources | `core` |
+| `resources` | Resolution, opening, metadata and lifecycle of resources; media-agnostic, no decoded cache (ADR-0004) | `core` |
 | `resources-*` | Filesystem, archive, memory/temporary, Android and stream providers | `resources` |
-| `audio-api` | Backend-independent audio contracts | `core`, `resources` if needed |
-| `audio-*` | Audio backends and decoders | `audio-api` |
+| `audio-api` | Backend-independent audio contracts: short sounds, long sounds, variant sets, playlists (ADR-0004, PROPOSED) | `core`, `resources` (ADR-0004, decision 3B) |
+| `audio-*` | Audio backends and decoders; own the decoded caches (ADR-0004) | `audio-api`, `resources` |
 | `graphics` | Images, logical textures, sprites, spritesheets, animations (ADR-0003, PROPOSED) | `core`, `resources`, `render-api` depending on the separation to be defined (OQ-051; ADR-0003 assumes sprites emit `render-api` commands) |
 | `tilemap` | Tilesets, grids, layers, static/dynamic maps | `core`, graphics contracts |
 | `input-api` | Normalized actions, states and input events | `core` |

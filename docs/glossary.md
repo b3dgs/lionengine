@@ -32,6 +32,10 @@
 | Split-screen | Simultaneous presentation of several views/players on one screen. |
 | Sprite | Displayable graphic element, possibly tied to an image region. In ADR-0003: a lightweight instance (transform, color transform, location, alpha) over a shared immutable source (image + region). |
 | Animation | Ordered frames with durations in seconds and a loop mode; advanced from the simulation update step only (ADR-0003, PROPOSED). |
+| Short sound | Low-latency sound effect, cached for heavy reuse; can be played individually and stopped (ADR-0004, PROPOSED). |
+| Long sound | Music or ambient sound, preloaded for direct use and released when no longer needed (ADR-0004, PROPOSED). |
+| Variant set | Group of short-sound files; playing it selects one variant or plays several at once (composed sound); policies `TO BE DEFINED` (OQ-112). |
+| Playlist | Predefined sequence of long sounds; the next starts when the current terminates (ADR-0004, PROPOSED). |
 | Pivot | Internal location (origin) of a sprite, used for placement, rotation and scaling. |
 | Sprite sheet | Grid-based tileset image (cell size, columns, rows, optional margin/spacing) giving access to cells by index; sheets are grouped by unique id. |
 | Template color mapping | Static transform mapping source colors (or an indexed channel) to target colors, producing a cached color variant of one sprite (e.g. team colors). |

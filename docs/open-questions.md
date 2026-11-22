@@ -65,7 +65,7 @@ Rules:
 | OQ-050 | Are `platform-api` and `render-api` separate or merged? | Phase 1 |
 | OQ-051 | Does `graphics` depend on `render-api`, or does it only describe image/sprite data? | Phase 2 |
 | OQ-052 | Is `multiplayer` a base module or an optional extension? | Phase 5 |
-| OQ-053 | Are audio backends split by library, codec or platform? | Phase 2 |
+| OQ-053 | Are audio backends split by library, codec or platform? Touched by issue #853 (see OQ-115), not resolved. | Phase 2 |
 | OQ-054 | Rendering API style: abstract commands, drawing context, or specialized interface. | Phase 2 |
 | OQ-055 | Which frontend is the first reference frontend? (A headless frontend for tests is already required by REQ-TEST-001.) | Phase 1 |
 
@@ -107,6 +107,22 @@ Raised by issue #852 and [ADR-0003](decisions/0003-sprite-animation-and-sprite-s
 | OQ-106 | Sprite sheet id type (string vs typed id) and group lifecycle (who owns and closes sheets). | Sprite sheet batch |
 | OQ-107 | Loading thread (synchronous vs asynchronous) and where GPU upload occurs (related to OQ-031). | Before platform tests |
 | OQ-108 | Render command contract in `render-api` for sprites. Owner choice (decision 3B): sprites emit commands, never draw directly; batching is a later optimization behind the command abstraction (related to OQ-054). | Before batch work |
+
+## Audio
+
+Raised by issue #853 and [ADR-0004](decisions/0004-audio-contracts-short-and-long-sounds.md) (PROPOSED). OQ-053 is touched, not resolved. All rows below are open.
+
+| ID | Question | Needed by |
+|---|---|---|
+| OQ-110 | Short-sound cache policy: key, size, eviction, preload vs lazy, within the common resource convention (OQ-118). | Before short-sound implementation |
+| OQ-111 | Maximum simultaneous short voices and overflow behavior (drop, steal oldest, refuse). | Before short-sound implementation |
+| OQ-112 | Variant selection policy (pure random, no immediate repeat, weighted) and meaning of "composed" (simultaneous layers or offsets). | Before variant batch |
+| OQ-113 | Long-sound strategy: fully decoded preload vs streamed, and Android memory budget (related to OQ-033). | Before long-sound implementation |
+| OQ-114 | Playlist end behavior (stop vs loop), failing track (skip vs abort), and which thread triggers "next" (related to OQ-030; the callback must not mutate simulation state from the audio thread). | Before playlist batch |
+| OQ-115 | Supported formats and decoders per platform (REQ-AUDIO-002), decoder licenses and Android compatibility (OQ-006, `android-compatibility.md`); touches OQ-053. | Before first real backend |
+| OQ-116 | Android latency target and the threshold meant by "low latency". | Before Android backend |
+| OQ-117 | Audio features out of scope of issue #853, listed as candidates only: pause/resume, volume, looping, fades, spatial audio, mixer channels. | Before any of these is requested |
+| OQ-118 | Where the common resource convention (keys and release, owner statement of decision 3B) is documented: `resources` documentation, an ADR, or both. ADR-0004 proposes `contracts.md` (Resources section) plus ADR-0004; its content (key form, release rule) is not fixed. | Before the first consuming module implementation |
 
 ## Network and budgets
 
