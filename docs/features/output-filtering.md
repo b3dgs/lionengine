@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 2, after screen and display modes
 - Affected modules: `render-api`, `render-awt`, `render-opengl`, `test-support`, `examples`
 - Requirements: `REQ-FILTER-001` to `REQ-FILTER-003`, `REQ-DISPLAY-004`, `REQ-DISPLAY-005`
-- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md) (ACCEPTED), [`ADR-0006`](../decisions/0006-display-scaling-effective-result-and-fallback-orders.md) (PROPOSED)
+- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md) (ACCEPTED), [`ADR-0006`](../decisions/0006-display-scaling-effective-result-and-fallback-orders.md) (ACCEPTED)
 - Open questions involved: `OQ-093`, `OQ-094`, `OQ-122` (`OQ-006` related; `OQ-120` resolved)
 
 ## Objective

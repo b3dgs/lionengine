@@ -7,12 +7,12 @@
 | `core` | Common types, lifecycle, errors, events, cross-cutting contracts | No frontend dependency |
 | `runtime` | Orchestration, game loop, clock, scheduling | `core` |
 | `platform-api` | Window/surface contracts, platform capabilities, frontend lifecycle, screen modes and display-mode selection (ADR-0002) | `core` |
-| `render-api` | Rendering contracts, textures, commands, viewport, output filtering (ADR-0002), scaling policy type (ADR-0006, PROPOSED) | `core` |
+| `render-api` | Rendering contracts, textures, commands, viewport, output filtering (ADR-0002), scaling policy type (ADR-0006) | `core` |
 | `render-awt` | AWT implementation | `render-api`, `platform-api` |
 | `render-opengl` | OpenGL implementation | `render-api`, `platform-api`; `resources` if shader assets are delivered through it (OQ-094, candidate under ADR-0005) |
-| `platform-awt` | Desktop implementation of `platform-api` with the JDK AWT: window and surface lifecycle, screen modes, display modes, effective-result report; no rendering, input, audio or resources (ADR-0008, PROPOSED) | `platform-api`, `core`; JDK `java.desktop` only; excluded from Android builds |
+| `platform-awt` | Desktop implementation of `platform-api` with the JDK AWT: window and surface lifecycle, screen modes, display modes, effective-result report; no rendering, input, audio or resources (ADR-0008) | `platform-api`, `core`; JDK `java.desktop` only; excluded from Android builds |
 | `platform-android` | Android lifecycle, surface, resources and input adaptation | `platform-api` and the `*-api` modules it implements |
-| `resources` | Resolution, opening, metadata and lifecycle of resources; media-agnostic, no decoded cache (ADR-0005); resource key and missing-resource exception types (ADR-0007, PROPOSED) | `core` |
+| `resources` | Resolution, opening, metadata and lifecycle of resources; media-agnostic, no decoded cache (ADR-0005); resource key and missing-resource exception types (ADR-0007) | `core` |
 | `resources-*` | Filesystem, archive, memory/temporary, Android and stream providers | `resources` |
 | `audio-api` | Backend-independent audio contracts: short sounds, long sounds, variant sets, playlists (ADR-0004) | `core`, `resources` (ADR-0004, decision 3B) |
 | `audio-*` | Audio backends and decoders; own the decoded caches (ADR-0004, ADR-0005) | `audio-api`, `resources` |
@@ -50,4 +50,4 @@ Arrows always point from the dependent module to its dependency. A cycle, or an 
 
 ## Open points
 
-Module-related open points (OQ-041, OQ-043, OQ-044, OQ-052, OQ-053, OQ-121 for the thread safety of module caches and OQ-119 for the desktop implementer of `platform-api` (answered by ADR-0008, PROPOSED), OQ-123 for the desktop render side) are tracked in [`../open-questions.md`](../open-questions.md).
+Module-related open points (OQ-041, OQ-043, OQ-044, OQ-052, OQ-053, OQ-121 for the thread safety of module caches, OQ-123 for the desktop render side and OQ-124 for unknown display-mode values) are tracked in [`../open-questions.md`](../open-questions.md).

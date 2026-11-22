@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 2 (after the first rendering backend), see `roadmap.md`
 - Affected modules: `platform-api`, `render-awt`, `render-opengl`, `platform-android`, `test-support`, `examples`
 - Requirements: `REQ-DISPLAY-001` to `REQ-DISPLAY-008`
-- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md) (ACCEPTED), [`ADR-0006`](../decisions/0006-display-scaling-effective-result-and-fallback-orders.md) (PROPOSED)
+- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md) (ACCEPTED), [`ADR-0006`](../decisions/0006-display-scaling-effective-result-and-fallback-orders.md) (ACCEPTED)
 - Open questions involved: `OQ-095`, `OQ-096`, `OQ-119`, `OQ-122` (`OQ-090`, `OQ-091`, `OQ-120` resolved)
 
 ## Objective
