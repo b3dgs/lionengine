@@ -38,7 +38,8 @@
 - images and sprites;
 - spritesheet and animation;
 - first rendering backend;
-- audio API and first backend if prioritized.
+- audio API and first backend if prioritized;
+- screen modes, display-mode selection and logical-resolution scaling, then output filtering (ADR-0002, REQ-DISPLAY-*, REQ-FILTER-*), after the first backend exists; `HQ2X`/CRT sources and licenses (OQ-093) and shaders (OQ-094) before filter implementation; persistence of user display settings (OQ-095) to be placed.
 
 **Expected output:** a demonstrator displaying an animated scene and playing a sound.
 

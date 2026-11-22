@@ -78,6 +78,20 @@ Rules:
 | OQ-082 | Asset production pipeline (including locally AI-generated sprites): formats, naming, provenance and licensing. | Phase 2 |
 | OQ-083 | How the API index is kept in sync with the code: manual review, generation, or a CI check (REQ-DOC-002). | Phase 1 |
 
+## Display and output filtering
+
+Raised by issue #850 and [ADR-0002](decisions/0002-display-modes-resolution-and-output-filtering.md) (PROPOSED). OQ-050 and OQ-051 are touched, not resolved: ADR-0002 assumes `platform-api` and `render-api` stay separate (owner decision 1B of issue #850) while the ADR is PROPOSED. Decisions 2A, 3A and 4A below are owner choices recorded in the ADR; the rows stay open until the ADR is `ACCEPTED`.
+
+| ID | Question | Needed by |
+|---|---|---|
+| OQ-090 | Request exactness. Owner choice (decision 2A of issue #850): pure best-effort, the effective result is reported; no "required" flag in the first batch. Open until ADR-0002 is `ACCEPTED`; the form of the report (effective value and reason) remains `TO BE DEFINED`. | Before display contracts |
+| OQ-091 | Scaling policy set (stretch, aspect-preserving, integer scale), its default, and whether it is owned by `platform-api` or `render-api`. | Before ADR-0002 is `ACCEPTED` |
+| OQ-092 | Filter scope. Owner choice (decision 3A of issue #850): logical frame to output surface only, no per-layer filtering. Open until ADR-0002 is `ACCEPTED`; chain composition and fallback details remain `TO BE DEFINED`. | Before the filter feature |
+| OQ-093 | Source and license of the `HQ2X` and CRT algorithms (own implementation or third-party library; license and Android/DEX compatibility to be recorded, see OQ-006). | Before filter implementation |
+| OQ-094 | Shader portability (GLSL vs GLSL ES) and delivery of shader assets through `resources` (needed by CRT and custom filters). | Before CRT |
+| OQ-095 | Persistence of user display settings: engine responsibility or game responsibility. | Roadmap (before Phase 4) |
+| OQ-096 | Multi-monitor and HiDPI. Owner choice (decision 4A of issue #850): out of the first batch. Open until it is scheduled; the contracts must not preclude it. | Before the display feature is extended |
+
 ## Network and budgets
 
 | ID | Question | Needed by |

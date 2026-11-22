@@ -15,6 +15,18 @@ To specify:
 - GPU resources and their invalidation on context loss;
 - synchronization between update and render.
 
+### Display modes, resolution and output filtering (PROPOSED, ADR-0002)
+
+Capability-based best-effort negotiation: the game requests, the platform applies what it can and reports what it actually applied (effective value and reason), so game code is identical everywhere. A missing capability never throws.
+
+- **Screen mode** (`WINDOWED`, `FULL_WINDOW`, `FULL_SCREEN`) and **display mode** (width and height in pixels, refresh rate in Hz, color depth in bits): `platform-api`, with engine-defined neutral value types and a capability query. Unsupported requests fall back in a documented order (REQ-DISPLAY-001 to REQ-DISPLAY-003).
+- **Logical resolution** is independent of the output display mode; a scaling policy (stretch, aspect-preserving, integer scale) governs presentation. Scaling never changes world units (REQ-DISPLAY-004, OQ-091).
+- **Output filtering** (`NONE`, nearest, bilinear, `HQ2X`, CRT; extensible): `render-api`, an ordered chain applied from the logical frame to the output surface only, not per layer (REQ-FILTER-001 to REQ-FILTER-003).
+- Changes are applied at a frame boundary and signaled by an event; they never alter simulation state, and an extrapolated state is never reused as simulation input (REQ-DISPLAY-005, REQ-LOOP-006).
+- No AWT, OpenGL or Android type in these contracts (REQ-DISPLAY-006). Multi-monitor and HiDPI are outside the first batch (OQ-096).
+
+Java signatures are not fixed. Details: [`features/display-modes.md`](../features/display-modes.md), [`features/output-filtering.md`](../features/output-filtering.md).
+
 ## Unit conventions
 
 The world uses `(x, y)` in meters. Durations are in seconds. Speeds are in `m/s`, accelerations in `m/s²`. Any API that converts to pixels must belong to the presentation boundary and state the conversion factor explicitly.

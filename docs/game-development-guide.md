@@ -27,6 +27,7 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
    - An extrapolated state is never reused as simulation input.
    - Closing and ownership of resources (REQ-RES-003).
    - Not every capability exists on every platform (OQ-034); check before using.
+   - Screen mode, display mode and filter requests are best-effort: read the effective result instead of assuming it (ADR-0002, PROPOSED).
    - Android compatibility of any added dependency or Java API ([`android-compatibility.md`](android-compatibility.md)).
 6. **Differences from earlier LionEngine versions** — a table of renamed/removed concepts, so that agents do not reuse the old API from memory. *Filled when the v11 API exists.*
 7. **Where to look next** — [`api-index.md`](api-index.md), Javadoc, `examples`.
