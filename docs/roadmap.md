@@ -46,7 +46,7 @@
 ## Phase 3 — game world
 
 - objects/scenes;
-- basic traits; ECS dynamic objects, traits, queries, systems and the standard trait package (ADR-0011 PROPOSED, [`features/ecs.md`](features/ecs.md), [`features/standard-traits.md`](features/standard-traits.md)), after the build skeleton of Phase 0 and the decisions `OQ-041`, `OQ-042`, `OQ-013`, `OQ-010`;
+- basic traits; ECS dynamic objects, traits, queries, systems and the standard trait package (ADR-0011 ACCEPTED, [`features/ecs.md`](features/ecs.md), [`features/standard-traits.md`](features/standard-traits.md)), after the build skeleton of Phase 0 and the decisions `OQ-041`, `OQ-042`, `OQ-013`, `OQ-010`;
 - tilemap and tilesets (tile maps: ADR-0009 PROPOSED, [`features/tile-map.md`](features/tile-map.md));
 - camera: view rectangle, zoom, follow, smoothing and shake (ADR-0010 ACCEPTED, [`features/camera.md`](features/camera.md));
 - collisions according to the retained scope.

@@ -156,7 +156,7 @@ Envisaged examples: `Movable`, `Gravity`, `Collision`. Their names and semantics
 
 ### ECS objects, traits and standard traits
 
-Proposed by [ADR-0011](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (PROPOSED; `OQ-041` and `OQ-042` stay open). Responsibilities only; signatures are not fixed.
+Accepted by [ADR-0011](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (ACCEPTED; `OQ-041` and `OQ-042` stay open). Responsibilities only; signatures are not fixed.
 
 - **Object:** an opaque ID (index plus generation). Indices are recycled; a stale ID is detected. Accessors fail fast on a stale or never-valid ID; a liveness check never throws (`REQ-ECS-001`, `REQ-ECS-002`). A consumer that must tolerate a missing object, such as the camera follow lookup (`REQ-CAM-004`), uses the liveness check.
 - **Trait:** data only, registered once with an `int` type ID, without reflection or class scanning (`REQ-ECS-004`). Logic lives in systems.

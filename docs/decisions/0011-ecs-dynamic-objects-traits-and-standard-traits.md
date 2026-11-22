@@ -1,8 +1,8 @@
 # ADR-0011 — ECS: dynamic objects and traits, queries, systems and standard traits
 
-- Status: PROPOSED
+- Status: ACCEPTED
 - Date: 2026-11-22
-- Decision makers: to be filled in (the project owner decides; this ADR records an agent proposal built from the owner packet "ECS dynamic objects, traits & standard trait package")
+- Decision makers: project owner (acceptance requested in the session that followed the proposal: "accept ADR-0011 ... accept your proposal"; the proposal was built from the owner packet "ECS dynamic objects, traits & standard trait package")
 - Related requirements: `REQ-ECS-001` to `REQ-ECS-010`, `REQ-STD-001` to `REQ-STD-009`, `REQ-OBJ-001`, `REQ-OBJ-002`, `REQ-TRAIT-001`, `REQ-TRAIT-002`, `REQ-CAM-004`, `REQ-LOOP-003`, `REQ-LOOP-006`
 - Open questions resolved: none. Touched: `OQ-010`, `OQ-013`, `OQ-020`, `OQ-022`, `OQ-030`, `OQ-033`, `OQ-041`, `OQ-042`, `OQ-043`, `OQ-070`, `OQ-122`, `OQ-125`, `OQ-132`. Created: `OQ-137` to `OQ-146`.
 - Supersedes / superseded by: none. Builds on [ADR-0001](0001-technical-baseline-and-conventions.md) and [ADR-0010](0010-camera-system-in-camera.md) (not modified).
@@ -15,7 +15,7 @@ Inventory of existing ECS-related identifiers (packet item `OQ-NEW-1`): there is
 
 ## Decision
 
-This is a proposal; nothing below is a decision until the owner accepts it. The wording "Object" of the packet is the glossary's "Entity"; both name the opaque ID.
+Decisions 1 to 10 below were proposed by an agent and accepted by the owner on 2026-11-22. The wording "Object" of the packet is the glossary's "Entity"; both name the opaque ID.
 
 1. **Placement.** Two new modules: `ecs` (object IDs, trait registry and storage, queries, command buffer, events, system scheduling; depends on `core` only) and `traits` (the standard traits and systems; depends on `ecs` only, plus `core`). `traits` no longer depends on `world` (it did in `modules.md`); the relation between `world` and `ecs` is `OQ-146`.
 2. **Object.** An opaque ID made of an index and a generation. Indices are recycled, the generation is incremented on removal, so a stale ID is detected. Using a stale or never-valid ID in an accessor fails fast with a defined error; a separate liveness check is safe and never throws. This is how a consumer such as the camera follow adapter (`REQ-CAM-004`, "a missing entity is safe") coexists with fail-fast accessors. Java representation: `OQ-137`.
@@ -66,4 +66,4 @@ Not decided (kept open): Java types and signatures, ID bit layout (`OQ-137`), fl
 
 ## Validation
 
-Not yet validated. Owner action: accept, reject or amend decisions 1 to 10 (placement, ID, storage, deferred changes, standard set); the answers go in this section with the date. Until then every `REQ-ECS-*` and `REQ-STD-*` stays PROPOSED and nothing here resolves `OQ-041` or `OQ-042`.
+Accepted by the project owner on 2026-11-22 (explicit request in the session, accepting decisions 1 to 10 as proposed). Acceptance resolves no open question: `OQ-041` and `OQ-042` stay open and `OQ-137` to `OQ-146` stay open. The related requirements `REQ-ECS-001` to `REQ-ECS-010` and `REQ-STD-001` to `REQ-STD-009` stay PROPOSED until validated.

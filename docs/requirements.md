@@ -155,7 +155,7 @@ Note: the packet placeholders `REQ-GFX-SPR-NNN`, `REQ-GFX-ANI-NNN` and `REQ-GFX-
 
 ### ECS: dynamic objects, traits and standard traits
 
-Source: [ADR-0011](decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (PROPOSED), owner packet "ECS dynamic objects, traits & standard trait package". Features: [`features/ecs.md`](features/ecs.md), [`features/standard-traits.md`](features/standard-traits.md). These requirements refine `REQ-OBJ-001`, `REQ-TRAIT-001` and `REQ-TRAIT-002`, which are kept unchanged. "Object" is the glossary's "Entity". All rows stay PROPOSED until the owner accepts the ADR; the numeric budget of `REQ-ECS-009` is a proposal to calibrate (OQ-139).
+Source: [ADR-0011](decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (ACCEPTED), owner packet "ECS dynamic objects, traits & standard trait package". Features: [`features/ecs.md`](features/ecs.md), [`features/standard-traits.md`](features/standard-traits.md). These requirements refine `REQ-OBJ-001`, `REQ-TRAIT-001` and `REQ-TRAIT-002`, which are kept unchanged. "Object" is the glossary's "Entity". All rows stay PROPOSED until the owner accepts the ADR; the numeric budget of `REQ-ECS-009` is a proposal to calibrate (OQ-139).
 
 | ID | Requirement | Priority | Status | Expected verification |
 |---|---|---|---|---|

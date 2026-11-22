@@ -7,7 +7,7 @@
 - Flow: B of [`change-process.md`](../change-process.md) (new module `ecs`); ADR required and written
 - Affected modules: `ecs`, `core`, `test-support`, `examples`
 - Requirements: `REQ-ECS-001` to `REQ-ECS-010`
-- Applicable ADRs: [`ADR-0011`](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (PROPOSED), [`ADR-0001`](../decisions/0001-technical-baseline-and-conventions.md)
+- Applicable ADRs: [`ADR-0011`](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (ACCEPTED), [`ADR-0001`](../decisions/0001-technical-baseline-and-conventions.md)
 - Open questions involved: `OQ-020`, `OQ-030`, `OQ-041`, `OQ-042`, `OQ-122`, `OQ-132`, `OQ-137` to `OQ-141`, `OQ-145`, `OQ-146`
 
 ## Objective

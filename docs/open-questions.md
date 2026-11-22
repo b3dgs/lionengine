@@ -174,7 +174,7 @@ Raised by issue #868 and [ADR-0010](decisions/0010-camera-system-in-camera.md) (
 
 ## ECS: dynamic objects, traits and standard traits (ADR-0011)
 
-Raised by the owner packet "ECS dynamic objects, traits & standard trait package" and [ADR-0011](decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (PROPOSED). Touched, not resolved: OQ-010, OQ-013, OQ-020, OQ-022, OQ-030, OQ-033, OQ-041, OQ-042, OQ-043, OQ-070, OQ-122, OQ-125, OQ-132. All rows below are open. The packet placeholder `OQ-NEW-1` (links to existing ECS identifiers) is answered by the inventory in the ADR context and by OQ-137; `OQ-NEW-2` (tile collision with a tile map, separate packet) is the existing OQ-125.
+Raised by the owner packet "ECS dynamic objects, traits & standard trait package" and [ADR-0011](decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (ACCEPTED). Touched, not resolved: OQ-010, OQ-013, OQ-020, OQ-022, OQ-030, OQ-033, OQ-041, OQ-042, OQ-043, OQ-070, OQ-122, OQ-125, OQ-132. All rows below are open. The packet placeholder `OQ-NEW-1` (links to existing ECS identifiers) is answered by the inventory in the ADR context and by OQ-137; `OQ-NEW-2` (tile collision with a tile map, separate packet) is the existing OQ-125.
 
 | ID | Question | Needed by |
 |---|---|---|
