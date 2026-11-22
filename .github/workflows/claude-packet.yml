@@ -3,7 +3,7 @@
 #   1. Create an issue titled "[packet] ..." with the final packet as body.
 #   2. Comment "@claude plan"  -> Claude posts the list of files to change (nothing is modified).
 #   3. Read it, then comment "@claude apply" -> Claude edits, runs the check, opens a PR.
-# Requires the repository secret ANTHROPIC_API_KEY and the Claude GitHub app / action setup.
+# Requires the repository secret CLAUDE_CODE_OAUTH_TOKEN (generated with `claude setup-token`) and the Claude GitHub app / action setup.
 
 name: Decision packet
 
@@ -37,7 +37,7 @@ jobs:
         if: startsWith(github.event.comment.body, '@claude plan')
         uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
             Read AGENTS.md and docs/change-process.md. The decision packet is the body of issue #${{ github.event.issue.number }}:
 
@@ -56,7 +56,7 @@ jobs:
         if: startsWith(github.event.comment.body, '@claude apply')
         uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
             Read AGENTS.md and docs/change-process.md. The decision packet is the body of issue #${{ github.event.issue.number }}:
 
