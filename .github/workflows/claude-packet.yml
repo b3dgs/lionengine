@@ -15,11 +15,11 @@ on:
 
 jobs:
   packet:
-    # Only the repository owner comments, on issues (not PRs), and only on issues authored by an allowed login.
-    # Edit the allow-list in the fromJSON line below to add or remove authors.
+    # Only allowed logins can comment (and only on issues authored by an allowed login), on issues (not PRs).
+    # Edit the two allow-lists in the fromJSON lines below to add or remove logins.
     if: >
       !github.event.issue.pull_request &&
-      github.event.comment.author_association == 'OWNER' &&
+      contains(fromJSON('["b3dgs", "DjThunder"]'), github.event.comment.user.login) &&
       contains(fromJSON('["b3dgs", "DjThunder"]'), github.event.issue.user.login) &&
       (startsWith(github.event.comment.body, '@claude plan') ||
        startsWith(github.event.comment.body, '@claude apply'))
