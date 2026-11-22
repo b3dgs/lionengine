@@ -73,8 +73,13 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-ANIM-003 | Must | PROPOSED | ADR-0003 | OQ-020, OQ-022 | — | no test yet |
 | REQ-SHEET-001 | Must | PROPOSED | ADR-0003 | OQ-100 | — | no test yet |
 | REQ-SHEET-002 | Should | PROPOSED | ADR-0003 | OQ-106 | — | no test yet |
-| REQ-MAP-001 | Should | PROPOSED | — | — | — | no test yet |
-| REQ-MAP-002 | Should | PROPOSED | — | — | — | no test yet |
+| REQ-MAP-001 | Should | PROPOSED | ADR-0009 | OQ-012, OQ-044 | — | no test yet |
+| REQ-MAP-002 | Should | PROPOSED | — | OQ-125 | — | no test yet |
+| REQ-MAP-003 | Must | PROPOSED | ADR-0009 | — | — | no test yet |
+| REQ-MAP-004 | Must | PROPOSED | ADR-0009 | OQ-126, OQ-128, OQ-101 | — | no test yet |
+| REQ-MAP-005 | Must | PROPOSED | ADR-0009 | OQ-012, OQ-040, OQ-129 | — | no test yet |
+| REQ-MAP-006 | Must | PROPOSED | ADR-0009 | OQ-127 | — | no test yet |
+| REQ-MAP-007 | Should | PROPOSED | ADR-0009 | OQ-122 | — | no test yet |
 | REQ-OBJ-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-OBJ-002 | Could | PROPOSED | — | OQ-041 | — | no test yet |
 | REQ-TRAIT-001 | Should | PROPOSED | — | — | — | no test yet |

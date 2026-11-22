@@ -33,7 +33,7 @@
 | Resources | resolution, errors, streams, key normalization, idempotent release | each provider; key and release suite run by each consuming module (REQ-RES-005) | archive/Android/filesystem |
 | Audio | playback state, commands, seeded variant selection, playlist advance, cache hit and miss | short and long sound suites in `test-support`, run on every backend (REQ-AUDIO-009) | headless fake backend with controllable clock; codec, latency and Android on device (platform tests, later) |
 | Sprites | slicing, animation, mutation | data API | upload and rendering |
-| Tilemap | coordinates, layers, editing | map model | map rendering |
+| Tilemap | coordinates, bounds, set/get/clear, viewport-to-tile-range math, neighbor rules | loader suite in `test-support` (REQ-MAP-004) | headless: load, render commands only for visible tiles, destroy then render |
 | Objects | lifecycle, order | management strategy | complete scene |
 | Traits | isolated behavior, interactions | trait contract if defined | object composition |
 | Sprites, animations, sprite sheets | grid index math, transforms, palette mapping, animation state machine | sprite render and cache suites (`test-support`) | headless load, cache, render; AWT/OpenGL/Android color-transform parity; cache and batching performance |

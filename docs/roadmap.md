@@ -47,7 +47,7 @@
 
 - objects/scenes;
 - basic traits;
-- tilemap and tilesets;
+- tilemap and tilesets (tile maps: ADR-0009 PROPOSED, [`features/tile-map.md`](features/tile-map.md));
 - collisions according to the retained scope.
 
 **Expected output:** a simple 2D game demonstrator.

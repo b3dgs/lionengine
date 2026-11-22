@@ -147,3 +147,13 @@ Numbers announced in issue plan comments with another meaning and never assigned
 | OQ-097 | UNASSIGNED, not a question. Announced in the #852 plan for the pixel-buffer abstraction, merged as OQ-100. | — |
 | OQ-098 | UNASSIGNED, not a question. Announced in the #852 plan for the image cache policy, merged as OQ-101. | — |
 | OQ-099 | UNASSIGNED, not a question. Announced in the #852 plan for the color-transform capability model, merged as OQ-102. | — |
+
+## Tile maps (issue #865, ADR-0009)
+
+| ID | Question | Needed by |
+|---|---|---|
+| OQ-125 | Tile collision model, static and dynamic: shapes, link with the physics contracts (OQ-043). Out of scope of ADR-0009 (decision 4A); the tile model only keeps a per-tile properties hook. Touches `REQ-MAP-002`. | Phase 3 (before the collision batch) |
+| OQ-126 | Map file format and loader (decision 5A): the first batch uses an abstract loader contract tested with an in-memory test format; an own format or an existing one (e.g. Tiled TMX/JSON, license and Android/DEX review needed) stays open. | Before the loader batch |
+| OQ-127 | Auto-tiling rule format and neighborhood (4 or 8 neighbors) (decision 2A). | Before the destroy batch |
+| OQ-128 | Tileset reference form in a map file and tileset lifecycle: who owns and releases the sprite sheet; consistent with OQ-106 and the ADR-0007 keys. | Before the loader batch |
+| OQ-129 | Chunking and render cache strategy beyond viewport culling, and cell storage layout for large maps (Android memory). | Phase 3 (before large-map tests) |
