@@ -30,7 +30,7 @@
 |---|---|---|---|
 | Game loop | clock, time step, pause | each implementation | frontend lifecycle |
 | Resources | resolution, errors, streams | each provider | archive/Android/filesystem |
-| Audio | playback state, commands | each backend | codec and device |
+| Audio | playback state, commands, seeded variant selection, playlist advance, cache hit and miss | short and long sound suites in `test-support`, run on every backend (REQ-AUDIO-009) | headless fake backend with controllable clock; codec, latency and Android on device (platform tests, later) |
 | Sprites | slicing, animation, mutation | data API | upload and rendering |
 | Tilemap | coordinates, layers, editing | map model | map rendering |
 | Objects | lifecycle, order | management strategy | complete scene |

@@ -90,8 +90,16 @@ Note: the packet placeholder `REQ-RENDER-FILTER-NNN` is numbered `REQ-FILTER-NNN
 | REQ-RES-001 | Resource access is independent of the resource origin. | Must | PROPOSED | Same contract tested on several providers. |
 | REQ-RES-002 | Relative, Android, temporary, archive and stream origins are envisaged. | Should | PROPOSED | Tests per provider and error cases. |
 | REQ-RES-003 | Resource ownership and closing rules are explicit; a resource is never assumed to be a `File`. | Must | PROPOSED | Tests of closing, double closing and non-filesystem providers. |
-| REQ-AUDIO-001 | The engine exposes a backend-independent audio API. | Should | PROPOSED | Testable fake backend. |
-| REQ-AUDIO-002 | WAV, MP3 and OGG are target formats. | Should | PROPOSED | Codec/backend/platform matrix. |
+| REQ-RES-004 | Every module that handles a resource (an item reachable from a path: audio, graphics, ...) follows one common convention for resource keys and release; `resources` stays media-agnostic and decoded caches live inside the consuming modules (ADR-0004, decision 3B). | Should | PROPOSED | Contract tests reused by each consuming module: key equality, release, double release. Where the convention is documented: OQ-118. |
+| REQ-AUDIO-001 | The engine exposes a backend-independent audio API. Refined, not duplicated, by REQ-AUDIO-003 to REQ-AUDIO-009 (short and long sounds, ADR-0004, PROPOSED). | Should | PROPOSED | Testable fake backend. |
+| REQ-AUDIO-002 | WAV, MP3 and OGG are target formats (formats and decoders per platform: OQ-115). | Should | PROPOSED | Codec/backend/platform matrix. |
+| REQ-AUDIO-003 | Short sounds provide low-latency playback with a cache allowing heavy reuse without repeated loading or decoding. | Must | PROPOSED | Unit tests of cache hit and miss with a fake backend; latency threshold: OQ-116 (platform test later). |
+| REQ-AUDIO-004 | A short sound can be played individually and stopped. | Must | PROPOSED | Contract suite in `test-support` run on every backend, with defined behavior on stop of an already finished sound. |
+| REQ-AUDIO-005 | A variant set groups several short-sound files; playing it selects one variant randomly, or plays several simultaneously (composed sound, e.g. an explosion). Exact policies are `TO BE DEFINED` (OQ-112). | Must | PROPOSED | Unit tests with a seeded random source; selection and composition policies: OQ-112. |
+| REQ-AUDIO-006 | Long sounds (music, ambient) can be preloaded for direct use and released when no longer needed. | Must | PROPOSED | Unit and contract tests of preload, use after preload, release and double release; strategy: OQ-113. |
+| REQ-AUDIO-007 | A long sound can be played individually and stopped. | Must | PROPOSED | Contract suite in `test-support` run on every backend. |
+| REQ-AUDIO-008 | A predefined playlist of long sounds starts the next track when the current one terminates, and can be stopped. The advance logic is backend-independent (ADR-0004, decision 2A); backends only expose play, stop and end-of-track. | Must | PROPOSED | Unit tests of playlist advance with a fake backend and a controllable clock; end behavior, failing track and callback thread: OQ-114. |
+| REQ-AUDIO-009 | Audio contracts are testable headless with a fake backend and expose no platform type or concrete audio library type. | Must | PROPOSED | A fake backend in `test-support` passes the contract suites; dependency-rule check (REQ-CORE-005). |
 | REQ-SPR-001 | The engine handles modifiable images/sprites. | Must | PROPOSED | Mutation and lifecycle tests. |
 | REQ-SPR-002 | The engine handles animations and spritesheets. | Must | PROPOSED | Deterministic animation-progress tests. |
 

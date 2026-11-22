@@ -44,8 +44,16 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-RES-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-RES-002 | Should | PROPOSED | — | — | — | no test yet |
 | REQ-RES-003 | Must | PROPOSED | — | — | — | no test yet |
-| REQ-AUDIO-001 | Should | PROPOSED | — | — | — | no test yet |
-| REQ-AUDIO-002 | Should | PROPOSED | — | — | — | no test yet |
+| REQ-RES-004 | Should | PROPOSED | ADR-0004 | OQ-032, OQ-118 | — | no test yet |
+| REQ-AUDIO-001 | Should | PROPOSED | ADR-0004 | OQ-053 | — | no test yet |
+| REQ-AUDIO-002 | Should | PROPOSED | ADR-0004 | OQ-115 | — | no test yet |
+| REQ-AUDIO-003 | Must | PROPOSED | ADR-0004 | OQ-110, OQ-111, OQ-116 | — | no test yet |
+| REQ-AUDIO-004 | Must | PROPOSED | ADR-0004 | OQ-111 | — | no test yet |
+| REQ-AUDIO-005 | Must | PROPOSED | ADR-0004 | OQ-112 | — | no test yet |
+| REQ-AUDIO-006 | Must | PROPOSED | ADR-0004 | OQ-113 | — | no test yet |
+| REQ-AUDIO-007 | Must | PROPOSED | ADR-0004 | OQ-113 | — | no test yet |
+| REQ-AUDIO-008 | Must | PROPOSED | ADR-0004 | OQ-114 | — | no test yet |
+| REQ-AUDIO-009 | Must | PROPOSED | ADR-0004 | OQ-115 | — | no test yet |
 | REQ-SPR-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-SPR-002 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-SPRITE-001 | Must | PROPOSED | ADR-0003 | OQ-100, OQ-107 | — | no test yet |
