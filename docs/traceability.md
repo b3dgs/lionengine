@@ -48,6 +48,19 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-AUDIO-002 | Should | PROPOSED | — | — | — | no test yet |
 | REQ-SPR-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-SPR-002 | Must | PROPOSED | — | — | — | no test yet |
+| REQ-SPRITE-001 | Must | PROPOSED | ADR-0003 | OQ-100, OQ-107 | — | no test yet |
+| REQ-SPRITE-002 | Must | PROPOSED | ADR-0003 | OQ-101 | — | no test yet |
+| REQ-SPRITE-003 | Must | PROPOSED | ADR-0003 | OQ-104 | — | no test yet |
+| REQ-SPRITE-004 | Must | PROPOSED | ADR-0003 | OQ-100, OQ-102 | — | no test yet |
+| REQ-SPRITE-005 | Should | PROPOSED | ADR-0003 | OQ-102, OQ-103 | — | no test yet |
+| REQ-SPRITE-006 | Must | PROPOSED | ADR-0003 | OQ-104 | — | no test yet |
+| REQ-SPRITE-007 | Must | PROPOSED | ADR-0003 | OQ-100, OQ-108 | — | no test yet |
+| REQ-SPRITE-008 | Could | PROPOSED | ADR-0003 | OQ-108 | — | no test yet |
+| REQ-ANIM-001 | Must | PROPOSED | ADR-0003 | OQ-105 | — | no test yet |
+| REQ-ANIM-002 | Must | PROPOSED | ADR-0003 | — | — | no test yet |
+| REQ-ANIM-003 | Must | PROPOSED | ADR-0003 | — | — | no test yet |
+| REQ-SHEET-001 | Must | PROPOSED | ADR-0003 | OQ-100 | — | no test yet |
+| REQ-SHEET-002 | Should | PROPOSED | ADR-0003 | OQ-106 | — | no test yet |
 | REQ-MAP-001 | Should | PROPOSED | — | — | — | no test yet |
 | REQ-MAP-002 | Should | PROPOSED | — | — | — | no test yet |
 | REQ-OBJ-001 | Must | PROPOSED | — | — | — | no test yet |

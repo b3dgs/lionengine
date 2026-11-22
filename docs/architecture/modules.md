@@ -15,7 +15,7 @@
 | `resources-*` | Filesystem, archive, memory/temporary, Android and stream providers | `resources` |
 | `audio-api` | Backend-independent audio contracts | `core`, `resources` if needed |
 | `audio-*` | Audio backends and decoders | `audio-api` |
-| `graphics` | Images, logical textures, sprites, spritesheets, animations | `core`, `resources`, `render-api` depending on the separation to be defined (OQ-051) |
+| `graphics` | Images, logical textures, sprites, spritesheets, animations (ADR-0003, PROPOSED) | `core`, `resources`, `render-api` depending on the separation to be defined (OQ-051; ADR-0003 assumes sprites emit `render-api` commands) |
 | `tilemap` | Tilesets, grids, layers, static/dynamic maps | `core`, graphics contracts |
 | `input-api` | Normalized actions, states and input events | `core` |
 | `input-*` | Keyboard, mouse and gamepad adapters per platform | `input-api`, `platform-api` |
