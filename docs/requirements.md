@@ -133,6 +133,14 @@ Note: the packet placeholders `REQ-GFX-SPR-NNN`, `REQ-GFX-ANI-NNN` and `REQ-GFX-
 
 | ID | Requirement | Priority | Status | Expected verification |
 |---|---|---|---|---|
+| REQ-CAM-001 | A camera exposes a view rectangle in world units (meters, ADR-0001) as a plain value for rendering and queries (ADR-0010, decisions 3A and 6A). | Must | PROPOSED | Unit tests of the view rectangle for position and zoom. |
+| REQ-CAM-002 | Zoom is clamped to a configured range, can be animated, and a change applies from the next frame. | Must | PROPOSED | Unit tests of clamping, animation and next-frame application (details: OQ-135). |
+| REQ-CAM-003 | The camera position can be translated in absolute and in relative terms. | Must | PROPOSED | Unit tests of absolute and relative translation. |
+| REQ-CAM-004 | The camera can follow an entity by ID through a lookup contract defined by `camera` (ADR-0010, decision 2A); a missing entity is safe: no exception and the camera keeps its position. | Must | PROPOSED | Unit tests with a fake lookup, including a missing entity (entity ID type: OQ-132). |
+| REQ-CAM-005 | Camera movement has a configurable delay: exponential smoothing with a time constant in seconds, 0 meaning rigid, independent of the frame rate (ADR-0010, decision 4A). | Must | PROPOSED | Deterministic tests with a controllable clock at several frame rates (details: OQ-133). |
+| REQ-CAM-006 | A shake effect has amplitude, duration and frequency, and is deterministic for a given per-camera seed (ADR-0010, decision 5A). | Should | PROPOSED | Unit tests with a fixed seed (units and picking: OQ-134; randomness detail: OQ-130). |
+| REQ-CAM-007 | The camera converts world coordinates to screen coordinates and back; the meters-to-pixels factor is OQ-012. | Must | PROPOSED | Round-trip unit tests of the conversions. |
+| REQ-CAM-008 | Camera state changes (follow, delay, shake, zoom) happen in the update phase only; rendering only reads the state (`REQ-LOOP-003`, `REQ-LOOP-006`). The camera is headless, uses no platform type and is not a singleton. | Must | PROPOSED | Test that reading does not alter state; dependency-rule check once the build exists (REQ-CORE-005). |
 | REQ-MAP-001 | A tile map is a single-layer grid of cells (ADR-0009, decision 6A), each empty or referring to a tile of a tileset, i.e. a sprite sheet cell index (`REQ-SHEET-001`); its size is in tiles and its tile size in pixels of the logical frame. | Should | PROPOSED | Coordinate and cell-access tests. |
 | REQ-MAP-002 | Maps can distinguish static and dynamic content. | Should | PROPOSED | Modification and rendering tests. |
 | REQ-MAP-003 | Tiles can be created and set manually: `set`, `get` and `clear` by tile coordinates (`int` tile indices), with bounds checking and defined errors. | Must | PROPOSED | Unit tests of set/get/clear, out-of-bounds coordinates and empty cells. |

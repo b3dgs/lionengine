@@ -18,6 +18,7 @@
 | `audio-*` | Audio backends and decoders; own the decoded caches (ADR-0004, ADR-0005) | `audio-api`, `resources` |
 | `graphics` | Images, logical textures, sprites, spritesheets, animations (ADR-0003); owns its decoded image cache (ADR-0005); image decoders are platform-specific (OQ-100) | `core`, `resources`, `render-api` (ADR-0003: sprites emit `render-api` commands; OQ-051 resolved) |
 | `tilemap` | Tilesets, grids, layers, static/dynamic maps (single layer first, collision deferred: ADR-0009, PROPOSED) | `core`, graphics contracts; `resources` if map files are loaded through it (candidate under ADR-0005) |
+| `camera` | Camera: view rectangle in world units, zoom, translation, follow through a lookup contract, smoothing, shake; single module, headless, no ECS or platform dependency (ADR-0010, PROPOSED) | `core` only; the ECS adapter lives outside (OQ-132) |
 | `input-api` | Normalized actions, states and input events | `core` |
 | `input-*` | Keyboard, mouse and gamepad adapters per platform | `input-api`, `platform-api` |
 | `world` | Scenes, objects, lifecycle, queries | `core` |
@@ -33,7 +34,7 @@
 examples ─────────────► public APIs of all modules
 render-awt / render-opengl / platform-awt / platform-android / resources-* / audio-* / input-*
         └──────────────► *-api modules ──────────────► core
-runtime, world, graphics, tilemap ───────────────────► core (+ resources / render-api where listed)
+runtime, world, graphics, tilemap, camera ───────────────────► core (+ resources / render-api where listed)
 audio-api, audio-* ──────────────────────────────────► resources (ADR-0004, ADR-0005)
 traits ─► world        multiplayer ─► world, input-api       test-support ─► (test scope)
 ```

@@ -45,6 +45,7 @@
 | Template color mapping | Static transform mapping source colors (or an indexed channel) to target colors, producing a cached color variant of one sprite (e.g. team colors). |
 | Spritesheet | Same as sprite sheet. |
 | System | In ECS, logic that processes entities having a given set of components. |
+| Camera | Headless view onto the world: view rectangle in world units, zoom, translation, follow, smoothing and shake (ADR-0010). |
 | Tile | Cell or graphic element of a tileset. |
 | Tilemap | Map organized in cells and layers (single layer first, ADR-0009). |
 | Tileset | Sprite sheet whose cells are the tiles of a tile map (`REQ-SHEET-001`). |

@@ -31,5 +31,6 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 ## Proposed decisions
 
 - [`ADR-0009`](0009-tile-map-contracts-in-tilemap.md) — Tile map contracts in `tilemap` (PROPOSED, issue #865).
+- [`ADR-0010`](0010-camera-system-in-camera.md) — Camera system in `camera`: world-unit view rectangle, zoom, follow through a lookup contract, smoothing, seeded shake (PROPOSED, issue #868).
 
 Other likely candidates are listed in [`../open-questions.md`](../open-questions.md) (see items needed by Phase 0).
