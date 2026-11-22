@@ -19,7 +19,7 @@
 | Frameskipping | Dropping a presentation (render) when the machine cannot keep up, without dropping simulation computations. |
 | Frame boundary | Point between two presentations, outside any simulation update; a display or filter change requested while presentations are skipped applies at the next presentation (ADR-0002). |
 | Display mode | A combination of width and height in pixels, refresh rate in Hz and color depth in bits supported by a display (ADR-0002). |
-| Frontend | Adapter to a runtime environment (AWT, OpenGL, Android...). |
+| Frontend | Adapter to a runtime environment (AWT, OpenGL, Android...). On desktop, `platform-awt` implements `platform-api` (ADR-0008, PROPOSED). |
 | Logical resolution | Resolution in pixels of the frame the game renders, independent of the output display mode. |
 | Scaling policy | How the logical frame is scaled to the output surface: `FIT` (aspect-preserving, default), `INTEGER` (integer factors only, opt-in) or `STRETCH` (ADR-0006, PROPOSED). |
 | Effective result | Immutable value reporting, per field, the requested and the actually applied value of a display or filter request, with a `degraded` flag and a reason (ADR-0006, PROPOSED). |

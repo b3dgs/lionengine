@@ -69,9 +69,11 @@ Rules:
 | OQ-052 | Is `multiplayer` a base module or an optional extension? | Phase 5 |
 | OQ-053 | Are audio backends split by library, codec or platform? Touched by issue #853 (see OQ-115), not resolved. | Phase 2 |
 | OQ-054 | **RESOLVED** by [ADR-0003](decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md): abstract commands (owner decision 3B of issue #852); the command contract itself is OQ-108. Original question: rendering API style: abstract commands, drawing context, or specialized interface. | Phase 2 |
-| OQ-055 | Which frontend is the first reference frontend? (A headless frontend for tests is already required by REQ-TEST-001.) | Phase 1 |
+| OQ-055 | Which frontend is the first reference frontend? (A headless frontend for tests is already required by REQ-TEST-001.) Touched by [ADR-0008](decisions/0008-awt-desktop-implementer-of-platform-api.md) (PROPOSED): `platform-awt` is the desktop reference implementer of `platform-api`; the render side is OQ-123. | Phase 1 |
 | OQ-120 | **RESOLVED** by [ADR-0006](decisions/0006-display-scaling-effective-result-and-fallback-orders.md) (PROPOSED): effective result as an immutable value (requested vs effective per field, `degraded` flag, reason) delivered at the frame boundary and readable as current state; apply never blocks; fallback orders for screen modes, display modes and filters fixed in the ADR (issue #859). Delivery mechanism: OQ-122. Original question: form of the effective-result report and the documented fallback orders for screen modes (REQ-DISPLAY-002) and filter chains (REQ-FILTER-002). | Phase 2 |
-| OQ-119 | Which module implements `platform-api` on desktop (AWT, OpenGL): `render-awt` / `render-opengl`, or separate desktop platform modules? Needed by the screen and display modes of ADR-0002. Raised by the joint review of packets #850, #852 and #853. | Phase 1 |
+| OQ-119 | Which module implements `platform-api` on desktop (AWT, OpenGL): `render-awt` / `render-opengl`, or separate desktop platform modules? Needed by the screen and display modes of ADR-0002. Raised by the joint review of packets #850, #852 and #853. Answered by [ADR-0008](decisions/0008-awt-desktop-implementer-of-platform-api.md) (PROPOSED, issue #861): a separate `platform-awt` module using the JDK AWT only; resolved once the ADR is `ACCEPTED`. | Phase 1 |
+| OQ-123 | Which module provides the desktop render side with `platform-awt` (`render-awt`, `render-opengl`, a later LWJGL/GLFW backend), and how the AWT surface reaches it without crossing an `*-api` (an implementation-to-implementation dependency or another mechanism). Raised by issue #861. | Phase 1 |
+| OQ-124 | How the neutral display-mode value types (ADR-0002) represent an unknown refresh rate or a multi or unknown bit depth (AWT reports `0` and `-1`). Raised by issue #861. | Phase 2 (before display contracts) |
 
 ## Game development and workflow
 
@@ -94,7 +96,7 @@ Raised by issue #850 and [ADR-0002](decisions/0002-display-modes-resolution-and-
 | OQ-093 | Source and license of the `HQ2X` and CRT algorithms (own implementation or third-party library; license and Android/DEX compatibility to be recorded, see OQ-006). | Phase 2 (before filter implementation) |
 | OQ-094 | Shader portability (GLSL vs GLSL ES) and delivery of shader assets through `resources` (needed by CRT and custom filters); if confirmed, rendering backends follow the common resource convention (ADR-0005). | Phase 2 (before CRT) |
 | OQ-095 | Persistence of user display settings: engine responsibility or game responsibility. | Phase 4 |
-| OQ-096 | Multi-monitor and HiDPI. Owner decision 4A of issue #850 (ADR-0002, ACCEPTED): out of the first batch. Open until it is scheduled; the contracts must not preclude it. | Phase 4 (before the display feature is extended) |
+| OQ-096 | Multi-monitor and HiDPI. Owner decision 4A of issue #850 (ADR-0002, ACCEPTED): out of the first batch. Open until it is scheduled; the contracts must not preclude it. AWT applies HiDPI scaling by default on some systems, so `platform-awt` may report scaled pixel sizes (ADR-0008). | Phase 4 (before the display feature is extended) |
 
 ## Sprites, animations and sprite sheets
 

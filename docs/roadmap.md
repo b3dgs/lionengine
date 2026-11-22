@@ -24,7 +24,7 @@
 - abstract clock and test-driven loop (`test-support`);
 - runtime lifecycle;
 - resources with memory and filesystem providers;
-- minimal reference frontend;
+- minimal reference frontend (desktop `platform-api` implementer: `platform-awt`, ADR-0008; render side: OQ-123);
 - contract tests and a headless example;
 - the `examples` module with a CI job that compiles and runs every example (REQ-DOC-001);
 - first entries of the API index and of the game development guide (REQ-DOC-002, REQ-DOC-003);

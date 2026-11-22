@@ -10,6 +10,7 @@
 | `render-api` | Rendering contracts, textures, commands, viewport, output filtering (ADR-0002), scaling policy type (ADR-0006, PROPOSED) | `core` |
 | `render-awt` | AWT implementation | `render-api`, `platform-api` |
 | `render-opengl` | OpenGL implementation | `render-api`, `platform-api`; `resources` if shader assets are delivered through it (OQ-094, candidate under ADR-0005) |
+| `platform-awt` | Desktop implementation of `platform-api` with the JDK AWT: window and surface lifecycle, screen modes, display modes, effective-result report; no rendering, input, audio or resources (ADR-0008, PROPOSED) | `platform-api`, `core`; JDK `java.desktop` only; excluded from Android builds |
 | `platform-android` | Android lifecycle, surface, resources and input adaptation | `platform-api` and the `*-api` modules it implements |
 | `resources` | Resolution, opening, metadata and lifecycle of resources; media-agnostic, no decoded cache (ADR-0005); resource key and missing-resource exception types (ADR-0007, PROPOSED) | `core` |
 | `resources-*` | Filesystem, archive, memory/temporary, Android and stream providers | `resources` |
@@ -30,7 +31,7 @@
 
 ```text
 examples ─────────────► public APIs of all modules
-render-awt / render-opengl / platform-android / resources-* / audio-* / input-*
+render-awt / render-opengl / platform-awt / platform-android / resources-* / audio-* / input-*
         └──────────────► *-api modules ──────────────► core
 runtime, world, graphics, tilemap ───────────────────► core (+ resources / render-api where listed)
 audio-api, audio-* ──────────────────────────────────► resources (ADR-0004, ADR-0005)
@@ -49,4 +50,4 @@ Arrows always point from the dependent module to its dependency. A cycle, or an 
 
 ## Open points
 
-Module-related open points (OQ-041, OQ-043, OQ-044, OQ-052, OQ-053, OQ-121 for the thread safety of module caches and OQ-119 for the desktop implementer of `platform-api`) are tracked in [`../open-questions.md`](../open-questions.md).
+Module-related open points (OQ-041, OQ-043, OQ-044, OQ-052, OQ-053, OQ-121 for the thread safety of module caches and OQ-119 for the desktop implementer of `platform-api` (answered by ADR-0008, PROPOSED), OQ-123 for the desktop render side) are tracked in [`../open-questions.md`](../open-questions.md).
