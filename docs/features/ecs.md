@@ -8,7 +8,7 @@
 - Affected modules: `ecs`, `core`, `test-support`, `examples`
 - Requirements: `REQ-ECS-001` to `REQ-ECS-013`, `REQ-WORLD-001`, `REQ-OBJ-001`, `REQ-OBJ-002`, `REQ-DET-001`, `REQ-DET-003`
 - Applicable ADRs: [`ADR-0011`](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0021`](../decisions/0021-scene-world-viewport-and-object-model.md), [`ADR-0030`](../decisions/0030-ecs-details-ids-flush-scheduling-collision-and-traits.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0034`](../decisions/0034-camera-and-ecs-defaults-noise-clamp-slots-capacities-events-shapes.md)
-- Open questions involved: `OQ-147` (Android benchmark device)
+- Open questions involved: none (Android benchmark once the Android job exists, ADR-0041)
 
 ## Objective
 

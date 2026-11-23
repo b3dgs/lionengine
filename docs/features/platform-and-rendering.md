@@ -7,7 +7,7 @@
 - Affected modules: `platform-api`, `render-api`, `platform-awt`, `render-awt`, `test-support`, `examples`
 - Requirements: `REQ-FE-001` to `REQ-FE-003`, `REQ-PLATFORM-001`, `REQ-PLATFORM-002`, `REQ-RT-001`, `REQ-RT-008`, `REQ-SPRITE-010`, `REQ-TEST-001`, `REQ-CORE-006`
 - Applicable ADRs: [`ADR-0008`](../decisions/0008-awt-desktop-implementer-of-platform-api.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0020`](../decisions/0020-no-reflection-factory-registry-and-capability-lookup.md), [`ADR-0022`](../decisions/0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0037`](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md), [`ADR-0040`](../decisions/0040-thread-hand-off-contracts-in-core-and-loop-wiring.md)
-- Open questions involved: `OQ-096` (HiDPI: `platform-awt` may report scaled sizes)
+- Open questions involved: none (HiDPI settled by [`ADR-0043`](../decisions/0043-display-v11-scope-default-monitor-device-pixels.md): `platform-awt` reports device pixels)
 
 ## Objective
 
@@ -35,7 +35,7 @@ Display modes and filters (see [`display-modes.md`](display-modes.md), [`output-
 
 ### Desktop AWT (`platform-awt`, `render-awt`)
 
-- `platform-awt`: a `java.awt` window, active rendering (no repaint events), the loop on a dedicated thread named `lionengine-runtime`, AWT events converted into inbox events; `AwtSurface` capability for `render-awt` and `input-awt`.
+- `platform-awt`: a `java.awt` window on the default monitor, sizes reported in device pixels (AWT HiDPI scale converted, `render-awt` presenting at device-pixel resolution, ADR-0043), active rendering (no repaint events), the loop on a dedicated thread named `lionengine-runtime`, AWT events converted into inbox events; `AwtSurface` capability for `render-awt` and `input-awt`.
 - `render-awt`: executes the command buffer into an offscreen image of the logical frame size, then scales it to the window with the scaling policy; nearest-neighbor sampling; CPU filters later (ADR-0033).
 - Nothing of AWT leaves these modules except through `AwtSurface`.
 

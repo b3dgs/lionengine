@@ -68,6 +68,7 @@ Today no engine code exists: every area below is at most *Specified*.
 - Output filters on the final image: none (sharp pixels), smooth, `HQ2X`-style upscaling, CRT effect; custom filters can be added.
 - Drawing is done in layers; several views can share the screen (split screen, minimap).
 - The window reports resize, focus, background and close; closing can be confirmed by the game.
+- Version 11 opens on the default monitor; on high-density (HiDPI) screens the scaling works on real device pixels, so whole-multiple scaling stays crisp. Choosing another monitor is not offered yet (ADR-0043).
 
 ## Images, sprites and animations
 

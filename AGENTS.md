@@ -78,7 +78,7 @@ At the end, provide:
 
 When documentation was changed, run `python3 -I scripts/check-docs.py` and report its result. A change coming from a decision packet ([`docs/templates/DECISION-PACKET-TEMPLATE.md`](docs/templates/DECISION-PACKET-TEMPLATE.md)) is applied only as far as the packet states decisions as taken.
 
-Never claim a test was run if it was not. Build and test commands are `TO BE DEFINED` until the build skeleton exists (OQ-149): never invent them.
+Never claim a test was run if it was not. Build and test commands are written by the build-skeleton batch (ADR-0042); until it is merged none exists: never invent them.
 
 ## 8. Building a game with the engine
 

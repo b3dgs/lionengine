@@ -62,7 +62,7 @@
 
 ## Test tooling
 
-Framework: **JUnit 5** (ADR-0012); coverage with JaCoCo merged for SonarCloud. Exact versions and build commands are set with the build skeleton (OQ-149) and recorded in `README.md` and `AGENTS.md`; until then no test command exists.
+Framework: **JUnit 5** (ADR-0012); coverage with JaCoCo merged for SonarCloud. Exact versions and build commands are set with the build skeleton (ADR-0042) and recorded in `README.md` and `AGENTS.md`; until then no test command exists.
 
 - Allocation tests use the per-thread allocation counter of the JVM (`com.sun.management.ThreadMXBean`), in JVM-only test code; they assert zero bytes over many steady-state steps after warm-up (ADR-0030).
 - Benchmarks use the project's own harness (warm-up, median over many steps); CI asserts allocation and linear scaling only; wall-clock results go to a non-blocking trend job on the standard Linux runner (ADR-0030, ADR-0034).
@@ -75,4 +75,4 @@ Filled by the benchmark batches (REQ-PERF-001); a value appears here only once m
 | Tier | Reference | Step budget | Memory | Measured on |
 |---|---|---|---|---|
 | Desktop | CI trend-job runner (standard Linux) | ≤ 1 ms per step for 1,000 objects × 4 traits (REQ-ECS-009) | not measured yet | — |
-| Android | mid-range API 21-era device (OQ-147) | frame ≤ 16.6 ms (REQ-PERF-002) | not measured yet | — |
+| Android | mid-range API 21-era device (ADR-0041) | frame ≤ 16.6 ms (REQ-PERF-002) | not measured yet | — |

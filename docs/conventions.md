@@ -6,7 +6,7 @@
 
 - Names carry the unit when the type does not (`deltaSeconds`, `speedMetersPerSecond`, `positionX`, `angleDegrees`).
 - No `ms`, `px` or unit-less `time`/`speed`/`size` in world-facing APIs.
-- Group `com.b3dgs.lionengine`, artifacts `lionengine-XXX` (`XXX` = module name), base package `com.b3dgs.lionengine` (ADR-0012); package tree per module verified at the build skeleton (OQ-149).
+- Group `com.b3dgs.lionengine`, artifacts `lionengine-XXX` (`XXX` = module name), base package `com.b3dgs.lionengine` (ADR-0012); package tree per module verified at the build skeleton (ADR-0037, ADR-0042).
 - World: origin `(0, 0)`, Y up, meters, `double`; screen (logical frame): origin top left, Y down, pixels; angles in degrees in public APIs and data files (ADR-0013, ADR-0014).
 - Rotation is counter-clockwise positive, `0°` along `+X`; absolute angles in `[0, 360)`, signed differences in `(-180, 180]`; normalization only through explicit helpers, never in setters (ADR-0016).
 - Registry ids are `namespace:name` in lower case (`lionengine:movable`); resource keys are normalized logical paths (`sprites/hero.png`) (ADR-0007, ADR-0032).
@@ -29,7 +29,7 @@
 - No `java.util.function`, `Optional`, streams or `java.time` in shared public APIs or hot paths: callbacks are small role-named interfaces with one abstract method (`SceneFactory<C>`, `TransitionCondition<C>`, `CloseListener`), absence is `null` plus a `has...` check, documented.
 - Interfaces carry no `I` prefix and implementations no `Impl` suffix: an implementation is named by what distinguishes it (`AwtPlatform`, `FileProvider`, `FakeAudioBackend`).
 - Listeners are `XxxListener` with `onYyy` methods; factories `XxxFactory` with `create`; exceptions `XxxException` extending `RuntimeException`.
-- Engine value types are `final` classes until records are verified for Android (OQ-147).
+- Engine value types are `final` classes until records are verified for Android by the Android job (ADR-0041).
 
 ## Errors
 

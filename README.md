@@ -13,7 +13,7 @@
 
 ## Architecture
 
-> Status: **VALIDATED specification** — every requirement and document is validated and backed by the decisions in `docs/decisions/` (ADR-0001 to ADR-0040). Only three questions remain open: the build skeleton (OQ-149), the Android/DEX verification (OQ-147) and multi-monitor and HiDPI (OQ-096, Phase 4).
+> Status: **VALIDATED specification** — every requirement and document is validated and backed by the decisions in `docs/decisions/` (ADR-0001 to ADR-0043). No question remains open: the next step is the build-skeleton batch.
 
 **New here? Start with [`docs/how-the-engine-works.md`](docs/how-the-engine-works.md)**: a short, diagram-based explanation readable by anybody.
 
@@ -78,4 +78,4 @@ In case of contradiction, a `VALIDATED` decision prevails over a proposal. If tw
 
 ### Initial state
 
-All decisions ADR-0001 to ADR-0040 are `ACCEPTED`: technical baseline and units (ADR-0001, ADR-0012 to ADR-0016), game loop, threads, loading and no reflection (ADR-0017 to ADR-0020), object model and modules (ADR-0021, ADR-0022), game workflow and budgets (ADR-0023, ADR-0024), and every feature contract (ADR-0002 to ADR-0011, ADR-0025 to ADR-0030). ADR-0031 to ADR-0035 fixed the remaining defaults (runtime, data files and dependencies, media, camera and ECS, input), ADR-0036 the scene flow, ADR-0037 the package tree, callback types and canonical names, and ADR-0038 and ADR-0039 the network model and protocol, under the owner's delegation of 2026-11-23; ADR-0040 moved the thread hand-off contracts (inbox, asynchronous handles, worker pool, loop control) to `core` after the architecture review. Every requirement and document is **VALIDATED**; templates keep `PROPOSED` as the initial status of the items created from them.
+All decisions ADR-0001 to ADR-0043 are `ACCEPTED`: technical baseline and units (ADR-0001, ADR-0012 to ADR-0016), game loop, threads, loading and no reflection (ADR-0017 to ADR-0020), object model and modules (ADR-0021, ADR-0022), game workflow and budgets (ADR-0023, ADR-0024), and every feature contract (ADR-0002 to ADR-0011, ADR-0025 to ADR-0030). ADR-0031 to ADR-0035 fixed the remaining defaults (runtime, data files and dependencies, media, camera and ECS, input), ADR-0036 the scene flow, ADR-0037 the package tree, callback types and canonical names, and ADR-0038 and ADR-0039 the network model and protocol, under the owner's delegation of 2026-11-23; ADR-0040 moved the thread hand-off contracts (inbox, asynchronous handles, worker pool, loop control) to `core` after the architecture review, and ADR-0041 to ADR-0043 closed the last questions (Android bytecode fallback, Maven Central, version 11 display scope). Every requirement and document is **VALIDATED**; templates keep `PROPOSED` as the initial status of the items created from them.

@@ -15,9 +15,9 @@ Done (ADR-0001 to ADR-0039):
 - network model, protocol and sessions (ADR-0038, ADR-0039).
 
 Remaining, in this order:
-1. build skeleton ([`features/build-skeleton.md`](features/build-skeleton.md), OQ-149): declare the modules of `architecture/modules.md` as Maven modules with empty `package-info.java`, package tree verified by `radial-encapsulation-maven-plugin`, JUnit 5, Javadoc with doclint failing on warnings (REQ-CORE-003), coverage, exact build and test commands recorded in `README.md` and `AGENTS.md`;
+1. build skeleton ([`features/build-skeleton.md`](features/build-skeleton.md), ADR-0042): declare the modules of `architecture/modules.md` as Maven modules with empty `package-info.java`, package tree verified by `radial-encapsulation-maven-plugin`, JUnit 5, Javadoc with doclint failing on warnings (REQ-CORE-003), coverage, exact build and test commands recorded in `README.md` and `AGENTS.md`;
 2. CI: Linux build and tests, Windows and macOS as non-blocking jobs (REQ-SUPPORT-001), documentation check, API index and asset provenance checks (REQ-DOC-005, REQ-DOC-006);
-3. Android/DEX verification job and the record of verified Java features at API 21 (OQ-147).
+3. Android/DEX verification job and the record of the shared bytecode level (25, 21 or 17) and verified Java features at API 21 (ADR-0041).
 
 **Expected output:** a compilable repository skeleton passing CI, including the Android/DEX job.
 
@@ -60,7 +60,7 @@ Remaining, in this order:
 - Android frontend: `platform-android`, `audio-android`, `input-android`, `graphics-android`, on top of the already verified Android/DEX pipeline;
 - `render-opengl` with the GPU filters (CRT);
 - desktop gamepad adapter, with its dependency recorded (ADR-0035);
-- multi-monitor and HiDPI, if scheduled (OQ-096).
+- monitor selection, if a game needs it (a new ADR; version 11 uses the default monitor and device pixels, ADR-0043).
 
 **Expected output:** the same game logic running on desktop and Android.
 
@@ -83,4 +83,4 @@ Remaining, in this order:
 
 ## Progression rule
 
-Each phase is split into small, verifiable batches. A batch defines its scope, requirements, APIs, tests, dependencies and acceptance criteria before implementation (see [`templates/FEATURE-TEMPLATE.md`](templates/FEATURE-TEMPLATE.md)). The open questions needed by a phase are resolved before that phase starts (today: OQ-147 and OQ-149 for Phase 0). A batch that adds or changes a public API is not complete without its example and its API-index entry.
+Each phase is split into small, verifiable batches. A batch defines its scope, requirements, APIs, tests, dependencies and acceptance criteria before implementation (see [`templates/FEATURE-TEMPLATE.md`](templates/FEATURE-TEMPLATE.md)). The open questions needed by a phase are resolved before that phase starts (none is open today). A batch that adds or changes a public API is not complete without its example and its API-index entry.

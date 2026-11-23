@@ -7,7 +7,7 @@
 - Affected modules: `platform-api`, `platform-awt`, `render-api`, `render-awt`, `render-opengl`, `platform-android`, `test-support`, `examples`
 - Requirements: `REQ-DISPLAY-001` to `REQ-DISPLAY-009`, `REQ-PLATFORM-001`, `REQ-PLATFORM-002`
 - Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md), [`ADR-0006`](../decisions/0006-display-scaling-effective-result-and-fallback-orders.md), [`ADR-0008`](../decisions/0008-awt-desktop-implementer-of-platform-api.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0022`](../decisions/0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md), [`ADR-0025`](../decisions/0025-filter-implementation-shaders-and-display-settings.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md)
-- Open questions involved: `OQ-096` (multi-monitor and HiDPI, deferred; contracts must not preclude it)
+- Open questions involved: none (multi-monitor and HiDPI scope of version 11: [`ADR-0043`](../decisions/0043-display-v11-scope-default-monitor-device-pixels.md))
 
 ## Objective
 
@@ -15,7 +15,7 @@ Let a game request a screen mode, a display mode and a logical resolution throug
 
 ## Out of scope
 
-Output filtering (see [`output-filtering.md`](output-filtering.md)); multi-monitor and HiDPI (`OQ-096`); persistence of user settings (game responsibility, ADR-0025); a "required" request flag (ADR-0002, decision 2A).
+Output filtering (see [`output-filtering.md`](output-filtering.md)); monitor selection (not in version 11: default monitor, device pixels, ADR-0043, `REQ-DISPLAY-010`); persistence of user settings (game responsibility, ADR-0025); a "required" request flag (ADR-0002, decision 2A).
 
 ## Expected behavior
 

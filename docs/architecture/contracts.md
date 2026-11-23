@@ -1,6 +1,6 @@
 # Cross-cutting contracts
 
-**Status: VALIDATED — responsibilities, invariants and defaults of every contract (ADR-0001 to ADR-0040). Java signatures are written by each implementation batch under [`../conventions.md`](../conventions.md) and reviewed in its pull request.**
+**Status: VALIDATED — responsibilities, invariants and defaults of every contract (ADR-0001 to ADR-0043). Java signatures are written by each implementation batch under [`../conventions.md`](../conventions.md) and reviewed in its pull request.**
 
 Each public contract must specify: responsibility, invariants, lifecycle, calling thread, units, errors, data ownership, behavior when a capability is absent, and compatibility (including Android/DEX). A plain-language summary with diagrams is in [`../how-the-engine-works.md`](../how-the-engine-works.md).
 
@@ -49,7 +49,7 @@ Capability-based best-effort negotiation: the game requests, the platform applie
 - **Custom filters:** a registry id, explicit registration on the backend, a scaling or post kind, a fragment shader resource and/or a CPU implementation over `int[]` ARGB; a backend lacking the needed implementation skips it and reports the skip.
 - **Fallback orders:** screen mode `FULL_SCREEN` → `FULL_WINDOW` → `WINDOWED`, `WINDOWED` → `FULL_WINDOW` → `FULL_SCREEN`, `FULL_WINDOW` → `WINDOWED` → `FULL_SCREEN`; display mode exact, then nearest size, rate, depth; filters: CRT skipped, `HQ2X` → bilinear → `NONE`.
 - **Effective result:** apply returns the accepted request without blocking; the effective result (requested vs effective per field, `degraded` flag, reason) is an immutable value delivered through the inbox at the frame boundary where it is applied and readable as the current state.
-- Changes apply at a frame boundary and never alter simulation state. No AWT, OpenGL or Android type in these contracts. Settings persistence is the game's job. Multi-monitor and HiDPI: OQ-096 (contracts assume neither one monitor nor scale 1.0).
+- Changes apply at a frame boundary and never alter simulation state. No AWT, OpenGL or Android type in these contracts. Settings persistence is the game's job. Version 11 uses the default monitor and reports sizes in device pixels; contracts assume neither one monitor nor scale 1.0 (ADR-0043).
 
 Details: [`features/display-modes.md`](../features/display-modes.md), [`features/output-filtering.md`](../features/output-filtering.md).
 

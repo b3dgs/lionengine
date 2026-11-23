@@ -1,6 +1,6 @@
 # Conceptual module breakdown
 
-**Status: VALIDATED — module list, responsibilities and allowed dependencies (ADR-0002 to ADR-0040). Each module becomes one artifact `lionengine-<module>` (ADR-0012); its declaration and package tree are done at the build skeleton (OQ-149).**
+**Status: VALIDATED — module list, responsibilities and allowed dependencies (ADR-0002 to ADR-0043). Each module becomes one artifact `lionengine-<module>` (ADR-0012); its declaration and package tree are done at the build skeleton (ADR-0042).**
 
 | Domain | Responsibility | Allowed dependencies |
 |---|---|---|
@@ -87,4 +87,4 @@ Arrows always point from the dependent module to its dependency. A cycle, or an 
 
 ## Open points
 
-Only the build-skeleton work remains: physical declaration of these modules with their root packages, profiles and commands (OQ-149, [`../features/build-skeleton.md`](../features/build-skeleton.md)), and the Android verification job (OQ-147).
+None. The build-skeleton batch declares these modules with their root packages, profiles and commands ([`../features/build-skeleton.md`](../features/build-skeleton.md), ADR-0042) and runs the Android verification job (ADR-0041).
