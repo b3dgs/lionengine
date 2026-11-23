@@ -1,13 +1,13 @@
 # Feature: animated sprite
 
-**Status: PROPOSED**
+**Status: VALIDATED**
 
-- Owner: to be filled in
+- Owner: project owner
 - Roadmap phase: Phase 2, see `roadmap.md` (batch order: sprite sheet, sprite, animated sprite)
-- Affected modules: `graphics`, `render-api` (sprite only), `resources`, `test-support`, `examples`
-- Requirements: `REQ-ANIM-001` to `REQ-ANIM-003`
-- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md) (ACCEPTED)
-- Open questions involved: `OQ-160`
+- Affected modules: `graphics`, `render-api`, `resources`, `test-support`, `examples`
+- Requirements: `REQ-ANIM-001` to `REQ-ANIM-003`, `REQ-SPR-002`
+- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0017`](../decisions/0017-fixed-step-game-loop.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md)
+- Open questions involved: none
 
 ## Objective
 
@@ -19,38 +19,38 @@ Sprite transforms and color (see [`sprite.md`](sprite.md)); sheet representation
 
 ## Expected behavior
 
-- Animation: frames, durations in seconds, loop mode; defined in code and loadable from a resource (format: `OQ-105`).
-- Play, pause, resume, stop with specified state transitions; invalid transitions defined.
-- Time advances only from the update step; extrapolated or interpolated render values are never fed back (`REQ-LOOP-006`).
-- Frames come from sheet cells or regions of the same shared source (decision 4).
+- An animation is a list of cell indices (`frames`), a frame duration in seconds (`frameDuration`), optional per-frame durations (`frameDurations`, one per frame, overriding `frameDuration`) and a loop mode: `once` (stops on the last frame), `loop` (restarts at the first) or `ping-pong` (plays forward then backward, the end frames shown once per turn).
+- Animations are built in code or read from the `animations` object of the sprite sheet definition; invalid data (empty frames, negative or zero duration, index out of range, unknown loop mode) fails with the definition exception.
+- States: stopped, playing, paused, finished (`once` only). `play` starts from the first frame; `pause` keeps the frame; `resume` continues from a pause; `stop` returns to the first frame in the stopped state. A call that makes no sense in the current state (for example `resume` while playing) throws `IllegalStateException`.
+- Time advances only from the update step with the constant step in seconds; several frames may be skipped in one step when the step is longer than a frame; rendering never changes the animation state (`REQ-LOOP-006`).
+- Frames come from cells of the same shared source.
 
 ## Envisaged APIs / contracts
 
-Responsibilities only; signatures are not fixed. See `architecture/contracts.md`.
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Images, sprites and animations); signatures written by the batch: animation value, animator state machine, animated sprite.
 
 ## Lifecycle and concurrency
 
-An animated sprite holds playback state only; images stay owned by the `graphics` cache (ADR-0005). Update on the runtime thread (`OQ-030`).
+An animated sprite holds playback state only; images stay owned by the `graphics` cache. Runtime thread only.
 
 ## Units and Android/DEX compatibility
 
-Seconds for durations; pixels for frames. Any decoding API or dependency needs its purpose, license and DEX compatibility recorded first (`docs/android-compatibility.md`).
+Seconds for durations; cell indices for frames. Pure Java, no platform type.
 
 ## Dependencies
 
-Allowed: `core`, `resources`, `render-api` (ADR-0003; `OQ-051` resolved). Forbidden: AWT, OpenGL or Android types in `graphics` APIs.
+`core`, `resources`, `render-api`. Forbidden: AWT, OpenGL or Android types in `graphics` APIs.
 
 ## Tests
 
-- Unit tests: animation state machine, frame selection, loop modes, invalid transitions.
+- Unit tests: state machine including invalid transitions, frame selection for each loop mode, per-frame durations, frame skipping with a long step.
 - Contract tests (`test-support`): deterministic progress with a controllable clock.
-- Integration tests: headless animation loaded from a resource, advanced by update steps.
-- Platform/performance tests: color-transform parity and cache performance where relevant.
+- Integration tests: headless animation loaded from a sheet definition, advanced by update steps and rendered.
 
 ## Acceptance criteria
 
 - [ ] Requirements covered.
-- [ ] API validated.
+- [ ] API reviewed in the pull request.
 - [ ] Automated tests added and passing.
 - [ ] Complete Javadoc.
 - [ ] Headless example, API-index entry, traceability updated (REQ-DOC-001, REQ-DOC-002).

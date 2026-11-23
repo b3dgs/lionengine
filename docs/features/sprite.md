@@ -1,13 +1,13 @@
 # Feature: sprite
 
-**Status: PROPOSED**
+**Status: VALIDATED**
 
-- Owner: to be filled in
+- Owner: project owner
 - Roadmap phase: Phase 2, see `roadmap.md` (batch order: sprite sheet, sprite, animated sprite)
-- Affected modules: `graphics`, `render-api` (sprite only), `resources`, `test-support`, `examples`
-- Requirements: `REQ-SPRITE-001` to `REQ-SPRITE-008`
-- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md) (ACCEPTED), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md) (ACCEPTED)
-- Open questions involved: `OQ-121`, `OQ-160` (`OQ-118` resolved; `OQ-011`, `OQ-012` touched)
+- Affected modules: `graphics`, `render-api`, `resources`, `test-support`, `examples`
+- Requirements: `REQ-SPRITE-001` to `REQ-SPRITE-010`, `REQ-SPR-001`
+- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md), [`ADR-0014`](../decisions/0014-meters-to-pixels-numeric-type-and-rotation.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md)
+- Open questions involved: none
 
 ## Objective
 
@@ -15,44 +15,45 @@ Load, cache, transform, color-transform and render a sprite through `render-api`
 
 ## Out of scope
 
-Animation (see [`animated-sprite.md`](animated-sprite.md)); actual batching, which stays a note here: sprites emit commands so batching can be added later behind the command abstraction (`REQ-SPRITE-008`, `OQ-108`).
+Animation (see [`animated-sprite.md`](animated-sprite.md)); actual batching (a later optimization behind the command buffer, `REQ-SPRITE-008`); mask-layer templates (later extension, ADR-0033).
 
 ## Expected behavior
 
-- Load from a resource identifier through `resources`; defined errors for missing or invalid data.
-- Shared immutable source (image + region) and lightweight instance (transform, color transform, location, alpha) (decision 4).
-- Resize, translation, rotation with documented units, order and pivot (`OQ-104`); internal location used for placement, rotation and scaling.
-- Color transformation (decision 1C): description in `graphics`; fade, tint, alpha through `render-api` parameters; palette swap, grading, mask bake on the CPU with cache; CPU fallback always possible (`OQ-102`).
-- Template palette mapping yields cached color variants of one sprite (decision 2, `OQ-103`).
-- Rendering emits `render-api` commands, never draws directly (decision 3B).
+- Load from a resource key through `resources`; a missing resource raises the resource exception, invalid data the `graphics` decoding exception.
+- Shared immutable source (image + region) and a lightweight mutable instance (transform, color transform, pivot, alpha), changed in the update phase only, allocating nothing.
+- Transform: scale, then rotation, then translation, all about the pivot. The pivot is in pixels from the frame top-left, default the frame center. Rotation in degrees, counter-clockwise as seen on screen (the sprite handles the screen Y flip). Position in pixels of the logical frame, given by the caller (usually from the camera view transform).
+- Color transformation: a backend-independent description. Tint (multiplied color) and alpha are per-frame command parameters when the backend's typed capability says so; otherwise, and for palette swap, grading and mask bake, the effect is baked on the CPU once and cached.
+- Template color variants: exact key colors mapped to target colors in the sheet definition's `templates`; each variant is cached by (source image, mapping).
+- Rendering writes one entry in the command buffer: texture handle, source rectangle, position, scale, rotation, pivot, tint, alpha, layer. Commands are presented by ascending layer, then submission order. Texture sampling is nearest-neighbor.
+- Modifiable pixels: a caller-owned copy of a source; turning it into a source copies it into a new cache entry; the cached source is never mutated.
 
 ## Envisaged APIs / contracts
 
-Responsibilities only; signatures are not fixed. See `architecture/contracts.md`.
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Render commands; Images, sprites and animations); signatures written by the batch: sprite source, sprite instance, color transform description, color-transform capability, command buffer.
 
 ## Lifecycle and concurrency
 
-Sources are loaded through `resources` and held by the `graphics` cache, following the common convention (ADR-0005, `REQ-RES-004`, `OQ-118`, `OQ-101`); instances are lightweight and own no image. Loading thread and GPU upload: `OQ-107`.
+Sources are owned by the `graphics` cache (reference counted, released by their acquirer); instances own no image. Runtime thread only; rendering reads instances and never changes them.
 
 ## Units and Android/DEX compatibility
 
-Pixels for images, and pixels of the logical frame for location, translation and pivot (conversion from meters: `OQ-012`); rotation follows the engine angle convention (`OQ-011`). Image decoders are platform-specific (`OQ-100`). No frontend type in the API (`REQ-SPRITE-007`). Any decoding API or dependency needs its purpose, license and DEX compatibility recorded first (`docs/android-compatibility.md`).
+Pixels for images, positions and pivots; degrees for rotation; `float` only inside command entries (ADR-0014). No frontend type in the API. Optional decoders live in `graphics-imageio` and `graphics-android`.
 
 ## Dependencies
 
-Allowed: `core`, `resources`, `render-api` (ADR-0003; `OQ-051` resolved). Forbidden: AWT, OpenGL or Android types in `graphics` APIs.
+`core`, `resources`, `render-api`. Forbidden: AWT, OpenGL or Android types in `graphics` APIs.
 
 ## Tests
 
-- Unit tests: transforms and order, pivot, palette mapping, color-transform description.
-- Contract tests (`test-support`): sprite render on a fake backend, cache hit and release, CPU fallback.
-- Integration tests: headless load, cache, render of two color variants; AWT/OpenGL/Android color parity.
-- Platform/performance tests: color-transform parity and cache performance where relevant.
+- Unit tests: transform order and pivot, rotation sign, palette mapping, color-transform description, CPU bake, command ordering, zero allocation per frame.
+- Contract tests (`test-support`): sprite render on a fake backend with and without the tint/alpha capability, cache hit and release.
+- Integration tests: headless load, cache, render of two color variants.
+- Platform tests: AWT, OpenGL and Android color-transform parity.
 
 ## Acceptance criteria
 
 - [ ] Requirements covered.
-- [ ] API validated.
+- [ ] API reviewed in the pull request.
 - [ ] Automated tests added and passing.
 - [ ] Complete Javadoc.
 - [ ] Headless example, API-index entry, traceability updated (REQ-DOC-001, REQ-DOC-002).

@@ -1,183 +1,162 @@
 # Cross-cutting contracts
 
-**Status: PROPOSED — conceptual contracts, no Java signature is fixed yet.**
+**Status: VALIDATED — responsibilities, invariants and defaults of every contract (ADR-0001 to ADR-0035). Java signatures are written by each implementation batch under [`../conventions.md`](../conventions.md) and reviewed in its pull request.**
 
-Each public contract must specify: responsibility, invariants, lifecycle, calling thread, units, errors, data ownership, behavior when a capability is absent, and compatibility (including Android/DEX).
+Each public contract must specify: responsibility, invariants, lifecycle, calling thread, units, errors, data ownership, behavior when a capability is absent, and compatibility (including Android/DEX). A plain-language summary with diagrams is in [`../how-the-engine-works.md`](../how-the-engine-works.md).
 
-## Frontend and rendering
+## Threads and events (ADR-0018, ADR-0031)
 
-The frontend manages native resources and the platform lifecycle. Rendering receives presentation requests without exposing AWT/OpenGL/Android to the core.
+- One **runtime thread** owns the loop, the update phase, the world, cameras, animations, caches and, by default, the render phase. Every public type documents its thread; the default is "not thread-safe, owned by the runtime thread". The engine starts no thread; the platform runs the loop on the thread it requires (AWT: a dedicated thread with active rendering; OpenGL and Android: the context or renderer thread).
+- Thread-safe entry points only enqueue: the platform **inbox**, pause, resume, stop and time-scale requests, asynchronous-load completion, audio callbacks.
+- **Inbox:** FIFO, bounded (default 1,024 events), delivered on the runtime thread at the start of an iteration, before the update steps. Posting never blocks beyond a short lock; an overflowing event is rejected, counted and reported. Pause, resume, stop and time scale are atomic request fields, not inbox entries.
+- **Internal events** (ECS, tile changed, collision) are synchronous in the update phase. Listeners run on the runtime thread; registration during a dispatch takes effect after it; no allocation per event; a listener exception follows fail-fast.
 
-To specify:
-- creation, resizing, suspension and closing;
-- rendering surface/context and associated thread;
-- screen, world and viewport coordinates;
-- GPU resources and their invalidation on context loss;
-- synchronization between update and render.
+## Frontend, platform and rendering
 
-### Display modes, resolution and output filtering (ADR-0002, ACCEPTED)
+### Platform lifecycle (ADR-0031)
 
-Capability-based best-effort negotiation: the game requests, the platform applies what it can and reports what it actually applied (effective value and reason), so game code is identical everywhere. A missing capability never throws.
+- The application creates the platform object, configures it (logical frame size, initial screen mode, scaling policy, filter chain), registers its modules explicitly (ADR-0020) and starts it.
+- Surface resize, focus change, background and foreground, close request, context loss and recovery are inbox events. Resize never changes the logical frame; scaling is recomputed at the next frame boundary. Background pauses and foreground resumes (ADR-0017). A close request stops the loop unless a close listener vetoes it. Context loss is recovered by the backend from CPU copies or by reloading (ADR-0019).
+- Capabilities are found by a typed optional lookup on the platform object; absence means unsupported (ADR-0020).
+- Desktop reference: `platform-awt` (JDK AWT only, excluded from Android builds, ADR-0008) with `render-awt`, which reaches the surface through the `AwtSurface` capability of `platform-awt` (ADR-0022, ADR-0033).
 
-- **Screen mode** (`WINDOWED`, `FULL_WINDOW`, `FULL_SCREEN`) and **display mode** (width and height in pixels, refresh rate in Hz, color depth in bits): `platform-api`, with engine-defined neutral value types and a capability query. Unsupported requests fall back in a documented order (REQ-DISPLAY-001 to REQ-DISPLAY-003).
-- **Logical resolution** is independent of the output display mode; a scaling policy governs presentation: `FIT` (default), `INTEGER` (opt-in, falls back to `FIT` when the surface is too small) or `STRETCH`; the policy type is in `render-api`, the surface size comes from `platform-api`. Scaling never changes world units (REQ-DISPLAY-004, REQ-DISPLAY-007, ADR-0006).
-- **Output filtering** (`NONE`, bilinear, `HQ2X`, CRT; extensible; `NONE` samples nearest-neighbor when the logical frame is scaled): `render-api`, an ordered chain applied from the logical frame to the output surface only, not per layer (REQ-FILTER-001 to REQ-FILTER-003). Scaling filters (`NONE`, bilinear, `HQ2X`) resample the logical frame to the output size; post filters (CRT) run on the scaled output; no filter changes the scaling policy (ADR-0006).
-- Changes are applied at a frame boundary (between two presentations, outside any simulation update) and signaled by an event; they never alter simulation state, and an extrapolated state is never reused as simulation input (REQ-DISPLAY-005, REQ-LOOP-006).
-- No AWT, OpenGL or Android type in these contracts (REQ-DISPLAY-006). Multi-monitor and HiDPI are outside the first batch (OQ-096). On desktop, `platform-awt` implements `platform-api` with the JDK AWT only (ADR-0008); the render side and the surface hand-off are open (OQ-123), and the representation of an unknown refresh rate or bit depth is OQ-124.
-- **Effective result and fallback (ADR-0006):** apply returns the accepted request and never blocks the update step; the effective result (requested vs effective per field, `degraded` flag, reason) is an immutable value delivered at the frame boundary and readable as current state (REQ-DISPLAY-008; delivery mechanism: OQ-122). Fallback orders: screen mode `FULL_SCREEN` → `FULL_WINDOW` → `WINDOWED`, `WINDOWED` → `FULL_WINDOW` → `FULL_SCREEN`, `FULL_WINDOW` → `WINDOWED` → `FULL_SCREEN`; display mode exact, then nearest size, rate, depth; filters CRT skipped, `HQ2X` → bilinear → `NONE`.
+### Coordinate spaces (ADR-0013, ADR-0014)
 
-Java signatures are not fixed. Details: [`features/display-modes.md`](../features/display-modes.md), [`features/output-filtering.md`](../features/output-filtering.md).
+| Space | Unit | Origin and axes | Owner |
+|---|---|---|---|
+| World | meters (`double`) | `(0, 0)`, X right, Y up | simulation (`ecs`, `traits`, `physics`, tile collision) |
+| Tile | `int` tile indices | bottom-left cell, Y up (loaders flip top-down files) | `tilemap` |
+| Logical frame (screen) | pixels | top-left, Y down | rendering, sprites, tile rendering, pointer input |
+| Output surface | device pixels | top-left, Y down | platform and render backend, after scaling and filters |
+
+The camera alone converts world to logical-frame pixels through its view transform (`screenX = x * scale + offsetX`, `screenY = offsetY - y * scale`, ADR-0034). The scaling policy alone maps the logical frame to the output surface (ADR-0006). `float` appears only at the render boundary.
+
+### Render commands (ADR-0026, ADR-0033)
+
+- Rendering code never draws directly: it writes entries into a preallocated command buffer of parallel primitive arrays (texture handle, source rectangle, position, scale, rotation in degrees, pivot, tint, alpha, layer). Entries are presented by ascending layer, then submission order. No allocation per frame.
+- A **viewport** (rectangle in logical-frame pixels) clips and offsets the following commands; a scene with several views sets one viewport per view (ADR-0031).
+- Pixel buffers are packed `int` ARGB with straight alpha; texture sampling is nearest-neighbor by default; per-frame tint and alpha are a typed capability of `render-api`, other color effects are baked on the CPU and cached.
+- GPU upload happens on the render thread at first use or at an explicit prepare call, never on a worker (ADR-0026).
+
+### Display modes, resolution and output filtering (ADR-0002, ADR-0006, ADR-0025, ADR-0033)
+
+Capability-based best-effort negotiation: the game requests, the platform applies what it can and reports what it actually applied, so game code is identical everywhere. A missing capability never throws.
+
+- **Screen mode** (`WINDOWED`, `FULL_WINDOW`, `FULL_SCREEN`) and **display mode** (width and height in pixels, refresh rate in Hz, color depth in bits; `0` means unknown or multiple, with `isRefreshRateKnown()` and `isBitDepthKnown()`): `platform-api`, engine-defined value types, capability query.
+- **Logical resolution** is independent of the display mode. Scaling policy `FIT` (default), `INTEGER` (opt-in, falls back to `FIT` when the surface is smaller than the logical frame) or `STRETCH`; the type is in `render-api`, the surface size comes from `platform-api`. Scaling never changes world units.
+- **Output filtering** (`NONE` nearest-neighbor, bilinear, `HQ2X`, CRT, custom): `render-api`, an ordered chain from the logical frame to the output surface only. Scaling filters resample, post filters (CRT) run on the scaled output. Shaders use the GLSL ES 1.00 feature set, compiled as `#version 100` or `#version 120` with headers prepended by the backend, delivered through `resources`. `render-awt` implements `NONE`, bilinear and `Scale2x` on the CPU (standing in for `HQ2X` until its license record) and reports CRT unsupported.
+- **Custom filters:** a registry id, explicit registration on the backend, a scaling or post kind, a fragment shader resource and/or a CPU implementation over `int[]` ARGB; a backend lacking the needed implementation skips it and reports the skip.
+- **Fallback orders:** screen mode `FULL_SCREEN` → `FULL_WINDOW` → `WINDOWED`, `WINDOWED` → `FULL_WINDOW` → `FULL_SCREEN`, `FULL_WINDOW` → `WINDOWED` → `FULL_SCREEN`; display mode exact, then nearest size, rate, depth; filters: CRT skipped, `HQ2X` → bilinear → `NONE`.
+- **Effective result:** apply returns the accepted request without blocking; the effective result (requested vs effective per field, `degraded` flag, reason) is an immutable value delivered through the inbox at the frame boundary where it is applied and readable as the current state.
+- Changes apply at a frame boundary and never alter simulation state. No AWT, OpenGL or Android type in these contracts. Settings persistence is the game's job. Multi-monitor and HiDPI: OQ-096 (contracts assume neither one monitor nor scale 1.0).
+
+Details: [`features/display-modes.md`](../features/display-modes.md), [`features/output-filtering.md`](../features/output-filtering.md).
 
 ## Unit conventions
 
-The world uses `(x, y)` in meters. Durations are in seconds. Speeds are in `m/s`, accelerations in `m/s²`. Any API that converts to pixels must belong to the presentation boundary and state the conversion factor explicitly.
+The world uses `(x, y)` in meters, `double`. Durations are in seconds. Speeds are in `m/s`, accelerations in `m/s²`. Angles are degrees, counter-clockwise positive, `0°` along `+X`; absolute angles in `[0, 360)`, signed differences in `(-180, 180]`, normalized only by explicit helpers (ADR-0013, ADR-0014, ADR-0016). Any API that converts to pixels belongs to the presentation boundary and states the conversion factor.
 
-A time value must not be expressed sometimes in milliseconds, sometimes in seconds without explicit conversion. Prefer parameter names that include the unit when the Java type does not remove the ambiguity.
+A time value is never expressed sometimes in milliseconds and sometimes in seconds; parameter names carry the unit when the Java type does not.
 
-## Game loop
+## Game loop (ADR-0017, ADR-0031)
 
-Conceptual contract:
-- start, stop, suspend and resume;
-- run the simulation against a time reference independent of machine speed;
-- trigger rendering separately;
-- be able to skip a presentation (frameskipping) without skipping or altering the required simulation calculations;
-- extrapolate a state for presentation only;
-- expose a lifecycle state;
-- allow a deterministic, test-driven implementation.
+- Fixed step from an update rate in `[1, 1000]` Hz (default 60); abstract monotonic clock in nanoseconds (`System.nanoTime` on the JVM and Android, a controllable clock in tests); `long` accumulator with catch-up; the rounding remainder of scaled time is carried.
+- Lag cap 0.25 s by default (configurable in `[one step, 1 s]`); excess dropped and reported (counters and an allocation-free listener). Frameskipping drops renders, never updates below the cap.
+- Vsync snapping: elapsed time within 0.25 ms of 1 to 4 steps is snapped.
+- `alpha = accumulator / step`, always in `[0, 1)`. Interpolation is the default presentation, extrapolation is opt-in; both are presentation-only and never fed back.
+- Pause: no catch-up and no time shift on resume; rendering may continue. Time scale in `[0.1, 4.0]` multiplies elapsed time; the step never changes. Render receives `alpha` and the unscaled real delta for presentation-only state.
+- Fail-fast: an exception in update or render stops the loop in a failed state and reaches the owner. Stop is honored at a frame boundary and is idempotent.
+- **One iteration:** read control requests → deliver the inbox (input, platform events, load completions) → run zero or more fixed steps (each: the active scene's update, which runs the world — systems by slot, then the flush — and then its cameras, which sample their targets) → render once with `alpha` and the unscaled delta.
 
-**Mandatory invariant:** an extrapolated state never becomes the source state of the next simulation update. Extrapolation, including with a factor greater than `1`, must not introduce cumulative error in world calculations.
+## Scenes (ADR-0021, ADR-0031)
 
-Defined by [ADR-0017](../decisions/0017-fixed-step-game-loop.md): fixed step, monotonic clock, accumulator and catch-up, factor in `[0, 1)`, lag cap, interpolation by default, pause, time scale, fail-fast and shutdown at a frame boundary; calibration details in OQ-151. The test loop must allow time to be advanced artificially and exact states to be verified.
+- A scene is a lifecycle contract in `runtime`: `enter`, `update`, `render`, `exit`, `dispose`. It knows nothing of world, camera, graphics or audio; the game (or the optional `composition` module) composes its content.
+- The scene manager receives scene instances, keeps one active scene and switches at a frame boundary: the previous scene is exited and disposed before the next is entered. A second batch adds an overlay stack: only the top scene updates, every stacked scene renders bottom to top.
+- A loading screen is an ordinary scene driving asynchronous handles. Transitions are drawn by the game.
 
-## Resources
+## Resources (ADR-0005, ADR-0007, ADR-0019, ADR-0032)
 
-A resource must be identified independently of its physical location.
+- A resource is identified by a **key**: a normalized logical path string (`/` separator, case-sensitive, no leading `/`, no `.` or `..`) for every origin; a stream supplied by the application is registered under such a key. A resource is never assumed to be a `File`.
+- **Providers** (`resources-*`: filesystem, archive, memory/temporary, Android assets, application stream) form an ordered list configured by the application; the first provider that has the key wins. Providers are read-only unless declared writable; they are thread-safe for reading. An opened stream belongs to the caller, who closes it.
+- Errors: missing or inaccessible content raises the one unchecked resource exception of `resources`, with the key and a `MISSING` or `INACCESSIBLE` reason; invalid format and corruption are decoding errors of the consuming module.
+- **Consuming modules** (`graphics`, audio, `tilemap`, render backends for shaders) keep their own decoded caches; `resources` is media-agnostic. Derived caches key on (resource key, module discriminator). Release is owned by the consuming module and idempotent.
+- **Lifetime:** explicit reference counting and release, no weak references, no automatic eviction by default, optional size limits, scope release (for example a level). Cache operations on the runtime thread only; decoded data immutable.
+- **Loading:** synchronous by default. Opt-in asynchronous requests return a handle (`PENDING`, `READY`, `FAILED`, `CANCELLED`, progress in `[0, 1]`) completed through the inbox; workers (default 2 on desktop, 1 on Android) only read and decode. Reloading only for context loss and as an explicit development reload at a frame boundary.
 
-Envisaged origins:
-- path relative to a resource space;
-- filesystem;
-- Android assets;
-- temporary/memory storage;
-- archive;
-- stream supplied by the application.
+## Definition files and registry (ADR-0020, ADR-0028, ADR-0032)
 
-To specify:
-- resolution and priority between providers;
-- distinction between logical URI and physical path;
-- read/write opening;
-- stream closing;
-- concurrent access;
-- caching, invalidation and reloading;
-- errors: missing, inaccessible, invalid format, corruption.
+- Every definition file is standard JSON read by the strict reader of `core`: duplicate keys, comments, trailing commas, `NaN` and `Infinity` are errors; integral literals are `long`, others `double`; limits 16 MiB, depth 64, 1 MiB strings by default.
+- Engine files declare `"format"` (for example `lionengine.sheet`) and `"version"` (from 1). Field names are lower camel case; colors `"#RRGGBB"` or `"#AARRGGBB"`; durations seconds, angles degrees, image positions pixels. An unread field is an error except `"comment"`. Errors carry the key, line, column and JSON path.
+- Data-driven types are created through an explicit registry instance of ids `namespace:name` (engine namespace `lionengine`) and factories registered at startup; factories read a typed configuration. No reflection, `ServiceLoader` or class scanning.
 
-Do not assume that a resource is a `File`: a resource in an archive or an Android asset may have no filesystem path.
+## Audio (ADR-0004, ADR-0022, ADR-0027, ADR-0033)
 
-**Common convention for modules handling resources (ADR-0005, ACCEPTED; owner rule stated with decision 3B of issue #853):** `resources` stays media-agnostic and holds no decoded cache. Every module that loads or decodes resource content (today `graphics` and the audio modules; candidates `tilemap` for map files and rendering backends for shader assets, OQ-094) depends on `resources`, keeps its own decoded cache, and follows one common convention for keys and release, to limit divergence between implementations (REQ-RES-004). Content of the convention (ADR-0007; REQ-RES-005): the key is a normalized logical path string (`/` separator, case-sensitive, no leading `/`, no `.` or `..`) for every origin, a stream supplied by the application being registered under such a name; derived caches key on (resource key, module discriminator); release is owned by the consuming module and idempotent; a missing or unreadable resource raises one unchecked engine exception type, while decoding errors belong to the consuming module. The module cache policies (OQ-101, OQ-110) and the sprite sheet id (OQ-106) use this key form. Thread safety of module caches: OQ-121; asynchronous loading: OQ-031; reloading: OQ-032.
+- Two families with distinct handles: **short sounds** (effects, at most 10 s, preloaded explicitly, cached, low latency) and **long sounds** (music, ambient, streamed through a bounded buffer by default, or fully decoded on request).
+- Variant sets: random with no immediate repeat and optional weights, or composed (simultaneous layers); own seeded generator. Playlists: next track prepared ahead; stop at the end by default, loop on request; a failing track is skipped and reported; end-of-track goes through the inbox and advance runs on the runtime thread.
+- Voices: 16 by default; overflow steals the oldest voice of the lowest priority (priority `0` to `100`, default `50`); drop-new and refuse selectable.
+- First batch: play, stop, volume (gain in `[0, 1]`), looping, pause, resume. Second batch: mixer groups (`music`, `effects`, `ui` and game groups; gain = master × group × sound) and linear fades. Spatial audio deferred.
+- Formats: PCM WAV baseline parsed by project code; OGG Vorbis by the Android platform and by `audio-codec-ogg` on desktop; no MP3 baseline. Backends per output library or platform (`audio-javasound`, `audio-android`).
+- No platform or audio library type in `audio-api`; durations and positions in seconds, sample rate in Hz.
 
-## Audio
+Details: [`features/audio-short-and-long-sounds.md`](../features/audio-short-and-long-sounds.md).
 
-The audio API describes operations and their lifecycle, not the concrete audio engine.
+## Images, sprites and animations (ADR-0003, ADR-0026, ADR-0033)
 
-### Short and long sounds (ADR-0004, ACCEPTED)
+- A shared immutable **source** (image + region, held by the reference-counted cache of a `graphics` instance) is separate from a lightweight mutable **sprite instance** (transform, color transform, pivot, alpha) changed in the update phase only.
+- Decoding: built-in pure-Java PNG decoder (non-interlaced, every color type, depths 1 to 8 and 16 reduced to 8, `tRNS`); other formats through optional decoder modules (`graphics-imageio`, `graphics-android`) registered explicitly. Modifiable pixels are a separate caller-owned buffer; turning it into a source copies it.
+- Transform: scale, then rotation, then translation, about the pivot (pixels from the frame top-left, default the frame center); rotation counter-clockwise on screen, in degrees.
+- Template color variants: exact key colors mapped to targets in the sheet definition, cached by (source image, mapping).
+- Animation: frame indices, frame duration in seconds (optional per-frame durations), loop mode `once`, `loop` or `ping-pong`; time advances with the simulation step only.
+- Sprite sheet: grid (cell size, columns, rows, margin, spacing) and cells by index; sheets grouped by a unique string id, reference-counted, released by their acquirer (normally the scene). Definition file format `lionengine.sheet`.
 
-Owner decisions of issue #853 (ADR accepted on 2026-11-22):
+Details: [`features/sprite-sheet.md`](../features/sprite-sheet.md), [`features/sprite.md`](../features/sprite.md), [`features/animated-sprite.md`](../features/animated-sprite.md).
 
-- **Two families (decision 1A):** short sounds (low-latency effects, cached for heavy reuse, play, stop, variant sets) and long sounds (music/ambient, preloadable and releasable, play, stop, playlists) are separate contract families with distinct handles and lifecycles.
-- **Backend-independent logic (decision 2A):** variant selection and playlist advance live in `audio-api` (or a shared helper); backends only expose play, stop and end-of-track.
-- **Resources (decision 3B):** `audio-api` and `audio-*` depend on `resources`; decoded caches exist only inside the audio modules (REQ-RES-004, ADR-0005).
-- Durations and positions in seconds, sample rate in Hz; no platform or concrete audio library type in the API (REQ-AUDIO-009). Playlist-advance callbacks must not mutate simulation state from the audio thread (OQ-114).
+## Tile map (ADR-0009, ADR-0028, ADR-0032)
 
-Not decided: cache policy (OQ-110), voice limit (OQ-111), variant policies (OQ-112), long-sound strategy (OQ-113), playlist end, failure and thread (OQ-114), formats and decoders (OQ-115), latency target (OQ-116). Java signatures are not fixed. Details: [`features/audio-short-and-long-sounds.md`](../features/audio-short-and-long-sounds.md).
+- Single-layer grid of cells, each empty or a tileset cell index; `int` tile coordinates with the origin at the bottom-left, Y up; tile size in logical-frame pixels; `set`, `get`, `clear` with bounds checking; flat row-major `int[]` storage.
+- Tileset referenced by sprite sheet id and reference-counted by the map; the owning scene closes the map, which releases the sheet.
+- Loading through an abstract loader over `resources`; first real format Tiled JSON (orthogonal, finite, one tile layer, one tileset, array or base64 data with optional zlib or gzip; unsupported features rejected).
+- Rendering: only tiles intersecting a viewport rectangle in logical-frame pixels plus a margin, by emitting commands; read-only.
+- Destruction: ordered auto-tiling rules (8-neighbor bitmask plus care mask, first match wins) update neighbors in the update phase; a synchronous tile-changed listener reports cell, old and new tile.
+- Collision: per-tile `empty` or `solid` from the tileset; `tilemap` implements the `physics` shape-query contract with a world placement (origin and tile size in meters, default 1 m); no dependency on `ecs`. Later: one-way tiles, then slopes (ADR-0034). Several layers stay a candidate.
 
-Out of this scope, to specify later (OQ-117): pause, resume, volume, looping, fades, possible spatialization, mixer channels. WAV/MP3/OGG are target formats, not a guarantee of universal decoding on every platform.
+## Camera (ADR-0010, ADR-0029, ADR-0034)
 
-## Images, sprites and animations
+- Headless `camera` module on `core` only; no singleton; state changes in the update phase only; rendering reads.
+- View rectangle in meters (logical frame size converted with the camera's pixels per meter, divided by the zoom). Per frame, an immutable view transform (`scale`, `offsetX`, `offsetY`) computed from the state interpolated with `alpha`; rendering never sees a `Camera` type.
+- Zoom: multiplier, default 1.0, range 0.25 to 4.0, curves `LINEAR`, `SMOOTHSTEP` (default), `EASE_IN`, `EASE_OUT`, center pivot or a world anchor (ignored while following).
+- Follow: lookup contract keyed by a primitive `long` (the ECS object ID); a missing object stops the follow safely; smoothing time constant default 0 (rigid); explicit snap; target sampled at the end of the step. Bounds clamp, dead zone (fraction of the view) and follow offset (meters).
+- Shake: amplitude in meters, frequency in Hz, duration in seconds, linear decay, fixed-point integer value noise (bit-exact), per-camera seed (default `0x4C494F4E`), strongest shake wins; picking ignores it unless `includeShake`.
 
-Separate as much as necessary:
-- image data and modifiable pixels;
-- resource/texture consumable by rendering;
-- sprite (region, transformation, display state);
-- spritesheet (slicing);
-- animation (sequence, duration, loop, state).
+## Objects and traits (ADR-0011, ADR-0021, ADR-0030, ADR-0034)
 
-To specify: pixel format, alpha, mutation, copy/sharing, dimensions, origin, texture sampling (distinct from output filtering, ADR-0002), CPU/GPU synchronization and release.
+The ECS is the single object model: a `World` (module `ecs`) owns objects, traits, queries, systems, the flush and a seeded random source. Traits attach to ECS objects only. Collision shapes, overlap tests, the shape-query contract and the broad phase live in `physics`. Several worlds may coexist; none is a singleton.
 
-### Sprites, animations and sprite sheets (ADR-0003, ACCEPTED)
-
-Owner decisions of issue #852 (ADR accepted on 2026-11-22):
-
-- **Sprite model (decision 4):** a shared immutable **source** (image + region, loaded through `resources`, held by the `graphics` cache per ADR-0005) is separate from a lightweight **sprite instance** (transform, color transform, location, alpha). Animated sprites and sheet cells produce instances or regions from the same source.
-- **Color transformation (decision 1C):** a backend-independent color-transform *description* lives in `graphics`; per-frame effects (fade, tint, alpha) go through `render-api` draw parameters; static transforms (palette swap, grading, mask bake) run on the CPU and are cached. A backend can always fall back to the CPU path; capability query and fallback rules: OQ-102.
-- **Template color variants (decision 2):** a template palette mapping yields variants cached by (source image, mapping); authoring convention: OQ-103.
-- **Rendering (decision 3B):** sprites emit `render-api` commands and never draw directly; batching is a later optimization behind the command abstraction (OQ-108). This fixes the abstract-command style (OQ-054, resolved by ADR-0003).
-- **Units (review choice, ADR-0003):** sprite location, translation, pivot and size are in pixels of the logical frame; rotation follows the engine angle convention (OQ-011); the conversion from world meters belongs to the camera/viewport (OQ-012).
-- Animation time advances only from the simulation update step (REQ-ANIM-003, REQ-LOOP-006). Durations in seconds, sizes in pixels, no frontend type in the API (REQ-SPRITE-007).
-
-Java signatures are not fixed. Details: [`features/sprite-sheet.md`](../features/sprite-sheet.md), [`features/sprite.md`](../features/sprite.md), [`features/animated-sprite.md`](../features/animated-sprite.md).
-
-## Tilemap
-
-Distinguish:
-- tileset: tile definitions and image regions;
-- grid/map: tile placement;
-- layers: order, visibility, properties;
-- static content and dynamic modifications.
-
-Decisions of [ADR-0009](../decisions/0009-tile-map-contracts-in-tilemap.md) (ACCEPTED 2026-11-22; owner decisions of issue #865):
-
-- **Model:** single-layer grid of cells, each empty or a tileset cell index (`REQ-SHEET-001`); tile coordinates are `int` tile indices; tile size in pixels of the logical frame; `set`, `get`, `clear` with bounds checking and defined errors (`REQ-MAP-003`). A per-tile properties hook exists, with no collision type.
-- **Loading:** through an abstract loader contract over `resources`; keys and release per ADR-0007 (`REQ-MAP-004`). File format: Tiled JSON (ADR-0028); tileset reference and ownership: OQ-128.
-- **Rendering:** draws only tiles intersecting a viewport rectangle (pixels of the logical frame, a plain value, no camera type) plus a margin, by emitting `render-api` commands; read-only (`REQ-MAP-005`).
-- **Destruction:** rule-based auto-tiling updates neighbors in the update phase (`REQ-MAP-006`; rule format ADR-0028); a synchronous tile-changed listener reports cell, old and new tile (`REQ-MAP-007`; OQ-122).
-
-Collision, storage and chunking are decided by ADR-0028 (first batch); still to specify: layers (candidate), slopes and one-way tiles (OQ-142), follow-ups OQ-162.
-
-## Camera
-
-Decisions of [ADR-0010](../decisions/0010-camera-system-in-camera.md) (ACCEPTED; owner decisions of issue #868):
-
-- **Placement:** single `camera` module depending on `core` only.
-- **View:** a plain view rectangle in world units (meters, ADR-0001), no `Camera` type seen by rendering (`REQ-CAM-001`); consumer contract: view transform (ADR-0029). World-to-screen and screen-to-world conversion (`REQ-CAM-007`; factor OQ-012).
-- **Zoom and translation:** zoom dimensionless, clamped, animated, applied from the next frame; absolute and relative translation (`REQ-CAM-002`, `REQ-CAM-003`).
-- **Follow:** an entity-ID lookup contract defined by `camera`; the ECS system or adapter lives outside, no dependency on `ecs`; a missing entity is safe (`REQ-CAM-004`; ADR-0029).
-- **Delay:** exponential smoothing, time constant in seconds, 0 is rigid, frame-rate independent (`REQ-CAM-005`; ADR-0029).
-- **Shake:** amplitude, duration, frequency; per-camera seeded noise, deterministic (`REQ-CAM-006`; ADR-0029).
-- **Lifecycle:** update phase only; rendering reads only; no singleton (`REQ-CAM-008`).
-
-Zoom and candidate features: ADR-0029; follow-ups OQ-163.
-
-## Objects and traits
-
-The ECS is the single object model (ADR-0021): traits attach to ECS objects only. A scene is a lifecycle contract in `runtime`; a world is the container type of `ecs`; camera and viewport are two sides of a view (ADR-0021). Collision shapes, overlap tests and the broad phase live in `physics`.
-
-An object must have an explicit lifecycle. A trait represents a composable capability/behavior and must define its preconditions, its state, its execution order and its interactions.
-
-Envisaged examples: `Movable`, `Gravity`, `Collision`. Their names and semantics remain to be defined. Avoid circular dependencies between traits.
-
-### ECS objects, traits and standard traits
-
-Accepted by [ADR-0011](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (ACCEPTED; `OQ-041` and `OQ-042` resolved by ADR-0021). Responsibilities only; signatures are not fixed.
-
-- **Object:** an opaque ID (index plus generation). Indices are recycled; a stale ID is detected. Accessors fail fast on a stale or never-valid ID; a liveness check never throws (`REQ-ECS-001`, `REQ-ECS-002`). A consumer that must tolerate a missing object, such as the camera follow lookup (`REQ-CAM-004`), uses the liveness check.
-- **Trait:** data only, registered once with an `int` type ID, without reflection or class scanning (`REQ-ECS-004`). Logic lives in systems.
-- **Storage and query:** one sparse set per trait type; a query selects objects with all of a set of trait types and none of an exclusion set, is cached and updated incrementally, and iterates without allocation (`REQ-ECS-005`).
-- **Structural changes:** object and trait add/remove are recorded and applied at one flush per simulation step; iterating a query is always safe (`REQ-ECS-003`, `REQ-ECS-006`; semantics `OQ-138`). Data inside traits may change at any time during the update.
-- **Events:** `onAdded`/`onRemoved` per trait type and object created/destroyed, synchronous at the flush in the update phase (`REQ-ECS-007`; `OQ-122`).
-- **Systems:** run in a fixed, deterministic order during the update phase; rendering is read-only (`REQ-ECS-008`, `REQ-ECS-010`, `REQ-LOOP-003`, `REQ-LOOP-006`).
-- **Standard traits** (`traits`): `Transformable`, `Movable`, `Gravity`, `Jumpable`, `Collidable`, `Lifetime`, with their systems; meters, m/s, m/s², seconds (`REQ-STD-001` to `REQ-STD-008`).
+- **Object:** a packed `long` ID (generation high 32 bits, index low 32 bits, `0` invalid). A created object is pending until the flush (liveness false, accessors fail fast, commands may already be queued). Stale IDs are detected; the liveness check never throws.
+- **Trait:** data only, registered once with an `int` type ID; pooled instances in dense arrays, reset on removal; capacities 1,024 objects and 256 per trait type by default, doubling at the flush.
+- **Query:** include and exclude sets, cached, updated incrementally, allocation-free iteration; deterministic order for the same operation sequence, no creation-order guarantee; explicit ID copy in ascending order into a caller buffer.
+- **Structural changes:** recorded in a command buffer and applied at one flush per step, at the end, after all systems and before rendering; commands in recorded order; explicit flush allowed outside the loop.
+- **Events:** listeners with primitive arguments, synchronous: created and destroyed, trait added and removed (at the flush), collision enter and exit (after the `Collision` system, `objectA < objectB`).
+- **Systems:** `int` ordering slot, lower first, ties by registration order; enabled flag applied at the next step; constant step in seconds; exceptions propagate.
+- **Standard traits** (`traits`): `Transformable`, `Movable`, `Gravity`, `Jumpable`, `Collidable`, `Lifetime`; systems `Jump` (1000), `Gravity` (2000), `Movement` (3000), `Collision` (4000), `Lifetime` (5000). Collision first batches: grid cell 2 m, boxes, layers and masks both ways, triggers, detection only for objects, tile push-out setting `grounded`, no swept detection.
 - **Not allowed:** a platform type in `ecs` or `traits`, a singleton world, an allocation per step in the query, system and flush paths, an ECS dependency of `core` or of an `*-api` module.
 
-## Input
+Details: [`features/ecs.md`](../features/ecs.md), [`features/standard-traits.md`](../features/standard-traits.md).
 
-Normalize physical inputs into events and/or logical states. Distinguish device (keyboard/mouse/gamepad), game action and player.
+## Input (ADR-0035)
 
-To specify: mapping, key repeat, analog axes, dead zone, hot-plug, focus/loss of focus, multiple devices and event ordering.
+- Devices: keyboard, pointer (mouse and touch), gamepad (standard layout); engine-defined `int` codes; availability through capabilities.
+- Game logic reads **actions** (digital or analog) bound to codes by a binding table; several bindings per action.
+- Raw events go through the inbox. Each digital action exposes `down`, `pressed`, `released` per update step; an edge is seen by exactly one step; a tap within one step is never lost.
+- Sticks in `[-1, 1]` with a radial dead zone (default 0.15), triggers in `[0, 1]`; pointer positions in logical-frame pixels after inverse scaling.
+- Focus loss releases everything; gamepad hot-plug events keep device indices; key repeat ignored; text input is a separate later stream.
+- Players are device sets plus bindings; per-step action states can be recorded.
+
+## Logging (ADR-0031)
+
+`core` provides a facade with levels `ERROR`, `WARNING`, `INFO`, `DEBUG`, an `isEnabled` check and constant messages with primitive arguments; disabled levels allocate nothing; the default sink writes errors and warnings to `System.err`; platforms may install another sink.
 
 ## Multiplayer
 
-Clearly distinguish:
-- several local players;
-- split-screen (several viewports/cameras);
-- network (transport, session, replication/synchronization).
-
-Split-screen must not be confused with networking. Protocol, authority, prediction, rollback and synchronization are outside the contract until decided (OQ-158, ADR-0024).
+- Several local players and split-screen are several views in one scene and per-player device sets (ADR-0021, ADR-0035); no module needed.
+- Network: the optional `multiplayer` module (ADR-0022), Phase 5. Binding today: deterministic simulation, whole-state read and replace, inputs through actions (ADR-0024). Protocol, authority, prediction and rollback: OQ-165.

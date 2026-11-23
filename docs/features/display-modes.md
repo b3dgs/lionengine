@@ -1,13 +1,13 @@
 # Feature: screen and display modes
 
-**Status: PROPOSED**
+**Status: VALIDATED**
 
-- Owner: to be filled in
+- Owner: project owner
 - Roadmap phase: Phase 2 (after the first rendering backend), see `roadmap.md`
-- Affected modules: `platform-api`, `render-awt`, `render-opengl`, `platform-android`, `test-support`, `examples`
-- Requirements: `REQ-DISPLAY-001` to `REQ-DISPLAY-008`
-- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md) (ACCEPTED), [`ADR-0006`](../decisions/0006-display-scaling-effective-result-and-fallback-orders.md) (ACCEPTED)
-- Open questions involved: `OQ-096`, `OQ-119`, `OQ-122` (`OQ-090`, `OQ-091`, `OQ-120` resolved)
+- Affected modules: `platform-api`, `platform-awt`, `render-api`, `render-awt`, `render-opengl`, `platform-android`, `test-support`, `examples`
+- Requirements: `REQ-DISPLAY-001` to `REQ-DISPLAY-009`, `REQ-PLATFORM-001`, `REQ-PLATFORM-002`
+- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md), [`ADR-0006`](../decisions/0006-display-scaling-effective-result-and-fallback-orders.md), [`ADR-0008`](../decisions/0008-awt-desktop-implementer-of-platform-api.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0022`](../decisions/0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md), [`ADR-0025`](../decisions/0025-filter-implementation-shaders-and-display-settings.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md)
+- Open questions involved: `OQ-096` (multi-monitor and HiDPI, deferred; contracts must not preclude it)
 
 ## Objective
 
@@ -15,44 +15,45 @@ Let a game request a screen mode, a display mode and a logical resolution throug
 
 ## Out of scope
 
-Output filtering (see [`output-filtering.md`](output-filtering.md)); multi-monitor and HiDPI (`OQ-096`); persistence of user settings (game responsibility, ADR-0025); a "required" request flag (decision 2A).
+Output filtering (see [`output-filtering.md`](output-filtering.md)); multi-monitor and HiDPI (`OQ-096`); persistence of user settings (game responsibility, ADR-0025); a "required" request flag (ADR-0002, decision 2A).
 
 ## Expected behavior
 
 - Capability query for `WINDOWED`, `FULL_WINDOW`, `FULL_SCREEN`.
-- Unsupported screen mode: documented fallback order (ADR-0006), effective mode reported, no failure.
-- Enumerate and select display modes (width, height in pixels; refresh rate in Hz; color depth in bits).
-- Logical resolution independent of the display mode; scaling policy `FIT` (default), `INTEGER` (opt-in) or `STRETCH` (ADR-0006).
-- Apply returns the accepted request without blocking; the effective result is delivered at the frame boundary and readable as current state (`REQ-DISPLAY-008`).
-- Changes applied at a frame boundary and signaled by an event; simulation state untouched.
+- Unsupported screen mode: fallback `FULL_SCREEN` → `FULL_WINDOW` → `WINDOWED`, `WINDOWED` → `FULL_WINDOW` → `FULL_SCREEN`, `FULL_WINDOW` → `WINDOWED` → `FULL_SCREEN`; effective mode and reason reported; never an exception.
+- Enumerate and select display modes (width, height in pixels; refresh rate in Hz; color depth in bits). An unknown or multiple rate or depth is `0`; `isRefreshRateKnown()` and `isBitDepthKnown()` tell it; `platform-awt` maps AWT's `0` and `-1` to `0`. Selection falls back to the exact mode, then the nearest size, then rate, then depth.
+- Logical resolution independent of the display mode; scaling policy `FIT` (default), `INTEGER` (opt-in, falls back to `FIT` when the surface is smaller than the logical frame) or `STRETCH`.
+- Apply returns the accepted request without blocking; the effective result (requested vs effective per field, `degraded` flag, reason) is delivered through the inbox at the frame boundary where it is applied, and stays readable as the current state.
+- A surface resize is a platform event: the logical frame never changes, the scaling is recomputed at the next frame boundary (ADR-0031).
+- Simulation state is never touched.
 
 ## Envisaged APIs / contracts
 
-Responsibilities only; signatures are not fixed. See `architecture/contracts.md`.
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Display modes); Java signatures are written by the batch under `conventions.md`: screen-mode enum, display-mode value type, capability query, request and effective-result value types, scaling-policy enum (in `render-api`).
 
 ## Lifecycle and concurrency
 
-Changes are requested at any time and applied at the next frame boundary on the rendering thread (thread rules: `OQ-030`). Ownership of native windows stays with the platform implementation.
+Requests may come from the runtime thread at any time; they apply at the next frame boundary. The platform posts the effective result to the inbox; it is delivered on the runtime thread (ADR-0018). Native windows belong to the platform implementation.
 
 ## Units and Android/DEX compatibility
 
-Pixels, Hz, bits; world units unchanged. Own value types only; Android specifics isolated in `platform-android`. Check required per `android-compatibility.md`: not done yet.
+Pixels, Hz, bits; world units unchanged. Own value types with `int` fields only. Android specifics are isolated in `platform-android`; refresh-rate and depth selection may be unavailable there and are then reported in the effective result. Check per `android-compatibility.md` in the batch.
 
 ## Dependencies
 
-Allowed: `core`. Forbidden: AWT, OpenGL or Android types in `core` or `platform-api`.
+`platform-api` on `core`; scaling policy in `render-api`. Forbidden: AWT, OpenGL or Android types in `core`, `platform-api` or `render-api`.
 
 ## Tests
 
-- Unit tests: value types, fallback order, scaling computation.
-- Contract tests (`test-support`): effective result and reason, never throws on a missing capability, frame-boundary application.
+- Unit tests: value types and the `0` convention, fallback orders, scaling math for each policy including the `INTEGER` fallback.
+- Contract tests (`test-support`): effective result and reason, no exception on a missing capability, frame-boundary application through the inbox, resize.
 - Integration tests: headless, fake capabilities.
-- Platform/performance tests: real window per frontend, identified separately.
+- Platform tests: real window per frontend, identified separately.
 
 ## Acceptance criteria
 
 - [ ] Requirements covered.
-- [ ] API validated.
+- [ ] API reviewed in the pull request.
 - [ ] Automated tests added and passing.
 - [ ] Complete Javadoc.
 - [ ] Headless example (list capabilities, request a mode, print the effective result), API-index entry, traceability updated.
