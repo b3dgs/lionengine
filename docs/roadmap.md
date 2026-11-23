@@ -39,7 +39,7 @@ Remaining, in this order:
 - screen modes, display-mode selection and logical-resolution scaling, then output filtering ([`features/display-modes.md`](features/display-modes.md), [`features/output-filtering.md`](features/output-filtering.md));
 - audio in batches: contracts + fake backend + contract suites; short sounds with cache, voices and variants; long sounds with streaming and playlists; `audio-javasound`; mixer groups and fades ([`features/audio-short-and-long-sounds.md`](features/audio-short-and-long-sounds.md));
 - asynchronous loading and load groups (REQ-RT-004, REQ-RT-010);
-- scene overlay stack (REQ-SCENE-003).
+- scene overlay stack and scene flow ([`features/scenes.md`](features/scenes.md), REQ-SCENE-003 to REQ-SCENE-008).
 
 **Expected output:** a demonstrator displaying an animated scene and playing a sound.
 

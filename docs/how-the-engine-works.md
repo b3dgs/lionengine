@@ -129,6 +129,19 @@ stateDiagram-v2
 
 A pause menu can be shown over a level: the level stays drawn but stops updating.
 
+The links between scenes are declared once, in a **scene flow**: "when the intro says *finished*, go to the menu", "when the menu says *start* and a save slot is chosen, go to the level". Scenes only say what happened; the flow decides where to go.
+
+```mermaid
+flowchart LR
+  intro["Introduction"] -- finished --> menu["Menu"]
+  menu -- "start (if a slot is chosen)" --> level["Level"]
+  menu -- credits --> credits["Credits"]
+  level -- pause --> pause["Pause (over the level)"]
+  pause -- resume --> level
+  level -- "won (if last level)" --> credits
+  credits -- finished --> menu
+```
+
 ## 8. Input
 
 The game reads actions such as "jump" or "move left", not keys. A table binds keys, buttons, sticks or touch to actions, so players can rebind them and the same code works with a keyboard or a gamepad. A quick tap is always seen by exactly one step.

@@ -17,6 +17,7 @@ Purpose: let a developer or an AI agent find, by **task**, which public types to
 |---|---|---|---|---|---|
 | Start, update and stop an application | `runtime` | *(to be filled)* | *(to be created)* | — | Fixed step 60 Hz, interpolation with `alpha`, fail-fast (ADR-0017, ADR-0031) |
 | Switch scenes and show a pause overlay | `runtime` | *(to be filled)* | *(to be created)* | — | Switch at a frame boundary; overlay stack in a second batch (REQ-SCENE-001 to REQ-SCENE-003) |
+| Link scenes (intro, menu, level, credits) with triggers and conditions | `runtime` | *(to be filled)* | *(to be created: headless four-scene flow)* | — | Scene flow built in code; triggers resolve at once, apply at the frame boundary (REQ-SCENE-004 to REQ-SCENE-008, [`features/scenes.md`](features/scenes.md)) |
 | Read a definition file and register a data-driven type | `core` | *(to be filled)* | *(to be created)* | — | Strict JSON, `format` and `version`, ids `namespace:name` (REQ-DEF-001 to REQ-DEF-003, REQ-RT-007) |
 | Load a resource | `resources` | *(to be filled)* | *(to be created)* | — | Closing rules: REQ-RES-003; keys and idempotent release: REQ-RES-005 (ADR-0007) |
 | Display and animate a sprite | `graphics` | *(to be filled; ADR-0003 ACCEPTED)* | *(to be created: headless example loading a sprite sheet, animating a sprite and rendering two color variants of one sprite)* | — | Pixels for images and cells, seconds for animation; world in meters, pixels at presentation only (REQ-SPRITE-*, REQ-ANIM-*, REQ-SHEET-*) |

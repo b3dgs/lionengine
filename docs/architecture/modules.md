@@ -5,7 +5,7 @@
 | Domain | Responsibility | Allowed dependencies |
 |---|---|---|
 | `core` | Common types, lifecycle, errors, events and listener rules, logging facade, seeded random generator, strict JSON reader, definition exception, registry and typed configuration (ADR-0020, ADR-0028, ADR-0031, ADR-0032) | JDK only; no frontend dependency |
-| `runtime` | Game loop, clock, inbox, asynchronous-handle plumbing, scene lifecycle contract and scene manager (ADR-0017, ADR-0018, ADR-0021, ADR-0031) | `core` |
+| `runtime` | Game loop, clock, inbox, asynchronous-handle plumbing, scene lifecycle contract, scene manager and scene flow (ADR-0017, ADR-0018, ADR-0021, ADR-0031, ADR-0036) | `core` |
 | `platform-api` | Window and surface contracts, platform object and capability lookup, lifecycle events, worker pool, screen modes and display-mode selection (ADR-0002, ADR-0020, ADR-0031) | `core` |
 | `render-api` | Rendering contracts: texture handles, command buffer, viewport, color-transform capability, scaling policy type, output filtering and custom filter contract (ADR-0002, ADR-0006, ADR-0026, ADR-0033) | `core` |
 | `platform-awt` | Desktop implementation of `platform-api` with the JDK AWT: window and surface lifecycle, screen modes, display modes, effective-result report, `AwtSurface` capability; no rendering, input, audio or resources (ADR-0008, ADR-0033) | `platform-api`, `core`; JDK `java.desktop` only; excluded from Android builds |

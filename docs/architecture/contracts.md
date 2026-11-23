@@ -68,11 +68,12 @@ A time value is never expressed sometimes in milliseconds and sometimes in secon
 - Fail-fast: an exception in update or render stops the loop in a failed state and reaches the owner. Stop is honored at a frame boundary and is idempotent.
 - **One iteration:** read control requests → deliver the inbox (input, platform events, load completions) → run zero or more fixed steps (each: the active scene's update, which runs the world — systems by slot, then the flush — and then its cameras, which sample their targets) → render once with `alpha` and the unscaled delta.
 
-## Scenes (ADR-0021, ADR-0031)
+## Scenes (ADR-0021, ADR-0031, ADR-0036)
 
 - A scene is a lifecycle contract in `runtime`: `enter`, `update`, `render`, `exit`, `dispose`. It knows nothing of world, camera, graphics or audio; the game (or the optional `composition` module) composes its content.
 - The scene manager receives scene instances, keeps one active scene and switches at a frame boundary: the previous scene is exited and disposed before the next is entered. A second batch adds an overlay stack: only the top scene updates, every stacked scene renders bottom to top.
-- A loading screen is an ordinary scene driving asynchronous handles. Transitions are drawn by the game.
+- A loading screen is an ordinary scene driving asynchronous handles. Visual transitions are drawn by the game.
+- **Scene flow:** a code-built, validated, immutable state machine over scene ids (`namespace:name`, each with a factory creating a new instance per entry) and a game context object. Transitions `(from id or any scene, trigger, condition, kind, target)` with kinds `SWITCH`, `PUSH`, `POP`, `EXIT`; `trigger(name)` resolves at once against the top scene (its transitions, then any-scene ones, in declaration order), returns whether one was selected, and the selected one applies at the next frame boundary; one pending transition at a time. Details: [`features/scenes.md`](../features/scenes.md).
 
 ## Resources (ADR-0005, ADR-0007, ADR-0019, ADR-0032)
 
