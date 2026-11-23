@@ -19,6 +19,9 @@
 | DEX | Dalvik Executable: the bytecode format run by Android. |
 | ECS | Entity-Component-System: model that stores entities as sets of components processed by systems. |
 | Engine change request | A need raised by a game that the engine does not cover; tracked instead of being worked around inside the game. |
+| Scene | Self-contained unit of the running game with a lifecycle, composing a world, cameras, a background and music (ADR-0021). |
+| World | Container owning the objects (entities), traits, queries and systems; hosted by `ecs` (ADR-0021). |
+| View | One camera paired with one viewport (ADR-0021). |
 | Entity | In ECS, an identifier grouping components. |
 | Extrapolation | Presentation-only prediction of a visual state beyond the last known simulation state; never fed back into the simulation. |
 | Frameskipping | Dropping a presentation (render) when the machine cannot keep up, without dropping simulation computations. |

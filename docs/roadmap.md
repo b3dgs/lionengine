@@ -7,7 +7,7 @@
 - apply the validated choices: Java 25+, Maven 3+, X/Y coordinates in meters and time in seconds (ADR-0001);
 - specify the coordinate system (origin, direction of Y), meters/pixels conversions and angle conventions (OQ-010 to OQ-013);
 - game loop model: fixed step, accumulator, interpolation, lag cap (ADR-0017, follow-ups OQ-151);
-- decide the place of ECS: core model or optional module (OQ-041);
+- place of ECS: single object model (ADR-0021);
 - set package conventions, versioning, thread rules and physical module layout (OQ-003, OQ-030);
 - define the Android build strategy with Maven (OQ-002) and the project license (OQ-006);
 - define the core/frontend boundaries;
@@ -45,8 +45,8 @@
 
 ## Phase 3 — game world
 
-- objects/scenes;
-- basic traits; ECS dynamic objects, traits, queries, systems and the standard trait package (ADR-0011 ACCEPTED, [`features/ecs.md`](features/ecs.md), [`features/standard-traits.md`](features/standard-traits.md)), after the build skeleton of Phase 0 and the decisions `OQ-041`, `OQ-042`, `OQ-013`, `OQ-010`;
+- scenes (lifecycle contract and scene manager in `runtime`) and the world (ADR-0021); `physics` contracts;
+- basic traits; ECS dynamic objects, traits, queries, systems and the standard trait package (ADR-0011 ACCEPTED, [`features/ecs.md`](features/ecs.md), [`features/standard-traits.md`](features/standard-traits.md)), after the build skeleton of Phase 0 and the decisions of ADR-0021, `OQ-013`, `OQ-010`;
 - tilemap and tilesets (tile maps: ADR-0009 ACCEPTED, [`features/tile-map.md`](features/tile-map.md));
 - camera: view rectangle, zoom, follow, smoothing and shake (ADR-0010 ACCEPTED, [`features/camera.md`](features/camera.md));
 - collisions according to the retained scope.
@@ -63,7 +63,6 @@
 
 ## Phase 5 — advanced extensibility
 
-- optional ECS strategy if justified (see OQ-041);
 - local multiplayer and split-screen;
 - network architecture, only after the synchronization needs are defined (OQ-060).
 

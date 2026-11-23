@@ -148,7 +148,7 @@ Still to specify: zoom details (OQ-135), out-of-scope candidates (OQ-136).
 
 ## Objects and traits
 
-The simple model and the ECS model are candidate strategies, not necessarily a single common API (OQ-041, OQ-042).
+The ECS is the single object model (ADR-0021): traits attach to ECS objects only. A scene is a lifecycle contract in `runtime`; a world is the container type of `ecs`; camera and viewport are two sides of a view (ADR-0021). Collision shapes, overlap tests and the broad phase live in `physics`.
 
 An object must have an explicit lifecycle. A trait represents a composable capability/behavior and must define its preconditions, its state, its execution order and its interactions.
 
@@ -156,7 +156,7 @@ Envisaged examples: `Movable`, `Gravity`, `Collision`. Their names and semantics
 
 ### ECS objects, traits and standard traits
 
-Accepted by [ADR-0011](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (ACCEPTED; `OQ-041` and `OQ-042` stay open). Responsibilities only; signatures are not fixed.
+Accepted by [ADR-0011](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (ACCEPTED; `OQ-041` and `OQ-042` resolved by ADR-0021). Responsibilities only; signatures are not fixed.
 
 - **Object:** an opaque ID (index plus generation). Indices are recycled; a stale ID is detected. Accessors fail fast on a stale or never-valid ID; a liveness check never throws (`REQ-ECS-001`, `REQ-ECS-002`). A consumer that must tolerate a missing object, such as the camera follow lookup (`REQ-CAM-004`), uses the liveness check.
 - **Trait:** data only, registered once with an `int` type ID, without reflection or class scanning (`REQ-ECS-004`). Logic lives in systems.

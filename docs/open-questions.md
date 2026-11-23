@@ -22,8 +22,9 @@ Summary of the answers recorded so far, by decision. Details are in the rows bel
 | [ADR-0018](decisions/0018-runtime-thread-events-and-cache-thread-safety.md) runtime thread, events, cache thread safety | OQ-030, OQ-121, OQ-122 | OQ-153 | #877 |
 | [ADR-0019](decisions/0019-loading-resource-policy-and-memory.md) loading, resource policy, memory | OQ-031, OQ-032, OQ-033 | OQ-153 | #877 |
 | [ADR-0020](decisions/0020-no-reflection-factory-registry-and-capability-lookup.md) no reflection, factory registry, capabilities | OQ-034, OQ-152 | OQ-154 | #877 |
+| [ADR-0021](decisions/0021-scene-world-viewport-and-object-model.md) scene, world, viewport, single ECS object model, physics contracts | OQ-040, OQ-041, OQ-042, OQ-043, OQ-044, OQ-146 | OQ-155 | #878 |
 
-Sections "Platform and build", "Coordinates and units", "Game loop" and "Runtime" have no unresolved original question left. Next section to treat: "World and objects" (OQ-040 to OQ-044).
+Sections "Platform and build", "Coordinates and units", "Game loop", "Runtime" and "World and objects" have no unresolved original question left. Next section to treat: to be chosen by the owner.
 
 ## Platform and build
 
@@ -75,16 +76,17 @@ Sections "Platform and build", "Coordinates and units", "Game loop" and "Runtime
 | OQ-152 | **RESOLVED** by [ADR-0020](decisions/0020-no-reflection-factory-registry-and-capability-lookup.md): explicit registry of string ids and factories registered at startup, typed configuration, no reflection; build-time generation is a possible later option (OQ-154). Original question: Data-driven object definition without reflection: how a definition file (XML in the previous engine) names the traits and types to instantiate and their parameters.  Related: OQ-041, OQ-042, OQ-126, OQ-146, OQ-034. | Before the first data-driven loader batch |
 | OQ-153 | Runtime follow-ups of ADR-0018 and ADR-0019: inbox capacity and overflow policy, asynchronous worker pool size, exact asynchronous handle contract and progress, memory budgets (OQ-070). | Before the runtime batch |
 | OQ-154 | Follow-ups of ADR-0020: id naming rules (namespacing, case), typed configuration API, definition file format (XML or other, with OQ-126), module hosting the registry (with OQ-146), optional build-time generated registration and its dependency review (OQ-148). | Before the first data-driven loader batch |
+| OQ-155 | Follow-ups of ADR-0021: scene manager details (transitions, scene stack for pause or overlay menus, scene identity, loading screen with asynchronous loading of ADR-0019), the optional composition module (world + camera + background + music) and its name, package layout of `physics`, how several views are bound at render time (OQ-131, OQ-108). | Before the scene batch |
 
 ## World and objects
 
 | ID | Question | Needed by |
 |---|---|---|
-| OQ-040 | Definition of a scene, a world and a viewport. | Phase 3 |
-| OQ-041 | Relationship between simple object management and ECS. The project goal describes an ECS-based engine, whereas `docs/vision.md` makes ECS optional (REQ-OBJ-002 is `Could`). Decide whether ECS is the core model or an optional module. | Phase 0 |
-| OQ-042 | Are traits attached to classic objects, ECS entities, or both through a common contract? | Phase 3 |
-| OQ-043 | Where do the "physics contracts" required by `traits` live (collision shapes, bodies)? No module owns them today. | Phase 3 |
-| OQ-044 | Is `world` independent of `tilemap`? | Phase 3 |
+| OQ-040 | **RESOLVED** by [ADR-0021](decisions/0021-scene-world-viewport-and-object-model.md): scene = lifecycle unit composing a world, cameras, background and music (lifecycle contract in `runtime`); world = container of objects, hosted by `ecs`; camera = world-side view (ADR-0010); viewport = surface-side region; a view pairs one camera with one viewport. Original question: Definition of a scene, a world and a viewport. | Phase 3 |
+| OQ-041 | **RESOLVED** by [ADR-0021](decisions/0021-scene-world-viewport-and-object-model.md): the ECS of ADR-0011 is the single object model; no second "simple" strategy; a game using no objects links neither `ecs` nor `traits` (owner delegated the decision). Original question: Relationship between simple object management and ECS. The project goal describes an ECS-based engine, whereas `docs/vision.md` makes ECS optional (REQ-OBJ-002 is `Could`). Decide whether ECS is the core model or an optional module. | Phase 0 |
+| OQ-042 | **RESOLVED** by [ADR-0021](decisions/0021-scene-world-viewport-and-object-model.md): traits attach to ECS objects only. Original question: Are traits attached to classic objects, ECS entities, or both through a common contract? | Phase 3 |
+| OQ-043 | **RESOLVED** by [ADR-0021](decisions/0021-scene-world-viewport-and-object-model.md): new headless module `physics` (on `core`): shapes, overlap tests, uniform-grid broad phase; used by `traits` and later `tilemap`. Details: OQ-142, OQ-125. Original question: Where do the "physics contracts" required by `traits` live (collision shapes, bodies)? No module owns them today. | Phase 3 |
+| OQ-044 | **RESOLVED** by [ADR-0021](decisions/0021-scene-world-viewport-and-object-model.md): `ecs`/world and `tilemap` are independent; they meet only through `physics` contracts and the owning scene. Original question: Is `world` independent of `tilemap`? | Phase 3 |
 
 ## Modules and APIs
 
@@ -213,4 +215,4 @@ Raised by the owner packet "ECS dynamic objects, traits & standard trait package
 | OQ-143 | Jump and ground details: how `grounded` is set (collision contact or game code), default coyote and buffer durations, variable jump height, and the sign of the jump impulse and gravity given the Y direction (OQ-010). | Before the jump batch |
 | OQ-144 | Further standard traits (friction/drag, health, parent link, controller intent, render link, tag) and the numeric type and interpolation use of `Transformable` (OQ-013, OQ-022): which are standard and in which batch. | When one is requested |
 | OQ-145 | Iteration-order guarantee: swap-removal reorders dense arrays; whether the order must be stable and reproducible for deterministic simulation or replay, and its consequence for any later network mode (OQ-060). | Before the query batch |
-| OQ-146 | Relation of `world` (scenes, objects, queries) to `ecs`: wrapper, shared contract or replacement, and whether classic objects and ECS objects share a contract (OQ-041, OQ-042, OQ-044). | Phase 3 |
+| OQ-146 | **RESOLVED** by [ADR-0021](decisions/0021-scene-world-viewport-and-object-model.md): `World` is the container type of the `ecs` module; no separate `world` module. Original question: Relation of `world` (scenes, objects, queries) to `ecs`: wrapper, shared contract or replacement, and whether classic objects and ECS objects share a contract (OQ-041, OQ-042, OQ-044). | Phase 3 |

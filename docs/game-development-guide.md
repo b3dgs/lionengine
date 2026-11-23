@@ -14,7 +14,7 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
 
 1. **Prerequisites** — Java/Maven versions (ADR-0001), how to depend on the engine (OQ-080).
 2. **Hello engine** — the smallest headless application: start, update, stop. *Example: to be created in Phase 1.*
-3. **Concepts, in order of use** — runtime and game loop, resources, graphics (sprite, animation), world (objects, traits or ECS: OQ-041), tilemap, input, audio.
+3. **Concepts, in order of use** — runtime and game loop, resources, graphics (sprite, animation), world and objects (ECS, ADR-0021), tilemap, input, audio.
 4. **Recipes** — one short, tested recipe per common task:
    - display and animate a sprite, including two color variants of one sprite and a sprite sheet (ADR-0003; example to be created);
    - load a map and scroll the camera (camera contract: [`features/camera.md`](features/camera.md), ADR-0010);

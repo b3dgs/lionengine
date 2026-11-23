@@ -85,7 +85,7 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-ANIM-003 | Must | PROPOSED | ADR-0003 | OQ-020, OQ-022 | — | no test yet |
 | REQ-SHEET-001 | Must | PROPOSED | ADR-0003 | OQ-100 | — | no test yet |
 | REQ-SHEET-002 | Should | PROPOSED | ADR-0003 | OQ-106 | — | no test yet |
-| REQ-MAP-001 | Should | PROPOSED | ADR-0009 | OQ-012, OQ-044 | — | no test yet |
+| REQ-MAP-001 | Should | PROPOSED | ADR-0009 | OQ-012 | — | no test yet |
 | REQ-MAP-002 | Should | PROPOSED | — | OQ-125 | — | no test yet |
 | REQ-MAP-003 | Must | PROPOSED | ADR-0009 | — | — | no test yet |
 | REQ-MAP-004 | Must | PROPOSED | ADR-0009 | OQ-126, OQ-128, OQ-101 | — | no test yet |
@@ -101,9 +101,13 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-CAM-007 | Must | PROPOSED | ADR-0010 | OQ-012, OQ-013 | — | no test yet |
 | REQ-CAM-008 | Must | PROPOSED | ADR-0010 | OQ-040 | — | no test yet |
 | REQ-OBJ-001 | Must | PROPOSED | — | — | — | no test yet |
-| REQ-OBJ-002 | Could | PROPOSED | — | OQ-041 | — | no test yet |
+| REQ-OBJ-002 | Should | PROPOSED | ADR-0021 | — | — | no test yet |
 | REQ-TRAIT-001 | Should | PROPOSED | — | — | — | no test yet |
 | REQ-TRAIT-002 | Should | PROPOSED | — | — | — | no test yet |
+| REQ-SCENE-001 | Must | PROPOSED | ADR-0021 | OQ-155 | — | no test yet |
+| REQ-SCENE-002 | Must | PROPOSED | ADR-0021 | OQ-155 | — | no test yet |
+| REQ-WORLD-001 | Must | PROPOSED | ADR-0021 | — | — | no test yet |
+| REQ-PHYS-001 | Should | PROPOSED | ADR-0021 | OQ-142 | — | no test yet |
 | REQ-ECS-001 | Must | PROPOSED | ADR-0011 | OQ-137 | — | no test yet |
 | REQ-ECS-002 | Must | PROPOSED | ADR-0011 | OQ-137, OQ-132 | — | no test yet |
 | REQ-ECS-003 | Must | PROPOSED | ADR-0011 | OQ-138 | — | no test yet |

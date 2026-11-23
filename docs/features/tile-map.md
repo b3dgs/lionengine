@@ -7,7 +7,7 @@
 - Affected modules: `tilemap`, `graphics` (sprite sheet), `render-api`, `resources`, `test-support`, `examples`
 - Requirements: `REQ-MAP-001`, `REQ-MAP-003`, `REQ-MAP-004`, `REQ-MAP-005`, `REQ-MAP-006`, `REQ-MAP-007`
 - Applicable ADRs: [`ADR-0009`](../decisions/0009-tile-map-contracts-in-tilemap.md) (ACCEPTED), [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md)
-- Open questions involved: `OQ-012`, `OQ-040`, `OQ-043`, `OQ-044`, `OQ-101`, `OQ-122`, `OQ-125`, `OQ-126`, `OQ-127`, `OQ-128`, `OQ-129`
+- Open questions involved: `OQ-012`, `OQ-101`, `OQ-122`, `OQ-125`, `OQ-126`, `OQ-127`, `OQ-128`, `OQ-129`
 
 ## Objective
 

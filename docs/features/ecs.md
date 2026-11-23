@@ -8,7 +8,7 @@
 - Affected modules: `ecs`, `core`, `test-support`, `examples`
 - Requirements: `REQ-ECS-001` to `REQ-ECS-010`
 - Applicable ADRs: [`ADR-0011`](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (ACCEPTED), [`ADR-0001`](../decisions/0001-technical-baseline-and-conventions.md)
-- Open questions involved: `OQ-020`, `OQ-030`, `OQ-041`, `OQ-042`, `OQ-122`, `OQ-132`, `OQ-137` to `OQ-141`, `OQ-145`, `OQ-146`
+- Open questions involved: `OQ-020`, `OQ-030`, `OQ-122`, `OQ-132`, `OQ-137` to `OQ-141`, `OQ-145`
 
 ## Objective
 
@@ -16,7 +16,7 @@ Create and remove objects at runtime by ID, add and remove traits dynamically, p
 
 ## Out of scope
 
-Standard traits and systems (`features/standard-traits.md`); scenes and `world` (`OQ-146`); networking and replication; multithreaded systems (`OQ-030`); serialization of objects; a camera adapter (ADR-0010, `OQ-132`).
+Standard traits and systems (`features/standard-traits.md`); scenes (lifecycle contract in `runtime`, ADR-0021); networking and replication; multithreaded systems (`OQ-030`); serialization of objects; a camera adapter (ADR-0010, `OQ-132`).
 
 ## Expected behavior
 
