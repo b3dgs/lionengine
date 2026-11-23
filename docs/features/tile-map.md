@@ -1,56 +1,59 @@
 # Feature: tile map
 
-**Status: PROPOSED**
+**Status: VALIDATED**
 
-- Owner: to be filled in
+- Owner: project owner
 - Roadmap phase: Phase 3, see `roadmap.md`
-- Affected modules: `tilemap`, `graphics` (sprite sheet), `render-api`, `resources`, `test-support`, `examples`
-- Requirements: `REQ-MAP-001`, `REQ-MAP-003`, `REQ-MAP-004`, `REQ-MAP-005`, `REQ-MAP-006`, `REQ-MAP-007`
-- Applicable ADRs: [`ADR-0009`](../decisions/0009-tile-map-contracts-in-tilemap.md) (ACCEPTED), [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md)
-- Open questions involved: `OQ-012`, `OQ-101`, `OQ-122`, `OQ-162` (`OQ-125` to `OQ-129` resolved by ADR-0028)
+- Affected modules: `tilemap`, `graphics` (sprite sheet), `render-api`, `resources`, `physics`, `core` (JSON reader), `test-support`, `examples`
+- Requirements: `REQ-MAP-001` to `REQ-MAP-008`, `REQ-DEF-001`, `REQ-DEF-002`
+- Applicable ADRs: [`ADR-0009`](../decisions/0009-tile-map-contracts-in-tilemap.md), [`ADR-0013`](../decisions/0013-world-coordinates-and-angles.md), [`ADR-0021`](../decisions/0021-scene-world-viewport-and-object-model.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0028`](../decisions/0028-tile-map-collision-json-definitions-and-storage.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0034`](../decisions/0034-camera-and-ecs-defaults-noise-clamp-slots-capacities-events-shapes.md)
+- Open questions involved: none
 
 ## Objective
 
-Single-layer tile maps built on the sprite sheet: manual editing, loading from a resource, viewport rendering and destroyable tiles with neighbor updates.
+Single-layer tile maps built on the sprite sheet: manual editing, loading from a resource, viewport rendering, destroyable tiles with neighbor updates, and tile collision for the standard traits.
 
 ## Out of scope
 
-Collision, static and dynamic (`OQ-125`); layers; map file format (Tiled JSON, ADR-0028); chunking and render cache (`OQ-129`); camera and meter conversion (`OQ-012`).
+Several layers (candidate); one-way tiles and slopes (later, ADR-0034); chunked storage and render caches (only after a benchmark shows a need, ADR-0028); the camera (the caller passes a pixel rectangle).
 
 ## Expected behavior
 
-- Grid of cells, each empty or a tileset cell index; `set`, `get`, `clear` by `int` tile coordinates; out-of-bounds has a defined error.
-- Loading through an abstract loader contract over `resources`; missing or invalid data has defined errors; keys and release per ADR-0007.
-- Rendering takes a viewport rectangle in pixels of the logical frame and emits `render-api` commands only for intersecting tiles plus a margin; it never mutates the map.
-- Destroying a tile applies auto-tiling rules to its neighbors (rule format: ADR-0028) and notifies a synchronous listener with cell, old and new tile.
+- Grid of `width × height` cells stored as a flat row-major `int[]`; each cell is empty or a tileset cell index. Tile coordinates are `int`, origin at the bottom-left, Y up. `set`, `get`, `clear` check bounds and throw `IndexOutOfBoundsException` outside the map.
+- The tileset is a sprite sheet referenced by its string id (for Tiled, the resource key of the `.tsj` file, or of the map for an embedded tileset); the map holds a reference count on the sheet group and releases it at `close`; the scene that loaded the map closes it.
+- Loading through an abstract loader contract over `resources`; missing data raises the resource exception, invalid data the definition exception. The Tiled JSON loader accepts orthogonal, finite maps with one tile layer and one tileset (embedded or `.tsj`), layer data as a JSON array or base64 (uncompressed, zlib or gzip), and flips Tiled's top-down rows. It rejects flip and rotation flags, infinite maps, other orientations and several tile layers; it ignores object, image and group layers.
+- Tile collision property: `empty` or `solid`, from the Tiled tile property `collision` (or given in code); the map implements the `physics` shape-query contract (which solid tile boxes overlap a box) with a world placement: origin and tile size in meters, default 1 m per tile.
+- Rendering takes a viewport rectangle in pixels of the logical frame and emits `render-api` commands only for the intersecting tiles plus a margin (default one tile, configurable); it never mutates the map; cost independent of the map size.
+- Auto-tiling rules come from a `lionengine.autotile` file named by the Tiled tileset property `autotile` (or are given in code): an ordered list of `neighbors`, `care` and `tile`, bit 0 north then clockwise, a cell outside the map counting as not empty (ADR-0032).
+- Destroying a tile clears it and re-evaluates its non-empty neighbors among the 8: the first rule with `(mask & care) == (neighbors & care)` gives the new tile, otherwise the tile is unchanged; every change (set, clear, destroy, neighbor update) updates collision at once and notifies the synchronous tile-changed listener with cell, old and new tile.
 
 ## Envisaged APIs / contracts
 
-Responsibilities only; signatures are not fixed. See `architecture/contracts.md` (Tilemap).
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Tile map); signatures written by the batch: tile map, tileset reference, loader contract, Tiled loader, auto-tiling rule set, tile-changed listener, collision shape query implementation.
 
 ## Lifecycle and concurrency
 
-Changes run in the update phase only (`REQ-LOOP-003`); rendering is read-only (`REQ-LOOP-006`). Tileset ownership and release: ADR-0028. Threads: `OQ-030`, `OQ-121`.
+Changes run in the update phase only (`REQ-LOOP-003`) on the runtime thread; rendering is read-only (`REQ-LOOP-006`).
 
 ## Units and Android/DEX compatibility
 
-Tile indices are `int`; tile size, viewport and positions are pixels of the logical frame. No `java.awt` or `javax.imageio`; any map-format library needs purpose, license and Android check first (`docs/android-compatibility.md`).
+Tile indices `int`; tile size, viewport and positions in pixels of the logical frame for rendering; meters for collision only. Base64 is decoded by project code (`java.util.Base64` needs API 26 and is not used in shared code); zlib and gzip use `java.util.zip`, to verify on API 21 (`android-compatibility.md`).
 
 ## Dependencies
 
-Allowed: `core`, `graphics` contracts, `render-api`, `resources`. Forbidden: frontend types; any dependency of `core` or an `*-api` module on `tilemap`.
+`core`, `resources`, `graphics`, `render-api`, `physics`. Forbidden: `ecs` or `traits`, frontend types, any dependency of `core` or an `*-api` module on `tilemap`.
 
 ## Tests
 
-- Unit tests: bounds, set/get/clear, viewport-to-tile-range math, neighbor rules.
-- Contract tests (`test-support`): map loaders.
+- Unit tests: bounds, set/get/clear, row flip, viewport-to-tile-range math, neighbor rules, shape query, collision after set and destroy, Tiled subset (each accepted and rejected feature).
+- Contract tests (`test-support`): map loader suite with an in-memory test format.
 - Integration tests: headless load, render commands only for visible tiles, destroy then render.
-- Platform/performance tests: large maps (`OQ-129`), later.
+- Performance tests: a 1000 × 1000 map renders a viewport in constant time.
 
 ## Acceptance criteria
 
 - [ ] Requirements covered.
-- [ ] API validated.
+- [ ] API reviewed in the pull request.
 - [ ] Automated tests added and passing.
 - [ ] Complete Javadoc.
 - [ ] Headless example, API-index entry, traceability updated (REQ-DOC-001, REQ-DOC-002).

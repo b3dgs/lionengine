@@ -1,6 +1,6 @@
 # Architecture overview
 
-**Status: PROPOSED** (sections 6 and 7 restate VALIDATED decisions from ADR-0001)
+**Status: VALIDATED — principles and boundaries (ADR-0001 to ADR-0035). Sections 6 and 7 restate ADR-0001 as refined by later ADRs. A plain-language version with diagrams: [`../how-the-engine-works.md`](../how-the-engine-works.md).**
 
 ## 1. General direction
 
@@ -14,47 +14,51 @@ Layered architecture with dependency inversion: the core defines the contracts; 
         +------------------+------------------+
         |                  |                  |
      Runtime            World              Media
-   game loop        objects / traits    sprites / audio
+  loop, scenes      ecs, traits,      graphics, audio,
+  inbox, threads    physics, camera,  tilemap rendering
+                    tile collision
         |                  |                  |
         +------------------+------------------+
                            |
-                    Core contracts
+                 core + *-api contracts
                            |
        +-------------------+-------------------+
        |                   |                   |
-  AWT frontend        OpenGL frontend     Android frontend
-  Input / Display     Render / Input      View / Input / Audio
+  AWT frontend        OpenGL renderer     Android frontend
+  platform-awt,       render-opengl       platform-android,
+  render-awt,                             audio-android,
+  input-awt                               input-android
        |                   |                   |
        +------------ Backends -----------------+
                            |
                  OS / native libraries
 ```
 
-The diagram is conceptual: modules are named `lionengine-XXX` under group `com.b3dgs.lionengine` (ADR-0012); the exact module list and the allowed dependencies are set at the build skeleton (OQ-149). The Android toolchain is not Maven-native: DEX is produced by a separate Gradle module consuming the Maven artifacts (ADR-0012).
+Modules are named `lionengine-XXX` under group `com.b3dgs.lionengine` (ADR-0012); the module list and allowed dependencies are in [`modules.md`](modules.md); their physical declaration is done at the build skeleton (OQ-149). DEX is produced by a separate Gradle module consuming the Maven artifacts (ADR-0012).
 
 ## 2. Boundaries
 
 ### Core
 
-Contains the contracts and the platform-independent logic: time, lifecycle, objects, scenes, abstract resources, animation, coordinates, events and orchestration.
+Contains the contracts and the platform-independent logic: time, lifecycle, objects, scenes, abstract resources, animation, coordinates, events, definition files and orchestration.
 
 ### Adapters
 
-Implement the contracts for a given environment: window, rendering surface, keyboard/mouse/gamepad events, audio decoding or Android asset access.
+Implement the contracts for a given environment: window, rendering surface, keyboard/mouse/gamepad events, audio output and decoding, Android asset access.
 
 ### Game application
 
-Configures the engine, selects the implementations, declares the resources and defines the game-specific rules. It must not need to know the internal details of the backends.
+Configures the engine, selects and registers the implementations explicitly (ADR-0020), declares the resources and defines the game-specific rules. It never needs to know the internal details of the backends.
 
-## 3. Proposed dependency rules
+## 3. Dependency rules
 
 - `core` depends on no frontend.
 - An adapter depends on the core contracts, never the reverse.
-- Business modules do not depend directly on each other without contractual need.
-- Optional integrations must not be required to use the foundation.
-- Transitive dependencies of a frontend must not leak into the public APIs of the core.
-- Dependency cycles between modules are forbidden.
-- These rules are verified automatically by the build (REQ-CORE-005, OQ-005).
+- Business modules do not depend directly on each other without contractual need (`ecs` and `tilemap` meet only through `physics` and the scene, ADR-0021).
+- Optional modules (`composition`, `multiplayer`) are never required to use the foundation.
+- Transitive dependencies of a frontend never leak into the public APIs of the core.
+- Dependency cycles between modules are forbidden; a package never depends on a descendant package (ADR-0015).
+- These rules are verified automatically by the build (REQ-CORE-005, ADR-0012).
 
 ## 4. Several implementations
 
@@ -65,39 +69,42 @@ An abstraction does not imply a universal implementation. For example:
 - an OpenGL backend;
 - an Android adapter.
 
-Each implementation must respect the same contract or explicitly declare its capabilities/limits.
+Each implementation respects the same contract and passes the same contract suite of `test-support`, or explicitly declares its capabilities and limits.
 
 ## 5. Capabilities and compatibility
 
-**PROPOSED:** platforms may announce their capabilities (gamepad, audio, acceleration, shaders, etc.). The engine must not assume that a capability exists everywhere.
+- Platforms announce their capabilities (gamepad, audio, shaders, per-frame color effects, screen modes, ...). The engine never assumes that a capability exists everywhere.
+- Lookup: a typed optional lookup on an explicit platform object, without class-name lookup or reflection (ADR-0020).
+- Screen modes, display-mode selection and output filtering are best-effort requests with the effective result reported (ADR-0002, ADR-0006). They are presentation concerns: the logical resolution is decoupled from the output resolution and nothing here changes world units or simulation state.
 
-**ACCEPTED (ADR-0020):** a typed optional lookup on an explicit platform object, without class-name lookup or reflection.
-
-**ACCEPTED (ADR-0002):** screen modes, display-mode selection and output filtering follow this capability model: best-effort requests, with the effective result reported. They are presentation concerns: the logical resolution is decoupled from the output resolution and nothing here changes world units or simulation state.
-
-## 6. Physical and temporal conventions — VALIDATED
+## 6. Physical and temporal conventions
 
 - The world is two-dimensional, with two coordinates: `X` and `Y`.
-- World coordinates and distances are expressed in **meters**.
+- World coordinates and distances are expressed in **meters**, as `double` (ADR-0014).
 - Time, durations and time deltas are expressed in **seconds**.
 - Speeds are expressed in **meters per second (`m/s`)**; accelerations in `m/s²`.
-- Conversions to pixels are a responsibility of the presentation layer (camera/viewport/rendering, see [ADR-0010](../decisions/0010-camera-system-in-camera.md)), never a change to the world units.
-- The world origin is `(0, 0)` with Y up; the screen has its origin at the top left with Y down; angles are in degrees (ADR-0013). The meters-to-pixels conversion is done in the camera only, world quantities are `double`, and rotation is counter-clockwise positive (ADR-0014); absolute angles are in `[0, 360)` and signed differences in `(-180, 180]` (ADR-0016).
+- The world origin is `(0, 0)` with Y up; the screen (logical frame) has its origin at the top left with Y down (ADR-0013).
+- Angles are in degrees, counter-clockwise positive, `0°` along `+X`; absolute angles in `[0, 360)`, signed differences in `(-180, 180]` (ADR-0013, ADR-0014, ADR-0016).
+- Conversion to pixels is done by the camera view transform only; there is no engine-wide pixels-per-meter constant; `float` appears only at the render boundary (ADR-0014, ADR-0029).
 
-APIs must make units explicit in their Javadoc. Do not implicitly mix meters and pixels, or seconds and milliseconds. Parameter and method names should avoid ambiguous units (`deltaSeconds`, `speedMetersPerSecond`, etc.) where this improves readability.
+APIs make units explicit in their Javadoc. Never mix meters and pixels, or seconds and milliseconds, implicitly. Parameter and method names carry the unit where the type does not (`deltaSeconds`, `speedMetersPerSecond`).
 
-## 7. Default game loop model — VALIDATED in principle
+## 7. Default game loop model
 
-The default loop must be **independent of machine performance** for the simulation. It combines:
-- **frameskipping**: rendering may be skipped when the machine cannot keep up with the presentation cadence;
-- **extrapolation**: the display may anticipate the visual state between two known simulation states.
+The default loop is **independent of machine performance** for the simulation (ADR-0001). It combines:
+- **frameskipping**: rendering may be skipped when the machine cannot keep up, never a simulation step below the lag cap;
+- **presentation between states**: interpolation by default, extrapolation opt-in.
 
-Simulation and presentation must be separated. Extrapolation is a presentation operation: it must never feed its result back into the simulation state. An extrapolation greater than `1` therefore must not degrade calculation accuracy or cause cumulative drift. Gameplay calculations must remain based on the reference simulation time.
+Simulation and presentation are separated. A presented state is never fed back into the simulation, so an "extrapolation greater than 1" cannot degrade accuracy or cause drift.
 
-**Refined by [ADR-0017](../decisions/0017-fixed-step-game-loop.md):** fixed step with an accumulator and catch-up; the presentation factor is `accumulator / step`, always in `[0, 1)`; interpolation is the default and extrapolation is opt-in; lag is capped and the excess dropped; pause and a time scale are supported; exceptions are fail-fast.
+Made precise by [ADR-0017](../decisions/0017-fixed-step-game-loop.md) and [ADR-0031](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md): fixed step (default 60 Hz) with a `long` nanosecond accumulator and catch-up; `alpha = accumulator / step` in `[0, 1)`; lag capped at 0.25 s by default, excess dropped and reported; vsync snapping; pause without catch-up; time scale in `[0.1, 4.0]`; fail-fast exceptions; stop at a frame boundary.
 
 **Historical note (ADR-0001):** "extrapolation greater than 1" meant an extrapolation factor greater than the normalized interval between two reference states. With ADR-0017 that case no longer reaches the renderer.
 
-## 8. Open architectural questions
+## 8. Threads
 
-All open architectural questions (origin of the coordinate system, angles, meters/pixels, simulation step, extrapolation, threading, loading, resource ownership, scene/world/viewport, ECS compatibility, network determinism, Android build strategy, module layout, rendering API style) are tracked in [`../open-questions.md`](../open-questions.md).
+One runtime thread owns the loop, the world and the caches; platform threads and workers only post to the inbox (ADR-0018, ADR-0031). Details: [`contracts.md`](contracts.md#threads-and-events-adr-0018-adr-0031).
+
+## 9. Open architectural questions
+
+Only build-skeleton work (OQ-147, OQ-149), multi-monitor and HiDPI (OQ-096) and the network model (OQ-165) remain open; they are tracked in [`../open-questions.md`](../open-questions.md).

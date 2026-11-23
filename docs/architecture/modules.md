@@ -1,45 +1,65 @@
 # Conceptual module breakdown
 
-**Status: PROPOSED — this table does not prejudge the physical split into artifacts.**
+**Status: VALIDATED — module list, responsibilities and allowed dependencies (ADR-0002 to ADR-0035). Each module becomes one artifact `lionengine-<module>` (ADR-0012); its declaration and package tree are done at the build skeleton (OQ-149).**
 
-| Domain | Responsibility | Allowed dependencies (conceptual direction) |
+| Domain | Responsibility | Allowed dependencies |
 |---|---|---|
-| `core` | Common types, lifecycle, errors, events, cross-cutting contracts; the strict JSON reader for definition files (ADR-0028) | No frontend dependency |
-| `runtime` | Orchestration, game loop, clock, scheduling; scene lifecycle contract and scene manager (ADR-0021) | `core` |
-| `platform-api` | Window/surface contracts, platform capabilities, frontend lifecycle, screen modes and display-mode selection (ADR-0002) | `core` |
-| `render-api` | Rendering contracts, textures, commands, viewport, output filtering (ADR-0002), scaling policy type (ADR-0006) | `core` |
-| `render-awt` | AWT implementation; reaches the AWT surface through a capability of `platform-awt` (ADR-0022) | `render-api`, `platform-api`, `platform-awt` |
-| `render-opengl` | OpenGL implementation | `render-api`, `platform-api`; `resources` if shader assets are delivered through it (ADR-0025, ADR-0005) |
-| `platform-awt` | Desktop implementation of `platform-api` with the JDK AWT: window and surface lifecycle, screen modes, display modes, effective-result report; no rendering, input, audio or resources (ADR-0008) | `platform-api`, `core`; JDK `java.desktop` only; excluded from Android builds |
-| `platform-android` | Android lifecycle, surface, resources and input adaptation | `platform-api` and the `*-api` modules it implements |
-| `resources` | Resolution, opening, metadata and lifecycle of resources; media-agnostic, no decoded cache (ADR-0005); resource key and missing-resource exception types (ADR-0007) | `core` |
-| `resources-*` | Filesystem, archive, memory/temporary, Android and stream providers | `resources` |
-| `audio-api` | Backend-independent audio contracts: short sounds, long sounds, variant sets, playlists (ADR-0004) | `core`, `resources` (ADR-0004, decision 3B) |
-| `audio-*` | Audio backends, one per output library or platform, and decoder modules per codec only when a third-party library is needed (ADR-0022);  own the decoded caches (ADR-0004, ADR-0005) | `audio-api`, `resources` |
-| `graphics` | Images, logical textures, sprites, spritesheets, animations (ADR-0003); owns its decoded image cache (ADR-0005); built-in pure-Java PNG decoder, optional platform decoders (ADR-0026) | `core`, `resources`, `render-api` (ADR-0003: sprites emit `render-api` commands; OQ-051 resolved) |
-| `tilemap` | Tilesets, grids, layers, static/dynamic maps (single layer first, collision deferred: ADR-0009, ACCEPTED) | `core`, graphics contracts; `resources` if map files are loaded through it (candidate under ADR-0005) |
-| `camera` | Camera: view rectangle in world units, zoom, translation, follow through a lookup contract, smoothing, shake; single module, headless, no ECS or platform dependency (ADR-0010) | `core` only; the ECS adapter lives outside (OQ-132) |
-| `input-api` | Normalized actions, states and input events | `core` |
-| `input-*` | Keyboard, mouse and gamepad adapters per platform | `input-api`, `platform-api` |
-| `traits` | Composable capabilities as ECS traits and systems (ADR-0011, ADR-0021): `Transformable`, `Movable`, `Gravity`, `Jumpable`, `Collidable`, `Lifetime` | `ecs`, `physics`, `core` |
-| `ecs` | The object model (ADR-0011, ADR-0021): `World` container, object IDs, trait registry and sparse-set storage, cached queries, command buffer, events, system ordering; headless, independent of `tilemap` | `core` |
-| `physics` | Headless collision contracts (ADR-0021): shapes (axis-aligned box first), overlap tests, uniform-grid broad phase over plain data; no rigid bodies | `core` |
-| `multiplayer` | Optional extension (ADR-0022, no module depends on it): session and network transport abstractions; local split-screen is several views in one scene (ADR-0021) | `ecs`, `input-api`, network contracts to be defined |
+| `core` | Common types, lifecycle, errors, events and listener rules, logging facade, seeded random generator, strict JSON reader, definition exception, registry and typed configuration (ADR-0020, ADR-0028, ADR-0031, ADR-0032) | JDK only; no frontend dependency |
+| `runtime` | Game loop, clock, inbox, asynchronous-handle plumbing, scene lifecycle contract and scene manager (ADR-0017, ADR-0018, ADR-0021, ADR-0031) | `core` |
+| `platform-api` | Window and surface contracts, platform object and capability lookup, lifecycle events, worker pool, screen modes and display-mode selection (ADR-0002, ADR-0020, ADR-0031) | `core` |
+| `render-api` | Rendering contracts: texture handles, command buffer, viewport, color-transform capability, scaling policy type, output filtering and custom filter contract (ADR-0002, ADR-0006, ADR-0026, ADR-0033) | `core` |
+| `platform-awt` | Desktop implementation of `platform-api` with the JDK AWT: window and surface lifecycle, screen modes, display modes, effective-result report, `AwtSurface` capability; no rendering, input, audio or resources (ADR-0008, ADR-0033) | `platform-api`, `core`; JDK `java.desktop` only; excluded from Android builds |
+| `render-awt` | AWT renderer; CPU filters `NONE`, bilinear, `Scale2x`; reaches the surface through `AwtSurface` (ADR-0022, ADR-0033) | `render-api`, `platform-api`, `platform-awt` |
+| `render-opengl` | OpenGL and OpenGL ES renderer; GPU filters and shaders loaded through `resources` (ADR-0025) | `render-api`, `platform-api`, `resources` |
+| `platform-android` | Android lifecycle, surface, Android asset provider adaptation, platform events | `platform-api` and the `*-api` modules it implements |
+| `resources` | Keys, provider list, opening, metadata and lifecycle of resources; media-agnostic, no decoded cache; resource exception (ADR-0005, ADR-0007, ADR-0032) | `core` |
+| `resources-*` | Filesystem, archive, memory/temporary, Android assets and application-stream providers | `resources` |
+| `audio-api` | Backend-independent audio contracts: short and long sounds, variant sets, playlists, voices, mixer groups, fades (ADR-0004, ADR-0027, ADR-0033) | `core`, `resources` |
+| `audio-*` | Audio backends per output library or platform (`audio-javasound`, `audio-android`, later `audio-openal`) and decoder modules per third-party codec (`audio-codec-ogg`); they own the decoded caches (ADR-0022, ADR-0033) | `audio-api`, `resources` |
+| `graphics` | Pixel buffer, PNG decoder, image cache, sprites, sprite sheets, animations, color transforms (ADR-0003, ADR-0026, ADR-0033) | `core`, `resources`, `render-api` |
+| `graphics-*` | Optional image decoders (`graphics-imageio` on desktop, `graphics-android`) registered explicitly (ADR-0026, ADR-0033) | `graphics` |
+| `tilemap` | Tile maps: grid, tileset reference, loader contract and Tiled JSON loader, viewport rendering, auto-tiling, tile collision through the `physics` shape-query contract (ADR-0009, ADR-0028) | `core`, `resources`, `graphics`, `render-api`, `physics` |
+| `camera` | Camera: view rectangle, view transform, zoom, translation, follow through a `long`-keyed lookup, smoothing, bounds, dead zone, shake (ADR-0010, ADR-0029, ADR-0034) | `core` |
+| `input-api` | Devices, input codes, actions and bindings, per-step edges, players (ADR-0035) | `core` |
+| `input-*` | Input adapters: `input-awt` (keyboard, mouse), `input-android` (touch, keys, gamepads) (ADR-0033, ADR-0035) | `input-api`, `platform-api`; `input-awt` also `platform-awt` |
+| `ecs` | The object model: `World`, object IDs, trait registry and storage, cached queries, command buffer and flush, events, system ordering (ADR-0011, ADR-0021, ADR-0030, ADR-0034) | `core` |
+| `physics` | Headless collision contracts: shapes (axis-aligned box first), overlap tests, shape-query contract, uniform-grid broad phase; no rigid bodies (ADR-0021, ADR-0028) | `core` |
+| `traits` | Standard traits and systems: `Transformable`, `Movable`, `Gravity`, `Jumpable`, `Collidable`, `Lifetime` (ADR-0011, ADR-0030, ADR-0034) | `ecs`, `physics`, `core` |
+| `composition` | Optional ready-made scene composition: world, views (`View` = camera + viewport), tile map, background, music; camera follow adapter over the world; nothing depends on it (ADR-0031) | `runtime`, `ecs`, `camera`, `graphics`, `tilemap`, `audio-api`, `render-api` |
+| `multiplayer` | Optional extension, Phase 5: sessions and network transport; nothing depends on it (ADR-0022, OQ-165) | `ecs`, `input-api` |
 | `test-support` | Controllable clock, manually driven loop, headless frontend, fake backends, reusable contract-test suites (REQ-TEST-001) | Contracts of the modules it tests; used in `test` scope only |
-| `examples` | Minimal and demonstration applications, headless first | Public APIs only; never depended upon |
+| `examples` | Minimal and demonstration applications, headless first, compiled and run by the build (REQ-DOC-001) | Public APIs only; never depended upon |
 
-## Dependency direction (conceptual)
+## Dependency direction
 
-```text
-examples ─────────────► public APIs of all modules
-render-awt / render-opengl / platform-awt / platform-android / resources-* / audio-* / input-*
-        └──────────────► *-api modules ──────────────► core
-runtime, ecs, physics, graphics, tilemap, camera ───────────────► core (+ resources / render-api where listed)
-audio-api, audio-* ──────────────────────────────────► resources (ADR-0004, ADR-0005)
-traits ─► ecs, physics ─► core        tilemap ─► physics (tile collision, OQ-125)        multiplayer ─► ecs, input-api       test-support ─► (test scope)
+```mermaid
+flowchart BT
+  core[core]
+  runtime[runtime] --> core
+  papi[platform-api] --> core
+  rapi[render-api] --> core
+  res[resources] --> core
+  iapi[input-api] --> core
+  ecs[ecs] --> core
+  physics[physics] --> core
+  camera[camera] --> core
+  aapi[audio-api] --> res
+  graphics[graphics] --> res
+  graphics --> rapi
+  tilemap[tilemap] --> graphics
+  tilemap --> physics
+  traits[traits] --> ecs
+  traits --> physics
+  composition["composition (optional)"] --> runtime
+  composition --> ecs
+  composition --> camera
+  composition --> tilemap
+  composition --> aapi
 ```
 
-Arrows always point from the dependent module to its dependency. A cycle, or an arrow from `core` or an `*-api` module to an implementation module, is a violation (REQ-CORE-005).
+Implementation modules point to the API they implement: `platform-awt` and `platform-android` → `platform-api`; `render-awt` and `render-opengl` → `render-api` (and `render-awt` → `platform-awt`); `audio-*` → `audio-api`; `resources-*` → `resources`; `input-*` → `input-api`; `graphics-*` → `graphics`. `multiplayer` → `ecs`, `input-api`. `examples` may use every public API; `test-support` is test scope only.
+
+Arrows always point from the dependent module to its dependency. A cycle, or an arrow from `core` or an `*-api` module to an implementation module, is a violation (REQ-CORE-005). No module depends on `composition`, `multiplayer` or `examples`.
 
 ## Splitting principles
 
@@ -47,8 +67,8 @@ Arrows always point from the dependent module to its dependency. A cycle, or an 
 - Do not automatically create one module per class or per tiny feature.
 - Separate API and implementation when several plausible implementations exist or when there is a real platform boundary.
 - Do not artificially split a concept if it adds complexity without isolation or testing benefit.
-- The names above are provisional identifiers; they may be renamed before validation.
+- Adding, renaming, splitting or merging a module follows flow B of [`../change-process.md`](../change-process.md) and needs an ADR.
 
 ## Open points
 
-Module-related open points (OQ-156 for the follow-ups of ADR-0022, OQ-121 for the thread safety of module caches) are tracked in [`../open-questions.md`](../open-questions.md).
+Only the build-skeleton work remains: physical declaration of these modules, package tree verified against the dependency plugin, profiles and commands (OQ-149), and the Android verification job (OQ-147).

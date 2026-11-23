@@ -1,57 +1,61 @@
 # Feature: audio, short sounds and long sounds
 
-**Status: PROPOSED**
+**Status: VALIDATED**
 
-- Owner: to be filled in
-- Roadmap phase: Phase 2, see `roadmap.md` (batches: contracts + fake backend + contract tests; short sounds with cache and variants; long sounds with preload/release and playlist; first desktop backend; Android backend)
-- Affected modules: `audio-api`, `audio-*`, `resources`, `test-support`, `examples`
-- Requirements: `REQ-AUDIO-003` to `REQ-AUDIO-009`, `REQ-RES-004` (refines `REQ-AUDIO-001`, `REQ-AUDIO-002`)
-- Applicable ADRs: [`ADR-0004`](../decisions/0004-audio-contracts-short-and-long-sounds.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md) (ACCEPTED), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md) (ACCEPTED)
-- Open questions involved: `OQ-161` (`OQ-110` to `OQ-117` resolved by ADR-0027)
+- Owner: project owner
+- Roadmap phase: Phase 2, see `roadmap.md` (batches: contracts + fake backend + contract tests; short sounds with cache, voices and variants; long sounds with streaming and playlists; first desktop backend `audio-javasound`; mixer groups and fades; Android backend `audio-android`)
+- Affected modules: `audio-api`, `audio-javasound`, `audio-android`, `audio-codec-ogg`, `resources`, `test-support`, `examples`
+- Requirements: `REQ-AUDIO-001` to `REQ-AUDIO-013`, `REQ-RES-004`, `REQ-RES-005`
+- Applicable ADRs: [`ADR-0004`](../decisions/0004-audio-contracts-short-and-long-sounds.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0022`](../decisions/0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md), [`ADR-0027`](../decisions/0027-audio-policies-formats-latency-and-first-scope.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md)
+- Open questions involved: `OQ-147` (Android latency measurement waits for the DEX job)
 
 ## Objective
 
-Provide two audio families with different lifecycles: short sounds (low-latency effects, cached, variant sets) and long sounds (music, ambient, preload and release, playlists).
+Provide two audio families with different lifecycles: short sounds (low-latency effects, cached, variant sets) and long sounds (music, ambient, streamed, playlists).
 
 ## Out of scope
 
-Pause/resume, volume, looping, fades, spatial audio, mixer channels (ADR-0027: volume, looping, pause and resume first).
+Spatial audio (deferred: camera center as listener, meters, pan and attenuation when scheduled); MP3; sound offsets inside composed sounds.
 
 ## Expected behavior
 
-- Short sound: cached for heavy reuse without repeated loading or decoding; played individually; stopped.
-- Variant set: groups several short-sound files; playing it selects one variant randomly or plays several simultaneously; policy ADR-0027.
-- Long sound: preloaded for direct use, released when no longer needed; played individually; stopped.
-- Playlist: predefined long sounds; next track starts when the current terminates; can be stopped; end, failure and thread: ADR-0027.
-- Variant selection and playlist advance are backend-independent; backends expose play, stop and end-of-track only (decision 2A).
+- **Short sound:** at most 10 s (a longer file is refused with a defined error); preloaded explicitly, normally by the scene that needs it, or lazily on first play as an option; cached by reference count with no automatic eviction; an opt-in cache limit in bytes; played individually and stopped; stopping a finished sound does nothing.
+- **Voices:** 16 simultaneous short voices by default; on overflow the oldest voice of the lowest priority (`0` to `100`, default `50`) is stolen; drop-new and refuse are selectable.
+- **Variant set:** random selection with no immediate repeat (when at least two variants have a positive weight), optional weights (non-negative `double`, default `1.0`, `0` excludes); or composed: all layers started together. Its own seeded generator, separate from the world's.
+- **Long sound:** streamed by default through a bounded buffer (4 chunks of 4,096 frames); fully decoded preparation on request; released when no longer needed; played and stopped.
+- **Playlist:** predefined long sounds; the next track is prepared ahead and starts when the current one ends; at the end it stops (default) or loops; a failing track is skipped and reported to a listener (playlist, track index, exception) on the runtime thread, or aborts the playlist on request; end-of-track is posted to the inbox and the advance runs on the runtime thread.
+- **First batch controls:** play, stop, volume (gain in `[0, 1]`, master and per sound), looping, pause, resume.
+- **Second batch:** mixer groups `music`, `effects`, `ui` plus game-defined groups; each sound in one group (`effects` for short sounds, `music` for long sounds by default); gain = master × group × sound. Fades: target gain and duration in seconds, linear ramp applied by the backend per audio buffer, completion posted to the inbox.
+- **Formats:** PCM WAV parsed by project code on every backend; OGG Vorbis by the Android platform and by `audio-codec-ogg` (JOrbis candidate, after its register entry) on desktop.
+- Variant selection and playlist advance are backend-independent; backends expose play, stop, pause, resume, gain and end-of-track only.
 
 ## Envisaged APIs / contracts
 
-Responsibilities only; signatures are not fixed. See `architecture/contracts.md`.
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Audio); signatures written by the batch: audio system, short sound and long sound handles, variant set, playlist, voice policy, mixer group, backend SPI.
 
 ## Lifecycle and concurrency
 
-Distinct handles and lifecycles per family. Decoded caches live inside the audio modules and follow the common resource convention (ADR-0005, ADR-0007, `REQ-RES-004`, `REQ-RES-005`, `OQ-110`, `OQ-121`). Completion callbacks must not mutate simulation state from the audio thread (`OQ-114`, `OQ-030`).
+Distinct handles and lifecycles per family. Decoded caches live in the audio modules, on the runtime thread only. Backend threads and streaming decoders never touch simulation state; they post completions to the inbox (ADR-0018). Backgrounding pauses output (ADR-0031).
 
 ## Units and Android/DEX compatibility
 
-Seconds for durations and positions, Hz for sample rate. No `javax.sound` in `audio-api`; real backends are platform-specific; decoders, licenses and desugaring to be verified first (`OQ-115`, `docs/android-compatibility.md`).
+Seconds for durations and positions, Hz for sample rate, gain in `[0, 1]`. No `javax.sound` in `audio-api`; `audio-javasound` is desktop only; `audio-android` uses platform APIs. Latency targets (50 ms desktop, 100 ms best effort Android) are measured by platform tests outside CI.
 
 ## Dependencies
 
-Allowed: `core`, `resources`. Forbidden: any concrete audio library or platform type in `audio-api`.
+`audio-api` on `core`, `resources`; backends on `audio-api`. Forbidden: any concrete audio library or platform type in `audio-api`. A codec library only in an `audio-codec-*` module with its row in [`../dependencies.md`](../dependencies.md).
 
 ## Tests
 
-- Unit tests: seeded variant selection, playlist advance, cache hit and miss.
-- Contract tests (`test-support`): reusable suites for every backend.
-- Integration tests: headless fake backend with controllable clock.
+- Unit tests: seeded variant selection (no repeat, weights, composition), playlist advance (end, loop, failing track), voice stealing per policy, cache hit and miss, short-sound length limit, WAV parsing.
+- Contract tests (`test-support`): reusable suites run on every backend, with a fake backend first.
+- Integration tests: headless fake backend with a controllable clock, including fades and gain products.
 - Platform tests (later, separate): latency, Android.
 
 ## Acceptance criteria
 
 - [ ] Requirements covered.
-- [ ] API validated.
+- [ ] API reviewed in the pull request.
 - [ ] Automated tests added and passing.
 - [ ] Complete Javadoc.
 - [ ] Headless example, API-index entry, traceability updated (REQ-DOC-001, REQ-DOC-002).
