@@ -60,6 +60,7 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 - [`ADR-0039`](0039-network-protocol-transport-sessions-and-defaults.md) — Network protocol and sessions: UDP polled on the runtime thread, loopback and simulated-conditions transports, packet header, reliable-ordered channel, joining by IP and name, players and properties, chat, game messages, statistics, LAN discovery, security baseline and extension points (accepted 2026-11-23, owner need, agent design).
 - [`ADR-0040`](0040-thread-hand-off-contracts-in-core-and-loop-wiring.md) — Thread hand-off contracts (inbox, inbox events, asynchronous handles, worker pool, loop control and driver) in `core`, loop callbacks wired by the application or `composition`; supersedes the module placement of these types in ADR-0031 and ADR-0037 (accepted 2026-11-23, owner request, architecture review).
 - [`ADR-0041`](0041-android-bytecode-level-fallback.md) — Shared modules target Java 25 bytecode, then 21, then 17, the first level the Android job accepts; API 21 kept (accepted 2026-11-23, owner answer).
+- [`ADR-0044`](0044-java-21-shared-level-and-api-21-constraints.md) — Shared modules at Java 21 (tested on an API 21 emulator), forbidden and verified API lists, lint `NewApi` and emulator job; supersedes ADR-0041 (accepted 2026-11-23, owner test).
 - [`ADR-0042`](0042-build-skeleton-closure-and-maven-central.md) — Build skeleton closure: artifacts on Maven Central, snapshots on Sonatype Central; commands written by the skeleton batch (accepted 2026-11-23, owner answer).
 - [`ADR-0043`](0043-display-v11-scope-default-monitor-device-pixels.md) — Display scope of version 11: default monitor, sizes in device pixels, no monitor selection (accepted 2026-11-23, owner answer).
 
@@ -69,4 +70,4 @@ Statements inside accepted ADRs such as "the requirements stay PROPOSED until va
 
 None at the moment.
 
-No open question remains in [`../open-questions.md`](../open-questions.md) since ADR-0041 to ADR-0043.
+No open question remains in [`../open-questions.md`](../open-questions.md) since ADR-0041 to ADR-0044. ADR-0044 fully supersedes ADR-0041; the text of ADR-0041 is kept unchanged as history.

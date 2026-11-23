@@ -87,4 +87,4 @@ Arrows always point from the dependent module to its dependency. A cycle, or an 
 
 ## Open points
 
-None. The build-skeleton batch declares these modules with their root packages, profiles and commands ([`../features/build-skeleton.md`](../features/build-skeleton.md), ADR-0042) and runs the Android verification job (ADR-0041).
+None. The build-skeleton batch declares these modules with their root packages, profiles and commands ([`../features/build-skeleton.md`](../features/build-skeleton.md), ADR-0042) and runs the Android verification job (ADR-0044).

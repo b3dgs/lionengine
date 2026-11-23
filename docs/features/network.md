@@ -8,7 +8,7 @@
 - Affected modules: `network`, `test-support`, `examples`; `platform-android` (multicast lock capability, last batch)
 - Requirements: `REQ-NET-001` to `REQ-NET-017`
 - Applicable ADRs: [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0020`](../decisions/0020-no-reflection-factory-registry-and-capability-lookup.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0037`](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md), [`ADR-0038`](../decisions/0038-network-model-server-authority-snapshots-prediction.md), [`ADR-0039`](../decisions/0039-network-protocol-transport-sessions-and-defaults.md)
-- Open questions involved: none (Android verification of the socket APIs by the Android job, ADR-0041)
+- Open questions involved: none (Android verification of the socket APIs by the Android job, ADR-0044)
 
 ## Objective
 
@@ -134,7 +134,7 @@ The game creates a session, configures listeners, calls `update()` once per step
 
 ## Units and Android/DEX compatibility
 
-Seconds for every duration, bytes for sizes, ticks as `int`. JDK APIs: `java.nio.channels.DatagramChannel`, `java.net.InetSocketAddress`, `java.util.zip.CRC32`, `java.security.SecureRandom`, `java.nio.charset.StandardCharsets` (API 19). All are at API 21 without desugaring but are **not compatible yet** until checked by the Android job (ADR-0041, [`../android-compatibility.md`](../android-compatibility.md)). The game declares `android.permission.INTERNET`; network calls must not run on the Android main thread (the runtime thread is the render thread there). No `java.util.function`, `Optional` or streams (ADR-0037).
+Seconds for every duration, bytes for sizes, ticks as `int`. JDK APIs: `java.nio.channels.DatagramChannel`, `java.net.InetSocketAddress`, `java.util.zip.CRC32`, `java.security.SecureRandom`, `java.nio.charset.StandardCharsets` (API 19). All are at API 21 without desugaring but are **not compatible yet** until checked by the Android job (ADR-0044, [`../android-compatibility.md`](../android-compatibility.md)). The game declares `android.permission.INTERNET`; network calls must not run on the Android main thread (the runtime thread is the render thread there). No `java.util.function`, `Optional` or streams (ADR-0037).
 
 ## Dependencies
 
