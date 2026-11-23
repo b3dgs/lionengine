@@ -9,7 +9,7 @@
 | `platform-api` | Window/surface contracts, platform capabilities, frontend lifecycle, screen modes and display-mode selection (ADR-0002) | `core` |
 | `render-api` | Rendering contracts, textures, commands, viewport, output filtering (ADR-0002), scaling policy type (ADR-0006) | `core` |
 | `render-awt` | AWT implementation; reaches the AWT surface through a capability of `platform-awt` (ADR-0022) | `render-api`, `platform-api`, `platform-awt` |
-| `render-opengl` | OpenGL implementation | `render-api`, `platform-api`; `resources` if shader assets are delivered through it (OQ-094, candidate under ADR-0005) |
+| `render-opengl` | OpenGL implementation | `render-api`, `platform-api`; `resources` if shader assets are delivered through it (ADR-0025, ADR-0005) |
 | `platform-awt` | Desktop implementation of `platform-api` with the JDK AWT: window and surface lifecycle, screen modes, display modes, effective-result report; no rendering, input, audio or resources (ADR-0008) | `platform-api`, `core`; JDK `java.desktop` only; excluded from Android builds |
 | `platform-android` | Android lifecycle, surface, resources and input adaptation | `platform-api` and the `*-api` modules it implements |
 | `resources` | Resolution, opening, metadata and lifecycle of resources; media-agnostic, no decoded cache (ADR-0005); resource key and missing-resource exception types (ADR-0007) | `core` |

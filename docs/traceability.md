@@ -36,10 +36,12 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-DISPLAY-005 | Must | PROPOSED | ADR-0002 | OQ-020, OQ-030 | — | no test yet |
 | REQ-DISPLAY-006 | Must | PROPOSED | ADR-0002 | OQ-050 | — | no test yet |
 | REQ-DISPLAY-007 | Must | PROPOSED | ADR-0006 | OQ-091 | — | no test yet |
+| REQ-DISPLAY-009 | Should | PROPOSED | ADR-0025 | OQ-096 | — | no test yet |
 | REQ-DISPLAY-008 | Must | PROPOSED | ADR-0006 | OQ-120, OQ-122 | — | no test yet |
-| REQ-FILTER-001 | Must | PROPOSED | ADR-0002 | OQ-092, OQ-093 | — | no test yet |
+| REQ-FILTER-001 | Must | PROPOSED | ADR-0002, ADR-0025 | OQ-159 | — | no test yet |
 | REQ-FILTER-002 | Should | PROPOSED | ADR-0002, ADR-0006 | OQ-092, OQ-120 | — | no test yet |
-| REQ-FILTER-003 | Could | PROPOSED | ADR-0002 | OQ-092, OQ-094 | — | no test yet |
+| REQ-FILTER-003 | Could | PROPOSED | ADR-0002 | OQ-159 | — | no test yet |
+| REQ-FILTER-004 | Should | PROPOSED | ADR-0025 | OQ-159 | — | no test yet |
 | REQ-LOOP-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-LOOP-002 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-LOOP-003 | Should | PROPOSED | — | — | — | no test yet |

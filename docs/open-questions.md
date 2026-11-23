@@ -26,6 +26,7 @@ Summary of the answers recorded so far, by decision. Details are in the rows bel
 | [ADR-0022](decisions/0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md) optional multiplayer, audio backends, reference frontend, surface hand-off, unknown display values | OQ-052, OQ-053, OQ-055, OQ-123, OQ-124 | OQ-156 | #879 |
 | [ADR-0023](decisions/0023-game-repository-change-requests-assets-and-api-index-check.md) game repository, engine change requests, asset provenance, API index check | OQ-080, OQ-081, OQ-082, OQ-083 | OQ-157 | #880 |
 | [ADR-0024](decisions/0024-determinism-performance-budgets-and-desktop-support.md) determinism, budgets, desktop platforms | OQ-060, OQ-070, OQ-071 | OQ-158 | #881 |
+| [ADR-0025](decisions/0025-filter-implementation-shaders-and-display-settings.md) filter implementation, shaders, display settings persistence, HiDPI constraint | OQ-093, OQ-094, OQ-095 (OQ-096 constraint, stays open) | OQ-159 | #882 |
 
 Sections "Platform and build", "Coordinates and units", "Game loop", "Runtime" and "World and objects" and "Modules and APIs" and "Game development and workflow" and "Network and budgets" have no unresolved original question left. Next section to treat: to be chosen by the owner.
 
@@ -83,6 +84,7 @@ Sections "Platform and build", "Coordinates and units", "Game loop", "Runtime" a
 | OQ-156 | Follow-ups of ADR-0022: final names of the audio backend modules and decoder modules, shared `awt-common` module if a second AWT consumer of the surface appears, exact form of the "is known" check for display values, naming of the AWT surface capability. | Before the first audio backend or render-awt batch |
 | OQ-157 | Follow-ups of ADR-0023: format and location of the asset provenance metadata file, CI check of its presence, hosting of published artifacts (OQ-149), implementation of the API index check. | Before the first game asset or the build skeleton |
 | OQ-158 | Follow-ups of ADR-0024: network model, protocol, authority, prediction and rollback (Phase 5, with a game need); form of the world's seeded random source and of whole-state snapshots; memory budget values per tier; Windows and macOS CI jobs; Java 25 on Android behavior of `double` (with OQ-147). | Phase 5 / before the runtime batch |
+| OQ-159 | Follow-ups of ADR-0025: license check and recorded result for `HQ2X` (OQ-148), the shader subset and its version header, the CPU filter implementations, the custom filter extension point (REQ-FILTER-003). | Before filter implementation |
 
 ## World and objects
 
@@ -120,17 +122,17 @@ Sections "Platform and build", "Coordinates and units", "Game loop", "Runtime" a
 
 ## Display and output filtering
 
-Raised by issue #850 and [ADR-0002](decisions/0002-display-modes-resolution-and-output-filtering.md) (ACCEPTED on 2026-11-22). Acceptance resolved OQ-050, OQ-090 and OQ-092; the parts of OQ-090 and OQ-092 still open moved to OQ-120. OQ-096 is deferred, not resolved. Packet placeholders `OQ-NEW-1` to `OQ-NEW-7` of issue #850 map to OQ-090 to OQ-096, in order.
+Raised by issue #850 and [ADR-0002](decisions/0002-display-modes-resolution-and-output-filtering.md) (ACCEPTED on 2026-11-22). Acceptance resolved OQ-050, OQ-090 and OQ-092; OQ-093 to OQ-095 were resolved later by ADR-0025; the parts of OQ-090 and OQ-092 still open moved to OQ-120. OQ-096 is deferred, not resolved. Packet placeholders `OQ-NEW-1` to `OQ-NEW-7` of issue #850 map to OQ-090 to OQ-096, in order.
 
 | ID | Question | Needed by |
 |---|---|---|
 | OQ-090 | **RESOLVED** by [ADR-0002](decisions/0002-display-modes-resolution-and-output-filtering.md): pure best-effort, the effective result is reported; no "required" flag in the first batch (owner decision 2A of issue #850). The form of the report and the fallback orders moved to OQ-120. Original question: request exactness. | Phase 2 (before display contracts) |
 | OQ-091 | **RESOLVED** by [ADR-0006](decisions/0006-display-scaling-effective-result-and-fallback-orders.md) (ACCEPTED): `FIT` (default), `INTEGER` (opt-in, falls back to `FIT` when the surface is smaller than the logical frame), `STRETCH`; policy type in `render-api`, surface size from `platform-api` (issue #859). Original question: scaling policy set, its default, and whether it is owned by `platform-api` or `render-api`. | Phase 2 (before display contracts) |
 | OQ-092 | **RESOLVED** by [ADR-0002](decisions/0002-display-modes-resolution-and-output-filtering.md): filtering applies from the logical frame to the output surface only, no per-layer filtering (owner decision 3A of issue #850). Chain fallback details moved to OQ-120. Original question: filter scope. | Phase 2 (before the filter feature) |
-| OQ-093 | Source and license of the `HQ2X` and CRT algorithms (own implementation or third-party library; license and Android/DEX compatibility to be recorded, see OQ-006). | Phase 2 (before filter implementation) |
-| OQ-094 | Shader portability (GLSL vs GLSL ES) and delivery of shader assets through `resources` (needed by CRT and custom filters); if confirmed, rendering backends follow the common resource convention (ADR-0005). | Phase 2 (before CRT) |
-| OQ-095 | Persistence of user display settings: engine responsibility or game responsibility. | Phase 4 |
-| OQ-096 | Multi-monitor and HiDPI. Owner decision 4A of issue #850 (ADR-0002, ACCEPTED): out of the first batch. Open until it is scheduled; the contracts must not preclude it. AWT applies HiDPI scaling by default on some systems, so `platform-awt` may report scaled pixel sizes (ADR-0008). | Phase 4 (before the display feature is extended) |
+| OQ-093 | **RESOLVED** by [ADR-0025](decisions/0025-filter-implementation-shaders-and-display-settings.md): own implementations, no third-party library; `HQ2X` only after a recorded license check (OQ-148), `Scale2x`/`EPX` meanwhile. Original question: Source and license of the `HQ2X` and CRT algorithms (own implementation or third-party library; license and Android/DEX compatibility to be recorded, see OQ-006). | Phase 2 (before filter implementation) |
+| OQ-094 | **RESOLVED** by [ADR-0025](decisions/0025-filter-implementation-shaders-and-display-settings.md): common GLSL/GLSL ES subset, shaders delivered through `resources` (ADR-0005), CPU implementation in `render-awt`. Original question: Shader portability (GLSL vs GLSL ES) and delivery of shader assets through `resources` (needed by CRT and custom filters); if confirmed, rendering backends follow the common resource convention (ADR-0005). | Phase 2 (before CRT) |
+| OQ-095 | **RESOLVED** by [ADR-0025](decisions/0025-filter-implementation-shaders-and-display-settings.md): game responsibility; the engine exposes the requested-versus-effective value only. Original question: Persistence of user display settings: engine responsibility or game responsibility. | Phase 4 |
+| OQ-096 | Multi-monitor and HiDPI. Owner decision 4A of issue #850 (ADR-0002, ACCEPTED): out of the first batch. Open until it is scheduled; the contracts must not preclude it. Constraint recorded by [ADR-0025](decisions/0025-filter-implementation-shaders-and-display-settings.md): no assumption of one monitor or of scale 1.0. AWT applies HiDPI scaling by default on some systems, so `platform-awt` may report scaled pixel sizes (ADR-0008). | Phase 4 (before the display feature is extended) |
 
 ## Sprites, animations and sprite sheets
 

@@ -7,7 +7,7 @@
 - Affected modules: `render-api`, `render-awt`, `render-opengl`, `test-support`, `examples`
 - Requirements: `REQ-FILTER-001` to `REQ-FILTER-003`, `REQ-DISPLAY-004`, `REQ-DISPLAY-005`
 - Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md) (ACCEPTED), [`ADR-0006`](../decisions/0006-display-scaling-effective-result-and-fallback-orders.md) (ACCEPTED)
-- Open questions involved: `OQ-093`, `OQ-094`, `OQ-122` (`OQ-006` related; `OQ-120` resolved)
+- Open questions involved: `OQ-122`, `OQ-159` (`OQ-006` related; `OQ-120` resolved)
 
 ## Objective
 
@@ -36,11 +36,11 @@ Filter resources (shaders, buffers) belong to the backend and are invalidated on
 
 ## Units and Android/DEX compatibility
 
-Pixels only. `HQ2X`/CRT sources and licenses: `OQ-093`; shader portability GLSL vs GLSL ES and shader assets through `resources`: `OQ-094`. Any third-party filter library needs license and DEX verification before use.
+Pixels only. Own implementations, common GLSL/GLSL ES shaders through `resources`: ADR-0025 (`HQ2X` license check: `OQ-159`). Any third-party filter library needs license and DEX verification before use.
 
 ## Dependencies
 
-Allowed: `core`; `resources` for backends that load shader assets, if confirmed (`OQ-094`, ADR-0005). Forbidden: AWT, OpenGL or Android types in `render-api`.
+Allowed: `core`; `resources` for backends that load shader assets, if confirmed (ADR-0025, ADR-0005). Forbidden: AWT, OpenGL or Android types in `render-api`.
 
 ## Tests
 

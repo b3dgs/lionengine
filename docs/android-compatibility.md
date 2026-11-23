@@ -46,7 +46,7 @@ Recorded for the accepted decisions; nothing here is verified yet, so every item
 | Feature | Item to verify | Status |
 |---|---|---|
 | Screen and display modes (ADR-0002) | Mode selection through Android APIs, isolated in `platform-android`; refresh-rate and color-depth selection may be unavailable and is then reported through the effective result | not compatible yet |
-| Output filtering (ADR-0002) | GLSL ES portability of shader filters (OQ-094); license and DEX check of any `HQ2X` or CRT library (OQ-093) | not compatible yet |
+| Output filtering (ADR-0002) | common GLSL/GLSL ES shader subset and own filter implementations (ADR-0025); `HQ2X` license check (OQ-159) | not compatible yet |
 | Sprites and sprite sheets (ADR-0003) | Image decoding without `java.awt` or `javax.imageio` in shared code; placement of the platform-specific decoders (OQ-100) | not compatible yet |
 | Audio (ADR-0004) | No `javax.sound` in `audio-api`; decoder libraries, licenses and desugaring (OQ-115); latency target (OQ-116) | not compatible yet |
 | Desktop platform (ADR-0008) | `platform-awt` uses `java.desktop`, which does not exist on Android: it must stay out of every Android build | platform module only |
