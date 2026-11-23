@@ -65,10 +65,11 @@ Check those that apply; Claude Code must confirm the list before writing.
 - [ ] `docs/roadmap.md`
 - [ ] `docs/testing.md`
 - [ ] `docs/api-index.md` and `docs/game-development-guide.md`
+- [ ] `docs/engine-features.md` (what a game can do, state of the area)
 - [ ] feature file from `docs/templates/FEATURE-TEMPLATE.md`
 
 ## 9. Instruction for Claude Code
 
 Copy the following, with this packet attached or pasted:
 
-> Read `AGENTS.md` and this decision packet. In plan mode, list every file that must change to apply it consistently (requirements, traceability, open questions, modules, contracts, ADR and its index, glossary, roadmap, tests, API index). Wait for my approval. Then apply it, without turning any proposal into a decision that the packet does not state as taken, and run `python3 -I scripts/check-docs.py`. Report the files changed, the checks run and any point left `TO BE DEFINED`.
+> Read `AGENTS.md` and this decision packet. In plan mode, list every file that must change to apply it consistently (requirements, traceability, open questions, engine features summary, modules, contracts, ADR and its index, glossary, roadmap, tests, API index). Wait for my approval. Then apply it, without turning any proposal into a decision that the packet does not state as taken, and run `python3 -I scripts/check-docs.py`. Report the files changed, the checks run and any point left `TO BE DEFINED`.

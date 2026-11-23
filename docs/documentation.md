@@ -7,6 +7,7 @@
 - `README.md`: getting started, prerequisites and links.
 - `AGENTS.md`: agent working rules (`CLAUDE.md` simply imports it).
 - `docs/how-the-engine-works.md`: plain-language summary with diagrams, readable by anybody.
+- `docs/engine-features.md`: what a game can do, area by area, with the state of each area; updated by every batch that changes a capability.
 - `docs/vision.md`: purpose and scope.
 - `docs/requirements.md`: identified requirements.
 - `docs/architecture/`: views, modules and contracts.
@@ -43,7 +44,7 @@ Each fact has one owner; other documents summarize it and link to it.
 | Why a choice was made, and the choice itself at architecture level | the ADR | requirements, contracts, feature page |
 | What must be verifiable | `requirements.md` | traceability, feature page |
 | Everything a batch needs to implement (rules, defaults, states, order of operations, names) | the feature page (`docs/features/`) | `architecture/contracts.md` |
-| Overview for newcomers | `how-the-engine-works.md` | — |
+| Overview for newcomers | `how-the-engine-works.md`, `engine-features.md` | — |
 
 In a conflict: ADR, then requirement, then feature page, then `contracts.md`, then `how-the-engine-works.md`. A feature page is `VALIDATED` and may fix batch-level details (state names, method lists, order of steps) inside the limits of its ADRs without a new ADR; a change of an architecture choice needs an ADR. Whoever finds a conflict fixes the lower document in the same pull request, or records it in `open-questions.md` if the higher one is unclear.
 
@@ -53,7 +54,7 @@ Requirements use stable `REQ-*` identifiers. Decisions use `ADR-NNNN`. Open ques
 
 ## Automated check
 
-`python3 -I scripts/check-docs.py` (also run by the `docs-check` workflow) verifies: relative links, orphan files, undefined or duplicate `REQ-*`/`OQ-*`/`ADR-*`, consistency between `requirements.md` and `traceability.md`, and the `Status:` line of each document. It must pass before any documentation change is merged.
+`python3 -I scripts/check-docs.py` (also run by the `docs-check` workflow) verifies: relative links, orphan files, undefined or duplicate `REQ-*`/`OQ-*`/`ADR-*`, consistency between `requirements.md` and `traceability.md`, the `Status:` line of each document, and that every feature page is linked from `engine-features.md`. It must pass before any documentation change is merged.
 
 ## Changing the documentation consistently
 

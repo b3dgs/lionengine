@@ -53,6 +53,6 @@ Required modules and forbidden dependencies.
 - [ ] API reviewed in the pull request.
 - [ ] Automated tests added and passing.
 - [ ] Complete Javadoc.
-- [ ] Headless example, `api-index.md` entry, traceability matrix and `docs/features/README.md` updated.
+- [ ] Headless example, `api-index.md` entry, traceability matrix, `docs/features/README.md` and `docs/engine-features.md` (capability bullets and state) updated.
 - [ ] No forbidden coupling.
 - [ ] Android/DEX compatibility verified.

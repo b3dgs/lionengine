@@ -160,6 +160,8 @@ The game reads actions such as "jump" or "move left", not keys. A table binds ke
 
 ## Where to go next
 
+- What a game can do, area by area: [`engine-features.md`](engine-features.md).
+
 - Rules for contributors and agents: [`../AGENTS.md`](../AGENTS.md).
 - Every contract in detail: [`architecture/contracts.md`](architecture/contracts.md); modules: [`architecture/modules.md`](architecture/modules.md).
 - What must be built: [`requirements.md`](requirements.md); why: [`decisions/`](decisions/README.md).

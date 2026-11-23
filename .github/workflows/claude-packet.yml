@@ -53,7 +53,7 @@ jobs:
 
             Do NOT modify any file. List every file that must change to apply the packet consistently
             (requirements, traceability, open questions, modules, contracts, ADR and its index, glossary,
-            roadmap, tests, API index, feature files). Assign real REQ/OQ/ADR numbers without reusing existing ones.
+            roadmap, tests, API index, feature files, docs/engine-features.md). Assign real REQ/OQ/ADR numbers without reusing existing ones.
             Flag anything the packet leaves as a proposal rather than a decision.
             Post the result as a comment on issue #${{ github.event.issue.number }} with `gh issue comment`.
           claude_args: >-
