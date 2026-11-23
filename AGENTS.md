@@ -12,6 +12,8 @@ Before any task:
 
 `VALIDATED` documents are contractual. `PROPOSED` items are working hypotheses, not authorizations to implement them as established facts.
 
+For an implementation batch, start from its page in [`docs/features/`](docs/features/README.md): it holds every rule and default value the batch needs. If documents disagree: ADR, then requirement, then feature page, then `contracts.md` ([`docs/documentation.md`](docs/documentation.md)).
+
 ## 2. Prohibitions
 
 - Do not invent a responsibility, a public API, a dependency or an unspecified behavior.
@@ -33,7 +35,7 @@ For each task:
 3. check the applicable decisions and open questions;
 4. list ambiguities and dependencies;
 5. propose a limited, testable plan;
-6. wait for human validation if the task involves a `TO BE DEFINED` decision, an architecture change or a public API change.
+6. wait for human validation if the task involves a `TO BE DEFINED` decision, an architecture change, or a public API that no `VALIDATED` contract describes (or a change to an existing public API). New Java signatures that implement a `VALIDATED` contract of a feature file are proposed in the batch and reviewed in its pull request.
 
 For an already scoped task, implement only the requested scope. Use the default values stated in the ADRs and feature files; never choose a value that a document leaves unstated: report it as a gap.
 

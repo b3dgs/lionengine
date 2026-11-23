@@ -32,7 +32,7 @@ General knowledge of D8/ART, to be confirmed by the Android CI job (OQ-147). Unt
 |---|---|
 | `java.desktop` (AWT, Swing, ImageIO, `javax.sound`, `java.beans`) | absent on every Android level: platform module only |
 | `java.lang.foreign`, virtual threads, structured concurrency, scoped values, `java.net.http`, module system (`module-info` ignored) | unavailable |
-| `java.time`, streams, `Optional`, `java.util.function`, much of `java.util.concurrent` (about JDK 11 level) | through core library desugaring only |
+| `java.time`, streams, `Optional`, `java.util.function`, much of `java.util.concurrent` (about JDK 11 level) | through core library desugaring only; not used in shared public APIs or hot paths (ADR-0037) |
 | APIs added after about JDK 11 (sequenced collections, `Math.clamp`, `HexFormat`, `Cleaner`, `VarHandle`, `MethodHandles`, record reflection) | only on recent Android levels, not desugared: avoid in shared code |
 | Records, sealed types, switch expressions, text blocks, `instanceof` patterns | compile-time, handled by D8; verify |
 | Pattern matching for `switch`, record patterns, Java 22 to 25 language features | rely on `invokedynamic` bootstraps or new class file versions: verify one by one |

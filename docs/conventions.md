@@ -19,8 +19,17 @@
 - Validate arguments at the public boundary and fail fast with a documented exception (`@throws`): `IllegalArgumentException` for an invalid argument, `IllegalStateException` for a call in the wrong state.
 - Prefer immutable value types for results and configurations; mutable state has a documented owner and lifecycle. In hot paths, primitives and preallocated mutable objects replace value objects (ADR-0019).
 - Do not expose collections for mutation; return unmodifiable views or copy into a caller-provided buffer, documented.
-- Configuration has documented defaults; every default value of ADR-0031 to ADR-0035 is a named constant in the code and stated in the Javadoc.
+- Configuration has documented defaults; every default value of ADR-0031 to ADR-0037 and of the feature pages is a named constant in the code and stated in the Javadoc.
 - Listeners are interfaces with primitive arguments where they run in hot paths (ADR-0034).
+
+## Packages, names and callbacks
+
+- Each module lives in its root package of [ADR-0037](decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md); inside a module a subpackage may use its ancestors only, never a sibling or a descendant.
+- Use the canonical type names of ADR-0037 for the concepts it lists.
+- No `java.util.function`, `Optional`, streams or `java.time` in shared public APIs or hot paths: callbacks are small role-named interfaces with one abstract method (`SceneFactory<C>`, `TransitionCondition<C>`, `CloseListener`), absence is `null` plus a `has...` check, documented.
+- Interfaces carry no `I` prefix and implementations no `Impl` suffix: an implementation is named by what distinguishes it (`AwtPlatform`, `FileProvider`, `FakeAudioBackend`).
+- Listeners are `XxxListener` with `onYyy` methods; factories `XxxFactory` with `create`; exceptions `XxxException` extending `RuntimeException`.
+- Engine value types are `final` classes until records are verified for Android (OQ-147).
 
 ## Errors
 

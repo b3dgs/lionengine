@@ -29,7 +29,15 @@ Several layers (candidate); one-way tiles and slopes (later, ADR-0034); chunked 
 
 ## Envisaged APIs / contracts
 
-Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Tile map); signatures written by the batch: tile map, tileset reference, loader contract, Tiled loader, auto-tiling rule set, tile-changed listener, collision shape query implementation.
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Tile map); canonical type names in [ADR-0037](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md); signatures written by the batch: tile map, tileset reference, loader contract, Tiled loader, auto-tiling rule set, tile-changed listener, collision shape query implementation.
+
+## Batches (order)
+
+1. Grid, `set`/`get`/`clear`, tileset reference and release (`REQ-MAP-001`, `REQ-MAP-003`).
+2. Viewport rendering (`REQ-MAP-005`).
+3. Loader contract with an in-memory format, then the Tiled JSON loader (`REQ-MAP-004`).
+4. Auto-tiling rules and destruction, tile-changed listener (`REQ-MAP-006`, `REQ-MAP-007`, `REQ-MAP-002`).
+5. Tile collision through the `physics` shape query (`REQ-MAP-008`).
 
 ## Lifecycle and concurrency
 

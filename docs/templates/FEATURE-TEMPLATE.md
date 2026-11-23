@@ -18,11 +18,15 @@ What will not be handled in this feature.
 
 ## Expected behavior
 
-Describe the observable behaviors, including errors and edge cases.
+Describe the observable behaviors, including errors and edge cases. Restate every default value, range, state and order of operations the batch needs, with the ADR it comes from: an implementer must not have to open an ADR to find a value.
 
 ## Envisaged APIs / contracts
 
-Describe responsibilities and interactions. Do not fix signatures before validation.
+Responsibilities and interactions; the canonical type names of ADR-0037 that apply. Java signatures are proposed by the batch under `docs/conventions.md` and reviewed in its pull request.
+
+## Batches (order)
+
+Numbered list of small batches, each with the requirements it covers.
 
 ## Lifecycle and concurrency
 
@@ -46,9 +50,9 @@ Required modules and forbidden dependencies.
 ## Acceptance criteria
 
 - [ ] Requirements covered.
-- [ ] API validated.
+- [ ] API reviewed in the pull request.
 - [ ] Automated tests added and passing.
 - [ ] Complete Javadoc.
-- [ ] Documentation, examples and traceability matrix updated.
+- [ ] Headless example, `api-index.md` entry, traceability matrix and `docs/features/README.md` updated.
 - [ ] No forbidden coupling.
 - [ ] Android/DEX compatibility verified.

@@ -1,11 +1,11 @@
 # Conceptual module breakdown
 
-**Status: VALIDATED — module list, responsibilities and allowed dependencies (ADR-0002 to ADR-0035). Each module becomes one artifact `lionengine-<module>` (ADR-0012); its declaration and package tree are done at the build skeleton (OQ-149).**
+**Status: VALIDATED — module list, responsibilities and allowed dependencies (ADR-0002 to ADR-0037). Each module becomes one artifact `lionengine-<module>` (ADR-0012); its declaration and package tree are done at the build skeleton (OQ-149).**
 
 | Domain | Responsibility | Allowed dependencies |
 |---|---|---|
 | `core` | Common types, lifecycle, errors, events and listener rules, logging facade, seeded random generator, strict JSON reader, definition exception, registry and typed configuration (ADR-0020, ADR-0028, ADR-0031, ADR-0032) | JDK only; no frontend dependency |
-| `runtime` | Game loop, clock, inbox, asynchronous-handle plumbing, scene lifecycle contract and scene manager (ADR-0017, ADR-0018, ADR-0021, ADR-0031) | `core` |
+| `runtime` | Game loop, clock, inbox, asynchronous-handle plumbing, scene lifecycle contract, scene manager and scene flow (ADR-0017, ADR-0018, ADR-0021, ADR-0031, ADR-0036) | `core` |
 | `platform-api` | Window and surface contracts, platform object and capability lookup, lifecycle events, worker pool, screen modes and display-mode selection (ADR-0002, ADR-0020, ADR-0031) | `core` |
 | `render-api` | Rendering contracts: texture handles, command buffer, viewport, color-transform capability, scaling policy type, output filtering and custom filter contract (ADR-0002, ADR-0006, ADR-0026, ADR-0033) | `core` |
 | `platform-awt` | Desktop implementation of `platform-api` with the JDK AWT: window and surface lifecycle, screen modes, display modes, effective-result report, `AwtSurface` capability; no rendering, input, audio or resources (ADR-0008, ADR-0033) | `platform-api`, `core`; JDK `java.desktop` only; excluded from Android builds |
@@ -13,7 +13,7 @@
 | `render-opengl` | OpenGL and OpenGL ES renderer; GPU filters and shaders loaded through `resources` (ADR-0025) | `render-api`, `platform-api`, `resources` |
 | `platform-android` | Android lifecycle, surface, Android asset provider adaptation, platform events | `platform-api` and the `*-api` modules it implements |
 | `resources` | Keys, provider list, opening, metadata and lifecycle of resources; media-agnostic, no decoded cache; resource exception (ADR-0005, ADR-0007, ADR-0032) | `core` |
-| `resources-*` | Filesystem, archive, memory/temporary, Android assets and application-stream providers | `resources` |
+| `resources-*` | Providers: `resources-file` (filesystem), `resources-archive` (ZIP), `resources-memory` (memory and temporary storage), `resources-android` (Android assets); the application-stream provider is in `resources` (ADR-0037) | `resources` |
 | `audio-api` | Backend-independent audio contracts: short and long sounds, variant sets, playlists, voices, mixer groups, fades (ADR-0004, ADR-0027, ADR-0033) | `core`, `resources` |
 | `audio-*` | Audio backends per output library or platform (`audio-javasound`, `audio-android`, later `audio-openal`) and decoder modules per third-party codec (`audio-codec-ogg`); they own the decoded caches (ADR-0022, ADR-0033) | `audio-api`, `resources` |
 | `graphics` | Pixel buffer, PNG decoder, image cache, sprites, sprite sheets, animations, color transforms (ADR-0003, ADR-0026, ADR-0033) | `core`, `resources`, `render-api` |
@@ -29,6 +29,10 @@
 | `multiplayer` | Optional extension, Phase 5: sessions and network transport; nothing depends on it (ADR-0022, OQ-165) | `ecs`, `input-api` |
 | `test-support` | Controllable clock, manually driven loop, headless frontend, fake backends, reusable contract-test suites (REQ-TEST-001) | Contracts of the modules it tests; used in `test` scope only |
 | `examples` | Minimal and demonstration applications, headless first, compiled and run by the build (REQ-DOC-001) | Public APIs only; never depended upon |
+
+## Root packages
+
+Each module has one root package under `com.b3dgs.lionengine` (`core` is the root itself; an implementation module is a child of its API, for example `platform-awt` → `com.b3dgs.lionengine.platform.awt`). The full table is in [ADR-0037](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md). `radial-encapsulation-maven-plugin` runs per module with `basePackage` set to that root; dependencies between modules are governed by the table above and enforced by the Maven dependency graph.
 
 ## Dependency direction
 
@@ -71,4 +75,4 @@ Arrows always point from the dependent module to its dependency. A cycle, or an 
 
 ## Open points
 
-Only the build-skeleton work remains: physical declaration of these modules, package tree verified against the dependency plugin, profiles and commands (OQ-149), and the Android verification job (OQ-147).
+Only the build-skeleton work remains: physical declaration of these modules with their root packages, profiles and commands (OQ-149, [`../features/build-skeleton.md`](../features/build-skeleton.md)), and the Android verification job (OQ-147).

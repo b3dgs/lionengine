@@ -27,7 +27,13 @@ Sprite transforms and color (see [`sprite.md`](sprite.md)); sheet representation
 
 ## Envisaged APIs / contracts
 
-Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Images, sprites and animations); signatures written by the batch: animation value, animator state machine, animated sprite.
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Images, sprites and animations); canonical type names in [ADR-0037](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md); signatures written by the batch: animation value, animator state machine, animated sprite.
+
+## Batches (order)
+
+1. Animation value and loader from the sheet definition (`REQ-ANIM-001`).
+2. Animator state machine and loop modes (`REQ-ANIM-002`).
+3. Animated sprite driven by the update step (`REQ-ANIM-003`).
 
 ## Lifecycle and concurrency
 

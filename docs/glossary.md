@@ -53,6 +53,7 @@
 | Runtime thread | The single thread that owns the loop, the world, the caches and by default rendering (ADR-0018). |
 | Scaling policy | How the logical frame is scaled to the output surface: `FIT` (aspect-preserving, default), `INTEGER` (integer factors only, opt-in) or `STRETCH` (ADR-0006). |
 | Scene | Self-contained unit of the running game with a lifecycle (enter, update, render, exit, dispose), composing a world, cameras, a background and music (ADR-0021). |
+| Scene flow | Validated state machine linking scene ids by named triggers, optional conditions and transitions `SWITCH`, `PUSH`, `POP`, `EXIT` (ADR-0036). |
 | Screen mode | How the application occupies the screen: `WINDOWED`, `FULL_WINDOW` or `FULL_SCREEN`. |
 | Short sound | Low-latency sound effect of at most 10 s, cached for heavy reuse; played individually and stopped (ADR-0004, ADR-0033). |
 | Simulation step | Fixed duration, in seconds, by which the simulation advances in one update (default 1/60 s, ADR-0017). |
@@ -67,6 +68,8 @@
 | Tilemap | Map organized in cells (single layer first, ADR-0009). |
 | Tileset | Sprite sheet whose cells are the tiles of a tile map (`REQ-SHEET-001`). |
 | Time scale | Multiplier of elapsed time before it enters the accumulator, in `[0.1, 4.0]`, for slow or fast motion; the step never changes (ADR-0017, ADR-0031). |
+| Transition (scene) | A link of the scene flow from a scene (or any scene) to a target, selected by a trigger and a condition and applied at the next frame boundary (ADR-0036). |
+| Trigger (scene) | Name (for example `finished`, `pause`) passed to the scene flow to request a transition (ADR-0036). |
 | Trait | Composable data attached to an ECS object; its logic lives in systems (ADR-0011). |
 | Variant set | Group of short-sound files; playing it selects one variant or plays several at once (composed sound) (ADR-0027). |
 | View | One camera paired with one viewport (ADR-0021); type provided by `composition`. |

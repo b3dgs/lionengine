@@ -34,6 +34,19 @@ Javadoc must state units, coordinates, allowed null values, side effects, resour
 
 Do not copy the method name as documentation. Describe the observable behavior.
 
+## Which document wins
+
+Each fact has one owner; other documents summarize it and link to it.
+
+| Kind of fact | Owner | Summaries |
+|---|---|---|
+| Why a choice was made, and the choice itself at architecture level | the ADR | requirements, contracts, feature page |
+| What must be verifiable | `requirements.md` | traceability, feature page |
+| Everything a batch needs to implement (rules, defaults, states, order of operations, names) | the feature page (`docs/features/`) | `architecture/contracts.md` |
+| Overview for newcomers | `how-the-engine-works.md` | — |
+
+In a conflict: ADR, then requirement, then feature page, then `contracts.md`, then `how-the-engine-works.md`. A feature page is `VALIDATED` and may fix batch-level details (state names, method lists, order of steps) inside the limits of its ADRs without a new ADR; a change of an architecture choice needs an ADR. Whoever finds a conflict fixes the lower document in the same pull request, or records it in `open-questions.md` if the higher one is unclear.
+
 ## Traceability
 
 Requirements use stable `REQ-*` identifiers. Decisions use `ADR-NNNN`. Open questions use `OQ-NNN`. A feature documents the requirements it covers and the decisions it applies. [`traceability.md`](traceability.md) must be kept in sync.

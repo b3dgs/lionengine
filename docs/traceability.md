@@ -126,9 +126,14 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-OBJ-002 | Should | VALIDATED | ADR-0021 | — | — | no test yet |
 | REQ-TRAIT-001 | Should | VALIDATED | ADR-0011, ADR-0021 | — | — | no test yet |
 | REQ-TRAIT-002 | Should | VALIDATED | ADR-0011 | — | — | no test yet |
-| REQ-SCENE-001 | Must | VALIDATED | ADR-0021, ADR-0031 | — | — | no test yet |
+| REQ-SCENE-001 | Must | VALIDATED | ADR-0021, ADR-0031, ADR-0036 | — | — | no test yet |
 | REQ-SCENE-002 | Must | VALIDATED | ADR-0021, ADR-0031 | — | — | no test yet |
 | REQ-SCENE-003 | Should | VALIDATED | ADR-0031 | — | — | no test yet |
+| REQ-SCENE-004 | Must | VALIDATED | ADR-0036 | — | — | no test yet |
+| REQ-SCENE-005 | Must | VALIDATED | ADR-0036 | — | — | no test yet |
+| REQ-SCENE-006 | Must | VALIDATED | ADR-0036 | — | — | no test yet |
+| REQ-SCENE-007 | Must | VALIDATED | ADR-0036 | — | — | no test yet |
+| REQ-SCENE-008 | Should | VALIDATED | ADR-0036 | — | — | no test yet |
 | REQ-WORLD-001 | Must | VALIDATED | ADR-0021, ADR-0024 | — | — | no test yet |
 | REQ-PHYS-001 | Should | VALIDATED | ADR-0021, ADR-0028, ADR-0030 | — | — | no test yet |
 | REQ-DEF-001 | Must | VALIDATED | ADR-0020, ADR-0028 | — | — | no test yet |

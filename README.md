@@ -13,7 +13,7 @@
 
 ## Architecture
 
-> Status: **VALIDATED specification** — every requirement and document is validated and backed by the decisions in `docs/decisions/` (ADR-0001 to ADR-0035). Only four questions remain open: the build skeleton (OQ-149), the Android/DEX verification (OQ-147), multi-monitor and HiDPI (OQ-096, Phase 4) and the network model (OQ-165, Phase 5).
+> Status: **VALIDATED specification** — every requirement and document is validated and backed by the decisions in `docs/decisions/` (ADR-0001 to ADR-0037). Only four questions remain open: the build skeleton (OQ-149), the Android/DEX verification (OQ-147), multi-monitor and HiDPI (OQ-096, Phase 4) and the network model (OQ-165, Phase 5).
 
 **New here? Start with [`docs/how-the-engine-works.md`](docs/how-the-engine-works.md)**: a short, diagram-based explanation readable by anybody.
 
@@ -47,6 +47,7 @@ This branch currently contains a Maven baseline (parent `pom.xml`, no modules ye
 15. [`docs/change-process.md`](docs/change-process.md) — how to modify a feature or add a module consistently.
 
 Building a game with the engine (humans and agents):
+- [`docs/features/`](docs/features/README.md) — one page per implementation batch, in order: the entry point for implementers.
 - [`docs/game-development-guide.md`](docs/game-development-guide.md) — path from nothing to a small game.
 - [`docs/api-index.md`](docs/api-index.md) — find the right types by task.
 - [`docs/agent-workflow.md`](docs/agent-workflow.md) — division of work between local and cloud agents.
@@ -76,4 +77,4 @@ In case of contradiction, a `VALIDATED` decision prevails over a proposal. If tw
 
 ### Initial state
 
-All decisions ADR-0001 to ADR-0035 are `ACCEPTED`: technical baseline and units (ADR-0001, ADR-0012 to ADR-0016), game loop, threads, loading and no reflection (ADR-0017 to ADR-0020), object model and modules (ADR-0021, ADR-0022), game workflow and budgets (ADR-0023, ADR-0024), and every feature contract (ADR-0002 to ADR-0011, ADR-0025 to ADR-0030). ADR-0031 to ADR-0035 fixed the remaining defaults (runtime, data files and dependencies, media, camera and ECS, input) under the owner's delegation of 2026-11-23. Every requirement and document is **VALIDATED**; templates keep `PROPOSED` as the initial status of the items created from them.
+All decisions ADR-0001 to ADR-0037 are `ACCEPTED`: technical baseline and units (ADR-0001, ADR-0012 to ADR-0016), game loop, threads, loading and no reflection (ADR-0017 to ADR-0020), object model and modules (ADR-0021, ADR-0022), game workflow and budgets (ADR-0023, ADR-0024), and every feature contract (ADR-0002 to ADR-0011, ADR-0025 to ADR-0030). ADR-0031 to ADR-0035 fixed the remaining defaults (runtime, data files and dependencies, media, camera and ECS, input), ADR-0036 the scene flow and ADR-0037 the package tree, callback types and canonical names, under the owner's delegation of 2026-11-23. Every requirement and document is **VALIDATED**; templates keep `PROPOSED` as the initial status of the items created from them.

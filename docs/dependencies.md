@@ -14,7 +14,7 @@
 | Name | Version | Module | Shipped | Purpose | License (SPDX) | Android status | Checked |
 |---|---|---|---|---|---|---|---|
 | `com.b3dgs:b3dgs-parent` | 2.1.0-SNAPSHOT | aggregator `pom.xml` | no | Parent POM: plugin versions and common build configuration | to record at the build skeleton (OQ-149) | not shipped | — |
-| `com.b3dgs.radialencapsulation:radial-encapsulation-maven-plugin` | from the parent POM | aggregator `pom.xml` | no | Package dependency rule check (ADR-0012, ADR-0015, REQ-CORE-005) | to record at the build skeleton (OQ-149) | not shipped | — |
+| `com.b3dgs.radialencapsulation:radial-encapsulation-maven-plugin` | from the parent POM (latest release 1.0.2) | aggregator `pom.xml`, `basePackage` per module (ADR-0037) | no | Package dependency rule check inside each module (ADR-0012, ADR-0015, ADR-0037, REQ-CORE-005) | Apache-2.0 | not shipped | 2026-11-23 |
 | JUnit 5 | set at the build skeleton | test scope of every module | no | Test framework (ADR-0012) | EPL-2.0 | not shipped | 2026-11-23 |
 | JaCoCo | set at the build skeleton | build | no | Coverage merged for SonarCloud (ADR-0012) | EPL-2.0 | not shipped | 2026-11-23 |
 | Android Gradle Plugin | 9.2.1 (ADR-0012) | Android verification module | no | DEX production and verification (ADR-0012, OQ-147) | Apache-2.0 | not shipped | 2026-11-23 |

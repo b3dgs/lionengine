@@ -32,7 +32,7 @@ Standard traits and systems (`features/standard-traits.md`); scenes (lifecycle c
 
 ## Envisaged APIs / contracts
 
-Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Objects and traits); signatures written by the batch: `World`, world configuration, trait type registry, trait storage, query, command buffer, listeners, system contract.
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Objects and traits); canonical type names in [ADR-0037](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md); signatures written by the batch: `World`, world configuration, trait type registry, trait storage, query, command buffer, listeners, system contract.
 
 ## Batches (order)
 

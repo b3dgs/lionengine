@@ -31,7 +31,7 @@ Rotation (deferred); parallax (a background-layer feature reading the camera pos
 
 ## Envisaged APIs / contracts
 
-Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Camera); signatures written by the batch: camera, view transform value, view rectangle value, follow lookup contract, zoom curve enum.
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Camera); canonical type names in [ADR-0037](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md); signatures written by the batch: camera, view transform value, view rectangle value, follow lookup contract, zoom curve enum.
 
 ## Batches (order)
 
