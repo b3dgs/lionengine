@@ -64,7 +64,7 @@
 ## Phase 5 — advanced extensibility
 
 - local multiplayer and split-screen;
-- network architecture, only after the synchronization needs are defined (OQ-060).
+- network architecture, only after the synchronization needs are defined (OQ-158, ADR-0024).
 
 **Expected output:** optional modules and demonstrators, without weighing down the minimal foundation.
 

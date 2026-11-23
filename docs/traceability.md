@@ -132,6 +132,11 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-IN-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-IN-002 | Should | PROPOSED | — | — | — | no test yet |
 | REQ-MP-001 | Could | PROPOSED | — | — | — | no test yet |
-| REQ-MP-002 | Could | PROPOSED | — | OQ-060 | — | no test yet |
+| REQ-MP-002 | Could | PROPOSED | ADR-0024 | OQ-158 | — | no test yet |
+| REQ-DET-001 | Should | PROPOSED | ADR-0024 | OQ-158 | — | no test yet |
+| REQ-DET-002 | Could | PROPOSED | ADR-0024 | — | — | no test yet |
+| REQ-PERF-001 | Should | PROPOSED | ADR-0024 | OQ-139 | — | no test yet |
+| REQ-PERF-002 | Should | PROPOSED | ADR-0024 | OQ-147 | — | no test yet |
+| REQ-SUPPORT-001 | Should | PROPOSED | ADR-0024 | OQ-158 | — | no test yet |
 
 Retired identifiers are listed in `requirements.md`.

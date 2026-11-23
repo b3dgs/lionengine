@@ -180,4 +180,4 @@ Clearly distinguish:
 - split-screen (several viewports/cameras);
 - network (transport, session, replication/synchronization).
 
-Split-screen must not be confused with networking. Protocol, authority, prediction, rollback and synchronization are outside the contract until decided (OQ-060).
+Split-screen must not be confused with networking. Protocol, authority, prediction, rollback and synchronization are outside the contract until decided (OQ-158, ADR-0024).

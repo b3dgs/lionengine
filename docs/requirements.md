@@ -215,11 +215,19 @@ Source: [ADR-0011](decisions/0011-ecs-dynamic-objects-traits-and-standard-traits
 
 ## Non-functional requirements
 
-Non-functional constraints (Android versions and DEX toolchain, CPU/memory budgets, concurrency model, memory management, API compatibility policy, licenses, determinism level) are not requirements yet: they are `TO BE DEFINED` and tracked in [`open-questions.md`](open-questions.md) (OQ-001 to OQ-008, OQ-030 to OQ-033, OQ-070, OQ-071). Each one becomes a `REQ-*` once decided.
+Constraints on Android versions, the DEX toolchain, concurrency, memory management, API compatibility and licenses are fixed by ADR-0012 to ADR-0020. Determinism, budgets and desktop support come from [ADR-0024](decisions/0024-determinism-performance-budgets-and-desktop-support.md).
+
+| ID | Requirement | Priority | Status | Expected verification |
+|---|---|---|---|---|
+| REQ-DET-001 | The simulation is deterministic for a given sequence of inputs and steps; randomness comes from a seeded generator owned by the world, never from a global source (ADR-0024, decision 1). | Should | PROPOSED | Test: two worlds with the same seed and inputs produce the same state (generator form: OQ-158). |
+| REQ-DET-002 | Bit-exact determinism between the JVM and Android is not promised; replay, rollback and prediction are not requirements (ADR-0024, decision 1). | Could | PROPOSED | None; recorded as a non-guarantee. |
+| REQ-PERF-001 | Default target of 60 updates per second; budgets are set per platform tier and measured, not guessed; memory values per tier follow the first benchmark (ADR-0024, decision 2; OQ-139). | Should | PROPOSED | Headless benchmark per tier (`REQ-ECS-009` is the first). |
+| REQ-PERF-002 | On the Android reference tier (a mid-range API 21-era device) a frame completes in 16.6 ms and hot paths allocate nothing in steady state (`REQ-RT-006`). | Should | PROPOSED | Android measurement once the DEX job exists (OQ-147). |
+| REQ-SUPPORT-001 | Desktop support covers Windows, macOS and Linux on JDK 25; a platform is claimed supported only when CI runs the headless tests on it, Linux first (ADR-0024, decision 3). | Should | PROPOSED | CI matrix per platform. |
 
 ## Retired identifiers
 
 | ID | Reason |
 |---|---|
 | REQ-CORE-001 | Duplicate of REQ-TECH-001 (Java as implementation language is already covered by the Java target). |
-| REQ-MP-003 | Not a requirement: network protocol, synchronization and authority are an open question (OQ-060). |
+| REQ-MP-003 | Not a requirement: network protocol, synchronization and authority are an open question (OQ-158). |

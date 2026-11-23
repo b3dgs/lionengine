@@ -42,6 +42,7 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 - [`ADR-0021`](0021-scene-world-viewport-and-object-model.md) — Scene, world, camera and viewport vocabulary; single ECS object model; world hosted by `ecs`; physics contracts module (accepted 2026-11-23, issue #878).
 - [`ADR-0022`](0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md) — Optional multiplayer, audio backend split, desktop AWT reference frontend, `render-awt` on `platform-awt`, unknown display values as 0 (accepted 2026-11-23, issue #879).
 - [`ADR-0023`](0023-game-repository-change-requests-assets-and-api-index-check.md) — Game repository on pinned Maven artifacts, engine change request issues, asset provenance, API index CI check (accepted 2026-11-23, issue #880).
+- [`ADR-0024`](0024-determinism-performance-budgets-and-desktop-support.md) — Determinism groundwork, performance budgets per tier, supported desktop platforms (accepted 2026-11-23, issue #881).
 - [`ADR-0019`](0019-loading-resource-policy-and-memory.md) — Synchronous-first loading with opt-in asynchronous contract, explicit reference-counted resources, hot-path memory policy (accepted 2026-11-22, issue #877).
 - [`ADR-0020`](0020-no-reflection-factory-registry-and-capability-lookup.md) — No reflection: factory registry for data-driven objects, typed capability lookup (accepted 2026-11-22, issue #877).
 
