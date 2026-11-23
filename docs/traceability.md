@@ -117,25 +117,28 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-WORLD-001 | Must | PROPOSED | ADR-0021 | — | — | no test yet |
 | REQ-PHYS-001 | Should | PROPOSED | ADR-0021 | OQ-142 | — | no test yet |
 | REQ-DEF-001 | Must | PROPOSED | ADR-0028, ADR-0020 | OQ-162 | — | no test yet |
-| REQ-ECS-001 | Must | PROPOSED | ADR-0011 | OQ-137 | — | no test yet |
-| REQ-ECS-002 | Must | PROPOSED | ADR-0011 | OQ-137, OQ-132 | — | no test yet |
-| REQ-ECS-003 | Must | PROPOSED | ADR-0011 | OQ-138 | — | no test yet |
-| REQ-ECS-004 | Must | PROPOSED | ADR-0011 | OQ-140 | — | no test yet |
-| REQ-ECS-005 | Must | PROPOSED | ADR-0011 | OQ-140, OQ-145 | — | no test yet |
-| REQ-ECS-006 | Must | PROPOSED | ADR-0011 | OQ-138 | — | no test yet |
+| REQ-ECS-001 | Must | PROPOSED | ADR-0011, ADR-0030 | OQ-164 | — | no test yet |
+| REQ-ECS-002 | Must | PROPOSED | ADR-0011, ADR-0030 | OQ-164 | — | no test yet |
+| REQ-ECS-003 | Must | PROPOSED | ADR-0011, ADR-0030 | OQ-164 | — | no test yet |
+| REQ-ECS-004 | Must | PROPOSED | ADR-0011, ADR-0030 | OQ-164 | — | no test yet |
+| REQ-ECS-005 | Must | PROPOSED | ADR-0011, ADR-0030 | OQ-164 | — | no test yet |
+| REQ-ECS-006 | Must | PROPOSED | ADR-0011, ADR-0030 | OQ-164 | — | no test yet |
 | REQ-ECS-007 | Should | PROPOSED | ADR-0011 | OQ-122 | — | no test yet |
-| REQ-ECS-008 | Must | PROPOSED | ADR-0011 | OQ-141, OQ-020 | — | no test yet |
-| REQ-ECS-009 | Must | PROPOSED | ADR-0011 | OQ-139, OQ-070, OQ-001 | — | no test yet |
+| REQ-ECS-008 | Must | PROPOSED | ADR-0011, ADR-0030 | OQ-020, OQ-164 | — | no test yet |
+| REQ-ECS-009 | Must | PROPOSED | ADR-0011, ADR-0030 | OQ-070, OQ-001, OQ-164 | — | no test yet |
 | REQ-ECS-010 | Must | PROPOSED | ADR-0011 | OQ-030, OQ-146 | — | no test yet |
+| REQ-ECS-011 | Must | PROPOSED | ADR-0030 | OQ-164 | — | no test yet |
+| REQ-ECS-012 | Must | PROPOSED | ADR-0030 | OQ-164 | — | no test yet |
 | REQ-STD-001 | Should | PROPOSED | ADR-0011 | OQ-013, OQ-022 | — | no test yet |
 | REQ-STD-002 | Should | PROPOSED | ADR-0011 | OQ-013 | — | no test yet |
 | REQ-STD-003 | Should | PROPOSED | ADR-0011 | OQ-010 | — | no test yet |
-| REQ-STD-004 | Should | PROPOSED | ADR-0011 | OQ-143 | — | no test yet |
-| REQ-STD-005 | Should | PROPOSED | ADR-0011, ADR-0028 | OQ-142 | — | no test yet |
+| REQ-STD-004 | Should | PROPOSED | ADR-0011, ADR-0030 | OQ-164 | — | no test yet |
+| REQ-STD-005 | Should | PROPOSED | ADR-0011, ADR-0028, ADR-0030 | OQ-164 | — | no test yet |
 | REQ-STD-006 | Should | PROPOSED | ADR-0011 | — | — | no test yet |
 | REQ-STD-007 | Should | PROPOSED | ADR-0011 | — | — | no test yet |
-| REQ-STD-008 | Should | PROPOSED | ADR-0011 | OQ-141 | — | no test yet |
-| REQ-STD-009 | Could | PROPOSED | ADR-0011 | OQ-144 | — | no test yet |
+| REQ-STD-008 | Should | PROPOSED | ADR-0011, ADR-0030 | OQ-164 | — | no test yet |
+| REQ-STD-010 | Should | PROPOSED | ADR-0030 | OQ-164 | — | no test yet |
+| REQ-STD-009 | Could | PROPOSED | ADR-0011, ADR-0030 | OQ-164 | — | no test yet |
 | REQ-IN-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-IN-002 | Should | PROPOSED | — | — | — | no test yet |
 | REQ-MP-001 | Could | PROPOSED | — | — | — | no test yet |

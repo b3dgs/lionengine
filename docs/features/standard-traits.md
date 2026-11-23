@@ -8,7 +8,7 @@
 - Affected modules: `traits`, `ecs`, `core`, `test-support`, `examples`
 - Requirements: `REQ-STD-001` to `REQ-STD-009`
 - Applicable ADRs: [`ADR-0011`](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (ACCEPTED), [`ADR-0001`](../decisions/0001-technical-baseline-and-conventions.md)
-- Open questions involved: `OQ-010`, `OQ-013`, `OQ-022`, `OQ-142` to `OQ-144`
+- Open questions involved: `OQ-010`, `OQ-013`, `OQ-022`, `OQ-164` (`OQ-142` to `OQ-144` resolved by ADR-0030)
 
 ## Objective
 
@@ -16,7 +16,7 @@ A standard, documented set of traits and systems expected from a 2D game engine,
 
 ## Out of scope
 
-Tile collision (`OQ-125`, separate packet); shapes other than axis-aligned boxes and physical response beyond what is specified (`OQ-142`); rendering and animation links; the candidates of `REQ-STD-009`.
+Tile collision beyond the first batch (ADR-0028, ADR-0030); shapes other than axis-aligned boxes and physical response beyond what is specified (ADR-0030, `OQ-142` for later shapes); rendering and animation links; the candidates of `REQ-STD-009`.
 
 ## Expected behavior
 
@@ -31,7 +31,7 @@ Systems run in this proposed relative order each step: `Jump` (reads requests), 
 | `Collidable` | axis-aligned box, layer, mask, trigger flag | uniform-grid broad phase; reports overlapping pairs; triggers do not block |
 | `Lifetime` | duration (s) | requests removal on expiry |
 
-The order, signs (`OQ-010`) and defaults (`OQ-143`) are proposals until accepted.
+The order, signs (ADR-0013) and defaults (ADR-0030) are decided; the requirements stay PROPOSED.
 
 ## Envisaged APIs / contracts
 
@@ -67,6 +67,6 @@ Meters, m/s, m/s², seconds, delta-based (REQ-TECH-003 to REQ-TECH-005). Pure ma
 ## Acceptance criteria
 
 - [ ] Requirements `REQ-STD-001` to `REQ-STD-009` verified.
-- [ ] ADR-0011 accepted; `OQ-010`, `OQ-013`, `OQ-142`, `OQ-143` settled or explicitly assumed.
+- [x] ADR-0011 accepted; `OQ-010`, `OQ-013`, `OQ-142`, `OQ-143` settled by ADR-0013, ADR-0014 and ADR-0030.
 - [ ] Automated tests added and passing; complete Javadoc for every trait and system.
 - [ ] Example and `api-index.md` entry; no forbidden coupling; Android/DEX compatibility verified.
