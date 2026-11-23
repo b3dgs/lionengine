@@ -29,6 +29,7 @@ The owner's goal after this review is to define the base skeleton of each module
 - Declare the interfaces inside the build-skeleton batch (rejected): one pull request mixing the reactor, CI, the Android job and some thirty signatures, which is not one reviewable change set (`AGENTS.md`, section 6).
 - Keep per-batch signatures (rejected): the first batch decides each seam for every later consumer, and parallel batches drift.
 - Declare every public type of every module, concrete classes included (rejected): stub classes without behavior are not contracts, and they would be rewritten by their batches.
+- Also declare now the contracts of `audio-api`, `input-api`, `ecs`, `physics`, `camera`, `tilemap`, `network` and `multiplayer` (rejected). Their signatures need a class of their own batch (`World`, `PixelBuffer`, `CommandBuffer`), or a hot-path shape that the batch designs (`ShapeQuery`, `FollowLookup`: no allocation per call). The first batch of each of these modules declares them before any implementer exists, so no later consumer is decided for.
 
 ## Consequences
 
@@ -39,4 +40,4 @@ The owner's goal after this review is to define the base skeleton of each module
 
 ## Validation
 
-Decided by the agent on 2026-11-23 at the owner's request to apply the review's changes; reversible by a superseding ADR.
+Decided by the agent on 2026-11-23 at the owner's request to apply the review's changes. After reading a summary of this ADR, the owner left the remaining choice, the width of the contract skeleton, to the agent the same day ("I let you choose the best option"). The agent kept the scope above: the cross-module contracts of Phases 1 and 2 whose signatures are fully specified now. Reversible by a superseding ADR.

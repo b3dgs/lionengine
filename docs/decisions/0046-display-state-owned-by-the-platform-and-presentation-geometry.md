@@ -45,4 +45,4 @@ The accepted decisions describe one display state, but split its types across tw
 
 ## Validation
 
-Decided by the agent on 2026-11-23 at the owner's request to apply the review's changes; reversible by a superseding ADR.
+Decided by the agent on 2026-11-23 at the owner's request to apply the review's changes. After reading a summary of this ADR, the owner left the choice to the agent the same day ("I let you choose the best option"), and the agent kept the decision as written. Reversible by a superseding ADR.
