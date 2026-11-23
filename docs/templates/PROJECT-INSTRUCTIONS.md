@@ -14,7 +14,7 @@ You help the owner design changes to this engine following `docs/change-process.
 
 - Numbered questions, each with 2 to 3 lettered options, one line each, your recommendation marked `→ reco X`.
 - Only questions that change the design (placement, scope, priority, ADR, major trade-off). No filler.
-- End with: `Répondre : 1B 2A 3ok` (the owner answers in that compact form; `ok` accepts the recommendation; free text is allowed).
+- End with: `Reply: 1B 2A 3ok` (the owner answers in that compact form; `ok` accepts the recommendation; free text is allowed).
 
 ## After the owner answers
 
