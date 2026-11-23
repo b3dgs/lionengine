@@ -4,9 +4,9 @@
 
 - Owner: project owner
 - Roadmap phase: Phase 1 (loop, inbox), Phase 2 (asynchronous handles and load groups)
-- Affected modules: `runtime`, `test-support`, `examples`
+- Affected modules: `core` (inbox, handles, worker pool and loop contracts, ADR-0040), `runtime`, `test-support`, `examples`
 - Requirements: `REQ-LOOP-001` to `REQ-LOOP-012`, `REQ-RT-001` to `REQ-RT-004`, `REQ-RT-009`, `REQ-RT-010`, `REQ-TEST-001`
-- Applicable ADRs: [`ADR-0001`](../decisions/0001-technical-baseline-and-conventions.md), [`ADR-0017`](../decisions/0017-fixed-step-game-loop.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0019`](../decisions/0019-loading-resource-policy-and-memory.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0037`](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md)
+- Applicable ADRs: [`ADR-0001`](../decisions/0001-technical-baseline-and-conventions.md), [`ADR-0017`](../decisions/0017-fixed-step-game-loop.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0019`](../decisions/0019-loading-resource-policy-and-memory.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0037`](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md), [`ADR-0040`](../decisions/0040-thread-hand-off-contracts-in-core-and-loop-wiring.md)
 - Open questions involved: none
 
 ## Objective
@@ -42,17 +42,21 @@ On resume the clock reference is reset and the accumulator cleared. The first it
 
 ### Inbox
 
+- `Inbox` and `InboxEvent` are `core` contracts (ADR-0040): an event is an object with one `deliver()` method, implemented by its producer and run on the runtime thread; the inbox never inspects event types. `GameLoop` owns its inbox (capacity from `LoopConfig`) and exposes it as the `core` type for the application to hand to producers.
 - Thread-safe, bounded FIFO; `post` from any thread never blocks beyond a short lock; when full the event is rejected, counted, and the drop is logged once at the next delivery. Control requests are not inbox entries.
 - Listener registration or removal during a delivery takes effect after it.
 
 ### Asynchronous handles (Phase 2)
 
 - `AsyncHandle<T>` states `PENDING`, `READY`, `FAILED`, `CANCELLED`; progress `double` in `[0, 1]`; state changes only at inbox delivery. `get()` when not `READY` throws `IllegalStateException`; `cancel()` is best effort and a late result is released. `LoadGroup` aggregates handles (mean progress, `READY` when all are).
+- `AsyncHandle<T>`, `AsyncState`, `LoadGroup` and `WorkerPool` are `core` contracts so that `graphics`, `audio-api`, `tilemap` and `network` can use them without `runtime` (ADR-0040).
 - Workers (platform pool: 2 on desktop, 1 on Android, 0 = synchronous only) only read and decode.
 
 ## Envisaged APIs / contracts
 
-Canonical names (ADR-0037): `Clock`, `GameLoop`, `LoopConfig`, `Inbox`, `AsyncHandle<T>`, `AsyncState`, `LoadGroup`; listeners `LagListener` and the update and render callbacks as role-named interfaces.
+Canonical names (ADR-0037, ADR-0040): in `runtime` `Clock`, `GameLoop`, `LoopConfig`; in `core` `Inbox`, `InboxEvent`, `AsyncHandle<T>`, `AsyncState`, `LoadGroup`, `WorkerPool`, `LoopControl`, `LoopDriver` (`GameLoop` implements `LoopDriver`); listeners `LagListener` and the update and render callbacks as role-named interfaces. The pause, resume, stop and time-scale requests are the `LoopControl` methods.
+
+Wiring (ADR-0040): the application or `composition` sets the update callback to advance every `InputState` then update the scene manager, and the render callback to render the scene manager then present the command buffer; `runtime` knows neither input nor rendering.
 
 ## Batches (order)
 
@@ -71,7 +75,7 @@ Nanoseconds inside the loop, seconds in every callback. `System.nanoTime` to ver
 
 ## Dependencies
 
-`core` only.
+`runtime` on `core` only; the hand-off contracts are in `core` itself.
 
 ## Tests
 

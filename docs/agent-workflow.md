@@ -33,6 +33,6 @@ No agent relies on a conversation history. Everything an agent needs is in the r
 ## Rules that never depend on the agent
 
 - Architecture decisions are made by the owner, recorded as ADRs, whichever agent proposed them.
-- A local agent that hits a `TO BE DEFINED` point (today only OQ-096, OQ-147 and OQ-149, or a gap it finds) records it in `open-questions.md` and stops that part of the work; it does not decide.
+- A local agent that hits a `TO BE DEFINED` point (none is open today; a gap it finds) records it in `open-questions.md` and stops that part of the work; it does not decide.
 - CI results (build, tests, dependency rules, Android/DEX, compiled examples) decide whether a batch is accepted, not the agent's own report.
 - Every pull request is reviewed by a person or by an independent agent that did not write it.

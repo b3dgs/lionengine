@@ -1,6 +1,6 @@
 # Android/DEX compatibility checklist
 
-**Status: VALIDATED — operational procedure applying REQ-TECH-006 and REQ-TECH-007 (ADR-0001). Baseline of ADR-0012: minimum API 21, DEX through a separate Gradle module. Java 25 support on that baseline is verified at the build skeleton (OQ-147); until then every item below is `not compatible yet` unless stated otherwise.**
+**Status: VALIDATED — operational procedure applying REQ-TECH-006 and REQ-TECH-007 (ADR-0001). Baseline of ADR-0012: minimum API 21, DEX through a separate Gradle module. Shared bytecode level: Java 25, then 21, then 17, the first one the Android job accepts, fixed at the build skeleton (ADR-0041); until then every item below is `not compatible yet` unless stated otherwise.**
 
 Java compilation alone is not proof of DEX compatibility. Verification is continuous, not a final step.
 
@@ -17,16 +17,16 @@ Java compilation alone is not proof of DEX compatibility. Verification is contin
 - A CI job builds the Android-targeted modules through D8/R8 and produces the expected DEX artifacts (REQ-TECH-006, REQ-TECH-007).
 - A verification build covers APIs requiring desugaring.
 - Tests run on the targeted Android versions (devices or emulators); these are platform tests and are kept separate from the headless unit tests.
-- Pipeline design (ADR-0012): Maven builds and tests the modules; a separate Gradle module consumes the Maven artifacts. An Android *library* (AAR) build does not run D8, so the job also needs a verification module that dexes the artifacts (OQ-147).
+- Pipeline design (ADR-0012): Maven builds and tests the modules; a separate Gradle module consumes the Maven artifacts. An Android *library* (AAR) build does not run D8, so the job also needs a verification module that dexes the artifacts (ADR-0041).
 - Games must enable core library desugaring on the application side too.
 
 ## Baseline (ADR-0012)
 
-Observed in `master` `java/lionengine-core-android/build.gradle` on 2026-11-22: Android Gradle Plugin 9.2.1, `compileSdk`/`targetSdk` 37, `minSdk` 21, Java 21 source/target, `desugar_jdk_libs:2.1.5`. Proven in `master`: Java 21 bytecode. Not verified: Java 25 class files and APIs (OQ-147).
+Observed in `master` `java/lionengine-core-android/build.gradle` on 2026-11-22: Android Gradle Plugin 9.2.1, `compileSdk`/`targetSdk` 37, `minSdk` 21, Java 21 source/target, `desugar_jdk_libs:2.1.5`. Proven in `master`: Java 21 bytecode. Not verified: Java 25 class files and APIs; the owner reports a working build with JDK 17 (ADR-0041).
 
 ## Java features and APIs at API 21 (working list, NOT verified)
 
-General knowledge of D8/ART, to be confirmed by the Android CI job (OQ-147). Until confirmed, each item is **not compatible yet** in shared code (procedure above).
+General knowledge of D8/ART, to be confirmed by the Android CI job (ADR-0041). Until confirmed, each item is **not compatible yet** in shared code (procedure above).
 
 | Area | Expectation at API 21 |
 |---|---|
@@ -37,7 +37,7 @@ General knowledge of D8/ART, to be confirmed by the Android CI job (OQ-147). Unt
 | Records, sealed types, switch expressions, text blocks, `instanceof` patterns | compile-time, handled by D8; verify |
 | Pattern matching for `switch`, record patterns, Java 22 to 25 language features | rely on `invokedynamic` bootstraps or new class file versions: verify one by one |
 | Preview features | forbidden in shared code |
-| Class file version 69 (Java 25) | unknown; proven path is `--release 21` |
+| Class file version 69 (Java 25) | unknown; tried first, then `--release 21` (proven in `master`), then `--release 17` (ADR-0041) |
 
 ## Pending checks of the accepted decisions
 
@@ -48,7 +48,7 @@ Nothing here is verified yet, so every item is **not compatible yet** until it i
 | Screen and display modes (ADR-0002) | Mode selection through Android APIs, isolated in `platform-android`; refresh-rate and color-depth selection may be unavailable and is then reported through the effective result | not compatible yet |
 | Output filtering (ADR-0002) | common GLSL/GLSL ES shader subset and own filter implementations (ADR-0025, ADR-0033); headers `#version 100` on Android | not compatible yet |
 | Sprites and sprite sheets (ADR-0003) | Pure-Java PNG decoder in shared code (`java.util.zip.Inflater`, to verify on API 21); optional platform decoders (ADR-0026) | not compatible yet |
-| Audio (ADR-0004) | No `javax.sound` in `audio-api`; PCM WAV baseline, OGG Vorbis decoded by the platform; latency target 100 ms best effort to measure (ADR-0027, ADR-0033, OQ-147) | not compatible yet |
+| Audio (ADR-0004) | No `javax.sound` in `audio-api`; PCM WAV baseline, OGG Vorbis decoded by the platform; latency target 100 ms best effort to measure (ADR-0027, ADR-0033, ADR-0041) | not compatible yet |
 | Desktop platform (ADR-0008) | `platform-awt` uses `java.desktop`, which does not exist on Android: it must stay out of every Android build | platform module only |
 | Desktop renderer and input (ADR-0022, ADR-0035) | `render-awt`, `input-awt`, `audio-javasound`, `graphics-imageio` use `java.desktop` | platform module only |
 | JSON reader and definition files (ADR-0028, ADR-0032) | Pure Java string and number parsing in `core`; no `java.util.Base64` (API 26) in shared code, base64 decoded by project code | not compatible yet |
@@ -60,6 +60,6 @@ Nothing here is verified yet, so every item is **not compatible yet** until it i
 | Allocation tests (ADR-0030) | `com.sun.management.ThreadMXBean` is JVM-only: test code only, never in shared main code | platform module only |
 | Desktop OGG decoder (ADR-0033) | JOrbis in `audio-codec-ogg`, desktop only; Android uses the platform decoder | platform module only |
 
-## What to record at the build skeleton (OQ-147)
+## What to record at the build skeleton (ADR-0041)
 
 The baseline (minimum API level, Android Gradle Plugin, desugaring library and versions) is in ADR-0012. The Android verification job records here: the class file version and language level accepted for shared modules, the D8/R8 version actually used, the JDK of the job, and the status of each row of the two tables above, changed from `not compatible yet` to its verified status.

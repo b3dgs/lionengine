@@ -1,21 +1,22 @@
 # Cross-cutting contracts
 
-**Status: VALIDATED — responsibilities, invariants and defaults of every contract (ADR-0001 to ADR-0039). Java signatures are written by each implementation batch under [`../conventions.md`](../conventions.md) and reviewed in its pull request.**
+**Status: VALIDATED — responsibilities, invariants and defaults of every contract (ADR-0001 to ADR-0043). Java signatures are written by each implementation batch under [`../conventions.md`](../conventions.md) and reviewed in its pull request.**
 
 Each public contract must specify: responsibility, invariants, lifecycle, calling thread, units, errors, data ownership, behavior when a capability is absent, and compatibility (including Android/DEX). A plain-language summary with diagrams is in [`../how-the-engine-works.md`](../how-the-engine-works.md).
 
-## Threads and events (ADR-0018, ADR-0031)
+## Threads and events (ADR-0018, ADR-0031, ADR-0040)
 
 - One **runtime thread** owns the loop, the update phase, the world, cameras, animations, caches and, by default, the render phase. Every public type documents its thread; the default is "not thread-safe, owned by the runtime thread". The engine starts no thread; the platform runs the loop on the thread it requires (AWT: a dedicated thread with active rendering; OpenGL and Android: the context or renderer thread).
 - Thread-safe entry points only enqueue: the platform **inbox**, pause, resume, stop and time-scale requests, asynchronous-load completion, audio callbacks.
 - **Inbox:** FIFO, bounded (default 1,024 events), delivered on the runtime thread at the start of an iteration, before the update steps. Posting never blocks beyond a short lock; an overflowing event is rejected, counted and reported. Pause, resume, stop and time scale are atomic request fields, not inbox entries.
+- **Where they live (ADR-0040):** `Inbox`, `InboxEvent` (one `deliver()` method run on the runtime thread, implemented by the producer), `AsyncHandle<T>`, `AsyncState`, `LoadGroup`, `WorkerPool`, `LoopControl` (thread-safe requests) and `LoopDriver` (one iteration on the calling thread) are `core` contracts. `GameLoop` (`runtime`) implements `LoopDriver` and owns the inbox; the platform runs the `LoopDriver` and provides the `WorkerPool`. The application or `composition` hands the inbox and the worker pool to producers and wires the loop callbacks: per step, advance the input states then update the scenes; per iteration, render the scenes then present the command buffer.
 - **Internal events** (ECS, tile changed, collision) are synchronous in the update phase. Listeners run on the runtime thread; registration during a dispatch takes effect after it; no allocation per event; a listener exception follows fail-fast.
 
 ## Frontend, platform and rendering
 
-### Platform lifecycle (ADR-0031)
+### Platform lifecycle (ADR-0031, ADR-0040)
 
-- The application creates the platform object, configures it (logical frame size, initial screen mode, scaling policy, filter chain), registers its modules explicitly (ADR-0020) and starts it.
+- The application creates the platform object, configures it (logical frame size, initial screen mode, scaling policy, filter chain), registers its modules explicitly (ADR-0020) and starts it with the loop's `LoopDriver` (ADR-0040).
 - Surface resize, focus change, background and foreground, close request, context loss and recovery are inbox events. Resize never changes the logical frame; scaling is recomputed at the next frame boundary. Background pauses and foreground resumes (ADR-0017). A close request stops the loop unless a close listener vetoes it. Context loss is recovered by the backend from CPU copies or by reloading (ADR-0019).
 - Capabilities are found by a typed lookup on the platform object: `getCapability(Class<T>)` returns the capability or `null` when unsupported, `hasCapability(Class<?>)` tells it (ADR-0020, ADR-0037).
 - Desktop reference: `platform-awt` (JDK AWT only, excluded from Android builds, ADR-0008) with `render-awt`, which reaches the surface through the `AwtSurface` capability of `platform-awt` (ADR-0022, ADR-0033).
@@ -48,7 +49,7 @@ Capability-based best-effort negotiation: the game requests, the platform applie
 - **Custom filters:** a registry id, explicit registration on the backend, a scaling or post kind, a fragment shader resource and/or a CPU implementation over `int[]` ARGB; a backend lacking the needed implementation skips it and reports the skip.
 - **Fallback orders:** screen mode `FULL_SCREEN` → `FULL_WINDOW` → `WINDOWED`, `WINDOWED` → `FULL_WINDOW` → `FULL_SCREEN`, `FULL_WINDOW` → `WINDOWED` → `FULL_SCREEN`; display mode exact, then nearest size, rate, depth; filters: CRT skipped, `HQ2X` → bilinear → `NONE`.
 - **Effective result:** apply returns the accepted request without blocking; the effective result (requested vs effective per field, `degraded` flag, reason) is an immutable value delivered through the inbox at the frame boundary where it is applied and readable as the current state.
-- Changes apply at a frame boundary and never alter simulation state. No AWT, OpenGL or Android type in these contracts. Settings persistence is the game's job. Multi-monitor and HiDPI: OQ-096 (contracts assume neither one monitor nor scale 1.0).
+- Changes apply at a frame boundary and never alter simulation state. No AWT, OpenGL or Android type in these contracts. Settings persistence is the game's job. Version 11 uses the default monitor and reports sizes in device pixels; contracts assume neither one monitor nor scale 1.0 (ADR-0043).
 
 Details: [`features/display-modes.md`](../features/display-modes.md), [`features/output-filtering.md`](../features/output-filtering.md).
 

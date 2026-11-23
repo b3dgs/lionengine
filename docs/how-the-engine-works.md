@@ -6,7 +6,7 @@ LionEngine is a Java library for 2D games. A game uses it to run a loop, show im
 
 ## 1. The big picture
 
-The game talks only to engine contracts. Platform modules plug in underneath and can be swapped.
+The game talks only to engine contracts. Platform modules plug in underneath and can be swapped: they implement the engine's contracts, the engine never depends on them.
 
 ```mermaid
 flowchart TB
@@ -26,7 +26,7 @@ flowchart TB
   runtime --> core
   world --> core
   media --> core
-  engine --> platform
+  platform -. "implements the contracts of" .-> engine
 ```
 
 ## 2. One turn of the loop

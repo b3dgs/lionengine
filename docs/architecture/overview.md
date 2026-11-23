@@ -1,6 +1,6 @@
 # Architecture overview
 
-**Status: VALIDATED — principles and boundaries (ADR-0001 to ADR-0039). Sections 6 and 7 restate ADR-0001 as refined by later ADRs. A plain-language version with diagrams: [`../how-the-engine-works.md`](../how-the-engine-works.md).**
+**Status: VALIDATED — principles and boundaries (ADR-0001 to ADR-0043). Sections 6 and 7 restate ADR-0001 as refined by later ADRs. A plain-language version with diagrams: [`../how-the-engine-works.md`](../how-the-engine-works.md).**
 
 ## 1. General direction
 
@@ -34,7 +34,7 @@ Layered architecture with dependency inversion: the core defines the contracts; 
                  OS / native libraries
 ```
 
-Modules are named `lionengine-XXX` under group `com.b3dgs.lionengine` (ADR-0012); the module list and allowed dependencies are in [`modules.md`](modules.md); their physical declaration is done at the build skeleton (OQ-149). DEX is produced by a separate Gradle module consuming the Maven artifacts (ADR-0012).
+Modules are named `lionengine-XXX` under group `com.b3dgs.lionengine` (ADR-0012); the module list and allowed dependencies are in [`modules.md`](modules.md); their physical declaration is done at the build skeleton (ADR-0042). DEX is produced by a separate Gradle module consuming the Maven artifacts (ADR-0012).
 
 ## 2. Boundaries
 
@@ -103,8 +103,8 @@ Made precise by [ADR-0017](../decisions/0017-fixed-step-game-loop.md) and [ADR-0
 
 ## 8. Threads
 
-One runtime thread owns the loop, the world and the caches; platform threads and workers only post to the inbox (ADR-0018, ADR-0031). Network sockets are non-blocking and polled by the runtime thread during the session update, so networking starts no thread either (ADR-0039). Details: [`contracts.md`](contracts.md#threads-and-events-adr-0018-adr-0031).
+One runtime thread owns the loop, the world and the caches; platform threads and workers only post to the inbox (ADR-0018, ADR-0031). The inbox, asynchronous handles, worker pool and loop-control contracts are in `core`, so producers never depend on `runtime` (ADR-0040). Network sockets are non-blocking and polled by the runtime thread during the session update, so networking starts no thread either (ADR-0039). Details: [`contracts.md`](contracts.md#threads-and-events-adr-0018-adr-0031).
 
 ## 9. Open architectural questions
 
-Only build-skeleton work (OQ-147, OQ-149) and multi-monitor and HiDPI (OQ-096) remain open; they are tracked in [`../open-questions.md`](../open-questions.md).
+None remain open (ADR-0041 to ADR-0043); new gaps go to [`../open-questions.md`](../open-questions.md).

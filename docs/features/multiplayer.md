@@ -140,7 +140,7 @@ The game builds the schema at startup, creates the session (`network`), then a `
 
 ## Units and Android/DEX compatibility
 
-World units of ADR-0013 (meters, seconds, m/s); ticks are `int`; interpolation ratios dimensionless. Pure Java on top of `network`, `ecs`, `traits` and `input-api`; no new JDK API beyond those of `network`; no `java.util.function`, `Optional` or streams (ADR-0037). Verified with the Android job like every shared module (`OQ-147`).
+World units of ADR-0013 (meters, seconds, m/s); ticks are `int`; interpolation ratios dimensionless. Pure Java on top of `network`, `ecs`, `traits` and `input-api`; no new JDK API beyond those of `network`; no `java.util.function`, `Optional` or streams (ADR-0037). Verified with the Android job like every shared module (ADR-0041).
 
 ## Dependencies
 
