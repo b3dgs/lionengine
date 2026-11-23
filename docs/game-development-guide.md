@@ -1,6 +1,6 @@
 # Guide: building a game with LionEngine
 
-**Status: PROPOSED — skeleton. Every section is `TO BE DEFINED` until the matching engine feature and its compiled example exist. Do not fill it from memory of other engines or earlier LionEngine versions.**
+**Status: VALIDATED — outline. Each section is filled only when the matching engine feature and its compiled example exist; until then a section has no code. Do not fill it from memory of other engines or earlier LionEngine versions.**
 
 Audience: a developer or an AI agent writing a game on top of the engine, who has never seen this API.
 
@@ -14,7 +14,7 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
 
 1. **Prerequisites** — Java/Maven versions (ADR-0001), how to depend on the engine: pinned Maven version with sources and Javadoc JARs (ADR-0023).
 2. **Hello engine** — the smallest headless application: start, update, stop. *Example: to be created in Phase 1.*
-3. **Concepts, in order of use** — runtime and game loop, resources, graphics (sprite, animation), world and objects (ECS, ADR-0021), tilemap, input, audio.
+3. **Concepts, in order of use** — start with [`how-the-engine-works.md`](how-the-engine-works.md); then runtime and game loop, scenes, resources and definition files, graphics (sprite, animation), world and objects (ECS, ADR-0021), tilemap, camera, input, audio.
 4. **Recipes** — one short, tested recipe per common task:
    - display and animate a sprite, including two color variants of one sprite and a sprite sheet (ADR-0003; example to be created);
    - load a map and scroll the camera (camera contract: [`features/camera.md`](features/camera.md), ADR-0010);
@@ -27,7 +27,11 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
    - An extrapolated state is never reused as simulation input.
    - Closing and ownership of resources (REQ-RES-003); modules handling resources follow one convention for keys and release: normalized logical path keys, idempotent release (REQ-RES-004, REQ-RES-005, ADR-0007).
    - Audio completion callbacks (playlist advance) must not mutate simulation state from the audio thread (ADR-0004).
-   - Not every capability exists on every platform (OQ-034); check before using.
+   - Not every capability exists on every platform; look it up on the platform object before using it (ADR-0020).
+   - Objects created or removed during a step exist or vanish only at the end of the step (the flush, ADR-0030).
+   - Read input through actions; a press is seen by exactly one step (ADR-0035).
+   - Every data file is strict JSON with `format` and `version`; an unknown field is an error (ADR-0032).
+   - Simulation randomness comes from the world's seeded generator, never `Math.random` or `java.util.Random` (ADR-0031).
    - Animation time advances in the update step only; a sprite emits render commands and never draws directly (ADR-0003).
    - Screen mode, display mode and filter requests are best-effort: read the effective result, delivered at the frame boundary, instead of assuming it (ADR-0002, ADR-0006).
    - Android compatibility of any added dependency or Java API ([`android-compatibility.md`](android-compatibility.md)).

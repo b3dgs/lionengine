@@ -1,32 +1,32 @@
-# Proposed roadmap
+# Roadmap
 
-**Status: PROPOSED — indicative order, not a delivery commitment.**
+**Status: VALIDATED — delivery order of the phases; dates are not committed. Each phase is split into batches specified with [`templates/FEATURE-TEMPLATE.md`](templates/FEATURE-TEMPLATE.md).**
 
 ## Phase 0 — structuring decisions and project skeleton
 
-- apply the validated choices: Java 25+, Maven 3+, X/Y coordinates in meters and time in seconds (ADR-0001);
-- specify the coordinate system (origin, direction of Y), meters/pixels conversions and angle conventions (OQ-010 to OQ-013);
-- game loop model: fixed step, accumulator, interpolation, lag cap (ADR-0017, follow-ups OQ-151);
-- place of ECS: single object model (ADR-0021);
-- set package conventions, versioning, thread rules and physical module layout (OQ-003, OQ-030);
-- define the Android build strategy with Maven (OQ-002) and the project license (OQ-006);
-- define the core/frontend boundaries;
-- choose the first reference frontend (a headless test frontend is mandatory, REQ-TEST-001);
-- define the minimal game loop and resource contracts;
-- start from the existing Maven baseline (aggregator `pom.xml`, no modules yet);
-- set up the build skeleton and continuous integration: Maven build, test framework, Javadoc with doclint, automatic dependency-rule check (REQ-CORE-005) and an **Android/DEX verification job** on the skeleton, as required by ADR-0001 (verification is continuous, not postponed).
+Done (ADR-0001 to ADR-0035):
+- technical baseline, coordinates, units, angles, numeric types (ADR-0001, ADR-0012 to ADR-0016);
+- game loop, threads, events, loading, memory, no reflection (ADR-0017 to ADR-0020, ADR-0031);
+- scene, world and object model, modules and their dependencies (ADR-0021, ADR-0022, `architecture/modules.md`);
+- game repository, change requests, assets, API index, dependency policy (ADR-0023, ADR-0032);
+- determinism, budgets, supported desktop platforms (ADR-0024);
+- every feature contract (ADR-0025 to ADR-0030, ADR-0033 to ADR-0035).
 
-**Expected output:** recorded decisions, compilable repository skeleton passing CI (including the Android/DEX job), applicable agent rules.
+Remaining, in this order:
+1. build skeleton (OQ-149): declare the modules of `architecture/modules.md` as Maven modules with empty `package-info.java`, package tree verified by `radial-encapsulation-maven-plugin`, JUnit 5, Javadoc with doclint failing on warnings (REQ-CORE-003), coverage, exact build and test commands recorded in `README.md` and `AGENTS.md`;
+2. CI: Linux build and tests, Windows and macOS as non-blocking jobs (REQ-SUPPORT-001), documentation check, API index and asset provenance checks (REQ-DOC-005, REQ-DOC-006);
+3. Android/DEX verification job and the record of verified Java features at API 21 (OQ-147).
+
+**Expected output:** a compilable repository skeleton passing CI, including the Android/DEX job.
 
 ## Phase 1 — testable foundation
 
-- minimal core;
-- abstract clock and test-driven loop (`test-support`);
-- runtime lifecycle;
-- resources with memory and filesystem providers;
-- minimal reference frontend (desktop `platform-api` implementer: `platform-awt`, ADR-0008; render side: `render-awt` on `platform-awt`, ADR-0022);
-- contract tests and a headless example;
-- the `examples` module with a CI job that compiles and runs every example (REQ-DOC-001);
+- `core`: logging facade, JSON reader, definition exception, registry and typed configuration, random generator (ADR-0031, ADR-0032);
+- `test-support`: controllable clock, manually driven loop, headless frontend (REQ-TEST-001);
+- `runtime`: loop with its calibration, inbox, scene contract and scene manager (one active scene) (ADR-0017, ADR-0018, ADR-0031);
+- `resources` with memory and filesystem providers, provider order, resource convention suite (ADR-0007, ADR-0032);
+- `platform-api` lifecycle events and capability lookup; minimal reference frontend `platform-awt` and `render-awt` (ADR-0008, ADR-0022);
+- `examples` with a CI job that compiles and runs every example (REQ-DOC-001);
 - first entries of the API index and of the game development guide (REQ-DOC-002, REQ-DOC-003);
 - sources and Javadoc artifacts published by the build (REQ-DOC-004).
 
@@ -34,37 +34,38 @@
 
 ## Phase 2 — 2D rendering and media
 
-- rendering contract;
-- images and sprites;
-- spritesheet and animation; sprite, animated sprite and sprite sheet contracts in `graphics` (ADR-0003, REQ-SPRITE-*, REQ-ANIM-*, REQ-SHEET-*), in three batches: sprite sheet (foundation), sprite, animated sprite; batching stays a note inside the sprite feature;
-- first rendering backend;
-- audio API and first backend if prioritized; short and long sounds, variant sets and playlists in `audio-api` (ADR-0004, REQ-AUDIO-003 to REQ-AUDIO-009), in batches: contracts + fake backend + contract tests; short sounds with cache and variants; long sounds with preload/release and playlist; first desktop backend (OQ-115); Android backend (OQ-116);
-- screen modes, display-mode selection and logical-resolution scaling, then output filtering (ADR-0002, REQ-DISPLAY-*, REQ-FILTER-*), after the first backend exists; `HQ2X`/CRT sources and licenses (OQ-093) and shaders (OQ-094) before filter implementation; persistence of user display settings (OQ-095) in Phase 4.
+- `render-api` command buffer and viewport; `render-awt` executing it;
+- `graphics` in three batches: sprite sheet (pixel buffer, PNG decoder, cache, sheet definition), sprite, animated sprite ([`features/sprite-sheet.md`](features/sprite-sheet.md), [`features/sprite.md`](features/sprite.md), [`features/animated-sprite.md`](features/animated-sprite.md));
+- screen modes, display-mode selection and logical-resolution scaling, then output filtering ([`features/display-modes.md`](features/display-modes.md), [`features/output-filtering.md`](features/output-filtering.md));
+- audio in batches: contracts + fake backend + contract suites; short sounds with cache, voices and variants; long sounds with streaming and playlists; `audio-javasound`; mixer groups and fades ([`features/audio-short-and-long-sounds.md`](features/audio-short-and-long-sounds.md));
+- asynchronous loading and load groups (REQ-RT-004, REQ-RT-010);
+- scene overlay stack (REQ-SCENE-003).
 
 **Expected output:** a demonstrator displaying an animated scene and playing a sound.
 
 ## Phase 3 — game world
 
-- scenes (lifecycle contract and scene manager in `runtime`) and the world (ADR-0021); `physics` contracts;
-- basic traits; ECS dynamic objects, traits, queries, systems and the standard trait package (ADR-0011 ACCEPTED, [`features/ecs.md`](features/ecs.md), [`features/standard-traits.md`](features/standard-traits.md)), after the build skeleton of Phase 0 and the decisions of ADR-0021, `OQ-013`, `OQ-010`;
-- tilemap and tilesets (tile maps: ADR-0009 ACCEPTED, [`features/tile-map.md`](features/tile-map.md));
-- camera: view rectangle, zoom, follow, smoothing and shake (ADR-0010 ACCEPTED, [`features/camera.md`](features/camera.md));
-- collisions according to the retained scope.
+- `ecs` ([`features/ecs.md`](features/ecs.md)), `physics` and `traits` ([`features/standard-traits.md`](features/standard-traits.md));
+- `tilemap` with the Tiled loader and tile collision ([`features/tile-map.md`](features/tile-map.md));
+- `camera` ([`features/camera.md`](features/camera.md));
+- `input-api` and `input-awt` (keyboard and mouse) (ADR-0035), needed by the demonstrator;
+- `composition`: views, ready-made scene content and the camera follow adapter (ADR-0031).
 
-**Expected output:** a simple 2D game demonstrator.
+**Expected output:** a simple 2D platformer demonstrator: a tile map, a player that runs, jumps and collides, a following camera, sounds.
 
-## Phase 4 — input and platforms
+## Phase 4 — platforms
 
-- keyboard, mouse, gamepad;
-- additional frontend(s);
-- Android frontend (`platform-android`) on top of the already-verified Android/DEX pipeline.
+- Android frontend: `platform-android`, `audio-android`, `input-android`, `graphics-android`, on top of the already verified Android/DEX pipeline;
+- `render-opengl` with the GPU filters (CRT);
+- desktop gamepad adapter, with its dependency recorded (ADR-0035);
+- multi-monitor and HiDPI, if scheduled (OQ-096).
 
-**Expected output:** the same game logic usable through several frontends.
+**Expected output:** the same game logic running on desktop and Android.
 
 ## Phase 5 — advanced extensibility
 
-- local multiplayer and split-screen;
-- network architecture, only after the synchronization needs are defined (OQ-158, ADR-0024).
+- local multiplayer demonstrator: two views and two players (REQ-MP-001);
+- network architecture, only after the synchronization needs of a real game are defined (OQ-165).
 
 **Expected output:** optional modules and demonstrators, without weighing down the minimal foundation.
 
@@ -78,4 +79,4 @@
 
 ## Progression rule
 
-Each phase is split into small, verifiable batches. A batch must define its scope, requirements, APIs, tests, dependencies and acceptance criteria before implementation (see [`templates/FEATURE-TEMPLATE.md`](templates/FEATURE-TEMPLATE.md)). Open questions needed by a phase must be resolved before that phase starts. A batch that adds or changes a public API is not complete without its example and its API-index entry.
+Each phase is split into small, verifiable batches. A batch defines its scope, requirements, APIs, tests, dependencies and acceptance criteria before implementation (see [`templates/FEATURE-TEMPLATE.md`](templates/FEATURE-TEMPLATE.md)). The open questions needed by a phase are resolved before that phase starts (today: OQ-147 and OQ-149 for Phase 0). A batch that adds or changes a public API is not complete without its example and its API-index entry.

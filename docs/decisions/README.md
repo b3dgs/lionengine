@@ -1,6 +1,6 @@
 # Architecture decisions (ADR)
 
-**Status: PROPOSED — process description; the decisions listed below carry their own status.**
+**Status: VALIDATED — process description; the decisions listed below carry their own status.**
 
 An approved decision is binding for future implementations until it is explicitly superseded.
 
@@ -27,10 +27,8 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 - [`ADR-0006`](0006-display-scaling-effective-result-and-fallback-orders.md) — Display scaling policy, effective-result report and fallback orders; extends ADR-0002 (accepted 2026-11-22).
 - [`ADR-0007`](0007-resource-convention-keys-release-and-errors.md) — Resource convention: keys, release and errors; extends ADR-0005 (accepted 2026-11-22).
 - [`ADR-0008`](0008-awt-desktop-implementer-of-platform-api.md) — AWT desktop implementer of `platform-api` (`platform-awt`) (accepted 2026-11-22).
-- [`ADR-0010`](0010-camera-system-in-camera.md) — Camera system in `camera`: world-unit view rectangle, zoom, follow through a lookup contract, smoothing, seeded shake (accepted 2026-11-22, issue #868).
-
 - [`ADR-0009`](0009-tile-map-contracts-in-tilemap.md) — Tile map contracts in `tilemap` (accepted 2026-11-22, issue #865).
-
+- [`ADR-0010`](0010-camera-system-in-camera.md) — Camera system in `camera`: world-unit view rectangle, zoom, follow through a lookup contract, smoothing, seeded shake (accepted 2026-11-22, issue #868).
 - [`ADR-0011`](0011-ecs-dynamic-objects-traits-and-standard-traits.md) — ECS: dynamic objects and traits, cached queries, deferred structural changes, system order and standard traits in `ecs` and `traits` (accepted 2026-11-22).
 - [`ADR-0012`](0012-platform-and-build-baseline.md) — Platform and build baseline: Android API 21, DEX through a separate Gradle module, Maven layout, JUnit 5, GPL-3.0, semantic versioning, GitHub Actions (accepted 2026-11-22, issue #875).
 - [`ADR-0013`](0013-world-coordinates-and-angles.md) — World coordinate system and angles: origin (0, 0), Y up, degrees (accepted 2026-11-22, issue #875).
@@ -39,6 +37,8 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 - [`ADR-0016`](0016-angle-range-and-normalization.md) — Angle range: absolute angles in `[0, 360)`, signed differences in `(-180, 180]` (accepted 2026-11-22, issue #875).
 - [`ADR-0017`](0017-fixed-step-game-loop.md) — Fixed-step game loop with accumulator, interpolation by default, lag cap, pause and time scale, fail-fast (accepted 2026-11-22, issue #876).
 - [`ADR-0018`](0018-runtime-thread-events-and-cache-thread-safety.md) — One runtime thread, platform event inbox, cache thread confinement (accepted 2026-11-22, issue #877).
+- [`ADR-0019`](0019-loading-resource-policy-and-memory.md) — Synchronous-first loading with opt-in asynchronous contract, explicit reference-counted resources, hot-path memory policy (accepted 2026-11-22, issue #877).
+- [`ADR-0020`](0020-no-reflection-factory-registry-and-capability-lookup.md) — No reflection: factory registry for data-driven objects, typed capability lookup (accepted 2026-11-22, issue #877).
 - [`ADR-0021`](0021-scene-world-viewport-and-object-model.md) — Scene, world, camera and viewport vocabulary; single ECS object model; world hosted by `ecs`; physics contracts module (accepted 2026-11-23, issue #878).
 - [`ADR-0022`](0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md) — Optional multiplayer, audio backend split, desktop AWT reference frontend, `render-awt` on `platform-awt`, unknown display values as 0 (accepted 2026-11-23, issue #879).
 - [`ADR-0023`](0023-game-repository-change-requests-assets-and-api-index-check.md) — Game repository on pinned Maven artifacts, engine change request issues, asset provenance, API index CI check (accepted 2026-11-23, issue #880).
@@ -49,11 +49,16 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 - [`ADR-0028`](0028-tile-map-collision-json-definitions-and-storage.md) — Tile maps: collision through `physics`, JSON definition files, Tiled JSON, auto-tiling rules, tileset ownership, storage (accepted 2026-11-23, issue #885).
 - [`ADR-0029`](0029-camera-details-view-transform-follow-shake-zoom.md) — Camera details: view transform, `long` follow key, rigid default delay, integer-noise shake, zoom, candidate features (accepted 2026-11-23, issue #886).
 - [`ADR-0030`](0030-ecs-details-ids-flush-scheduling-collision-and-traits.md) — ECS details: `long` object ID, flush at the end of the step, benchmark policy, storage, scheduling slots, collision first batches, jump and ground, further traits, iteration order (accepted 2026-11-23, issue #887).
-- [`ADR-0019`](0019-loading-resource-policy-and-memory.md) — Synchronous-first loading with opt-in asynchronous contract, explicit reference-counted resources, hot-path memory policy (accepted 2026-11-22, issue #877).
-- [`ADR-0020`](0020-no-reflection-factory-registry-and-capability-lookup.md) — No reflection: factory registry for data-driven objects, typed capability lookup (accepted 2026-11-22, issue #877).
+- [`ADR-0031`](0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md) — Runtime defaults: loop calibration, inbox, asynchronous handles, scenes and `composition`, platform lifecycle, random generator, logging (accepted 2026-11-23, owner delegation).
+- [`ADR-0032`](0032-definition-files-registry-ids-resource-providers-dependency-policy.md) — Registry ids and typed configuration, strict JSON definition files, Tiled subset, resource providers, dependency policy and register, provenance and API index checks, Javadoc check (accepted 2026-11-23, owner delegation).
+- [`ADR-0033`](0033-media-defaults-module-names-filters-graphics-data-audio.md) — Media defaults: module names, shaders and custom filters, pixel and command layouts, PNG subset, sheet and animation fields, audio limits, groups and fades (accepted 2026-11-23, owner delegation).
+- [`ADR-0034`](0034-camera-and-ecs-defaults-noise-clamp-slots-capacities-events-shapes.md) — Camera and ECS defaults: shake noise, view transform, zoom curves, bounds and dead zone, object reference point, capacities, system slots, listeners, later collision features (accepted 2026-11-23, owner delegation).
+- [`ADR-0035`](0035-input-actions-devices-and-step-edges.md) — Input: devices, actions and bindings, per-step edges, analog values, focus and hot-plug, adapters (accepted 2026-11-23, owner delegation).
+
+Statements inside accepted ADRs such as "the requirements stay PROPOSED until validated" or "stays `TO BE DEFINED`" describe the state at the time of the decision and are kept unchanged as history. The current status of a requirement is in [`../requirements.md`](../requirements.md); the current state of a question is in [`../open-questions.md`](../open-questions.md). ADR-0031 to ADR-0035 were decided by the agent under the owner's explicit delegation of 2026-11-23 and can be superseded like any other ADR.
 
 ## Proposed decisions
 
 None at the moment.
 
-Other likely candidates are listed in [`../open-questions.md`](../open-questions.md) (see items needed by Phase 0).
+The remaining open questions are listed in [`../open-questions.md`](../open-questions.md): OQ-147 and OQ-149 at the build skeleton, OQ-096 in Phase 4, OQ-165 in Phase 5.

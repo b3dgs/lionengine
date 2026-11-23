@@ -54,8 +54,13 @@ flowchart TD
 Objects are just IDs. Their data ("traits", such as position or speed) is processed by "systems" in a fixed order.
 
 ```mermaid
-flowchart LR
-  jump["Jump"] --> gravity["Gravity"] --> move["Movement"] --> collide["Collision"] --> life["Lifetime"] --> flush["Apply the creations and removals asked for during the step"] --> camera["Cameras follow their targets"]
+flowchart TB
+  subgraph systems["Systems, in order"]
+    direction LR
+    jump["Jump"] --> gravity["Gravity"] --> move["Movement"] --> collide["Collision"] --> life["Lifetime"]
+  end
+  systems --> flush["Apply the creations and removals asked for during the step"]
+  flush --> camera["Cameras follow their targets"]
 ```
 
 - Game systems can be inserted anywhere in this order.
@@ -66,7 +71,7 @@ flowchart LR
 The world is measured in meters with Y going up. The screen is measured in pixels with Y going down. Only the camera converts between them.
 
 ```mermaid
-flowchart LR
+flowchart TB
   w["World positions in meters"] --> cam["Camera: position, zoom, shake"]
   cam --> frame["Logical frame in pixels, for example 320 x 180"]
   frame --> scale["Scaling to the window: FIT, INTEGER or STRETCH"]
@@ -98,7 +103,7 @@ sequenceDiagram
 Every file has a key such as `sprites/hero.png`. The engine looks for it in an ordered list of places (folder, archive, Android assets), decodes it once and counts who uses it.
 
 ```mermaid
-flowchart LR
+flowchart TB
   ask["Scene asks for sprites/hero.png"] --> find["Search the places in order; first one wins"]
   find --> decode["Decode once"]
   decode --> cache["Cache: users = 1, 2, ..."]

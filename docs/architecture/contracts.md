@@ -117,7 +117,7 @@ Details: [`features/sprite-sheet.md`](../features/sprite-sheet.md), [`features/s
 - Tileset referenced by sprite sheet id and reference-counted by the map; the owning scene closes the map, which releases the sheet.
 - Loading through an abstract loader over `resources`; first real format Tiled JSON (orthogonal, finite, one tile layer, one tileset, array or base64 data with optional zlib or gzip; unsupported features rejected).
 - Rendering: only tiles intersecting a viewport rectangle in logical-frame pixels plus a margin, by emitting commands; read-only.
-- Destruction: ordered auto-tiling rules (8-neighbor bitmask plus care mask, first match wins) update neighbors in the update phase; a synchronous tile-changed listener reports cell, old and new tile.
+- Destruction: ordered auto-tiling rules (8-neighbor bitmask plus care mask, bit 0 north then clockwise, first match wins; file format `lionengine.autotile`) update neighbors in the update phase; a synchronous tile-changed listener reports cell, old and new tile.
 - Collision: per-tile `empty` or `solid` from the tileset; `tilemap` implements the `physics` shape-query contract with a world placement (origin and tile size in meters, default 1 m); no dependency on `ecs`. Later: one-way tiles, then slopes (ADR-0034). Several layers stay a candidate.
 
 ## Camera (ADR-0010, ADR-0029, ADR-0034)

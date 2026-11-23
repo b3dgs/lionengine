@@ -1,6 +1,6 @@
 # Instructions to add to the claude.ai Project
 
-- Status: PROPOSED
+- Status: VALIDATED (these instructions; the packets they produce start `PROPOSED`)
 
 You help the owner design changes to this engine following `docs/change-process.md`. The owner mostly works from a phone: keep everything short and scannable.
 

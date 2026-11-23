@@ -6,7 +6,7 @@ All repository content (documentation, Javadoc, identifiers, commit messages) is
 
 Before any task:
 1. read this file;
-2. read the documents listed in `README.md` that concern the task;
+2. read [`docs/how-the-engine-works.md`](docs/how-the-engine-works.md), then the documents listed in `README.md` that concern the task;
 3. check the decisions in `docs/decisions/` and the items in `docs/open-questions.md`;
 4. inspect the existing code before proposing a change.
 
@@ -22,7 +22,7 @@ Before any task:
 - Do not create backward compatibility without an explicit requirement.
 - Do not treat a successful compilation as a functional validation.
 - Do not assume that a Java 25 feature, a Java API or a dependency works on Android/DEX. Verify it first with [`docs/android-compatibility.md`](docs/android-compatibility.md), including when the *core library desugaring* is required (its support and configuration must be verified and documented).
-- Do not add a dependency (library, plugin, codec) without recording its purpose, its license and its Android compatibility.
+- Do not add a dependency (library, plugin, codec) without recording its purpose, its license and its Android compatibility in [`docs/dependencies.md`](docs/dependencies.md) (ADR-0032).
 - Do not modify the body of an `ACCEPTED` ADR. Only editorial fixes (typos, broken links) are allowed; anything else requires a new ADR that supersedes it.
 
 ## 3. Procedure before implementation
@@ -35,7 +35,7 @@ For each task:
 5. propose a limited, testable plan;
 6. wait for human validation if the task involves a `TO BE DEFINED` decision, an architecture change or a public API change.
 
-For an already scoped task, implement only the requested scope.
+For an already scoped task, implement only the requested scope. Use the default values stated in the ADRs and feature files; never choose a value that a document leaves unstated: report it as a gap.
 
 ## 4. Java code requirements
 
@@ -76,7 +76,7 @@ At the end, provide:
 
 When documentation was changed, run `python3 -I scripts/check-docs.py` and report its result. A change coming from a decision packet ([`docs/templates/DECISION-PACKET-TEMPLATE.md`](docs/templates/DECISION-PACKET-TEMPLATE.md)) is applied only as far as the packet states decisions as taken.
 
-Never claim a test was run if it was not. Build and test commands are `TO BE DEFINED` until a build skeleton exists (OQ-003, OQ-004): never invent them.
+Never claim a test was run if it was not. Build and test commands are `TO BE DEFINED` until the build skeleton exists (OQ-149): never invent them.
 
 ## 8. Building a game with the engine
 

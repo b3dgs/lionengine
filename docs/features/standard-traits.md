@@ -31,6 +31,8 @@ Systems run in this order each step, by slot: `Jump` (1000), `Gravity` (2000), `
 | `Collidable` | axis-aligned box: width, height and center offset from the position (meters, offset default `(0, 0)`), layer, mask, trigger flag | `Collision`: uniform-grid broad phase (cell size per world, default 2 m); a pair collides only if each mask includes the other's layer; reports enter and exit events after the system; triggers never block; tiles block through an axis-separated push-out that sets `grounded` from a contact below |
 | `Lifetime` | duration (s) | `Lifetime`: requests removal on expiry (applied at the flush) |
 
+Registry ids for object definition files: `lionengine:transformable`, `lionengine:movable`, `lionengine:gravity`, `lionengine:jumpable`, `lionengine:collidable`, `lionengine:lifetime`; parameter names are the field names above in lower camel case (`maxSpeed`, `terminalVelocity`, `coyoteTime`, ...) (ADR-0032).
+
 Collision rule without swept detection: per-step displacement must stay under half the smallest collider, helped by the `Movable` speed clamp.
 
 ## Envisaged APIs / contracts

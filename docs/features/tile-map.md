@@ -20,11 +20,12 @@ Several layers (candidate); one-way tiles and slopes (later, ADR-0034); chunked 
 ## Expected behavior
 
 - Grid of `width × height` cells stored as a flat row-major `int[]`; each cell is empty or a tileset cell index. Tile coordinates are `int`, origin at the bottom-left, Y up. `set`, `get`, `clear` check bounds and throw `IndexOutOfBoundsException` outside the map.
-- The tileset is a sprite sheet referenced by its string id; the map holds a reference count on the sheet group and releases it at `close`; the scene that loaded the map closes it.
+- The tileset is a sprite sheet referenced by its string id (for Tiled, the resource key of the `.tsj` file, or of the map for an embedded tileset); the map holds a reference count on the sheet group and releases it at `close`; the scene that loaded the map closes it.
 - Loading through an abstract loader contract over `resources`; missing data raises the resource exception, invalid data the definition exception. The Tiled JSON loader accepts orthogonal, finite maps with one tile layer and one tileset (embedded or `.tsj`), layer data as a JSON array or base64 (uncompressed, zlib or gzip), and flips Tiled's top-down rows. It rejects flip and rotation flags, infinite maps, other orientations and several tile layers; it ignores object, image and group layers.
-- Tile collision property: `empty` or `solid`, from the Tiled tile property `collision` or the engine tileset definition; the map implements the `physics` shape-query contract (which solid tile boxes overlap a box) with a world placement: origin and tile size in meters, default 1 m per tile.
+- Tile collision property: `empty` or `solid`, from the Tiled tile property `collision` (or given in code); the map implements the `physics` shape-query contract (which solid tile boxes overlap a box) with a world placement: origin and tile size in meters, default 1 m per tile.
 - Rendering takes a viewport rectangle in pixels of the logical frame and emits `render-api` commands only for the intersecting tiles plus a margin (default one tile, configurable); it never mutates the map; cost independent of the map size.
-- Destroying a tile clears it and re-evaluates the 8 neighbors with the tileset's auto-tiling rules (8-neighbor bitmask plus care mask, first matching rule wins); every change (set, clear, destroy, neighbor update) updates collision at once and notifies the synchronous tile-changed listener with cell, old and new tile.
+- Auto-tiling rules come from a `lionengine.autotile` file named by the Tiled tileset property `autotile` (or are given in code): an ordered list of `neighbors`, `care` and `tile`, bit 0 north then clockwise, a cell outside the map counting as not empty (ADR-0032).
+- Destroying a tile clears it and re-evaluates its non-empty neighbors among the 8: the first rule with `(mask & care) == (neighbors & care)` gives the new tile, otherwise the tile is unchanged; every change (set, clear, destroy, neighbor update) updates collision at once and notifies the synchronous tile-changed listener with cell, old and new tile.
 
 ## Envisaged APIs / contracts
 

@@ -11,9 +11,11 @@
 
 ---
 
-## Architecture (preliminary)
+## Architecture
 
-> Status: **scoping draft** — no proposal in this repository is considered validated until it has been approved and recorded in `docs/decisions/`.
+> Status: **VALIDATED specification** — every requirement and document is validated and backed by the decisions in `docs/decisions/` (ADR-0001 to ADR-0035). Only four questions remain open: the build skeleton (OQ-149), the Android/DEX verification (OQ-147), multi-monitor and HiDPI (OQ-096, Phase 4) and the network model (OQ-165, Phase 5).
+
+**New here? Start with [`docs/how-the-engine-works.md`](docs/how-the-engine-works.md)**: a short, diagram-based explanation readable by anybody.
 
 ### Objective
 
@@ -24,24 +26,25 @@ Describe the architecture of a 2D Java game engine that is independent of its ru
 - documentation consistent with the code;
 - AI agents to work without implicit architectural decisions.
 
-This branch currently contains a Maven baseline (parent `pom.xml`, no modules yet) and the architecture documentation: there is no engine source code and no build/test CI yet (see `docs/roadmap.md`, Phase 0).
+This branch currently contains a Maven baseline (parent `pom.xml`, no modules yet) and the complete architecture documentation: there is no engine source code and no build/test CI yet. The next step is the build skeleton (`docs/roadmap.md`, Phase 0).
 
 ### Reading order
 
 1. [`AGENTS.md`](AGENTS.md) — mandatory rules for agents.
-2. [`docs/vision.md`](docs/vision.md) — scope and goals.
-3. [`docs/requirements.md`](docs/requirements.md) — functional and non-functional requirements.
-4. [`docs/architecture/overview.md`](docs/architecture/overview.md) — principles and boundaries.
-5. [`docs/architecture/modules.md`](docs/architecture/modules.md) — proposed conceptual breakdown.
-6. [`docs/architecture/contracts.md`](docs/architecture/contracts.md) — cross-cutting contracts.
-7. [`docs/conventions.md`](docs/conventions.md) — code conventions.
-8. [`docs/testing.md`](docs/testing.md) — test strategy.
-9. [`docs/android-compatibility.md`](docs/android-compatibility.md) — Android/DEX verification checklist.
-10. [`docs/documentation.md`](docs/documentation.md) — documentation rules.
-11. [`docs/roadmap.md`](docs/roadmap.md) — proposed delivery order.
-12. [`docs/decisions/`](docs/decisions/README.md) — architecture decisions (ADRs).
-13. [`docs/open-questions.md`](docs/open-questions.md) — every `TO BE DEFINED` item, in one place.
-14. [`docs/change-process.md`](docs/change-process.md) — how to modify a feature or add a module consistently.
+2. [`docs/how-the-engine-works.md`](docs/how-the-engine-works.md) — the engine in a few diagrams.
+3. [`docs/vision.md`](docs/vision.md) — scope and goals.
+4. [`docs/requirements.md`](docs/requirements.md) — functional and non-functional requirements.
+5. [`docs/architecture/overview.md`](docs/architecture/overview.md) — principles and boundaries.
+6. [`docs/architecture/modules.md`](docs/architecture/modules.md) — modules and their dependencies.
+7. [`docs/architecture/contracts.md`](docs/architecture/contracts.md) — cross-cutting contracts.
+8. [`docs/conventions.md`](docs/conventions.md) — code conventions.
+9. [`docs/testing.md`](docs/testing.md) — test strategy.
+10. [`docs/android-compatibility.md`](docs/android-compatibility.md) — Android/DEX verification checklist.
+11. [`docs/documentation.md`](docs/documentation.md) — documentation rules.
+12. [`docs/roadmap.md`](docs/roadmap.md) — delivery order.
+13. [`docs/decisions/`](docs/decisions/README.md) — architecture decisions (ADRs).
+14. [`docs/open-questions.md`](docs/open-questions.md) — every `TO BE DEFINED` item, in one place.
+15. [`docs/change-process.md`](docs/change-process.md) — how to modify a feature or add a module consistently.
 
 Building a game with the engine (humans and agents):
 - [`docs/game-development-guide.md`](docs/game-development-guide.md) — path from nothing to a small game.
@@ -52,6 +55,7 @@ Building a game with the engine (humans and agents):
 Reference material:
 - [`docs/glossary.md`](docs/glossary.md) — terminology.
 - [`docs/traceability.md`](docs/traceability.md) — requirement → decision → test matrix.
+- [`docs/dependencies.md`](docs/dependencies.md) — every dependency with its purpose, license and Android status.
 - [`docs/templates/DECISION-PACKET-TEMPLATE.md`](docs/templates/DECISION-PACKET-TEMPLATE.md) — note to fill in during a discussion, then hand to an agent to propagate the change consistently.
 - [`docs/templates/FEATURE-TEMPLATE.md`](docs/templates/FEATURE-TEMPLATE.md) — template for a feature batch.
 - [`scripts/check-docs.py`](scripts/check-docs.py) — documentation consistency check (`python3 -I scripts/check-docs.py`).
@@ -72,4 +76,4 @@ In case of contradiction, a `VALIDATED` decision prevails over a proposal. If tw
 
 ### Initial state
 
-The choices explicitly confirmed by the project owner are recorded as **VALIDATED** in [`ADR-0001`](docs/decisions/0001-technical-baseline-and-conventions.md): Java 25+, Maven 3+, Android/DEX compatibility, X/Y coordinates in meters, time in seconds, and the principles of the default game loop (details still to be specified). ADR-0002 to ADR-0008, ADR-0010 (camera) and ADR-0011 (ECS dynamic objects, traits and standard traits) (display modes and output filtering, sprites and animations, audio, common resource convention, display scaling and effective result, resource keys, AWT desktop platform) are also `ACCEPTED`. All other architectural elements remain **PROPOSALS**.
+All decisions ADR-0001 to ADR-0035 are `ACCEPTED`: technical baseline and units (ADR-0001, ADR-0012 to ADR-0016), game loop, threads, loading and no reflection (ADR-0017 to ADR-0020), object model and modules (ADR-0021, ADR-0022), game workflow and budgets (ADR-0023, ADR-0024), and every feature contract (ADR-0002 to ADR-0011, ADR-0025 to ADR-0030). ADR-0031 to ADR-0035 fixed the remaining defaults (runtime, data files and dependencies, media, camera and ECS, input) under the owner's delegation of 2026-11-23. Every requirement and document is **VALIDATED**; templates keep `PROPOSED` as the initial status of the items created from them.

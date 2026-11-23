@@ -1,24 +1,26 @@
 # Documentation policy
 
-**Status: PROPOSED**
+**Status: VALIDATED**
 
 ## Expected documentation
 
 - `README.md`: getting started, prerequisites and links.
 - `AGENTS.md`: agent working rules (`CLAUDE.md` simply imports it).
+- `docs/how-the-engine-works.md`: plain-language summary with diagrams, readable by anybody.
 - `docs/vision.md`: purpose and scope.
 - `docs/requirements.md`: identified requirements.
 - `docs/architecture/`: views, modules and contracts.
 - `docs/decisions/`: approved architecture decisions.
 - `docs/open-questions.md`: unresolved points.
 - `docs/traceability.md`: requirement → decision → test matrix.
+- `docs/dependencies.md`: register of every dependency and its license (ADR-0032).
 - `docs/game-development-guide.md` and `docs/api-index.md`: how to use the engine, by task.
 - Javadoc: detailed reference of the public APIs.
 - examples: minimal, real usage demonstrations, compiled and run by the build (REQ-DOC-001). They are the primary reference for newcomers and AI agents; code snippets in prose documents are included from them, never written by hand.
 
 ## Java Javadoc
 
-Every public class, interface, enum, record, constructor and method must have useful Javadoc. Add the relevant tags:
+Every public class, interface, enum, record, constructor and method must have useful Javadoc. The build runs doclint `all` on public and protected members and fails on any warning (REQ-CORE-003, ADR-0032). Add the relevant tags:
 - `@param` for every parameter;
 - `@return` for every returned value;
 - `@throws` for contractual exceptions;
@@ -28,7 +30,7 @@ Every public class, interface, enum, record, constructor and method must have us
 
 Each package must have a `package-info.java` describing its responsibility and its place in the module breakdown. Public APIs of a module that has no Javadoc, or whose tags are incomplete, fail the documentation check (REQ-CORE-003).
 
-Javadoc must state units, coordinates, allowed null values, side effects, resource ownership/closing and thread constraints where they apply.
+Javadoc must state units, coordinates, allowed null values, side effects, resource ownership/closing, thread constraints and default values where they apply.
 
 Do not copy the method name as documentation. Describe the observable behavior.
 

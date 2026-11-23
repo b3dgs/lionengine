@@ -1,63 +1,76 @@
 # Glossary
 
-**Status: PROPOSED — definitions will be refined with the architecture decisions.**
+**Status: VALIDATED — terms used by the requirements, ADRs and code; a new term is added with the decision that introduces it.**
 
-| Term | Provisional meaning |
+| Term | Meaning |
 |---|---|
+| Action | A game-level input (for example "jump") bound to one or more physical inputs; game logic reads actions, not devices (ADR-0035). |
 | ADR | Architecture Decision Record: a documented architecture decision. |
+| Alpha (presentation factor) | `accumulator / step`, in `[0, 1)`: how far the presentation is between the last two simulation steps (ADR-0017). |
+| Animation | Ordered frames with durations in seconds and a loop mode (`once`, `loop`, `ping-pong`); advanced from the simulation update step only (ADR-0003, ADR-0026). |
+| Auto-tiling | Rule-based update of a cell's tile from its neighborhood, applied to neighbors when a tile is destroyed; rules are ordered 8-neighbor bitmasks with a care mask (ADR-0028). |
 | Backend | Concrete implementation of an abstract service (rendering, audio, resource...). |
 | Batch | A small, verifiable unit of work (one contract, its tests, its example), specified with the feature template before implementation. |
-| Capability | A feature a platform may or may not provide (gamepad, shaders, audio...), announced rather than assumed. |
+| Camera | Headless view onto the world: view rectangle in world units, zoom, translation, follow, smoothing and shake (ADR-0010). |
+| Capability | A feature a platform may or may not provide (gamepad, shaders, audio...), found by a typed optional lookup rather than assumed (ADR-0020). |
+| Command buffer | List of deferred structural changes (object and trait add/remove) applied at the flush of a simulation step (ADR-0011). Also, in rendering, the preallocated buffer of render commands (ADR-0026). |
 | Component | In ECS, a plain data holder attached to an entity. In this engine a component is called a trait (ADR-0011). |
-| Command buffer | List of deferred structural changes (object and trait add/remove) applied at the flush of a simulation step (ADR-0011). |
-| Flush | Single point per simulation step where the command buffer is applied and events are delivered (ADR-0011). |
-| Object ID | Opaque ID of an ECS object (entity): index plus generation, so that a recycled index is distinguishable from a stale ID (ADR-0011). |
-| Query | Cached view of the objects having all of a set of trait types and none of an exclusion set (ADR-0011). |
-| Sparse set | Storage giving O(1) add, remove and membership and dense iteration; one per trait type (ADR-0011). |
+| Composition module | Optional module `composition`: ready-made scene content (world, views, tile map, music) and the camera follow adapter (ADR-0031). |
 | Core library desugaring | Android build feature that makes some newer Java library APIs available on older Android versions. |
 | D8 / R8 | Android tools that convert Java bytecode to DEX (D8) and shrink/optimize it (R8). |
+| Definition file | A JSON data file declaring `"format"` and `"version"` (sprite sheet, tileset, object definition), read by the strict reader of `core` (ADR-0028, ADR-0032). |
 | DEX | Dalvik Executable: the bytecode format run by Android. |
-| ECS | Entity-Component-System: model that stores entities as sets of components processed by systems. |
-| Engine change request | A need raised by a game that the engine does not cover; tracked instead of being worked around inside the game. |
-| Scene | Self-contained unit of the running game with a lifecycle, composing a world, cameras, a background and music (ADR-0021). |
-| World | Container owning the objects (entities), traits, queries and systems; hosted by `ecs` (ADR-0021). |
-| View | One camera paired with one viewport (ADR-0021). |
-| Entity | In ECS, an identifier grouping components. |
-| Extrapolation | Presentation-only prediction of a visual state beyond the last known simulation state; never fed back into the simulation. |
-| Frameskipping | Dropping a presentation (render) when the machine cannot keep up, without dropping simulation computations. |
-| Frame boundary | Point between two presentations, outside any simulation update; a display or filter change requested while presentations are skipped applies at the next presentation (ADR-0002). |
-| Display mode | A combination of width and height in pixels, refresh rate in Hz and color depth in bits supported by a display (ADR-0002). |
-| Frontend | Adapter to a runtime environment (AWT, OpenGL, Android...). On desktop, `platform-awt` implements `platform-api` (ADR-0008). |
-| Logical resolution | Resolution in pixels of the frame the game renders, independent of the output display mode. |
-| Scaling policy | How the logical frame is scaled to the output surface: `FIT` (aspect-preserving, default), `INTEGER` (integer factors only, opt-in) or `STRETCH` (ADR-0006). |
+| Display mode | A combination of width and height in pixels, refresh rate in Hz and color depth in bits supported by a display; `0` means unknown or multiple (ADR-0002, ADR-0022). |
+| ECS | Entity-Component-System: model that stores entities as sets of components processed by systems; the single object model of the engine (ADR-0021). |
+| Edge (input) | `pressed` or `released` transition of a digital action, seen by exactly one update step (ADR-0035). |
 | Effective result | Immutable value reporting, per field, the requested and the actually applied value of a display or filter request, with a `degraded` flag and a reason (ADR-0006). |
-| Game loop | Mechanism that paces updates and/or rendering. |
+| Engine change request | A need raised by a game that the engine does not cover; filed as a GitHub issue instead of being worked around inside the game (ADR-0023). |
+| Entity | In ECS, an identifier grouping components. Called "object" in this engine. |
+| Extrapolation | Presentation-only prediction of a visual state beyond the last known simulation state; opt-in, never fed back into the simulation (ADR-0017). |
+| Flush | Single point at the end of each simulation step where the command buffer is applied and structural events are delivered (ADR-0011, ADR-0030). |
+| Frame boundary | Point between two presentations, outside any simulation update; a display or filter change requested while presentations are skipped applies at the next presentation (ADR-0002). |
+| Frameskipping | Dropping a presentation (render) when the machine cannot keep up, without dropping simulation computations. |
+| Frontend | Adapter to a runtime environment (AWT, OpenGL, Android...). On desktop, `platform-awt` implements `platform-api` (ADR-0008). |
+| Game loop | Mechanism that paces updates and rendering: fixed step, accumulator, catch-up, lag cap (ADR-0017). |
 | Headless | Execution without a window or real graphics device. |
-| Interpolation | Presentation-only blend between two known simulation states (distinct from extrapolation). |
-| Output filter | Presentation-time image filter (`NONE`, bilinear, `HQ2X`, CRT...) applied from the logical frame to the output surface; `NONE` samples nearest-neighbor when the frame is scaled. |
-| Provider | A resource source implementation (filesystem, archive, memory, Android assets, stream). |
+| Inbox | Thread-safe bounded FIFO through which platform threads and workers hand events to the runtime thread, delivered at the start of an iteration (ADR-0018, ADR-0031). |
+| Interpolation | Presentation-only blend between the last two simulation states with `alpha`; the default presentation (ADR-0017). |
+| Lag cap | Maximum real time added to the accumulator in one iteration (default 0.25 s); the excess is dropped and reported (ADR-0017, ADR-0031). |
+| Layer and mask (collision) | Two objects collide only if each one's mask includes the other's layer (ADR-0030). |
+| Logical resolution | Resolution in pixels of the frame the game renders, independent of the output display mode. |
+| Long sound | Music or ambient sound, streamed by default, released when no longer needed (ADR-0004, ADR-0027). |
+| Object ID | Opaque ID of an ECS object: a packed `long`, generation in the high 32 bits, index in the low 32 bits, `0` invalid (ADR-0030). |
+| Output filter | Presentation-time image filter (`NONE`, bilinear, `HQ2X`, CRT, custom) applied from the logical frame to the output surface; `NONE` samples nearest-neighbor when the frame is scaled. |
+| Pending object | An object created during a step and not yet flushed: not alive, but commands may be queued with its ID (ADR-0030). |
+| Pivot | Internal location (origin) of a sprite, in pixels from the frame's top-left corner, default the frame center; used for placement, rotation and scaling (ADR-0026). |
+| Playlist | Predefined sequence of long sounds; the next starts when the current terminates (ADR-0004). |
+| Provider | A resource source implementation (filesystem, archive, memory, Android assets, stream), searched in a configured order (ADR-0032). |
+| Query | Cached view of the objects having all of a set of trait types and none of an exclusion set (ADR-0011). |
+| Registry | Explicit instance mapping ids `namespace:name` to factories, used to create data-driven types without reflection (ADR-0020, ADR-0032). |
 | Resource | Data identified logically, independently of its location. |
 | Resource key | Normalized logical path string identifying a resource for every origin (`/` separator, case-sensitive, no leading `/`, no `.` or `..`); used by every module cache (ADR-0007). |
-| Runtime | Orchestration of the engine lifecycle and execution. |
+| Runtime | Orchestration of the engine lifecycle and execution: loop, inbox, scenes. |
+| Runtime thread | The single thread that owns the loop, the world, the caches and by default rendering (ADR-0018). |
+| Scaling policy | How the logical frame is scaled to the output surface: `FIT` (aspect-preserving, default), `INTEGER` (integer factors only, opt-in) or `STRETCH` (ADR-0006). |
+| Scene | Self-contained unit of the running game with a lifecycle (enter, update, render, exit, dispose), composing a world, cameras, a background and music (ADR-0021). |
 | Screen mode | How the application occupies the screen: `WINDOWED`, `FULL_WINDOW` or `FULL_SCREEN`. |
-| Simulation step | Fixed duration, in seconds, by which the simulation advances in one update (default 60 Hz, configurable, ADR-0017). |
+| Short sound | Low-latency sound effect of at most 10 s, cached for heavy reuse; played individually and stopped (ADR-0004, ADR-0033). |
+| Simulation step | Fixed duration, in seconds, by which the simulation advances in one update (default 1/60 s, ADR-0017). |
+| Slot (system) | `int` giving a system's place in the update order, lower first (ADR-0030, ADR-0034). |
+| Sparse set | Storage giving O(1) add, remove and membership and dense iteration; one per trait type (ADR-0011). |
 | Split-screen | Simultaneous presentation of several views/players on one screen. |
-| Sprite | Displayable graphic element, possibly tied to an image region. In ADR-0003: a lightweight instance (transform, color transform, location, alpha) over a shared immutable source (image + region). |
-| Animation | Ordered frames with durations in seconds and a loop mode; advanced from the simulation update step only (ADR-0003). |
-| Short sound | Low-latency sound effect, cached for heavy reuse; can be played individually and stopped (ADR-0004). |
-| Long sound | Music or ambient sound, preloaded for direct use and released when no longer needed (ADR-0004). |
-| Variant set | Group of short-sound files; playing it selects one variant or plays several at once (composed sound); policies in ADR-0027. |
-| Playlist | Predefined sequence of long sounds; the next starts when the current terminates (ADR-0004). |
-| Pivot | Internal location (origin) of a sprite, used for placement, rotation and scaling. |
-| Sprite sheet | Image grouping several sprite regions as a grid (cell size, columns, rows, optional margin/spacing), giving access to cells by index; sheets are grouped by unique id (ADR-0003). |
-| Template color mapping | Static transform mapping source colors (or an indexed channel) to target colors, producing a cached color variant of one sprite (e.g. team colors). |
-| Spritesheet | Same as sprite sheet. |
-| System | In ECS, logic that processes entities having a given set of components. |
-| Camera | Headless view onto the world: view rectangle in world units, zoom, translation, follow, smoothing and shake (ADR-0010). |
+| Sprite | Lightweight instance (transform, color transform, pivot, alpha) over a shared immutable source (image + region) (ADR-0003). |
+| Sprite sheet | Image grouping several sprite regions as a grid (cell size, columns, rows, optional margin/spacing), giving access to cells by index; sheets are grouped by unique id (ADR-0003). Also written "spritesheet". |
+| System | In ECS, logic that processes the objects of a query during the update phase, in slot order. |
+| Template color mapping | Static transform mapping exact key colors to target colors, producing a cached color variant of one sprite (e.g. team colors) (ADR-0026). |
 | Tile | Cell or graphic element of a tileset. |
-| Tilemap | Map organized in cells and layers (single layer first, ADR-0009). |
+| Tilemap | Map organized in cells (single layer first, ADR-0009). |
 | Tileset | Sprite sheet whose cells are the tiles of a tile map (`REQ-SHEET-001`). |
-| Auto-tiling | Rule-based update of a cell's tile from its neighborhood, applied to neighbors when a tile is destroyed; rules are ordered 8-neighbor bitmasks with a care mask (ADR-0028). |
+| Time scale | Multiplier of elapsed time before it enters the accumulator, in `[0.1, 4.0]`, for slow or fast motion; the step never changes (ADR-0017, ADR-0031). |
+| Trait | Composable data attached to an ECS object; its logic lives in systems (ADR-0011). |
+| Variant set | Group of short-sound files; playing it selects one variant or plays several at once (composed sound) (ADR-0027). |
+| View | One camera paired with one viewport (ADR-0021); type provided by `composition`. |
+| View transform | Per-frame immutable value (`scale`, `offsetX`, `offsetY`) converting world meters to logical-frame pixels (ADR-0029, ADR-0034). |
+| Viewport | Rectangle of the logical frame, in pixels, in which a view is presented; it clips and offsets render commands (ADR-0021, ADR-0031). |
 | Viewport culling | Drawing only the tiles that intersect the viewport rectangle (plus a margin). |
-| Trait | Composable capability or behavior attached to an object/entity. |
-| Viewport | Region where a view of the world is presented on a surface; the view rectangle of a camera is its world-side counterpart (ADR-0010). |
+| World | Container owning the objects, traits, queries, systems, flush and seeded random source; hosted by `ecs` (ADR-0021). |

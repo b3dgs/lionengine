@@ -28,6 +28,7 @@ Standard traits and systems (`features/standard-traits.md`); scenes (lifecycle c
 - **Events:** listeners with primitive arguments, synchronous on the runtime thread: created and destroyed `(long id)`, trait added and removed `(long id, int traitTypeId)` during the flush.
 - **Systems:** registered with an `int` slot (lower first, ties by registration order) and an enabled flag applied at the next step; `world.update(stepSeconds)` runs them with the constant step, then flushes. An exception propagates; the world is undefined afterwards and the loop fails (`REQ-LOOP-010`).
 - **Random source:** the world owns a SplitMix64-seeded xoshiro256\*\* generator (REQ-DET-003).
+- **Object definitions:** a `lionengine.object` JSON file maps trait registry ids to parameter objects; creating an object from it queues the create and one add per trait for the next flush (ADR-0032). Each trait type is registered with its id and a factory reading a typed configuration; unknown ids, duplicate registrations and invalid or unread parameters fail with the definition exception.
 
 ## Envisaged APIs / contracts
 

@@ -1,15 +1,15 @@
 # Android/DEX compatibility checklist
 
-**Status: PROPOSED — operational procedure applying the VALIDATED requirements REQ-TECH-006 and REQ-TECH-007 (ADR-0001). Baseline of ADR-0012 (ACCEPTED): minimum API 21, DEX through a separate Gradle module. Java 25 support on that baseline is not verified (OQ-147).**
+**Status: VALIDATED — operational procedure applying REQ-TECH-006 and REQ-TECH-007 (ADR-0001). Baseline of ADR-0012: minimum API 21, DEX through a separate Gradle module. Java 25 support on that baseline is verified at the build skeleton (OQ-147); until then every item below is `not compatible yet` unless stated otherwise.**
 
 Java compilation alone is not proof of DEX compatibility. Verification is continuous, not a final step.
 
 ## Before using a Java language feature, a Java API or a dependency in shared code
 
 1. Identify where it will be used: shared code (must be Android-compatible) or a platform-specific module (isolated, may use platform APIs).
-2. Check that the targeted toolchain supports it: language level accepted by the Android build, D8/R8 handling of the construct, availability of the API at the minimum Android API level (OQ-001).
+2. Check that the targeted toolchain supports it: language level accepted by the Android build, D8/R8 handling of the construct, availability of the API at the minimum Android API level, 21 (ADR-0012).
 3. If the API is only available through *core library desugaring*: confirm it is supported, record the configuration, and cover it with a verification build and tests on the targeted Android versions.
-4. For a third-party dependency: confirm it contains no unsupported APIs or native code, and record its license (OQ-006).
+4. For a third-party dependency: confirm it contains no unsupported APIs or native code, check its license against the allow-list, and record it in [`dependencies.md`](dependencies.md) (ADR-0032).
 5. Record the outcome in the pull request (or feature file): `compatible`, `compatible with desugaring`, `platform module only`, or `rejected`. If unable to verify, the answer is **not compatible yet**, never "probably fine".
 
 ## Pipeline requirements
@@ -39,18 +39,25 @@ General knowledge of D8/ART, to be confirmed by the Android CI job (OQ-147). Unt
 | Preview features | forbidden in shared code |
 | Class file version 69 (Java 25) | unknown; proven path is `--release 21` |
 
-## Pending checks of ADR-0002 to ADR-0004
+## Pending checks of the accepted decisions
 
-Recorded for the accepted decisions; nothing here is verified yet, so every item is **not compatible yet** until it is checked with the procedure above.
+Nothing here is verified yet, so every item is **not compatible yet** until it is checked with the procedure above, except where the status says otherwise.
 
 | Feature | Item to verify | Status |
 |---|---|---|
 | Screen and display modes (ADR-0002) | Mode selection through Android APIs, isolated in `platform-android`; refresh-rate and color-depth selection may be unavailable and is then reported through the effective result | not compatible yet |
-| Output filtering (ADR-0002) | common GLSL/GLSL ES shader subset and own filter implementations (ADR-0025); `HQ2X` license check (OQ-159) | not compatible yet |
+| Output filtering (ADR-0002) | common GLSL/GLSL ES shader subset and own filter implementations (ADR-0025, ADR-0033); headers `#version 100` on Android | not compatible yet |
 | Sprites and sprite sheets (ADR-0003) | Pure-Java PNG decoder in shared code (`java.util.zip.Inflater`, to verify on API 21); optional platform decoders (ADR-0026) | not compatible yet |
-| Audio (ADR-0004) | No `javax.sound` in `audio-api`; PCM WAV baseline, OGG Vorbis decoded by the platform; latency target 100 ms best effort to measure (ADR-0027, OQ-161) | not compatible yet |
+| Audio (ADR-0004) | No `javax.sound` in `audio-api`; PCM WAV baseline, OGG Vorbis decoded by the platform; latency target 100 ms best effort to measure (ADR-0027, ADR-0033, OQ-147) | not compatible yet |
 | Desktop platform (ADR-0008) | `platform-awt` uses `java.desktop`, which does not exist on Android: it must stay out of every Android build | platform module only |
+| Desktop renderer and input (ADR-0022, ADR-0035) | `render-awt`, `input-awt`, `audio-javasound`, `graphics-imageio` use `java.desktop` | platform module only |
+| JSON reader and definition files (ADR-0028, ADR-0032) | Pure Java string and number parsing in `core`; no `java.util.Base64` (API 26) in shared code, base64 decoded by project code | not compatible yet |
+| Tiled loader (ADR-0032) | `java.util.zip` `Inflater` and `GZIPInputStream` on API 21 | not compatible yet |
+| Random generator (ADR-0031) | Own SplitMix64 and xoshiro256\*\*, integer operations only; `SplittableRandom` (API 24) not used | not compatible yet |
+| Loop clock (ADR-0017) | `System.nanoTime` on API 21 | not compatible yet |
+| Allocation tests (ADR-0030) | `com.sun.management.ThreadMXBean` is JVM-only: test code only, never in shared main code | platform module only |
+| Desktop OGG decoder (ADR-0033) | JOrbis in `audio-codec-ogg`, desktop only; Android uses the platform decoder | platform module only |
 
-## What to record once decided
+## What to record at the build skeleton (OQ-147)
 
-Minimum Android API level, Android Gradle Plugin version (if used), D8/R8 version, desugaring library and its version, list of Java language features and APIs verified. Put them in an ADR and reference it here.
+The baseline (minimum API level, Android Gradle Plugin, desugaring library and versions) is in ADR-0012. The Android verification job records here: the class file version and language level accepted for shared modules, the D8/R8 version actually used, the JDK of the job, and the status of each row of the two tables above, changed from `not compatible yet` to its verified status.

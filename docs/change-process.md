@@ -1,6 +1,6 @@
 # Change process: modifying a feature, adding a module
 
-**Status: PROPOSED — recommended workflow; adjust it as the project learns what works.**
+**Status: VALIDATED — the workflow for every change; amend it by a pull request like any other document.**
 
 Two flows share the same skeleton: **discuss with minimal context, write a decision packet, then let an agent with the whole repository propagate the change and run the checks.** Consistency comes from stable identifiers (`REQ-*`, `OQ-*`, `ADR-*`), the traceability matrix and the automated check, not from showing every file to the discussion.
 
@@ -50,7 +50,7 @@ A new module is an architecture change: it always goes through a proposal and an
    - whether it is API + implementations or a single module;
    - the contracts it exposes and the capabilities it may lack on some platforms;
    - Android impact: shared code or platform-specific, desugaring, new dependencies and their licenses;
-   - which open questions it touches (for example module layout `OQ-003`, physics contracts `OQ-043`, `platform-api` vs `render-api` `OQ-050`).
+   - which open questions it touches or creates (`open-questions.md`) and which ADRs it completes or supersedes.
 3. **Write the ADR.** From [`decisions/ADR-TEMPLATE.md`](decisions/ADR-TEMPLATE.md): context, decision, options (including "no new module"), consequences. It stays `PROPOSED` until the owner approves; then it becomes `ACCEPTED`.
 4. **Plan the propagation (agent, plan mode).** Typical files:
    - [`architecture/modules.md`](architecture/modules.md): new table row, dependency-direction diagram, open points;
@@ -59,7 +59,8 @@ A new module is an architecture change: it always goes through a proposal and an
    - `requirements.md` and `traceability.md`: new `REQ-*` for the module;
    - `open-questions.md`: resolved and new questions;
    - `decisions/` (ADR and index), `glossary.md`, `roadmap.md` (phase and ordering), `testing.md` (new matrix row), `api-index.md`;
-   - build: Maven module declaration and the dependency-rule check (REQ-CORE-005, `OQ-005`), once the build skeleton exists.
+   - build: Maven module declaration and the dependency-rule check (REQ-CORE-005, ADR-0012, ADR-0015), once the build skeleton exists;
+   - [`dependencies.md`](dependencies.md) if the module adds a dependency (ADR-0032).
 5. **Create the skeleton first.** Empty module, `package-info.java` describing its responsibility, dependencies as decided, build and dependency-rule check passing, Android/DEX job passing if the module is shared code. No behavior yet.
 6. **Add the contract tests.** Reusable contract suites in `test-support` before or with the first implementation (REQ-TEST-001), so every future implementation is checked the same way.
 7. **Implement by batches** as in Flow A, steps 5–8, starting with the minimal contract and a headless implementation.
@@ -96,7 +97,7 @@ Independent review of an ADR (separate session):
 - [ ] `REQ-*` added/changed/retired, `traceability.md` in sync.
 - [ ] Architecture documents consistent (`modules.md`, `contracts.md`, `overview.md` when relevant).
 - [ ] Code, tests and complete Javadoc; no forbidden coupling.
-- [ ] Android/DEX compatibility verified.
+- [ ] Android/DEX compatibility verified; new dependencies recorded in `dependencies.md`.
 - [ ] Compiled example and `api-index.md` entry.
 - [ ] `scripts/check-docs.py` passes; test results reported honestly.
 - [ ] Pull request reviewed by someone who did not write it.
