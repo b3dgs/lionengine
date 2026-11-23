@@ -13,7 +13,8 @@ Checks:
   4. no duplicate REQ-* or OQ-* definition;
   5. requirements.md and traceability.md list exactly the same requirements,
      with the same priority and status;
-  6. every document under docs/ declares a Status line near its top.
+  6. every document under docs/ declares a Status line near its top;
+  7. every feature page of docs/features/ is linked from docs/engine-features.md.
 """
 import os
 import re
@@ -132,6 +133,19 @@ def main(root):
             head = "\n".join(text.splitlines()[:8])
             if not STATUS.search(head):
                 errors.append(f"no Status line near the top of {rel(path)}")
+
+    # 7: every feature page is summarized in engine-features.md
+    summary = os.path.join(root, "docs", "engine-features.md")
+    features_dir = os.path.join(root, "docs", "features")
+    if summary in texts and os.path.isdir(features_dir):
+        summary_links = {
+            os.path.normpath(os.path.join(os.path.dirname(summary), target))
+            for target in LINK.findall(texts[summary])
+        }
+        for name in sorted(os.listdir(features_dir)):
+            page = os.path.join(features_dir, name)
+            if name.endswith(".md") and name != "README.md" and page not in summary_links:
+                errors.append(f"feature page not linked from docs/engine-features.md: {rel(page)}")
 
     if errors:
         print(f"{len(errors)} problem(s) found:")

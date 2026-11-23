@@ -41,7 +41,7 @@ Title `ADR-NNNN — ...` or "not needed: reason".
 - Example + api-index entry:
 
 ## Files likely to change
-Claude Code confirms in plan mode. Typical: requirements, traceability, open-questions, modules, contracts, ADR + index, glossary, roadmap, testing, api-index, feature file(s).
+Claude Code confirms in plan mode. Typical: requirements, traceability, open-questions, modules, contracts, ADR + index, glossary, roadmap, testing, api-index, engine-features, feature file(s).
 
 ## Instruction for Claude Code
 Read `AGENTS.md` and this issue. Apply the process in `docs/change-process.md`. Do not turn any proposal into a decision that "Taken" does not state. Run `python3 -I scripts/check-docs.py`. Report files changed, checks run, points left `TO BE DEFINED`.

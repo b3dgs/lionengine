@@ -32,7 +32,8 @@ If unsure, treat the change as requiring an ADR: it is cheaper than discovering 
    - `open-questions.md` (resolved or new items; never delete a row);
    - `architecture/contracts.md` (and `modules.md` if responsibilities or dependencies move);
    - `decisions/` (new ADR and its index) if the change alters a contract, lifecycle or boundary;
-   - `glossary.md`, `roadmap.md`, `testing.md` if concepts, phases or test strategy change.
+   - `glossary.md`, `roadmap.md`, `testing.md` if concepts, phases or test strategy change;
+   - `engine-features.md` if what a game can do changes.
 5. **Specify the batch.** Create a feature file from [`templates/FEATURE-TEMPLATE.md`](templates/FEATURE-TEMPLATE.md): scope, out of scope, behavior, contract, lifecycle, units, tests, acceptance criteria.
 6. **Implement in small batches.** Code, tests (unit, contract, integration as needed), complete Javadoc (units, ownership, thread, nullability), Android/DEX check ([`android-compatibility.md`](android-compatibility.md)).
 7. **Make it usable.** Add or update the compiled example and the [`api-index.md`](api-index.md) entry (REQ-DOC-001, REQ-DOC-002); update the game development guide if the usage path changes.
@@ -99,5 +100,6 @@ Independent review of an ADR (separate session):
 - [ ] Code, tests and complete Javadoc; no forbidden coupling.
 - [ ] Android/DEX compatibility verified; new dependencies recorded in `dependencies.md`.
 - [ ] Compiled example and `api-index.md` entry.
+- [ ] [`engine-features.md`](engine-features.md) updated if a capability or an area's state changed.
 - [ ] `scripts/check-docs.py` passes; test results reported honestly.
 - [ ] Pull request reviewed by someone who did not write it.

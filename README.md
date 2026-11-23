@@ -32,19 +32,20 @@ This branch currently contains a Maven baseline (parent `pom.xml`, no modules ye
 
 1. [`AGENTS.md`](AGENTS.md) — mandatory rules for agents.
 2. [`docs/how-the-engine-works.md`](docs/how-the-engine-works.md) — the engine in a few diagrams.
-3. [`docs/vision.md`](docs/vision.md) — scope and goals.
-4. [`docs/requirements.md`](docs/requirements.md) — functional and non-functional requirements.
-5. [`docs/architecture/overview.md`](docs/architecture/overview.md) — principles and boundaries.
-6. [`docs/architecture/modules.md`](docs/architecture/modules.md) — modules and their dependencies.
-7. [`docs/architecture/contracts.md`](docs/architecture/contracts.md) — cross-cutting contracts.
-8. [`docs/conventions.md`](docs/conventions.md) — code conventions.
-9. [`docs/testing.md`](docs/testing.md) — test strategy.
-10. [`docs/android-compatibility.md`](docs/android-compatibility.md) — Android/DEX verification checklist.
-11. [`docs/documentation.md`](docs/documentation.md) — documentation rules.
-12. [`docs/roadmap.md`](docs/roadmap.md) — delivery order.
-13. [`docs/decisions/`](docs/decisions/README.md) — architecture decisions (ADRs).
-14. [`docs/open-questions.md`](docs/open-questions.md) — every `TO BE DEFINED` item, in one place.
-15. [`docs/change-process.md`](docs/change-process.md) — how to modify a feature or add a module consistently.
+3. [`docs/engine-features.md`](docs/engine-features.md) — what a game can do with the engine, area by area, and the state of each area.
+4. [`docs/vision.md`](docs/vision.md) — scope and goals.
+5. [`docs/requirements.md`](docs/requirements.md) — functional and non-functional requirements.
+6. [`docs/architecture/overview.md`](docs/architecture/overview.md) — principles and boundaries.
+7. [`docs/architecture/modules.md`](docs/architecture/modules.md) — modules and their dependencies.
+8. [`docs/architecture/contracts.md`](docs/architecture/contracts.md) — cross-cutting contracts.
+9. [`docs/conventions.md`](docs/conventions.md) — code conventions.
+10. [`docs/testing.md`](docs/testing.md) — test strategy.
+11. [`docs/android-compatibility.md`](docs/android-compatibility.md) — Android/DEX verification checklist.
+12. [`docs/documentation.md`](docs/documentation.md) — documentation rules.
+13. [`docs/roadmap.md`](docs/roadmap.md) — delivery order.
+14. [`docs/decisions/`](docs/decisions/README.md) — architecture decisions (ADRs).
+15. [`docs/open-questions.md`](docs/open-questions.md) — every `TO BE DEFINED` item, in one place.
+16. [`docs/change-process.md`](docs/change-process.md) — how to modify a feature or add a module consistently.
 
 Building a game with the engine (humans and agents):
 - [`docs/features/`](docs/features/README.md) — one page per implementation batch, in order: the entry point for implementers.

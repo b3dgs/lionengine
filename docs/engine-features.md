@@ -1,0 +1,154 @@
+# Engine features
+
+**Status: VALIDATED — what the engine lets a game do, area by area. Kept up to date by every batch that changes a capability (see "Keeping this page current" below).**
+
+One line per capability, no implementation detail. Each area links to its feature page, which holds the rules and values. The *State* column says where each area stands:
+
+- **Specified**: decided and documented; no code yet.
+- **In progress**: some batches merged; the page lists what works.
+- **Available**: implemented, tested, with an example.
+- **Planned**: in the roadmap, not yet specified in detail.
+
+Today no engine code exists: every area below is at most *Specified*.
+
+| Area | State | Phase |
+|---|---|---|
+| [Game loop and timing](#game-loop-and-timing) | Specified | 1–2 |
+| [Scenes and navigation](#scenes-and-navigation) | Specified | 1–2 |
+| [Resources and data files](#resources-and-data-files) | Specified | 1 |
+| [Window, display and rendering](#window-display-and-rendering) | Specified | 1–2 |
+| [Images, sprites and animations](#images-sprites-and-animations) | Specified | 2 |
+| [Audio](#audio) | Specified | 2 |
+| [Objects and behaviors](#objects-and-behaviors) | Specified | 3 |
+| [Tile maps](#tile-maps) | Specified | 3 |
+| [Camera](#camera) | Specified | 3 |
+| [Input](#input) | Specified | 3–4 |
+| [Platforms](#platforms) | Specified | 1–4 |
+| [Multiplayer and network](#multiplayer-and-network) | Planned | 5 |
+
+## Game loop and timing
+
+[`features/game-loop.md`](features/game-loop.md)
+
+- The game runs at a fixed simulation rate (60 updates per second by default, configurable), identical on fast and slow machines.
+- Motion is drawn smoothly between updates, whatever the display rate.
+- Pause and resume without jumps; slow motion and fast motion from 0.1× to 4×, for example for bullet time.
+- Under heavy load the game slows down briefly instead of freezing; the lost time is reported.
+- Menus and other presentation-only effects keep animating during pause and slow motion.
+- Long loads can run in the background, with a progress value for a loading screen.
+- Every behavior can be tested without a window, with a clock that the test controls.
+
+## Scenes and navigation
+
+[`features/scenes.md`](features/scenes.md)
+
+- A game is split into scenes: introduction, menu, level, pause, credits.
+- The links between scenes are declared in one place: "on *finished*, go to the menu", "on *start*, if a slot is selected, go to the level".
+- A pause menu or dialog can be shown over a scene, which stays visible but frozen.
+- Mistakes in the links (unknown scene, missing start) are reported at startup.
+- Data shared between scenes (save slot, level, score) lives in one game-owned object.
+
+## Resources and data files
+
+[`features/resources.md`](features/resources.md), [`features/core-foundation.md`](features/core-foundation.md)
+
+- Files are named by a logical key (`sprites/hero.png`) wherever they are: folder, ZIP archive, memory, Android assets, or a stream given by the game.
+- Several sources can be stacked; the first one that has a file wins, so a mod folder can override the base data.
+- Loaded data is shared and freed when nobody uses it any more.
+- Game data (sprite sheets, animations, maps, object definitions, input bindings) is written in JSON; a mistake is reported with the file, line and field.
+- Object types used by data files are registered by name (`game:enemy`), so data can create them without code changes.
+- A seeded random generator gives the same results on every platform.
+
+## Window, display and rendering
+
+[`features/platform-and-rendering.md`](features/platform-and-rendering.md), [`features/display-modes.md`](features/display-modes.md), [`features/output-filtering.md`](features/output-filtering.md)
+
+- The game draws at a fixed logical resolution (for example 320 × 180) and the engine scales it to the window: keep the aspect ratio, whole multiples only (crisp pixel art), or stretch.
+- Windowed, borderless full-window and full-screen modes, with resolution and refresh-rate selection where the platform allows it; the game reads what was actually applied.
+- Output filters on the final image: none (sharp pixels), smooth, `HQ2X`-style upscaling, CRT effect; custom filters can be added.
+- Drawing is done in layers; several views can share the screen (split screen, minimap).
+- The window reports resize, focus, background and close; closing can be confirmed by the game.
+
+## Images, sprites and animations
+
+[`features/sprite-sheet.md`](features/sprite-sheet.md), [`features/sprite.md`](features/sprite.md), [`features/animated-sprite.md`](features/animated-sprite.md)
+
+- PNG images are loaded on every platform with the same result; sprite sheets cut an image into a grid of frames.
+- Many sprites can share one image; each can be moved, scaled, rotated around its pivot, tinted and faded.
+- Color variants of one sprite (team colors) from a color mapping, without extra image files.
+- Animations from frames and durations: play once, loop or ping-pong; pause, resume, stop.
+- Animations advance with the simulation, so they stay in sync with gameplay.
+
+## Audio
+
+[`features/audio-short-and-long-sounds.md`](features/audio-short-and-long-sounds.md)
+
+- Sound effects that start quickly and can be played many times at once (16 voices by default, the least important ones cut first).
+- Random variants of an effect without immediate repetition, or several layered together (an explosion).
+- Music and ambient sounds streamed with little memory; playlists that chain tracks and can loop.
+- Volume per sound, and per group (music, effects, interface) with fades.
+- WAV everywhere, OGG Vorbis on desktop and Android.
+
+## Objects and behaviors
+
+[`features/ecs.md`](features/ecs.md), [`features/standard-traits.md`](features/standard-traits.md)
+
+- Objects are created and destroyed at any time, and receive or lose behaviors ("traits") while the game runs.
+- Ready-made behaviors: position and size, movement with a speed limit, gravity, jump (with the forgiving "coyote time" and jump buffering), collision with layers and triggers, limited lifetime.
+- Objects stand on and bump into solid tiles of the map.
+- Games add their own behaviors and logic in the same way as the ready-made ones, in a fixed, documented order.
+- Designed for at least 1,000 moving objects per frame, including on mid-range Android phones.
+- Objects can be described in JSON and created from the description.
+
+## Tile maps
+
+[`features/tile-map.md`](features/tile-map.md)
+
+- Maps made with the Tiled editor (JSON export) are loaded directly; maps can also be built in code.
+- Tiles can be placed, changed and destroyed during the game; neighbors update their look automatically (auto-tiling).
+- Solid tiles block objects; only the visible part of a map is drawn, so map size does not slow rendering.
+
+## Camera
+
+[`features/camera.md`](features/camera.md)
+
+- Follow an object with optional smoothing, a dead zone and an offset; stay inside the level bounds.
+- Zoom in and out, instantly or with an eased animation, around the center or a chosen point.
+- Screen shake, identical on every platform for the same seed.
+- Convert between screen and world positions (for mouse or touch picking).
+
+## Input
+
+[`features/input.md`](features/input.md)
+
+- Games react to actions ("jump", "move") rather than keys; bindings can be changed and loaded from a file.
+- Keyboard, mouse and touch on desktop and Android; gamepads on Android first.
+- A quick tap is never missed and never counted twice.
+- Several local players, each with their own devices and bindings.
+- Input can be recorded and replayed.
+
+## Platforms
+
+[`features/platform-and-rendering.md`](features/platform-and-rendering.md), [`features/build-skeleton.md`](features/build-skeleton.md)
+
+- Desktop (Windows, macOS, Linux) through Java AWT: the first reference platform.
+- Android from API level 21, with the same game code (Phase 4).
+- OpenGL rendering on desktop and Android, needed for the CRT filter (Phase 4).
+- A headless mode for automated tests and servers.
+
+## Multiplayer and network
+
+- Local multiplayer and split screen are covered by views and input players above.
+- Network play is planned for Phase 5; the simulation is kept deterministic so that it stays possible (OQ-165).
+
+## Not provided
+
+A game editor (maps come from Tiled), a scripting language, a full physics engine (rigid bodies, joints), a network protocol or server, 3D.
+
+## Keeping this page current
+
+This page is part of the definition of done of every batch ([`../AGENTS.md`](../AGENTS.md) section 7, [`change-process.md`](change-process.md), [`templates/FEATURE-TEMPLATE.md`](templates/FEATURE-TEMPLATE.md)):
+
+- a batch that adds, removes or changes what a game can do updates the matching bullet in the same pull request, in plain words, without implementation detail;
+- the *State* column changes from *Specified* to *In progress* with the first merged batch of an area, and to *Available* when every batch of its feature page is merged with its example;
+- a new feature page is added to the table and gets its own section; `scripts/check-docs.py` fails if a feature page is not linked from this page.
