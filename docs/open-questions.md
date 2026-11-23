@@ -24,8 +24,9 @@ Summary of the answers recorded so far, by decision. Details are in the rows bel
 | [ADR-0020](decisions/0020-no-reflection-factory-registry-and-capability-lookup.md) no reflection, factory registry, capabilities | OQ-034, OQ-152 | OQ-154 | #877 |
 | [ADR-0021](decisions/0021-scene-world-viewport-and-object-model.md) scene, world, viewport, single ECS object model, physics contracts | OQ-040, OQ-041, OQ-042, OQ-043, OQ-044, OQ-146 | OQ-155 | #878 |
 | [ADR-0022](decisions/0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md) optional multiplayer, audio backends, reference frontend, surface hand-off, unknown display values | OQ-052, OQ-053, OQ-055, OQ-123, OQ-124 | OQ-156 | #879 |
+| [ADR-0023](decisions/0023-game-repository-change-requests-assets-and-api-index-check.md) game repository, engine change requests, asset provenance, API index check | OQ-080, OQ-081, OQ-082, OQ-083 | OQ-157 | #880 |
 
-Sections "Platform and build", "Coordinates and units", "Game loop", "Runtime" and "World and objects" and "Modules and APIs" have no unresolved original question left. Next section to treat: to be chosen by the owner.
+Sections "Platform and build", "Coordinates and units", "Game loop", "Runtime" and "World and objects" and "Modules and APIs" and "Game development and workflow" have no unresolved original question left. Next section to treat: to be chosen by the owner.
 
 ## Platform and build
 
@@ -79,6 +80,7 @@ Sections "Platform and build", "Coordinates and units", "Game loop", "Runtime" a
 | OQ-154 | Follow-ups of ADR-0020: id naming rules (namespacing, case), typed configuration API, definition file format (XML or other, with OQ-126), module hosting the registry (with OQ-146), optional build-time generated registration and its dependency review (OQ-148). | Before the first data-driven loader batch |
 | OQ-155 | Follow-ups of ADR-0021: scene manager details (transitions, scene stack for pause or overlay menus, scene identity, loading screen with asynchronous loading of ADR-0019), the optional composition module (world + camera + background + music) and its name, package layout of `physics`, how several views are bound at render time (OQ-131, OQ-108). | Before the scene batch |
 | OQ-156 | Follow-ups of ADR-0022: final names of the audio backend modules and decoder modules, shared `awt-common` module if a second AWT consumer of the surface appears, exact form of the "is known" check for display values, naming of the AWT surface capability. | Before the first audio backend or render-awt batch |
+| OQ-157 | Follow-ups of ADR-0023: format and location of the asset provenance metadata file, CI check of its presence, hosting of published artifacts (OQ-149), implementation of the API index check. | Before the first game asset or the build skeleton |
 
 ## World and objects
 
@@ -109,10 +111,10 @@ Sections "Platform and build", "Coordinates and units", "Game loop", "Runtime" a
 
 | ID | Question | Needed by |
 |---|---|---|
-| OQ-080 | Layout of the game repository and how it consumes the engine: separate repository, Maven dependency and version pinning (snapshot vs release), sources/Javadoc artifacts available to agents (REQ-DOC-004). | Phase 1 |
-| OQ-081 | Process for engine change requests raised by the game (who triages, how they become batches or ADRs). | Phase 3 |
-| OQ-082 | Asset production pipeline (including locally AI-generated sprites): formats, naming, provenance and licensing. | Phase 2 |
-| OQ-083 | How the API index is kept in sync with the code: manual review, generation, or a CI check (REQ-DOC-002). | Phase 1 |
+| OQ-080 | **RESOLVED** by [ADR-0023](decisions/0023-game-repository-change-requests-assets-and-api-index-check.md): separate game repository on pinned Maven artifacts (sources and Javadoc JARs); snapshot only during development. Original question: Layout of the game repository and how it consumes the engine: separate repository, Maven dependency and version pinning (snapshot vs release), sources/Javadoc artifacts available to agents (REQ-DOC-004). | Phase 1 |
+| OQ-081 | **RESOLVED** by [ADR-0023](decisions/0023-game-repository-change-requests-assets-and-api-index-check.md): GitHub issue with the engine change request template; owner triages into batch or ADR. Original question: Process for engine change requests raised by the game (who triages, how they become batches or ADRs). | Phase 3 |
+| OQ-082 | **RESOLVED** by [ADR-0023](decisions/0023-game-repository-change-requests-assets-and-api-index-check.md): provenance metadata file per asset or folder; assets in the game repository; format and CI check: OQ-157. Original question: Asset production pipeline (including locally AI-generated sprites): formats, naming, provenance and licensing. | Phase 2 |
+| OQ-083 | **RESOLVED** by [ADR-0023](decisions/0023-game-repository-change-requests-assets-and-api-index-check.md): hand-written index plus a CI check once the build skeleton exists. Original question: How the API index is kept in sync with the code: manual review, generation, or a CI check (REQ-DOC-002). | Phase 1 |
 
 ## Display and output filtering
 

@@ -9,7 +9,7 @@ Purpose: let a developer or an AI agent find, by **task**, which public types to
 - Every public contract (REQ-CORE-004) appears here with its module, entry-point types and the example that uses it.
 - Only list types that exist. An agent must never use a type that is not in this index, the code or the Javadoc.
 - Keep one line per task. Details belong in the Javadoc.
-- Keeping this index in sync with the code (manual review vs generated, CI check): **TO BE DEFINED** (OQ-083).
+- The index stays hand-written, by task; a CI check verifies its types and examples once the build skeleton exists (ADR-0023, `REQ-DOC-005`).
 
 ## Index by task
 

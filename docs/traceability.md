@@ -20,9 +20,11 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-CORE-005 | Must | PROPOSED | — | OQ-005 | — | no test yet |
 | REQ-TEST-001 | Must | PROPOSED | ADR-0022 | — | — | no test yet |
 | REQ-DOC-001 | Must | PROPOSED | — | — | — | no test yet |
-| REQ-DOC-002 | Should | PROPOSED | — | OQ-083 | — | no test yet |
+| REQ-DOC-002 | Should | PROPOSED | ADR-0023 | — | — | no test yet |
 | REQ-DOC-003 | Should | PROPOSED | — | — | — | no test yet |
-| REQ-DOC-004 | Should | PROPOSED | — | OQ-080 | — | no test yet |
+| REQ-DOC-004 | Should | PROPOSED | ADR-0023 | — | — | no test yet |
+| REQ-DOC-005 | Should | PROPOSED | ADR-0023 | OQ-157 | — | no test yet |
+| REQ-DOC-006 | Should | PROPOSED | ADR-0023 | OQ-157 | — | no test yet |
 | REQ-FE-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-FE-002 | Should | PROPOSED | — | — | — | no test yet |
 | REQ-FE-003 | Must | PROPOSED | ADR-0002, ADR-0008 | — | — | no test yet |

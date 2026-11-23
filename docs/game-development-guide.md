@@ -12,7 +12,7 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
 
 ## Outline
 
-1. **Prerequisites** — Java/Maven versions (ADR-0001), how to depend on the engine (OQ-080).
+1. **Prerequisites** — Java/Maven versions (ADR-0001), how to depend on the engine: pinned Maven version with sources and Javadoc JARs (ADR-0023).
 2. **Hello engine** — the smallest headless application: start, update, stop. *Example: to be created in Phase 1.*
 3. **Concepts, in order of use** — runtime and game loop, resources, graphics (sprite, animation), world and objects (ECS, ADR-0021), tilemap, input, audio.
 4. **Recipes** — one short, tested recipe per common task:

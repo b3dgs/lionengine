@@ -70,9 +70,9 @@
 
 ## Phase 6 — first game
 
-- create the game repository from [`templates/GAME-AGENTS-TEMPLATE.md`](templates/GAME-AGENTS-TEMPLATE.md) (OQ-080);
+- create the game repository from [`templates/GAME-AGENTS-TEMPLATE.md`](templates/GAME-AGENTS-TEMPLATE.md) (ADR-0023);
 - build the game in small batches with local and cloud agents ([`agent-workflow.md`](agent-workflow.md));
-- every missing engine capability becomes an engine change request (OQ-081), not a workaround buried in the game.
+- every missing engine capability becomes an engine change request (GitHub issue template, ADR-0023), not a workaround buried in the game.
 
 **Expected output:** a playable game built only on the public engine API, plus the list of API gaps and documentation fixes it revealed.
 

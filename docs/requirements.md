@@ -42,7 +42,9 @@ Goal: a developer or an AI agent that has never seen the engine can write a game
 | REQ-DOC-001 | Every public feature ships with a minimal runnable example in the `examples` module; examples are compiled and executed (headless where possible) by the build, so they cannot drift from the API. | Must | PROPOSED | CI job that compiles and runs all examples; failing example fails the build. |
 | REQ-DOC-002 | The API index lists, by task, the public entry-point types and the example to copy, and stays consistent with the code. | Should | PROPOSED | Consistency check between [`api-index.md`](api-index.md) and the public API (method: OQ-083). |
 | REQ-DOC-003 | Code snippets in the game development guide are included from compiled examples, never written by hand. | Should | PROPOSED | Check that the guide contains no snippet absent from `examples`. |
-| REQ-DOC-004 | Engine sources and Javadoc are published as artifacts so that a game repository (and its agents) can read them at the pinned engine version. | Should | PROPOSED | Build produces sources and Javadoc artifacts; game repository can resolve them (OQ-080). |
+| REQ-DOC-004 | Engine sources and Javadoc are published as artifacts so that a game repository (and its agents) can read them at the pinned engine version. | Should | PROPOSED | Build produces sources and Javadoc artifacts; game repository can resolve them (OQ-080, ADR-0023). |
+| REQ-DOC-005 | `api-index.md` stays hand-written by task; a CI check verifies that every type it names exists in the public API and that every example it names is compiled (ADR-0023, decision 4). | Should | PROPOSED | CI check once the build skeleton exists (OQ-157). |
+| REQ-DOC-006 | Every asset or asset folder carries a provenance metadata file (source, tool and model if generated, license, author); a generated asset is accepted only with a recorded tool and license (ADR-0023, decision 3). | Should | PROPOSED | Review, then CI check of presence (OQ-157). |
 
 ## Frontends and rendering
 
