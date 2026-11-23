@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 1 (platform object, lifecycle, headless frontend, minimal `platform-awt` and `render-awt`), Phase 2 (command buffer complete, viewport)
 - Affected modules: `platform-api`, `render-api`, `platform-awt`, `render-awt`, `test-support`, `examples`
 - Requirements: `REQ-FE-001` to `REQ-FE-003`, `REQ-PLATFORM-001`, `REQ-PLATFORM-002`, `REQ-RT-001`, `REQ-RT-008`, `REQ-SPRITE-010`, `REQ-TEST-001`, `REQ-CORE-006`
-- Applicable ADRs: [`ADR-0008`](../decisions/0008-awt-desktop-implementer-of-platform-api.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0020`](../decisions/0020-no-reflection-factory-registry-and-capability-lookup.md), [`ADR-0022`](../decisions/0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0037`](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md)
+- Applicable ADRs: [`ADR-0008`](../decisions/0008-awt-desktop-implementer-of-platform-api.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0020`](../decisions/0020-no-reflection-factory-registry-and-capability-lookup.md), [`ADR-0022`](../decisions/0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0037`](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md), [`ADR-0040`](../decisions/0040-thread-hand-off-contracts-in-core-and-loop-wiring.md)
 - Open questions involved: `OQ-096` (HiDPI: `platform-awt` may report scaled sizes)
 
 ## Objective
@@ -21,17 +21,17 @@ Display modes and filters (see [`display-modes.md`](display-modes.md), [`output-
 
 ### Platform object (`Platform`, `platform-api`)
 
-- Created by the application with its configuration (logical frame width and height in pixels, initial screen mode, scaling policy, logger sink), then started with the game loop to run. The platform runs the loop on its required thread and returns or blocks as documented per platform.
+- Created by the application with its configuration (logical frame width and height in pixels, initial screen mode, scaling policy, logger sink), then started with the game loop to run as a `core` `LoopDriver` (ADR-0040). The platform runs the loop on its required thread and returns or blocks as documented per platform.
 - `getCapability(Class<T>)` returns the capability or `null`; `hasCapability(Class<?>)`. Modules (renderer, input, audio) are attached explicitly by the application, never discovered.
-- Lifecycle events posted to the inbox as `PlatformEvent`s: surface resized (new size in pixels), focus gained or lost, background, foreground, close requested, context lost, context restored. Background pauses the loop, foreground resumes it. A close request stops the loop unless a `CloseListener` vetoes it.
-- The platform provides the loading worker pool (2 workers on desktop, 1 on Android by default) and the logging sink.
+- Lifecycle events posted to the `core` `Inbox` handed over by the application, as `PlatformEvent`s (each an `InboxEvent`): surface resized (new size in pixels), focus gained or lost, background, foreground, close requested, context lost, context restored. Background pauses the loop, foreground resumes it, through `LoopControl`. A close request stops the loop unless a `CloseListener` vetoes it.
+- The platform provides the loading worker pool as an implementation of the `core` `WorkerPool` (2 workers on desktop, 1 on Android by default) and the logging sink.
 
 ### Render commands (`render-api`)
 
 - `CommandBuffer`: preallocated parallel primitive arrays; one entry per draw: texture handle (`int`), source rectangle (`int` x, y, width, height), position (`float` x, y in logical-frame pixels, the pivot's location), scale x and y (`float`), rotation (`float` degrees, counter-clockwise on screen), pivot (`float` x, y from the source top-left), tint (`int` ARGB, `0xFFFFFFFF` = none), alpha (`float` `[0, 1]`), layer (`int`). Presented by ascending layer, then submission order. Capacity grows by doubling, between frames only; no allocation in steady state.
 - `Viewport`: a rectangle of the logical frame in pixels; setting it clips and offsets the following commands until the next viewport; the default viewport is the whole frame.
 - Textures are created from `graphics` pixel buffers (`PixelBuffer`, straight ARGB) through the backend and identified by `TextureHandle` (`int`); upload at first use or on an explicit prepare, on the render thread.
-- Each frame: the scene renders (writes commands), then the backend presents them on the logical frame, then scales it to the surface (ADR-0006).
+- Each frame: the scene renders (writes commands), then the backend presents them on the logical frame, then scales it to the surface (ADR-0006). Both calls are made by the loop's render callback as wired by the application or `composition` (ADR-0040).
 
 ### Desktop AWT (`platform-awt`, `render-awt`)
 

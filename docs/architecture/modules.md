@@ -1,12 +1,12 @@
 # Conceptual module breakdown
 
-**Status: VALIDATED — module list, responsibilities and allowed dependencies (ADR-0002 to ADR-0039). Each module becomes one artifact `lionengine-<module>` (ADR-0012); its declaration and package tree are done at the build skeleton (OQ-149).**
+**Status: VALIDATED — module list, responsibilities and allowed dependencies (ADR-0002 to ADR-0040). Each module becomes one artifact `lionengine-<module>` (ADR-0012); its declaration and package tree are done at the build skeleton (OQ-149).**
 
 | Domain | Responsibility | Allowed dependencies |
 |---|---|---|
-| `core` | Common types, lifecycle, errors, events and listener rules, logging facade, seeded random generator, strict JSON reader, definition exception, registry and typed configuration (ADR-0020, ADR-0028, ADR-0031, ADR-0032) | JDK only; no frontend dependency |
-| `runtime` | Game loop, clock, inbox, asynchronous-handle plumbing, scene lifecycle contract, scene manager and scene flow (ADR-0017, ADR-0018, ADR-0021, ADR-0031, ADR-0036) | `core` |
-| `platform-api` | Window and surface contracts, platform object and capability lookup, lifecycle events, worker pool, screen modes and display-mode selection (ADR-0002, ADR-0020, ADR-0031) | `core` |
+| `core` | Common types, lifecycle, errors, events and listener rules, thread hand-off contracts (inbox and inbox events, asynchronous handles and load groups, worker pool, loop control and driver), logging facade, seeded random generator, strict JSON reader, definition exception, registry and typed configuration (ADR-0020, ADR-0028, ADR-0031, ADR-0032, ADR-0040) | JDK only; no frontend dependency |
+| `runtime` | Game loop (implements the `core` loop driver and owns its inbox), clock, scene lifecycle contract, scene manager and scene flow (ADR-0017, ADR-0018, ADR-0021, ADR-0031, ADR-0036, ADR-0040) | `core` |
+| `platform-api` | Window and surface contracts, platform object and capability lookup, lifecycle events, running the loop through the `core` loop driver, worker pool provision, screen modes and display-mode selection (ADR-0002, ADR-0020, ADR-0031, ADR-0040) | `core` |
 | `render-api` | Rendering contracts: texture handles, command buffer, viewport, color-transform capability, scaling policy type, output filtering and custom filter contract (ADR-0002, ADR-0006, ADR-0026, ADR-0033) | `core` |
 | `platform-awt` | Desktop implementation of `platform-api` with the JDK AWT: window and surface lifecycle, screen modes, display modes, effective-result report, `AwtSurface` capability; no rendering, input, audio or resources (ADR-0008, ADR-0033) | `platform-api`, `core`; JDK `java.desktop` only; excluded from Android builds |
 | `render-awt` | AWT renderer; CPU filters `NONE`, bilinear, `Scale2x`; reaches the surface through `AwtSurface` (ADR-0022, ADR-0033) | `render-api`, `platform-api`, `platform-awt` |
@@ -53,6 +53,8 @@ flowchart BT
   graphics --> rapi
   tilemap[tilemap] --> graphics
   tilemap --> physics
+  tilemap --> res
+  tilemap --> rapi
   traits[traits] --> ecs
   traits --> physics
   composition["composition (optional)"] --> runtime
@@ -60,13 +62,18 @@ flowchart BT
   composition --> camera
   composition --> tilemap
   composition --> aapi
+  composition --> graphics
+  composition --> rapi
   network["network (optional)"] --> core
   multiplayer["multiplayer (optional)"] --> network
   multiplayer --> traits
+  multiplayer --> ecs
   multiplayer --> iapi
 ```
 
 Implementation modules point to the API they implement: `platform-awt` and `platform-android` → `platform-api`; `render-awt` and `render-opengl` → `render-api` (and `render-awt` → `platform-awt`); `audio-*` → `audio-api`; `resources-*` → `resources`; `input-*` → `input-api`; `graphics-*` → `graphics`. `network` → `core`; `multiplayer` → `network`, `ecs`, `traits`, `input-api`. `examples` may use every public API; `test-support` is test scope only.
+
+The diagram shows the direct dependencies between the domain modules of the table, except edges to `core` that another arrow already implies. Producers on other threads (platform, input, audio, loaders, workers) reach the runtime thread through the `core` inbox and loop contracts, never through `runtime` (ADR-0040).
 
 Arrows always point from the dependent module to its dependency. A cycle, or an arrow from `core` or an `*-api` module to an implementation module, is a violation (REQ-CORE-005). No module depends on `composition`, `multiplayer` or `examples`, and only `multiplayer` depends on `network`.
 

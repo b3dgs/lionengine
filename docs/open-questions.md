@@ -38,6 +38,7 @@ Summary of the answers recorded so far, by decision. Details are in the rows bel
 | [ADR-0034](decisions/0034-camera-and-ecs-defaults-noise-clamp-slots-capacities-events-shapes.md) camera and ECS defaults | OQ-163, OQ-164, rest of OQ-142 | — | owner delegation of 2026-11-23 |
 | [ADR-0035](decisions/0035-input-actions-devices-and-step-edges.md) input contract | (no open question; input points of `contracts.md`) | — | owner delegation of 2026-11-23 |
 | [ADR-0038](decisions/0038-network-model-server-authority-snapshots-prediction.md) network model, modules `network` and `multiplayer`; [ADR-0039](decisions/0039-network-protocol-transport-sessions-and-defaults.md) protocol, sessions and defaults | OQ-165 | — | owner delegation of 2026-11-23 |
+| [ADR-0040](decisions/0040-thread-hand-off-contracts-in-core-and-loop-wiring.md) thread hand-off contracts in `core`, loop wiring | (no open question; module-graph defect found by the architecture review) | — | owner request of 2026-11-23 |
 
 Every section of this register has been treated: the general sections by ADR-0012 to ADR-0024, the feature sections (display, sprites, audio, tile maps, camera, ECS) by ADR-0025 to ADR-0030, the follow-up rows by ADR-0031 to ADR-0035 and the network model by ADR-0038 and ADR-0039, decided under the owner's explicit delegation of 2026-11-23. Three rows stay open on purpose, because they need work rather than a choice:
 

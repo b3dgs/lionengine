@@ -1,6 +1,6 @@
 # Architecture overview
 
-**Status: VALIDATED — principles and boundaries (ADR-0001 to ADR-0039). Sections 6 and 7 restate ADR-0001 as refined by later ADRs. A plain-language version with diagrams: [`../how-the-engine-works.md`](../how-the-engine-works.md).**
+**Status: VALIDATED — principles and boundaries (ADR-0001 to ADR-0040). Sections 6 and 7 restate ADR-0001 as refined by later ADRs. A plain-language version with diagrams: [`../how-the-engine-works.md`](../how-the-engine-works.md).**
 
 ## 1. General direction
 
@@ -103,7 +103,7 @@ Made precise by [ADR-0017](../decisions/0017-fixed-step-game-loop.md) and [ADR-0
 
 ## 8. Threads
 
-One runtime thread owns the loop, the world and the caches; platform threads and workers only post to the inbox (ADR-0018, ADR-0031). Network sockets are non-blocking and polled by the runtime thread during the session update, so networking starts no thread either (ADR-0039). Details: [`contracts.md`](contracts.md#threads-and-events-adr-0018-adr-0031).
+One runtime thread owns the loop, the world and the caches; platform threads and workers only post to the inbox (ADR-0018, ADR-0031). The inbox, asynchronous handles, worker pool and loop-control contracts are in `core`, so producers never depend on `runtime` (ADR-0040). Network sockets are non-blocking and polled by the runtime thread during the session update, so networking starts no thread either (ADR-0039). Details: [`contracts.md`](contracts.md#threads-and-events-adr-0018-adr-0031).
 
 ## 9. Open architectural questions
 

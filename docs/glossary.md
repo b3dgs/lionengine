@@ -38,7 +38,7 @@
 | Game loop | Mechanism that paces updates and rendering: fixed step, accumulator, catch-up, lag cap (ADR-0017). |
 | Headless | Execution without a window or real graphics device. |
 | Host | A process running the server and one ordinary client (its own player) connected in memory; no dedicated machine needed (ADR-0038). |
-| Inbox | Thread-safe bounded FIFO through which platform threads and workers hand events to the runtime thread, delivered at the start of an iteration (ADR-0018, ADR-0031). |
+| Inbox | Thread-safe bounded FIFO through which platform threads and workers hand events to the runtime thread, delivered at the start of an iteration; a `core` contract, so producers never depend on `runtime` (ADR-0018, ADR-0031, ADR-0040). |
 | Input frame | The `input-api` action states of one player for one tick (3 bits per digital action, 16 bits per analog action), sent to the server every tick (ADR-0038). |
 | Input lead | How many ticks before its use a client's input frame reaches the server; the client keeps it near 2 ticks (ADR-0038). |
 | Interpolation | Presentation-only blend between the last two simulation states with `alpha`; the default presentation (ADR-0017). |

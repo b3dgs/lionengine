@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 1, first batches after the build skeleton
 - Affected modules: `core`, `test-support`, `examples`
 - Requirements: `REQ-CORE-006`, `REQ-DEF-001` to `REQ-DEF-003`, `REQ-RT-007`, `REQ-DET-003`
-- Applicable ADRs: [`ADR-0020`](../decisions/0020-no-reflection-factory-registry-and-capability-lookup.md), [`ADR-0028`](../decisions/0028-tile-map-collision-json-definitions-and-storage.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0037`](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md)
+- Applicable ADRs: [`ADR-0020`](../decisions/0020-no-reflection-factory-registry-and-capability-lookup.md), [`ADR-0028`](../decisions/0028-tile-map-collision-json-definitions-and-storage.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0037`](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md), [`ADR-0040`](../decisions/0040-thread-hand-off-contracts-in-core-and-loop-wiring.md)
 - Open questions involved: none
 
 ## Objective
@@ -15,7 +15,7 @@ The dependency-free building blocks every other module uses: a logging facade, a
 
 ## Out of scope
 
-Reading files (the JSON reader takes characters or bytes; opening resources belongs to `resources`); concrete definition formats (each owning module defines its own: sheets in `graphics`, maps in `tilemap`, objects in `ecs`).
+The thread hand-off contracts of `core` (`Inbox`, `InboxEvent`, `AsyncHandle<T>`, `AsyncState`, `LoadGroup`, `WorkerPool`, `LoopControl`, `LoopDriver`, ADR-0040): they live in `core` but are specified and delivered by the batches of [`game-loop.md`](game-loop.md). Reading files (the JSON reader takes characters or bytes; opening resources belongs to `resources`); concrete definition formats (each owning module defines its own: sheets in `graphics`, maps in `tilemap`, objects in `ecs`).
 
 ## Expected behavior
 

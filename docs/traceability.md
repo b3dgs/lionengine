@@ -17,7 +17,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-CORE-002 | Must | VALIDATED | ADR-0012, ADR-0015 | — | — | no test yet |
 | REQ-CORE-003 | Must | VALIDATED | ADR-0012, ADR-0032 | OQ-149 | — | no test yet |
 | REQ-CORE-004 | Must | VALIDATED | ADR-0012 | — | — | no test yet |
-| REQ-CORE-005 | Must | VALIDATED | ADR-0012, ADR-0015 | OQ-149 | — | no test yet |
+| REQ-CORE-005 | Must | VALIDATED | ADR-0012, ADR-0015, ADR-0040 | OQ-149 | — | no test yet |
 | REQ-CORE-006 | Should | VALIDATED | ADR-0031 | — | — | no test yet |
 | REQ-TEST-001 | Must | VALIDATED | ADR-0017, ADR-0022 | — | — | no test yet |
 | REQ-DOC-001 | Must | VALIDATED | ADR-0023 | OQ-149 | — | no test yet |
@@ -31,7 +31,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-FE-002 | Should | VALIDATED | ADR-0022 | — | — | no test yet |
 | REQ-FE-003 | Must | VALIDATED | ADR-0002, ADR-0008 | — | — | no test yet |
 | REQ-PLATFORM-001 | Must | VALIDATED | ADR-0008, ADR-0022, ADR-0033 | — | — | no test yet |
-| REQ-PLATFORM-002 | Must | VALIDATED | ADR-0017, ADR-0018, ADR-0031 | — | — | no test yet |
+| REQ-PLATFORM-002 | Must | VALIDATED | ADR-0017, ADR-0018, ADR-0031, ADR-0040 | — | — | no test yet |
 | REQ-DISPLAY-001 | Must | VALIDATED | ADR-0002 | OQ-096 | — | no test yet |
 | REQ-DISPLAY-002 | Must | VALIDATED | ADR-0002, ADR-0006 | — | — | no test yet |
 | REQ-DISPLAY-003 | Must | VALIDATED | ADR-0002, ADR-0022, ADR-0033 | OQ-096 | — | no test yet |
@@ -57,16 +57,16 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-LOOP-010 | Must | VALIDATED | ADR-0017, ADR-0018 | — | — | no test yet |
 | REQ-LOOP-011 | Must | VALIDATED | ADR-0031 | — | — | no test yet |
 | REQ-LOOP-012 | Should | VALIDATED | ADR-0031 | — | — | no test yet |
-| REQ-RT-001 | Must | VALIDATED | ADR-0018 | — | — | no test yet |
-| REQ-RT-002 | Must | VALIDATED | ADR-0018 | — | — | no test yet |
+| REQ-RT-001 | Must | VALIDATED | ADR-0018, ADR-0040 | — | — | no test yet |
+| REQ-RT-002 | Must | VALIDATED | ADR-0018, ADR-0040 | — | — | no test yet |
 | REQ-RT-003 | Must | VALIDATED | ADR-0018, ADR-0007 | — | — | no test yet |
-| REQ-RT-004 | Should | VALIDATED | ADR-0019, ADR-0031 | — | — | no test yet |
+| REQ-RT-004 | Should | VALIDATED | ADR-0019, ADR-0031, ADR-0040 | — | — | no test yet |
 | REQ-RT-005 | Must | VALIDATED | ADR-0019, ADR-0026, ADR-0027 | — | — | no test yet |
 | REQ-RT-006 | Must | VALIDATED | ADR-0019 | — | — | no test yet |
 | REQ-RT-007 | Must | VALIDATED | ADR-0020, ADR-0032 | — | — | no test yet |
 | REQ-RT-008 | Must | VALIDATED | ADR-0020 | — | — | no test yet |
-| REQ-RT-009 | Must | VALIDATED | ADR-0031 | — | — | no test yet |
-| REQ-RT-010 | Should | VALIDATED | ADR-0031 | — | — | no test yet |
+| REQ-RT-009 | Must | VALIDATED | ADR-0031, ADR-0040 | — | — | no test yet |
+| REQ-RT-010 | Should | VALIDATED | ADR-0031, ADR-0040 | — | — | no test yet |
 | REQ-RES-001 | Must | VALIDATED | ADR-0005, ADR-0032 | — | — | no test yet |
 | REQ-RES-002 | Should | VALIDATED | ADR-0005, ADR-0032 | — | — | no test yet |
 | REQ-RES-003 | Must | VALIDATED | ADR-0005, ADR-0019 | — | — | no test yet |
@@ -163,7 +163,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-STD-009 | Could | VALIDATED | ADR-0030, ADR-0034 | — | — | no test yet |
 | REQ-STD-010 | Should | VALIDATED | ADR-0028, ADR-0030 | — | — | no test yet |
 | REQ-STD-011 | Should | VALIDATED | ADR-0038 | — | — | no test yet |
-| REQ-IN-001 | Must | VALIDATED | ADR-0035 | — | — | no test yet |
+| REQ-IN-001 | Must | VALIDATED | ADR-0035, ADR-0040 | — | — | no test yet |
 | REQ-IN-002 | Should | VALIDATED | ADR-0035 | — | — | no test yet |
 | REQ-IN-003 | Must | VALIDATED | ADR-0018, ADR-0035 | — | — | no test yet |
 | REQ-IN-004 | Should | VALIDATED | ADR-0035 | — | — | no test yet |
