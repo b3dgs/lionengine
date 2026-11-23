@@ -1,5 +1,12 @@
 # Instructions for AI agents
 
+## 0. Language
+
+- All repository content is written in English: documentation, Javadoc, code comments, identifiers, file and branch names, commit messages, pull request titles and descriptions, issue and review comments, test names and data, exception and log messages, decision packets and templates.
+- The language of the user's message does not change this. A request in French (or any other language) may be answered in that language, but what is written into the repository is English: translate the request before writing it. Keep non-English text only when it is literal data that must stay as is (for example a quoted string under test), and explain it in English around it.
+- Never mix languages in one file, one sentence or one label, and never leave a French label in a template or a workflow prompt.
+- Before committing documentation, run `python3 -I scripts/check-docs.py`: it rejects French accented characters in the Markdown files it checks. It does not catch unaccented French, so review the diff too.
+
 All repository content (documentation, Javadoc, identifiers, commit messages) is written in English.
 
 ## 1. Source of truth

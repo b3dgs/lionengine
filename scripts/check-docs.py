@@ -14,7 +14,9 @@ Checks:
   5. requirements.md and traceability.md list exactly the same requirements,
      with the same priority and status;
   6. every document under docs/ declares a Status line near its top;
-  7. every feature page of docs/features/ is linked from docs/engine-features.md.
+  7. every feature page of docs/features/ is linked from docs/engine-features.md;
+  8. no French accented character in the checked Markdown files (AGENTS.md section 0:
+     repository content is English whatever the language of the request).
 """
 import os
 import re
@@ -37,6 +39,8 @@ REQ_REF = re.compile(r"REQ-[A-Z]+-\d+")
 OQ_REF = re.compile(r"OQ-\d+")
 ADR_REF = re.compile(r"ADR-(\d{4})")
 STATUS = re.compile(r"^(\*\*)?(- )?Status:", re.M)
+# Accented letters that French uses and English documentation does not (AGENTS.md section 0).
+FRENCH_ACCENT = re.compile("[àâäçéèêëîïôöùûüÀÂÄÇÉÈÊËÎÏÔÖÙÛÜ]")
 
 
 def read(path):
@@ -146,6 +150,16 @@ def main(root):
             page = os.path.join(features_dir, name)
             if name.endswith(".md") and name != "README.md" and page not in summary_links:
                 errors.append(f"feature page not linked from docs/engine-features.md: {rel(page)}")
+
+    # 8: repository content is English (AGENTS.md section 0)
+    for path, text in texts.items():
+        for number, line in enumerate(text.splitlines(), start=1):
+            found = sorted(set(FRENCH_ACCENT.findall(line)))
+            if found:
+                errors.append(
+                    f"French accented character(s) {''.join(found)} in {rel(path)}:{number} "
+                    "(repository content is English, AGENTS.md section 0)"
+                )
 
     if errors:
         print(f"{len(errors)} problem(s) found:")

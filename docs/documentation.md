@@ -71,4 +71,4 @@ Any change to a public contract must update:
 
 ## Language and status headers
 
-Documentation is written in English. Every document under `docs/` starts with a `Status:` line using the vocabulary of the root `README.md`.
+Documentation is written in English, whatever the language of the request that triggered the change ([`AGENTS.md`](../AGENTS.md), section 0). Every document under `docs/` starts with a `Status:` line using the vocabulary of the root `README.md`.
