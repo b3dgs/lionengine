@@ -8,7 +8,7 @@
 - Affected modules: `traits`, `ecs`, `core`, `test-support`, `examples`
 - Requirements: `REQ-STD-001` to `REQ-STD-009`
 - Applicable ADRs: [`ADR-0011`](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (ACCEPTED), [`ADR-0001`](../decisions/0001-technical-baseline-and-conventions.md)
-- Open questions involved: `OQ-010`, `OQ-013`, `OQ-022`, `OQ-125`, `OQ-142` to `OQ-144`
+- Open questions involved: `OQ-010`, `OQ-013`, `OQ-022`, `OQ-142` to `OQ-144`
 
 ## Objective
 

@@ -4,7 +4,7 @@
 
 | Domain | Responsibility | Allowed dependencies (conceptual direction) |
 |---|---|---|
-| `core` | Common types, lifecycle, errors, events, cross-cutting contracts | No frontend dependency |
+| `core` | Common types, lifecycle, errors, events, cross-cutting contracts; the strict JSON reader for definition files (ADR-0028) | No frontend dependency |
 | `runtime` | Orchestration, game loop, clock, scheduling; scene lifecycle contract and scene manager (ADR-0021) | `core` |
 | `platform-api` | Window/surface contracts, platform capabilities, frontend lifecycle, screen modes and display-mode selection (ADR-0002) | `core` |
 | `render-api` | Rendering contracts, textures, commands, viewport, output filtering (ADR-0002), scaling policy type (ADR-0006) | `core` |

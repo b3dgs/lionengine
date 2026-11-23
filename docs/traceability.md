@@ -92,12 +92,13 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-SHEET-001 | Must | PROPOSED | ADR-0003, ADR-0026 | OQ-160 | — | no test yet |
 | REQ-SHEET-002 | Should | PROPOSED | ADR-0003, ADR-0026 | OQ-160 | — | no test yet |
 | REQ-MAP-001 | Should | PROPOSED | ADR-0009 | OQ-012 | — | no test yet |
-| REQ-MAP-002 | Should | PROPOSED | — | OQ-125 | — | no test yet |
+| REQ-MAP-002 | Should | PROPOSED | ADR-0028 | OQ-162 | — | no test yet |
 | REQ-MAP-003 | Must | PROPOSED | ADR-0009 | — | — | no test yet |
-| REQ-MAP-004 | Must | PROPOSED | ADR-0009 | OQ-126, OQ-128, OQ-101 | — | no test yet |
-| REQ-MAP-005 | Must | PROPOSED | ADR-0009 | OQ-012, OQ-040, OQ-129 | — | no test yet |
-| REQ-MAP-006 | Must | PROPOSED | ADR-0009 | OQ-127 | — | no test yet |
+| REQ-MAP-004 | Must | PROPOSED | ADR-0009, ADR-0028 | OQ-162 | — | no test yet |
+| REQ-MAP-005 | Must | PROPOSED | ADR-0009, ADR-0028 | OQ-012 | — | no test yet |
+| REQ-MAP-006 | Must | PROPOSED | ADR-0009, ADR-0028 | OQ-162 | — | no test yet |
 | REQ-MAP-007 | Should | PROPOSED | ADR-0009 | OQ-122 | — | no test yet |
+| REQ-MAP-008 | Should | PROPOSED | ADR-0028 | OQ-142 | — | no test yet |
 | REQ-CAM-001 | Must | PROPOSED | ADR-0010 | OQ-010, OQ-012, OQ-131 | — | no test yet |
 | REQ-CAM-002 | Must | PROPOSED | ADR-0010 | OQ-135 | — | no test yet |
 | REQ-CAM-003 | Must | PROPOSED | ADR-0010 | OQ-010 | — | no test yet |
@@ -114,6 +115,7 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-SCENE-002 | Must | PROPOSED | ADR-0021 | OQ-155 | — | no test yet |
 | REQ-WORLD-001 | Must | PROPOSED | ADR-0021 | — | — | no test yet |
 | REQ-PHYS-001 | Should | PROPOSED | ADR-0021 | OQ-142 | — | no test yet |
+| REQ-DEF-001 | Must | PROPOSED | ADR-0028, ADR-0020 | OQ-162 | — | no test yet |
 | REQ-ECS-001 | Must | PROPOSED | ADR-0011 | OQ-137 | — | no test yet |
 | REQ-ECS-002 | Must | PROPOSED | ADR-0011 | OQ-137, OQ-132 | — | no test yet |
 | REQ-ECS-003 | Must | PROPOSED | ADR-0011 | OQ-138 | — | no test yet |
@@ -128,7 +130,7 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-STD-002 | Should | PROPOSED | ADR-0011 | OQ-013 | — | no test yet |
 | REQ-STD-003 | Should | PROPOSED | ADR-0011 | OQ-010 | — | no test yet |
 | REQ-STD-004 | Should | PROPOSED | ADR-0011 | OQ-143 | — | no test yet |
-| REQ-STD-005 | Should | PROPOSED | ADR-0011 | OQ-142, OQ-043, OQ-125 | — | no test yet |
+| REQ-STD-005 | Should | PROPOSED | ADR-0011, ADR-0028 | OQ-142 | — | no test yet |
 | REQ-STD-006 | Should | PROPOSED | ADR-0011 | — | — | no test yet |
 | REQ-STD-007 | Should | PROPOSED | ADR-0011 | — | — | no test yet |
 | REQ-STD-008 | Should | PROPOSED | ADR-0011 | OQ-141 | — | no test yet |

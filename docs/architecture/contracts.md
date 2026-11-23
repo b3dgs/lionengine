@@ -126,11 +126,11 @@ Distinguish:
 Decisions of [ADR-0009](../decisions/0009-tile-map-contracts-in-tilemap.md) (ACCEPTED 2026-11-22; owner decisions of issue #865):
 
 - **Model:** single-layer grid of cells, each empty or a tileset cell index (`REQ-SHEET-001`); tile coordinates are `int` tile indices; tile size in pixels of the logical frame; `set`, `get`, `clear` with bounds checking and defined errors (`REQ-MAP-003`). A per-tile properties hook exists, with no collision type.
-- **Loading:** through an abstract loader contract over `resources`; keys and release per ADR-0007 (`REQ-MAP-004`). File format: OQ-126; tileset reference and ownership: OQ-128.
+- **Loading:** through an abstract loader contract over `resources`; keys and release per ADR-0007 (`REQ-MAP-004`). File format: Tiled JSON (ADR-0028); tileset reference and ownership: OQ-128.
 - **Rendering:** draws only tiles intersecting a viewport rectangle (pixels of the logical frame, a plain value, no camera type) plus a margin, by emitting `render-api` commands; read-only (`REQ-MAP-005`).
-- **Destruction:** rule-based auto-tiling updates neighbors in the update phase (`REQ-MAP-006`; rule format OQ-127); a synchronous tile-changed listener reports cell, old and new tile (`REQ-MAP-007`; OQ-122).
+- **Destruction:** rule-based auto-tiling updates neighbors in the update phase (`REQ-MAP-006`; rule format ADR-0028); a synchronous tile-changed listener reports cell, old and new tile (`REQ-MAP-007`; OQ-122).
 
-Still to specify: layers (candidate), chunks and render cache (OQ-129), collisions static and dynamic (OQ-125, OQ-043).
+Collision, storage and chunking are decided by ADR-0028 (first batch); still to specify: layers (candidate), slopes and one-way tiles (OQ-142), follow-ups OQ-162.
 
 ## Camera
 

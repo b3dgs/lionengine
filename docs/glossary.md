@@ -57,7 +57,7 @@
 | Tile | Cell or graphic element of a tileset. |
 | Tilemap | Map organized in cells and layers (single layer first, ADR-0009). |
 | Tileset | Sprite sheet whose cells are the tiles of a tile map (`REQ-SHEET-001`). |
-| Auto-tiling | Rule-based update of a cell's tile from its neighborhood, applied to neighbors when a tile is destroyed; rule format `TO BE DEFINED` (OQ-127). |
+| Auto-tiling | Rule-based update of a cell's tile from its neighborhood, applied to neighbors when a tile is destroyed; rules are ordered 8-neighbor bitmasks with a care mask (ADR-0028). |
 | Viewport culling | Drawing only the tiles that intersect the viewport rectangle (plus a margin). |
 | Trait | Composable capability or behavior attached to an object/entity. |
 | Viewport | Region where a view of the world is presented on a surface; the view rectangle of a camera is its world-side counterpart (ADR-0010). |
