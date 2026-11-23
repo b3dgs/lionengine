@@ -29,7 +29,14 @@ Animation (see [`animated-sprite.md`](animated-sprite.md)); actual batching (a l
 
 ## Envisaged APIs / contracts
 
-Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Render commands; Images, sprites and animations); signatures written by the batch: sprite source, sprite instance, color transform description, color-transform capability, command buffer.
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Render commands; Images, sprites and animations); canonical type names in [ADR-0037](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md); signatures written by the batch: sprite source, sprite instance, color transform description, color-transform capability, command buffer.
+
+## Batches (order)
+
+1. Source, instance, transform and pivot, command emission (`REQ-SPRITE-001`, `REQ-SPRITE-003`, `REQ-SPRITE-006`, `REQ-SPRITE-007`, `REQ-SPRITE-010`).
+2. Cache sharing (`REQ-SPRITE-002`).
+3. Color transforms: capability query, per-frame tint and alpha, CPU bake (`REQ-SPRITE-004`).
+4. Template color variants (`REQ-SPRITE-005`).
 
 ## Lifecycle and concurrency
 

@@ -37,9 +37,9 @@ A scene knows nothing of world, camera, graphics or audio types; it composes the
 ### Scene flow (`REQ-SCENE-004` to `REQ-SCENE-008`)
 
 - Built with a builder, validated at `build()`, immutable afterwards:
-  - scenes: id `namespace:name` → factory `context → new scene instance`;
+  - scenes: id `namespace:name` → `SceneFactory<C>` (`create(context)` returns a new scene instance);
   - start id;
-  - transitions `(from id or any scene, trigger, optional condition on the context, kind, target id)`.
+  - transitions `(from id or any scene, trigger, optional `TransitionCondition<C>` (`test(context)`), kind, target id)`.
 - Kinds: `SWITCH` (replace the whole stack), `PUSH` (overlay), `POP` (close the top overlay), `EXIT` (dispose everything, request the loop stop).
 - `trigger(name)` on the runtime thread: tries the top scene's transitions, then the any-scene transitions, each in declaration order; the first with that trigger and a true condition is selected and `true` is returned; otherwise `false` and nothing happens.
 - The selected transition applies at the next frame boundary; until then other triggers return `false`.
@@ -62,7 +62,7 @@ stateDiagram-v2
 
 ## Envisaged APIs / contracts
 
-Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Scenes); signatures written by the batch under `conventions.md`: `Scene`, `SceneManager`, `SceneFlow<C>` and its builder, transition kind enum, transition listener.
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Scenes); canonical names (ADR-0037): `Scene`, `SceneManager`, `SceneFlow<C>`, `SceneFlowBuilder<C>`, `SceneFactory<C>`, `TransitionCondition<C>`, `TransitionKind`, `TransitionListener`; signatures written by the batch under `conventions.md`.
 
 ## Batches (order)
 
@@ -77,7 +77,7 @@ Runtime thread only (ADR-0018). Transitions never apply inside a step. An except
 
 ## Units and Android/DEX compatibility
 
-Seconds; ids and trigger names are strings. Pure Java (`java.util.function` interfaces need verification at API 21 or own functional interfaces, `android-compatibility.md`).
+Seconds; ids and trigger names are strings. Pure Java; callbacks are the role-named interfaces `SceneFactory<C>`, `TransitionCondition<C>` and `TransitionListener`, not `java.util.function` (ADR-0037).
 
 ## Dependencies
 

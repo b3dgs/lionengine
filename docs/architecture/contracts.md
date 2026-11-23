@@ -1,6 +1,6 @@
 # Cross-cutting contracts
 
-**Status: VALIDATED — responsibilities, invariants and defaults of every contract (ADR-0001 to ADR-0035). Java signatures are written by each implementation batch under [`../conventions.md`](../conventions.md) and reviewed in its pull request.**
+**Status: VALIDATED — responsibilities, invariants and defaults of every contract (ADR-0001 to ADR-0037). Java signatures are written by each implementation batch under [`../conventions.md`](../conventions.md) and reviewed in its pull request.**
 
 Each public contract must specify: responsibility, invariants, lifecycle, calling thread, units, errors, data ownership, behavior when a capability is absent, and compatibility (including Android/DEX). A plain-language summary with diagrams is in [`../how-the-engine-works.md`](../how-the-engine-works.md).
 
@@ -17,7 +17,7 @@ Each public contract must specify: responsibility, invariants, lifecycle, callin
 
 - The application creates the platform object, configures it (logical frame size, initial screen mode, scaling policy, filter chain), registers its modules explicitly (ADR-0020) and starts it.
 - Surface resize, focus change, background and foreground, close request, context loss and recovery are inbox events. Resize never changes the logical frame; scaling is recomputed at the next frame boundary. Background pauses and foreground resumes (ADR-0017). A close request stops the loop unless a close listener vetoes it. Context loss is recovered by the backend from CPU copies or by reloading (ADR-0019).
-- Capabilities are found by a typed optional lookup on the platform object; absence means unsupported (ADR-0020).
+- Capabilities are found by a typed lookup on the platform object: `getCapability(Class<T>)` returns the capability or `null` when unsupported, `hasCapability(Class<?>)` tells it (ADR-0020, ADR-0037).
 - Desktop reference: `platform-awt` (JDK AWT only, excluded from Android builds, ADR-0008) with `render-awt`, which reaches the surface through the `AwtSurface` capability of `platform-awt` (ADR-0022, ADR-0033).
 
 ### Coordinate spaces (ADR-0013, ADR-0014)

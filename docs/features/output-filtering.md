@@ -29,7 +29,14 @@ Per-layer filtering (ADR-0002, decision 3A); screen and display modes (see [`dis
 
 ## Envisaged APIs / contracts
 
-Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Display modes, resolution and output filtering); signatures are written by the batch: filter identifier, chain, capability query, custom filter contract (CPU and shader forms).
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Display modes, resolution and output filtering); canonical type names in [ADR-0037](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md) (`OutputFilter`, `ScalingPolicy`); signatures are written by the batch: filter identifier, chain, capability query, custom filter contract (CPU and shader forms).
+
+## Batches (order)
+
+1. Identifiers, chain, capability query and fallback with fake backends (`REQ-FILTER-001`, `REQ-FILTER-002`).
+2. CPU filters in `render-awt`: `NONE`, bilinear, `Scale2x` (`REQ-FILTER-004`).
+3. Custom filter extension point (`REQ-FILTER-003`).
+4. `HQ2X` after its license record; GPU filters and CRT with `render-opengl` (Phase 4).
 
 ## Lifecycle and concurrency
 

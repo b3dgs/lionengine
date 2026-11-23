@@ -1,6 +1,6 @@
 # Requirements
 
-**Status: VALIDATED — every row below is VALIDATED (owner delegation of 2026-11-23; details in ADR-0001 to ADR-0035). A row added later starts PROPOSED until the owner validates it.**
+**Status: VALIDATED — every row below is VALIDATED (owner delegation of 2026-11-23; details in ADR-0001 to ADR-0037). A row added later starts PROPOSED until the owner validates it.**
 
 Each requirement has a stable identifier. Agents must reference these identifiers in their plans, commits and reports. Identifiers are never reused: removed requirements are listed under [Retired identifiers](#retired-identifiers).
 

@@ -12,6 +12,8 @@ Before any task:
 
 `VALIDATED` documents are contractual. `PROPOSED` items are working hypotheses, not authorizations to implement them as established facts.
 
+For an implementation batch, start from its page in [`docs/features/`](docs/features/README.md): it holds every rule and default value the batch needs. If documents disagree: ADR, then requirement, then feature page, then `contracts.md` ([`docs/documentation.md`](docs/documentation.md)).
+
 ## 2. Prohibitions
 
 - Do not invent a responsibility, a public API, a dependency or an unspecified behavior.

@@ -1,6 +1,6 @@
 # Architecture overview
 
-**Status: VALIDATED — principles and boundaries (ADR-0001 to ADR-0035). Sections 6 and 7 restate ADR-0001 as refined by later ADRs. A plain-language version with diagrams: [`../how-the-engine-works.md`](../how-the-engine-works.md).**
+**Status: VALIDATED — principles and boundaries (ADR-0001 to ADR-0037). Sections 6 and 7 restate ADR-0001 as refined by later ADRs. A plain-language version with diagrams: [`../how-the-engine-works.md`](../how-the-engine-works.md).**
 
 ## 1. General direction
 

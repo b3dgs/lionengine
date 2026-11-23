@@ -37,7 +37,7 @@ Collision rule without swept detection: per-step displacement must stay under ha
 
 ## Envisaged APIs / contracts
 
-Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Objects and traits); signatures written by the batch. Each trait is data only; each system implements the `ecs` system contract and declares its slot; `physics` provides the box shape, overlap test, shape-query contract (implemented by `tilemap`) and broad phase.
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Objects and traits); canonical type names in [ADR-0037](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md); signatures written by the batch. Each trait is data only; each system implements the `ecs` system contract and declares its slot; `physics` provides the box shape, overlap test, shape-query contract (implemented by `tilemap`) and broad phase.
 
 ## Batches (order)
 

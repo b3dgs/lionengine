@@ -28,7 +28,14 @@ Sprite rendering and animation playback (see [`sprite.md`](sprite.md), [`animate
 
 ## Envisaged APIs / contracts
 
-Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Images, sprites and animations); signatures written by the batch: pixel buffer, PNG decoder, image cache, sprite sheet, sheet group, sheet loader.
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Images, sprites and animations); canonical type names in [ADR-0037](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md); signatures written by the batch: pixel buffer, PNG decoder, image cache, sprite sheet, sheet group, sheet loader.
+
+## Batches (order)
+
+1. `PixelBuffer` and the PNG decoder (`REQ-SPRITE-009`).
+2. `ImageCache` with the resource convention suite.
+3. Grid, cells, groups and ids (`REQ-SHEET-001`, `REQ-SHEET-002`).
+4. Sheet definition loader (`REQ-SHEET-003`).
 
 ## Lifecycle and concurrency
 

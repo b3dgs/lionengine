@@ -31,7 +31,18 @@ Spatial audio (deferred: camera center as listener, meters, pan and attenuation 
 
 ## Envisaged APIs / contracts
 
-Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Audio); signatures written by the batch: audio system, short sound and long sound handles, variant set, playlist, voice policy, mixer group, backend SPI.
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Audio); canonical type names in [ADR-0037](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md); signatures written by the batch: audio system, short sound and long sound handles, variant set, playlist, voice policy, mixer group, backend SPI.
+
+## Batches (order)
+
+1. `audio-api` contracts, fake backend and contract suites (`REQ-AUDIO-001`, `REQ-AUDIO-009`).
+2. Short sounds: WAV parser, cache, voices, length limit (`REQ-AUDIO-003`, `REQ-AUDIO-004`, `REQ-AUDIO-010`, `REQ-AUDIO-013`).
+3. Variant sets (`REQ-AUDIO-005`).
+4. Long sounds and streaming, playlists (`REQ-AUDIO-006` to `REQ-AUDIO-008`).
+5. First-batch controls: volume, looping, pause, resume (`REQ-AUDIO-011`).
+6. `audio-javasound` (`REQ-AUDIO-002`).
+7. Mixer groups and fades (`REQ-AUDIO-012`).
+8. `audio-codec-ogg` after its register entry; `audio-android` in Phase 4.
 
 ## Lifecycle and concurrency
 
