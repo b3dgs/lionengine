@@ -56,7 +56,7 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-RT-002 | Must | PROPOSED | ADR-0018 | OQ-153 | — | no test yet |
 | REQ-RT-003 | Must | PROPOSED | ADR-0018, ADR-0007 | — | — | no test yet |
 | REQ-RT-004 | Should | PROPOSED | ADR-0019, ADR-0018 | OQ-153 | — | no test yet |
-| REQ-RT-005 | Must | PROPOSED | ADR-0019 | OQ-101, OQ-110 | — | no test yet |
+| REQ-RT-005 | Must | PROPOSED | ADR-0019, ADR-0026, ADR-0027 | OQ-161 | — | no test yet |
 | REQ-RT-006 | Must | PROPOSED | ADR-0019 | OQ-070, OQ-139 | — | no test yet |
 | REQ-RT-007 | Must | PROPOSED | ADR-0020, ADR-0011 | OQ-154 | — | no test yet |
 | REQ-RT-008 | Must | PROPOSED | ADR-0020 | — | — | no test yet |
@@ -66,14 +66,16 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-RES-004 | Must | PROPOSED | ADR-0005, ADR-0007 | OQ-032, OQ-118, OQ-121 | — | no test yet |
 | REQ-RES-005 | Must | PROPOSED | ADR-0007 | OQ-118, OQ-121 | — | no test yet |
 | REQ-AUDIO-001 | Should | PROPOSED | ADR-0004, ADR-0022 | OQ-156 | — | no test yet |
-| REQ-AUDIO-002 | Should | PROPOSED | ADR-0004 | OQ-115 | — | no test yet |
-| REQ-AUDIO-003 | Must | PROPOSED | ADR-0004 | OQ-110, OQ-111, OQ-116, OQ-118 | — | no test yet |
-| REQ-AUDIO-004 | Must | PROPOSED | ADR-0004 | OQ-111 | — | no test yet |
-| REQ-AUDIO-005 | Must | PROPOSED | ADR-0004 | OQ-112 | — | no test yet |
-| REQ-AUDIO-006 | Must | PROPOSED | ADR-0004 | OQ-113, OQ-118 | — | no test yet |
-| REQ-AUDIO-007 | Must | PROPOSED | ADR-0004 | OQ-113 | — | no test yet |
-| REQ-AUDIO-008 | Must | PROPOSED | ADR-0004 | OQ-114 | — | no test yet |
-| REQ-AUDIO-009 | Must | PROPOSED | ADR-0004 | OQ-115 | — | no test yet |
+| REQ-AUDIO-002 | Should | PROPOSED | ADR-0004, ADR-0027 | OQ-161 | — | no test yet |
+| REQ-AUDIO-003 | Must | PROPOSED | ADR-0004, ADR-0027 | OQ-161 | — | no test yet |
+| REQ-AUDIO-004 | Must | PROPOSED | ADR-0004, ADR-0027 | OQ-161 | — | no test yet |
+| REQ-AUDIO-005 | Must | PROPOSED | ADR-0004, ADR-0027 | OQ-161 | — | no test yet |
+| REQ-AUDIO-006 | Must | PROPOSED | ADR-0004, ADR-0027 | OQ-161 | — | no test yet |
+| REQ-AUDIO-007 | Must | PROPOSED | ADR-0004, ADR-0027 | OQ-161 | — | no test yet |
+| REQ-AUDIO-008 | Must | PROPOSED | ADR-0004, ADR-0027 | OQ-161 | — | no test yet |
+| REQ-AUDIO-010 | Must | PROPOSED | ADR-0027 | OQ-161 | — | no test yet |
+| REQ-AUDIO-011 | Should | PROPOSED | ADR-0027 | OQ-161 | — | no test yet |
+| REQ-AUDIO-009 | Must | PROPOSED | ADR-0004 | — | — | no test yet |
 | REQ-SPR-001 | Must | PROPOSED | ADR-0003, ADR-0026 | OQ-160 | — | no test yet |
 | REQ-SPR-002 | Must | PROPOSED | ADR-0003, ADR-0026 | OQ-160 | — | no test yet |
 | REQ-SPRITE-001 | Must | PROPOSED | ADR-0003, ADR-0026 | OQ-160 | — | no test yet |

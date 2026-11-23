@@ -46,7 +46,7 @@
 | Animation | Ordered frames with durations in seconds and a loop mode; advanced from the simulation update step only (ADR-0003). |
 | Short sound | Low-latency sound effect, cached for heavy reuse; can be played individually and stopped (ADR-0004). |
 | Long sound | Music or ambient sound, preloaded for direct use and released when no longer needed (ADR-0004). |
-| Variant set | Group of short-sound files; playing it selects one variant or plays several at once (composed sound); policies `TO BE DEFINED` (OQ-112). |
+| Variant set | Group of short-sound files; playing it selects one variant or plays several at once (composed sound); policies in ADR-0027. |
 | Playlist | Predefined sequence of long sounds; the next starts when the current terminates (ADR-0004). |
 | Pivot | Internal location (origin) of a sprite, used for placement, rotation and scaling. |
 | Sprite sheet | Image grouping several sprite regions as a grid (cell size, columns, rows, optional margin/spacing), giving access to cells by index; sheets are grouped by unique id (ADR-0003). |

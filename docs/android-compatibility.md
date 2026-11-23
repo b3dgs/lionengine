@@ -48,7 +48,7 @@ Recorded for the accepted decisions; nothing here is verified yet, so every item
 | Screen and display modes (ADR-0002) | Mode selection through Android APIs, isolated in `platform-android`; refresh-rate and color-depth selection may be unavailable and is then reported through the effective result | not compatible yet |
 | Output filtering (ADR-0002) | common GLSL/GLSL ES shader subset and own filter implementations (ADR-0025); `HQ2X` license check (OQ-159) | not compatible yet |
 | Sprites and sprite sheets (ADR-0003) | Pure-Java PNG decoder in shared code (`java.util.zip.Inflater`, to verify on API 21); optional platform decoders (ADR-0026) | not compatible yet |
-| Audio (ADR-0004) | No `javax.sound` in `audio-api`; decoder libraries, licenses and desugaring (OQ-115); latency target (OQ-116) | not compatible yet |
+| Audio (ADR-0004) | No `javax.sound` in `audio-api`; PCM WAV baseline, OGG Vorbis decoded by the platform; latency target 100 ms best effort to measure (ADR-0027, OQ-161) | not compatible yet |
 | Desktop platform (ADR-0008) | `platform-awt` uses `java.desktop`, which does not exist on Android: it must stay out of every Android build | platform module only |
 
 ## What to record once decided
