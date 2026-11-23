@@ -99,13 +99,14 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-MAP-006 | Must | PROPOSED | ADR-0009, ADR-0028 | OQ-162 | — | no test yet |
 | REQ-MAP-007 | Should | PROPOSED | ADR-0009 | OQ-122 | — | no test yet |
 | REQ-MAP-008 | Should | PROPOSED | ADR-0028 | OQ-142 | — | no test yet |
-| REQ-CAM-001 | Must | PROPOSED | ADR-0010 | OQ-010, OQ-012, OQ-131 | — | no test yet |
-| REQ-CAM-002 | Must | PROPOSED | ADR-0010 | OQ-135 | — | no test yet |
+| REQ-CAM-001 | Must | PROPOSED | ADR-0010, ADR-0029 | OQ-163 | — | no test yet |
+| REQ-CAM-002 | Must | PROPOSED | ADR-0010, ADR-0029 | OQ-163 | — | no test yet |
 | REQ-CAM-003 | Must | PROPOSED | ADR-0010 | OQ-010 | — | no test yet |
-| REQ-CAM-004 | Must | PROPOSED | ADR-0010 | OQ-041, OQ-132 | — | no test yet |
-| REQ-CAM-005 | Must | PROPOSED | ADR-0010 | OQ-021, OQ-133 | — | no test yet |
-| REQ-CAM-006 | Should | PROPOSED | ADR-0010 | OQ-130, OQ-134 | — | no test yet |
-| REQ-CAM-007 | Must | PROPOSED | ADR-0010 | OQ-012, OQ-013 | — | no test yet |
+| REQ-CAM-004 | Must | PROPOSED | ADR-0010, ADR-0029 | OQ-163 | — | no test yet |
+| REQ-CAM-005 | Must | PROPOSED | ADR-0010, ADR-0029 | OQ-163 | — | no test yet |
+| REQ-CAM-006 | Should | PROPOSED | ADR-0010, ADR-0029 | OQ-163 | — | no test yet |
+| REQ-CAM-007 | Must | PROPOSED | ADR-0010, ADR-0029 | OQ-163 | — | no test yet |
+| REQ-CAM-009 | Must | PROPOSED | ADR-0029 | OQ-163 | — | no test yet |
 | REQ-CAM-008 | Must | PROPOSED | ADR-0010 | OQ-040 | — | no test yet |
 | REQ-OBJ-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-OBJ-002 | Should | PROPOSED | ADR-0021 | — | — | no test yet |

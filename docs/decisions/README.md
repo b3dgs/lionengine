@@ -47,6 +47,7 @@ Decisions must be atomic (one main decision each), motivated, and describe both 
 - [`ADR-0026`](0026-graphics-pixels-cache-transforms-animation-and-commands.md) — Graphics contracts: pixel buffer and PNG decoder, image cache, color transform capability, pivot and composition, animation, sheet ids, loading, render commands (accepted 2026-11-23, issue #883).
 - [`ADR-0027`](0027-audio-policies-formats-latency-and-first-scope.md) — Audio policies: short-sound cache, voices, variants, streaming, playlists, formats, latency targets, first scope (accepted 2026-11-23, issue #884).
 - [`ADR-0028`](0028-tile-map-collision-json-definitions-and-storage.md) — Tile maps: collision through `physics`, JSON definition files, Tiled JSON, auto-tiling rules, tileset ownership, storage (accepted 2026-11-23, issue #885).
+- [`ADR-0029`](0029-camera-details-view-transform-follow-shake-zoom.md) — Camera details: view transform, `long` follow key, rigid default delay, integer-noise shake, zoom, candidate features (accepted 2026-11-23, issue #886).
 - [`ADR-0019`](0019-loading-resource-policy-and-memory.md) — Synchronous-first loading with opt-in asynchronous contract, explicit reference-counted resources, hot-path memory policy (accepted 2026-11-22, issue #877).
 - [`ADR-0020`](0020-no-reflection-factory-registry-and-capability-lookup.md) — No reflection: factory registry for data-driven objects, typed capability lookup (accepted 2026-11-22, issue #877).
 

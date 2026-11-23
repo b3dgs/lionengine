@@ -30,6 +30,7 @@ Summary of the answers recorded so far, by decision. Details are in the rows bel
 | [ADR-0026](decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md) graphics: pixels and decoders, cache, color transforms, pivot, animation, sheet ids, loading, commands | OQ-100 to OQ-108 | OQ-160 | #883 |
 | [ADR-0027](decisions/0027-audio-policies-formats-latency-and-first-scope.md) audio policies, formats, latency, first scope | OQ-110 to OQ-117 | OQ-161 | #884 |
 | [ADR-0028](decisions/0028-tile-map-collision-json-definitions-and-storage.md) tile map collision, JSON definitions, auto-tiling, tileset ownership, storage | OQ-125 to OQ-129 | OQ-162 | #885 |
+| [ADR-0029](decisions/0029-camera-details-view-transform-follow-shake-zoom.md) camera details | OQ-130 to OQ-136 | OQ-163 | #886 |
 
 Sections "Platform and build", "Coordinates and units", "Game loop", "Runtime" and "World and objects" and "Modules and APIs" and "Game development and workflow" and "Network and budgets" have no unresolved original question left. Next section to treat: to be chosen by the owner.
 
@@ -91,6 +92,7 @@ Sections "Platform and build", "Coordinates and units", "Game loop", "Runtime" a
 | OQ-160 | Follow-ups of ADR-0026: exact types of the pixel buffer and command entries, premultiplied or straight alpha, decoder module names (with OQ-156), PNG feature subset (interlacing, bit depths, palettes), definition-file field names (with OQ-154, OQ-126), per-frame duration overrides, mask-layer templates. | Before the graphics batch |
 | OQ-161 | Follow-ups of ADR-0027: calibrated voice default, size and length limits, priority scale, weights format, event form for failing tracks, ring buffer size, desktop OGG decoder choice and license (OQ-148), mixer group and fade contracts, spatial audio design, measurement of the latency targets (OQ-147 for Android). | Before the audio batches |
 | OQ-162 | Follow-ups of ADR-0028: package and API of the JSON reader in `core` (number handling, error reporting, size limits), schema and versioning of definition files, Tiled feature subset (layers, object layers, properties, infinite maps), one-off converter for old XML files, optional packaged binary form, slopes and one-way tiles (OQ-142). | Before the loader batch |
+| OQ-163 | Follow-ups of ADR-0029: noise function and constants, default seed value, zoom curve set and defaults, `long` key encoding with OQ-137, bounds clamp, dead zone and follow offset contracts, view transform fields (with OQ-160), interaction of zoom anchor with follow. | Before the camera batches |
 
 ## World and objects
 
@@ -204,17 +206,17 @@ OQ-125 to OQ-129 were resolved later by [ADR-0028](decisions/0028-tile-map-colli
 
 ## Camera (issue #868, ADR-0010)
 
-Raised by issue #868 and [ADR-0010](decisions/0010-camera-system-in-camera.md) (ACCEPTED on 2026-11-22). OQ-012 and OQ-040 are touched, not resolved. All rows below are open. The packet placeholders `OQ-NEW-1` (rendering consumer) and `OQ-NEW-2` (shake randomness) map to OQ-131 and OQ-130.
+Raised by issue #868 and [ADR-0010](decisions/0010-camera-system-in-camera.md) (ACCEPTED on 2026-11-22). OQ-012 and OQ-040 are touched, not resolved. OQ-130 to OQ-136 were resolved later by ADR-0029. The packet placeholders `OQ-NEW-1` (rendering consumer) and `OQ-NEW-2` (shake randomness) map to OQ-131 and OQ-130.
 
 | ID | Question | Needed by |
 |---|---|---|
-| OQ-130 | Shake randomness detail (decision 5A, per-camera seeded noise): noise algorithm, default seed and reseeding, behavior when several shakes overlap. | Before the shake batch |
-| OQ-131 | Rendering consumer contract of the view rectangle (decision 6A): how `render-api` and `tilemap` receive it and apply the world-to-screen transform; related to OQ-108 and ADR-0009 decision 1A. | Phase 3 (before the first camera consumer) |
-| OQ-132 | Placement details and ECS adapter: entity ID type of the lookup contract, and the module hosting the adapter that implements it (decisions 1A, 2A); related to OQ-041 and OQ-042. | Before the follow batch |
-| OQ-133 | Follow delay details (decision 4A): default time constant, behavior on target switch or teleport, snap threshold, sampling of the target in the update step; related to OQ-021. | Before the follow batch |
-| OQ-134 | Shake units and picking: amplitude in meters or fraction of the view, frequency in Hz, decay curve, effect on screen-to-world picking. | Before the shake batch |
-| OQ-135 | Zoom details: default range, animation curve and duration, anchor point other than the camera center (the default pivot is the center, REQ-CAM-002), meaning of zoom values. | Before the zoom batch |
-| OQ-136 | Features out of scope of issue #868, listed as candidates only: multi-camera and split screen, bounds clamp, rotation, parallax, dead zone, follow offset. | When one is requested |
+| OQ-130 | **RESOLVED** by [ADR-0029](decisions/0029-camera-details-view-transform-follow-shake-zoom.md): integer hashed value noise, per-camera seed and reseed, strongest overlapping shake wins. Original question: Shake randomness detail (decision 5A, per-camera seeded noise): noise algorithm, default seed and reseeding, behavior when several shakes overlap. | Before the shake batch |
+| OQ-131 | **RESOLVED** by [ADR-0029](decisions/0029-camera-details-view-transform-follow-shake-zoom.md): per-frame plain view transform (scale, offset, Y flip) from the interpolated state; tilemap gets a pixel rectangle, sprites pixel positions. Original question: Rendering consumer contract of the view rectangle (decision 6A): how `render-api` and `tilemap` receive it and apply the world-to-screen transform; related to OQ-108 and ADR-0009 decision 1A. | Phase 3 (before the first camera consumer) |
+| OQ-132 | **RESOLVED** by [ADR-0029](decisions/0029-camera-details-view-transform-follow-shake-zoom.md): primitive `long` target key; adapter in the optional composition module (OQ-155) and examples; encoding OQ-137. Original question: Placement details and ECS adapter: entity ID type of the lookup contract, and the module hosting the adapter that implements it (decisions 1A, 2A); related to OQ-041 and OQ-042. | Before the follow batch |
+| OQ-133 | **RESOLVED** by [ADR-0029](decisions/0029-camera-details-view-transform-follow-shake-zoom.md): default rigid, smooth target switch, explicit snap, optional snap threshold, target sampled after the systems. Original question: Follow delay details (decision 4A): default time constant, behavior on target switch or teleport, snap threshold, sampling of the target in the update step; related to OQ-021. | Before the follow batch |
+| OQ-134 | **RESOLVED** by [ADR-0029](decisions/0029-camera-details-view-transform-follow-shake-zoom.md): amplitude in meters, Hz, linear decay; world-to-screen includes shake, picking ignores it by default with an option. Original question: Shake units and picking: amplitude in meters or fraction of the view, frequency in Hz, decay curve, effect on screen-to-world picking. | Before the shake batch |
+| OQ-135 | **RESOLVED** by [ADR-0029](decisions/0029-camera-details-view-transform-follow-shake-zoom.md): dimensionless multiplier, default 1.0, range 0.25 to 4.0, duration and smoothstep animation, center pivot with optional world anchor. Original question: Zoom details: default range, animation curve and duration, anchor point other than the camera center (the default pivot is the center, REQ-CAM-002), meaning of zoom values. | Before the zoom batch |
+| OQ-136 | **RESOLVED** by [ADR-0029](decisions/0029-camera-details-view-transform-follow-shake-zoom.md): bounds clamp first, then dead zone and follow offset; multi-camera by instances; parallax is a layer feature; rotation deferred. Original question: Features out of scope of issue #868, listed as candidates only: multi-camera and split screen, bounds clamp, rotation, parallax, dead zone, follow offset. | When one is requested |
 
 ## ECS: dynamic objects, traits and standard traits (ADR-0011)
 

@@ -7,7 +7,7 @@
 - Affected modules: `camera`, `core`, `test-support`, `examples`
 - Requirements: `REQ-CAM-001` to `REQ-CAM-008`
 - Applicable ADRs: [`ADR-0010`](../decisions/0010-camera-system-in-camera.md) (ACCEPTED), [`ADR-0001`](../decisions/0001-technical-baseline-and-conventions.md)
-- Open questions involved: `OQ-010`, `OQ-012`, `OQ-013`, `OQ-021`, `OQ-130` to `OQ-136`
+- Open questions involved: `OQ-010`, `OQ-012`, `OQ-013`, `OQ-021`, `OQ-163` (`OQ-130` to `OQ-136` resolved by ADR-0029)
 
 ## Objective
 
@@ -15,7 +15,7 @@ A headless camera representing the visible area of the world: zoom, translation,
 
 ## Out of scope
 
-Multi-camera and split screen, bounds clamp, rotation, parallax, dead zone, follow offset (`OQ-136`); meters-to-pixels factor (`OQ-012`).
+Multi-camera and split screen, bounds clamp, rotation, parallax, dead zone, follow offset (ADR-0029: bounds clamp first, rotation deferred); meters-to-pixels factor (`OQ-012`).
 
 ## Expected behavior
 
@@ -41,7 +41,7 @@ Meters, seconds, dimensionless zoom. Pure math, no reflection, no `java.awt`.
 
 ## Dependencies
 
-`core` only. The ECS adapter lives outside `camera` (`OQ-132`).
+`core` only. The ECS adapter lives outside `camera` (ADR-0029).
 
 ## Tests
 
