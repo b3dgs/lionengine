@@ -146,7 +146,37 @@ flowchart LR
 
 The game reads actions such as "jump" or "move left", not keys. A table binds keys, buttons, sticks or touch to actions, so players can rebind them and the same code works with a keyboard or a gamepad. A quick tap is always seen by exactly one step.
 
-## 9. Units everybody uses
+## 9. Playing over the network
+
+One machine is the **server**: it runs the real game. The others are **clients**: they send what their player does and show what the server tells them. The server can also be a player's own machine (the *host*).
+
+```mermaid
+flowchart LR
+  subgraph hostpc["Host machine"]
+    server["Server: the real game"]
+    local["Host's player (an ordinary client)"]
+    local <-->|in memory| server
+  end
+  c1["Client 2"] <-->|UDP| server
+  c2["Client 3"] <-->|UDP| server
+```
+
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant S as Server (the reference)
+  C->>S: my buttons for steps 50 to 53 (repeated until received)
+  S->>S: step 51: apply everyone's buttons, move everything
+  S-->>C: real positions of step 51 (only what changed)
+  C->>C: my character: was my guess right? if not, fix it and redo my last steps
+  C->>C: other objects: shown smoothly, 0.1 s in the past
+```
+
+- Clients never decide anything that matters (hits, scores): the server does, so the game cannot drift apart between machines.
+- Your own character moves at once (the client guesses, then checks against the server); everything else is shown slightly in the past so that it moves smoothly.
+- Joining takes an IP address, a port and a player name. Everybody sees the same player list and can chat.
+
+## 10. Units everybody uses
 
 | Quantity | Unit |
 |---|---|
@@ -161,6 +191,7 @@ The game reads actions such as "jump" or "move left", not keys. A table binds ke
 ## Where to go next
 
 - What a game can do, area by area: [`engine-features.md`](engine-features.md).
+- Network play in detail: [`features/network.md`](features/network.md) and [`features/multiplayer.md`](features/multiplayer.md).
 
 - Rules for contributors and agents: [`../AGENTS.md`](../AGENTS.md).
 - Every contract in detail: [`architecture/contracts.md`](architecture/contracts.md); modules: [`architecture/modules.md`](architecture/modules.md).

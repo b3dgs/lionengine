@@ -1,6 +1,6 @@
 # Cross-cutting contracts
 
-**Status: VALIDATED — responsibilities, invariants and defaults of every contract (ADR-0001 to ADR-0037). Java signatures are written by each implementation batch under [`../conventions.md`](../conventions.md) and reviewed in its pull request.**
+**Status: VALIDATED — responsibilities, invariants and defaults of every contract (ADR-0001 to ADR-0039). Java signatures are written by each implementation batch under [`../conventions.md`](../conventions.md) and reviewed in its pull request.**
 
 Each public contract must specify: responsibility, invariants, lifecycle, calling thread, units, errors, data ownership, behavior when a capability is absent, and compatibility (including Android/DEX). A plain-language summary with diagrams is in [`../how-the-engine-works.md`](../how-the-engine-works.md).
 
@@ -139,7 +139,7 @@ The ECS is the single object model: a `World` (module `ecs`) owns objects, trait
 - **Structural changes:** recorded in a command buffer and applied at one flush per step, at the end, after all systems and before rendering; commands in recorded order; explicit flush allowed outside the loop.
 - **Events:** listeners with primitive arguments, synchronous: created and destroyed, trait added and removed (at the flush), collision enter and exit (after the `Collision` system, `objectA < objectB`).
 - **Systems:** `int` ordering slot, lower first, ties by registration order; enabled flag applied at the next step; constant step in seconds; exceptions propagate.
-- **Standard traits** (`traits`): `Transformable`, `Movable`, `Gravity`, `Jumpable`, `Collidable`, `Lifetime`; systems `Jump` (1000), `Gravity` (2000), `Movement` (3000), `Collision` (4000), `Lifetime` (5000). Collision first batches: grid cell 2 m, boxes, layers and masks both ways, triggers, detection only for objects, tile push-out setting `grounded`, no swept detection.
+- **Standard traits** (`traits`): `Transformable`, `Movable`, `Gravity`, `Jumpable`, `Collidable`, `Lifetime`; systems `Jump` (1000), `Gravity` (2000), `Movement` (3000), `Collision` (4000), `Lifetime` (5000); each standard system accepts extra excluded trait types when created (for example `NetProxy`, ADR-0038). Collision first batches: grid cell 2 m, boxes, layers and masks both ways, triggers, detection only for objects, tile push-out setting `grounded`, no swept detection.
 - **Not allowed:** a platform type in `ecs` or `traits`, a singleton world, an allocation per step in the query, system and flush paths, an ECS dependency of `core` or of an `*-api` module.
 
 Details: [`features/ecs.md`](../features/ecs.md), [`features/standard-traits.md`](../features/standard-traits.md).
@@ -157,7 +157,17 @@ Details: [`features/ecs.md`](../features/ecs.md), [`features/standard-traits.md`
 
 `core` provides a facade with levels `ERROR`, `WARNING`, `INFO`, `DEBUG`, an `isEnabled` check and constant messages with primitive arguments; disabled levels allocate nothing; the default sink writes errors and warnings to `System.err`; platforms may install another sink.
 
-## Multiplayer
+## Multiplayer and network (ADR-0021, ADR-0022, ADR-0035, ADR-0038, ADR-0039)
 
-- Several local players and split-screen are several views in one scene and per-player device sets (ADR-0021, ADR-0035); no module needed.
-- Network: the optional `multiplayer` module (ADR-0022), Phase 5. Binding today: deterministic simulation, whole-state read and replace, inputs through actions (ADR-0024). Protocol, authority, prediction and rollback: OQ-165.
+- **Local:** several local players and split-screen are several views in one scene and per-player device sets; no module needed.
+- **Model:** client-server; the server is the only authority on replicated objects (creation, removal, outcomes). Clients send input frames every tick and commands (reliable game messages); they never send object state. A host runs the server and an ordinary loopback client in one process; a dedicated server runs on the headless platform. No lockstep, no peer-to-peer, no host migration.
+- **Snapshots:** every 3 ticks by default, absolute values of the relevant replicated objects, delta-compressed by byte comparison against the client's last acknowledged snapshot; object existence is part of the snapshot; network ids `int` from 1, never reused. Once a client applies a snapshot of tick T, its proxies hold the server's values of tick T: a divergence cannot last.
+- **Client view:** proxies (`NetProxy`, excluded from simulation systems) shown 2 snapshot intervals behind, interpolated by trait codecs; objects of predicted types owned by the local player are simulated immediately, compared byte for byte with the server's state and corrected by replaying the recorded frames (`isReplaying()`). Client code never creates or removes replicated objects; client-only objects live in another world.
+- **Inputs:** an input frame holds the `input-api` action states of one tick (3 bits per digital action, 16 bits per analog action); the client simulates with the decoded frame it sends; the server applies the frame of tick T at T, repeats held states when one is missing and carries the edges of a late one, so a press is never lost. Each player's input is an `InputState` in both local and network play. Clients keep a 2-tick input lead by running 0 or 2 ticks in an update when needed.
+- **Schema:** object types, replicated traits and codecs, predicted types, input layout and game message types are registered in the same order on both sides; a 32-bit content hash is checked at join.
+- **Protocol (`network`, on `core` only):** UDP through a non-blocking `DatagramChannel` polled on the runtime thread; loopback and simulated-conditions transports for the host and tests; 21-byte header with a salted CRC32, session token, sequence and acks; unreliable-sequenced and reliable-ordered channels; fragmentation; keepalive 0.1 s; timeout 10 s; default port 19880; datagrams of 1,200 bytes.
+- **Sessions:** join by IP literal and port with a name and checks in a fixed order (protocol, game, content, joinable, capacity 16 by default, name, authenticator); identical player lists (id, name, host flag, round trip, properties); kick, joinable flag, server name; chat of up to 256 characters with a filter and a rate limit; game messages registered by id with a codec; statistics; server information and LAN discovery.
+- **Security:** none in version 1 beyond tokens, address checks, padding and bounds checks; the protocol version, opaque authentication data with an `Authenticator` and a `PacketProtection` stage let a later version add encryption without changing the session API.
+- **Threads and time:** runtime thread only, no thread started; network timing from a monotonic `NetworkTime`; simulation counts ticks. A networked session runs at time scale 1.0; a paused server loop stalls it.
+
+Details: [`features/network.md`](../features/network.md), [`features/multiplayer.md`](../features/multiplayer.md).

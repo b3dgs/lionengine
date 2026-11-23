@@ -24,7 +24,7 @@ Today no engine code exists: every area below is at most *Specified*.
 | [Camera](#camera) | Specified | 3 |
 | [Input](#input) | Specified | 3–4 |
 | [Platforms](#platforms) | Specified | 1–4 |
-| [Multiplayer and network](#multiplayer-and-network) | Planned | 5 |
+| [Multiplayer and network](#multiplayer-and-network) | Specified | 5 |
 
 ## Game loop and timing
 
@@ -138,12 +138,22 @@ Today no engine code exists: every area below is at most *Specified*.
 
 ## Multiplayer and network
 
+[`features/network.md`](features/network.md), [`features/multiplayer.md`](features/multiplayer.md)
+
 - Local multiplayer and split screen are covered by views and input players above.
-- Network play is planned for Phase 5; the simulation is kept deterministic so that it stays possible (OQ-165).
+- Host a game on one machine and let others join by IP address and port with a player name; the host plays too, no dedicated server needed. A dedicated server can also run without a window.
+- Every machine sees the same list of players with their ping and game-defined details (team, color, ready); the host can kick a player or close the game to newcomers.
+- A built-in chat, to everyone or to one player, with a filter and flood protection.
+- The server is the reference: it sends the real values of the objects about 20 times per second, so a client can never stay out of sync, even when packets are lost.
+- Your own character reacts at once (prediction, corrected by the server if needed); other objects move smoothly (interpolation, about 0.1 s behind).
+- Fits platformers and shoot'em ups (each player's input sent every step) and strategy games (orders sent as commands, only changed units sent).
+- Games can send their own messages; servers on the local network can be found automatically.
+- Designed for up to 16 players; a test mode simulates lag and packet loss on one machine.
+- Not provided yet: encryption and passwords (the protocol is ready for them), internet matchmaking and NAT traversal, taking over when the host leaves.
 
 ## Not provided
 
-A game editor (maps come from Tiled), a scripting language, a full physics engine (rigid bodies, joints), a network protocol or server, 3D.
+A game editor (maps come from Tiled), a scripting language, a full physics engine (rigid bodies, joints), online services (matchmaking, server lists, relays), 3D.
 
 ## Keeping this page current
 

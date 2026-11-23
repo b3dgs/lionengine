@@ -43,7 +43,9 @@
 | Sprites, animations, sprite sheets | grid index math, transforms, palette mapping, animation state machine | sprite render and cache suites (`test-support`) | headless load, cache, render; AWT/OpenGL/Android color-transform parity; cache and batching performance |
 | Display and filtering | value types, scaling policies (including the `INTEGER` fallback), fallback orders, filter chain | effective result and reason, no throw on missing capability, frame-boundary application (`test-support`) | headless with fake capabilities; golden-image tests on AWT/OpenGL (none, bilinear, `HQ2X`), CRT on OpenGL |
 | Input | bindings, per-step edges with zero, one and several steps per iteration, taps within one step, dead zone, inverse scaling of pointers, focus loss, hot-plug (REQ-IN-001 to REQ-IN-005) | adapter suite in `test-support` | keyboard, mouse, touch, gamepad on each platform |
-| Multiplayer | per-player device sets and views (REQ-MP-001) | — | split-screen demonstrator; network in Phase 5 (OQ-165) |
+| Multiplayer (local) | per-player device sets and views (REQ-MP-001) | — | split-screen demonstrator |
+| Network | wire encoding, checksum, sequence wrap-around, acks, reliable ordering, resend, window, overflow, fragmentation, join checks and their order, names, properties, timeouts, chat filter and rate limit, statistics (REQ-NET-*) | transport suite in `test-support` run on loopback and UDP | server and clients over the conditioned transport with fixed seeds; UDP on the local address; real network and Android multicast as platform tests |
+| Multiplayer (network) | codecs, content hash, delta against a baseline, removal by absence, input frames (missing, late, quantized), pacing, prediction comparison, replay and snap, epochs (REQ-MP-004 to REQ-MP-015) | codec suite in `test-support` | convergence suite under loss, duplication, reordering and latency; predicted avatar; 1,000-unit RTS scenario; allocation of per-step paths |
 | Java/Android compatibility | check of the APIs used | — | D8/R8 compilation, DEX and device/emulator tests |
 | Architecture rules | — | — | forbidden-dependency and cycle check (REQ-CORE-005) |
 

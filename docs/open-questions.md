@@ -1,6 +1,6 @@
 # Open questions
 
-**Status: VALIDATED — single registry of every `TO BE DEFINED` item. Since ADR-0031 to ADR-0035 (2026-11-23), only OQ-096, OQ-147, OQ-149 and OQ-165 are open.**
+**Status: VALIDATED — single registry of every `TO BE DEFINED` item. Since ADR-0031 to ADR-0035 and ADR-0038, ADR-0039 (2026-11-23), only OQ-096, OQ-147 and OQ-149 are open.**
 
 Rules:
 - Do not guess the answer to an open question in code or documentation. Ask, or record the assumption you made and keep it reversible.
@@ -37,13 +37,13 @@ Summary of the answers recorded so far, by decision. Details are in the rows bel
 | [ADR-0033](decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md) media defaults: module names, filters and shaders, graphics data, audio | OQ-156, OQ-159, OQ-160, OQ-161 | — | owner delegation of 2026-11-23 |
 | [ADR-0034](decisions/0034-camera-and-ecs-defaults-noise-clamp-slots-capacities-events-shapes.md) camera and ECS defaults | OQ-163, OQ-164, rest of OQ-142 | — | owner delegation of 2026-11-23 |
 | [ADR-0035](decisions/0035-input-actions-devices-and-step-edges.md) input contract | (no open question; input points of `contracts.md`) | — | owner delegation of 2026-11-23 |
+| [ADR-0038](decisions/0038-network-model-server-authority-snapshots-prediction.md) network model, modules `network` and `multiplayer`; [ADR-0039](decisions/0039-network-protocol-transport-sessions-and-defaults.md) protocol, sessions and defaults | OQ-165 | — | owner delegation of 2026-11-23 |
 
-Every section of this register has been treated: the general sections by ADR-0012 to ADR-0024, the feature sections (display, sprites, audio, tile maps, camera, ECS) by ADR-0025 to ADR-0030, and the follow-up rows by ADR-0031 to ADR-0035, decided under the owner's explicit delegation of 2026-11-23. Four rows stay open on purpose, because they need work rather than a choice:
+Every section of this register has been treated: the general sections by ADR-0012 to ADR-0024, the feature sections (display, sprites, audio, tile maps, camera, ECS) by ADR-0025 to ADR-0030, the follow-up rows by ADR-0031 to ADR-0035 and the network model by ADR-0038 and ADR-0039, decided under the owner's explicit delegation of 2026-11-23. Three rows stay open on purpose, because they need work rather than a choice:
 
 - OQ-096 multi-monitor and HiDPI: deferred by the owner until Phase 4; contracts must not preclude it.
 - OQ-147 Android toolchain verification for Java 25: done and recorded at the build skeleton.
 - OQ-149 build skeleton details: module declaration, package tree verified with the dependency plugin, profiles, exact commands, CI adaptation, artifact hosting.
-- OQ-165 network model: Phase 5, with a real game need.
 
 An agent meeting one of these stops that part of the work and reports it; everything else is decided.
 
@@ -200,7 +200,7 @@ Raised by issue #853 and [ADR-0004](decisions/0004-audio-contracts-short-and-lon
 
 | ID | Question | Needed by |
 |---|---|---|
-| OQ-165 | Network model: protocol, transport, authority, prediction, rollback, snapshot form, and the content of the optional `multiplayer` module. Split from OQ-158 by ADR-0031. Constraints already binding: deterministic simulation, whole-state read and replace, inputs through `input-api` actions (ADR-0024, REQ-MP-002). | Phase 5, with a real game need |
+| OQ-165 | **RESOLVED** by [ADR-0038](decisions/0038-network-model-server-authority-snapshots-prediction.md) and [ADR-0039](decisions/0039-network-protocol-transport-sessions-and-defaults.md) (owner delegation of 2026-11-23): client-server with server authority; delta-compressed state snapshots; client prediction with replay for owned objects and interpolation for the others; input frames and reliable commands; own UDP protocol with a reliable-ordered channel, joining by IP and name, player list, chat, game messages, discovery; no lockstep, no whole-simulation rollback; modules `network` (on `core`) and `multiplayer` (over `ecs`). Original question: Network model: protocol, transport, authority, prediction, rollback, snapshot form, and the content of the optional `multiplayer` module. Split from OQ-158 by ADR-0031. Constraints already binding: deterministic simulation, whole-state read and replace, inputs through `input-api` actions (ADR-0024, REQ-MP-002). | Phase 5, with a real game need |
 
 ## Unassigned identifiers
 

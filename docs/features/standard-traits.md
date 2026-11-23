@@ -6,8 +6,8 @@
 - Roadmap phase: Phase 3, see `roadmap.md`
 - Flow: B of [`change-process.md`](../change-process.md) (new modules `traits` and `physics`); ADRs written and accepted
 - Affected modules: `traits`, `physics`, `ecs`, `core`, `test-support`, `examples`
-- Requirements: `REQ-STD-001` to `REQ-STD-010`, `REQ-PHYS-001`, `REQ-TRAIT-001`, `REQ-TRAIT-002`
-- Applicable ADRs: [`ADR-0011`](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md), [`ADR-0013`](../decisions/0013-world-coordinates-and-angles.md), [`ADR-0014`](../decisions/0014-meters-to-pixels-numeric-type-and-rotation.md), [`ADR-0021`](../decisions/0021-scene-world-viewport-and-object-model.md), [`ADR-0028`](../decisions/0028-tile-map-collision-json-definitions-and-storage.md), [`ADR-0030`](../decisions/0030-ecs-details-ids-flush-scheduling-collision-and-traits.md), [`ADR-0034`](../decisions/0034-camera-and-ecs-defaults-noise-clamp-slots-capacities-events-shapes.md)
+- Requirements: `REQ-STD-001` to `REQ-STD-011`, `REQ-PHYS-001`, `REQ-TRAIT-001`, `REQ-TRAIT-002`
+- Applicable ADRs: [`ADR-0011`](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md), [`ADR-0013`](../decisions/0013-world-coordinates-and-angles.md), [`ADR-0014`](../decisions/0014-meters-to-pixels-numeric-type-and-rotation.md), [`ADR-0021`](../decisions/0021-scene-world-viewport-and-object-model.md), [`ADR-0028`](../decisions/0028-tile-map-collision-json-definitions-and-storage.md), [`ADR-0030`](../decisions/0030-ecs-details-ids-flush-scheduling-collision-and-traits.md), [`ADR-0034`](../decisions/0034-camera-and-ecs-defaults-noise-clamp-slots-capacities-events-shapes.md), [`ADR-0038`](../decisions/0038-network-model-server-authority-snapshots-prediction.md)
 - Open questions involved: none
 
 ## Objective
@@ -20,7 +20,7 @@ Shapes other than axis-aligned boxes, one-way tiles, slopes, swept detection and
 
 ## Expected behavior
 
-Systems run in this order each step, by slot: `Jump` (1000), `Gravity` (2000), `Movement` (3000), `Collision` (4000), `Lifetime` (5000); the flush then applies structural changes. Game systems take slots between them (ADR-0034).
+Systems run in this order each step, by slot: `Jump` (1000), `Gravity` (2000), `Movement` (3000), `Collision` (4000), `Lifetime` (5000); the flush then applies structural changes. Game systems take slots between them (ADR-0034). Each standard system accepts, when created, additional trait types that its query excludes (default none), so that objects carrying them are skipped, for example the `NetProxy` trait of network proxies (`REQ-STD-011`, ADR-0038).
 
 | Trait | Data (units) | System behavior |
 |---|---|---|
@@ -47,6 +47,7 @@ Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.m
 4. Tile push-out and `grounded` through the `physics` shape query (`REQ-STD-010`, `REQ-MAP-008`).
 5. `Jumpable` and `Jump` (`REQ-STD-004`).
 6. Pipeline documentation, example and extension guide (`REQ-STD-007`, `REQ-STD-008`).
+7. Extra excluded trait types at system creation (`REQ-STD-011`); may be done with any earlier batch.
 
 ## Lifecycle and concurrency
 

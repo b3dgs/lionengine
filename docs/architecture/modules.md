@@ -1,6 +1,6 @@
 # Conceptual module breakdown
 
-**Status: VALIDATED — module list, responsibilities and allowed dependencies (ADR-0002 to ADR-0037). Each module becomes one artifact `lionengine-<module>` (ADR-0012); its declaration and package tree are done at the build skeleton (OQ-149).**
+**Status: VALIDATED — module list, responsibilities and allowed dependencies (ADR-0002 to ADR-0039). Each module becomes one artifact `lionengine-<module>` (ADR-0012); its declaration and package tree are done at the build skeleton (OQ-149).**
 
 | Domain | Responsibility | Allowed dependencies |
 |---|---|---|
@@ -26,13 +26,14 @@
 | `physics` | Headless collision contracts: shapes (axis-aligned box first), overlap tests, shape-query contract, uniform-grid broad phase; no rigid bodies (ADR-0021, ADR-0028) | `core` |
 | `traits` | Standard traits and systems: `Transformable`, `Movable`, `Gravity`, `Jumpable`, `Collidable`, `Lifetime` (ADR-0011, ADR-0030, ADR-0034) | `ecs`, `physics`, `core` |
 | `composition` | Optional ready-made scene composition: world, views (`View` = camera + viewport), tile map, background, music; camera follow adapter over the world; nothing depends on it (ADR-0031) | `runtime`, `ecs`, `camera`, `graphics`, `tilemap`, `audio-api`, `render-api` |
-| `multiplayer` | Optional extension, Phase 5: sessions and network transport; nothing depends on it (ADR-0022, OQ-165) | `ecs`, `input-api` |
+| `network` | Optional, Phase 5: UDP, loopback and simulated-conditions transports, packet protocol, reliable-ordered and unreliable channels, server and client sessions (join by IP and name, player list and properties, kick), chat, game messages, statistics, LAN discovery; no objects; polled on the runtime thread, no thread; nothing but `multiplayer` depends on it (ADR-0038, ADR-0039) | `core` |
+| `multiplayer` | Optional, Phase 5: server-authoritative replication of an ECS world: schema and content hash, delta-compressed snapshots, proxies and interpolation, input frames and commands, tick alignment, prediction with replay, standard trait codecs, host helper; nothing depends on it (ADR-0022, ADR-0038) | `network`, `ecs`, `traits`, `input-api`, `core` |
 | `test-support` | Controllable clock, manually driven loop, headless frontend, fake backends, reusable contract-test suites (REQ-TEST-001) | Contracts of the modules it tests; used in `test` scope only |
 | `examples` | Minimal and demonstration applications, headless first, compiled and run by the build (REQ-DOC-001) | Public APIs only; never depended upon |
 
 ## Root packages
 
-Each module has one root package under `com.b3dgs.lionengine` (`core` is the root itself; an implementation module is a child of its API, for example `platform-awt` → `com.b3dgs.lionengine.platform.awt`). The full table is in [ADR-0037](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md). `radial-encapsulation-maven-plugin` runs per module with `basePackage` set to that root; dependencies between modules are governed by the table above and enforced by the Maven dependency graph.
+Each module has one root package under `com.b3dgs.lionengine` (`core` is the root itself; an implementation module is a child of its API, for example `platform-awt` → `com.b3dgs.lionengine.platform.awt`). The full table is in [ADR-0037](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md); `network` uses `com.b3dgs.lionengine.network` ([ADR-0038](../decisions/0038-network-model-server-authority-snapshots-prediction.md)). `radial-encapsulation-maven-plugin` runs per module with `basePackage` set to that root; dependencies between modules are governed by the table above and enforced by the Maven dependency graph.
 
 ## Dependency direction
 
@@ -59,11 +60,15 @@ flowchart BT
   composition --> camera
   composition --> tilemap
   composition --> aapi
+  network["network (optional)"] --> core
+  multiplayer["multiplayer (optional)"] --> network
+  multiplayer --> traits
+  multiplayer --> iapi
 ```
 
-Implementation modules point to the API they implement: `platform-awt` and `platform-android` → `platform-api`; `render-awt` and `render-opengl` → `render-api` (and `render-awt` → `platform-awt`); `audio-*` → `audio-api`; `resources-*` → `resources`; `input-*` → `input-api`; `graphics-*` → `graphics`. `multiplayer` → `ecs`, `input-api`. `examples` may use every public API; `test-support` is test scope only.
+Implementation modules point to the API they implement: `platform-awt` and `platform-android` → `platform-api`; `render-awt` and `render-opengl` → `render-api` (and `render-awt` → `platform-awt`); `audio-*` → `audio-api`; `resources-*` → `resources`; `input-*` → `input-api`; `graphics-*` → `graphics`. `network` → `core`; `multiplayer` → `network`, `ecs`, `traits`, `input-api`. `examples` may use every public API; `test-support` is test scope only.
 
-Arrows always point from the dependent module to its dependency. A cycle, or an arrow from `core` or an `*-api` module to an implementation module, is a violation (REQ-CORE-005). No module depends on `composition`, `multiplayer` or `examples`.
+Arrows always point from the dependent module to its dependency. A cycle, or an arrow from `core` or an `*-api` module to an implementation module, is a violation (REQ-CORE-005). No module depends on `composition`, `multiplayer` or `examples`, and only `multiplayer` depends on `network`.
 
 ## Splitting principles
 

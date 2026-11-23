@@ -4,14 +4,15 @@
 
 ## Phase 0 — structuring decisions and project skeleton
 
-Done (ADR-0001 to ADR-0037):
+Done (ADR-0001 to ADR-0039):
 - technical baseline, coordinates, units, angles, numeric types (ADR-0001, ADR-0012 to ADR-0016);
 - game loop, threads, events, loading, memory, no reflection (ADR-0017 to ADR-0020, ADR-0031);
 - scene, world and object model, modules and their dependencies (ADR-0021, ADR-0022, `architecture/modules.md`);
 - game repository, change requests, assets, API index, dependency policy (ADR-0023, ADR-0032);
 - determinism, budgets, supported desktop platforms (ADR-0024);
 - every feature contract (ADR-0025 to ADR-0030, ADR-0033 to ADR-0036);
-- package tree per module, callback types and canonical names (ADR-0037); one feature page per batch ([`features/README.md`](features/README.md)).
+- package tree per module, callback types and canonical names (ADR-0037); one feature page per batch ([`features/README.md`](features/README.md));
+- network model, protocol and sessions (ADR-0038, ADR-0039).
 
 Remaining, in this order:
 1. build skeleton ([`features/build-skeleton.md`](features/build-skeleton.md), OQ-149): declare the modules of `architecture/modules.md` as Maven modules with empty `package-info.java`, package tree verified by `radial-encapsulation-maven-plugin`, JUnit 5, Javadoc with doclint failing on warnings (REQ-CORE-003), coverage, exact build and test commands recorded in `README.md` and `AGENTS.md`;
@@ -66,7 +67,9 @@ Remaining, in this order:
 ## Phase 5 — advanced extensibility
 
 - local multiplayer demonstrator: two views and two players (REQ-MP-001);
-- network architecture, only after the synchronization needs of a real game are defined (OQ-165).
+- `network` in batches: wire encoding and packets, transports (loopback, simulated conditions, UDP), connections, reliable channel, players, chat and game messages, LAN discovery ([`features/network.md`](features/network.md)); it needs only `core`, so it may start earlier if a game asks for it;
+- `multiplayer` in batches: schema and complete snapshots, deltas and convergence suite, input frames and commands, interpolation, tick alignment, prediction, standard codecs and host ([`features/multiplayer.md`](features/multiplayer.md));
+- network demonstrators: a two-player platformer with prediction and an RTS-style order example, both headless over the loopback transport with simulated lag and loss.
 
 **Expected output:** optional modules and demonstrators, without weighing down the minimal foundation.
 

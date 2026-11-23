@@ -162,15 +162,45 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-STD-008 | Should | VALIDATED | ADR-0011, ADR-0030, ADR-0034 | — | — | no test yet |
 | REQ-STD-009 | Could | VALIDATED | ADR-0030, ADR-0034 | — | — | no test yet |
 | REQ-STD-010 | Should | VALIDATED | ADR-0028, ADR-0030 | — | — | no test yet |
+| REQ-STD-011 | Should | VALIDATED | ADR-0038 | — | — | no test yet |
 | REQ-IN-001 | Must | VALIDATED | ADR-0035 | — | — | no test yet |
 | REQ-IN-002 | Should | VALIDATED | ADR-0035 | — | — | no test yet |
 | REQ-IN-003 | Must | VALIDATED | ADR-0018, ADR-0035 | — | — | no test yet |
 | REQ-IN-004 | Should | VALIDATED | ADR-0035 | — | — | no test yet |
 | REQ-IN-005 | Should | VALIDATED | ADR-0035 | — | — | no test yet |
 | REQ-MP-001 | Could | VALIDATED | ADR-0021, ADR-0022 | — | — | no test yet |
-| REQ-MP-002 | Could | VALIDATED | ADR-0024 | OQ-165 | — | no test yet |
+| REQ-MP-002 | Could | VALIDATED | ADR-0024, ADR-0038 | — | — | no test yet |
+| REQ-NET-001 | Should | VALIDATED | ADR-0038, ADR-0039 | OQ-147 | — | no test yet |
+| REQ-NET-002 | Should | VALIDATED | ADR-0039 | OQ-147 | — | no test yet |
+| REQ-NET-003 | Should | VALIDATED | ADR-0039 | — | — | no test yet |
+| REQ-NET-004 | Should | VALIDATED | ADR-0039 | — | — | no test yet |
+| REQ-NET-005 | Should | VALIDATED | ADR-0039 | — | — | no test yet |
+| REQ-NET-006 | Should | VALIDATED | ADR-0039 | — | — | no test yet |
+| REQ-NET-007 | Should | VALIDATED | ADR-0039 | — | — | no test yet |
+| REQ-NET-008 | Should | VALIDATED | ADR-0039 | — | — | no test yet |
+| REQ-NET-009 | Should | VALIDATED | ADR-0039 | — | — | no test yet |
+| REQ-NET-010 | Should | VALIDATED | ADR-0039 | — | — | no test yet |
+| REQ-NET-011 | Should | VALIDATED | ADR-0039 | — | — | no test yet |
+| REQ-NET-012 | Should | VALIDATED | ADR-0039 | — | — | no test yet |
+| REQ-NET-013 | Could | VALIDATED | ADR-0039 | OQ-147 | — | no test yet |
+| REQ-NET-014 | Should | VALIDATED | ADR-0039 | — | — | no test yet |
+| REQ-NET-015 | Should | VALIDATED | ADR-0020, ADR-0039 | — | — | no test yet |
+| REQ-NET-016 | Should | VALIDATED | ADR-0039 | OQ-147 | — | no test yet |
+| REQ-NET-017 | Should | VALIDATED | ADR-0039 | — | — | no test yet |
+| REQ-MP-004 | Should | VALIDATED | ADR-0038, ADR-0039 | — | — | no test yet |
+| REQ-MP-005 | Should | VALIDATED | ADR-0038 | — | — | no test yet |
+| REQ-MP-006 | Should | VALIDATED | ADR-0038 | — | — | no test yet |
+| REQ-MP-007 | Should | VALIDATED | ADR-0038 | — | — | no test yet |
+| REQ-MP-008 | Should | VALIDATED | ADR-0038 | — | — | no test yet |
+| REQ-MP-009 | Should | VALIDATED | ADR-0035, ADR-0038 | — | — | no test yet |
+| REQ-MP-010 | Should | VALIDATED | ADR-0038 | — | — | no test yet |
+| REQ-MP-011 | Should | VALIDATED | ADR-0038 | — | — | no test yet |
+| REQ-MP-012 | Could | VALIDATED | ADR-0038 | — | — | no test yet |
+| REQ-MP-013 | Should | VALIDATED | ADR-0038 | — | — | no test yet |
+| REQ-MP-014 | Should | VALIDATED | ADR-0038 | — | — | no test yet |
+| REQ-MP-015 | Should | VALIDATED | ADR-0038 | — | — | no test yet |
 | REQ-DET-001 | Should | VALIDATED | ADR-0024 | — | — | no test yet |
-| REQ-DET-002 | Could | VALIDATED | ADR-0024 | OQ-147 | — | no test yet |
+| REQ-DET-002 | Could | VALIDATED | ADR-0024, ADR-0038 | OQ-147 | — | no test yet |
 | REQ-DET-003 | Should | VALIDATED | ADR-0031 | — | — | no test yet |
 | REQ-PERF-001 | Should | VALIDATED | ADR-0024, ADR-0031 | — | — | no test yet |
 | REQ-PERF-002 | Should | VALIDATED | ADR-0024 | OQ-147 | — | no test yet |

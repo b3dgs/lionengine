@@ -16,7 +16,7 @@ Create and remove objects at runtime by ID, add and remove traits dynamically, p
 
 ## Out of scope
 
-Standard traits and systems (`features/standard-traits.md`); scenes (lifecycle contract in `runtime`); networking and replication (OQ-165); multithreaded systems; serialization of objects; the camera follow adapter (`composition`).
+Standard traits and systems (`features/standard-traits.md`); scenes (lifecycle contract in `runtime`); networking and replication (module `multiplayer`, [`multiplayer.md`](multiplayer.md)); multithreaded systems; serialization of objects; the camera follow adapter (`composition`).
 
 ## Expected behavior
 
@@ -24,7 +24,7 @@ Standard traits and systems (`features/standard-traits.md`); scenes (lifecycle c
 - **IDs:** `create` returns a packed `long` (generation high 32 bits, index low 32 bits; generation starts at 1, so `0` is never valid). The object is pending until the flush: `isAlive` returns false and accessors fail fast, but commands may already be queued with the ID. `remove` removes the object and all its traits at the flush; the index is recycled with a new generation; a stale ID fails fast in accessors, while `isAlive` never throws.
 - **Traits:** data only; each type registered once with an `int` type ID (duplicate registration fails); instances pooled in dense arrays and reset on removal; add, remove, replace and `has` follow the flush rules; a reference to a removed trait must not be kept.
 - **Queries:** include and exclude sets; a cached dense list updated incrementally; iteration allocates nothing; the order is deterministic for the same operation sequence and is not creation order; `copySortedIds(long[])` copies ascending IDs into a caller buffer.
-- **Command buffer and flush:** structural changes requested during an update (including from inside a query iteration, and from inbox events) are recorded and applied in recorded order at one flush per step, at the end, after all systems and before rendering; an add followed by a remove both apply and both fire events; explicit `flush` is allowed outside the loop (setup, tests); capacity doubles at the flush when exceeded and never shrinks.
+- **Command buffer and flush:** structural changes requested during an update (including from inside a query iteration, and from inbox events) are recorded and applied in recorded order at one flush per step, at the end, after all systems and before rendering; an add followed by a remove both apply and both fire events; explicit `flush` is allowed outside the loop (setup, tests) and between two world updates (snapshot application by `multiplayer`, ADR-0038); capacity doubles at the flush when exceeded and never shrinks.
 - **Events:** listeners with primitive arguments, synchronous on the runtime thread: created and destroyed `(long id)`, trait added and removed `(long id, int traitTypeId)` during the flush.
 - **Systems:** registered with an `int` slot (lower first, ties by registration order) and an enabled flag applied at the next step; `world.update(stepSeconds)` runs them with the constant step, then flushes. An exception propagates; the world is undefined afterwards and the loop fails (`REQ-LOOP-010`).
 - **Random source:** the world owns a SplitMix64-seeded xoshiro256\*\* generator (REQ-DET-003).
