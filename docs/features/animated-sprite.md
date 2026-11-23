@@ -7,7 +7,7 @@
 - Affected modules: `graphics`, `render-api` (sprite only), `resources`, `test-support`, `examples`
 - Requirements: `REQ-ANIM-001` to `REQ-ANIM-003`
 - Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md) (ACCEPTED)
-- Open questions involved: `OQ-105`
+- Open questions involved: `OQ-160`
 
 ## Objective
 

@@ -16,7 +16,7 @@
 | `resources-*` | Filesystem, archive, memory/temporary, Android and stream providers | `resources` |
 | `audio-api` | Backend-independent audio contracts: short sounds, long sounds, variant sets, playlists (ADR-0004) | `core`, `resources` (ADR-0004, decision 3B) |
 | `audio-*` | Audio backends, one per output library or platform, and decoder modules per codec only when a third-party library is needed (ADR-0022);  own the decoded caches (ADR-0004, ADR-0005) | `audio-api`, `resources` |
-| `graphics` | Images, logical textures, sprites, spritesheets, animations (ADR-0003); owns its decoded image cache (ADR-0005); image decoders are platform-specific (OQ-100) | `core`, `resources`, `render-api` (ADR-0003: sprites emit `render-api` commands; OQ-051 resolved) |
+| `graphics` | Images, logical textures, sprites, spritesheets, animations (ADR-0003); owns its decoded image cache (ADR-0005); built-in pure-Java PNG decoder, optional platform decoders (ADR-0026) | `core`, `resources`, `render-api` (ADR-0003: sprites emit `render-api` commands; OQ-051 resolved) |
 | `tilemap` | Tilesets, grids, layers, static/dynamic maps (single layer first, collision deferred: ADR-0009, ACCEPTED) | `core`, graphics contracts; `resources` if map files are loaded through it (candidate under ADR-0005) |
 | `camera` | Camera: view rectangle in world units, zoom, translation, follow through a lookup contract, smoothing, shake; single module, headless, no ECS or platform dependency (ADR-0010) | `core` only; the ECS adapter lives outside (OQ-132) |
 | `input-api` | Normalized actions, states and input events | `core` |

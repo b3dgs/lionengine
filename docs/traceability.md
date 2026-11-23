@@ -74,21 +74,21 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-AUDIO-007 | Must | PROPOSED | ADR-0004 | OQ-113 | — | no test yet |
 | REQ-AUDIO-008 | Must | PROPOSED | ADR-0004 | OQ-114 | — | no test yet |
 | REQ-AUDIO-009 | Must | PROPOSED | ADR-0004 | OQ-115 | — | no test yet |
-| REQ-SPR-001 | Must | PROPOSED | ADR-0003 | OQ-100, OQ-104 | — | no test yet |
-| REQ-SPR-002 | Must | PROPOSED | ADR-0003 | OQ-105, OQ-106 | — | no test yet |
-| REQ-SPRITE-001 | Must | PROPOSED | ADR-0003 | OQ-100, OQ-107 | — | no test yet |
-| REQ-SPRITE-002 | Must | PROPOSED | ADR-0003, ADR-0005 | OQ-101, OQ-118 | — | no test yet |
-| REQ-SPRITE-003 | Must | PROPOSED | ADR-0003 | OQ-011, OQ-012, OQ-104 | — | no test yet |
-| REQ-SPRITE-004 | Must | PROPOSED | ADR-0003 | OQ-100, OQ-102 | — | no test yet |
-| REQ-SPRITE-005 | Should | PROPOSED | ADR-0003 | OQ-102, OQ-103, OQ-118 | — | no test yet |
-| REQ-SPRITE-006 | Must | PROPOSED | ADR-0003 | OQ-012, OQ-104 | — | no test yet |
-| REQ-SPRITE-007 | Must | PROPOSED | ADR-0003 | OQ-054, OQ-100, OQ-108 | — | no test yet |
-| REQ-SPRITE-008 | Could | PROPOSED | ADR-0003 | OQ-108 | — | no test yet |
-| REQ-ANIM-001 | Must | PROPOSED | ADR-0003 | OQ-105 | — | no test yet |
-| REQ-ANIM-002 | Must | PROPOSED | ADR-0003 | — | — | no test yet |
-| REQ-ANIM-003 | Must | PROPOSED | ADR-0003 | OQ-020, OQ-022 | — | no test yet |
-| REQ-SHEET-001 | Must | PROPOSED | ADR-0003 | OQ-100 | — | no test yet |
-| REQ-SHEET-002 | Should | PROPOSED | ADR-0003 | OQ-106 | — | no test yet |
+| REQ-SPR-001 | Must | PROPOSED | ADR-0003, ADR-0026 | OQ-160 | — | no test yet |
+| REQ-SPR-002 | Must | PROPOSED | ADR-0003, ADR-0026 | OQ-160 | — | no test yet |
+| REQ-SPRITE-001 | Must | PROPOSED | ADR-0003, ADR-0026 | OQ-160 | — | no test yet |
+| REQ-SPRITE-002 | Must | PROPOSED | ADR-0003, ADR-0005, ADR-0026 | OQ-118, OQ-160 | — | no test yet |
+| REQ-SPRITE-003 | Must | PROPOSED | ADR-0003, ADR-0026 | OQ-011, OQ-012, OQ-160 | — | no test yet |
+| REQ-SPRITE-004 | Must | PROPOSED | ADR-0003, ADR-0026 | OQ-160 | — | no test yet |
+| REQ-SPRITE-005 | Should | PROPOSED | ADR-0003, ADR-0026 | OQ-118, OQ-160 | — | no test yet |
+| REQ-SPRITE-006 | Must | PROPOSED | ADR-0003, ADR-0026 | OQ-012, OQ-160 | — | no test yet |
+| REQ-SPRITE-007 | Must | PROPOSED | ADR-0003, ADR-0026 | OQ-054, OQ-160 | — | no test yet |
+| REQ-SPRITE-008 | Could | PROPOSED | ADR-0003, ADR-0026 | OQ-160 | — | no test yet |
+| REQ-ANIM-001 | Must | PROPOSED | ADR-0003, ADR-0026 | OQ-160 | — | no test yet |
+| REQ-ANIM-002 | Must | PROPOSED | ADR-0003, ADR-0026 | — | — | no test yet |
+| REQ-ANIM-003 | Must | PROPOSED | ADR-0003, ADR-0026 | OQ-020, OQ-022 | — | no test yet |
+| REQ-SHEET-001 | Must | PROPOSED | ADR-0003, ADR-0026 | OQ-160 | — | no test yet |
+| REQ-SHEET-002 | Should | PROPOSED | ADR-0003, ADR-0026 | OQ-160 | — | no test yet |
 | REQ-MAP-001 | Should | PROPOSED | ADR-0009 | OQ-012 | — | no test yet |
 | REQ-MAP-002 | Should | PROPOSED | — | OQ-125 | — | no test yet |
 | REQ-MAP-003 | Must | PROPOSED | ADR-0009 | — | — | no test yet |
