@@ -17,7 +17,7 @@ Done (ADR-0001 to ADR-0039):
 Remaining, in this order:
 1. build skeleton ([`features/build-skeleton.md`](features/build-skeleton.md), ADR-0042): declare the modules of `architecture/modules.md` as Maven modules with empty `package-info.java`, package tree verified by `radial-encapsulation-maven-plugin`, JUnit 5, Javadoc with doclint failing on warnings (REQ-CORE-003), coverage, exact build and test commands recorded in `README.md` and `AGENTS.md`;
 2. CI: Linux build and tests, Windows and macOS as non-blocking jobs (REQ-SUPPORT-001), documentation check, API index and asset provenance checks (REQ-DOC-005, REQ-DOC-006);
-3. Android/DEX verification job and the record of the shared bytecode level (25, 21 or 17) and verified Java features at API 21 (ADR-0041).
+3. Android/DEX verification job and the record of the verified Java features at API 21, with shared code at Java 21 (ADR-0044).
 
 **Expected output:** a compilable repository skeleton passing CI, including the Android/DEX job.
 

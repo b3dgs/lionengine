@@ -75,4 +75,4 @@ Filled by the benchmark batches (REQ-PERF-001); a value appears here only once m
 | Tier | Reference | Step budget | Memory | Measured on |
 |---|---|---|---|---|
 | Desktop | CI trend-job runner (standard Linux) | ≤ 1 ms per step for 1,000 objects × 4 traits (REQ-ECS-009) | not measured yet | — |
-| Android | mid-range API 21-era device (ADR-0041) | frame ≤ 16.6 ms (REQ-PERF-002) | not measured yet | — |
+| Android | mid-range API 21-era device (ADR-0044) | frame ≤ 16.6 ms (REQ-PERF-002) | not measured yet | — |

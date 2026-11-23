@@ -29,7 +29,7 @@
 - No `java.util.function`, `Optional`, streams or `java.time` in shared public APIs or hot paths: callbacks are small role-named interfaces with one abstract method (`SceneFactory<C>`, `TransitionCondition<C>`, `CloseListener`), absence is `null` plus a `has...` check, documented.
 - Interfaces carry no `I` prefix and implementations no `Impl` suffix: an implementation is named by what distinguishes it (`AwtPlatform`, `FileProvider`, `FakeAudioBackend`).
 - Listeners are `XxxListener` with `onYyy` methods; factories `XxxFactory` with `create`; exceptions `XxxException` extending `RuntimeException`.
-- Engine value types are `final` classes until records are verified for Android by the Android job (ADR-0041).
+- Engine value types are `final` classes or records (records are verified on API 21, ADR-0044); no record reflection.
 
 ## Errors
 
@@ -66,6 +66,7 @@
 ## Java language and APIs
 
 - Java 25+ for development, restricted by ADR-0001 to what is verified as Android/DEX-compatible; check each new language feature or API with [`android-compatibility.md`](android-compatibility.md) and record dependencies in [`dependencies.md`](dependencies.md).
+- Shared code is compiled at Java 21 (`--release 21`) and follows the forbidden and verified lists of [`android-compatibility.md`](android-compatibility.md) (ADR-0044): no Java 22 to 25 feature, no qualified enum constant in a pattern `switch` over a sealed interface, no virtual threads, `String.lines()`, `HexFormat` or sequenced-collection methods.
 - Preview features are forbidden in shared code.
 - Platform-specific code stays in the platform modules.
 

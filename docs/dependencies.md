@@ -17,7 +17,7 @@
 | `com.b3dgs.radialencapsulation:radial-encapsulation-maven-plugin` | from the parent POM (latest release 1.0.2) | aggregator `pom.xml`, `basePackage` per module (ADR-0037) | no | Package dependency rule check inside each module (ADR-0012, ADR-0015, ADR-0037, REQ-CORE-005) | Apache-2.0 | not shipped | 2026-11-23 |
 | JUnit 5 | set at the build skeleton | test scope of every module | no | Test framework (ADR-0012) | EPL-2.0 | not shipped | 2026-11-23 |
 | JaCoCo | set at the build skeleton | build | no | Coverage merged for SonarCloud (ADR-0012) | EPL-2.0 | not shipped | 2026-11-23 |
-| Android Gradle Plugin | 9.2.1 (ADR-0012) | Android verification module | no | DEX production and verification (ADR-0012, ADR-0041) | Apache-2.0 | not shipped | 2026-11-23 |
+| Android Gradle Plugin | 9.2.1 (ADR-0012) | Android verification module | no | DEX production and verification (ADR-0012, ADR-0044) | Apache-2.0 | not shipped | 2026-11-23 |
 | `com.android.tools:desugar_jdk_libs` | 2.1.5 (ADR-0012) | Android verification module and games | no (linked into Android applications by the Android Gradle Plugin) | Core library desugaring for API 21 (ADR-0012) | GPL-2.0-only WITH Classpath-exception-2.0 | compatible with desugaring | 2026-11-23 |
 
 Planned candidates, not added yet (a row moves to the table above only in the pull request that adds the dependency):
