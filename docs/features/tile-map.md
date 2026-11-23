@@ -54,7 +54,7 @@ Tile indices `int`; tile size, viewport and positions in pixels of the logical f
 ## Tests
 
 - Unit tests: bounds, set/get/clear, row flip, viewport-to-tile-range math, neighbor rules, shape query, collision after set and destroy, Tiled subset (each accepted and rejected feature).
-- Contract tests (`test-support`): map loader suite with an in-memory test format.
+- Contract tests (`tilemap` test JAR, ADR-0045): map loader suite with an in-memory test format.
 - Integration tests: headless load, render commands only for visible tiles, destroy then render.
 - Performance tests: a 1000 × 1000 map renders a viewport in constant time.
 

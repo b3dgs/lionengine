@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 2, after screen and display modes
 - Affected modules: `render-api`, `render-awt`, `render-opengl`, `resources`, `test-support`, `examples`
 - Requirements: `REQ-FILTER-001` to `REQ-FILTER-004`, `REQ-DISPLAY-004`, `REQ-DISPLAY-005`, `REQ-DISPLAY-008`
-- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md), [`ADR-0006`](../decisions/0006-display-scaling-effective-result-and-fallback-orders.md), [`ADR-0025`](../decisions/0025-filter-implementation-shaders-and-display-settings.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md)
+- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md), [`ADR-0006`](../decisions/0006-display-scaling-effective-result-and-fallback-orders.md), [`ADR-0025`](../decisions/0025-filter-implementation-shaders-and-display-settings.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0046`](../decisions/0046-display-state-owned-by-the-platform-and-presentation-geometry.md), [`ADR-0047`](../decisions/0047-render-api-texture-pixel-data-and-shader-resource-keys.md), [`ADR-0049`](../decisions/0049-interface-catalog-and-contract-skeleton.md)
 - Open questions involved: none
 
 ## Objective
@@ -21,15 +21,15 @@ Per-layer filtering (ADR-0002, decision 3A); screen and display modes (see [`dis
 
 - Standard identifiers: `NONE`, bilinear, `HQ2X`, CRT, with a capability query. `NONE` samples nearest-neighbor when the logical frame is scaled; there is no separate nearest identifier.
 - Filters form an ordered chain: scaling filters (`NONE`, bilinear, `HQ2X`) resample the logical frame to the output size; post filters (CRT) run on the scaled output; no filter changes the scaling policy.
-- Fallback per filter: CRT skipped; `HQ2X` → bilinear → `NONE`; each fallback is reported in the effective result.
+- Fallback per filter: CRT skipped; `HQ2X` → bilinear → `NONE`; the platform resolves the chain against the filters of the attached render backend and reports each fallback in its effective result (ADR-0046).
 - `render-awt` implements `NONE`, bilinear and `Scale2x` on the CPU (`Scale2x` stands in for `HQ2X` until its license record exists) and reports CRT unsupported. `render-opengl` implements all four with shaders.
 - Shaders: GLSL ES 1.00 feature set, no `#version` line or precision qualifier in the file (the backend prepends `#version 100` or `#version 120`), `.vert` and `.frag` resources loaded through `resources`; standard uniforms: source texture, source size, output size (pixels), presentation time (seconds).
-- Custom filters: a registry id (`namespace:name`), registered explicitly on the backend at startup, declared as scaling or post filter, providing a fragment shader resource, a CPU implementation over `int[]` ARGB buffers, or both; a backend lacking the needed implementation skips it and reports the skip.
+- Custom filters: a registry id (`namespace:name`), registered explicitly on the backend at startup, declared as scaling or post filter, providing a fragment shader resource (`ResourceKey`, ADR-0047), a CPU implementation over `int[]` ARGB buffers, or both; a backend lacking the needed implementation skips it and reports the skip.
 - Changes apply at a frame boundary and are reported through the effective result; simulation state is untouched.
 
 ## Envisaged APIs / contracts
 
-Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Display modes, resolution and output filtering); canonical type names in [ADR-0037](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md) (`OutputFilter`, `ScalingPolicy`); signatures are written by the batch: filter identifier, chain, capability query, custom filter contract (CPU and shader forms).
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Display modes, resolution and output filtering); canonical type names in [ADR-0037](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md) (`OutputFilter`, `ScalingPolicy`); signatures are written by the batch: filter identifier, chain, capability query, custom filter contract (CPU and shader forms). `OutputFilter` and the custom filter contract are declared by the contract skeleton (ADR-0049, [`contract-skeleton.md`](contract-skeleton.md)); the batches below implement them.
 
 ## Batches (order)
 
@@ -48,12 +48,12 @@ Pixels; time uniform in seconds. Own implementations only, no third-party filter
 
 ## Dependencies
 
-`render-api` on `core`; backends on `render-api`, `platform-api`; `render-opengl` on `resources` for shaders. Forbidden: AWT, OpenGL or Android types in `render-api`.
+`render-api` on `core` and `resources` (shader keys, ADR-0047); `platform-api` on `render-api` (filter chain in the display request, ADR-0046); backends on `render-api`, `platform-api`; `render-opengl` on `resources` to open shaders. Forbidden: AWT, OpenGL or Android types in `render-api`.
 
 ## Tests
 
 - Unit tests: identifiers, capability query, chain ordering and fallback, CPU scalers on small reference images.
-- Contract tests (`test-support`): fallback reported, never throws on a missing capability, frame-boundary application, custom filter on fake GPU and CPU backends.
+- Contract tests (`render-api` test JAR, ADR-0045): fallback reported, never throws on a missing capability, frame-boundary application, custom filter on fake GPU and CPU backends.
 - Integration tests: headless, fake capabilities.
 - Platform tests: golden images for `NONE`, bilinear, `HQ2X`/`Scale2x` (AWT, OpenGL); CRT on OpenGL.
 

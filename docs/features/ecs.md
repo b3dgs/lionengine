@@ -58,7 +58,7 @@ No unit of its own (systems receive the step in seconds). Plain Java arrays only
 ## Tests
 
 - Unit tests: ID packing, pending and stale IDs, recycling over many cycles, create/remove, trait add/remove/replace, include/exclude queries, deferred changes inside iteration, add-then-remove events, event order, system order and enabled flag, capacity growth, random generator reference vectors.
-- Contract tests (`test-support`): trait and system conventions.
+- Contract tests (`ecs` test JAR, ADR-0045): trait and system conventions, run by `traits`, `multiplayer` and games.
 - Integration tests: a headless world driven by a controllable clock; two identical runs give the same order and state.
 - Performance tests: 1,000 objects × 4 traits and 10,000 objects scaling; zero steady-state allocation asserted in CI; wall-clock in the non-blocking trend job.
 

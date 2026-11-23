@@ -121,7 +121,7 @@ Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.m
 ## Batches (order)
 
 1. `NetWriter`, `NetReader`, packet header, checksum, sequence comparison, ack bits (`REQ-NET-003`, `REQ-NET-015`).
-2. `Transport`, `LoopbackNetwork`, `ConditionedTransport`, `UdpTransport`, transport contract suite in `test-support` (`REQ-NET-002`, `REQ-NET-017`).
+2. `Transport`, `LoopbackNetwork`, `ConditionedTransport`, `UdpTransport`, transport contract suite in the `network` test JAR (`REQ-NET-002`, `REQ-NET-017`, ADR-0045).
 3. Connection: join, reject reasons, tokens, keepalive, timeout, disconnect, round trip and statistics (`REQ-NET-005`, `REQ-NET-006`, `REQ-NET-012`, `REQ-NET-014`).
 4. Reliable-ordered channel and fragmentation (`REQ-NET-004`, `REQ-NET-016`).
 5. Players, properties, administration (`REQ-NET-007` to `REQ-NET-009`).
@@ -143,7 +143,7 @@ Seconds for every duration, bytes for sizes, ticks as `int`. JDK APIs: `java.nio
 ## Tests
 
 - Unit tests: writer and reader (every type, limits, read past the end), checksum with another protocol id or version, sequence wrap-around, ack bits, reliable ordering, resend interval, window and overflow, fragmentation and reassembly with missing fragments, each reject reason in order, name rules, property limits, timeouts and keepalive with a controllable time, chat filter and rate limit, statistics.
-- Contract tests (`test-support`): one transport suite run on `LoopbackNetwork` and on `UdpTransport` bound to the local loopback address.
+- Contract tests (`network` test JAR, ADR-0045): one transport suite run on `LoopbackNetwork` and on `UdpTransport` bound to the local loopback address.
 - Integration tests: a server and three clients over loopback with `ConditionedTransport` (latency 0.1 s, jitter 0.02 s, loss 0.1, duplication 0.05, reordering 0.05, fixed seed): every reliable message delivered once and in order, identical player lists, chat delivered, disconnect and timeout detected.
 - Platform tests: two processes over UDP on a real network, kept apart from the headless suite; Android device test with the multicast lock.
 

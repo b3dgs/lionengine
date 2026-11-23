@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 2, see `roadmap.md` (batch order: sprite sheet, sprite, animated sprite)
 - Affected modules: `graphics`, `resources`, `core` (JSON reader), `test-support`, `examples`
 - Requirements: `REQ-SHEET-001` to `REQ-SHEET-003`, `REQ-SPRITE-009`, `REQ-RES-004`, `REQ-RES-005`, `REQ-DEF-001`, `REQ-DEF-002`
-- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md)
+- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0047`](../decisions/0047-render-api-texture-pixel-data-and-shader-resource-keys.md)
 - Open questions involved: none
 
 ## Objective
@@ -39,7 +39,7 @@ Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.m
 
 ## Lifecycle and concurrency
 
-Cache and group operations on the runtime thread only (ADR-0018). Synchronous loading first; asynchronous decoding on workers in a later batch (ADR-0019). GPU upload happens at first render or at an explicit prepare call, never on a worker.
+Cache and group operations on the runtime thread only (ADR-0018). Synchronous loading first; asynchronous decoding on workers in a later batch (ADR-0019). GPU upload happens at first render or at an explicit prepare call, never on a worker: the cache hands the immutable `int[]` of a source to the `render-api` texture contract and releases the texture with the source (ADR-0047).
 
 ## Units and Android/DEX compatibility
 
@@ -52,7 +52,7 @@ Pixels. The PNG decoder uses `java.util.zip.Inflater` (to verify on API 21, `and
 ## Tests
 
 - Unit tests: PNG decoding per color type and depth, rejection of interlaced files, grid index math, margin and spacing, out-of-range, duplicate and unknown ids, definition-file errors.
-- Contract tests (`test-support`): the resource convention suite (key equality, idempotent release, missing resource) and the cache suite.
+- Contract tests (`resources` test JAR, ADR-0045): the resource convention suite (key equality, idempotent release, missing resource) and the cache suite.
 - Integration tests: headless load of a sheet through `resources` from a definition file.
 
 ## Acceptance criteria

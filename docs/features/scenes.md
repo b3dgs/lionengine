@@ -4,7 +4,7 @@
 
 - Owner: project owner
 - Roadmap phase: Phase 1 (scene contract and manager), Phase 2 (overlay stack and scene flow), see `roadmap.md`
-- Affected modules: `runtime`, `test-support`, `examples`
+- Affected modules: `runtime`, `examples` (`runtime` tests use the controllable clock of its own test JAR, ADR-0045)
 - Requirements: `REQ-SCENE-001` to `REQ-SCENE-008`
 - Applicable ADRs: [`ADR-0017`](../decisions/0017-fixed-step-game-loop.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0021`](../decisions/0021-scene-world-viewport-and-object-model.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0036`](../decisions/0036-scene-flow-ids-triggers-conditions-transitions.md)
 - Open questions involved: none
@@ -62,7 +62,7 @@ stateDiagram-v2
 
 ## Envisaged APIs / contracts
 
-Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Scenes); canonical names (ADR-0037): `Scene`, `SceneManager`, `SceneFlow<C>`, `SceneFlowBuilder<C>`, `SceneFactory<C>`, `TransitionCondition<C>`, `TransitionKind`, `TransitionListener`; signatures written by the batch under `conventions.md`.
+Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.md) (Scenes); canonical names (ADR-0037): `Scene`, `SceneManager`, `SceneFlow<C>`, `SceneFlowBuilder<C>`, `SceneFactory<C>`, `TransitionCondition<C>`, `TransitionKind`, `TransitionListener`; signatures written by the batch under `conventions.md`. `Scene` is declared by the contract skeleton (ADR-0049, [`contract-skeleton.md`](contract-skeleton.md)).
 
 ## Batches (order)
 

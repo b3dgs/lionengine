@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 1 (platform object, lifecycle, headless frontend, minimal `platform-awt` and `render-awt`), Phase 2 (command buffer complete, viewport)
 - Affected modules: `platform-api`, `render-api`, `platform-awt`, `render-awt`, `test-support`, `examples`
 - Requirements: `REQ-FE-001` to `REQ-FE-003`, `REQ-PLATFORM-001`, `REQ-PLATFORM-002`, `REQ-RT-001`, `REQ-RT-008`, `REQ-SPRITE-010`, `REQ-TEST-001`, `REQ-CORE-006`
-- Applicable ADRs: [`ADR-0008`](../decisions/0008-awt-desktop-implementer-of-platform-api.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0020`](../decisions/0020-no-reflection-factory-registry-and-capability-lookup.md), [`ADR-0022`](../decisions/0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0037`](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md), [`ADR-0040`](../decisions/0040-thread-hand-off-contracts-in-core-and-loop-wiring.md)
+- Applicable ADRs: [`ADR-0008`](../decisions/0008-awt-desktop-implementer-of-platform-api.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0020`](../decisions/0020-no-reflection-factory-registry-and-capability-lookup.md), [`ADR-0022`](../decisions/0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0037`](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md), [`ADR-0040`](../decisions/0040-thread-hand-off-contracts-in-core-and-loop-wiring.md), [`ADR-0045`](../decisions/0045-test-fixtures-with-their-contracts-and-test-support-kit.md), [`ADR-0046`](../decisions/0046-display-state-owned-by-the-platform-and-presentation-geometry.md), [`ADR-0047`](../decisions/0047-render-api-texture-pixel-data-and-shader-resource-keys.md), [`ADR-0049`](../decisions/0049-interface-catalog-and-contract-skeleton.md)
 - Open questions involved: none (HiDPI settled by [`ADR-0043`](../decisions/0043-display-v11-scope-default-monitor-device-pixels.md): `platform-awt` reports device pixels)
 
 ## Objective
@@ -21,16 +21,17 @@ Display modes and filters (see [`display-modes.md`](display-modes.md), [`output-
 
 ### Platform object (`Platform`, `platform-api`)
 
-- Created by the application with its configuration (logical frame width and height in pixels, initial screen mode, scaling policy, logger sink), then started with the game loop to run as a `core` `LoopDriver` (ADR-0040). The platform runs the loop on its required thread and returns or blocks as documented per platform.
+- Created by the application with its configuration (logical frame width and height in pixels, initial display request with screen mode, scaling policy and filter chain, logger sink); the application attaches the render backend (ADR-0046); then started with the game loop to run as a `core` `LoopDriver` (ADR-0040). The platform runs the loop on its required thread and returns or blocks as documented per platform.
 - `getCapability(Class<T>)` returns the capability or `null`; `hasCapability(Class<?>)`. Modules (renderer, input, audio) are attached explicitly by the application, never discovered.
 - Lifecycle events posted to the `core` `Inbox` handed over by the application, as `PlatformEvent`s (each an `InboxEvent`): surface resized (new size in pixels), focus gained or lost, background, foreground, close requested, context lost, context restored. Background pauses the loop, foreground resumes it, through `LoopControl`. A close request stops the loop unless a `CloseListener` vetoes it.
+- The platform owns the display state and publishes the presentation geometry (the surface rectangle, in device pixels, where the logical frame is presented, and the scale on each axis), recomputed at the frame boundary of each change; render backends present with it, input adapters invert it (ADR-0046).
 - The platform provides the loading worker pool as an implementation of the `core` `WorkerPool` (2 workers on desktop, 1 on Android by default) and the logging sink.
 
 ### Render commands (`render-api`)
 
 - `CommandBuffer`: preallocated parallel primitive arrays; one entry per draw: texture handle (`int`), source rectangle (`int` x, y, width, height), position (`float` x, y in logical-frame pixels, the pivot's location), scale x and y (`float`), rotation (`float` degrees, counter-clockwise on screen), pivot (`float` x, y from the source top-left), tint (`int` ARGB, `0xFFFFFFFF` = none), alpha (`float` `[0, 1]`), layer (`int`). Presented by ascending layer, then submission order. Capacity grows by doubling, between frames only; no allocation in steady state.
 - `Viewport`: a rectangle of the logical frame in pixels; setting it clips and offsets the following commands until the next viewport; the default viewport is the whole frame.
-- Textures are created from `graphics` pixel buffers (`PixelBuffer`, straight ARGB) through the backend and identified by `TextureHandle` (`int`); upload at first use or on an explicit prepare, on the render thread.
+- Textures are created through the `render-api` texture contract from primitive pixel data: width and height in pixels and an `int[]` of packed straight-alpha ARGB, row-major, stride equal to the width (the layout of the `graphics` `PixelBuffer`, which `render-api` cannot name), and identified by `TextureHandle` (`int`). The array is shared read-only; the backend may keep it as its context-loss copy until release, which is idempotent; upload at first use or on an explicit prepare, on the render thread (ADR-0047).
 - Each frame: the scene renders (writes commands), then the backend presents them on the logical frame, then scales it to the surface (ADR-0006). Both calls are made by the loop's render callback as wired by the application or `composition` (ADR-0040).
 
 ### Desktop AWT (`platform-awt`, `render-awt`)
@@ -48,6 +49,8 @@ Display modes and filters (see [`display-modes.md`](display-modes.md), [`output-
 
 Canonical names (ADR-0037): `Platform`, `PlatformEvent`, `CommandBuffer`, `Viewport`, `TextureHandle`, `ScalingPolicy`; `AwtSurface` in `platform-awt`; `CloseListener`.
 
+Declared by the contract skeleton (ADR-0049, [`contract-skeleton.md`](contract-skeleton.md)): `Platform`, `PlatformEvent`, `CloseListener`, the presentation geometry, `Viewport` and the texture contract; the batches below implement them. Batch 3 adds the render backend contract with `CommandBuffer`, and the backend attachment on `Platform`.
+
 ## Batches (order)
 
 1. `Platform` contract, capability lookup, lifecycle events; headless test platform and recording backend in `test-support` (`REQ-FE-001`, `REQ-FE-003`, `REQ-RT-008`, `REQ-PLATFORM-002`, `REQ-TEST-001`).
@@ -64,7 +67,7 @@ Logical-frame pixels, `float` only in command entries. `platform-awt` and `rende
 
 ## Dependencies
 
-As in [`../architecture/modules.md`](../architecture/modules.md): `platform-api` and `render-api` on `core`; `platform-awt` on `platform-api`; `render-awt` on `render-api`, `platform-api`, `platform-awt`.
+As in [`../architecture/modules.md`](../architecture/modules.md): `platform-api` on `core` and `render-api` (ADR-0046); `render-api` on `core` and `resources` (ADR-0047); `platform-awt` on `platform-api`; `render-awt` on `render-api`, `platform-api`, `platform-awt`.
 
 ## Tests
 

@@ -65,7 +65,7 @@ The rules of ADR-0037 still apply on top: no `java.util.function`, `Optional`, s
 
 - Never use anything in the forbidden table; when a task seems to need one, use the listed alternative and say so in the pull request.
 - Before using a Java API newer than Java 8 that is not in the verified list, check whether it exists on API 21 or is covered by `desugar_jdk_libs`; if that cannot be confirmed, use a basic alternative.
-- The Android module enables the lint check `NewApi` as an error (for example `lint { error += "NewApi" }`; not tested with AGP 9.5, the skeleton batch verifies it is accepted); fix every violation, never suppress it.
+- The Android module enables the lint check `NewApi` as an error (for example `lint { error += "NewApi" }`; not yet tried with the Android Gradle Plugin version of the project, 9.2.1 in the ADR-0012 baseline: the skeleton batch verifies it is accepted); fix every violation, never suppress it.
 - Run the library on an API 21 emulator after adding any suspicious API: a successful build does not prove it works, `NoSuchMethodError` only shows at run time.
 
 ## Pending checks of the accepted decisions

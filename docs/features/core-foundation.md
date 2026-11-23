@@ -4,7 +4,7 @@
 
 - Owner: project owner
 - Roadmap phase: Phase 1, first batches after the build skeleton
-- Affected modules: `core`, `test-support`, `examples`
+- Affected modules: `core`, `examples` (fixtures in the `core` test JAR, ADR-0045)
 - Requirements: `REQ-CORE-006`, `REQ-DEF-001` to `REQ-DEF-003`, `REQ-RT-007`, `REQ-DET-003`
 - Applicable ADRs: [`ADR-0020`](../decisions/0020-no-reflection-factory-registry-and-capability-lookup.md), [`ADR-0028`](../decisions/0028-tile-map-collision-json-definitions-and-storage.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0037`](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md), [`ADR-0040`](../decisions/0040-thread-hand-off-contracts-in-core-and-loop-wiring.md)
 - Open questions involved: none
@@ -51,7 +51,7 @@ The thread hand-off contracts of `core` (`Inbox`, `InboxEvent`, `AsyncHandle<T>`
 
 ## Envisaged APIs / contracts
 
-Canonical names from ADR-0037: `Log`, `LogLevel`, `LogSink`, `JsonValue`, `JsonObject`, `JsonArray`, `DefinitionException`, `Configuration`, `Registry<T>`, `RandomSource`. Factories are role-named interfaces (`XxxFactory` with `create`), not `java.util.function`.
+Canonical names from ADR-0037: `Log`, `LogLevel`, `LogSink`, `JsonValue`, `JsonObject`, `JsonArray`, `DefinitionException`, `Configuration`, `Registry<T>`, `RandomSource`. Factories are role-named interfaces (`XxxFactory` with `create`), not `java.util.function`. `LogLevel`, `LogSink` and `DefinitionException` are declared by the contract skeleton (ADR-0049, [`contract-skeleton.md`](contract-skeleton.md)); the batches below implement the behavior around them.
 
 ## Batches (order)
 

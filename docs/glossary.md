@@ -20,6 +20,7 @@
 | Component | In ECS, a plain data holder attached to an entity. In this engine a component is called a trait (ADR-0011). |
 | Composition module | Optional module `composition`: ready-made scene content (world, views, tile map, music) and the camera follow adapter (ADR-0031). |
 | Content hash | 32-bit hash of the replication schema and message registrations, compared when a client joins so that incompatible builds cannot play together (ADR-0038). |
+| Contract skeleton | Phase 0 batch after the build skeleton that declares, with complete Javadoc and no behavior beyond value types, the cross-module contracts listed in `architecture/interfaces.md` (ADR-0049). |
 | Core library desugaring | Android build feature that makes some newer Java library APIs available on older Android versions. |
 | D8 / R8 | Android tools that convert Java bytecode to DEX (D8) and shrink/optimize it (R8). |
 | Definition file | A JSON data file declaring `"format"` and `"version"` (sprite sheet, tileset, object definition), read by the strict reader of `core` (ADR-0028, ADR-0032). |
@@ -54,6 +55,7 @@
 | Pivot | Internal location (origin) of a sprite, in pixels from the frame's top-left corner, default the frame center; used for placement, rotation and scaling (ADR-0026). |
 | Playlist | Predefined sequence of long sounds; the next starts when the current terminates (ADR-0004). |
 | Prediction | A client simulating its own player's objects immediately, before the server confirms; checked against the server's state and corrected by replay (ADR-0038). |
+| Presentation geometry | Rectangle of the output surface, in device pixels, where the logical frame is presented, with the scale on each axis; computed by the platform from the effective scaling policy at a frame boundary, used by render backends and inverted by input adapters (ADR-0046). |
 | Provider | A resource source implementation (filesystem, archive, memory, Android assets, stream), searched in a configured order (ADR-0032). |
 | Proxy | On a client, a replicated object whose state comes only from snapshots; carries `NetProxy` and is never simulated locally (ADR-0038). |
 | Query | Cached view of the objects having all of a set of trait types and none of an exclusion set (ADR-0011). |
@@ -70,6 +72,7 @@
 | Scene | Self-contained unit of the running game with a lifecycle (enter, update, render, exit, dispose), composing a world, cameras, a background and music (ADR-0021). |
 | Scene flow | Validated state machine linking scene ids by named triggers, optional conditions and transitions `SWITCH`, `PUSH`, `POP`, `EXIT` (ADR-0036). |
 | Screen mode | How the application occupies the screen: `WINDOWED`, `FULL_WINDOW` or `FULL_SCREEN`. |
+| Seam (cross-module contract) | A contract defined in one module and implemented or used by another; listed per module in `architecture/interfaces.md` (ADR-0049). |
 | Session | A network server or client connection set with its players, chat and messages (module `network`, ADR-0039). |
 | Short sound | Low-latency sound effect of at most 10 s, cached for heavy reuse; played individually and stopped (ADR-0004, ADR-0033). |
 | Simulation step | Fixed duration, in seconds, by which the simulation advances in one update (default 1/60 s, ADR-0017). |
@@ -81,6 +84,7 @@
 | Sprite sheet | Image grouping several sprite regions as a grid (cell size, columns, rows, optional margin/spacing), giving access to cells by index; sheets are grouped by unique id (ADR-0003). Also written "spritesheet". |
 | System | In ECS, logic that processes the objects of a query during the update phase, in slot order. |
 | Template color mapping | Static transform mapping exact key colors to target colors, producing a cached color variant of one sprite (e.g. team colors) (ADR-0026). |
+| Test JAR | The published test sources of a module (Maven classifier `tests`): the fakes and abstract contract suites of its contracts, used in test scope by the modules that depend on it (ADR-0045). |
 | Tick | Number of a simulation step in a network session, counted as an `int` from 0 at session start (ADR-0038). |
 | Tile | Cell or graphic element of a tileset. |
 | Tilemap | Map organized in cells (single layer first, ADR-0009). |

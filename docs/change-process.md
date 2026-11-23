@@ -57,13 +57,14 @@ A new module is an architecture change: it always goes through a proposal and an
    - [`architecture/modules.md`](architecture/modules.md): new table row, dependency-direction diagram, open points;
    - [`architecture/overview.md`](architecture/overview.md) if boundaries or the layer diagram change;
    - [`architecture/contracts.md`](architecture/contracts.md): the new cross-cutting contract section;
+   - [`architecture/interfaces.md`](architecture/interfaces.md): the module's root package, public types and seams (ADR-0049);
    - `requirements.md` and `traceability.md`: new `REQ-*` for the module;
    - `open-questions.md`: resolved and new questions;
    - `decisions/` (ADR and index), `glossary.md`, `roadmap.md` (phase and ordering), `testing.md` (new matrix row), `api-index.md`;
    - build: Maven module declaration and the dependency-rule check (REQ-CORE-005, ADR-0012, ADR-0015), once the build skeleton exists;
    - [`dependencies.md`](dependencies.md) if the module adds a dependency (ADR-0032).
 5. **Create the skeleton first.** Empty module, `package-info.java` describing its responsibility, dependencies as decided, build and dependency-rule check passing, Android/DEX job passing if the module is shared code. No behavior yet.
-6. **Add the contract tests.** Reusable contract suites in `test-support` before or with the first implementation (REQ-TEST-001), so every future implementation is checked the same way.
+6. **Add the contract tests.** Reusable contract suites and fakes in the new module's test JAR before or with the first implementation (REQ-TEST-001, ADR-0045), so every future implementation is checked the same way.
 7. **Implement by batches** as in Flow A, steps 5–8, starting with the minimal contract and a headless implementation.
 8. **Add the example and index entries**, then verify (tests, dependency-rule check, Android/DEX job, `scripts/check-docs.py`).
 9. **Merge** with the ADR set to `ACCEPTED`, referencing it in the pull request.

@@ -1,6 +1,6 @@
 # Architecture overview
 
-**Status: VALIDATED — principles and boundaries (ADR-0001 to ADR-0043). Sections 6 and 7 restate ADR-0001 as refined by later ADRs. A plain-language version with diagrams: [`../how-the-engine-works.md`](../how-the-engine-works.md).**
+**Status: VALIDATED — principles and boundaries (ADR-0001 to ADR-0049). Sections 6 and 7 restate ADR-0001 as refined by later ADRs. A plain-language version with diagrams: [`../how-the-engine-works.md`](../how-the-engine-works.md).**
 
 ## 1. General direction
 
@@ -34,7 +34,7 @@ Layered architecture with dependency inversion: the core defines the contracts; 
                  OS / native libraries
 ```
 
-Modules are named `lionengine-XXX` under group `com.b3dgs.lionengine` (ADR-0012); the module list and allowed dependencies are in [`modules.md`](modules.md); their physical declaration is done at the build skeleton (ADR-0042). DEX is produced by a separate Gradle module consuming the Maven artifacts (ADR-0012).
+Modules are named `lionengine-XXX` under group `com.b3dgs.lionengine` (ADR-0012); the module list and allowed dependencies are in [`modules.md`](modules.md); their physical declaration is done at the build skeleton (ADR-0042), and their cross-module contracts are listed in [`interfaces.md`](interfaces.md) and declared by the contract skeleton (ADR-0049). DEX is produced by a separate Gradle module consuming the Maven artifacts (ADR-0012).
 
 ## 2. Boundaries
 
@@ -69,12 +69,13 @@ An abstraction does not imply a universal implementation. For example:
 - an OpenGL backend;
 - an Android adapter.
 
-Each implementation respects the same contract and passes the same contract suite of `test-support`, or explicitly declares its capabilities and limits.
+Each implementation respects the same contract and passes the same contract suite, published in the test JAR of the module that defines the contract (ADR-0045), or explicitly declares its capabilities and limits.
 
 ## 5. Capabilities and compatibility
 
 - Platforms announce their capabilities (gamepad, audio, shaders, per-frame color effects, screen modes, ...). The engine never assumes that a capability exists everywhere.
 - Lookup: a typed optional lookup on an explicit platform object, without class-name lookup or reflection (ADR-0020).
+- The display state (screen mode, display mode, scaling policy, filter chain) is owned by the platform, which publishes the presentation geometry used by the render backends and the input adapters (ADR-0046).
 - Screen modes, display-mode selection and output filtering are best-effort requests with the effective result reported (ADR-0002, ADR-0006). They are presentation concerns: the logical resolution is decoupled from the output resolution and nothing here changes world units or simulation state.
 
 ## 6. Physical and temporal conventions
@@ -107,4 +108,4 @@ One runtime thread owns the loop, the world and the caches; platform threads and
 
 ## 9. Open architectural questions
 
-None remain open (ADR-0041 to ADR-0044); new gaps go to [`../open-questions.md`](../open-questions.md).
+None remain open (ADR-0041 to ADR-0044; the skeleton-readiness review, ADR-0045 to ADR-0049, opened none); new gaps go to [`../open-questions.md`](../open-questions.md).

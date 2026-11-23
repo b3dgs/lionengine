@@ -4,7 +4,7 @@
 
 - Owner: project owner
 - Roadmap phase: Phase 1 (`resources`, `resources-memory`, `resources-file`), then `resources-archive`; `resources-android` in Phase 4
-- Affected modules: `resources`, `resources-file`, `resources-archive`, `resources-memory`, `resources-android`, `test-support`, `examples`
+- Affected modules: `resources`, `resources-file`, `resources-archive`, `resources-memory`, `resources-android`, `examples` (suites in the `resources` test JAR, ADR-0045)
 - Requirements: `REQ-RES-001` to `REQ-RES-006`, `REQ-RT-003`, `REQ-RT-005`
 - Applicable ADRs: [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0019`](../decisions/0019-loading-resource-policy-and-memory.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0037`](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md)
 - Open questions involved: none
@@ -25,11 +25,11 @@ Decoding and decoded caches (they belong to `graphics`, audio, `tilemap`); file 
 - **Application streams:** the application can register a stream supplier under a key in `resources` (for example downloaded content); it behaves like a provider placed where the application inserts it.
 - **Errors:** missing everywhere → `ResourceException` with reason `MISSING`; present but unreadable (I/O error, permission) → reason `INACCESSIBLE`; both carry the key and the cause. Decoding errors are the consuming module's exceptions (`ImageDecodingException`, `AudioDecodingException`, `MapLoadingException`).
 - **Providers:** `resources-file` maps keys under a configured root directory and never escapes it; `resources-archive` reads a ZIP archive through `java.util.zip`; `resources-memory` stores byte arrays (writable); `resources-android` reads Android assets.
-- **Consuming modules' caches** (the contract suite in `test-support`): key = (resource key, module discriminator); reference counted; `release` idempotent; no automatic eviction; operations on the runtime thread only; decoded data immutable.
+- **Consuming modules' caches** (the cache convention suite of the `resources` test JAR, ADR-0045): key = (resource key, module discriminator); reference counted; `release` idempotent; no automatic eviction; operations on the runtime thread only; decoded data immutable.
 
 ## Envisaged APIs / contracts
 
-Canonical names (ADR-0037): `ResourceKey`, `ResourceProvider`, `Resources`, `ResourceException` with `Reason`; signatures written by the batch.
+Canonical names (ADR-0037): `ResourceKey`, `ResourceProvider`, `Resources`, `ResourceException` with `Reason`; signatures written by the batch. `ResourceKey`, `ResourceProvider` and `ResourceException` are declared by the contract skeleton (ADR-0049, [`contract-skeleton.md`](contract-skeleton.md)); the batches below write `Resources`, the providers and the suites.
 
 ## Batches (order)
 
@@ -53,7 +53,7 @@ No units. `java.io` streams and `java.util.zip`; no `java.nio.file` in shared mo
 ## Tests
 
 - Unit tests: key normalization and every rejection; provider order and override; read-only refusal; error reasons; directory escape refused.
-- Contract suites (`test-support`): provider suite run by every provider; cache convention suite run by every consuming module.
+- Contract suites (`resources` test JAR, ADR-0045): provider suite run by every provider; cache convention suite run by every consuming module.
 - Concurrency test: parallel reads from two threads on each provider.
 
 ## Acceptance criteria

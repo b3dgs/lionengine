@@ -43,10 +43,10 @@ Each fact has one owner; other documents summarize it and link to it.
 |---|---|---|
 | Why a choice was made, and the choice itself at architecture level | the ADR | requirements, contracts, feature page |
 | What must be verifiable | `requirements.md` | traceability, feature page |
-| Everything a batch needs to implement (rules, defaults, states, order of operations, names) | the feature page (`docs/features/`) | `architecture/contracts.md` |
+| Everything a batch needs to implement (rules, defaults, states, order of operations, names) | the feature page (`docs/features/`) | `architecture/contracts.md`, `architecture/interfaces.md` |
 | Overview for newcomers | `how-the-engine-works.md`, `engine-features.md` | — |
 
-In a conflict: ADR, then requirement, then feature page, then `contracts.md`, then `how-the-engine-works.md`. A feature page is `VALIDATED` and may fix batch-level details (state names, method lists, order of steps) inside the limits of its ADRs without a new ADR; a change of an architecture choice needs an ADR. Whoever finds a conflict fixes the lower document in the same pull request, or records it in `open-questions.md` if the higher one is unclear.
+In a conflict: ADR, then requirement, then feature page, then `contracts.md` and `interfaces.md`, then `how-the-engine-works.md`. A feature page is `VALIDATED` and may fix batch-level details (state names, method lists, order of steps) inside the limits of its ADRs without a new ADR; a change of an architecture choice needs an ADR. Whoever finds a conflict fixes the lower document in the same pull request, or records it in `open-questions.md` if the higher one is unclear.
 
 ## Traceability
 
