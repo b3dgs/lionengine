@@ -7,6 +7,7 @@ A feature page is the entry point of an implementation batch: it restates every 
 | Phase | Page | Modules | Requirements |
 |---|---|---|---|
 | 0 | [`build-skeleton.md`](build-skeleton.md) | all (empty), `android/` | REQ-TECH-*, REQ-CORE-003, REQ-CORE-005, REQ-DOC-* |
+| 0 | [`contract-skeleton.md`](contract-skeleton.md) | `core`, `runtime`, `resources`, `render-api`, `platform-api` (cross-module contracts of [`../architecture/interfaces.md`](../architecture/interfaces.md)) | REQ-CORE-003, REQ-CORE-004, REQ-CORE-005, REQ-TECH-006, REQ-TECH-008 |
 | 1 | [`core-foundation.md`](core-foundation.md) | `core` | REQ-CORE-006, REQ-DEF-*, REQ-RT-007, REQ-DET-003 |
 | 1–2 | [`game-loop.md`](game-loop.md) | `runtime` | REQ-LOOP-*, REQ-RT-001 to REQ-RT-004, REQ-RT-009, REQ-RT-010 |
 | 1–2 | [`scenes.md`](scenes.md) | `runtime` | REQ-SCENE-* |
@@ -28,4 +29,4 @@ A feature page is the entry point of an implementation batch: it restates every 
 
 Every page here is summarized for readers in [`../engine-features.md`](../engine-features.md); a batch that changes a capability updates that summary too (checked by `scripts/check-docs.py` for links).
 
-Not yet paged (written when scheduled): `composition` (Phase 3, ADR-0031), `render-opengl` and the Android frontend (Phase 4). New pages start from [`../templates/FEATURE-TEMPLATE.md`](../templates/FEATURE-TEMPLATE.md).
+Not yet paged (written when scheduled): `composition` (Phase 3, ADR-0031, ADR-0048; declared empty by the build skeleton), `render-opengl` and the Android frontend (Phase 4). New pages start from [`../templates/FEATURE-TEMPLATE.md`](../templates/FEATURE-TEMPLATE.md).

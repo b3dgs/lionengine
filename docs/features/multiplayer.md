@@ -149,7 +149,7 @@ World units of ADR-0013 (meters, seconds, m/s); ticks are `int`; interpolation r
 ## Tests
 
 - Unit tests: codec round trips, content hash changes with any registration change, delta encoding and decoding against a baseline, baseline selection and fallback to complete, removal by absence, network id mapping, input frame encoding and quantization, missing and late frame rules, pacing decisions, prediction comparison, replay, snap, epoch filtering, the client structural rule.
-- Contract tests (`test-support`): a codec suite (write then read gives equal bytes; interpolation at 0 and 1 gives the endpoints) run on every standard codec.
+- Contract tests (`multiplayer` test JAR, ADR-0045): a codec suite (write then read gives equal bytes; interpolation at 0 and 1 gives the endpoints) run on every standard codec.
 - Integration tests: **convergence suite** — a server and two clients over `ConditionedTransport` (latency 0.1 s, jitter 0.03 s, loss 0.2, duplication 0.05, reordering 0.1, fixed seeds), 3,000 ticks with objects created, moved and removed: after every applied snapshot, each proxy's traits equal the server's values of that tick and no object exists on one side only; a predicted avatar under the same conditions ends at the server's position; an RTS scenario with 1,000 replicated units and orders as commands.
 - Performance tests: allocation check of the per-step paths; snapshot size and encode time for 1,000 objects reported by the trend job.
 

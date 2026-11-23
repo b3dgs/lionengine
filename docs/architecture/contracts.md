@@ -1,6 +1,6 @@
 # Cross-cutting contracts
 
-**Status: VALIDATED — responsibilities, invariants and defaults of every contract (ADR-0001 to ADR-0043). Java signatures are written by each implementation batch under [`../conventions.md`](../conventions.md) and reviewed in its pull request.**
+**Status: VALIDATED — responsibilities, invariants and defaults of every contract (ADR-0001 to ADR-0049). Java signatures are written by the contract skeleton for the cross-module contracts and by each implementation batch for the rest, under [`../conventions.md`](../conventions.md), and reviewed in their pull requests; the per-module list of types and seams is [`interfaces.md`](interfaces.md).**
 
 Each public contract must specify: responsibility, invariants, lifecycle, calling thread, units, errors, data ownership, behavior when a capability is absent, and compatibility (including Android/DEX). A plain-language summary with diagrams is in [`../how-the-engine-works.md`](../how-the-engine-works.md).
 
@@ -16,7 +16,7 @@ Each public contract must specify: responsibility, invariants, lifecycle, callin
 
 ### Platform lifecycle (ADR-0031, ADR-0040)
 
-- The application creates the platform object, configures it (logical frame size, initial screen mode, scaling policy, filter chain), registers its modules explicitly (ADR-0020) and starts it with the loop's `LoopDriver` (ADR-0040).
+- The application creates the platform object, configures it (logical frame size, initial screen mode, scaling policy, filter chain), registers its modules explicitly (ADR-0020), attaches the render backend (ADR-0046) and starts it with the loop's `LoopDriver` (ADR-0040).
 - Surface resize, focus change, background and foreground, close request, context loss and recovery are inbox events. Resize never changes the logical frame; scaling is recomputed at the next frame boundary. Background pauses and foreground resumes (ADR-0017). A close request stops the loop unless a close listener vetoes it. Context loss is recovered by the backend from CPU copies or by reloading (ADR-0019).
 - Capabilities are found by a typed lookup on the platform object: `getCapability(Class<T>)` returns the capability or `null` when unsupported, `hasCapability(Class<?>)` tells it (ADR-0020, ADR-0037).
 - Desktop reference: `platform-awt` (JDK AWT only, excluded from Android builds, ADR-0008) with `render-awt`, which reaches the surface through the `AwtSurface` capability of `platform-awt` (ADR-0022, ADR-0033).
@@ -28,25 +28,28 @@ Each public contract must specify: responsibility, invariants, lifecycle, callin
 | World | meters (`double`) | `(0, 0)`, X right, Y up | simulation (`ecs`, `traits`, `physics`, tile collision) |
 | Tile | `int` tile indices | bottom-left cell, Y up (loaders flip top-down files) | `tilemap` |
 | Logical frame (screen) | pixels | top-left, Y down | rendering, sprites, tile rendering, pointer input |
-| Output surface | device pixels | top-left, Y down | platform and render backend, after scaling and filters |
+| Output surface | device pixels | top-left, Y down | platform (presentation geometry, ADR-0046) and render backend, after scaling and filters |
 
-The camera alone converts world to logical-frame pixels through its view transform (`screenX = x * scale + offsetX`, `screenY = offsetY - y * scale`, ADR-0034). The scaling policy alone maps the logical frame to the output surface (ADR-0006). `float` appears only at the render boundary.
+The camera alone converts world to logical-frame pixels through its view transform (`screenX = x * scale + offsetX`, `screenY = offsetY - y * scale`, ADR-0034). The scaling policy alone maps the logical frame to the output surface (ADR-0006); the platform publishes the result as the presentation geometry, which render backends present with and input adapters invert (ADR-0046). `float` appears only at the render boundary.
 
 ### Render commands (ADR-0026, ADR-0033)
 
 - Rendering code never draws directly: it writes entries into a preallocated command buffer of parallel primitive arrays (texture handle, source rectangle, position, scale, rotation in degrees, pivot, tint, alpha, layer). Entries are presented by ascending layer, then submission order. No allocation per frame.
 - A **viewport** (rectangle in logical-frame pixels) clips and offsets the following commands; a scene with several views sets one viewport per view (ADR-0031).
 - Pixel buffers are packed `int` ARGB with straight alpha; texture sampling is nearest-neighbor by default; per-frame tint and alpha are a typed capability of `render-api`, other color effects are baked on the CPU and cached.
+- Textures are created through the `render-api` texture contract from primitive data in that layout (width, height, `int[]`), shared read-only: the backend may keep the array as its context-loss copy, and the `graphics` cache releases the texture with its source (ADR-0047).
 - GPU upload happens on the render thread at first use or at an explicit prepare call, never on a worker (ADR-0026).
 
 ### Display modes, resolution and output filtering (ADR-0002, ADR-0006, ADR-0025, ADR-0033)
 
 Capability-based best-effort negotiation: the game requests, the platform applies what it can and reports what it actually applied, so game code is identical everywhere. A missing capability never throws.
 
+- **Ownership (ADR-0046):** the platform owns the display state. Its configuration and display request carry the `render-api` scaling policy and filter chain (`platform-api` depends on `render-api`); the attached render backend tells which filters it implements; one effective result reports every field. At the frame boundary of each change the platform recomputes the presentation geometry: the surface rectangle, in device pixels, where the logical frame is presented, and the scale on each axis.
+
 - **Screen mode** (`WINDOWED`, `FULL_WINDOW`, `FULL_SCREEN`) and **display mode** (width and height in pixels, refresh rate in Hz, color depth in bits; `0` means unknown or multiple, with `isRefreshRateKnown()` and `isBitDepthKnown()`): `platform-api`, engine-defined value types, capability query.
 - **Logical resolution** is independent of the display mode. Scaling policy `FIT` (default), `INTEGER` (opt-in, falls back to `FIT` when the surface is smaller than the logical frame) or `STRETCH`; the type is in `render-api`, the surface size comes from `platform-api`. Scaling never changes world units.
 - **Output filtering** (`NONE` nearest-neighbor, bilinear, `HQ2X`, CRT, custom): `render-api`, an ordered chain from the logical frame to the output surface only. Scaling filters resample, post filters (CRT) run on the scaled output. Shaders use the GLSL ES 1.00 feature set, compiled as `#version 100` or `#version 120` with headers prepended by the backend, delivered through `resources`. `render-awt` implements `NONE`, bilinear and `Scale2x` on the CPU (standing in for `HQ2X` until its license record) and reports CRT unsupported.
-- **Custom filters:** a registry id, explicit registration on the backend, a scaling or post kind, a fragment shader resource and/or a CPU implementation over `int[]` ARGB; a backend lacking the needed implementation skips it and reports the skip.
+- **Custom filters:** a registry id, explicit registration on the backend, a scaling or post kind, a fragment shader `ResourceKey` (`render-api` depends on `resources`, ADR-0047) and/or a CPU implementation over `int[]` ARGB; a backend lacking the needed implementation skips it and reports the skip.
 - **Fallback orders:** screen mode `FULL_SCREEN` → `FULL_WINDOW` → `WINDOWED`, `WINDOWED` → `FULL_WINDOW` → `FULL_SCREEN`, `FULL_WINDOW` → `WINDOWED` → `FULL_SCREEN`; display mode exact, then nearest size, rate, depth; filters: CRT skipped, `HQ2X` → bilinear → `NONE`.
 - **Effective result:** apply returns the accepted request without blocking; the effective result (requested vs effective per field, `degraded` flag, reason) is an immutable value delivered through the inbox at the frame boundary where it is applied and readable as the current state.
 - Changes apply at a frame boundary and never alter simulation state. No AWT, OpenGL or Android type in these contracts. Settings persistence is the game's job. Version 11 uses the default monitor and reports sizes in device pixels; contracts assume neither one monitor nor scale 1.0 (ADR-0043).
@@ -150,7 +153,7 @@ Details: [`features/ecs.md`](../features/ecs.md), [`features/standard-traits.md`
 - Devices: keyboard, pointer (mouse and touch), gamepad (standard layout); engine-defined `int` codes; availability through capabilities.
 - Game logic reads **actions** (digital or analog) bound to codes by a binding table; several bindings per action.
 - Raw events go through the inbox. Each digital action exposes `down`, `pressed`, `released` per update step; an edge is seen by exactly one step; a tap within one step is never lost.
-- Sticks in `[-1, 1]` with a radial dead zone (default 0.15), triggers in `[0, 1]`; pointer positions in logical-frame pixels after inverse scaling.
+- Sticks in `[-1, 1]` with a radial dead zone (default 0.15), triggers in `[0, 1]`; pointer positions in logical-frame pixels after inverse scaling, converted at delivery on the runtime thread with the platform's presentation geometry (ADR-0046).
 - Focus loss releases everything; gamepad hot-plug events keep device indices; key repeat ignored; text input is a separate later stream.
 - Players are device sets plus bindings; per-step action states can be recorded.
 

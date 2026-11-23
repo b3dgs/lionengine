@@ -13,7 +13,7 @@
 
 ## Architecture
 
-> Status: **VALIDATED specification** — every requirement and document is validated and backed by the decisions in `docs/decisions/` (ADR-0001 to ADR-0044). No question remains open: the next step is the build-skeleton batch.
+> Status: **VALIDATED specification** — every requirement and document is validated and backed by the decisions in `docs/decisions/` (ADR-0001 to ADR-0049). No question remains open: the next steps are the build-skeleton batch, then the contract-skeleton batch.
 
 **New here? Start with [`docs/how-the-engine-works.md`](docs/how-the-engine-works.md)**: a short, diagram-based explanation readable by anybody.
 
@@ -37,15 +37,16 @@ This branch currently contains a Maven baseline (parent `pom.xml`, no modules ye
 5. [`docs/requirements.md`](docs/requirements.md) — functional and non-functional requirements.
 6. [`docs/architecture/overview.md`](docs/architecture/overview.md) — principles and boundaries.
 7. [`docs/architecture/modules.md`](docs/architecture/modules.md) — modules and their dependencies.
-8. [`docs/architecture/contracts.md`](docs/architecture/contracts.md) — cross-cutting contracts.
-9. [`docs/conventions.md`](docs/conventions.md) — code conventions.
-10. [`docs/testing.md`](docs/testing.md) — test strategy.
-11. [`docs/android-compatibility.md`](docs/android-compatibility.md) — Android/DEX verification checklist.
-12. [`docs/documentation.md`](docs/documentation.md) — documentation rules.
-13. [`docs/roadmap.md`](docs/roadmap.md) — delivery order.
-14. [`docs/decisions/`](docs/decisions/README.md) — architecture decisions (ADRs).
-15. [`docs/open-questions.md`](docs/open-questions.md) — every `TO BE DEFINED` item, in one place.
-16. [`docs/change-process.md`](docs/change-process.md) — how to modify a feature or add a module consistently.
+8. [`docs/architecture/interfaces.md`](docs/architecture/interfaces.md) — public types per module and the contracts that cross modules.
+9. [`docs/architecture/contracts.md`](docs/architecture/contracts.md) — cross-cutting contracts.
+10. [`docs/conventions.md`](docs/conventions.md) — code conventions.
+11. [`docs/testing.md`](docs/testing.md) — test strategy.
+12. [`docs/android-compatibility.md`](docs/android-compatibility.md) — Android/DEX verification checklist.
+13. [`docs/documentation.md`](docs/documentation.md) — documentation rules.
+14. [`docs/roadmap.md`](docs/roadmap.md) — delivery order.
+15. [`docs/decisions/`](docs/decisions/README.md) — architecture decisions (ADRs).
+16. [`docs/open-questions.md`](docs/open-questions.md) — every `TO BE DEFINED` item, in one place.
+17. [`docs/change-process.md`](docs/change-process.md) — how to modify a feature or add a module consistently.
 
 Building a game with the engine (humans and agents):
 - [`docs/features/`](docs/features/README.md) — one page per implementation batch, in order: the entry point for implementers.
@@ -78,4 +79,4 @@ In case of contradiction, a `VALIDATED` decision prevails over a proposal. If tw
 
 ### Initial state
 
-All decisions ADR-0001 to ADR-0044 are `ACCEPTED`: technical baseline and units (ADR-0001, ADR-0012 to ADR-0016), game loop, threads, loading and no reflection (ADR-0017 to ADR-0020), object model and modules (ADR-0021, ADR-0022), game workflow and budgets (ADR-0023, ADR-0024), and every feature contract (ADR-0002 to ADR-0011, ADR-0025 to ADR-0030). ADR-0031 to ADR-0035 fixed the remaining defaults (runtime, data files and dependencies, media, camera and ECS, input), ADR-0036 the scene flow, ADR-0037 the package tree, callback types and canonical names, and ADR-0038 and ADR-0039 the network model and protocol, under the owner's delegation of 2026-11-23; ADR-0040 moved the thread hand-off contracts (inbox, asynchronous handles, worker pool, loop control) to `core` after the architecture review, and ADR-0041 to ADR-0044 closed the last questions (Android bytecode level, Maven Central, version 11 display scope, Java 21 shared level with the tested API 21 constraints). Every requirement and document is **VALIDATED**; templates keep `PROPOSED` as the initial status of the items created from them.
+All decisions ADR-0001 to ADR-0049 are `ACCEPTED`: technical baseline and units (ADR-0001, ADR-0012 to ADR-0016), game loop, threads, loading and no reflection (ADR-0017 to ADR-0020), object model and modules (ADR-0021, ADR-0022), game workflow and budgets (ADR-0023, ADR-0024), and every feature contract (ADR-0002 to ADR-0011, ADR-0025 to ADR-0030). ADR-0031 to ADR-0035 fixed the remaining defaults (runtime, data files and dependencies, media, camera and ECS, input), ADR-0036 the scene flow, ADR-0037 the package tree, callback types and canonical names, and ADR-0038 and ADR-0039 the network model and protocol, under the owner's delegation of 2026-11-23; ADR-0040 moved the thread hand-off contracts (inbox, asynchronous handles, worker pool, loop control) to `core` after the architecture review, and ADR-0041 to ADR-0044 closed the last questions (Android bytecode level, Maven Central, version 11 display scope, Java 21 shared level with the tested API 21 constraints). ADR-0045 to ADR-0049 come from the skeleton-readiness review requested by the owner the same day: test fixtures with their contracts, display state owned by the platform, `render-api` boundary types, `composition` dependencies, and the interface catalog with the contract-skeleton batch. Every requirement and document is **VALIDATED**; templates keep `PROPOSED` as the initial status of the items created from them.

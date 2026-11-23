@@ -130,7 +130,7 @@ Today no engine code exists: every area below is at most *Specified*.
 
 ## Platforms
 
-[`features/platform-and-rendering.md`](features/platform-and-rendering.md), [`features/build-skeleton.md`](features/build-skeleton.md)
+[`features/platform-and-rendering.md`](features/platform-and-rendering.md), [`features/build-skeleton.md`](features/build-skeleton.md), [`features/contract-skeleton.md`](features/contract-skeleton.md)
 
 - Desktop (Windows, macOS, Linux) through Java AWT: the first reference platform.
 - Android from API level 21, with the same game code (Phase 4).

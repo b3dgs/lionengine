@@ -59,7 +59,7 @@ Seconds for durations and positions, Hz for sample rate, gain in `[0, 1]`. No `j
 ## Tests
 
 - Unit tests: seeded variant selection (no repeat, weights, composition), playlist advance (end, loop, failing track), voice stealing per policy, cache hit and miss, short-sound length limit, WAV parsing.
-- Contract tests (`test-support`): reusable suites run on every backend, with a fake backend first.
+- Contract tests (`audio-api` test JAR, ADR-0045): reusable suites run on every backend, with a fake backend first.
 - Integration tests: headless fake backend with a controllable clock, including fades and gain products.
 - Platform tests (later, separate): latency, Android.
 

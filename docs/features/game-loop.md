@@ -21,7 +21,7 @@ Scenes (see [`scenes.md`](scenes.md)); the platform threads themselves (see [`pl
 
 ### Clock and configuration
 
-- `Clock`: monotonic nanoseconds (`System.nanoTime` in production; a controllable clock in `test-support`).
+- `Clock`: monotonic nanoseconds (`System.nanoTime` in production; a controllable clock in the `runtime` test JAR, reused by `test-support`, ADR-0045).
 - `LoopConfig` defaults: update rate 60 Hz (`int` in `[1, 1000]`); lag cap 0.25 s (in `[one step, 1 s]`); time scale 1.0 (in `[0.1, 4.0]`); vsync snapping tolerance 0.25 ms (`0` disables); inbox capacity 1,024. Out-of-range values throw `IllegalArgumentException`.
 
 ### One iteration (exact order)
@@ -54,7 +54,7 @@ On resume the clock reference is reset and the accumulator cleared. The first it
 
 ## Envisaged APIs / contracts
 
-Canonical names (ADR-0037, ADR-0040): in `runtime` `Clock`, `GameLoop`, `LoopConfig`; in `core` `Inbox`, `InboxEvent`, `AsyncHandle<T>`, `AsyncState`, `LoadGroup`, `WorkerPool`, `LoopControl`, `LoopDriver` (`GameLoop` implements `LoopDriver`); listeners `LagListener` and the update and render callbacks as role-named interfaces. The pause, resume, stop and time-scale requests are the `LoopControl` methods.
+Canonical names (ADR-0037, ADR-0040): in `runtime` `Clock`, `GameLoop`, `LoopConfig`; in `core` `Inbox`, `InboxEvent`, `AsyncHandle<T>`, `AsyncState`, `LoadGroup`, `WorkerPool`, `LoopControl`, `LoopDriver` (`GameLoop` implements `LoopDriver`); listeners `LagListener` and the update and render callbacks as role-named interfaces. The pause, resume, stop and time-scale requests are the `LoopControl` methods. Declared by the contract skeleton (ADR-0049, [`contract-skeleton.md`](contract-skeleton.md)): `Inbox`, `InboxEvent`, `AsyncHandle<T>`, `AsyncState`, `WorkerPool`, `LoopControl`, `LoopDriver`, `Clock` and the update and render callbacks; the batches below implement them.
 
 Wiring (ADR-0040): the application or `composition` sets the update callback to advance every `InputState` then update the scene manager, and the render callback to render the scene manager then present the command buffer; `runtime` knows neither input nor rendering.
 

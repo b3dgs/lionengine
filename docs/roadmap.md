@@ -4,7 +4,7 @@
 
 ## Phase 0 — structuring decisions and project skeleton
 
-Done (ADR-0001 to ADR-0039):
+Done (ADR-0001 to ADR-0049):
 - technical baseline, coordinates, units, angles, numeric types (ADR-0001, ADR-0012 to ADR-0016);
 - game loop, threads, events, loading, memory, no reflection (ADR-0017 to ADR-0020, ADR-0031);
 - scene, world and object model, modules and their dependencies (ADR-0021, ADR-0022, `architecture/modules.md`);
@@ -12,19 +12,22 @@ Done (ADR-0001 to ADR-0039):
 - determinism, budgets, supported desktop platforms (ADR-0024);
 - every feature contract (ADR-0025 to ADR-0030, ADR-0033 to ADR-0036);
 - package tree per module, callback types and canonical names (ADR-0037); one feature page per batch ([`features/README.md`](features/README.md));
-- network model, protocol and sessions (ADR-0038, ADR-0039).
+- network model, protocol and sessions (ADR-0038, ADR-0039);
+- thread hand-off contracts in `core`, Android bytecode level, Maven Central, version 11 display scope (ADR-0040 to ADR-0044);
+- skeleton readiness: test fixtures with their contracts, display state owned by the platform, `render-api` boundary types, `composition` dependencies, interface catalog and contract skeleton (ADR-0045 to ADR-0049, [`architecture/interfaces.md`](architecture/interfaces.md)).
 
 Remaining, in this order:
 1. build skeleton ([`features/build-skeleton.md`](features/build-skeleton.md), ADR-0042): declare the modules of `architecture/modules.md` as Maven modules with empty `package-info.java`, package tree verified by `radial-encapsulation-maven-plugin`, JUnit 5, Javadoc with doclint failing on warnings (REQ-CORE-003), coverage, exact build and test commands recorded in `README.md` and `AGENTS.md`;
 2. CI: Linux build and tests, Windows and macOS as non-blocking jobs (REQ-SUPPORT-001), documentation check, API index and asset provenance checks (REQ-DOC-005, REQ-DOC-006);
-3. Android/DEX verification job and the record of the verified Java features at API 21, with shared code at Java 21 (ADR-0044).
+3. Android/DEX verification job and the record of the verified Java features at API 21, with shared code at Java 21 (ADR-0044);
+4. contract skeleton ([`features/contract-skeleton.md`](features/contract-skeleton.md), ADR-0049): declare the cross-module contracts of [`architecture/interfaces.md`](architecture/interfaces.md) in `core`, `runtime`, `resources`, `render-api` and `platform-api`, with complete Javadoc and no behavior beyond value types.
 
-**Expected output:** a compilable repository skeleton passing CI, including the Android/DEX job.
+**Expected output:** a compilable repository skeleton passing CI, including the Android/DEX job, with every module declared and the cross-module contracts of Phases 1 and 2 compiled.
 
 ## Phase 1 — testable foundation
 
 - `core`: logging facade, JSON reader, definition exception, registry and typed configuration, random generator ([`features/core-foundation.md`](features/core-foundation.md));
-- `test-support`: controllable clock, manually driven loop, headless frontend (REQ-TEST-001);
+- `test-support`: headless frontend and manually driven loop; controllable clock in the `runtime` test JAR (REQ-TEST-001, ADR-0045);
 - `runtime`: loop with its calibration, inbox ([`features/game-loop.md`](features/game-loop.md)), scene contract and scene manager with one active scene ([`features/scenes.md`](features/scenes.md));
 - `resources` with memory and filesystem providers, provider order, resource convention suite ([`features/resources.md`](features/resources.md));
 - `platform-api` lifecycle events and capability lookup; headless test frontend; minimal reference frontend `platform-awt` and `render-awt` ([`features/platform-and-rendering.md`](features/platform-and-rendering.md));

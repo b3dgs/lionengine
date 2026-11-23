@@ -53,7 +53,7 @@ Pixels for images, positions and pivots; degrees for rotation; `float` only insi
 ## Tests
 
 - Unit tests: transform order and pivot, rotation sign, palette mapping, color-transform description, CPU bake, command ordering, zero allocation per frame.
-- Contract tests (`test-support`): sprite render on a fake backend with and without the tint/alpha capability, cache hit and release.
+- Contract tests: sprite render on the recording backend of `test-support` with and without the tint/alpha capability; cache hit and release with the cache convention suite of the `resources` test JAR (ADR-0045).
 - Integration tests: headless load, cache, render of two color variants.
 - Platform tests: AWT, OpenGL and Android color-transform parity.
 
