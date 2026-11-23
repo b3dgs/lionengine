@@ -6,8 +6,8 @@
 
 - apply the validated choices: Java 25+, Maven 3+, X/Y coordinates in meters and time in seconds (ADR-0001);
 - specify the coordinate system (origin, direction of Y), meters/pixels conversions and angle conventions (OQ-010 to OQ-013);
-- formalize the game loop model mathematically: simulation step, frameskipping, extrapolation and factor greater than 1 (OQ-020, OQ-021);
-- decide the place of ECS: core model or optional module (OQ-041);
+- game loop model: fixed step, accumulator, interpolation, lag cap (ADR-0017, follow-ups OQ-151);
+- place of ECS: single object model (ADR-0021);
 - set package conventions, versioning, thread rules and physical module layout (OQ-003, OQ-030);
 - define the Android build strategy with Maven (OQ-002) and the project license (OQ-006);
 - define the core/frontend boundaries;
@@ -24,7 +24,7 @@
 - abstract clock and test-driven loop (`test-support`);
 - runtime lifecycle;
 - resources with memory and filesystem providers;
-- minimal reference frontend (desktop `platform-api` implementer: `platform-awt`, ADR-0008; render side: OQ-123);
+- minimal reference frontend (desktop `platform-api` implementer: `platform-awt`, ADR-0008; render side: `render-awt` on `platform-awt`, ADR-0022);
 - contract tests and a headless example;
 - the `examples` module with a CI job that compiles and runs every example (REQ-DOC-001);
 - first entries of the API index and of the game development guide (REQ-DOC-002, REQ-DOC-003);
@@ -45,8 +45,8 @@
 
 ## Phase 3 — game world
 
-- objects/scenes;
-- basic traits; ECS dynamic objects, traits, queries, systems and the standard trait package (ADR-0011 ACCEPTED, [`features/ecs.md`](features/ecs.md), [`features/standard-traits.md`](features/standard-traits.md)), after the build skeleton of Phase 0 and the decisions `OQ-041`, `OQ-042`, `OQ-013`, `OQ-010`;
+- scenes (lifecycle contract and scene manager in `runtime`) and the world (ADR-0021); `physics` contracts;
+- basic traits; ECS dynamic objects, traits, queries, systems and the standard trait package (ADR-0011 ACCEPTED, [`features/ecs.md`](features/ecs.md), [`features/standard-traits.md`](features/standard-traits.md)), after the build skeleton of Phase 0 and the decisions of ADR-0021, `OQ-013`, `OQ-010`;
 - tilemap and tilesets (tile maps: ADR-0009 ACCEPTED, [`features/tile-map.md`](features/tile-map.md));
 - camera: view rectangle, zoom, follow, smoothing and shake (ADR-0010 ACCEPTED, [`features/camera.md`](features/camera.md));
 - collisions according to the retained scope.
@@ -63,17 +63,16 @@
 
 ## Phase 5 — advanced extensibility
 
-- optional ECS strategy if justified (see OQ-041);
 - local multiplayer and split-screen;
-- network architecture, only after the synchronization needs are defined (OQ-060).
+- network architecture, only after the synchronization needs are defined (OQ-158, ADR-0024).
 
 **Expected output:** optional modules and demonstrators, without weighing down the minimal foundation.
 
 ## Phase 6 — first game
 
-- create the game repository from [`templates/GAME-AGENTS-TEMPLATE.md`](templates/GAME-AGENTS-TEMPLATE.md) (OQ-080);
+- create the game repository from [`templates/GAME-AGENTS-TEMPLATE.md`](templates/GAME-AGENTS-TEMPLATE.md) (ADR-0023);
 - build the game in small batches with local and cloud agents ([`agent-workflow.md`](agent-workflow.md));
-- every missing engine capability becomes an engine change request (OQ-081), not a workaround buried in the game.
+- every missing engine capability becomes an engine change request (GitHub issue template, ADR-0023), not a workaround buried in the game.
 
 **Expected output:** a playable game built only on the public engine API, plus the list of API gaps and documentation fixes it revealed.
 

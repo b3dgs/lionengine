@@ -47,7 +47,7 @@ Conceptual contract:
 
 **Mandatory invariant:** an extrapolated state never becomes the source state of the next simulation update. Extrapolation, including with a factor greater than `1`, must not introduce cumulative error in world calculations.
 
-To define before implementation (OQ-020 to OQ-023): simulation step duration, monotonic clock, target render cadence, extrapolation formula and factor, maximum tolerated lag, catch-up strategy, pause, slow motion, exceptions and shutdown policy. The test loop must allow time to be advanced artificially and exact states to be verified.
+Defined by [ADR-0017](../decisions/0017-fixed-step-game-loop.md): fixed step, monotonic clock, accumulator and catch-up, factor in `[0, 1)`, lag cap, interpolation by default, pause, time scale, fail-fast and shutdown at a frame boundary; calibration details in OQ-151. The test loop must allow time to be advanced artificially and exact states to be verified.
 
 ## Resources
 
@@ -126,29 +126,29 @@ Distinguish:
 Decisions of [ADR-0009](../decisions/0009-tile-map-contracts-in-tilemap.md) (ACCEPTED 2026-11-22; owner decisions of issue #865):
 
 - **Model:** single-layer grid of cells, each empty or a tileset cell index (`REQ-SHEET-001`); tile coordinates are `int` tile indices; tile size in pixels of the logical frame; `set`, `get`, `clear` with bounds checking and defined errors (`REQ-MAP-003`). A per-tile properties hook exists, with no collision type.
-- **Loading:** through an abstract loader contract over `resources`; keys and release per ADR-0007 (`REQ-MAP-004`). File format: OQ-126; tileset reference and ownership: OQ-128.
+- **Loading:** through an abstract loader contract over `resources`; keys and release per ADR-0007 (`REQ-MAP-004`). File format: Tiled JSON (ADR-0028); tileset reference and ownership: OQ-128.
 - **Rendering:** draws only tiles intersecting a viewport rectangle (pixels of the logical frame, a plain value, no camera type) plus a margin, by emitting `render-api` commands; read-only (`REQ-MAP-005`).
-- **Destruction:** rule-based auto-tiling updates neighbors in the update phase (`REQ-MAP-006`; rule format OQ-127); a synchronous tile-changed listener reports cell, old and new tile (`REQ-MAP-007`; OQ-122).
+- **Destruction:** rule-based auto-tiling updates neighbors in the update phase (`REQ-MAP-006`; rule format ADR-0028); a synchronous tile-changed listener reports cell, old and new tile (`REQ-MAP-007`; OQ-122).
 
-Still to specify: layers (candidate), chunks and render cache (OQ-129), collisions static and dynamic (OQ-125, OQ-043).
+Collision, storage and chunking are decided by ADR-0028 (first batch); still to specify: layers (candidate), slopes and one-way tiles (OQ-142), follow-ups OQ-162.
 
 ## Camera
 
 Decisions of [ADR-0010](../decisions/0010-camera-system-in-camera.md) (ACCEPTED; owner decisions of issue #868):
 
 - **Placement:** single `camera` module depending on `core` only.
-- **View:** a plain view rectangle in world units (meters, ADR-0001), no `Camera` type seen by rendering (`REQ-CAM-001`); consumer contract OQ-131. World-to-screen and screen-to-world conversion (`REQ-CAM-007`; factor OQ-012).
+- **View:** a plain view rectangle in world units (meters, ADR-0001), no `Camera` type seen by rendering (`REQ-CAM-001`); consumer contract: view transform (ADR-0029). World-to-screen and screen-to-world conversion (`REQ-CAM-007`; factor OQ-012).
 - **Zoom and translation:** zoom dimensionless, clamped, animated, applied from the next frame; absolute and relative translation (`REQ-CAM-002`, `REQ-CAM-003`).
-- **Follow:** an entity-ID lookup contract defined by `camera`; the ECS system or adapter lives outside, no dependency on `ecs`; a missing entity is safe (`REQ-CAM-004`; OQ-132).
-- **Delay:** exponential smoothing, time constant in seconds, 0 is rigid, frame-rate independent (`REQ-CAM-005`; OQ-133).
-- **Shake:** amplitude, duration, frequency; per-camera seeded noise, deterministic (`REQ-CAM-006`; OQ-130, OQ-134).
+- **Follow:** an entity-ID lookup contract defined by `camera`; the ECS system or adapter lives outside, no dependency on `ecs`; a missing entity is safe (`REQ-CAM-004`; ADR-0029).
+- **Delay:** exponential smoothing, time constant in seconds, 0 is rigid, frame-rate independent (`REQ-CAM-005`; ADR-0029).
+- **Shake:** amplitude, duration, frequency; per-camera seeded noise, deterministic (`REQ-CAM-006`; ADR-0029).
 - **Lifecycle:** update phase only; rendering reads only; no singleton (`REQ-CAM-008`).
 
-Still to specify: zoom details (OQ-135), out-of-scope candidates (OQ-136).
+Zoom and candidate features: ADR-0029; follow-ups OQ-163.
 
 ## Objects and traits
 
-The simple model and the ECS model are candidate strategies, not necessarily a single common API (OQ-041, OQ-042).
+The ECS is the single object model (ADR-0021): traits attach to ECS objects only. A scene is a lifecycle contract in `runtime`; a world is the container type of `ecs`; camera and viewport are two sides of a view (ADR-0021). Collision shapes, overlap tests and the broad phase live in `physics`.
 
 An object must have an explicit lifecycle. A trait represents a composable capability/behavior and must define its preconditions, its state, its execution order and its interactions.
 
@@ -156,7 +156,7 @@ Envisaged examples: `Movable`, `Gravity`, `Collision`. Their names and semantics
 
 ### ECS objects, traits and standard traits
 
-Accepted by [ADR-0011](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (ACCEPTED; `OQ-041` and `OQ-042` stay open). Responsibilities only; signatures are not fixed.
+Accepted by [ADR-0011](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (ACCEPTED; `OQ-041` and `OQ-042` resolved by ADR-0021). Responsibilities only; signatures are not fixed.
 
 - **Object:** an opaque ID (index plus generation). Indices are recycled; a stale ID is detected. Accessors fail fast on a stale or never-valid ID; a liveness check never throws (`REQ-ECS-001`, `REQ-ECS-002`). A consumer that must tolerate a missing object, such as the camera follow lookup (`REQ-CAM-004`), uses the liveness check.
 - **Trait:** data only, registered once with an `int` type ID, without reflection or class scanning (`REQ-ECS-004`). Logic lives in systems.
@@ -180,4 +180,4 @@ Clearly distinguish:
 - split-screen (several viewports/cameras);
 - network (transport, session, replication/synchronization).
 
-Split-screen must not be confused with networking. Protocol, authority, prediction, rollback and synchronization are outside the contract until decided (OQ-060).
+Split-screen must not be confused with networking. Protocol, authority, prediction, rollback and synchronization are outside the contract until decided (OQ-158, ADR-0024).

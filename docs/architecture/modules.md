@@ -4,27 +4,27 @@
 
 | Domain | Responsibility | Allowed dependencies (conceptual direction) |
 |---|---|---|
-| `core` | Common types, lifecycle, errors, events, cross-cutting contracts | No frontend dependency |
-| `runtime` | Orchestration, game loop, clock, scheduling | `core` |
+| `core` | Common types, lifecycle, errors, events, cross-cutting contracts; the strict JSON reader for definition files (ADR-0028) | No frontend dependency |
+| `runtime` | Orchestration, game loop, clock, scheduling; scene lifecycle contract and scene manager (ADR-0021) | `core` |
 | `platform-api` | Window/surface contracts, platform capabilities, frontend lifecycle, screen modes and display-mode selection (ADR-0002) | `core` |
 | `render-api` | Rendering contracts, textures, commands, viewport, output filtering (ADR-0002), scaling policy type (ADR-0006) | `core` |
-| `render-awt` | AWT implementation | `render-api`, `platform-api` |
-| `render-opengl` | OpenGL implementation | `render-api`, `platform-api`; `resources` if shader assets are delivered through it (OQ-094, candidate under ADR-0005) |
+| `render-awt` | AWT implementation; reaches the AWT surface through a capability of `platform-awt` (ADR-0022) | `render-api`, `platform-api`, `platform-awt` |
+| `render-opengl` | OpenGL implementation | `render-api`, `platform-api`; `resources` if shader assets are delivered through it (ADR-0025, ADR-0005) |
 | `platform-awt` | Desktop implementation of `platform-api` with the JDK AWT: window and surface lifecycle, screen modes, display modes, effective-result report; no rendering, input, audio or resources (ADR-0008) | `platform-api`, `core`; JDK `java.desktop` only; excluded from Android builds |
 | `platform-android` | Android lifecycle, surface, resources and input adaptation | `platform-api` and the `*-api` modules it implements |
 | `resources` | Resolution, opening, metadata and lifecycle of resources; media-agnostic, no decoded cache (ADR-0005); resource key and missing-resource exception types (ADR-0007) | `core` |
 | `resources-*` | Filesystem, archive, memory/temporary, Android and stream providers | `resources` |
 | `audio-api` | Backend-independent audio contracts: short sounds, long sounds, variant sets, playlists (ADR-0004) | `core`, `resources` (ADR-0004, decision 3B) |
-| `audio-*` | Audio backends and decoders; own the decoded caches (ADR-0004, ADR-0005) | `audio-api`, `resources` |
-| `graphics` | Images, logical textures, sprites, spritesheets, animations (ADR-0003); owns its decoded image cache (ADR-0005); image decoders are platform-specific (OQ-100) | `core`, `resources`, `render-api` (ADR-0003: sprites emit `render-api` commands; OQ-051 resolved) |
+| `audio-*` | Audio backends, one per output library or platform, and decoder modules per codec only when a third-party library is needed (ADR-0022);  own the decoded caches (ADR-0004, ADR-0005) | `audio-api`, `resources` |
+| `graphics` | Images, logical textures, sprites, spritesheets, animations (ADR-0003); owns its decoded image cache (ADR-0005); built-in pure-Java PNG decoder, optional platform decoders (ADR-0026) | `core`, `resources`, `render-api` (ADR-0003: sprites emit `render-api` commands; OQ-051 resolved) |
 | `tilemap` | Tilesets, grids, layers, static/dynamic maps (single layer first, collision deferred: ADR-0009, ACCEPTED) | `core`, graphics contracts; `resources` if map files are loaded through it (candidate under ADR-0005) |
 | `camera` | Camera: view rectangle in world units, zoom, translation, follow through a lookup contract, smoothing, shake; single module, headless, no ECS or platform dependency (ADR-0010) | `core` only; the ECS adapter lives outside (OQ-132) |
 | `input-api` | Normalized actions, states and input events | `core` |
 | `input-*` | Keyboard, mouse and gamepad adapters per platform | `input-api`, `platform-api` |
-| `world` | Scenes, objects, lifecycle, queries | `core` |
-| `traits` | Composable capabilities: mobility, gravity, collision, etc. ADR-0011 (ACCEPTED): the standard traits and systems (`Transformable`, `Movable`, `Gravity`, `Jumpable`, `Collidable`, `Lifetime`) | `world` and physics contracts (location: OQ-043); under ADR-0011 `ecs` instead of `world` (OQ-146) |
-| `ecs` | ECS storage and systems strategy; ADR-0011 (ACCEPTED): object IDs, trait registry and sparse-set storage, cached queries, command buffer, events, system ordering (core model or optional module: OQ-041 stays open) | `core`; contracts shared with `world` to be defined (OQ-146) |
-| `multiplayer` | Player, view, session and network transport abstractions | `world`, `input-api`, network contracts to be defined |
+| `traits` | Composable capabilities as ECS traits and systems (ADR-0011, ADR-0021): `Transformable`, `Movable`, `Gravity`, `Jumpable`, `Collidable`, `Lifetime` | `ecs`, `physics`, `core` |
+| `ecs` | The object model (ADR-0011, ADR-0021): `World` container, object IDs, trait registry and sparse-set storage, cached queries, command buffer, events, system ordering; headless, independent of `tilemap` | `core` |
+| `physics` | Headless collision contracts (ADR-0021): shapes (axis-aligned box first), overlap tests, uniform-grid broad phase over plain data; no rigid bodies | `core` |
+| `multiplayer` | Optional extension (ADR-0022, no module depends on it): session and network transport abstractions; local split-screen is several views in one scene (ADR-0021) | `ecs`, `input-api`, network contracts to be defined |
 | `test-support` | Controllable clock, manually driven loop, headless frontend, fake backends, reusable contract-test suites (REQ-TEST-001) | Contracts of the modules it tests; used in `test` scope only |
 | `examples` | Minimal and demonstration applications, headless first | Public APIs only; never depended upon |
 
@@ -34,9 +34,9 @@
 examples ─────────────► public APIs of all modules
 render-awt / render-opengl / platform-awt / platform-android / resources-* / audio-* / input-*
         └──────────────► *-api modules ──────────────► core
-runtime, world, graphics, tilemap, camera ───────────────► core (+ resources / render-api where listed)
+runtime, ecs, physics, graphics, tilemap, camera ───────────────► core (+ resources / render-api where listed)
 audio-api, audio-* ──────────────────────────────────► resources (ADR-0004, ADR-0005)
-traits ─► world (ADR-0011 ACCEPTED: traits ─► ecs ─► core)        multiplayer ─► world, input-api       test-support ─► (test scope)
+traits ─► ecs, physics ─► core        tilemap ─► physics (tile collision, OQ-125)        multiplayer ─► ecs, input-api       test-support ─► (test scope)
 ```
 
 Arrows always point from the dependent module to its dependency. A cycle, or an arrow from `core` or an `*-api` module to an implementation module, is a violation (REQ-CORE-005).
@@ -51,4 +51,4 @@ Arrows always point from the dependent module to its dependency. A cycle, or an 
 
 ## Open points
 
-Module-related open points (OQ-041, OQ-043, OQ-044, OQ-052, OQ-053, OQ-121 for the thread safety of module caches, OQ-123 for the desktop render side and OQ-124 for unknown display-mode values) are tracked in [`../open-questions.md`](../open-questions.md).
+Module-related open points (OQ-156 for the follow-ups of ADR-0022, OQ-121 for the thread safety of module caches) are tracked in [`../open-questions.md`](../open-questions.md).

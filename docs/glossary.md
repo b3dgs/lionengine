@@ -19,6 +19,9 @@
 | DEX | Dalvik Executable: the bytecode format run by Android. |
 | ECS | Entity-Component-System: model that stores entities as sets of components processed by systems. |
 | Engine change request | A need raised by a game that the engine does not cover; tracked instead of being worked around inside the game. |
+| Scene | Self-contained unit of the running game with a lifecycle, composing a world, cameras, a background and music (ADR-0021). |
+| World | Container owning the objects (entities), traits, queries and systems; hosted by `ecs` (ADR-0021). |
+| View | One camera paired with one viewport (ADR-0021). |
 | Entity | In ECS, an identifier grouping components. |
 | Extrapolation | Presentation-only prediction of a visual state beyond the last known simulation state; never fed back into the simulation. |
 | Frameskipping | Dropping a presentation (render) when the machine cannot keep up, without dropping simulation computations. |
@@ -37,13 +40,13 @@
 | Resource key | Normalized logical path string identifying a resource for every origin (`/` separator, case-sensitive, no leading `/`, no `.` or `..`); used by every module cache (ADR-0007). |
 | Runtime | Orchestration of the engine lifecycle and execution. |
 | Screen mode | How the application occupies the screen: `WINDOWED`, `FULL_WINDOW` or `FULL_SCREEN`. |
-| Simulation step | Fixed duration, in seconds, by which the simulation advances in one update (value `TO BE DEFINED`, OQ-020). |
+| Simulation step | Fixed duration, in seconds, by which the simulation advances in one update (default 60 Hz, configurable, ADR-0017). |
 | Split-screen | Simultaneous presentation of several views/players on one screen. |
 | Sprite | Displayable graphic element, possibly tied to an image region. In ADR-0003: a lightweight instance (transform, color transform, location, alpha) over a shared immutable source (image + region). |
 | Animation | Ordered frames with durations in seconds and a loop mode; advanced from the simulation update step only (ADR-0003). |
 | Short sound | Low-latency sound effect, cached for heavy reuse; can be played individually and stopped (ADR-0004). |
 | Long sound | Music or ambient sound, preloaded for direct use and released when no longer needed (ADR-0004). |
-| Variant set | Group of short-sound files; playing it selects one variant or plays several at once (composed sound); policies `TO BE DEFINED` (OQ-112). |
+| Variant set | Group of short-sound files; playing it selects one variant or plays several at once (composed sound); policies in ADR-0027. |
 | Playlist | Predefined sequence of long sounds; the next starts when the current terminates (ADR-0004). |
 | Pivot | Internal location (origin) of a sprite, used for placement, rotation and scaling. |
 | Sprite sheet | Image grouping several sprite regions as a grid (cell size, columns, rows, optional margin/spacing), giving access to cells by index; sheets are grouped by unique id (ADR-0003). |
@@ -54,7 +57,7 @@
 | Tile | Cell or graphic element of a tileset. |
 | Tilemap | Map organized in cells and layers (single layer first, ADR-0009). |
 | Tileset | Sprite sheet whose cells are the tiles of a tile map (`REQ-SHEET-001`). |
-| Auto-tiling | Rule-based update of a cell's tile from its neighborhood, applied to neighbors when a tile is destroyed; rule format `TO BE DEFINED` (OQ-127). |
+| Auto-tiling | Rule-based update of a cell's tile from its neighborhood, applied to neighbors when a tile is destroyed; rules are ordered 8-neighbor bitmasks with a care mask (ADR-0028). |
 | Viewport culling | Drawing only the tiles that intersect the viewport rectangle (plus a margin). |
 | Trait | Composable capability or behavior attached to an object/entity. |
 | Viewport | Region where a view of the world is presented on a surface; the view rectangle of a camera is its world-side counterpart (ADR-0010). |

@@ -19,7 +19,7 @@ No agent relies on a conversation history. Everything an agent needs is in the r
 | Defining batches (feature files), reviewing pull requests, cross-module consistency checks | Cloud | Needs a global view |
 | Implementing a small, well-specified batch (one module, clear contract and tests) | Local or cloud | Bounded scope fits a smaller context |
 | Writing examples, recipes, API-index entries after an API lands | Local or cloud | Mechanical once the code exists |
-| Asset generation (sprites) and anything needing local GPUs | Local | Hardware is local; provenance and licensing recorded (OQ-082) |
+| Asset generation (sprites) and anything needing local GPUs | Local | Hardware is local; provenance and licensing recorded per asset (ADR-0023) |
 | Android/DEX verification, long builds and device tests | Wherever the pipeline runs | CI is the arbiter, not the agent |
 
 ## Making smaller-context agents effective

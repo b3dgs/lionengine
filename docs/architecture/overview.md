@@ -30,7 +30,7 @@ Layered architecture with dependency inversion: the core defines the contracts; 
                  OS / native libraries
 ```
 
-The diagram is conceptual: the exact split into Maven modules and the allowed dependencies remain to be decided (OQ-003). The Android toolchain is not Maven-native: see OQ-002.
+The diagram is conceptual: modules are named `lionengine-XXX` under group `com.b3dgs.lionengine` (ADR-0012); the exact module list and the allowed dependencies are set at the build skeleton (OQ-149). The Android toolchain is not Maven-native: DEX is produced by a separate Gradle module consuming the Maven artifacts (ADR-0012).
 
 ## 2. Boundaries
 
@@ -71,7 +71,7 @@ Each implementation must respect the same contract or explicitly declare its cap
 
 **PROPOSED:** platforms may announce their capabilities (gamepad, audio, acceleration, shaders, etc.). The engine must not assume that a capability exists everywhere.
 
-The form of this mechanism (interface, registry, configuration) is **TO BE DEFINED** (OQ-034).
+**ACCEPTED (ADR-0020):** a typed optional lookup on an explicit platform object, without class-name lookup or reflection.
 
 **ACCEPTED (ADR-0002):** screen modes, display-mode selection and output filtering follow this capability model: best-effort requests, with the effective result reported. They are presentation concerns: the logical resolution is decoupled from the output resolution and nothing here changes world units or simulation state.
 
@@ -82,7 +82,7 @@ The form of this mechanism (interface, registry, configuration) is **TO BE DEFIN
 - Time, durations and time deltas are expressed in **seconds**.
 - Speeds are expressed in **meters per second (`m/s`)**; accelerations in `m/s²`.
 - Conversions to pixels are a responsibility of the presentation layer (camera/viewport/rendering, see [ADR-0010](../decisions/0010-camera-system-in-camera.md)), never a change to the world units.
-- The origin, the positive direction of the Y axis, angle conventions and the screen coordinate system remain to be specified (OQ-010 to OQ-013).
+- The world origin is `(0, 0)` with Y up; the screen has its origin at the top left with Y down; angles are in degrees (ADR-0013). The meters-to-pixels conversion is done in the camera only, world quantities are `double`, and rotation is counter-clockwise positive (ADR-0014); absolute angles are in `[0, 360)` and signed differences in `(-180, 180]` (ADR-0016).
 
 APIs must make units explicit in their Javadoc. Do not implicitly mix meters and pixels, or seconds and milliseconds. Parameter and method names should avoid ambiguous units (`deltaSeconds`, `speedMetersPerSecond`, etc.) where this improves readability.
 
@@ -94,7 +94,9 @@ The default loop must be **independent of machine performance** for the simulati
 
 Simulation and presentation must be separated. Extrapolation is a presentation operation: it must never feed its result back into the simulation state. An extrapolation greater than `1` therefore must not degrade calculation accuracy or cause cumulative drift. Gameplay calculations must remain based on the reference simulation time.
 
-**Important:** "extrapolation greater than 1" here means an extrapolation factor greater than the normalized interval between two reference states. The exact mathematical definition of this factor, its bounds and the behavior under extreme lag must be specified before implementation (OQ-020 to OQ-022).
+**Refined by [ADR-0017](../decisions/0017-fixed-step-game-loop.md):** fixed step with an accumulator and catch-up; the presentation factor is `accumulator / step`, always in `[0, 1)`; interpolation is the default and extrapolation is opt-in; lag is capped and the excess dropped; pause and a time scale are supported; exceptions are fail-fast.
+
+**Historical note (ADR-0001):** "extrapolation greater than 1" meant an extrapolation factor greater than the normalized interval between two reference states. With ADR-0017 that case no longer reaches the renderer.
 
 ## 8. Open architectural questions
 

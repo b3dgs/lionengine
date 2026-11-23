@@ -8,7 +8,7 @@
 - Affected modules: `ecs`, `core`, `test-support`, `examples`
 - Requirements: `REQ-ECS-001` to `REQ-ECS-010`
 - Applicable ADRs: [`ADR-0011`](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md) (ACCEPTED), [`ADR-0001`](../decisions/0001-technical-baseline-and-conventions.md)
-- Open questions involved: `OQ-020`, `OQ-030`, `OQ-041`, `OQ-042`, `OQ-122`, `OQ-132`, `OQ-137` to `OQ-141`, `OQ-145`, `OQ-146`
+- Open questions involved: `OQ-020`, `OQ-030`, `OQ-122`, `OQ-164` (`OQ-137` to `OQ-141`, `OQ-145` resolved by ADR-0030)
 
 ## Objective
 
@@ -16,7 +16,7 @@ Create and remove objects at runtime by ID, add and remove traits dynamically, p
 
 ## Out of scope
 
-Standard traits and systems (`features/standard-traits.md`); scenes and `world` (`OQ-146`); networking and replication; multithreaded systems (`OQ-030`); serialization of objects; a camera adapter (ADR-0010, `OQ-132`).
+Standard traits and systems (`features/standard-traits.md`); scenes (lifecycle contract in `runtime`, ADR-0021); networking and replication; multithreaded systems (`OQ-030`); serialization of objects; a camera adapter (ADR-0029).
 
 ## Expected behavior
 
@@ -37,7 +37,7 @@ Responsibilities only; signatures are not fixed (ADR-0011, `architecture/contrac
 2. Trait registry, sparse-set storage, deferred add/remove and flush (`REQ-ECS-003`, `REQ-ECS-004`, `REQ-ECS-006`).
 3. Cached queries with include/exclude (`REQ-ECS-005`).
 4. Events (`REQ-ECS-007`) and system ordering (`REQ-ECS-008`).
-5. Benchmark and allocation check at 1,000 objects × 4 traits (`REQ-ECS-009`); layout change if needed (`OQ-140`).
+5. Benchmark and allocation check at 1,000 objects × 4 traits (`REQ-ECS-009`); layout change if needed (ADR-0030).
 
 ## Lifecycle and concurrency
 
@@ -56,7 +56,7 @@ No unit of its own (time is passed in seconds by the systems). Plain Java arrays
 - Unit tests: ID recycling and stale access, create/remove, trait add/remove/replace, include/exclude queries, deferred changes inside iteration, event order, system order.
 - Contract tests: trait and system conventions in `test-support`.
 - Integration tests: a headless world driven by a controllable clock.
-- Platform/performance tests: benchmark 1,000 objects × 4 traits and 10,000 objects scaling; allocation check; no wall-clock assertion that could make CI fragile (`OQ-139`).
+- Platform/performance tests: benchmark 1,000 objects × 4 traits and 10,000 objects scaling; allocation check; no wall-clock assertion that could make CI fragile (ADR-0030).
 
 ## Acceptance criteria
 

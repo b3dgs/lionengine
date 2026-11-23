@@ -7,7 +7,7 @@
 - Affected modules: `audio-api`, `audio-*`, `resources`, `test-support`, `examples`
 - Requirements: `REQ-AUDIO-003` to `REQ-AUDIO-009`, `REQ-RES-004` (refines `REQ-AUDIO-001`, `REQ-AUDIO-002`)
 - Applicable ADRs: [`ADR-0004`](../decisions/0004-audio-contracts-short-and-long-sounds.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md) (ACCEPTED), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md) (ACCEPTED)
-- Open questions involved: `OQ-110` to `OQ-118` (`OQ-053`, `OQ-032` touched)
+- Open questions involved: `OQ-161` (`OQ-110` to `OQ-117` resolved by ADR-0027)
 
 ## Objective
 
@@ -15,14 +15,14 @@ Provide two audio families with different lifecycles: short sounds (low-latency 
 
 ## Out of scope
 
-Pause/resume, volume, looping, fades, spatial audio, mixer channels (`OQ-117`).
+Pause/resume, volume, looping, fades, spatial audio, mixer channels (ADR-0027: volume, looping, pause and resume first).
 
 ## Expected behavior
 
 - Short sound: cached for heavy reuse without repeated loading or decoding; played individually; stopped.
-- Variant set: groups several short-sound files; playing it selects one variant randomly or plays several simultaneously; policies `OQ-112`.
+- Variant set: groups several short-sound files; playing it selects one variant randomly or plays several simultaneously; policy ADR-0027.
 - Long sound: preloaded for direct use, released when no longer needed; played individually; stopped.
-- Playlist: predefined long sounds; next track starts when the current terminates; can be stopped; end, failure and thread: `OQ-114`.
+- Playlist: predefined long sounds; next track starts when the current terminates; can be stopped; end, failure and thread: ADR-0027.
 - Variant selection and playlist advance are backend-independent; backends expose play, stop and end-of-track only (decision 2A).
 
 ## Envisaged APIs / contracts

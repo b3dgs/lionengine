@@ -7,7 +7,7 @@
 - Affected modules: `platform-api`, `render-awt`, `render-opengl`, `platform-android`, `test-support`, `examples`
 - Requirements: `REQ-DISPLAY-001` to `REQ-DISPLAY-008`
 - Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md) (ACCEPTED), [`ADR-0006`](../decisions/0006-display-scaling-effective-result-and-fallback-orders.md) (ACCEPTED)
-- Open questions involved: `OQ-095`, `OQ-096`, `OQ-119`, `OQ-122` (`OQ-090`, `OQ-091`, `OQ-120` resolved)
+- Open questions involved: `OQ-096`, `OQ-119`, `OQ-122` (`OQ-090`, `OQ-091`, `OQ-120` resolved)
 
 ## Objective
 
@@ -15,7 +15,7 @@ Let a game request a screen mode, a display mode and a logical resolution throug
 
 ## Out of scope
 
-Output filtering (see [`output-filtering.md`](output-filtering.md)); multi-monitor and HiDPI (`OQ-096`); persistence of user settings (`OQ-095`); a "required" request flag (decision 2A).
+Output filtering (see [`output-filtering.md`](output-filtering.md)); multi-monitor and HiDPI (`OQ-096`); persistence of user settings (game responsibility, ADR-0025); a "required" request flag (decision 2A).
 
 ## Expected behavior
 

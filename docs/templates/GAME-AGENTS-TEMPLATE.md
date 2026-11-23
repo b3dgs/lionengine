@@ -1,6 +1,6 @@
 # Template: `AGENTS.md` for a game repository built on LionEngine
 
-**Status: PROPOSED — copy this into the root `AGENTS.md` of the game repository, then fill the placeholders. Where the game repository lives and how it consumes the engine: OQ-080.**
+**Status: PROPOSED — copy this into the root `AGENTS.md` of the game repository, then fill the placeholders. The game repository consumes the engine at a pinned Maven version (ADR-0023).**
 
 ---
 
@@ -27,7 +27,7 @@ This repository is a game built on LionEngine `<engine version>`. The engine liv
 
 - One batch per change set; reference the requirement or design item in commits.
 - Game logic is testable headless (no window, no audio device) whenever possible.
-- Assets: format, naming and licensing rules `<to be defined>` (including AI-generated sprites and their provenance: OQ-082).
+- Assets: lowercase names with hyphens; a provenance metadata file per asset or folder (source, tool and model if generated, license, author); format fixed per asset kind when the loader exists (ADR-0023).
 - Do not decide game design questions silently; record them in the design document as `TO BE DEFINED`.
 
 ## 4. End of task

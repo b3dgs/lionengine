@@ -9,7 +9,7 @@ Purpose: let a developer or an AI agent find, by **task**, which public types to
 - Every public contract (REQ-CORE-004) appears here with its module, entry-point types and the example that uses it.
 - Only list types that exist. An agent must never use a type that is not in this index, the code or the Javadoc.
 - Keep one line per task. Details belong in the Javadoc.
-- Keeping this index in sync with the code (manual review vs generated, CI check): **TO BE DEFINED** (OQ-083).
+- The index stays hand-written, by task; a CI check verifies its types and examples once the build skeleton exists (ADR-0023, `REQ-DOC-005`).
 
 ## Index by task
 
@@ -19,10 +19,10 @@ Purpose: let a developer or an AI agent find, by **task**, which public types to
 | Load a resource | `resources` | *(to be filled)* | *(to be created)* | — | Closing rules: REQ-RES-003; keys and idempotent release: REQ-RES-005 (ADR-0007) |
 | Display and animate a sprite | `graphics` | *(to be filled; ADR-0003 ACCEPTED)* | *(to be created: headless example loading a sprite sheet, animating a sprite and rendering two color variants of one sprite)* | — | Pixels for images and cells, seconds for animation; world in meters, pixels at presentation only (REQ-SPRITE-*, REQ-ANIM-*, REQ-SHEET-*) |
 | Read player input | `input-api` | *(to be filled)* | *(to be created)* | — | Capability may be absent (OQ-034) |
-| Create objects and attach behaviors | `world` / `traits` / `ecs` | *(to be filled)* | *(to be created)* | — | Model: OQ-041 |
+| Create objects and attach behaviors | `ecs` / `traits` | *(to be filled)* | *(to be created)* | — | Single ECS model (ADR-0021) |
 | Create and remove objects by ID, add and remove traits at runtime, query and run systems | `ecs` | *(to be filled; ADR-0011 ACCEPTED)* | *(to be created: headless example creating objects, attaching and detaching traits, iterating a query and adding a game-defined trait and system)* | — | Opaque IDs with stale detection; structural changes applied at the flush; no allocation per step; seconds (REQ-ECS-001 to REQ-ECS-010, [`features/ecs.md`](features/ecs.md)) |
 | Move, apply gravity, jump, collide and expire objects with the standard traits | `traits` | *(to be filled; ADR-0011 ACCEPTED)* | *(to be created: headless example of a falling, jumping and colliding object)* | — | Meters, m/s, m/s², seconds; fixed system order (REQ-STD-001 to REQ-STD-009, [`features/standard-traits.md`](features/standard-traits.md)) |
-| Load a tile map | `tilemap` | *(to be filled; ADR-0009 ACCEPTED)* | *(to be created: headless example loading a map)* | — | Loader contract over `resources`; format: OQ-126 (REQ-MAP-004) |
+| Load a tile map | `tilemap` | *(to be filled; ADR-0009 ACCEPTED)* | *(to be created: headless example loading a map)* | — | Loader contract over `resources`; format: Tiled JSON (ADR-0028) (REQ-MAP-004) |
 | Create and edit a tile map manually | `tilemap` | *(to be filled)* | *(to be created)* | — | Tile indices `int`, tile size in pixels of the logical frame (REQ-MAP-003) |
 | Destroy a tile and render a tile map | `tilemap` | *(to be filled)* | *(to be created: build, load, destroy a tile, render)* | — | Update phase only for changes; rendering read-only, viewport in pixels (REQ-MAP-005 to REQ-MAP-007) |
 | Move, zoom, follow and shake a camera | `camera` | *(to be filled; ADR-0010 ACCEPTED)* | *(to be created: headless example following an entity, zooming and shaking)* | — | Meters, seconds, dimensionless zoom; update phase only; view rectangle read by rendering (REQ-CAM-001 to REQ-CAM-008) |

@@ -14,7 +14,7 @@ LionEngine is a 2D game engine written in Java. It must provide a reusable found
 4. **Controlled extensibility**: new features are integrated through documented contracts.
 5. **Composition**: object behaviors are composable, notably through traits/capabilities.
 6. **Implementation choice**: several strategies may coexist when they address different constraints (game loop, object management, rendering).
-7. **No premature over-architecture**: do not impose ECS, networking or GPU rendering on every project. *(To be reconciled with the project goal of an ECS-based engine: see OQ-041.)*
+7. **No premature over-architecture**: do not impose ECS, networking or GPU rendering on every project. *(Reconciled by ADR-0021: ECS is the single object model, but a game using no objects links neither `ecs` nor `traits`.)*
 
 ## Envisaged functional scope
 
