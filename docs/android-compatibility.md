@@ -55,6 +55,8 @@ Nothing here is verified yet, so every item is **not compatible yet** until it i
 | Tiled loader (ADR-0032) | `java.util.zip` `Inflater` and `GZIPInputStream` on API 21 | not compatible yet |
 | Random generator (ADR-0031) | Own SplitMix64 and xoshiro256\*\*, integer operations only; `SplittableRandom` (API 24) not used | not compatible yet |
 | Loop clock (ADR-0017) | `System.nanoTime` on API 21 | not compatible yet |
+| Network transport (ADR-0039) | `java.nio.channels.DatagramChannel` through `open()`, `socket().bind(...)`, `configureBlocking(false)`, `receive`, `send` (API 1; `DatagramChannel.bind` and `open(ProtocolFamily)` are API 24 and are not used); `socket().setBroadcast(true)` for discovery; `java.util.zip.CRC32`, `java.security.SecureRandom`, `StandardCharsets` (API 19); the game declares `android.permission.INTERNET`; calls never run on the Android main thread (the runtime thread is the render thread); a hosting device holds the Wi-Fi multicast lock for LAN discovery (`platform-android` capability) | not compatible yet |
+| Multiplayer (ADR-0038) | Pure Java over `network`, `ecs`, `traits`, `input-api`; no new JDK API | not compatible yet |
 | Allocation tests (ADR-0030) | `com.sun.management.ThreadMXBean` is JVM-only: test code only, never in shared main code | platform module only |
 | Desktop OGG decoder (ADR-0033) | JOrbis in `audio-codec-ogg`, desktop only; Android uses the platform decoder | platform module only |
 

@@ -1,6 +1,6 @@
 # Architecture overview
 
-**Status: VALIDATED — principles and boundaries (ADR-0001 to ADR-0037). Sections 6 and 7 restate ADR-0001 as refined by later ADRs. A plain-language version with diagrams: [`../how-the-engine-works.md`](../how-the-engine-works.md).**
+**Status: VALIDATED — principles and boundaries (ADR-0001 to ADR-0039). Sections 6 and 7 restate ADR-0001 as refined by later ADRs. A plain-language version with diagrams: [`../how-the-engine-works.md`](../how-the-engine-works.md).**
 
 ## 1. General direction
 
@@ -55,7 +55,7 @@ Configures the engine, selects and registers the implementations explicitly (ADR
 - `core` depends on no frontend.
 - An adapter depends on the core contracts, never the reverse.
 - Business modules do not depend directly on each other without contractual need (`ecs` and `tilemap` meet only through `physics` and the scene, ADR-0021).
-- Optional modules (`composition`, `multiplayer`) are never required to use the foundation.
+- Optional modules (`composition`, `network`, `multiplayer`) are never required to use the foundation.
 - Transitive dependencies of a frontend never leak into the public APIs of the core.
 - Dependency cycles between modules are forbidden; a package never depends on a descendant package (ADR-0015).
 - These rules are verified automatically by the build (REQ-CORE-005, ADR-0012).
@@ -103,8 +103,8 @@ Made precise by [ADR-0017](../decisions/0017-fixed-step-game-loop.md) and [ADR-0
 
 ## 8. Threads
 
-One runtime thread owns the loop, the world and the caches; platform threads and workers only post to the inbox (ADR-0018, ADR-0031). Details: [`contracts.md`](contracts.md#threads-and-events-adr-0018-adr-0031).
+One runtime thread owns the loop, the world and the caches; platform threads and workers only post to the inbox (ADR-0018, ADR-0031). Network sockets are non-blocking and polled by the runtime thread during the session update, so networking starts no thread either (ADR-0039). Details: [`contracts.md`](contracts.md#threads-and-events-adr-0018-adr-0031).
 
 ## 9. Open architectural questions
 
-Only build-skeleton work (OQ-147, OQ-149), multi-monitor and HiDPI (OQ-096) and the network model (OQ-165) remain open; they are tracked in [`../open-questions.md`](../open-questions.md).
+Only build-skeleton work (OQ-147, OQ-149) and multi-monitor and HiDPI (OQ-096) remain open; they are tracked in [`../open-questions.md`](../open-questions.md).

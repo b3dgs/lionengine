@@ -26,7 +26,7 @@ Text entry (a later character stream); desktop gamepads (need a recorded depende
 - **Pointer:** positions in logical-frame pixels after the inverse of the scaling policy; outside the presented frame the position is flagged outside. World positions come from the camera (`REQ-CAM-007`).
 - **Focus loss** releases every held input (edges emitted at the next step). **Hot-plug:** gamepad connected and disconnected events; a device keeps its index while connected. Key repeat is ignored.
 - **Players:** a `Player` is a set of devices plus a `Bindings`; each player has its own `InputState`.
-- **Recording:** the action states of each step are plain values that can be recorded and replayed (ADR-0024).
+- **Recording:** the action states of each step are plain values that can be recorded and replayed (ADR-0024); an `InputState` can be driven from such recorded values instead of devices, which `multiplayer` uses for remote players and for replay (ADR-0038).
 
 ## Envisaged APIs / contracts
 

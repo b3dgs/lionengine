@@ -23,7 +23,9 @@ A feature page is the entry point of an implementation batch: it restates every 
 | 3 | [`tile-map.md`](tile-map.md) | `tilemap` | REQ-MAP-* |
 | 3 | [`camera.md`](camera.md) | `camera` | REQ-CAM-* |
 | 3–4 | [`input.md`](input.md) | `input-api`, `input-awt`, `input-android` | REQ-IN-* |
+| 5 | [`network.md`](network.md) | `network` | REQ-NET-* |
+| 5 | [`multiplayer.md`](multiplayer.md) | `multiplayer`, `traits` | REQ-MP-004 to REQ-MP-015, REQ-STD-011 |
 
 Every page here is summarized for readers in [`../engine-features.md`](../engine-features.md); a batch that changes a capability updates that summary too (checked by `scripts/check-docs.py` for links).
 
-Not yet paged (written when scheduled): `composition` (Phase 3, ADR-0031), `render-opengl` and the Android frontend (Phase 4), `multiplayer` (Phase 5, OQ-165). New pages start from [`../templates/FEATURE-TEMPLATE.md`](../templates/FEATURE-TEMPLATE.md).
+Not yet paged (written when scheduled): `composition` (Phase 3, ADR-0031), `render-opengl` and the Android frontend (Phase 4). New pages start from [`../templates/FEATURE-TEMPLATE.md`](../templates/FEATURE-TEMPLATE.md).

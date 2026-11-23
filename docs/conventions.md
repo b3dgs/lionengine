@@ -19,7 +19,7 @@
 - Validate arguments at the public boundary and fail fast with a documented exception (`@throws`): `IllegalArgumentException` for an invalid argument, `IllegalStateException` for a call in the wrong state.
 - Prefer immutable value types for results and configurations; mutable state has a documented owner and lifecycle. In hot paths, primitives and preallocated mutable objects replace value objects (ADR-0019).
 - Do not expose collections for mutation; return unmodifiable views or copy into a caller-provided buffer, documented.
-- Configuration has documented defaults; every default value of ADR-0031 to ADR-0037 and of the feature pages is a named constant in the code and stated in the Javadoc.
+- Configuration has documented defaults; every default value of ADR-0031 to ADR-0039 and of the feature pages is a named constant in the code and stated in the Javadoc.
 - Listeners are interfaces with primitive arguments where they run in hot paths (ADR-0034).
 
 ## Packages, names and callbacks
