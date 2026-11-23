@@ -18,7 +18,7 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-CORE-003 | Must | PROPOSED | — | OQ-004 | — | no test yet |
 | REQ-CORE-004 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-CORE-005 | Must | PROPOSED | — | OQ-005 | — | no test yet |
-| REQ-TEST-001 | Must | PROPOSED | — | OQ-055 | — | no test yet |
+| REQ-TEST-001 | Must | PROPOSED | ADR-0022 | — | — | no test yet |
 | REQ-DOC-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-DOC-002 | Should | PROPOSED | — | OQ-083 | — | no test yet |
 | REQ-DOC-003 | Should | PROPOSED | — | — | — | no test yet |
@@ -26,7 +26,7 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-FE-001 | Must | PROPOSED | — | — | — | no test yet |
 | REQ-FE-002 | Should | PROPOSED | — | — | — | no test yet |
 | REQ-FE-003 | Must | PROPOSED | ADR-0002, ADR-0008 | — | — | no test yet |
-| REQ-PLATFORM-001 | Must | PROPOSED | ADR-0008 | OQ-119, OQ-123, OQ-124 | — | no test yet |
+| REQ-PLATFORM-001 | Must | PROPOSED | ADR-0008, ADR-0022 | OQ-156 | — | no test yet |
 | REQ-DISPLAY-001 | Must | PROPOSED | ADR-0002 | OQ-050, OQ-096, OQ-119 | — | no test yet |
 | REQ-DISPLAY-002 | Must | PROPOSED | ADR-0002, ADR-0006 | OQ-090, OQ-120 | — | no test yet |
 | REQ-DISPLAY-003 | Must | PROPOSED | ADR-0002 | OQ-096 | — | no test yet |
@@ -61,7 +61,7 @@ Maps each requirement to its decision, related open questions and tests. No code
 | REQ-RES-003 | Must | PROPOSED | ADR-0005 | OQ-032, OQ-118 | — | no test yet |
 | REQ-RES-004 | Must | PROPOSED | ADR-0005, ADR-0007 | OQ-032, OQ-118, OQ-121 | — | no test yet |
 | REQ-RES-005 | Must | PROPOSED | ADR-0007 | OQ-118, OQ-121 | — | no test yet |
-| REQ-AUDIO-001 | Should | PROPOSED | ADR-0004 | OQ-053 | — | no test yet |
+| REQ-AUDIO-001 | Should | PROPOSED | ADR-0004, ADR-0022 | OQ-156 | — | no test yet |
 | REQ-AUDIO-002 | Should | PROPOSED | ADR-0004 | OQ-115 | — | no test yet |
 | REQ-AUDIO-003 | Must | PROPOSED | ADR-0004 | OQ-110, OQ-111, OQ-116, OQ-118 | — | no test yet |
 | REQ-AUDIO-004 | Must | PROPOSED | ADR-0004 | OQ-111 | — | no test yet |
