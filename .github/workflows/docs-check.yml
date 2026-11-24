@@ -1,5 +1,5 @@
 # Documentation consistency check (links, identifiers, traceability).
-# Documentation only: the build/CI platform for the code itself is still open (OQ-008).
+# The code build and its structural checks are in build.yml (ADR-0012, ADR-0042).
 name: docs-check
 
 on:

@@ -13,7 +13,7 @@
 
 ## Architecture
 
-> Status: **VALIDATED specification** — every requirement and document is validated and backed by the decisions in `docs/decisions/` (ADR-0001 to ADR-0049). No question remains open: the next steps are the build-skeleton batch, then the contract-skeleton batch.
+> Status: **VALIDATED specification** — every requirement and document is validated and backed by the decisions in `docs/decisions/` (ADR-0001 to ADR-0051). The build skeleton and the contract skeleton are in place; the next steps are the Android/DEX job and the Phase 1 batches ([`docs/agent-workflow.md`](docs/agent-workflow.md), Handoff). Open points: [`docs/open-questions.md`](docs/open-questions.md).
 
 **New here? Start with [`docs/how-the-engine-works.md`](docs/how-the-engine-works.md)**: a short, diagram-based explanation readable by anybody.
 
@@ -26,7 +26,17 @@ Describe the architecture of a 2D Java game engine that is independent of its ru
 - documentation consistent with the code;
 - AI agents to work without implicit architectural decisions.
 
-This branch currently contains a Maven baseline (parent `pom.xml`, no modules yet) and the complete architecture documentation: there is no engine source code and no build/test CI yet. The next step is the build skeleton (`docs/roadmap.md`, Phase 0).
+This branch contains the build skeleton (24 Maven modules, structural checks, CI), the contract skeleton (the cross-module contracts of Phases 1 and 2, compiled and documented) and the complete architecture documentation. No engine behavior exists yet; the Android/DEX job and the Phase 1 batches come next (`docs/roadmap.md`).
+
+### Getting started
+
+Requirements: JDK 25 or later and Maven 3.9 (the build refuses an older JDK), Python 3 for the checks.
+
+- Build, checkstyle, package rule, tests and Javadoc: `mvn -B verify`.
+- One module and what it needs: `mvn -B -pl lionengine-<module> -am verify`.
+- Structural checks: `python3 -I scripts/check-modules.py`, `python3 -I scripts/check-api-index.py` (after the build), `python3 -I scripts/check-provenance.py`, `python3 -I scripts/check-docs.py`.
+
+Before writing engine code, read [`docs/implementation-guide.md`](docs/implementation-guide.md): the code-quality gates (b3dgs checkstyle, compiler and Javadoc settings, Sonar) and the Android and performance constraints.
 
 ### Reading order
 
@@ -40,13 +50,14 @@ This branch currently contains a Maven baseline (parent `pom.xml`, no modules ye
 8. [`docs/architecture/interfaces.md`](docs/architecture/interfaces.md) — public types per module and the contracts that cross modules.
 9. [`docs/architecture/contracts.md`](docs/architecture/contracts.md) — cross-cutting contracts.
 10. [`docs/conventions.md`](docs/conventions.md) — code conventions.
-11. [`docs/testing.md`](docs/testing.md) — test strategy.
-12. [`docs/android-compatibility.md`](docs/android-compatibility.md) — Android/DEX verification checklist.
-13. [`docs/documentation.md`](docs/documentation.md) — documentation rules.
-14. [`docs/roadmap.md`](docs/roadmap.md) — delivery order.
-15. [`docs/decisions/`](docs/decisions/README.md) — architecture decisions (ADRs).
-16. [`docs/open-questions.md`](docs/open-questions.md) — every `TO BE DEFINED` item, in one place.
-17. [`docs/change-process.md`](docs/change-process.md) — how to modify a feature or add a module consistently.
+11. [`docs/implementation-guide.md`](docs/implementation-guide.md) — how to write code that passes the quality gates.
+12. [`docs/testing.md`](docs/testing.md) — test strategy.
+13. [`docs/android-compatibility.md`](docs/android-compatibility.md) — Android/DEX verification checklist.
+14. [`docs/documentation.md`](docs/documentation.md) — documentation rules.
+15. [`docs/roadmap.md`](docs/roadmap.md) — delivery order.
+16. [`docs/decisions/`](docs/decisions/README.md) — architecture decisions (ADRs).
+17. [`docs/open-questions.md`](docs/open-questions.md) — every `TO BE DEFINED` item, in one place.
+18. [`docs/change-process.md`](docs/change-process.md) — how to modify a feature or add a module consistently.
 
 Building a game with the engine (humans and agents):
 - [`docs/features/`](docs/features/README.md) — one page per implementation batch, in order: the entry point for implementers.
@@ -79,4 +90,4 @@ In case of contradiction, a `VALIDATED` decision prevails over a proposal. If tw
 
 ### Initial state
 
-All decisions ADR-0001 to ADR-0049 are `ACCEPTED`: technical baseline and units (ADR-0001, ADR-0012 to ADR-0016), game loop, threads, loading and no reflection (ADR-0017 to ADR-0020), object model and modules (ADR-0021, ADR-0022), game workflow and budgets (ADR-0023, ADR-0024), and every feature contract (ADR-0002 to ADR-0011, ADR-0025 to ADR-0030). ADR-0031 to ADR-0035 fixed the remaining defaults (runtime, data files and dependencies, media, camera and ECS, input), ADR-0036 the scene flow, ADR-0037 the package tree, callback types and canonical names, and ADR-0038 and ADR-0039 the network model and protocol, under the owner's delegation of 2026-11-23; ADR-0040 moved the thread hand-off contracts (inbox, asynchronous handles, worker pool, loop control) to `core` after the architecture review, and ADR-0041 to ADR-0044 closed the last questions (Android bytecode level, Maven Central, version 11 display scope, Java 21 shared level with the tested API 21 constraints). ADR-0045 to ADR-0049 come from the skeleton-readiness review requested by the owner the same day: test fixtures with their contracts, display state owned by the platform, `render-api` boundary types, `composition` dependencies, and the interface catalog with the contract-skeleton batch. Every requirement and document is **VALIDATED**; templates keep `PROPOSED` as the initial status of the items created from them.
+All decisions ADR-0001 to ADR-0051 are `ACCEPTED`: technical baseline and units (ADR-0001, ADR-0012 to ADR-0016), game loop, threads, loading and no reflection (ADR-0017 to ADR-0020), object model and modules (ADR-0021, ADR-0022), game workflow and budgets (ADR-0023, ADR-0024), and every feature contract (ADR-0002 to ADR-0011, ADR-0025 to ADR-0030). ADR-0031 to ADR-0035 fixed the remaining defaults (runtime, data files and dependencies, media, camera and ECS, input), ADR-0036 the scene flow, ADR-0037 the package tree, callback types and canonical names, and ADR-0038 and ADR-0039 the network model and protocol, under the owner's delegation of 2026-11-23; ADR-0040 moved the thread hand-off contracts (inbox, asynchronous handles, worker pool, loop control) to `core` after the architecture review, and ADR-0041 to ADR-0044 closed the last questions (Android bytecode level, Maven Central, version 11 display scope, Java 21 shared level with the tested API 21 constraints). ADR-0045 to ADR-0049 come from the skeleton-readiness review requested by the owner the same day: test fixtures with their contracts, display state owned by the platform, `render-api` boundary types, `composition` dependencies, and the interface catalog with the contract-skeleton batch. ADR-0050 and ADR-0051 (2026-11-24, owner answers) move the tests to the latest stable JUnit release and the build to `b3dgs-parent` 3.0.0-SNAPSHOT. Every requirement and document is **VALIDATED**; templates keep `PROPOSED` as the initial status of the items created from them.

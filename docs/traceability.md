@@ -2,12 +2,12 @@
 
 **Status: VALIDATED — keep in sync with `requirements.md`.**
 
-Maps each requirement to its decisions, the questions that are still open for it, and its tests. No code exists yet, so every test column is empty; a requirement may only leave the state `no test yet` when a test is linked here or it is declared non-automatable with a reason. The "Still open" column lists only open questions; resolved ones are recorded in the ADRs and in `open-questions.md`.
+Maps each requirement to its decisions, the questions that are still open for it, and its tests. The build skeleton and the contract skeleton exist, so a few rows link build checks or value-type tests; a requirement may only leave the state `no test yet` when a test is linked here or it is declared non-automatable with a reason. The "Still open" column lists only open questions; resolved ones are recorded in the ADRs and in `open-questions.md`.
 
 | Requirement | Priority | Status | ADR | Still open | Tests | Verification state |
 |---|---|---|---|---|---|---|
-| REQ-TECH-001 | Must | VALIDATED | ADR-0001, ADR-0012, ADR-0041, ADR-0044 | — | — | no test yet |
-| REQ-TECH-002 | Must | VALIDATED | ADR-0001, ADR-0012 | — | — | no test yet |
+| REQ-TECH-001 | Must | VALIDATED | ADR-0001, ADR-0012, ADR-0041, ADR-0044 | — | enforcer rule (JDK 25 or later) in `pom.xml`; desktop modules at `--release 25` | verified by the build |
+| REQ-TECH-002 | Must | VALIDATED | ADR-0001, ADR-0012, ADR-0051 | — | Maven 3.9 reactor, `mvn -B verify` | verified by the build |
 | REQ-TECH-003 | Must | VALIDATED | ADR-0001, ADR-0013 | — | — | no test yet |
 | REQ-TECH-004 | Must | VALIDATED | ADR-0001 | — | — | no test yet |
 | REQ-TECH-005 | Must | VALIDATED | ADR-0001 | — | — | no test yet |
@@ -15,17 +15,17 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-TECH-007 | Must | VALIDATED | ADR-0001, ADR-0012, ADR-0041, ADR-0044 | — | — | no test yet |
 | REQ-TECH-008 | Must | VALIDATED | ADR-0001 | — | — | no test yet |
 | REQ-CORE-002 | Must | VALIDATED | ADR-0012, ADR-0015 | — | — | no test yet |
-| REQ-CORE-003 | Must | VALIDATED | ADR-0012, ADR-0032, ADR-0042, ADR-0049 | — | — | no test yet |
-| REQ-CORE-004 | Must | VALIDATED | ADR-0012, ADR-0045, ADR-0049 | — | — | no test yet |
-| REQ-CORE-005 | Must | VALIDATED | ADR-0012, ADR-0015, ADR-0040, ADR-0042, ADR-0045, ADR-0046, ADR-0047, ADR-0048, ADR-0049 | — | — | no test yet |
+| REQ-CORE-003 | Must | VALIDATED | ADR-0012, ADR-0032, ADR-0042, ADR-0049, ADR-0051 | — | javadoc doclint `all`, `failOnWarnings`; probe: an undocumented public class fails the build | verified by the build (probe) |
+| REQ-CORE-004 | Must | VALIDATED | ADR-0012, ADR-0045, ADR-0049, ADR-0050 | — | — | no test yet |
+| REQ-CORE-005 | Must | VALIDATED | ADR-0012, ADR-0015, ADR-0040, ADR-0042, ADR-0045, ADR-0046, ADR-0047, ADR-0048, ADR-0049 | — | `radial-encapsulation-maven-plugin` per module, `scripts/check-modules.py`, Maven graph; probes: sibling package, undeclared module, row and test-scope violations | verified by the build (probes) |
 | REQ-CORE-006 | Should | VALIDATED | ADR-0031 | — | — | no test yet |
-| REQ-TEST-001 | Must | VALIDATED | ADR-0017, ADR-0022, ADR-0045 | — | — | no test yet |
+| REQ-TEST-001 | Must | VALIDATED | ADR-0017, ADR-0022, ADR-0045, ADR-0050 | — | — | no test yet |
 | REQ-DOC-001 | Must | VALIDATED | ADR-0023, ADR-0042 | — | — | no test yet |
 | REQ-DOC-002 | Should | VALIDATED | ADR-0023 | — | — | no test yet |
 | REQ-DOC-003 | Should | VALIDATED | ADR-0023 | — | — | no test yet |
-| REQ-DOC-004 | Should | VALIDATED | ADR-0023, ADR-0042 | — | — | no test yet |
-| REQ-DOC-005 | Should | VALIDATED | ADR-0023, ADR-0032, ADR-0042 | — | — | no test yet |
-| REQ-DOC-006 | Should | VALIDATED | ADR-0023, ADR-0032, ADR-0042 | — | — | no test yet |
+| REQ-DOC-004 | Should | VALIDATED | ADR-0023, ADR-0042 | — | sources and Javadoc JARs built by `mvn -B verify` | verified by the build |
+| REQ-DOC-005 | Should | VALIDATED | ADR-0023, ADR-0032, ADR-0042 | — | `scripts/check-api-index.py`; probe: unknown type and example fail | check in place; the index names no type yet |
+| REQ-DOC-006 | Should | VALIDATED | ADR-0023, ADR-0032, ADR-0042 | — | `scripts/check-provenance.py`; probes: missing entry and incomplete generated entry fail | check in place; no asset yet |
 | REQ-DOC-007 | Must | VALIDATED | ADR-0012, ADR-0032 | — | — | no test yet |
 | REQ-FE-001 | Must | VALIDATED | ADR-0022 | — | — | no test yet |
 | REQ-FE-002 | Should | VALIDATED | ADR-0022 | — | — | no test yet |
@@ -34,17 +34,17 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-PLATFORM-002 | Must | VALIDATED | ADR-0017, ADR-0018, ADR-0031, ADR-0040, ADR-0045, ADR-0046 | — | — | no test yet |
 | REQ-DISPLAY-001 | Must | VALIDATED | ADR-0002, ADR-0043 | — | — | no test yet |
 | REQ-DISPLAY-002 | Must | VALIDATED | ADR-0002, ADR-0006 | — | — | no test yet |
-| REQ-DISPLAY-003 | Must | VALIDATED | ADR-0002, ADR-0022, ADR-0033, ADR-0043 | — | — | no test yet |
+| REQ-DISPLAY-003 | Must | VALIDATED | ADR-0002, ADR-0022, ADR-0033, ADR-0043 | — | `DisplayModeTest` (value type, unknown values) | partial: enumeration and selection pending |
 | REQ-DISPLAY-004 | Must | VALIDATED | ADR-0002, ADR-0006, ADR-0014, ADR-0046 | — | — | no test yet |
 | REQ-DISPLAY-005 | Must | VALIDATED | ADR-0002, ADR-0018 | — | — | no test yet |
 | REQ-DISPLAY-006 | Must | VALIDATED | ADR-0002 | — | — | no test yet |
 | REQ-DISPLAY-007 | Must | VALIDATED | ADR-0006, ADR-0046 | — | — | no test yet |
-| REQ-DISPLAY-008 | Must | VALIDATED | ADR-0006, ADR-0018, ADR-0046 | — | — | no test yet |
+| REQ-DISPLAY-008 | Must | VALIDATED | ADR-0006, ADR-0018, ADR-0046 | — | `DisplayRequestTest` (request and effective-result values) | partial: delivery at the frame boundary pending |
 | REQ-DISPLAY-009 | Should | VALIDATED | ADR-0025, ADR-0043 | — | — | no test yet |
 | REQ-DISPLAY-010 | Should | VALIDATED | ADR-0043 | — | — | no test yet |
-| REQ-FILTER-001 | Must | VALIDATED | ADR-0002, ADR-0025 | — | — | no test yet |
+| REQ-FILTER-001 | Must | VALIDATED | ADR-0002, ADR-0025 | — | `OutputFilterTest` (standard identifiers) | partial: capability query pending |
 | REQ-FILTER-002 | Should | VALIDATED | ADR-0002, ADR-0006, ADR-0046 | — | — | no test yet |
-| REQ-FILTER-003 | Could | VALIDATED | ADR-0002, ADR-0033, ADR-0047 | — | — | no test yet |
+| REQ-FILTER-003 | Could | VALIDATED | ADR-0002, ADR-0033, ADR-0047 | — | `OutputFilterTest` (custom ids) | partial: registration on the backend pending |
 | REQ-FILTER-004 | Should | VALIDATED | ADR-0025, ADR-0033 | — | — | no test yet |
 | REQ-LOOP-001 | Must | VALIDATED | ADR-0017 | — | — | no test yet |
 | REQ-LOOP-002 | Must | VALIDATED | ADR-0017, ADR-0018 | — | — | no test yet |
@@ -72,8 +72,8 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-RES-002 | Should | VALIDATED | ADR-0005, ADR-0032 | — | — | no test yet |
 | REQ-RES-003 | Must | VALIDATED | ADR-0005, ADR-0019 | — | — | no test yet |
 | REQ-RES-004 | Must | VALIDATED | ADR-0005, ADR-0007, ADR-0045 | — | — | no test yet |
-| REQ-RES-005 | Must | VALIDATED | ADR-0007 | — | — | no test yet |
-| REQ-RES-006 | Must | VALIDATED | ADR-0032 | — | — | no test yet |
+| REQ-RES-005 | Must | VALIDATED | ADR-0007 | — | `ResourceKeyTest` (key rules, equality) | partial: release convention pending |
+| REQ-RES-006 | Must | VALIDATED | ADR-0032 | — | `ResourceExceptionTest` (reasons, key, cause) | partial: providers pending |
 | REQ-AUDIO-001 | Should | VALIDATED | ADR-0004, ADR-0022 | — | — | no test yet |
 | REQ-AUDIO-002 | Should | VALIDATED | ADR-0027, ADR-0033 | — | — | no test yet |
 | REQ-AUDIO-003 | Must | VALIDATED | ADR-0004, ADR-0027, ADR-0041, ADR-0044 | — | — | no test yet |
@@ -137,7 +137,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-SCENE-008 | Should | VALIDATED | ADR-0036 | — | — | no test yet |
 | REQ-WORLD-001 | Must | VALIDATED | ADR-0021, ADR-0024 | — | — | no test yet |
 | REQ-PHYS-001 | Should | VALIDATED | ADR-0021, ADR-0028, ADR-0030 | — | — | no test yet |
-| REQ-DEF-001 | Must | VALIDATED | ADR-0020, ADR-0028 | — | — | no test yet |
+| REQ-DEF-001 | Must | VALIDATED | ADR-0020, ADR-0028 | — | `DefinitionExceptionTest` (error location and message) | partial: reader pending |
 | REQ-DEF-002 | Must | VALIDATED | ADR-0032 | — | — | no test yet |
 | REQ-DEF-003 | Must | VALIDATED | ADR-0020, ADR-0032 | — | — | no test yet |
 | REQ-ECS-001 | Must | VALIDATED | ADR-0011, ADR-0030 | — | — | no test yet |

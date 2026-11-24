@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.b3dgs.lionengine</groupId>
+        <artifactId>lionengine</artifactId>
+        <version>11.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>lionengine-graphics-imageio</artifactId>
+    <packaging>jar</packaging>
+    <name>LionEngine Graphics ImageIO</name>
+    <description>Optional desktop image decoder on ImageIO, registered explicitly</description>
+    <properties>
+        <!-- Desktop-only module: Java 25 class files are allowed (ADR-0044); excluded from Android builds. -->
+        <jdk.version>25</jdk.version>
+        <radial.base-package>com.b3dgs.lionengine.graphics.imageio</radial.base-package>
+        <!-- No public type yet: javadoc refuses an empty module. The batch that adds the first public type
+             removes this property (REQ-CORE-003). -->
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-graphics</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+</project>

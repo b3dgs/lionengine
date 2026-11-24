@@ -13,12 +13,17 @@
 
 | Name | Version | Module | Shipped | Purpose | License (SPDX) | Android status | Checked |
 |---|---|---|---|---|---|---|---|
-| `com.b3dgs:b3dgs-parent` | 2.1.0-SNAPSHOT | aggregator `pom.xml` | no | Parent POM: plugin versions and common build configuration | to record at the build skeleton (ADR-0042) | not shipped | — |
-| `com.b3dgs.radialencapsulation:radial-encapsulation-maven-plugin` | from the parent POM (latest release 1.0.2) | aggregator `pom.xml`, `basePackage` per module (ADR-0037) | no | Package dependency rule check inside each module (ADR-0012, ADR-0015, ADR-0037, REQ-CORE-005) | Apache-2.0 | not shipped | 2026-11-23 |
-| JUnit 5 | set at the build skeleton | test scope of every module | no | Test framework (ADR-0012) | EPL-2.0 | not shipped | 2026-11-23 |
-| JaCoCo | set at the build skeleton | build | no | Coverage merged for SonarCloud (ADR-0012) | EPL-2.0 | not shipped | 2026-11-23 |
+| `com.b3dgs:b3dgs-parent` | 3.0.0-SNAPSHOT (ADR-0051; resolved from the Sonatype Central snapshot repository declared in the aggregator; a released version is required before the first engine release) | aggregator `pom.xml` | no | Parent POM: plugin versions, checkstyle, JaCoCo, Sonar profile, publishing | GPL-3.0-or-later | not shipped | 2026-11-24 |
+| `com.b3dgs.radialencapsulation:radial-encapsulation-maven-plugin` | 1.0.2 (from the parent POM) | aggregator `pom.xml`, `basePackage` per module (ADR-0037) | no | Package dependency rule check inside each module (ADR-0012, ADR-0015, ADR-0037, REQ-CORE-005) | Apache-2.0 | not shipped | 2026-11-23 |
+| JUnit Jupiter (`junit-jupiter`, `junit-platform-suite-engine`) | 6.1.3, the latest stable release, pinned by the `junit.version` property of the aggregator (ADR-0050; the parent provides the same version) | test scope of every module | no | Test framework (ADR-0012, ADR-0050) | EPL-2.0 | not shipped | 2026-11-24 |
+| JaCoCo (`jacoco-maven-plugin`) | 0.8.16 (from the parent POM) | build | no | Coverage, XML report per module for SonarCloud (ADR-0012) | EPL-2.0 | not shipped | 2026-11-24 |
+| Checkstyle with `com.b3dgs:b3dgs-buildtools` | 14.1.0 with buildtools 3.0.0-SNAPSHOT (from the parent POM, ADR-0051) | build; buildtools also inherited as a dependency, restricted to `provided` scope | no | Code style rules, license header and suppressions of `b3dgs-parent` ([`implementation-guide.md`](implementation-guide.md)) | LGPL-2.1-or-later (checkstyle), GPL-3.0-or-later (buildtools) | not shipped | 2026-11-24 |
+| SLF4J (`slf4j-api`, `slf4j-simple`) | 2.0.20 (from the parent POM) | inherited by every module; restricted to test scope by the aggregator (REQ-CORE-006: no logging library in shared modules) | no | Logging of test tools only | MIT | not shipped | 2026-11-24 |
+| Maven plugins of the parent: compiler 3.16.0, jar 3.5.1, source 3.4.0, javadoc 3.12.0, surefire and failsafe 3.6.1, enforcer 3.7.0 (Maven 3.9.0 or later required), dependency 3.11.0, resources 3.5.0, install and deploy 3.2.0; Apache Felix `maven-bundle-plugin` 6.2.0; `sonar-maven-plugin` 5.9.0.7382 | as listed | build | no | Build, packaging (OSGi manifest), Javadoc with doclint, tests, JDK 25 enforcement, Sonar analysis | Apache-2.0 (Sonar plugin: LGPL-3.0-only) | not shipped | 2026-11-24 |
 | Android Gradle Plugin | 9.2.1 (ADR-0012) | Android verification module | no | DEX production and verification (ADR-0012, ADR-0044) | Apache-2.0 | not shipped | 2026-11-23 |
 | `com.android.tools:desugar_jdk_libs` | 2.1.5 (ADR-0012) | Android verification module and games | no (linked into Android applications by the Android Gradle Plugin) | Core library desugaring for API 21 (ADR-0012) | GPL-2.0-only WITH Classpath-exception-2.0 | compatible with desugaring | 2026-11-23 |
+
+Build toolchain (not dependencies): JDK 25 or later (verified with Temurin 25.0.5.1), Maven 3.9 (3.9.11 locally, 3.9.14 in CI), Python 3 for the checks.
 
 Planned candidates, not added yet (a row moves to the table above only in the pull request that adds the dependency):
 

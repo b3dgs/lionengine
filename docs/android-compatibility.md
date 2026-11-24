@@ -56,6 +56,8 @@ The rules of ADR-0037 still apply on top: no `java.util.function`, `Optional`, s
 | `java.desktop` (AWT, Swing, ImageIO, `javax.sound`, `java.beans`) | absent on every Android level: platform module only |
 | `java.lang.foreign`, structured concurrency, scoped values, `java.net.http`, module system (`module-info` ignored) | unavailable |
 | `java.time`, `Optional`, `java.util.function`, much of `java.util.concurrent` (about JDK 11 level) | through core library desugaring only; not used in shared public APIs or hot paths (ADR-0037) |
+| Default and static methods in interfaces (desugared by D8 below API 24, not in the verified list) | not used in shared code until the Android job verifies them |
+| `List.copyOf`, `Map.copyOf`, `Set.copyOf` | not in the verified list: use `Collections.unmodifiableList(new ArrayList<>(...))` |
 | Any other API newer than API 21 (for example `Files.readString`, `String.formatted`, `Collectors.teeing`, `Cleaner`, `VarHandle`, `MethodHandles`, record reflection) | may fail at run time like the forbidden list: do not assume it works |
 | Java 22 to 25 language features and class files | not used in shared code (ADR-0044) |
 | Preview features | forbidden in shared code |
@@ -90,5 +92,7 @@ Nothing here is verified yet, so every item is **not compatible yet** until it i
 | Desktop OGG decoder (ADR-0033) | JOrbis in `audio-codec-ogg`, desktop only; Android uses the platform decoder | platform module only |
 
 ## What to record at the build skeleton (ADR-0044)
+
+State on 2026-11-24: the Maven part of the build skeleton is merged; the Android job (`android/` Gradle build, D8 verification module, lint `NewApi`, API 21 emulator tests) is the next batch and has not run yet ([`agent-workflow.md`](agent-workflow.md), Handoff). Nothing below has been recorded yet.
 
 The baseline (minimum API level, Android Gradle Plugin, desugaring library and versions) is in ADR-0012; the shared level (Java 21) in ADR-0044. The Android verification job records here: the D8/R8 version and the JDK actually used, the emulator image, the result of the lint `NewApi` check, the first R8 release-build result, and the status of each row of the tables above, changed from `not compatible yet` to its verified status.
