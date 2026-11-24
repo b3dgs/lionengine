@@ -11,7 +11,8 @@ on:
   pull_request:
     branches:
       - rewrite/v11
-  # Manual runs: a merge made by auto-merge-agent-prs.yml starts no push build on rewrite/v11.
+  # Started by auto-merge-agent-prs.yml after each merge (a merge made with the workflow token starts no
+  # push build), and by hand on any branch.
   workflow_dispatch:
 
 permissions:

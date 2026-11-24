@@ -66,7 +66,7 @@ Runs at `validate` on `src/main/java` and fails on the first error. Tests are no
 
 ## 5. Sonar (`b3dgs` quality profile, SonarCloud project `b3dgs_lionengine`)
 
-The CI runs the analysis when the `SONAR_TOKEN` secret is available, and the `sonar` job fails when the quality gate fails. The `b3dgs` profile of the organization is stricter than "Sonar way". A pull request is analyzed on its changed files; a branch (a push to `rewrite/v11`, a manual run) counts every file that differs from `master` as new code, so an issue anywhere in the rewrite fails it. Target for every batch:
+The CI runs the analysis when the `SONAR_TOKEN` secret is available, and the `sonar` job fails when the quality gate fails. The `b3dgs` profile of the organization is stricter than "Sonar way". A pull request is analyzed on its changed files, compared with `rewrite/v11`. The branch `rewrite/v11` is analyzed after every merge (the auto-merge workflow starts `build.yml`) and kept as a long-lived branch (pattern `rewrite/.*` in the SonarCloud project settings); any other branch built by hand is short-lived and counts every file that differs from `master` as new code, so an issue anywhere in the rewrite fails it. Target for every batch:
 - the default quality gate on new code: coverage of at least 80 %, duplicated lines at most 3 %, no new bug or vulnerability, maintainability, reliability and security ratings A, hotspots reviewed;
 - no new issue of any severity.
 
@@ -81,6 +81,7 @@ Rules that most often fire on engine code:
 | S2142 | On `InterruptedException`, restore the interrupt flag (`Thread.currentThread().interrupt()`) before leaving |
 | S2095, S2093 | Close streams with try-with-resources; the owner of a stream is documented (`conventions.md`) |
 | S2384, S2386 | Copy mutable collections and arrays given or returned, or document the sharing explicitly when it is the contract (`TextureStore`, ADR-0047) and justify it in the pull request |
+| S9395 implicit `long` to `double` conversion | Cast explicitly, arguments of `assertEquals(double, double, double)` included |
 | S1948, S2057, S4926 | Exceptions: serializable fields, no `serialVersionUID`, `@SuppressWarnings("serial")` (S2057 does not apply to exceptions) |
 | S1711 standard functional interface redefined | Ignored for the whole project in `pom.xml`: shared modules declare their own callback interfaces because `java.util.function` is not on Android API 21 (ADR-0037) |
 | S1312 logger not `private static final LOG` | Ignored for the whole project in `pom.xml`: a `Log` is an instance passed explicitly or held by the platform object, never static (ADR-0031) |
