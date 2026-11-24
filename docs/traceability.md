@@ -19,9 +19,9 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-CORE-004 | Must | VALIDATED | ADR-0012, ADR-0045, ADR-0049, ADR-0050 | — | — | no test yet |
 | REQ-CORE-005 | Must | VALIDATED | ADR-0012, ADR-0015, ADR-0040, ADR-0042, ADR-0045, ADR-0046, ADR-0047, ADR-0048, ADR-0049 | — | `radial-encapsulation-maven-plugin` per module, `scripts/check-modules.py`, Maven graph; probes: sibling package, undeclared module, row and test-scope violations | verified by the build (probes) |
 | REQ-CORE-006 | Should | VALIDATED | ADR-0031 | — | `LogTest` (levels, arguments, sink replacement, allocation with a disabled level), `SystemErrSinkTest` | verified by tests |
-| REQ-TEST-001 | Must | VALIDATED | ADR-0017, ADR-0022, ADR-0045, ADR-0050 | — | — | no test yet |
-| REQ-DOC-001 | Must | VALIDATED | ADR-0023, ADR-0042 | — | `DefinitionExampleTest`, `RandomExampleTest` run the `core` examples in the build | partial: `core` examples only |
-| REQ-DOC-002 | Should | VALIDATED | ADR-0023 | — | `scripts/check-api-index.py` on the `core` rows | partial: `core` rows only |
+| REQ-TEST-001 | Must | VALIDATED | ADR-0017, ADR-0022, ADR-0045, ADR-0050 | — | `ControllableClock` (runtime test JAR) used by `GameLoopTest` | partial: the headless frontend of `test-support` is not written yet |
+| REQ-DOC-001 | Must | VALIDATED | ADR-0023, ADR-0042 | — | `DefinitionExampleTest`, `RandomExampleTest`, `GameLoopExampleTest` run the examples in the build | partial: `core` and `runtime` examples only |
+| REQ-DOC-002 | Should | VALIDATED | ADR-0023 | — | `scripts/check-api-index.py` on the `core` and `runtime` rows | partial: `core` and `runtime` rows only |
 | REQ-DOC-003 | Should | VALIDATED | ADR-0023 | — | — | no test yet |
 | REQ-DOC-004 | Should | VALIDATED | ADR-0023, ADR-0042 | — | sources and Javadoc JARs built by `mvn -B verify` | verified by the build |
 | REQ-DOC-005 | Should | VALIDATED | ADR-0023, ADR-0032, ADR-0042 | — | `scripts/check-api-index.py`; probe: unknown type and example fail | check in place; the index names no type yet |
@@ -46,27 +46,27 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-FILTER-002 | Should | VALIDATED | ADR-0002, ADR-0006, ADR-0046 | — | — | no test yet |
 | REQ-FILTER-003 | Could | VALIDATED | ADR-0002, ADR-0033, ADR-0047 | — | `OutputFilterTest` (custom ids) | partial: registration on the backend pending |
 | REQ-FILTER-004 | Should | VALIDATED | ADR-0025, ADR-0033 | — | — | no test yet |
-| REQ-LOOP-001 | Must | VALIDATED | ADR-0017 | — | — | no test yet |
-| REQ-LOOP-002 | Must | VALIDATED | ADR-0017, ADR-0018 | — | — | no test yet |
-| REQ-LOOP-003 | Should | VALIDATED | ADR-0017 | — | — | no test yet |
-| REQ-LOOP-004 | Must | VALIDATED | ADR-0001, ADR-0017 | — | — | no test yet |
-| REQ-LOOP-005 | Must | VALIDATED | ADR-0001, ADR-0017 | — | — | no test yet |
-| REQ-LOOP-006 | Must | VALIDATED | ADR-0001, ADR-0017 | — | — | no test yet |
-| REQ-LOOP-007 | Must | VALIDATED | ADR-0017 | — | — | no test yet |
-| REQ-LOOP-008 | Must | VALIDATED | ADR-0017, ADR-0031 | — | — | no test yet |
-| REQ-LOOP-009 | Must | VALIDATED | ADR-0017 | — | — | no test yet |
-| REQ-LOOP-010 | Must | VALIDATED | ADR-0017, ADR-0018 | — | — | no test yet |
-| REQ-LOOP-011 | Must | VALIDATED | ADR-0031 | — | — | no test yet |
-| REQ-LOOP-012 | Should | VALIDATED | ADR-0031 | — | — | no test yet |
-| REQ-RT-001 | Must | VALIDATED | ADR-0018, ADR-0040 | — | — | no test yet |
-| REQ-RT-002 | Must | VALIDATED | ADR-0018, ADR-0040 | — | — | no test yet |
+| REQ-LOOP-001 | Must | VALIDATED | ADR-0017 | — | `LoopDriverContract` (core test JAR), bound by `GameLoopContractTest` and `ManualLoopDriverTest` | verified by tests |
+| REQ-LOOP-002 | Must | VALIDATED | ADR-0017, ADR-0018 | — | `LoopDriverContract` run on two implementations (`GameLoop`, `ManualLoopDriver`) | verified by tests |
+| REQ-LOOP-003 | Should | VALIDATED | ADR-0017 | — | `GameLoopTest` (call order: inbox, updates, render) | verified by tests |
+| REQ-LOOP-004 | Must | VALIDATED | ADR-0001, ADR-0017 | — | `GameLoopTest.testIndependentOfCadence` | verified by tests |
+| REQ-LOOP-005 | Must | VALIDATED | ADR-0001, ADR-0017 | — | `GameLoopTest` (several updates, one render; `alpha` given to the render) | partial: extrapolation itself is presentation code of the traits batch |
+| REQ-LOOP-006 | Must | VALIDATED | ADR-0001, ADR-0017 | — | by design: the render receives `alpha` only and never feeds the simulation | partial: the state-level test comes with `Transformable` |
+| REQ-LOOP-007 | Must | VALIDATED | ADR-0017 | — | `GameLoopTest` (exact update counts, `alpha` bounds, cadence independence), `GameLoopExampleTest` | verified by tests |
+| REQ-LOOP-008 | Must | VALIDATED | ADR-0017, ADR-0031 | — | `GameLoopTest.testLagCap`, `LoopConfigTest` | verified by tests |
+| REQ-LOOP-009 | Must | VALIDATED | ADR-0017 | — | `GameLoopTest.testPauseResume`, `testTimeScale` | verified by tests |
+| REQ-LOOP-010 | Must | VALIDATED | ADR-0017, ADR-0018 | — | `GameLoopTest` (update, render and listener failures, stop during an iteration), `GameLoopInboxTest.testEventFailure`, `LoopDriverContract` | verified by tests |
+| REQ-LOOP-011 | Must | VALIDATED | ADR-0031 | — | `GameLoopTest.testNoDrift` (10^6 steps), `testRemainderCarried`, `LoopConfigTest` (ranges), lag counters and listener | verified by tests |
+| REQ-LOOP-012 | Should | VALIDATED | ADR-0031 | — | `GameLoopTest.testSnapping`, `testSnappingDisabled`, unscaled delta during pause and at time scale 0.25 | verified by tests |
+| REQ-RT-001 | Must | VALIDATED | ADR-0018, ADR-0040 | — | `GameLoopInboxTest.testConcurrentPosts` (delivery on the runtime thread); thread rules in the Javadoc | partial: contract tests on a test platform come with `test-support` |
+| REQ-RT-002 | Must | VALIDATED | ADR-0018, ADR-0040 | — | `GameLoopInboxTest` (order, delivery before the updates, posts during a delivery) | verified by tests for the inbox; listener registration rules come with each listener holder |
 | REQ-RT-003 | Must | VALIDATED | ADR-0018, ADR-0007 | — | — | no test yet |
 | REQ-RT-004 | Should | VALIDATED | ADR-0019, ADR-0031, ADR-0040 | — | — | no test yet |
 | REQ-RT-005 | Must | VALIDATED | ADR-0019, ADR-0026, ADR-0027 | — | — | no test yet |
 | REQ-RT-006 | Must | VALIDATED | ADR-0019 | — | — | no test yet |
 | REQ-RT-007 | Must | VALIDATED | ADR-0020, ADR-0032 | — | `RegistryTest` (registration, unknown and duplicate ids, typed parameters, two registries); `DefinitionExampleTest` | verified by tests; the no-reflection check of shared modules is not written yet |
 | REQ-RT-008 | Must | VALIDATED | ADR-0020 | — | — | no test yet |
-| REQ-RT-009 | Must | VALIDATED | ADR-0031, ADR-0040 | — | — | no test yet |
+| REQ-RT-009 | Must | VALIDATED | ADR-0031, ADR-0040 | — | `GameLoopInboxTest.testOverflow` (counted, reported once, control requests while full), `testConcurrentPosts` | verified by tests |
 | REQ-RT-010 | Should | VALIDATED | ADR-0031, ADR-0040 | — | — | no test yet |
 | REQ-RES-001 | Must | VALIDATED | ADR-0005, ADR-0032 | — | — | no test yet |
 | REQ-RES-002 | Should | VALIDATED | ADR-0005, ADR-0032 | — | — | no test yet |

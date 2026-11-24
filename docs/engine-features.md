@@ -9,11 +9,11 @@ One line per capability, no implementation detail. Each area links to its featur
 - **Available**: implemented, tested, with an example.
 - **Planned**: in the roadmap, not yet specified in detail.
 
-Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)) and the core foundation ([`features/core-foundation.md`](features/core-foundation.md)) exist: data files are *In progress*, every other area is *Specified*.
+Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)) and the game loop without asynchronous loading ([`features/game-loop.md`](features/game-loop.md)) exist: data files and the game loop are *In progress*, every other area is *Specified*.
 
 | Area | State | Phase |
 |---|---|---|
-| [Game loop and timing](#game-loop-and-timing) | Specified | 1–2 |
+| [Game loop and timing](#game-loop-and-timing) | In progress | 1–2 |
 | [Scenes and navigation](#scenes-and-navigation) | Specified | 1–2 |
 | [Resources and data files](#resources-and-data-files) | In progress | 1 |
 | [Window, display and rendering](#window-display-and-rendering) | Specified | 1–2 |
@@ -37,6 +37,8 @@ Today the build skeleton, the cross-module contracts ([`features/contract-skelet
 - Menus and other presentation-only effects keep animating during pause and slow motion.
 - Long loads can run in the background, with a progress value for a loading screen.
 - Every behavior can be tested without a window, with a clock that the test controls.
+
+Works now: the fixed-step loop with interpolation, catch-up, lag cap and report, pause, time scale, snapping, fail-fast stop, and the inbox for events from other threads (example `GameLoopExample`). Background loading with progress comes with the asynchronous handles batch.
 
 ## Scenes and navigation
 
