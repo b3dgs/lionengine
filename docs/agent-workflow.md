@@ -47,7 +47,8 @@ Next batches, in this order. Each one starts from its feature page and [`impleme
    - an `android/` Gradle build consuming the shared modules installed with `mvn -B install`, with core library desugaring and a verification module that runs D8 on them;
    - lint `NewApi` as an error, and the shared modules' tests on an API 21 emulator;
    - a `build.yml` job running it;
-   - probes for the items the guide treats as not verified (default and static interface methods, `List.copyOf`), and the versions and results recorded in [`android-compatibility.md`](android-compatibility.md).
+   - probes for the items the guide treats as not verified (default and static interface methods, `List.copyOf`), and the versions and results recorded in [`android-compatibility.md`](android-compatibility.md);
+   - an instrumentation harness for the emulator tests, because JUnit 6 Jupiter tests run on the JVM only (ADR-0050); its dependency is recorded in [`dependencies.md`](dependencies.md).
 2. **Core foundation**, batches 1 to 4 ([`features/core-foundation.md`](features/core-foundation.md)): the `Log` facade and its default `LogSink` first, because the inbox reports its drops through it.
 3. **Game loop**, batches 1 to 3 ([`features/game-loop.md`](features/game-loop.md)):
    - `GameLoop` implementing `LoopDriver` and its `Inbox`;
@@ -63,4 +64,4 @@ Next batches, in this order. Each one starts from its feature page and [`impleme
 
 Batch 3 needs batch 2 (the inbox logs its drops); batches 4 and 5 depend only on what is merged and may run in parallel with 2 and 3 on separate branches, as long as each pull request keeps `mvn -B verify` green on the merge result.
 
-Open questions to settle with the owner meanwhile: `OQ-166` (JUnit 6 from the parent) and `OQ-167` (parent version).
+Open question to settle with the owner meanwhile: `OQ-167` (parent version). `OQ-166` is resolved by ADR-0050 (latest stable JUnit).

@@ -7,7 +7,7 @@
 - Affected modules: all modules of [`../architecture/modules.md`](../architecture/modules.md) needed by Phases 1 to 3, `android/` Gradle build
 - Requirements: `REQ-TECH-001`, `REQ-TECH-002`, `REQ-TECH-006`, `REQ-TECH-007`, `REQ-CORE-003`, `REQ-CORE-005`, `REQ-DOC-001`, `REQ-DOC-004` to `REQ-DOC-007`, `REQ-SUPPORT-001`
 - Applicable ADRs: [`ADR-0012`](../decisions/0012-platform-and-build-baseline.md), [`ADR-0015`](../decisions/0015-single-version-and-package-dependency-rule.md), [`ADR-0023`](../decisions/0023-game-repository-change-requests-assets-and-api-index-check.md), [`ADR-0024`](../decisions/0024-determinism-performance-budgets-and-desktop-support.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0037`](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md), [`ADR-0045`](../decisions/0045-test-fixtures-with-their-contracts-and-test-support-kit.md), [`ADR-0048`](../decisions/0048-composition-dependencies-and-skeleton-declaration.md), [`ADR-0049`](../decisions/0049-interface-catalog-and-contract-skeleton.md)
-- Open questions involved: `OQ-166`, `OQ-167` (raised by this batch, assumptions stated there); `OQ-147` resolved by [`ADR-0041`](../decisions/0041-android-bytecode-level-fallback.md) and [`ADR-0044`](../decisions/0044-java-21-shared-level-and-api-21-constraints.md), `OQ-149` by [`ADR-0042`](../decisions/0042-build-skeleton-closure-and-maven-central.md); this batch does the work they describe)
+- Open questions involved: `OQ-167` (raised by this batch, assumption stated there; `OQ-166` resolved by [`ADR-0050`](../decisions/0050-test-framework-latest-stable-junit.md)); `OQ-147` resolved by [`ADR-0041`](../decisions/0041-android-bytecode-level-fallback.md) and [`ADR-0044`](../decisions/0044-java-21-shared-level-and-api-21-constraints.md), `OQ-149` by [`ADR-0042`](../decisions/0042-build-skeleton-closure-and-maven-central.md); this batch does the work they describe)
 
 ## Objective
 
@@ -21,7 +21,7 @@ Any engine behavior; the first release itself (artifacts go to Maven Central, sn
 
 1. **Maven reactor.** The aggregator `pom.xml` (group `com.b3dgs.lionengine`, version `11.0.0-SNAPSHOT`, one version for all modules) declares one folder per module, `lionengine-<module>`, for: `core`, `runtime`, `platform-api`, `render-api`, `resources`, `resources-file`, `resources-archive`, `resources-memory`, `audio-api`, `graphics`, `tilemap`, `camera`, `input-api`, `ecs`, `physics`, `traits`, `composition` (ADR-0048), `test-support`, `examples`, and the desktop modules `platform-awt`, `render-awt`, `input-awt`, `audio-javasound`, `graphics-imageio`. Other modules are declared by their first batch: `audio-codec-ogg` with its dependency entry (ADR-0033), the Phase 4 and 5 modules.
 2. **Each module:** a POM declaring exactly the dependencies of its row in `modules.md` (no more), its root package from ADR-0037 with a `package-info.java` describing its responsibility, the property `radial.base-package` set to that root package, and an empty test source folder published as the module's test JAR (ADR-0045).
-3. **Build configuration:** JUnit 5; JaCoCo; Javadoc with doclint `all` failing on warnings; sources and Javadoc JARs; compiler release for shared modules `--release 21` (ADR-0044); desktop-only modules use 25.
+3. **Build configuration:** JUnit 6, latest stable release (ADR-0050); JaCoCo; Javadoc with doclint `all` failing on warnings; sources and Javadoc JARs; compiler release for shared modules `--release 21` (ADR-0044); desktop-only modules use 25.
 4. **Android build** (`android/`, Gradle, ADR-0012): consumes the Maven artifacts of the shared modules, a verification module that really runs D8 on them, core library desugaring enabled. Lint `NewApi` is an error (the batch verifies the setting is accepted by the Android Gradle Plugin version used), and the shared modules' platform tests run on an API 21 emulator (ADR-0044). The batch records the D8/R8, Android Gradle Plugin, JDK and emulator image versions and the first R8 release-build result in [`../android-compatibility.md`](../android-compatibility.md).
 5. **Checks run in CI** (GitHub Actions, adapted from `master` `ci-cd.yml`):
    - Maven build and tests on JDK 25, Linux (blocking); Windows and macOS (non-blocking) (`REQ-SUPPORT-001`);
@@ -62,7 +62,7 @@ Done: items 1, 2, 3, 5 (except the Android/DEX job) and 6.
 
 Decisions of the batch:
 - parent `b3dgs-parent` 2.0.0, because 2.1.0-SNAPSHOT is not published (`OQ-167`);
-- JUnit Jupiter 6.0.3 from the parent (`OQ-166`);
+- JUnit 6.1.3, the latest stable release, pinned in the aggregator (ADR-0050, resolving `OQ-166`);
 - the parent's compile-scope `slf4j-api` restricted to tests (REQ-CORE-006) and `b3dgs-buildtools` to `provided`, so that neither ships;
 - `-Xlint:all -Werror`; enforcer rule JDK 25 or later;
 - a test JAR in every module (ADR-0045);

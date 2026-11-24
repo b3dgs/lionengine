@@ -1,6 +1,6 @@
 # Open questions
 
-**Status: VALIDATED — single registry of every `TO BE DEFINED` item. Open today: `OQ-166` and `OQ-167`, raised by the build skeleton on 2026-11-24; a new question is added only when a gap is found.**
+**Status: VALIDATED — single registry of every `TO BE DEFINED` item. Open today: `OQ-167`, raised by the build skeleton on 2026-11-24; a new question is added only when a gap is found.**
 
 Rules:
 - Do not guess the answer to an open question in code or documentation. Ask, or record the assumption you made and keep it reversible.
@@ -260,5 +260,5 @@ Raised by the owner packet "ECS dynamic objects, traits & standard trait package
 
 | ID | Question | Needed by |
 |---|---|---|
-| OQ-166 | ADR-0012 names JUnit 5 as the test framework; `b3dgs-parent` 2.0.0 provides JUnit Jupiter 6.0.3 (same Jupiter API, Java 17 baseline). Assumption made by the build skeleton: use the parent's version. Owner to confirm, or to pin JUnit 5 in the aggregator `pom.xml`. | Phase 1 |
+| OQ-166 | **RESOLVED** by [ADR-0050](decisions/0050-test-framework-latest-stable-junit.md): the latest stable JUnit release (6.1.3 on 2026-11-24), pinned in the aggregator `pom.xml`. Original question: ADR-0012 names JUnit 5 as the test framework; `b3dgs-parent` 2.0.0 provides JUnit Jupiter 6.0.3 (same Jupiter API, Java 17 baseline). Assumption made by the build skeleton: use the parent's version. Owner to confirm, or to pin JUnit 5 in the aggregator `pom.xml`. | Phase 1 |
 | OQ-167 | The aggregator `pom.xml` referenced `b3dgs-parent` 2.1.0-SNAPSHOT, which is not published (Maven Central has 2.0.0; the snapshot repository has no 2.1.0 snapshot), so nobody could resolve the build. Assumption made by the build skeleton: use the released 2.0.0. Owner to confirm, or to publish 2.1.0 and bump the version. | Phase 1 |

@@ -28,6 +28,8 @@
         <!-- Overridden by every module with its own root package (ADR-0037). -->
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
         <build-jdk.minimum>25</build-jdk.minimum>
+        <!-- ADR-0050: the latest stable JUnit release; overrides the 6.0.3 of b3dgs-parent 2.0.0. -->
+        <junit.version>6.1.3</junit.version>
     </properties>
     <modules>
         <module>lionengine-core</module>
