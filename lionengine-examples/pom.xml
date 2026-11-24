@@ -41,5 +41,12 @@
             <artifactId>lionengine-resources-memory</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- ADR-0045: the headless application kit, for the headless game tests of the examples. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-test-support</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

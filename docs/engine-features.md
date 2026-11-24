@@ -9,14 +9,14 @@ One line per capability, no implementation detail. Each area links to its featur
 - **Available**: implemented, tested, with an example.
 - **Planned**: in the roadmap, not yet specified in detail.
 
-Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop without asynchronous loading ([`features/game-loop.md`](features/game-loop.md)), the single-scene manager ([`features/scenes.md`](features/scenes.md)) and the file, memory and application-stream resource providers ([`features/resources.md`](features/resources.md)) exist: resources and data files, the game loop and scenes are *In progress*, every other area is *Specified*.
+Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop without asynchronous loading ([`features/game-loop.md`](features/game-loop.md)), the single-scene manager ([`features/scenes.md`](features/scenes.md)), the file, memory and application-stream resource providers ([`features/resources.md`](features/resources.md)) and the headless platform with the scaling function ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)) exist: resources and data files, the game loop, scenes, and window and display are *In progress*, every other area is *Specified*.
 
 | Area | State | Phase |
 |---|---|---|
 | [Game loop and timing](#game-loop-and-timing) | In progress | 1–2 |
 | [Scenes and navigation](#scenes-and-navigation) | In progress | 1–2 |
 | [Resources and data files](#resources-and-data-files) | In progress | 1 |
-| [Window, display and rendering](#window-display-and-rendering) | Specified | 1–2 |
+| [Window, display and rendering](#window-display-and-rendering) | In progress | 1–2 |
 | [Images, sprites and animations](#images-sprites-and-animations) | Specified | 2 |
 | [Audio](#audio) | Specified | 2 |
 | [Objects and behaviors](#objects-and-behaviors) | Specified | 3 |
@@ -75,6 +75,8 @@ Works now: reading JSON data files with exact error positions, typed parameters 
 - Drawing is done in layers; several views can share the screen (split screen, minimap).
 - The window reports resize, focus, background and close; closing can be confirmed by the game.
 - Version 11 opens on the default monitor; on high-density (HiDPI) screens the scaling works on real device pixels, so whole-multiple scaling stays crisp. Choosing another monitor is not offered yet (ADR-0043).
+
+Works now: the scaling of the logical frame to any surface size with the three policies, and a headless platform on which a game runs and reacts to resize, background, foreground and close, for tests without a window (example `HeadlessGameTest`). Drawing commands and the desktop window come with the next batches.
 
 ## Images, sprites and animations
 

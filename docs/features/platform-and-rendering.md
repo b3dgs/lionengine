@@ -49,13 +49,15 @@ Display modes and filters (see [`display-modes.md`](display-modes.md), [`output-
 
 Canonical names (ADR-0037): `Platform`, `PlatformEvent`, `CommandBuffer`, `Viewport`, `TextureHandle`, `ScalingPolicy`; `AwtSurface` in `platform-awt`; `CloseListener`.
 
-Declared by the contract skeleton (ADR-0049, [`contract-skeleton.md`](contract-skeleton.md)): `Platform`, `PlatformEvent`, `CloseListener`, the presentation geometry, `Viewport` and the texture contract; the batches below implement them. Batch 3 adds the render backend contract with `CommandBuffer`, and the backend attachment on `Platform`.
+Declared by the contract skeleton (ADR-0049, [`contract-skeleton.md`](contract-skeleton.md)): `Platform`, `PlatformEvent`, `CloseListener`, the presentation geometry, `Viewport` and the texture contract; the batches below implement them. Batch 2 adds the render backend contract with `CommandBuffer`, and the backend attachment on `Platform`.
 
 ## Batches (order)
 
-1. `Platform` contract, capability lookup, lifecycle events; headless test platform and recording backend in `test-support` (`REQ-FE-001`, `REQ-FE-003`, `REQ-RT-008`, `REQ-PLATFORM-002`, `REQ-TEST-001`).
-2. `platform-awt` window and loop thread; `render-awt` clearing and presenting the logical frame with `FIT` scaling (`REQ-PLATFORM-001`).
-3. `CommandBuffer`, `Viewport`, textures; `render-awt` executes them (`REQ-SPRITE-010`).
+1. `Platform` contract, capability lookup, lifecycle events; headless test platform in `test-support`; the scaling function of `render-api`, brought forward from [`display-modes.md`](display-modes.md) batch 3 because the headless platform and `render-awt` need it (`REQ-FE-001`, `REQ-FE-003`, `REQ-RT-008`, `REQ-PLATFORM-002`, `REQ-TEST-001`, `REQ-DISPLAY-007`).
+2. Render backend contract, `CommandBuffer`, `Viewport`, textures, backend attachment on `Platform`; recording backend in `test-support` (`REQ-SPRITE-010`).
+3. `platform-awt` window and loop thread; `render-awt` implementing the render backend contract, presenting the logical frame with the scaling function; desktop example (`REQ-PLATFORM-001`).
+
+Order changed by the owner on 2026-11-24: the render backend contract comes before the AWT frontend, because the recording backend of batch 1 and `render-awt` of batch 2, as first written, both needed it; nothing temporary is written.
 
 ## Lifecycle and concurrency
 
@@ -73,6 +75,16 @@ As in [`../architecture/modules.md`](../architecture/modules.md): `platform-api`
 
 - Unit and contract tests with the headless platform: lifecycle events and their effect on the loop, close veto, capability presence and absence, command ordering, viewport clipping, buffer growth without steady-state allocation.
 - Platform tests (real display, kept apart): `platform-awt` opens, presents and closes a window; resize keeps the logical frame.
+
+## State (2026-11-24)
+
+Batch 1 is implemented; batches 2 and 3 are not. Names and details chosen by the batch, within this page, ADR-0006, ADR-0031, ADR-0045 and ADR-0046:
+- Scaling function: `FrameScaling.of(policy, logical width, logical height, surface width, surface height)` in `render-api` returns the presented rectangle, the scale of each axis and the policy applied (`FIT` after an `INTEGER` fallback). `FIT`: the smaller axis ratio, the presented size rounded to the nearest pixel and never larger than the surface; `INTEGER`: the largest integer factor, `FIT` when the surface is smaller than the logical frame on an axis; `STRETCH`: the whole surface. Centering puts the extra pixel of an odd margin on the right or bottom; an empty surface gives an empty rectangle at `(0, 0)` with scales of `1`. Platforms build their `PresentationGeometry` from it.
+- Contract suite (ADR-0045): the abstract `PlatformContract` of the `platform-api` test JAR. A platform binds it by creating a platform, posting events as its threads would, and running one frame on its runtime thread. It checks the creation arguments, a single start, an absent capability, the initial display state, background and foreground, informational events (focus, context), close with and without veto, a listener added during a delivery taking effect after it, resize, a request applied at the next frame boundary, and the `INTEGER` fallback being reported and ending.
+- `HeadlessPlatform` (`test-support`): created with the logical frame size, the initial request (applied at once) and the log sink; `start` returns at once, and the test runs each frame with `iterate()` (apply a pending request, then one loop iteration). Events are injected with `post(kind)` and `resize(width, height)`, one reused instance per kind; capabilities are set with `setCapability(type, capability)`. The surface and the display mode of its imaginary monitor start at the logical frame size; every screen mode and display mode is accepted; filters other than `NONE` are not applied until a render backend can be attached (batch 2), which the effective result reports. Close listeners are asked in the order they were added, and the first veto ends the request. The worker pool is the `FakeWorkerPool` of the `core` test JAR with 2 workers.
+- A pause or resume delivered through the inbox applies at the frame boundary after the delivery, because the game loop reads its control requests before delivering the inbox: one more step runs after a background event, and the resume discards the time spent in the background.
+- The example is a test, `HeadlessGameTest` in the examples, because `test-support` is used in test scope only; `scripts/check-api-index.py` accepts the compiled test classes of the examples for that reason.
+- Remaining gap: the effective result is readable at the frame boundary, but no inbox notification is sent yet; it comes with [`display-modes.md`](display-modes.md) batch 1, which also adds the screen-mode capability query and fallbacks.
 
 ## Acceptance criteria
 
