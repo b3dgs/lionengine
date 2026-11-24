@@ -9,12 +9,12 @@ One line per capability, no implementation detail. Each area links to its featur
 - **Available**: implemented, tested, with an example.
 - **Planned**: in the roadmap, not yet specified in detail.
 
-Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)) and the game loop without asynchronous loading ([`features/game-loop.md`](features/game-loop.md)) exist: data files and the game loop are *In progress*, every other area is *Specified*.
+Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop without asynchronous loading ([`features/game-loop.md`](features/game-loop.md)) and the single-scene manager ([`features/scenes.md`](features/scenes.md)) exist: data files, the game loop and scenes are *In progress*, every other area is *Specified*.
 
 | Area | State | Phase |
 |---|---|---|
 | [Game loop and timing](#game-loop-and-timing) | In progress | 1–2 |
-| [Scenes and navigation](#scenes-and-navigation) | Specified | 1–2 |
+| [Scenes and navigation](#scenes-and-navigation) | In progress | 1–2 |
 | [Resources and data files](#resources-and-data-files) | In progress | 1 |
 | [Window, display and rendering](#window-display-and-rendering) | Specified | 1–2 |
 | [Images, sprites and animations](#images-sprites-and-animations) | Specified | 2 |
@@ -49,6 +49,8 @@ Works now: the fixed-step loop with interpolation, catch-up, lag cap and report,
 - A pause menu or dialog can be shown over a scene, which stays visible but frozen.
 - Mistakes in the links (unknown scene, missing start) are reported at startup.
 - Data shared between scenes (save slot, level, score) lives in one game-owned object.
+
+Works now: one active scene, switched by the game at a frame boundary, with every scene exited and disposed before the next is entered (example `SceneExample`). The pause overlay and the declared links between scenes come with the next batches.
 
 ## Resources and data files
 

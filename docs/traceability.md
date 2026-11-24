@@ -127,8 +127,8 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-OBJ-002 | Should | VALIDATED | ADR-0021 | — | — | no test yet |
 | REQ-TRAIT-001 | Should | VALIDATED | ADR-0011, ADR-0021 | — | — | no test yet |
 | REQ-TRAIT-002 | Should | VALIDATED | ADR-0011 | — | — | no test yet |
-| REQ-SCENE-001 | Must | VALIDATED | ADR-0021, ADR-0031, ADR-0036 | — | — | no test yet |
-| REQ-SCENE-002 | Must | VALIDATED | ADR-0021, ADR-0031 | — | — | no test yet |
+| REQ-SCENE-001 | Must | VALIDATED | ADR-0021, ADR-0031, ADR-0036 | — | `SceneManagerTest` (lifecycle order), `SceneManagerLoopTest` (with `GameLoop` and the controllable clock), `SceneExampleTest`; `runtime` on `core` only by `scripts/check-modules.py` | verified by tests |
+| REQ-SCENE-002 | Must | VALIDATED | ADR-0021, ADR-0031 | — | `SceneManagerTest.testSwitchAtFrameBoundary`, `testFirstRequestWins`, `testClear`; `SceneManagerLoopTest.testSwitchInCatchUpFrame`, `testSwitchWhilePaused`, `testIterationAllocatesNothing` | verified by tests |
 | REQ-SCENE-003 | Should | VALIDATED | ADR-0031 | — | — | no test yet |
 | REQ-SCENE-004 | Must | VALIDATED | ADR-0036 | — | — | no test yet |
 | REQ-SCENE-005 | Must | VALIDATED | ADR-0036 | — | — | no test yet |
