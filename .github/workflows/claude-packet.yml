@@ -37,7 +37,7 @@ jobs:
 
       - name: Plan (read-only)
         if: startsWith(github.event.comment.body, '@claude plan')
-        uses: anthropics/claude-code-action@v1
+        uses: anthropics/claude-code-action@eb56b6666facdbd501035f4a0269d8caee2e7a8b # v1.0.289
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
@@ -73,7 +73,7 @@ jobs:
 
       - name: Apply (edit, check, open PR)
         if: startsWith(github.event.comment.body, '@claude apply')
-        uses: anthropics/claude-code-action@v1
+        uses: anthropics/claude-code-action@eb56b6666facdbd501035f4a0269d8caee2e7a8b # v1.0.289
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           # Commits are signed with an SSH key registered as a Signing Key on the DjThunder GitHub account,

@@ -61,7 +61,7 @@ Runs at `validate` on `src/main/java` and fails on the first error. Tests are no
 
 ## 5. Sonar (`b3dgs` quality profile, SonarCloud project `b3dgs_lionengine`)
 
-The CI runs the analysis when the `SONAR_TOKEN` secret is available, and the `sonar` job fails when the quality gate fails. The `b3dgs` profile of the organization is stricter than "Sonar way". Target for every batch:
+The CI runs the analysis when the `SONAR_TOKEN` secret is available, and the `sonar` job fails when the quality gate fails. The `b3dgs` profile of the organization is stricter than "Sonar way". A pull request is analyzed on its changed files; a branch (a push to `rewrite/v11`, a manual run) counts every file that differs from `master` as new code, so an issue anywhere in the rewrite fails it. Target for every batch:
 - the default quality gate on new code: coverage of at least 80 %, duplicated lines at most 3 %, no new bug or vulnerability, maintainability, reliability and security ratings A, hotspots reviewed;
 - no new issue of any severity.
 
@@ -78,7 +78,9 @@ Rules that most often fire on engine code:
 | S2384, S2386 | Copy mutable collections and arrays given or returned, or document the sharing explicitly when it is the contract (`TextureStore`, ADR-0047) and justify it in the pull request |
 | S1948, S2057, S4926 | Exceptions: serializable fields, no `serialVersionUID`, `@SuppressWarnings("serial")` (S2057 does not apply to exceptions) |
 | S1711 standard functional interface redefined | Ignored for the whole project in `pom.xml`: shared modules declare their own callback interfaces because `java.util.function` is not on Android API 21 (ADR-0037) |
-| S3423 POM element order | Keep the order of the aggregator `pom.xml`: `modules`, `scm`, `properties`, `dependencies`, `repositories`, `build` |
+| S4032 package holding only `package-info.java` | Ignored for the whole project in `pom.xml`: every module declares its root package before it has types ([`features/build-skeleton.md`](features/build-skeleton.md)) |
+| S3423 POM element order, S103 lines over 120 characters | Keep the order of the aggregator `pom.xml`: `modules`, `scm`, `properties`, `dependencies`, `repositories`, `build`; wrap long lines in POMs too |
+| S7637 action not pinned (workflows) | Pin every third-party action to a full commit SHA, with the version in a comment |
 | S3077, S2886 | Shared mutable state: atomics or immutable values; only the documented thread-safe entry points (inbox, loop control) are concurrent |
 | S1172, S1068, S1144, S1854 | No unused parameters, fields, private methods or dead stores. A callback parameter an implementation does not need is documented as such |
 | S1186 | An intentionally empty method contains a comment saying why |
