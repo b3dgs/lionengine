@@ -124,12 +124,13 @@ public record LoopConfig(int updateRate,
         }
         final long stepNanos = Math.round(NANOS_PER_SECOND / updateRate);
         final long lagCapNanos = toNanos(lagCapSeconds);
-        if (!(lagCapSeconds <= MAX_LAG_CAP_SECONDS) || lagCapNanos < stepNanos)
+        if (lagCapSeconds > MAX_LAG_CAP_SECONDS || lagCapNanos < stepNanos)
         {
             throw new IllegalArgumentException("Lag cap outside [one step, 1 s]: " + lagCapSeconds);
         }
         checkTimeScale(timeScale);
-        if (!(snapToleranceSeconds >= 0.0) || toNanos(snapToleranceSeconds) >= (stepNanos + 1L) / 2L)
+        final long toleranceNanos = toNanos(snapToleranceSeconds);
+        if (Double.isNaN(snapToleranceSeconds) || snapToleranceSeconds < 0.0 || toleranceNanos >= (stepNanos + 1L) / 2L)
         {
             throw new IllegalArgumentException("Snapping tolerance outside [0, half a step): " + snapToleranceSeconds);
         }

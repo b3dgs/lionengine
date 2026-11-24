@@ -231,7 +231,7 @@ final class GameLoopTest
             frame(loop, clock, frameNanos);
             total += frameNanos;
         }
-        final double simulated = recorder.updates * (double) STEP + recorder.alpha * STEP;
+        final double simulated = recorder.updates * (double) STEP + recorder.alpha * (double) STEP;
 
         assertEquals(total / STEP, recorder.updates);
         assertEquals(total, simulated, SIMULATED_TOLERANCE);
@@ -251,7 +251,7 @@ final class GameLoopTest
         {
             frame(loop, clock, frameNanos);
         }
-        final double simulated = recorder.updates * (double) STEP + recorder.alpha * STEP;
+        final double simulated = recorder.updates * (double) STEP + recorder.alpha * (double) STEP;
 
         assertEquals(1_000_000L * frameNanos * 0.1, simulated, SIMULATED_TOLERANCE);
     }

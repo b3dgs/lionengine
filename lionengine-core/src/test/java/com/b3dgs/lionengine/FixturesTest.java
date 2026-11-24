@@ -132,6 +132,6 @@ final class FixturesTest
         assertThrows(IllegalArgumentException.class, () -> new FakeWorkerPool(-1));
 
         pool.close();
-        assertThrows(IllegalStateException.class, () -> pool.submit(() -> pool.getPendingCount()));
+        assertThrows(IllegalStateException.class, () -> pool.submit(pool::getPendingCount));
     }
 }
