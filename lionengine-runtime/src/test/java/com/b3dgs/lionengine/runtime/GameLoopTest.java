@@ -234,7 +234,7 @@ final class GameLoopTest
         final double simulated = recorder.updates * (double) STEP + recorder.alpha * (double) STEP;
 
         assertEquals(total / STEP, recorder.updates);
-        assertEquals(total, simulated, SIMULATED_TOLERANCE);
+        assertEquals((double) total, simulated, SIMULATED_TOLERANCE);
     }
 
     /**

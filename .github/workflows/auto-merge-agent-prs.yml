@@ -7,7 +7,9 @@
 #   runs the checks itself and only squash-merges (GitHub signs the resulting commit).
 # - A merge made with the workflow token starts no workflow on the target branch (GitHub rule), so the
 #   build of the merge result runs here, before merging, whenever the pull request changes more than
-#   documentation: Maven build and tests, then the module, API index and provenance checks.
+#   documentation: Maven build and tests, then the module, API index and provenance checks. After the
+#   merge, the "merge" job starts build.yml on the target branch by workflow_dispatch, the one event the
+#   workflow token may trigger: rewrite/v11 is then built and analyzed by Sonar after every merge.
 # - The pull request's code runs in the "verify" job, which has read-only permissions and no stored
 #   credentials; only the "merge" job holds the write token, and it runs no code of the pull request.
 # - Pull requests that accept an ADR or validate a requirement are merged too (owner decision of
@@ -106,12 +108,14 @@ jobs:
     needs: verify
     runs-on: ubuntu-latest
     permissions:
+      actions: write
       contents: write
       pull-requests: write
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       URL: ${{ github.event.pull_request.html_url }}
       SHA: ${{ github.event.pull_request.head.sha }}
+      BASE: ${{ github.event.pull_request.base.ref }}
     steps:
       - name: Flag pull requests that validate a decision
         run: |
@@ -121,3 +125,8 @@ jobs:
 
       - name: Squash-merge
         run: gh pr merge "$URL" --squash --match-head-commit "$SHA"
+
+      # Build and Sonar analysis of the merged branch; a later merge cancels a build still running
+      # (concurrency of build.yml), so the branch head is always the one analyzed.
+      - name: Start the build of the merged branch
+        run: gh api -X POST "repos/$GITHUB_REPOSITORY/actions/workflows/build.yml/dispatches" -f ref="$BASE"
