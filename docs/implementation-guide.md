@@ -19,7 +19,7 @@ Read this page before writing Java in the engine. Every rule below is enforced b
    - factory reading a `Configuration`, with a factory check through `createError`: `lionengine-examples/src/main/java/com/b3dgs/lionengine/examples/core/DefinitionExample.java`;
    - example with its test run by the build: `DefinitionExampleTest` next to it in `lionengine-examples/src/test/java`;
    - abstract contract suite in a test JAR, bound in another module: `LoopDriverContract` in `lionengine-core/src/test/java`, bound by `GameLoopContractTest` in `lionengine-runtime/src/test/java` (test-scope `test-jar` dependency in `lionengine-runtime/pom.xml`);
-   - test fixture published in a test JAR: `ControllableClock` (runtime), `FakeWorkerPool`, `InboxSpy`, `ManualLoopDriver` (core).
+   - test fixture published in a test JAR: `ControllableClock`, `RecordingScene` (runtime), `FakeWorkerPool`, `InboxSpy`, `ManualLoopDriver` (core).
 
 ## 2. Commands
 

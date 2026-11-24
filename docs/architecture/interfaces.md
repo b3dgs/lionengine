@@ -24,7 +24,7 @@ The base skeleton of the engine is built in two Phase 0 batches. The build skele
 | `WorkerPool` and its unit of work `WorkerTask` | interface, callback | `core` | `platform-awt`, `platform-android`, `test-support`; fake in the `core` test JAR | `graphics`, `audio-api`, `tilemap`, `network` (later host-name batch) | contract skeleton |
 | `LoopControl`, `LoopDriver` | interface | `core` | `runtime` (`GameLoop`); manual driver in the `core` test JAR | `platform-api` (started with a `LoopDriver`), `platform-*`, `composition` | contract skeleton |
 | `Clock` | interface | `runtime` | `runtime` (`System.nanoTime`); controllable clock in the `runtime` test JAR | `runtime`, `test-support` | contract skeleton |
-| `UpdateCallback`, `RenderCallback` | callback | `runtime` | the application or `composition` | `runtime` (`GameLoop`) | contract skeleton |
+| `UpdateCallback`, `RenderCallback` | callback | `runtime` | the application, `composition`, `runtime` (`SceneManager`, which a simple game gives to the loop as both callbacks) | `runtime` (`GameLoop`) | contract skeleton |
 | `Scene` | interface | `runtime` | games, `composition` | `runtime` (`SceneManager`) | contract skeleton |
 | `Platform` | interface | `platform-api` | `platform-awt`, `platform-android`, `test-support` (headless) | applications, `composition`, `render-*`, `input-*` | contract skeleton; render-backend attachment added with the render-backend contract |
 | `PlatformEvent`, `CloseListener` | event type (an `InboxEvent`), callback | `platform-api` | platform implementations; games (`CloseListener`) | applications, `composition` | contract skeleton |

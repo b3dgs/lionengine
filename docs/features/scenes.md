@@ -88,6 +88,15 @@ Seconds; ids and trigger names are strings. Pure Java; callbacks are the role-na
 - Unit tests: lifecycle order, switch at a frame boundary, overlay update and render calls, transition resolution order, conditions, any-scene fallback, single pending transition, each validation error, listener calls, new instance per entry.
 - Integration tests: a headless flow Intro → Menu → Level → Pause → Level → Credits → exit driven by a manually driven loop and a controllable clock.
 
+## State (2026-11-24)
+
+Batch 1 is implemented in `runtime`, with the example `SceneExample` and its API-index row; batches 2 to 4 (overlay stack and scene flow, Phase 2) are not. Names and details chosen by the batch, within this page, ADR-0021 and ADR-0031:
+- `SceneManager` implements `UpdateCallback` and `RenderCallback`, so a simple game gives it to `GameLoop` as both callbacks; a game with input calls its `update` and `render` from its own callbacks. The frame ends with `render`, which must therefore be called once per frame, even when nothing is drawn.
+- `switchTo(scene)` returns whether the request is accepted: the first request of a frame wins and later ones return `false` (their scenes receive no call), as ADR-0036 decides for triggers, so a request repeated at every step, or in every step of a catch-up frame, gives the same result. The switch applies at the first `update` or `render` call of the next frame: exit and dispose the current scene, enter the next, which is then updated and rendered in that frame. The active scene itself and `null` are rejected (`IllegalArgumentException`).
+- `isSwitchPending()`, `hasActive()` and `getActive()` (`null` when none) observe the manager. `clear()` exits and disposes the active scene and cancels a pending switch at once: the game calls it once the loop has stopped or failed. A scene calling `clear()`, `update` or `render` of the manager from a method the manager called gets an `IllegalStateException`.
+- Exceptions of scenes propagate unchanged, so the loop fails (ADR-0017). A scene whose `enter` or `exit` threw receives no further call, and when the exit of the current scene throws, the next scene is not entered; a scene whose `update` or `render` threw stays active, so `clear()` still exits and disposes it.
+- The manager allocates nothing in steady state, switches included (allocation test). Test fixture (ADR-0045): `RecordingScene` in the `runtime` test JAR, which records the lifecycle calls of several scenes in one list.
+
 ## Acceptance criteria
 
 - [ ] Requirements `REQ-SCENE-001` to `REQ-SCENE-008` verified.
