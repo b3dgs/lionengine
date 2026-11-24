@@ -21,16 +21,15 @@ package com.b3dgs.lionengine.resources;
  *
  * <p>
  * The only exception of {@code resources}. Invalid content is not a resource error: it is the decoding exception of
- * the consuming module. Immutable; may be thrown on any thread (providers are read by loading workers).
+ * the consuming module. Immutable; may be thrown on any thread (providers are read by loading workers). Not meant
+ * to be serialized: no {@code serialVersionUID} is declared (Sonar S4926).
  * </p>
  *
  * @since 11.0.0
  */
+@SuppressWarnings("serial")
 public final class ResourceException extends RuntimeException
 {
-    /** Serialization identifier. */
-    private static final long serialVersionUID = 1L;
-
     /** Path of the resource key; kept as a string so that the exception stays serializable. */
     private final String path;
     /** Reason of the failure. */

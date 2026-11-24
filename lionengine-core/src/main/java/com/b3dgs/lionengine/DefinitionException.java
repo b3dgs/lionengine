@@ -26,18 +26,18 @@ package com.b3dgs.lionengine;
  * </p>
  *
  * <p>
- * Immutable; may be thrown on any thread (definition files can be read on a loading worker, ADR-0019).
+ * Immutable; may be thrown on any thread (definition files can be read on a loading worker, ADR-0019). Not meant
+ * to be serialized: no {@code serialVersionUID} is declared (Sonar S4926).
  * </p>
  *
  * @since 11.0.0
  */
+@SuppressWarnings("serial")
 public final class DefinitionException extends RuntimeException
 {
     /** Line or column value when it is unknown. */
     public static final int UNKNOWN = 0;
 
-    /** Serialization identifier. */
-    private static final long serialVersionUID = 1L;
     /** Separator between the location fields of the message. */
     private static final char LOCATION_SEPARATOR = ':';
     /** Opening of the message suffix. */

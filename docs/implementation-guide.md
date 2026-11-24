@@ -1,6 +1,6 @@
 # Implementation guide
 
-**Status: VALIDATED — practical rules for writing engine code that passes the quality gates of the build: the `b3dgs-parent` checkstyle configuration, the compiler and Javadoc settings, the package and module rules, a Sonar analysis with the default "Sonar way" profile, and the Android/DEX and performance constraints. [`conventions.md`](conventions.md) stays the owner of the conventions; this page tells how to meet them in code.**
+**Status: VALIDATED — practical rules for writing engine code that passes the quality gates of the build: the `b3dgs-parent` checkstyle configuration, the compiler and Javadoc settings, the package and module rules, a Sonar analysis with the organization's `b3dgs` quality profile, and the Android/DEX and performance constraints. [`conventions.md`](conventions.md) stays the owner of the conventions; this page tells how to meet them in code.**
 
 Read this page before writing Java in the engine. Every rule below is enforced by the build or by the Sonar analysis; a batch is not done until all of them pass on the whole reactor.
 
@@ -27,6 +27,7 @@ JDK 25 and Maven 3.9 (the build refuses an older JDK). From the repository root:
 | Tests of one module | `mvn -B -pl lionengine-<module> -am test` |
 | Checkstyle only (fast) | `mvn -B validate` |
 | Sonar analysis (needs the owner's token) | `mvn -B verify -Psonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=b3dgs -Dsonar.projectKey=b3dgs_lionengine -Dsonar.token=<token>` |
+| Sonar results of a pull request (no token) | `curl -s "https://sonarcloud.io/api/issues/search?componentKeys=b3dgs_lionengine&pullRequest=<number>&resolved=false"`; quality gate: `api/qualitygates/project_status?projectKey=b3dgs_lionengine&pullRequest=<number>` |
 
 Never pass `-Dcheckstyle.skip`, `-DskipTests`, `-Dmaven.javadoc.skip` or `-o` to make a change pass. The only allowed `maven.javadoc.skip` is the property of a module that has no public type yet; the batch that adds its first public type removes it.
 
@@ -49,7 +50,7 @@ Runs at `validate` on `src/main/java` and fails on the first error. Tests are no
 ## 4. Compiler, Javadoc, package rule and modules
 
 - **Compiler:** `-Xlint:all -Werror`, so every warning fails the build. In practice:
-  - exceptions declare `serialVersionUID` and hold only serializable fields (see `ResourceException`, which keeps the key path as a string);
+  - exceptions declare no `serialVersionUID` (Sonar S4926) and are annotated `@SuppressWarnings("serial")` for the `serial` lint; their fields stay serializable (see `ResourceException`, which keeps the key path as a string);
   - no raw types or unchecked casts;
   - constructors never call an overridable method and never leak `this` (`this-escape`): prefer `final` classes;
   - no deprecated API.
@@ -58,9 +59,9 @@ Runs at `validate` on `src/main/java` and fails on the first error. Tests are no
 - **Package rule** (`radial-encapsulation-maven-plugin`, ADR-0015, ADR-0037): inside a module a package may use itself and its ancestors only. A type used by several sub-packages lives in their common ancestor, usually the module's root package. Package names must not be string prefixes of each other (`load` next to `loader`). No module creates a sub-package named like another module's root.
 - **Module rows:** `scripts/check-modules.py` enforces [`architecture/modules.md`](architecture/modules.md): main dependencies within the row; test scope only on the test JARs of modules already depended on, and on `test-support` when it does not depend on you (ADR-0045). The fakes and abstract contract suites of your module's contracts go in its `src/test/java`, published as its test JAR.
 
-## 5. Sonar ("Sonar way" profile, SonarCloud project `b3dgs_lionengine`)
+## 5. Sonar (`b3dgs` quality profile, SonarCloud project `b3dgs_lionengine`)
 
-The CI runs the analysis when the `SONAR_TOKEN` secret is available. Target for every batch:
+The CI runs the analysis when the `SONAR_TOKEN` secret is available, and the `sonar` job fails when the quality gate fails. The `b3dgs` profile of the organization is stricter than "Sonar way". Target for every batch:
 - the default quality gate on new code: coverage of at least 80 %, duplicated lines at most 3 %, no new bug or vulnerability, maintainability, reliability and security ratings A, hotspots reviewed;
 - no new issue of any severity.
 
@@ -75,7 +76,9 @@ Rules that most often fire on engine code:
 | S2142 | On `InterruptedException`, restore the interrupt flag (`Thread.currentThread().interrupt()`) before leaving |
 | S2095, S2093 | Close streams with try-with-resources; the owner of a stream is documented (`conventions.md`) |
 | S2384, S2386 | Copy mutable collections and arrays given or returned, or document the sharing explicitly when it is the contract (`TextureStore`, ADR-0047) and justify it in the pull request |
-| S1948, S2057 | Serializable fields and `serialVersionUID` in exceptions |
+| S1948, S2057, S4926 | Exceptions: serializable fields, no `serialVersionUID`, `@SuppressWarnings("serial")` (S2057 does not apply to exceptions) |
+| S1711 standard functional interface redefined | Ignored for the whole project in `pom.xml`: shared modules declare their own callback interfaces because `java.util.function` is not on Android API 21 (ADR-0037) |
+| S3423 POM element order | Keep the order of the aggregator `pom.xml`: `modules`, `scm`, `properties`, `dependencies`, `repositories`, `build` |
 | S3077, S2886 | Shared mutable state: atomics or immutable values; only the documented thread-safe entry points (inbox, loop control) are concurrent |
 | S1172, S1068, S1144, S1854 | No unused parameters, fields, private methods or dead stores. A callback parameter an implementation does not need is documented as such |
 | S1186 | An intentionally empty method contains a comment saying why |

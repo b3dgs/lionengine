@@ -16,21 +16,6 @@
     <name>LionEngine</name>
     <description>Java 2D Game Engine</description>
     <url>https://github.com/b3dgs/lionengine</url>
-    <scm>
-        <url>https://github.com/b3dgs/lionengine</url>
-        <connection>scm:git:git@github.com:b3dgs/lionengine.git</connection>
-        <developerConnection>scm:git:git@github.com:b3dgs/lionengine.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
-    <properties>
-        <!-- Shared modules: Java 21 class files (ADR-0044); desktop-only modules override it with 25. -->
-        <jdk.version>21</jdk.version>
-        <!-- Overridden by every module with its own root package (ADR-0037). -->
-        <radial.base-package>com.b3dgs.lionengine</radial.base-package>
-        <build-jdk.minimum>25</build-jdk.minimum>
-        <!-- ADR-0050: the latest stable JUnit release, pinned here whatever the parent provides. -->
-        <junit.version>6.1.3</junit.version>
-    </properties>
     <modules>
         <module>lionengine-core</module>
         <module>lionengine-runtime</module>
@@ -57,20 +42,26 @@
         <module>lionengine-graphics-imageio</module>
         <module>lionengine-examples</module>
     </modules>
-    <!-- Needed to resolve the snapshot parent itself (ADR-0051); the parent declares the same repository for the
-         rest of the build. Removed when the parent is a release. -->
-    <repositories>
-        <repository>
-            <id>snapshots</id>
-            <url>https://central.sonatype.com/repository/maven-snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+    <scm>
+        <url>https://github.com/b3dgs/lionengine</url>
+        <connection>scm:git:git@github.com:b3dgs/lionengine.git</connection>
+        <developerConnection>scm:git:git@github.com:b3dgs/lionengine.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+    <properties>
+        <!-- Shared modules: Java 21 class files (ADR-0044); desktop-only modules override it with 25. -->
+        <jdk.version>21</jdk.version>
+        <!-- Overridden by every module with its own root package (ADR-0037). -->
+        <radial.base-package>com.b3dgs.lionengine</radial.base-package>
+        <build-jdk.minimum>25</build-jdk.minimum>
+        <!-- ADR-0050: the latest stable JUnit release, pinned here whatever the parent provides. -->
+        <junit.version>6.1.3</junit.version>
+        <!-- Sonar S1711 asks for java.util.function instead of an engine callback interface; that package is not on
+             Android API 21 and is banned from shared public APIs (ADR-0037, docs/android-compatibility.md). -->
+        <sonar.issue.ignore.multicriteria>s1711</sonar.issue.ignore.multicriteria>
+        <sonar.issue.ignore.multicriteria.s1711.ruleKey>java:S1711</sonar.issue.ignore.multicriteria.s1711.ruleKey>
+        <sonar.issue.ignore.multicriteria.s1711.resourceKey>**/*.java</sonar.issue.ignore.multicriteria.s1711.resourceKey>
+    </properties>
     <dependencies>
         <!-- Inherited from b3dgs-parent in compile scope: no shared module may ship a logging library
              (REQ-CORE-006, ADR-0031), so it is kept for tests only. -->
@@ -89,6 +80,20 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+    <!-- Needed to resolve the snapshot parent itself (ADR-0051); the parent declares the same repository for the
+         rest of the build. Removed when the parent is a release. -->
+    <repositories>
+        <repository>
+            <id>snapshots</id>
+            <url>https://central.sonatype.com/repository/maven-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
     <build>
         <pluginManagement>
             <plugins>
