@@ -1,13 +1,19 @@
-# Tuning phase only: pull requests opened by the agents are squash-merged automatically once
-# docs-check passes on the merge result, so that the owner is never a bottleneck.
+# Tuning phase only: pull requests opened by the agents are squash-merged automatically once the
+# checks pass on the merge result, so that the owner is never a bottleneck.
 # To stop: delete this file (or restrict the allow-lists below). See docs/change-process.md.
 #
 # Notes:
 # - The branch ruleset requires signed commits and has no required status check, so this workflow
-#   runs the check itself and only squash-merges (GitHub signs the resulting commit).
+#   runs the checks itself and only squash-merges (GitHub signs the resulting commit).
+# - A merge made with the workflow token starts no workflow on the target branch (GitHub rule), so the
+#   build of the merge result runs here, before merging, whenever the pull request changes more than
+#   documentation: Maven build and tests, then the module, API index and provenance checks.
+# - The pull request's code runs in the "verify" job, which has read-only permissions and no stored
+#   credentials; only the "merge" job holds the write token, and it runs no code of the pull request.
 # - Pull requests that accept an ADR or validate a requirement are merged too (owner decision of
 #   2026-11-22): an agent opens such a pull request only on the owner's explicit request. They are
 #   flagged with a notice in the run log, so they stay easy to find and revert.
+# - Actions are pinned to the commits used by the master workflow ci-cd.yml.
 name: auto-merge-agent-prs
 
 on:
@@ -20,30 +26,98 @@ concurrency:
   group: auto-merge-agent-prs
   cancel-in-progress: false
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 jobs:
-  merge:
+  verify:
     if: >
       !github.event.pull_request.draft &&
       github.event.pull_request.head.repo.full_name == github.repository &&
       (startsWith(github.head_ref, 'packet/') || startsWith(github.head_ref, 'claude/')) &&
       contains(fromJSON('["claude[bot]", "DjThunder", "b3dgs"]'), github.event.pull_request.user.login)
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Checkout the merge result
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+
+      - name: Check documentation on the merge result
+        run: python3 -I scripts/check-docs.py
+
+      - name: Detect changes outside the documentation
+        id: changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          if gh pr diff "$URL" --name-only | grep -qvE '^(docs/|[^/]+\.md$)'; then
+            echo "build=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Cache
+        if: steps.changes.outputs.build == 'true'
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7
+        with:
+          path: ~/.m2/repository
+          key: maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: maven-
+
+      - name: Java
+        if: steps.changes.outputs.build == 'true'
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - name: Maven
+        id: maven
+        if: steps.changes.outputs.build == 'true'
+        continue-on-error: true
+        uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
+        with:
+          maven-version: 3.9.14
+
+      - name: Wait before retrying the Maven download (rate limit of Maven Central)
+        if: steps.changes.outputs.build == 'true' && steps.maven.outcome == 'failure'
+        run: sleep 60
+
+      - name: Maven (retry)
+        if: steps.changes.outputs.build == 'true' && steps.maven.outcome == 'failure'
+        uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
+        with:
+          maven-version: 3.9.14
+
+      - name: Build, checkstyle, package rule, tests, Javadoc
+        if: steps.changes.outputs.build == 'true'
+        run: mvn -B -ntp verify
+
+      - name: Module dependencies, API index, asset provenance
+        if: steps.changes.outputs.build == 'true'
+        run: |
+          python3 -I scripts/check-modules.py
+          python3 -I scripts/check-api-index.py
+          python3 -I scripts/check-provenance.py
+
+  merge:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       URL: ${{ github.event.pull_request.html_url }}
       SHA: ${{ github.event.pull_request.head.sha }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Check documentation on the merge result
-        run: python3 -I scripts/check-docs.py
       - name: Flag pull requests that validate a decision
         run: |
           if gh pr diff "$URL" | grep -qE '^\+(- Status: ACCEPTED|\*\*Status: VALIDATED|\|.*\| VALIDATED)'; then
             echo "::notice::This pull request accepts an ADR or validates a requirement (owner request); merging it."
           fi
+
       - name: Squash-merge
         run: gh pr merge "$URL" --squash --match-head-commit "$SHA"

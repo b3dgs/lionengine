@@ -11,6 +11,8 @@ on:
   pull_request:
     branches:
       - rewrite/v11
+  # Manual runs: a merge made by auto-merge-agent-prs.yml starts no push build on rewrite/v11.
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -43,6 +45,18 @@ jobs:
           java-version: 25
 
       - name: Maven
+        id: maven
+        continue-on-error: true
+        uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
+        with:
+          maven-version: 3.9.14
+
+      - name: Wait before retrying the Maven download (rate limit of Maven Central)
+        if: steps.maven.outcome == 'failure'
+        run: sleep 60
+
+      - name: Maven (retry)
+        if: steps.maven.outcome == 'failure'
         uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
         with:
           maven-version: 3.9.14
@@ -89,6 +103,18 @@ jobs:
           java-version: 25
 
       - name: Maven
+        id: maven
+        continue-on-error: true
+        uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
+        with:
+          maven-version: 3.9.14
+
+      - name: Wait before retrying the Maven download (rate limit of Maven Central)
+        if: steps.maven.outcome == 'failure'
+        run: sleep 60
+
+      - name: Maven (retry)
+        if: steps.maven.outcome == 'failure'
         uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
         with:
           maven-version: 3.9.14
@@ -126,7 +152,19 @@ jobs:
           java-version: 25
 
       - name: Maven
+        id: maven
         if: env.SONAR_TOKEN != ''
+        continue-on-error: true
+        uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
+        with:
+          maven-version: 3.9.14
+
+      - name: Wait before retrying the Maven download (rate limit of Maven Central)
+        if: env.SONAR_TOKEN != '' && steps.maven.outcome == 'failure'
+        run: sleep 60
+
+      - name: Maven (retry)
+        if: env.SONAR_TOKEN != '' && steps.maven.outcome == 'failure'
         uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
         with:
           maven-version: 3.9.14
