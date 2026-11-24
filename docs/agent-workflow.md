@@ -64,4 +64,4 @@ Next batches, in this order. Each one starts from its feature page and [`impleme
 
 Batch 3 needs batch 2 (the inbox logs its drops); batches 4 and 5 depend only on what is merged and may run in parallel with 2 and 3 on separate branches, as long as each pull request keeps `mvn -B verify` green on the merge result.
 
-Open question to settle with the owner meanwhile: `OQ-167` (parent version). `OQ-166` is resolved by ADR-0050 (latest stable JUnit).
+No question is open: `OQ-166` and `OQ-167` are resolved by ADR-0050 (latest stable JUnit) and ADR-0051 (`b3dgs-parent` 3.0.0-SNAPSHOT). The parent is a snapshot: a build that starts failing after a parent update is fixed in the engine code or reported to the owner.

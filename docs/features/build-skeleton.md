@@ -7,7 +7,7 @@
 - Affected modules: all modules of [`../architecture/modules.md`](../architecture/modules.md) needed by Phases 1 to 3, `android/` Gradle build
 - Requirements: `REQ-TECH-001`, `REQ-TECH-002`, `REQ-TECH-006`, `REQ-TECH-007`, `REQ-CORE-003`, `REQ-CORE-005`, `REQ-DOC-001`, `REQ-DOC-004` to `REQ-DOC-007`, `REQ-SUPPORT-001`
 - Applicable ADRs: [`ADR-0012`](../decisions/0012-platform-and-build-baseline.md), [`ADR-0015`](../decisions/0015-single-version-and-package-dependency-rule.md), [`ADR-0023`](../decisions/0023-game-repository-change-requests-assets-and-api-index-check.md), [`ADR-0024`](../decisions/0024-determinism-performance-budgets-and-desktop-support.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0037`](../decisions/0037-package-tree-per-module-callbacks-and-canonical-names.md), [`ADR-0045`](../decisions/0045-test-fixtures-with-their-contracts-and-test-support-kit.md), [`ADR-0048`](../decisions/0048-composition-dependencies-and-skeleton-declaration.md), [`ADR-0049`](../decisions/0049-interface-catalog-and-contract-skeleton.md)
-- Open questions involved: `OQ-167` (raised by this batch, assumption stated there; `OQ-166` resolved by [`ADR-0050`](../decisions/0050-test-framework-latest-stable-junit.md)); `OQ-147` resolved by [`ADR-0041`](../decisions/0041-android-bytecode-level-fallback.md) and [`ADR-0044`](../decisions/0044-java-21-shared-level-and-api-21-constraints.md), `OQ-149` by [`ADR-0042`](../decisions/0042-build-skeleton-closure-and-maven-central.md); this batch does the work they describe)
+- Open questions involved: none open; `OQ-166` and `OQ-167`, raised by this batch, are resolved by [`ADR-0050`](../decisions/0050-test-framework-latest-stable-junit.md) and [`ADR-0051`](../decisions/0051-parent-pom-b3dgs-parent-3-snapshot.md); `OQ-147` resolved by [`ADR-0041`](../decisions/0041-android-bytecode-level-fallback.md) and [`ADR-0044`](../decisions/0044-java-21-shared-level-and-api-21-constraints.md), `OQ-149` by [`ADR-0042`](../decisions/0042-build-skeleton-closure-and-maven-central.md); this batch does the work they describe)
 
 ## Objective
 
@@ -61,7 +61,7 @@ Only build and test tools listed in `dependencies.md`; each new one is recorded 
 Done: items 1, 2, 3, 5 (except the Android/DEX job) and 6.
 
 Decisions of the batch:
-- parent `b3dgs-parent` 2.0.0, because 2.1.0-SNAPSHOT is not published (`OQ-167`);
+- parent `b3dgs-parent` 3.0.0-SNAPSHOT, with the snapshot repository declared in the aggregator to resolve it (ADR-0051, resolving `OQ-167`; checkstyle 14.1.0);
 - JUnit 6.1.3, the latest stable release, pinned in the aggregator (ADR-0050, resolving `OQ-166`);
 - the parent's compile-scope `slf4j-api` restricted to tests (REQ-CORE-006) and `b3dgs-buildtools` to `provided`, so that neither ships;
 - `-Xlint:all -Werror`; enforcer rule JDK 25 or later;

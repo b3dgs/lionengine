@@ -7,7 +7,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | Requirement | Priority | Status | ADR | Still open | Tests | Verification state |
 |---|---|---|---|---|---|---|
 | REQ-TECH-001 | Must | VALIDATED | ADR-0001, ADR-0012, ADR-0041, ADR-0044 | — | enforcer rule (JDK 25 or later) in `pom.xml`; desktop modules at `--release 25` | verified by the build |
-| REQ-TECH-002 | Must | VALIDATED | ADR-0001, ADR-0012 | — | Maven 3.9 reactor, `mvn -B verify` | verified by the build |
+| REQ-TECH-002 | Must | VALIDATED | ADR-0001, ADR-0012, ADR-0051 | — | Maven 3.9 reactor, `mvn -B verify` | verified by the build |
 | REQ-TECH-003 | Must | VALIDATED | ADR-0001, ADR-0013 | — | — | no test yet |
 | REQ-TECH-004 | Must | VALIDATED | ADR-0001 | — | — | no test yet |
 | REQ-TECH-005 | Must | VALIDATED | ADR-0001 | — | — | no test yet |
@@ -15,7 +15,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-TECH-007 | Must | VALIDATED | ADR-0001, ADR-0012, ADR-0041, ADR-0044 | — | — | no test yet |
 | REQ-TECH-008 | Must | VALIDATED | ADR-0001 | — | — | no test yet |
 | REQ-CORE-002 | Must | VALIDATED | ADR-0012, ADR-0015 | — | — | no test yet |
-| REQ-CORE-003 | Must | VALIDATED | ADR-0012, ADR-0032, ADR-0042, ADR-0049 | — | javadoc doclint `all`, `failOnWarnings`; probe: an undocumented public class fails the build | verified by the build (probe) |
+| REQ-CORE-003 | Must | VALIDATED | ADR-0012, ADR-0032, ADR-0042, ADR-0049, ADR-0051 | — | javadoc doclint `all`, `failOnWarnings`; probe: an undocumented public class fails the build | verified by the build (probe) |
 | REQ-CORE-004 | Must | VALIDATED | ADR-0012, ADR-0045, ADR-0049, ADR-0050 | — | — | no test yet |
 | REQ-CORE-005 | Must | VALIDATED | ADR-0012, ADR-0015, ADR-0040, ADR-0042, ADR-0045, ADR-0046, ADR-0047, ADR-0048, ADR-0049 | — | `radial-encapsulation-maven-plugin` per module, `scripts/check-modules.py`, Maven graph; probes: sibling package, undeclared module, row and test-scope violations | verified by the build (probes) |
 | REQ-CORE-006 | Should | VALIDATED | ADR-0031 | — | — | no test yet |
