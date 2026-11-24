@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.platform.EffectiveResult;
 import com.b3dgs.lionengine.platform.Platform;
 import com.b3dgs.lionengine.platform.PlatformEvent;
 import com.b3dgs.lionengine.platform.PresentationGeometry;
+import com.b3dgs.lionengine.render.RenderBackend;
 
 /**
  * Platform without window, driven by the test, for headless tests of the engine and of games (ADR-0045,
@@ -44,13 +45,13 @@ import com.b3dgs.lionengine.platform.PresentationGeometry;
  * </p>
  *
  * <p>
- * Behavior: going to the background pauses the loop and coming back resumes it; a close request stops it unless a
- * close listener vetoes it (listeners are asked in the order they were added, and the first veto ends the request); a
- * resize changes the surface, never the logical frame. The surface starts at the logical frame size, and so does the
- * display mode of its imaginary monitor. Every screen mode and display mode is accepted; output filters are not
- * applied until a render backend can be attached, which is reported in the effective result. The worker pool is a
- * {@link FakeWorkerPool} of 2 workers that runs tasks only when the test asks it to. Not thread-safe: the test drives
- * it from one thread, its runtime thread.
+ * Behavior: going to the background pauses the loop and coming back resumes it; a close request stops it unless a close
+ * listener vetoes it (listeners are asked in the order they were added, and the first veto ends the request); a resize
+ * changes the surface, never the logical frame. The surface starts at the logical frame size, and so does the display
+ * mode of its imaginary monitor. Every screen mode and display mode is accepted; the output filters are those the
+ * attached render backend implements, and the others are reported as skipped in the effective result. The worker pool
+ * is a {@link FakeWorkerPool} of 2 workers that runs tasks only when the test asks it to. Not thread-safe: the test
+ * drives it from one thread, its runtime thread.
  * </p>
  *
  * @since 11.0.0
@@ -59,6 +60,8 @@ public final class HeadlessPlatform implements Platform
 {
     /** Number of workers of the pool, as the desktop default. */
     private static final int WORKERS = 2;
+    /** Error message of a second start, or an attachment after the start. */
+    private static final String ERROR_STARTED = "Headless platform already started";
     /** No listener. */
     private static final CloseListener[] NO_LISTENER = new CloseListener[0];
 
@@ -292,10 +295,24 @@ public final class HeadlessPlatform implements Platform
         }
         if (this.driver != null)
         {
-            throw new IllegalStateException("Headless platform already started");
+            throw new IllegalStateException(ERROR_STARTED);
         }
         this.driver = driver;
         this.inbox = inbox;
+    }
+
+    @Override
+    public void attach(RenderBackend backend)
+    {
+        if (backend == null)
+        {
+            throw new IllegalArgumentException("Render backend must not be null");
+        }
+        if (driver != null)
+        {
+            throw new IllegalStateException(ERROR_STARTED);
+        }
+        display.attach(backend);
     }
 
     @Override

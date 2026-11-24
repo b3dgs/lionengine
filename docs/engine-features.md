@@ -76,7 +76,7 @@ Works now: reading JSON data files with exact error positions, typed parameters 
 - The window reports resize, focus, background and close; closing can be confirmed by the game.
 - Version 11 opens on the default monitor; on high-density (HiDPI) screens the scaling works on real device pixels, so whole-multiple scaling stays crisp. Choosing another monitor is not offered yet (ADR-0043).
 
-Works now: the scaling of the logical frame to any surface size with the three policies, and a headless platform on which a game runs and reacts to resize, background, foreground and close, for tests without a window (example `HeadlessGameTest`). Drawing commands and the desktop window come with the next batches.
+Works now: the scaling of the logical frame to any surface size with the three policies; drawing with render commands (textures, positions, scale, rotation, tint, opacity, layers, views); and a headless platform with a recording renderer on which a game runs, draws and reacts to resize, background, foreground and close, for tests without a window (examples `HeadlessGameTest`, `MovingRectangle`). The desktop window comes with the next batch.
 
 ## Images, sprites and animations
 

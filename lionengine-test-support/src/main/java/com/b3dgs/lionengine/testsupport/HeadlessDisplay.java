@@ -16,7 +16,8 @@
  */
 package com.b3dgs.lionengine.testsupport;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.b3dgs.lionengine.platform.DisplayMode;
 import com.b3dgs.lionengine.platform.DisplayRequest;
@@ -24,6 +25,7 @@ import com.b3dgs.lionengine.platform.EffectiveResult;
 import com.b3dgs.lionengine.platform.PresentationGeometry;
 import com.b3dgs.lionengine.render.FrameScaling;
 import com.b3dgs.lionengine.render.OutputFilter;
+import com.b3dgs.lionengine.render.RenderBackend;
 
 /**
  * Display state of the headless platform: surface, display mode, effective result and presentation geometry
@@ -31,7 +33,8 @@ import com.b3dgs.lionengine.render.OutputFilter;
  *
  * <p>
  * Every screen mode and display mode is accepted; the scaling comes from the scaling function of {@code render-api};
- * output filters are not applied without a render backend. Runtime thread only.
+ * the output filters are those the attached render backend implements, none without a backend. Runtime thread
+ * only.
  * </p>
  */
 final class HeadlessDisplay
@@ -41,25 +44,24 @@ final class HeadlessDisplay
                                                  + "logical frame";
     /** Reason of filters not applied. */
     private static final String REASON_FILTERS = "Output filters not applied: no render backend attached";
+    /** Reason of a filter skipped by the backend. */
+    private static final String REASON_SKIPPED = "Output filter not implemented by the render backend, skipped: ";
     /** Separator of the reasons. */
     private static final String REASON_SEPARATOR = "; ";
 
     /**
-     * Tells whether a request applies a filter other than {@link OutputFilter#NONE}.
+     * Appends a reason to the reasons of an effective result.
      *
-     * @param request The request.
-     * @return {@code true} if a filter other than {@code NONE} is requested.
+     * @param reasons The reasons.
+     * @param reason The reason to append.
      */
-    private static boolean hasFilters(DisplayRequest request)
+    private static void addReason(StringBuilder reasons, String reason)
     {
-        for (final OutputFilter filter : request.filters())
+        if (!reasons.isEmpty())
         {
-            if (!OutputFilter.NONE.equals(filter))
-            {
-                return true;
-            }
+            reasons.append(REASON_SEPARATOR);
         }
-        return false;
+        reasons.append(reason);
     }
 
     /** Logical frame width in pixels. */
@@ -76,6 +78,8 @@ final class HeadlessDisplay
     private EffectiveResult effectiveResult;
     /** Current presentation geometry. */
     private PresentationGeometry geometry;
+    /** Attached render backend, {@code null} if none. */
+    private RenderBackend backend;
 
     /**
      * Creates the display state; the surface and the display mode have the logical frame size.
@@ -108,6 +112,17 @@ final class HeadlessDisplay
     }
 
     /**
+     * Attaches the render backend and applies the current request again with its filters.
+     *
+     * @param backend The render backend.
+     */
+    void attach(RenderBackend backend)
+    {
+        this.backend = backend;
+        apply(effectiveResult.requested());
+    }
+
+    /**
      * Applies a request: computes its effective result and the presentation geometry on the current surface.
      *
      * @param request The request.
@@ -128,25 +143,54 @@ final class HeadlessDisplay
         {
             reason.append(REASON_INTEGER);
         }
-        if (hasFilters(request))
-        {
-            if (reason.length() > 0)
-            {
-                reason.append(REASON_SEPARATOR);
-            }
-            reason.append(REASON_FILTERS);
-        }
+        final List<OutputFilter> filters = filters(request, reason);
         final DisplayRequest effective = new DisplayRequest(request.screenMode(),
                                                             displayMode,
                                                             scaling.policy(),
-                                                            Collections.emptyList());
-        effectiveResult = new EffectiveResult(request, effective, reason.length() > 0, reason.toString());
+                                                            filters);
+        effectiveResult = new EffectiveResult(request, effective, !reason.isEmpty(), reason.toString());
         geometry = new PresentationGeometry(scaling.x(),
                                             scaling.y(),
                                             scaling.width(),
                                             scaling.height(),
                                             scaling.scaleX(),
                                             scaling.scaleY());
+    }
+
+    /**
+     * Returns the filters applied for a request: those the backend implements, in order, without {@code NONE}.
+     *
+     * @param request The request.
+     * @param reason The reasons of the effective result, completed with the filters not applied.
+     * @return The filters applied.
+     */
+    private List<OutputFilter> filters(DisplayRequest request, StringBuilder reason)
+    {
+        final List<OutputFilter> applied = new ArrayList<>();
+        boolean missing = false;
+        for (final OutputFilter filter : request.filters())
+        {
+            if (!OutputFilter.NONE.equals(filter))
+            {
+                if (backend != null && backend.isSupported(filter))
+                {
+                    applied.add(filter);
+                }
+                else if (backend != null)
+                {
+                    addReason(reason, REASON_SKIPPED + filter.id());
+                }
+                else
+                {
+                    missing = true;
+                }
+            }
+        }
+        if (missing)
+        {
+            addReason(reason, REASON_FILTERS);
+        }
+        return applied;
     }
 
     /**

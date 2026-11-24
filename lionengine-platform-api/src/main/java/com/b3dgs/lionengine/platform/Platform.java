@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Inbox;
 import com.b3dgs.lionengine.LogSink;
 import com.b3dgs.lionengine.LoopDriver;
 import com.b3dgs.lionengine.WorkerPool;
+import com.b3dgs.lionengine.render.RenderBackend;
 
 /**
  * The platform object: window or surface, loop thread, lifecycle events, capabilities and display state (ADR-0008,
@@ -71,6 +72,17 @@ public interface Platform
      * @throws IllegalStateException If the platform is already started.
      */
     void start(LoopDriver driver, Inbox inbox);
+
+    /**
+     * Attaches the render backend, before the start (ADR-0020, ADR-0046): the platform asks it which output filters it
+     * implements, and skips and reports the others in its effective result. Attaching another backend replaces the
+     * previous one. Without a backend, no filter is applied and this is reported.
+     *
+     * @param backend The render backend (never {@code null}).
+     * @throws IllegalArgumentException If {@code backend} is {@code null}.
+     * @throws IllegalStateException If the platform is started.
+     */
+    void attach(RenderBackend backend);
 
     /**
      * Returns the loading worker pool owned by this platform: 2 workers on desktop and 1 on Android by default,

@@ -55,7 +55,7 @@ Next batches, in this order. Each one starts from its feature page and [`impleme
 5. **Resources**, batches 1 and 2 ([`features/resources.md`](features/resources.md)): done by a cloud agent (2026-11-24): `Resources`, `StreamProvider`, `resources-memory`, `resources-file`, the provider suite and a fake provider in the `resources` test JAR, and `ResourcesExample`; see the page's "State" section. Batches 3 (cache convention suite) and 4 (archive, Android assets) remain.
 6. **Platform and rendering** ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)), in the order chosen by the owner on 2026-11-24:
    - batch 1, done by a cloud agent (2026-11-24): the `Platform` suite, the headless platform in `test-support` and the scaling function `FrameScaling`; see the page's "State" section;
-   - batch 2: the render backend contract, `CommandBuffer`, `Viewport`, textures and the recording backend in `test-support`;
+   - batch 2, done by a cloud agent (2026-11-24): `CommandBuffer`, the `RenderBackend` contract and its suite, `Platform.attach`, and `RecordingBackend` in `test-support`;
    - batch 3: the `platform-awt` window and loop thread, and `render-awt` implementing the backend contract.
 7. **Examples and API index**: each batch adds its example and API-index row; the `core` ones exist (`DefinitionExample`, `RandomExample`) (REQ-DOC-001, REQ-DOC-002).
 
