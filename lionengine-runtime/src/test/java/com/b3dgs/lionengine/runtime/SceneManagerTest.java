@@ -105,7 +105,7 @@ final class SceneManagerTest
 
         frame(1);
 
-        assertEquals(List.of(first.record(ENTER), first.record(UPDATE), first.record(RENDER)), calls);
+        assertEquals(List.of(first.entry(ENTER), first.entry(UPDATE), first.entry(RENDER)), calls);
         assertTrue(manager.hasActive());
         assertSame(first, manager.getActive());
         assertFalse(manager.isSwitchPending());
@@ -122,7 +122,7 @@ final class SceneManagerTest
 
         manager.render(0.0, 0.0);
 
-        assertEquals(List.of(first.record(ENTER), first.record(RENDER)), calls);
+        assertEquals(List.of(first.entry(ENTER), first.entry(RENDER)), calls);
     }
 
     /**
@@ -137,7 +137,7 @@ final class SceneManagerTest
 
         frame(3);
 
-        assertEquals(List.of(first.record(UPDATE), first.record(UPDATE), first.record(UPDATE), first.record(RENDER)),
+        assertEquals(List.of(first.entry(UPDATE), first.entry(UPDATE), first.entry(UPDATE), first.entry(RENDER)),
                      calls);
         assertSame(first, manager.getActive());
         assertTrue(manager.isSwitchPending());
@@ -145,11 +145,11 @@ final class SceneManagerTest
         calls.clear();
         frame(1);
 
-        assertEquals(List.of(first.record(EXIT),
-                             first.record(DISPOSE),
-                             second.record(ENTER),
-                             second.record(UPDATE),
-                             second.record(RENDER)),
+        assertEquals(List.of(first.entry(EXIT),
+                             first.entry(DISPOSE),
+                             second.entry(ENTER),
+                             second.entry(UPDATE),
+                             second.entry(RENDER)),
                      calls);
         assertSame(second, manager.getActive());
     }
@@ -166,11 +166,11 @@ final class SceneManagerTest
         frame(0);
         frame(0);
 
-        assertEquals(List.of(first.record(RENDER),
-                             first.record(EXIT),
-                             first.record(DISPOSE),
-                             second.record(ENTER),
-                             second.record(RENDER)),
+        assertEquals(List.of(first.entry(RENDER),
+                             first.entry(EXIT),
+                             first.entry(DISPOSE),
+                             second.entry(ENTER),
+                             second.entry(RENDER)),
                      calls);
     }
 
@@ -189,7 +189,7 @@ final class SceneManagerTest
 
         assertSame(second, manager.getActive());
         assertEquals(0, third.getUpdates() + third.getRenders());
-        assertFalse(calls.contains(third.record(ENTER)));
+        assertFalse(calls.contains(third.entry(ENTER)));
     }
 
     /**
@@ -240,7 +240,7 @@ final class SceneManagerTest
         manager.clear();
         frame(1);
 
-        assertEquals(List.of(first.record(EXIT), first.record(DISPOSE)), calls);
+        assertEquals(List.of(first.entry(EXIT), first.entry(DISPOSE)), calls);
         assertFalse(manager.hasActive());
         assertFalse(manager.isSwitchPending());
 
@@ -288,7 +288,7 @@ final class SceneManagerTest
         manager.render(ALPHA, STEP);
         manager.clear();
 
-        assertEquals(List.of(first.record(EXIT), first.record(DISPOSE), second.record(ENTER)), calls);
+        assertEquals(List.of(first.entry(EXIT), first.entry(DISPOSE), second.entry(ENTER)), calls);
         assertFalse(manager.hasActive());
     }
 
@@ -305,7 +305,7 @@ final class SceneManagerTest
         assertThrows(IllegalStateException.class, () -> manager.update(STEP));
         manager.clear();
 
-        assertEquals(List.of(first.record(EXIT)), calls);
+        assertEquals(List.of(first.entry(EXIT)), calls);
         assertFalse(manager.hasActive());
         assertFalse(manager.isSwitchPending());
     }
@@ -322,7 +322,7 @@ final class SceneManagerTest
         assertThrows(IllegalStateException.class, () -> manager.update(STEP));
         manager.clear();
 
-        assertEquals(List.of(first.record(UPDATE), first.record(EXIT), first.record(DISPOSE)), calls);
+        assertEquals(List.of(first.entry(UPDATE), first.entry(EXIT), first.entry(DISPOSE)), calls);
     }
 
     /**
@@ -337,7 +337,7 @@ final class SceneManagerTest
         assertThrows(IllegalStateException.class, manager::clear);
         manager.clear();
 
-        assertEquals(List.of(first.record(EXIT)), calls);
+        assertEquals(List.of(first.entry(EXIT)), calls);
         assertFalse(manager.hasActive());
     }
 }

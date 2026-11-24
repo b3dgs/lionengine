@@ -9,7 +9,7 @@ One line per capability, no implementation detail. Each area links to its featur
 - **Available**: implemented, tested, with an example.
 - **Planned**: in the roadmap, not yet specified in detail.
 
-Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop without asynchronous loading ([`features/game-loop.md`](features/game-loop.md)) and the single-scene manager ([`features/scenes.md`](features/scenes.md)) exist: data files, the game loop and scenes are *In progress*, every other area is *Specified*.
+Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop without asynchronous loading ([`features/game-loop.md`](features/game-loop.md)), the single-scene manager ([`features/scenes.md`](features/scenes.md)) and the file, memory and application-stream resource providers ([`features/resources.md`](features/resources.md)) exist: resources and data files, the game loop and scenes are *In progress*, every other area is *Specified*.
 
 | Area | State | Phase |
 |---|---|---|
@@ -63,7 +63,7 @@ Works now: one active scene, switched by the game at a frame boundary, with ever
 - Object types used by data files are registered by name (`game:enemy`), so data can create them without code changes.
 - A seeded random generator gives the same results on every platform.
 
-Works now: reading JSON data files with exact error positions, typed parameters with strict fields, the registry of data-driven types, logging and the seeded random generator (examples `DefinitionExample` and `RandomExample`). Loading files by key comes with the resources batches.
+Works now: reading JSON data files with exact error positions, typed parameters with strict fields, the registry of data-driven types, logging and the seeded random generator (examples `DefinitionExample` and `RandomExample`). Files are opened by key from a folder, from memory or from streams registered by the game, with providers stacked so that the first one having a key wins (example `ResourcesExample`). ZIP archives, Android assets and the shared caches of loaded data come with the next resources batches.
 
 ## Window, display and rendering
 

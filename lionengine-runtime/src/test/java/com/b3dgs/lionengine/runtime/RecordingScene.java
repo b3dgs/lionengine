@@ -109,12 +109,12 @@ public final class RecordingScene implements Scene
     }
 
     /**
-     * Returns the record of a call of this scene.
+     * Returns the entry recorded for a call of this scene.
      *
      * @param method The recorded name of the method.
-     * @return The record, {@code "<name> <method>"}.
+     * @return The entry, {@code "<name> <method>"}.
      */
-    public String record(String method)
+    public String entry(String method)
     {
         return name + ' ' + method;
     }
@@ -127,10 +127,10 @@ public final class RecordingScene implements Scene
      */
     private void call(String method)
     {
-        calls.add(record(method));
+        calls.add(entry(method));
         if (method.equals(failure))
         {
-            throw new IllegalStateException(record(method));
+            throw new IllegalStateException(entry(method));
         }
         final Runnable action = actions.get(method);
         if (action != null)

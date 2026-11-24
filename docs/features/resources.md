@@ -56,6 +56,16 @@ No units. `java.io` streams and `java.util.zip`; no `java.nio.file` in shared mo
 - Contract suites (`resources` test JAR, ADR-0045): provider suite run by every provider; cache convention suite run by every consuming module.
 - Concurrency test: parallel reads from two threads on each provider.
 
+## State (2026-11-24)
+
+Batches 1 and 2 are implemented, with the example `ResourcesExample` (memory provider overriding a file provider) and its API-index row; batches 3 (cache convention suite) and 4 (`resources-archive`, `resources-android`) are not. Names and details chosen by the batches, within this page, ADR-0007 and ADR-0032:
+- `Resources` takes its providers as constructor arguments, in lookup order (copied). `exists` and `open` look the key up in each provider in turn; when the provider that has the key cannot read it, `open` reports `INACCESSIBLE` and does not fall back to the next provider, so a broken override is never hidden. `openWrite` writes to the first writable provider, `IllegalStateException` when there is none; `isWritable()` tells whether one exists. A `null` key or provider is an `IllegalArgumentException`, as in every provider.
+- `ResourceProvider.openWrite` now states that the written content is readable once the stream is closed.
+- Application streams: `StreamProvider` (read-only, thread-safe) holds `StreamSupplier` callbacks registered by key (`register` replaces a previous one); an `IOException` or a `null` stream from the supplier is `INACCESSIBLE`. The application places the provider in the list where its content must win.
+- `MemoryProvider` (`resources-memory`, writable): content stored at the first close of the write stream, never modified afterwards, so a stream already opened keeps its content; bytes written after the close are ignored.
+- `FileProvider` (`resources-file`, read-only, desktop): the root must be an existing directory and is kept canonical (`getRoot()`). A key matches a file only when every segment has the exact case of the name listed by its directory, so keys stay case-sensitive on case-insensitive filesystems; directories are not resources. A file that resolves outside the root through a symbolic link is present (`has` is `true`) but `open` refuses it as `INACCESSIBLE`; an unreadable file is `INACCESSIBLE` too. Writable file storage (save games) is not part of these batches.
+- Test fixtures (ADR-0045) in the `resources` test JAR: the abstract `ResourceProviderContract` suite (content, missing keys, directories, case, new stream per open, double close, writing according to `isWritable()`, two threads reading in parallel), bound by `StreamProvider`, `MemoryProvider`, `FileProvider` and the fixture itself; and `FakeResourceProvider` (writable or not, unreadable keys, counts of opened and unclosed streams) for the tests of `Resources` and of the modules that read resources.
+
 ## Acceptance criteria
 
 - [ ] Requirements covered; complete Javadoc; headless example (memory provider overriding a file provider); API-index entry.

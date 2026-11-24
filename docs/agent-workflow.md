@@ -52,13 +52,13 @@ Next batches, in this order. Each one starts from its feature page and [`impleme
 2. **Core foundation**, batches 1 to 4 ([`features/core-foundation.md`](features/core-foundation.md)): done by a cloud agent (2026-11-24), with the first examples and API-index rows; see the page's "State" section.
 3. **Game loop**, batches 1 to 3 ([`features/game-loop.md`](features/game-loop.md)): done by a cloud agent (2026-11-24), with `GameLoopExample`, the controllable clock in the `runtime` test JAR, and the fake `WorkerPool`, inbox spy, manual `LoopDriver` and `LoopDriver` contract suite in the `core` test JAR; see the page's "State" section. Batch 4 (asynchronous handles, Phase 2) remains.
 4. **Scenes**, batch 1 ([`features/scenes.md`](features/scenes.md)): done by a cloud agent (2026-11-24), with `SceneExample` and the `RecordingScene` fixture in the `runtime` test JAR; see the page's "State" section. Batches 2 to 4 (overlay stack and scene flow, Phase 2) remain.
-5. **Resources**, batches 1 and 2 ([`features/resources.md`](features/resources.md)): `Resources`, `resources-memory`, `resources-file`, and the provider suite in the `resources` test JAR.
+5. **Resources**, batches 1 and 2 ([`features/resources.md`](features/resources.md)): done by a cloud agent (2026-11-24): `Resources`, `StreamProvider`, `resources-memory`, `resources-file`, the provider suite and a fake provider in the `resources` test JAR, and `ResourcesExample`; see the page's "State" section. Batches 3 (cache convention suite) and 4 (archive, Android assets) remain.
 6. **Platform and rendering**, batches 1 and 2 ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)):
    - the headless platform and recording backend in `test-support`;
    - the `platform-awt` window and loop thread;
    - `render-awt` presenting the logical frame.
 7. **Examples and API index**: each batch adds its example and API-index row; the `core` ones exist (`DefinitionExample`, `RandomExample`) (REQ-DOC-001, REQ-DOC-002).
 
-Batches 2 to 4 are done; batch 5 depends only on what is merged and may run in parallel with the others on a separate branch, as long as each pull request keeps `mvn -B verify` green on the merge result.
+Batches 2 to 5 are done; batch 6 depends only on what is merged, as long as each pull request keeps `mvn -B verify` green on the merge result.
 
 No question is open: `OQ-166` and `OQ-167` are resolved by ADR-0050 (latest stable JUnit) and ADR-0051 (`b3dgs-parent` 3.0.0-SNAPSHOT). The parent is a snapshot: a build that starts failing after a parent update is fixed in the engine code or reported to the owner.

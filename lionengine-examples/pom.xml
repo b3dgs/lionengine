@@ -26,5 +26,20 @@
             <artifactId>lionengine-runtime</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-resources</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-resources-file</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-resources-memory</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

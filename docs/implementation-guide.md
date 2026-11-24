@@ -19,7 +19,8 @@ Read this page before writing Java in the engine. Every rule below is enforced b
    - factory reading a `Configuration`, with a factory check through `createError`: `lionengine-examples/src/main/java/com/b3dgs/lionengine/examples/core/DefinitionExample.java`;
    - example with its test run by the build: `DefinitionExampleTest` next to it in `lionengine-examples/src/test/java`;
    - abstract contract suite in a test JAR, bound in another module: `LoopDriverContract` in `lionengine-core/src/test/java`, bound by `GameLoopContractTest` in `lionengine-runtime/src/test/java` (test-scope `test-jar` dependency in `lionengine-runtime/pom.xml`);
-   - test fixture published in a test JAR: `ControllableClock`, `RecordingScene` (runtime), `FakeWorkerPool`, `InboxSpy`, `ManualLoopDriver` (core).
+   - test fixture published in a test JAR: `ControllableClock`, `RecordingScene` (runtime), `FakeWorkerPool`, `InboxSpy`, `ManualLoopDriver` (core), `FakeResourceProvider` (resources);
+   - contract suite taking the content to hold, bound by each implementation in its own module: `ResourceProviderContract` (resources test JAR), bound by `FileProviderTest` (`@TempDir`) and `MemoryProviderTest`.
 
 ## 2. Commands
 
@@ -82,6 +83,8 @@ Rules that most often fire on engine code:
 | S2095, S2093 | Close streams with try-with-resources; the owner of a stream is documented (`conventions.md`) |
 | S2384, S2386 | Copy mutable collections and arrays given or returned, or document the sharing explicitly when it is the contract (`TextureStore`, ADR-0047) and justify it in the pull request |
 | S9395 implicit `long` to `double` conversion | Cast explicitly, arguments of `assertEquals(double, double, double)` included |
+| S6213 restricted identifier, S7158 `length() > 0` | Never name a method `record`, `var` or `yield`; test emptiness with `isEmpty()` where the API level allows it, otherwise avoid the check (a separator field) |
+| S2972 inner class over 40 lines of code | Split it (one role per class) or make it a top-level class |
 | S1948, S2057, S4926 | Exceptions: serializable fields, no `serialVersionUID`, `@SuppressWarnings("serial")` (S2057 does not apply to exceptions) |
 | S1711 standard functional interface redefined | Ignored for the whole project in `pom.xml`: shared modules declare their own callback interfaces because `java.util.function` is not on Android API 21 (ADR-0037) |
 | S1312 logger not `private static final LOG` | Ignored for the whole project in `pom.xml`: a `Log` is an instance passed explicitly or held by the platform object, never static (ADR-0031) |
