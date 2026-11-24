@@ -173,7 +173,7 @@ final class GameLoopInboxTest
         inbox.post(inbox::deliverAll);
 
         assertThrows(IllegalStateException.class, inbox::deliverAll);
-        inbox.post(() -> inbox.getDroppedCount());
+        inbox.post(inbox::getDroppedCount);
         inbox.deliverAll();
         assertEquals(0L, inbox.getDroppedCount());
     }
