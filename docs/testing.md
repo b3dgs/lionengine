@@ -64,7 +64,7 @@
 
 Fixtures (ADR-0045): the fakes and abstract contract suites of a module's contracts are in that module's test sources, published as its test JAR; a module depends in test scope only on the test JARs of modules it already depends on, and on `test-support` (the headless platform, recording render backend and manually driven loop, built on `core`, `runtime`, `platform-api` and `render-api`) when `test-support` does not depend on it. The fixture placement table is in ADR-0045.
 
-Framework: **JUnit 5** (ADR-0012); coverage with JaCoCo merged for SonarCloud. Exact versions and build commands are set with the build skeleton (ADR-0042) and recorded in `README.md` and `AGENTS.md`; until then no test command exists.
+Framework: JUnit Jupiter 6.0.3, provided by `b3dgs-parent` 2.0.0 (ADR-0012 names JUnit 5; `OQ-166`); coverage with JaCoCo 0.8.14 (XML report per module), analyzed by SonarCloud. Commands are in `README.md` (Getting started) and [`implementation-guide.md`](implementation-guide.md); the coverage target of new code is 80 %.
 
 - Allocation tests use the per-thread allocation counter of the JVM (`com.sun.management.ThreadMXBean`), in JVM-only test code; they assert zero bytes over many steady-state steps after warm-up (ADR-0030).
 - Benchmarks use the project's own harness (warm-up, median over many steps); CI asserts allocation and linear scaling only; wall-clock results go to a non-blocking trend job on the standard Linux runner (ADR-0030, ADR-0034).

@@ -21,6 +21,8 @@ Before any task:
 
 For an implementation batch, start from its page in [`docs/features/`](docs/features/README.md): it holds every rule and default value the batch needs. If documents disagree: ADR, then requirement, then feature page, then `contracts.md` ([`docs/documentation.md`](docs/documentation.md)).
 
+Before writing Java, read [`docs/implementation-guide.md`](docs/implementation-guide.md): the quality gates every change must pass (b3dgs checkstyle, `-Xlint:all -Werror`, doclint, package and module rules, Sonar) and the Android/DEX and performance constraints.
+
 ## 2. Prohibitions
 
 - Do not invent a responsibility, a public API, a dependency or an unspecified behavior.
@@ -85,7 +87,7 @@ At the end, provide:
 
 When documentation was changed, run `python3 -I scripts/check-docs.py` and report its result. A change coming from a decision packet ([`docs/templates/DECISION-PACKET-TEMPLATE.md`](docs/templates/DECISION-PACKET-TEMPLATE.md)) is applied only as far as the packet states decisions as taken.
 
-Never claim a test was run if it was not. Build and test commands are written by the build-skeleton batch (ADR-0042); until it is merged none exists: never invent them.
+Never claim a test was run if it was not. Build and test commands (ADR-0042, JDK 25 and Maven 3.9): `mvn -B verify` builds and tests everything, `mvn -B -pl lionengine-<module> -am verify` one module; the structural checks are `python3 -I scripts/check-modules.py`, `python3 -I scripts/check-api-index.py`, `python3 -I scripts/check-provenance.py` and `python3 -I scripts/check-docs.py`. Report each command run and its result; never use a skip flag to make a change pass, and never invent another command.
 
 ## 8. Building a game with the engine
 

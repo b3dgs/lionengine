@@ -16,7 +16,7 @@ Done (ADR-0001 to ADR-0049):
 - thread hand-off contracts in `core`, Android bytecode level, Maven Central, version 11 display scope (ADR-0040 to ADR-0044);
 - skeleton readiness: test fixtures with their contracts, display state owned by the platform, `render-api` boundary types, `composition` dependencies, interface catalog and contract skeleton (ADR-0045 to ADR-0049, [`architecture/interfaces.md`](architecture/interfaces.md)).
 
-Remaining, in this order:
+Remaining, in this order (items 1, 2 and 4 are done; item 3 is the next batch, see [`agent-workflow.md`](agent-workflow.md), Handoff):
 1. build skeleton ([`features/build-skeleton.md`](features/build-skeleton.md), ADR-0042): declare the modules of `architecture/modules.md` as Maven modules with empty `package-info.java`, package tree verified by `radial-encapsulation-maven-plugin`, JUnit 5, Javadoc with doclint failing on warnings (REQ-CORE-003), coverage, exact build and test commands recorded in `README.md` and `AGENTS.md`;
 2. CI: Linux build and tests, Windows and macOS as non-blocking jobs (REQ-SUPPORT-001), documentation check, API index and asset provenance checks (REQ-DOC-005, REQ-DOC-006);
 3. Android/DEX verification job and the record of the verified Java features at API 21, with shared code at Java 21 (ADR-0044);

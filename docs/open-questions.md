@@ -1,6 +1,6 @@
 # Open questions
 
-**Status: VALIDATED — single registry of every `TO BE DEFINED` item. Since ADR-0041 to ADR-0044 (2026-11-23), no question is open; a new one is added only when a gap is found.**
+**Status: VALIDATED — single registry of every `TO BE DEFINED` item. Open today: `OQ-166` and `OQ-167`, raised by the build skeleton on 2026-11-24; a new question is added only when a gap is found.**
 
 Rules:
 - Do not guess the answer to an open question in code or documentation. Ask, or record the assumption you made and keep it reversible.
@@ -255,3 +255,10 @@ Raised by the owner packet "ECS dynamic objects, traits & standard trait package
 | OQ-144 | **RESOLVED** by [ADR-0030](decisions/0030-ecs-details-ids-flush-scheduling-collision-and-traits.md): controller intent, render link, tag first; friction/drag and health next; parent link last; `Transformable` in `double` with previous position. Original question: Further standard traits (friction/drag, health, parent link, controller intent, render link, tag) and the numeric type and interpolation use of `Transformable` (OQ-013, OQ-022): which are standard and in which batch. | When one is requested |
 | OQ-145 | **RESOLVED** by [ADR-0030](decisions/0030-ecs-details-ids-flush-scheduling-collision-and-traits.md): deterministic for the same operation sequence, not creation order, no logic on order, explicit sort key or ID sort. Original question: Iteration-order guarantee: swap-removal reorders dense arrays; whether the order must be stable and reproducible for deterministic simulation or replay, and its consequence for any later network mode (OQ-060). | Before the query batch |
 | OQ-146 | **RESOLVED** by [ADR-0021](decisions/0021-scene-world-viewport-and-object-model.md): `World` is the container type of the `ecs` module; no separate `world` module. Original question: Relation of `world` (scenes, objects, queries) to `ecs`: wrapper, shared contract or replacement, and whether classic objects and ECS objects share a contract (OQ-041, OQ-042, OQ-044). | Phase 3 |
+
+## Build skeleton (2026-11-24)
+
+| ID | Question | Needed by |
+|---|---|---|
+| OQ-166 | ADR-0012 names JUnit 5 as the test framework; `b3dgs-parent` 2.0.0 provides JUnit Jupiter 6.0.3 (same Jupiter API, Java 17 baseline). Assumption made by the build skeleton: use the parent's version. Owner to confirm, or to pin JUnit 5 in the aggregator `pom.xml`. | Phase 1 |
+| OQ-167 | The aggregator `pom.xml` referenced `b3dgs-parent` 2.1.0-SNAPSHOT, which is not published (Maven Central has 2.0.0; the snapshot repository has no 2.1.0 snapshot), so nobody could resolve the build. Assumption made by the build skeleton: use the released 2.0.0. Owner to confirm, or to publish 2.1.0 and bump the version. | Phase 1 |

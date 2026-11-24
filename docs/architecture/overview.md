@@ -108,4 +108,4 @@ One runtime thread owns the loop, the world and the caches; platform threads and
 
 ## 9. Open architectural questions
 
-None remain open (ADR-0041 to ADR-0044; the skeleton-readiness review, ADR-0045 to ADR-0049, opened none); new gaps go to [`../open-questions.md`](../open-questions.md).
+None remains open at architecture level (ADR-0041 to ADR-0049); build questions and new gaps go to [`../open-questions.md`](../open-questions.md).

@@ -22,6 +22,7 @@
 | Content hash | 32-bit hash of the replication schema and message registrations, compared when a client joins so that incompatible builds cannot play together (ADR-0038). |
 | Contract skeleton | Phase 0 batch after the build skeleton that declares, with complete Javadoc and no behavior beyond value types, the cross-module contracts listed in `architecture/interfaces.md` (ADR-0049). |
 | Core library desugaring | Android build feature that makes some newer Java library APIs available on older Android versions. |
+| Custom filter | An output filter supplied by a game: `CustomFilter` of `render-api`, with its `OutputFilter` id and `FilterKind` (scaling or post), a fragment shader `ResourceKey` and/or a `CpuFilter`, registered explicitly on the render backend (ADR-0033, ADR-0047). |
 | D8 / R8 | Android tools that convert Java bytecode to DEX (D8) and shrink/optimize it (R8). |
 | Definition file | A JSON data file declaring `"format"` and `"version"` (sprite sheet, tileset, object definition), read by the strict reader of `core` (ADR-0028, ADR-0032). |
 | DEX | Dalvik Executable: the bytecode format run by Android. |
@@ -55,7 +56,7 @@
 | Pivot | Internal location (origin) of a sprite, in pixels from the frame's top-left corner, default the frame center; used for placement, rotation and scaling (ADR-0026). |
 | Playlist | Predefined sequence of long sounds; the next starts when the current terminates (ADR-0004). |
 | Prediction | A client simulating its own player's objects immediately, before the server confirms; checked against the server's state and corrected by replay (ADR-0038). |
-| Presentation geometry | Rectangle of the output surface, in device pixels, where the logical frame is presented, with the scale on each axis; computed by the platform from the effective scaling policy at a frame boundary, used by render backends and inverted by input adapters (ADR-0046). |
+| Presentation geometry | `PresentationGeometry` of `platform-api`: rectangle of the output surface, in device pixels, where the logical frame is presented, with the scale on each axis; computed by the platform from the effective scaling policy at a frame boundary, used by render backends and inverted by input adapters (ADR-0046). |
 | Provider | A resource source implementation (filesystem, archive, memory, Android assets, stream), searched in a configured order (ADR-0032). |
 | Proxy | On a client, a replicated object whose state comes only from snapshots; carries `NetProxy` and is never simulated locally (ADR-0038). |
 | Query | Cached view of the objects having all of a set of trait types and none of an exclusion set (ADR-0011). |
@@ -85,6 +86,7 @@
 | System | In ECS, logic that processes the objects of a query during the update phase, in slot order. |
 | Template color mapping | Static transform mapping exact key colors to target colors, producing a cached color variant of one sprite (e.g. team colors) (ADR-0026). |
 | Test JAR | The published test sources of a module (Maven classifier `tests`): the fakes and abstract contract suites of its contracts, used in test scope by the modules that depend on it (ADR-0045). |
+| Texture store | `TextureStore` of `render-api`: creates textures from primitive ARGB data shared read-only, prepares and releases them by `int` handle (ADR-0047). |
 | Tick | Number of a simulation step in a network session, counted as an `int` from 0 at session start (ADR-0038). |
 | Tile | Cell or graphic element of a tileset. |
 | Tilemap | Map organized in cells (single layer first, ADR-0009). |
@@ -93,9 +95,11 @@
 | Trait | Composable data attached to an ECS object; its logic lives in systems (ADR-0011). |
 | Transition (scene) | A link of the scene flow from a scene (or any scene) to a target, selected by a trigger and a condition and applied at the next frame boundary (ADR-0036). |
 | Trigger (scene) | Name (for example `finished`, `pause`) passed to the scene flow to request a transition (ADR-0036). |
+| Update and render callbacks | `UpdateCallback` (one fixed step, in seconds) and `RenderCallback` (one frame, with `alpha` and the unscaled delta) of `runtime`, wired to the game loop by the application or `composition` (ADR-0040). |
 | Variant set | Group of short-sound files; playing it selects one variant or plays several at once (composed sound) (ADR-0027). |
 | View | One camera paired with one viewport (ADR-0021); type provided by `composition`. |
 | View transform | Per-frame immutable value (`scale`, `offsetX`, `offsetY`) converting world meters to logical-frame pixels (ADR-0029, ADR-0034). |
 | Viewport | Rectangle of the logical frame, in pixels, in which a view is presented; it clips and offsets render commands (ADR-0021, ADR-0031). |
 | Viewport culling | Drawing only the tiles that intersect the viewport rectangle (plus a margin). |
+| Worker task | `WorkerTask` of `core`: one unit of read-and-decode work run by the platform's `WorkerPool`; it reports back through the inbox (ADR-0019, ADR-0040). |
 | World | Container owning the objects, traits, queries, systems, flush and seeded random source; hosted by `ecs` (ADR-0021). |

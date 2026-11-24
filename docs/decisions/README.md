@@ -75,6 +75,6 @@ Statements inside accepted ADRs such as "the requirements stay PROPOSED until va
 
 None at the moment.
 
-No open question remains in [`../open-questions.md`](../open-questions.md) since ADR-0041 to ADR-0044. ADR-0044 fully supersedes ADR-0041; the text of ADR-0041 is kept unchanged as history.
+ADR-0041 to ADR-0044 closed every question open at the time; the questions opened since are in [`../open-questions.md`](../open-questions.md). ADR-0044 fully supersedes ADR-0041; the text of ADR-0041 is kept unchanged as history.
 
 ADR-0045 to ADR-0049 were decided by the agent at the owner's request of 2026-11-23 to review the architecture with the dedicated skills and apply the changes the review suggests, so that the base skeleton of each module and its interfaces can be defined; they opened no question. ADR-0045 supersedes the placement of contract suites and fakes "in `test-support`" stated by ADR-0002 to ADR-0009 and ADR-0040, and ADR-0048 the dependency list of `composition` in ADR-0031; ADR-0046 and ADR-0047 change the `platform-api` and `render-api` rows of `modules.md`. Those ADR texts are kept unchanged as history.

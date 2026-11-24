@@ -9,7 +9,7 @@ One line per capability, no implementation detail. Each area links to its featur
 - **Available**: implemented, tested, with an example.
 - **Planned**: in the roadmap, not yet specified in detail.
 
-Today no engine code exists: every area below is at most *Specified*.
+Today only the build skeleton and the cross-module contracts exist ([`features/contract-skeleton.md`](features/contract-skeleton.md)): every area below is at most *Specified*.
 
 | Area | State | Phase |
 |---|---|---|

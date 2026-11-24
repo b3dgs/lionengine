@@ -2,6 +2,8 @@
 
 **Status: VALIDATED — conventions every implementation follows; each one can be amended by an ADR.**
 
+How to meet them in code, with the checkstyle, compiler, Javadoc, Sonar, Android and performance gates of the build: [`implementation-guide.md`](implementation-guide.md).
+
 ## Naming and units
 
 - Names carry the unit when the type does not (`deltaSeconds`, `speedMetersPerSecond`, `positionX`, `angleDegrees`).

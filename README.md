@@ -13,7 +13,7 @@
 
 ## Architecture
 
-> Status: **VALIDATED specification** — every requirement and document is validated and backed by the decisions in `docs/decisions/` (ADR-0001 to ADR-0049). No question remains open: the next steps are the build-skeleton batch, then the contract-skeleton batch.
+> Status: **VALIDATED specification** — every requirement and document is validated and backed by the decisions in `docs/decisions/` (ADR-0001 to ADR-0049). The build skeleton and the contract skeleton are in place; the next steps are the Android/DEX job and the Phase 1 batches ([`docs/agent-workflow.md`](docs/agent-workflow.md), Handoff). Open points: [`docs/open-questions.md`](docs/open-questions.md).
 
 **New here? Start with [`docs/how-the-engine-works.md`](docs/how-the-engine-works.md)**: a short, diagram-based explanation readable by anybody.
 
@@ -26,7 +26,17 @@ Describe the architecture of a 2D Java game engine that is independent of its ru
 - documentation consistent with the code;
 - AI agents to work without implicit architectural decisions.
 
-This branch currently contains a Maven baseline (parent `pom.xml`, no modules yet) and the complete architecture documentation: there is no engine source code and no build/test CI yet. The next step is the build skeleton (`docs/roadmap.md`, Phase 0).
+This branch contains the build skeleton (24 Maven modules, structural checks, CI), the contract skeleton (the cross-module contracts of Phases 1 and 2, compiled and documented) and the complete architecture documentation. No engine behavior exists yet; the Android/DEX job and the Phase 1 batches come next (`docs/roadmap.md`).
+
+### Getting started
+
+Requirements: JDK 25 or later and Maven 3.9 (the build refuses an older JDK), Python 3 for the checks.
+
+- Build, checkstyle, package rule, tests and Javadoc: `mvn -B verify`.
+- One module and what it needs: `mvn -B -pl lionengine-<module> -am verify`.
+- Structural checks: `python3 -I scripts/check-modules.py`, `python3 -I scripts/check-api-index.py` (after the build), `python3 -I scripts/check-provenance.py`, `python3 -I scripts/check-docs.py`.
+
+Before writing engine code, read [`docs/implementation-guide.md`](docs/implementation-guide.md): the code-quality gates (b3dgs checkstyle, compiler and Javadoc settings, Sonar) and the Android and performance constraints.
 
 ### Reading order
 
@@ -40,13 +50,14 @@ This branch currently contains a Maven baseline (parent `pom.xml`, no modules ye
 8. [`docs/architecture/interfaces.md`](docs/architecture/interfaces.md) — public types per module and the contracts that cross modules.
 9. [`docs/architecture/contracts.md`](docs/architecture/contracts.md) — cross-cutting contracts.
 10. [`docs/conventions.md`](docs/conventions.md) — code conventions.
-11. [`docs/testing.md`](docs/testing.md) — test strategy.
-12. [`docs/android-compatibility.md`](docs/android-compatibility.md) — Android/DEX verification checklist.
-13. [`docs/documentation.md`](docs/documentation.md) — documentation rules.
-14. [`docs/roadmap.md`](docs/roadmap.md) — delivery order.
-15. [`docs/decisions/`](docs/decisions/README.md) — architecture decisions (ADRs).
-16. [`docs/open-questions.md`](docs/open-questions.md) — every `TO BE DEFINED` item, in one place.
-17. [`docs/change-process.md`](docs/change-process.md) — how to modify a feature or add a module consistently.
+11. [`docs/implementation-guide.md`](docs/implementation-guide.md) — how to write code that passes the quality gates.
+12. [`docs/testing.md`](docs/testing.md) — test strategy.
+13. [`docs/android-compatibility.md`](docs/android-compatibility.md) — Android/DEX verification checklist.
+14. [`docs/documentation.md`](docs/documentation.md) — documentation rules.
+15. [`docs/roadmap.md`](docs/roadmap.md) — delivery order.
+16. [`docs/decisions/`](docs/decisions/README.md) — architecture decisions (ADRs).
+17. [`docs/open-questions.md`](docs/open-questions.md) — every `TO BE DEFINED` item, in one place.
+18. [`docs/change-process.md`](docs/change-process.md) — how to modify a feature or add a module consistently.
 
 Building a game with the engine (humans and agents):
 - [`docs/features/`](docs/features/README.md) — one page per implementation batch, in order: the entry point for implementers.
