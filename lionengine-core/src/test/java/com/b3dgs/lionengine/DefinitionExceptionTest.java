@@ -18,6 +18,7 @@ package com.b3dgs.lionengine;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -83,5 +84,48 @@ final class DefinitionExceptionTest
         final DefinitionException error = new DefinitionException("Unknown id", "game:enemy", null);
 
         assertEquals("Unknown id (game:enemy)", error.getMessage());
+    }
+    /**
+     * An error about a value read by a factory carries the value location, the id and the parameter.
+     */
+    @Test
+    void testValueError()
+    {
+        final JsonObject traits = new JsonReader().read("{\"lionengine:movable\": {\"maxSpeed\": -1}}", "hero.json")
+                                                  .asObject();
+        final JsonValue speed = traits.get("lionengine:movable").asObject().get("maxSpeed");
+        final DefinitionException error = new DefinitionException("Negative speed",
+                                                                  speed,
+                                                                  "lionengine:movable",
+                                                                  "maxSpeed");
+
+        assertEquals("hero.json", error.getSource());
+        assertEquals(1, error.getLine());
+        assertEquals(37, error.getColumn());
+        assertEquals("$['lionengine:movable'].maxSpeed", error.getPath());
+        assertEquals("lionengine:movable", error.getId());
+        assertEquals("maxSpeed", error.getParameter());
+        assertEquals("Negative speed (hero.json:1:37, $['lionengine:movable'].maxSpeed, lionengine:movable, maxSpeed)",
+                     error.getMessage());
+    }
+
+    /**
+     * A value error without id and parameter omits them.
+     */
+    @Test
+    void testValueErrorWithoutId()
+    {
+        final JsonValue root = new JsonReader().read("[]", "list.json");
+
+        assertEquals("Empty (list.json:1:1, $)", new DefinitionException("Empty", root, null, null).getMessage());
+    }
+
+    /**
+     * A value error needs a value.
+     */
+    @Test
+    void testValueErrorWithoutValue()
+    {
+        assertThrows(IllegalArgumentException.class, () -> new DefinitionException("Missing", null, "a:b", "c"));
     }
 }

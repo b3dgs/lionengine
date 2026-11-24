@@ -14,8 +14,12 @@
     <description>Minimal and demonstration applications, headless first, compiled and run by the build</description>
     <properties>
         <radial.base-package>com.b3dgs.lionengine.examples</radial.base-package>
-        <!-- No public type yet: javadoc refuses an empty module. The batch that adds the first public type
-             removes this property (REQ-CORE-003). -->
-        <maven.javadoc.skip>true</maven.javadoc.skip>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

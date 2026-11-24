@@ -76,6 +76,19 @@ None (JDK only).
 
 - Unit tests: every reader error with its line, column and path; numbers at `long` bounds; Unicode escapes and surrogate pairs; limits; typed getters with and without defaults; strict fields; id validation; duplicate and unknown ids; two independent registries; random reference vectors and bound without bias; logging levels and allocation with a disabled level.
 
+## State (2026-11-24)
+
+Batches 1 to 4 are implemented in `core`, with the examples `DefinitionExample` and `RandomExample` in `examples` and their API-index rows. Names and details chosen by the batches, within this page and ADR-0032:
+- `JsonReader` reads bytes (UTF-8, strict decoding) or characters, with the limits as constructor arguments; it is immutable and thread-safe. `JsonValue.Kind` gives the kind of a value; the typed accessors (`asString`, `asInt`, `asLong`, `asDouble`, `asBoolean`, `asObject`, `asArray`) fail with a `DefinitionException` located at the value.
+- Positions: the column counts UTF-16 characters from 1; a line ends with a line feed, a carriage return and line feed, or a lone carriage return. JSON paths use `.name` for an ASCII identifier and `['name']` otherwise. A `\u` escape of an unpaired surrogate is an error. A string length error is located at the opening quote.
+- `DefinitionException` gains a third constructor, `(message, JsonValue value, id, parameter)`, for errors that need both the file position and the registry id and parameter (ADR-0032, section 1): the contract skeleton constructors cannot carry both within the five-parameter limit of the build.
+- `Configuration` reads a `JsonObject`; `getObject` returns a child configuration checked with its parent; `checkFormat(format, maxVersion)` checks the file header; `createError(name, message)` builds the error of a factory check; `checkAllRead()` is public so that a loader reading a file itself applies the strict-field rule.
+- `RegistryFactory<T>` is the factory callback (`create(Configuration)`). `Registry<T>.create(id, configuration)` binds the configuration to the id, calls the factory and checks that every member was read; an invalid or unknown id at creation is located at the configuration.
+- `Log`: the level set with `setLevel` is the least severe enabled level, `WARNING` by default, so the default `System.err` sink receives errors and warnings only. Arguments are appended after a space.
+- `RandomSource`: `nextInt(bound)` uses Lemire's multiply-and-reject method; `nextDouble` uses the high 53 bits; `nextBoolean` the highest bit. The tests compare with the reference outputs of the authors' C code as published by Apache Commons RNG.
+
+Not in these batches: iterating the member names of a `Configuration` (needed by the object definition file, whose `traits` keys are registry ids) is added by the ECS batch that reads that file.
+
 ## Acceptance criteria
 
-- [ ] Requirements covered; complete Javadoc; headless example (read a definition, create an object from a registry); API-index entry.
+- [x] Requirements covered; complete Javadoc; headless example (read a definition, create an object from a registry); API-index entry.

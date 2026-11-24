@@ -9,13 +9,13 @@ One line per capability, no implementation detail. Each area links to its featur
 - **Available**: implemented, tested, with an example.
 - **Planned**: in the roadmap, not yet specified in detail.
 
-Today only the build skeleton and the cross-module contracts exist ([`features/contract-skeleton.md`](features/contract-skeleton.md)): every area below is at most *Specified*.
+Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)) and the core foundation ([`features/core-foundation.md`](features/core-foundation.md)) exist: data files are *In progress*, every other area is *Specified*.
 
 | Area | State | Phase |
 |---|---|---|
 | [Game loop and timing](#game-loop-and-timing) | Specified | 1–2 |
 | [Scenes and navigation](#scenes-and-navigation) | Specified | 1–2 |
-| [Resources and data files](#resources-and-data-files) | Specified | 1 |
+| [Resources and data files](#resources-and-data-files) | In progress | 1 |
 | [Window, display and rendering](#window-display-and-rendering) | Specified | 1–2 |
 | [Images, sprites and animations](#images-sprites-and-animations) | Specified | 2 |
 | [Audio](#audio) | Specified | 2 |
@@ -58,6 +58,8 @@ Today only the build skeleton and the cross-module contracts exist ([`features/c
 - Game data (sprite sheets, animations, maps, object definitions, input bindings) is written in JSON; a mistake is reported with the file, line and field.
 - Object types used by data files are registered by name (`game:enemy`), so data can create them without code changes.
 - A seeded random generator gives the same results on every platform.
+
+Works now: reading JSON data files with exact error positions, typed parameters with strict fields, the registry of data-driven types, logging and the seeded random generator (examples `DefinitionExample` and `RandomExample`). Loading files by key comes with the resources batches.
 
 ## Window, display and rendering
 
