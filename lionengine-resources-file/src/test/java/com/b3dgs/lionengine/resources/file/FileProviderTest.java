@@ -90,7 +90,8 @@ final class FileProviderTest extends ResourceProviderContract
         write(file, new byte[1]);
 
         assertThrows(IllegalArgumentException.class, () -> new FileProvider(null));
-        assertThrows(IllegalArgumentException.class, () -> new FileProvider(new File(folder, "absent")));
+        final File absent = new File(folder, "absent");
+        assertThrows(IllegalArgumentException.class, () -> new FileProvider(absent));
         assertThrows(IllegalArgumentException.class, () -> new FileProvider(file));
         assertEquals(folder.getCanonicalFile(), new FileProvider(new File(folder, ".")).getRoot());
     }

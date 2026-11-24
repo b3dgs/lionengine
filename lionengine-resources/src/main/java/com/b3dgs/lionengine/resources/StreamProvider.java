@@ -120,15 +120,27 @@ public final class StreamProvider implements ResourceProvider
         {
             throw new ResourceException(key, ResourceException.Reason.MISSING, null);
         }
-        final InputStream stream;
         try
         {
-            stream = supplier.open();
+            return checkStream(key, supplier.open());
         }
         catch (final IOException exception)
         {
             throw new ResourceException(key, ResourceException.Reason.INACCESSIBLE, exception);
         }
+    }
+
+    /**
+     * Checks the stream given by a supplier, which breaks its contract when it gives none.
+     *
+     * @param key The resource key.
+     * @param stream The stream given by the supplier.
+     * @return The stream.
+     * @throws ResourceException With reason {@link ResourceException.Reason#INACCESSIBLE} if {@code stream} is
+     *             {@code null}.
+     */
+    private static InputStream checkStream(ResourceKey key, InputStream stream)
+    {
         if (stream == null)
         {
             throw new ResourceException(key, ResourceException.Reason.INACCESSIBLE, null);

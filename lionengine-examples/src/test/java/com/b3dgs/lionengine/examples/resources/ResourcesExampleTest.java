@@ -28,6 +28,7 @@ import java.nio.file.Files;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import com.b3dgs.lionengine.Log;
 import com.b3dgs.lionengine.resources.ResourceException;
 
 /**
@@ -40,6 +41,18 @@ final class ResourcesExampleTest
     File directory;
 
     /**
+     * Writes the greeting file of the game data directory.
+     *
+     * @throws IOException If the data file cannot be written.
+     */
+    private void writeData() throws IOException
+    {
+        final File text = new File(directory, "text");
+        assertTrue(text.mkdir());
+        Files.writeString(new File(text, "greeting.txt").toPath(), "Hello from the files", StandardCharsets.UTF_8);
+    }
+
+    /**
      * The greeting comes from the file, then from memory once overridden; the absent key is missing.
      *
      * @throws IOException If the data file cannot be written.
@@ -47,22 +60,28 @@ final class ResourcesExampleTest
     @Test
     void testRun() throws IOException
     {
-        final File text = new File(directory, "text");
-        assertTrue(text.mkdir());
-        Files.writeString(new File(text, "greeting.txt").toPath(), "Hello from the files", StandardCharsets.UTF_8);
+        writeData();
 
         assertEquals(new ResourcesExample.Result("Hello from the files",
                                                  ResourcesExample.OVERRIDE,
                                                  ResourceException.Reason.MISSING),
-                     ResourcesExample.run(directory));
+                     ResourcesExample.run(directory, new Log()));
     }
 
     /**
-     * The example runs.
+     * The example runs on a data directory, and prints its usage without one.
+     *
+     * @throws IOException If the data file cannot be written.
      */
     @Test
-    void testMain()
+    void testMain() throws IOException
     {
+        writeData();
+
+        assertDoesNotThrow(() -> ResourcesExample.main(new String[]
+        {
+            directory.getPath()
+        }));
         assertDoesNotThrow(() -> ResourcesExample.main(new String[0]));
     }
 }

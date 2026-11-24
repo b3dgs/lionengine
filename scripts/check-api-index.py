@@ -11,7 +11,8 @@ Reads the "Index by task" table of docs/api-index.md. Placeholder cells written 
   1. every type in backticks of the "Entry-point types" column is a public type of the compiled main
      classes of an engine module (lionengine-*/target/classes); generic parameters are ignored and
      `Outer.Inner` names a nested type;
-  2. every class in backticks of the "Example to copy" column is a compiled class of lionengine-examples.
+  2. every class in backticks of the "Example to copy" column is a compiled class of lionengine-examples,
+     main or test: a headless test of a game is an example too, since test-support is test scope only.
 """
 import os
 import re
@@ -41,17 +42,18 @@ def access_flags(path):
     return struct.unpack_from(">H", data, offset)[0]
 
 
-def compiled_classes(root, only_module=None):
-    """Return {simple binary name (Outer$Inner): [class file paths]} of the compiled main classes."""
+def compiled_classes(root, only_module=None, outputs=("classes",)):
+    """Return {simple binary name (Outer$Inner): [class file paths]} of the compiled classes of the outputs."""
     found = {}
     for name in sorted(os.listdir(root)):
         if not name.startswith("lionengine-") or (only_module and name != only_module):
             continue
-        classes = os.path.join(root, name, "target", "classes")
-        for directory, _, files in os.walk(classes):
-            for file in files:
-                if file.endswith(".class"):
-                    found.setdefault(file[:-len(".class")], []).append(os.path.join(directory, file))
+        for output in outputs:
+            classes = os.path.join(root, name, "target", output)
+            for directory, _, files in os.walk(classes):
+                for file in files:
+                    if file.endswith(".class"):
+                        found.setdefault(file[:-len(".class")], []).append(os.path.join(directory, file))
     return found
 
 
@@ -84,7 +86,7 @@ def main(root):
     root = os.path.abspath(root)
     errors = []
     engine = compiled_classes(root)
-    examples = compiled_classes(root, "lionengine-examples")
+    examples = compiled_classes(root, "lionengine-examples", ("classes", "test-classes"))
     checked = 0
     for types, example in rows(os.path.join(root, "docs", "api-index.md")):
         for name in names(types):

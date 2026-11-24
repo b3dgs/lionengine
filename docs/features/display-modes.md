@@ -36,7 +36,7 @@ Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.m
 
 1. Value types, capability query, screen modes with fallback and effective result through the inbox (`REQ-DISPLAY-001`, `REQ-DISPLAY-002`, `REQ-DISPLAY-005`, `REQ-DISPLAY-006`, `REQ-DISPLAY-008`).
 2. Display-mode enumeration and selection on `platform-awt` (`REQ-DISPLAY-003`).
-3. Scaling policies and resize handling (`REQ-DISPLAY-004`, `REQ-DISPLAY-007`, `REQ-PLATFORM-002`).
+3. Scaling policies and resize handling (`REQ-DISPLAY-004`, `REQ-DISPLAY-007`, `REQ-PLATFORM-002`). The scaling function (`FrameScaling` of `render-api`) and the resize of the headless platform were brought forward by [`platform-and-rendering.md`](platform-and-rendering.md) batch 1 (2026-11-24); this batch keeps the resize handling of `platform-awt`.
 4. Review of the settings and HiDPI constraints (`REQ-DISPLAY-009`).
 
 ## Lifecycle and concurrency

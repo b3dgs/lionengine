@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 import com.b3dgs.lionengine.Log;
@@ -67,35 +66,18 @@ public final class ResourcesExample
      * Reads the greeting from the files, overrides it in memory, reads it again, then tries a missing key.
      *
      * @param dataDirectory The game data directory, holding {@code text/greeting.txt}.
+     * @param log The log, to which the missing key error is written.
      * @return The greeting before and after the override, and the reason of the missing key error.
      */
-    public static Result run(File dataDirectory)
+    public static Result run(File dataDirectory, Log log)
     {
         final MemoryProvider memory = new MemoryProvider();
         final Resources resources = new Resources(memory, new FileProvider(dataDirectory));
 
         final String fromFile = readText(resources, GREETING);
-
-        try (OutputStream output = resources.openWrite(GREETING))
-        {
-            output.write(OVERRIDE.getBytes(StandardCharsets.UTF_8));
-        }
-        catch (final IOException exception)
-        {
-            throw new ResourceException(GREETING, ResourceException.Reason.INACCESSIBLE, exception);
-        }
+        writeText(resources, GREETING, OVERRIDE);
         final String fromMemory = readText(resources, GREETING);
-
-        ResourceException.Reason absent = null;
-        try
-        {
-            readText(resources, ABSENT);
-        }
-        catch (final ResourceException exception)
-        {
-            absent = exception.getReason();
-        }
-        return new Result(fromFile, fromMemory, absent);
+        return new Result(fromFile, fromMemory, readError(resources, ABSENT, log));
     }
 
     /**
@@ -119,27 +101,69 @@ public final class ResourcesExample
     }
 
     /**
-     * Runs the example on a temporary data directory and logs the result.
+     * Writes a resource as UTF-8 text to the first writable provider and closes its stream.
      *
-     * @param args Unused.
-     * @throws IOException If the temporary data directory cannot be written.
+     * @param resources The resources.
+     * @param key The key.
+     * @param text The text.
+     * @throws ResourceException If the resource cannot be written.
+     */
+    private static void writeText(Resources resources, ResourceKey key, String text)
+    {
+        try (OutputStream output = resources.openWrite(key))
+        {
+            output.write(text.getBytes(StandardCharsets.UTF_8));
+        }
+        catch (final IOException exception)
+        {
+            throw new ResourceException(key, ResourceException.Reason.INACCESSIBLE, exception);
+        }
+    }
+
+    /**
+     * Reads a resource expected to fail, and logs the error.
+     *
+     * @param resources The resources.
+     * @param key The key.
+     * @param log The log.
+     * @return The reason of the error, {@code null} if the resource was read.
+     */
+    private static ResourceException.Reason readError(Resources resources, ResourceKey key, Log log)
+    {
+        ResourceException.Reason reason = null;
+        try
+        {
+            readText(resources, key);
+        }
+        catch (final ResourceException exception)
+        {
+            log.log(LogLevel.INFO, "Resource error, as expected:", exception);
+            reason = exception.getReason();
+        }
+        return reason;
+    }
+
+    /**
+     * Runs the example on a game data directory and logs the result.
+     *
+     * @param args The path of a directory holding {@code text/greeting.txt}.
      */
     // CHECKSTYLE IGNORE LINE: UncommentedMain
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args)
     {
-        final Path directory = Files.createTempDirectory("lionengine-data");
-        final Path text = Files.createDirectory(directory.resolve("text"));
-        final Path greeting = Files.writeString(text.resolve("greeting.txt"), "Hello from the files");
-        directory.toFile().deleteOnExit();
-        text.toFile().deleteOnExit();
-        greeting.toFile().deleteOnExit();
-
-        final Result result = run(directory.toFile());
         final Log log = new Log();
         log.setLevel(LogLevel.INFO);
-        log.log(LogLevel.INFO, "Greeting overridden in memory, characters before and after:",
-                result.fromFile().length(),
-                result.fromMemory().length());
+        if (args.length == 1)
+        {
+            final Result result = run(Path.of(args[0]).toFile(), log);
+            log.log(LogLevel.INFO, "Greeting overridden in memory, characters before and after:",
+                    result.fromFile().length(),
+                    result.fromMemory().length());
+        }
+        else
+        {
+            log.log(LogLevel.WARNING, "Usage: ResourcesExample <data directory holding text/greeting.txt>");
+        }
     }
 
     /**

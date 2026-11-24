@@ -20,7 +20,9 @@ Read this page before writing Java in the engine. Every rule below is enforced b
    - example with its test run by the build: `DefinitionExampleTest` next to it in `lionengine-examples/src/test/java`;
    - abstract contract suite in a test JAR, bound in another module: `LoopDriverContract` in `lionengine-core/src/test/java`, bound by `GameLoopContractTest` in `lionengine-runtime/src/test/java` (test-scope `test-jar` dependency in `lionengine-runtime/pom.xml`);
    - test fixture published in a test JAR: `ControllableClock`, `RecordingScene` (runtime), `FakeWorkerPool`, `InboxSpy`, `ManualLoopDriver` (core), `FakeResourceProvider` (resources);
-   - contract suite taking the content to hold, bound by each implementation in its own module: `ResourceProviderContract` (resources test JAR), bound by `FileProviderTest` (`@TempDir`) and `MemoryProviderTest`.
+   - contract suite taking the content to hold, bound by each implementation in its own module: `ResourceProviderContract` (resources test JAR), bound by `FileProviderTest` (`@TempDir`) and `MemoryProviderTest`;
+   - contract suite with hooks that inject events and run frames: `PlatformContract` (platform-api test JAR), bound by `HeadlessPlatformTest` in `test-support`;
+   - headless test of a game, the structure a game copies: `HeadlessGameTest` in `lionengine-examples/src/test/java`.
 
 ## 2. Commands
 

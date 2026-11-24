@@ -14,9 +14,6 @@
     <description>Headless application kit for tests</description>
     <properties>
         <radial.base-package>com.b3dgs.lionengine.testsupport</radial.base-package>
-        <!-- No public type yet: javadoc refuses an empty module. The batch that adds the first public type
-             removes this property (REQ-CORE-003). -->
-        <maven.javadoc.skip>true</maven.javadoc.skip>
     </properties>
     <dependencies>
         <dependency>
@@ -52,6 +49,14 @@
             <artifactId>lionengine-runtime</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>
+        </dependency>
+        <!-- ADR-0045: the Platform contract suite, bound by the headless platform. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-platform-api</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

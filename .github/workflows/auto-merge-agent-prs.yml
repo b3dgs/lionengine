@@ -10,6 +10,10 @@
 #   documentation: Maven build and tests, then the module, API index and provenance checks. After the
 #   merge, the "merge" job starts build.yml on the target branch by workflow_dispatch, the one event the
 #   workflow token may trigger: rewrite/v11 is then built and analyzed by Sonar after every merge.
+# - Before merging, the "merge" job waits for the "sonar" check of build.yml on the head commit of the pull
+#   request and merges only when it succeeds: that job fails when the Sonar quality gate fails. A failed,
+#   skipped or late check leaves the pull request open; a new push, or a re-run of this workflow after the
+#   check succeeds, merges it.
 # - The pull request's code runs in the "verify" job, which has read-only permissions and no stored
 #   credentials; only the "merge" job holds the write token, and it runs no code of the pull request.
 # - Pull requests that accept an ADR or validate a requirement are merged too (owner decision of
@@ -109,6 +113,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       actions: write
+      checks: read
       contents: write
       pull-requests: write
     env:
@@ -122,6 +127,27 @@ jobs:
           if gh pr diff "$URL" | grep -qE '^\+(- Status: ACCEPTED|\*\*Status: VALIDATED|\|.*\| VALIDATED)'; then
             echo "::notice::This pull request accepts an ADR or validates a requirement (owner request); merging it."
           fi
+
+      # The last "sonar" check run of the head commit, polled every 30 s for at most 40 minutes.
+      - name: Wait for the Sonar quality gate of the pull request
+        run: |
+          for attempt in $(seq 1 80); do
+            result=$(gh api "repos/$GITHUB_REPOSITORY/commits/$SHA/check-runs?check_name=sonar" \
+              --jq '.check_runs | sort_by(.started_at) | last | "\(.status) \(.conclusion)"')
+            case "$result" in
+              "completed success")
+                echo "Sonar quality gate passed."
+                exit 0
+                ;;
+              completed*)
+                echo "::error::The sonar check ended with: $result. The pull request is not merged."
+                exit 1
+                ;;
+            esac
+            sleep 30
+          done
+          echo "::error::The sonar check did not complete in time. The pull request is not merged."
+          exit 1
 
       - name: Squash-merge
         run: gh pr merge "$URL" --squash --match-head-commit "$SHA"

@@ -26,5 +26,13 @@
             <artifactId>lionengine-render-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- ADR-0045: the manual loop driver and the inbox spy of the core test JAR, used by the Platform suite. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-core</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
