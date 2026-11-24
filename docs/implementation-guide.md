@@ -81,6 +81,7 @@ Rules that most often fire on engine code:
 | S2384, S2386 | Copy mutable collections and arrays given or returned, or document the sharing explicitly when it is the contract (`TextureStore`, ADR-0047) and justify it in the pull request |
 | S1948, S2057, S4926 | Exceptions: serializable fields, no `serialVersionUID`, `@SuppressWarnings("serial")` (S2057 does not apply to exceptions) |
 | S1711 standard functional interface redefined | Ignored for the whole project in `pom.xml`: shared modules declare their own callback interfaces because `java.util.function` is not on Android API 21 (ADR-0037) |
+| S1312 logger not `private static final LOG` | Ignored for the whole project in `pom.xml`: a `Log` is an instance passed explicitly or held by the platform object, never static (ADR-0031) |
 | S4032 package holding only `package-info.java` | Ignored for the whole project in `pom.xml`: every module declares its root package before it has types ([`features/build-skeleton.md`](features/build-skeleton.md)) |
 | S3423 POM element order, S103 lines over 120 characters | Keep the order of the aggregator `pom.xml`: `modules`, `scm`, `properties`, `dependencies`, `repositories`, `build`; wrap long lines in POMs too |
 | S7637 action not pinned (workflows) | Pin every third-party action to a full commit SHA, with the version in a comment |

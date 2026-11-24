@@ -272,8 +272,7 @@ public final class Configuration
      */
     public Configuration getObject(String name)
     {
-        required(name);
-        return child(name);
+        return child(requiredIndex(name), name);
     }
 
     /**
@@ -286,10 +285,11 @@ public final class Configuration
      */
     public Configuration getObject(String name, Configuration defaultValue)
     {
+        final int index = readIndex(name);
         Configuration result = defaultValue;
-        if (optional(name) != null)
+        if (index >= 0)
         {
-            result = child(name);
+            result = child(index, name);
         }
         return result;
     }
@@ -435,12 +435,7 @@ public final class Configuration
      */
     private JsonValue required(String name)
     {
-        final JsonValue value = optional(name);
-        if (value == null)
-        {
-            throw new DefinitionException(ERROR_MISSING, object, id, name);
-        }
-        return value;
+        return object.getValue(requiredIndex(name));
     }
 
     /**
@@ -451,26 +446,58 @@ public final class Configuration
      */
     private JsonValue optional(String name)
     {
-        final int index = object.indexOf(name);
+        final int index = readIndex(name);
         JsonValue value = null;
         if (index >= 0)
         {
-            read[index] = true;
             value = object.getValue(index);
         }
         return value;
     }
 
     /**
-     * Returns the configuration of an object member read before, created on the first call.
+     * Finds a required member and marks it as read.
      *
-     * @param name The member name, present.
+     * @param name The member name.
+     * @return The member index, in {@code [0, size)}.
+     * @throws DefinitionException If the member is missing.
+     */
+    private int requiredIndex(String name)
+    {
+        final int index = readIndex(name);
+        if (index < 0)
+        {
+            throw new DefinitionException(ERROR_MISSING, object, id, name);
+        }
+        return index;
+    }
+
+    /**
+     * Finds a member and marks it as read.
+     *
+     * @param name The member name.
+     * @return The member index, {@code -1} if missing.
+     */
+    private int readIndex(String name)
+    {
+        final int index = object.indexOf(name);
+        if (index >= 0)
+        {
+            read[index] = true;
+        }
+        return index;
+    }
+
+    /**
+     * Returns the configuration of an object member, created on the first call.
+     *
+     * @param index The member index, in {@code [0, size)}.
+     * @param name The member name.
      * @return The configuration of the object.
      * @throws DefinitionException If the member is not an object.
      */
-    private Configuration child(String name)
+    private Configuration child(int index, String name)
     {
-        final int index = object.indexOf(name);
         if (children[index] == null)
         {
             final JsonValue value = object.getValue(index);

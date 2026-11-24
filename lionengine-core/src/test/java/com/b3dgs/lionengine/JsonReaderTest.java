@@ -215,16 +215,18 @@ final class JsonReaderTest
     @Test
     void testDocument()
     {
-        final String json = "\uFEFF{\n"
-                            + "  \"format\": \"lionengine.sheet\",\n"
-                            + "  \"version\": 1,\n"
-                            + "  \"scale\": 1.5,\n"
-                            + "  \"visible\": true,\n"
-                            + "  \"hidden\": false,\n"
-                            + "  \"parent\": null,\n"
-                            + "  \"frames\": [0, 1, [], {}],\n"
-                            + "  \"empty\": {}\n"
-                            + "}\n";
+        final String json = """
+            \uFEFF{
+              "format": "lionengine.sheet",
+              "version": 1,
+              "scale": 1.5,
+              "visible": true,
+              "hidden": false,
+              "parent": null,
+              "frames": [0, 1, [], {}],
+              "empty": {}
+            }
+            """;
         final JsonObject root = new JsonReader().read(json.getBytes(StandardCharsets.UTF_8), SOURCE).asObject();
 
         assertAll(() -> assertEquals(8, root.size()),

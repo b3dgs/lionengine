@@ -215,7 +215,17 @@ final class JsonParser
         {
             throw error(ERROR_EMPTY);
         }
-        final JsonValue root = parseValue(null);
+        return expectEnd(parseValue(null));
+    }
+
+    /**
+     * Checks that only whitespace follows the root value.
+     *
+     * @param root The root value.
+     * @return The root value.
+     */
+    private JsonValue expectEnd(JsonValue root)
+    {
         skipWhitespace();
         if (position < length)
         {
@@ -353,6 +363,20 @@ final class JsonParser
         final String key = readString();
         final int mark = path.length();
         JsonPath.appendKey(path, key);
+        object.add(key, parseMemberValue(object, key, keyColumn));
+        path.setLength(mark);
+    }
+
+    /**
+     * Reads the colon and the value of a member whose name was just read.
+     *
+     * @param object The object being filled.
+     * @param key The member name.
+     * @param keyColumn The column of the member name, for the duplicate error.
+     * @return The member value.
+     */
+    private JsonValue parseMemberValue(JsonObject object, String key, int keyColumn)
+    {
         if (object.has(key))
         {
             throw errorAt(ERROR_DUPLICATE_KEY, keyColumn);
@@ -366,8 +390,7 @@ final class JsonParser
         position++;
         skipWhitespace();
         expectMore(ERROR_UNTERMINATED_OBJECT);
-        object.add(key, parseValue(object));
-        path.setLength(mark);
+        return parseValue(object);
     }
 
     /**

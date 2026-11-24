@@ -45,7 +45,7 @@ final class JsonNumber extends JsonValue
         super(source, line, column, parent);
         kind = Kind.LONG;
         this.integer = integer;
-        real = integer;
+        real = (double) integer;
     }
 
     /**

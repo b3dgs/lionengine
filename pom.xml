@@ -60,12 +60,16 @@
              e1, S1711: asks for java.util.function instead of an engine callback interface; that package is not on
              Android API 21 and is banned from shared public APIs (ADR-0037, docs/android-compatibility.md).
              e2, S4032: asks to remove a package holding only package-info.java; every module declares its root
-             package with a package-info.java before it has types (features/build-skeleton.md, change-process.md). -->
-        <sonar.issue.ignore.multicriteria>e1,e2</sonar.issue.ignore.multicriteria>
+             package with a package-info.java before it has types (features/build-skeleton.md, change-process.md).
+             e3, S1312: asks for a private static final logger; the engine Log is an instance passed explicitly or
+             held by the platform object, never static (ADR-0031, REQ-CORE-006). -->
+        <sonar.issue.ignore.multicriteria>e1,e2,e3</sonar.issue.ignore.multicriteria>
         <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S1711</sonar.issue.ignore.multicriteria.e1.ruleKey>
         <sonar.issue.ignore.multicriteria.e1.resourceKey>**/*.java</sonar.issue.ignore.multicriteria.e1.resourceKey>
         <sonar.issue.ignore.multicriteria.e2.ruleKey>java:S4032</sonar.issue.ignore.multicriteria.e2.ruleKey>
         <sonar.issue.ignore.multicriteria.e2.resourceKey>**/*</sonar.issue.ignore.multicriteria.e2.resourceKey>
+        <sonar.issue.ignore.multicriteria.e3.ruleKey>java:S1312</sonar.issue.ignore.multicriteria.e3.ruleKey>
+        <sonar.issue.ignore.multicriteria.e3.resourceKey>**/*.java</sonar.issue.ignore.multicriteria.e3.resourceKey>
     </properties>
     <dependencies>
         <!-- Inherited from b3dgs-parent in compile scope: no shared module may ship a logging library

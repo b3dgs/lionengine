@@ -35,12 +35,12 @@ package com.b3dgs.lionengine;
 public final class RandomSource
 {
     /** Increment of SplitMix64: the odd integer closest to 2^64 divided by the golden ratio. */
-    static final long GOLDEN_GAMMA = 0x9E3779B97F4A7C15L;
+    static final long GOLDEN_GAMMA = 0x9E37_79B9_7F4A_7C15L;
 
     /** First multiplier of the SplitMix64 output function. */
-    private static final long MIX_MULTIPLIER_1 = 0xBF58476D1CE4E5B9L;
+    private static final long MIX_MULTIPLIER_1 = 0xBF58_476D_1CE4_E5B9L;
     /** Second multiplier of the SplitMix64 output function. */
-    private static final long MIX_MULTIPLIER_2 = 0x94D049BB133111EBL;
+    private static final long MIX_MULTIPLIER_2 = 0x94D0_49BB_1331_11EBL;
     /** First shift of the SplitMix64 output function. */
     private static final int MIX_SHIFT_1 = 30;
     /** Second shift of the SplitMix64 output function. */
