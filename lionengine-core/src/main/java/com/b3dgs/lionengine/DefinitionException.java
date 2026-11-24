@@ -22,7 +22,10 @@ package com.b3dgs.lionengine;
  * <p>
  * A document error carries its source (resource key or caller-given name), its line and column (both from 1,
  * {@link #UNKNOWN} when unknown) and its JSON path (for example {@code $.animations.walk.frames[3]}). A registry error
- * carries the registry id and the parameter name. The message returned by {@link #getMessage()} includes them.
+ * carries the registry id and the parameter name. An error about a parameter read by a registry factory carries both:
+ * the location of the value and the id and parameter. The message returned by {@link #getMessage()} includes them,
+ * for example {@code Missing value (objects/hero.json:4:28, $.traits['lionengine:movable'], lionengine:movable,
+ * maxSpeed)}.
  * </p>
  *
  * <p>
@@ -57,13 +60,7 @@ public final class DefinitionException extends RuntimeException
      */
     private static String format(String message, String source, int line, int column, String path)
     {
-        final StringBuilder text = new StringBuilder(message).append(SUFFIX_OPEN);
-        text.append(source).append(LOCATION_SEPARATOR).append(line).append(LOCATION_SEPARATOR).append(column);
-        if (path != null)
-        {
-            text.append(PART_SEPARATOR).append(path);
-        }
-        return text.append(')').toString();
+        return location(message, source, line, column, path).append(')').toString();
     }
 
     /**
@@ -77,11 +74,63 @@ public final class DefinitionException extends RuntimeException
     private static String format(String message, String id, String parameter)
     {
         final StringBuilder text = new StringBuilder(message).append(SUFFIX_OPEN).append(id);
-        if (parameter != null)
-        {
-            text.append(PART_SEPARATOR).append(parameter);
-        }
+        appendPart(text, parameter);
         return text.append(')').toString();
+    }
+
+    /**
+     * Builds the message of an error about a value read by a registry factory.
+     *
+     * @param message The error description.
+     * @param value The faulty value, or the object missing a member.
+     * @param id The registry id, may be {@code null}.
+     * @param parameter The parameter name, may be {@code null}.
+     * @return The complete message.
+     * @throws IllegalArgumentException If {@code value} is {@code null}.
+     */
+    private static String format(String message, JsonValue value, String id, String parameter)
+    {
+        if (value == null)
+        {
+            throw new IllegalArgumentException("Value must not be null");
+        }
+        final StringBuilder text = location(message, value.getSource(), value.getLine(), value.getColumn(),
+                                            value.getPath());
+        appendPart(text, id);
+        appendPart(text, parameter);
+        return text.append(')').toString();
+    }
+
+    /**
+     * Starts a message with its location: {@code message (source:line:column, path}.
+     *
+     * @param message The error description.
+     * @param source The source name, may be {@code null}.
+     * @param line The line, {@link #UNKNOWN} when unknown.
+     * @param column The column, {@link #UNKNOWN} when unknown.
+     * @param path The JSON path, may be {@code null}.
+     * @return The message being built, without its closing parenthesis.
+     */
+    private static StringBuilder location(String message, String source, int line, int column, String path)
+    {
+        final StringBuilder text = new StringBuilder(message).append(SUFFIX_OPEN);
+        text.append(source).append(LOCATION_SEPARATOR).append(line).append(LOCATION_SEPARATOR).append(column);
+        appendPart(text, path);
+        return text;
+    }
+
+    /**
+     * Appends a part of the message suffix, after a separator.
+     *
+     * @param text The message being built.
+     * @param part The part, nothing is appended if {@code null}.
+     */
+    private static void appendPart(StringBuilder text, String part)
+    {
+        if (part != null)
+        {
+            text.append(PART_SEPARATOR).append(part);
+        }
     }
 
     /** Source name (resource key or caller-given name), {@code null} for a registry error. */
@@ -133,6 +182,28 @@ public final class DefinitionException extends RuntimeException
         line = UNKNOWN;
         column = UNKNOWN;
         path = null;
+        this.id = id;
+        this.parameter = parameter;
+    }
+
+    /**
+     * Creates an error about a value read by a registry factory: located at the value, naming the id and parameter.
+     *
+     * @param message The error description (never {@code null}).
+     * @param value The faulty value, or the object that misses the parameter (never {@code null}); its source, line,
+     *            column and path are copied, the value itself is not kept.
+     * @param id The registry id in the {@code namespace:name} form, {@code null} if unknown.
+     * @param parameter The parameter name, {@code null} if the error is not about one parameter.
+     * @throws IllegalArgumentException If {@code value} is {@code null}.
+     */
+    public DefinitionException(String message, JsonValue value, String id, String parameter)
+    {
+        super(format(message, value, id, parameter));
+
+        source = value.getSource();
+        line = value.getLine();
+        column = value.getColumn();
+        path = value.getPath();
         this.id = id;
         this.parameter = parameter;
     }

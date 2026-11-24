@@ -14,7 +14,10 @@ Read this page before writing Java in the engine. Every rule below is enforced b
    - value type (record with validation): `lionengine-resources/src/main/java/com/b3dgs/lionengine/resources/ResourceKey.java`;
    - value type with an explicit canonical constructor (defensive copy): `lionengine-platform-api/src/main/java/com/b3dgs/lionengine/platform/DisplayRequest.java`;
    - final class with constants, private static helpers and getters: `lionengine-core/src/main/java/com/b3dgs/lionengine/DefinitionException.java`;
-   - parameterized unit test: `lionengine-resources/src/test/java/com/b3dgs/lionengine/resources/ResourceKeyTest.java`.
+   - parameterized unit test: `lionengine-resources/src/test/java/com/b3dgs/lionengine/resources/ResourceKeyTest.java`;
+   - allocation test with the per-thread counter: `testDisabledLevelAllocatesNothing` in `lionengine-core/src/test/java/com/b3dgs/lionengine/LogTest.java`;
+   - factory reading a `Configuration`, with a factory check through `createError`: `lionengine-examples/src/main/java/com/b3dgs/lionengine/examples/core/DefinitionExample.java`;
+   - example with its test run by the build: `DefinitionExampleTest` next to it in `lionengine-examples/src/test/java`.
 
 ## 2. Commands
 

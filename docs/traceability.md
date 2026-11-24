@@ -18,10 +18,10 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-CORE-003 | Must | VALIDATED | ADR-0012, ADR-0032, ADR-0042, ADR-0049, ADR-0051 | — | javadoc doclint `all`, `failOnWarnings`; probe: an undocumented public class fails the build | verified by the build (probe) |
 | REQ-CORE-004 | Must | VALIDATED | ADR-0012, ADR-0045, ADR-0049, ADR-0050 | — | — | no test yet |
 | REQ-CORE-005 | Must | VALIDATED | ADR-0012, ADR-0015, ADR-0040, ADR-0042, ADR-0045, ADR-0046, ADR-0047, ADR-0048, ADR-0049 | — | `radial-encapsulation-maven-plugin` per module, `scripts/check-modules.py`, Maven graph; probes: sibling package, undeclared module, row and test-scope violations | verified by the build (probes) |
-| REQ-CORE-006 | Should | VALIDATED | ADR-0031 | — | — | no test yet |
+| REQ-CORE-006 | Should | VALIDATED | ADR-0031 | — | `LogTest` (levels, arguments, sink replacement, allocation with a disabled level), `SystemErrSinkTest` | verified by tests |
 | REQ-TEST-001 | Must | VALIDATED | ADR-0017, ADR-0022, ADR-0045, ADR-0050 | — | — | no test yet |
-| REQ-DOC-001 | Must | VALIDATED | ADR-0023, ADR-0042 | — | — | no test yet |
-| REQ-DOC-002 | Should | VALIDATED | ADR-0023 | — | — | no test yet |
+| REQ-DOC-001 | Must | VALIDATED | ADR-0023, ADR-0042 | — | `DefinitionExampleTest`, `RandomExampleTest` run the `core` examples in the build | partial: `core` examples only |
+| REQ-DOC-002 | Should | VALIDATED | ADR-0023 | — | `scripts/check-api-index.py` on the `core` rows | partial: `core` rows only |
 | REQ-DOC-003 | Should | VALIDATED | ADR-0023 | — | — | no test yet |
 | REQ-DOC-004 | Should | VALIDATED | ADR-0023, ADR-0042 | — | sources and Javadoc JARs built by `mvn -B verify` | verified by the build |
 | REQ-DOC-005 | Should | VALIDATED | ADR-0023, ADR-0032, ADR-0042 | — | `scripts/check-api-index.py`; probe: unknown type and example fail | check in place; the index names no type yet |
@@ -64,7 +64,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-RT-004 | Should | VALIDATED | ADR-0019, ADR-0031, ADR-0040 | — | — | no test yet |
 | REQ-RT-005 | Must | VALIDATED | ADR-0019, ADR-0026, ADR-0027 | — | — | no test yet |
 | REQ-RT-006 | Must | VALIDATED | ADR-0019 | — | — | no test yet |
-| REQ-RT-007 | Must | VALIDATED | ADR-0020, ADR-0032 | — | — | no test yet |
+| REQ-RT-007 | Must | VALIDATED | ADR-0020, ADR-0032 | — | `RegistryTest` (registration, unknown and duplicate ids, typed parameters, two registries); `DefinitionExampleTest` | verified by tests; the no-reflection check of shared modules is not written yet |
 | REQ-RT-008 | Must | VALIDATED | ADR-0020 | — | — | no test yet |
 | REQ-RT-009 | Must | VALIDATED | ADR-0031, ADR-0040 | — | — | no test yet |
 | REQ-RT-010 | Should | VALIDATED | ADR-0031, ADR-0040 | — | — | no test yet |
@@ -137,9 +137,9 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-SCENE-008 | Should | VALIDATED | ADR-0036 | — | — | no test yet |
 | REQ-WORLD-001 | Must | VALIDATED | ADR-0021, ADR-0024 | — | — | no test yet |
 | REQ-PHYS-001 | Should | VALIDATED | ADR-0021, ADR-0028, ADR-0030 | — | — | no test yet |
-| REQ-DEF-001 | Must | VALIDATED | ADR-0020, ADR-0028 | — | `DefinitionExceptionTest` (error location and message) | partial: reader pending |
-| REQ-DEF-002 | Must | VALIDATED | ADR-0032 | — | — | no test yet |
-| REQ-DEF-003 | Must | VALIDATED | ADR-0020, ADR-0032 | — | — | no test yet |
+| REQ-DEF-001 | Must | VALIDATED | ADR-0020, ADR-0028 | — | `JsonReaderTest` (every error with line, column and path; numbers; escapes; limits), `JsonValueTest`, `DefinitionExceptionTest` | verified by tests |
+| REQ-DEF-002 | Must | VALIDATED | ADR-0032 | — | `ConfigurationTest` (format and version, strict fields, comment), `JsonReaderTest` (limits), `RegistryTest` | verified by tests |
+| REQ-DEF-003 | Must | VALIDATED | ADR-0020, ADR-0032 | — | `RegistryTest` (id validation), `ConfigurationTest` (typed getters with and without defaults) | verified by tests |
 | REQ-ECS-001 | Must | VALIDATED | ADR-0011, ADR-0030 | — | — | no test yet |
 | REQ-ECS-002 | Must | VALIDATED | ADR-0011, ADR-0030 | — | — | no test yet |
 | REQ-ECS-003 | Must | VALIDATED | ADR-0011, ADR-0030 | — | — | no test yet |
@@ -202,7 +202,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-MP-015 | Should | VALIDATED | ADR-0038 | — | — | no test yet |
 | REQ-DET-001 | Should | VALIDATED | ADR-0024 | — | — | no test yet |
 | REQ-DET-002 | Could | VALIDATED | ADR-0024, ADR-0038, ADR-0041, ADR-0044 | — | — | no test yet |
-| REQ-DET-003 | Should | VALIDATED | ADR-0031 | — | — | no test yet |
+| REQ-DET-003 | Should | VALIDATED | ADR-0031 | — | `RandomSourceTest` (SplitMix64 and xoshiro256** reference outputs, seed expansion, bias) | verified by tests |
 | REQ-PERF-001 | Should | VALIDATED | ADR-0024, ADR-0031 | — | — | no test yet |
 | REQ-PERF-002 | Should | VALIDATED | ADR-0024, ADR-0041, ADR-0044 | — | — | no test yet |
 | REQ-SUPPORT-001 | Should | VALIDATED | ADR-0024, ADR-0031, ADR-0042 | — | — | no test yet |
