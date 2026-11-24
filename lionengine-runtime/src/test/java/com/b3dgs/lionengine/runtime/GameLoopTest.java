@@ -363,6 +363,32 @@ final class GameLoopTest
     }
 
     /**
+     * A pause requested and cancelled before the same frame boundary is applied as a pause immediately resumed: the
+     * elapsed time is discarded, nothing is caught up and no lag is reported.
+     */
+    @Test
+    void testPauseCancelledBeforeBoundary()
+    {
+        final ControllableClock clock = new ControllableClock();
+        final Recorder recorder = new Recorder();
+        final GameLoop loop = start(CONFIG, clock, recorder);
+        frame(loop, clock, 15_000_000L);
+
+        loop.pause();
+        loop.resume();
+        frame(loop, clock, 3_000_000_000L);
+
+        assertSame(LoopState.RUNNING, loop.getState());
+        assertEquals(1L, recorder.updates);
+        assertEquals(0.0, recorder.alpha);
+        assertEquals(0L, loop.getDroppedLagCount());
+        assertEquals(0.25, recorder.delta, 1e-12);
+
+        frame(loop, clock, STEP);
+        assertEquals(2L, recorder.updates);
+    }
+
+    /**
      * A pause requested before the first iteration starts the loop paused.
      */
     @Test

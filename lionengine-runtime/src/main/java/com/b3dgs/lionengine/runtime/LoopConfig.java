@@ -36,8 +36,9 @@ package com.b3dgs.lionengine.runtime;
  *            {@link #MAX_LAG_CAP_SECONDS}; the excess is dropped and reported.
  * @param timeScale The initial time scale, in [{@link #MIN_TIME_SCALE}, {@link #MAX_TIME_SCALE}]; {@code 1.0} is real
  *            time.
- * @param snapToleranceSeconds The vsync snapping tolerance, in seconds, finite and not negative: an elapsed time this
- *            close to 1 to 4 steps is snapped to that multiple; {@code 0} disables snapping.
+ * @param snapToleranceSeconds The vsync snapping tolerance, in seconds, not negative and below half a step: an
+ *            elapsed time this close to 1 to 4 steps is snapped to that multiple; {@code 0} disables snapping. From
+ *            half a step, every elapsed time would be snapped and the simulation would drift from real time.
  * @param inboxCapacity The number of events the inbox holds, positive.
  * @since 11.0.0
  */
@@ -110,7 +111,8 @@ public record LoopConfig(int updateRate,
      *            {@link #MAX_UPDATE_RATE}].
      * @param lagCapSeconds The lag cap in seconds, from one step to {@link #MAX_LAG_CAP_SECONDS}.
      * @param timeScale The initial time scale, in [{@link #MIN_TIME_SCALE}, {@link #MAX_TIME_SCALE}].
-     * @param snapToleranceSeconds The snapping tolerance in seconds, finite and not negative; {@code 0} disables it.
+     * @param snapToleranceSeconds The snapping tolerance in seconds, not negative and below half a step; {@code 0}
+     *            disables it.
      * @param inboxCapacity The inbox capacity, positive.
      * @throws IllegalArgumentException If a value is outside its range or not a number.
      */
@@ -127,9 +129,9 @@ public record LoopConfig(int updateRate,
             throw new IllegalArgumentException("Lag cap outside [one step, 1 s]: " + lagCapSeconds);
         }
         checkTimeScale(timeScale);
-        if (!(snapToleranceSeconds >= 0.0) || Double.isInfinite(snapToleranceSeconds))
+        if (!(snapToleranceSeconds >= 0.0) || toNanos(snapToleranceSeconds) >= (stepNanos + 1L) / 2L)
         {
-            throw new IllegalArgumentException("Snapping tolerance negative or not finite: " + snapToleranceSeconds);
+            throw new IllegalArgumentException("Snapping tolerance outside [0, half a step): " + snapToleranceSeconds);
         }
         if (inboxCapacity < 1)
         {

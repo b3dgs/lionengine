@@ -51,6 +51,8 @@ final class LoopConfigTest
                          Arguments.of(60, 0.25, 1.0, -0.001, 1),
                          Arguments.of(60, 0.25, 1.0, Double.NaN, 1),
                          Arguments.of(60, 0.25, 1.0, Double.POSITIVE_INFINITY, 1),
+                         Arguments.of(100, 0.25, 1.0, 0.005, 1),
+                         Arguments.of(1000, 0.25, 1.0, 0.000_5, 1),
                          Arguments.of(60, 0.25, 1.0, 0.0, 0));
     }
 
@@ -81,6 +83,8 @@ final class LoopConfigTest
         assertEquals(1_000_000L, new LoopConfig(1000, 0.25, 1.0, 0.0, 1).stepNanos());
         assertEquals(33_333_333L, new LoopConfig(30, 0.25, 1.0, 0.0, 1).stepNanos());
         assertEquals(0.01, new LoopConfig(100, 0.01, 1.0, 0.0, 1).stepSeconds());
+        assertEquals(0.004_999, new LoopConfig(100, 0.25, 1.0, 0.004_999, 1).snapToleranceSeconds());
+        assertEquals(1_000_000L, new LoopConfig(1000, 0.25, 1.0, LoopConfig.DEFAULT_SNAP_TOLERANCE_SECONDS, 1).stepNanos());
     }
 
     /**

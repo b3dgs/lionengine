@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.runtime;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com.b3dgs.lionengine.Inbox;
 import com.b3dgs.lionengine.Log;
 import com.b3dgs.lionengine.LoopDriver;
@@ -44,7 +46,9 @@ import com.b3dgs.lionengine.LoopDriver;
  * </ol>
  *
  * <p>
- * The first iteration uses an elapsed time of {@code 0}. Fail-fast: an exception thrown by an update, a render, an
+ * The first iteration uses an elapsed time of {@code 0}. A pause is never lost: a pause requested and cancelled before
+ * the same frame boundary is applied there as a pause immediately resumed, so the elapsed time is discarded (a short
+ * trip to the background causes no catch-up). Fail-fast: an exception thrown by an update, a render, an
  * inbox event or the lag listener puts the loop in {@link LoopState#FAILED} and reaches the caller of
  * {@link #iterate()}; no render follows a failed update.
  * </p>
@@ -86,6 +90,8 @@ public final class GameLoop implements LoopDriver
     private final FixedStepAccumulator time;
     /** Events from other threads. */
     private final BoundedInbox inbox;
+    /** Whether a pause was requested since the last frame boundary, even if a resume followed. */
+    private final AtomicBoolean pauseSeen = new AtomicBoolean();
     /** Requested pause, read at the next frame boundary. */
     private volatile boolean pauseRequested;
     /** Requested stop, read at the end of the iteration. */
@@ -251,6 +257,7 @@ public final class GameLoop implements LoopDriver
     public void pause()
     {
         pauseRequested = true;
+        pauseSeen.set(true);
     }
 
     @Override
@@ -275,22 +282,24 @@ public final class GameLoop implements LoopDriver
     /**
      * Applies the control requests at the frame boundary.
      *
-     * @return {@code true} if the loop resumes in this iteration.
+     * @return {@code true} if the loop resumes in this iteration, after a pause or a pause cancelled since the last
+     *         boundary: the elapsed time is discarded.
      */
     private boolean applyRequests()
     {
         time.setTimeScale(requestedTimeScale);
+        final boolean seen = pauseSeen.getAndSet(false);
         final boolean pause = pauseRequested;
-        boolean resumed = false;
         if (state == LoopState.CREATED)
         {
             state = LoopState.RUNNING;
         }
+        boolean resumed = false;
         if (pause && state == LoopState.RUNNING)
         {
             state = LoopState.PAUSED;
         }
-        else if (!pause && state == LoopState.PAUSED)
+        else if (!pause && (seen || state == LoopState.PAUSED))
         {
             state = LoopState.RUNNING;
             time.clear();
