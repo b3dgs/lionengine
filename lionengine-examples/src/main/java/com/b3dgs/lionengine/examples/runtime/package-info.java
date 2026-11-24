@@ -15,6 +15,6 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 /**
- * Examples of the {@code runtime} module: the game loop.
+ * Examples of the {@code runtime} module: the game loop and the scenes.
  */
 package com.b3dgs.lionengine.examples.runtime;

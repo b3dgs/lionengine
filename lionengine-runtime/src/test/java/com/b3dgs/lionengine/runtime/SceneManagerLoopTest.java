@@ -65,7 +65,7 @@ final class SceneManagerLoopTest
     {
         manager.switchTo(first);
         loop.iterate();
-        assertEquals(List.of(first.record(ENTER), first.record(RENDER)), calls);
+        assertEquals(List.of(first.entry(ENTER), first.entry(RENDER)), calls);
         calls.clear();
     }
 
@@ -82,17 +82,17 @@ final class SceneManagerLoopTest
         GameLoopTest.frame(loop, clock, THREE_STEPS);
 
         assertEquals(3, first.getUpdates());
-        assertEquals(List.of(first.record(UPDATE), first.record(UPDATE), first.record(UPDATE), first.record(RENDER)),
+        assertEquals(List.of(first.entry(UPDATE), first.entry(UPDATE), first.entry(UPDATE), first.entry(RENDER)),
                      calls);
 
         calls.clear();
         GameLoopTest.frame(loop, clock, GameLoopTest.STEP);
 
-        assertEquals(List.of(first.record(EXIT),
-                             first.record(DISPOSE),
-                             second.record(ENTER),
-                             second.record(UPDATE),
-                             second.record(RENDER)),
+        assertEquals(List.of(first.entry(EXIT),
+                             first.entry(DISPOSE),
+                             second.entry(ENTER),
+                             second.entry(UPDATE),
+                             second.entry(RENDER)),
                      calls);
     }
 
@@ -112,11 +112,11 @@ final class SceneManagerLoopTest
         GameLoopTest.frame(loop, clock, THREE_STEPS);
         GameLoopTest.frame(loop, clock, THREE_STEPS);
 
-        assertEquals(List.of(first.record(RENDER),
-                             first.record(EXIT),
-                             first.record(DISPOSE),
-                             second.record(ENTER),
-                             second.record(RENDER)),
+        assertEquals(List.of(first.entry(RENDER),
+                             first.entry(EXIT),
+                             first.entry(DISPOSE),
+                             second.entry(ENTER),
+                             second.entry(RENDER)),
                      calls);
         assertEquals(LoopState.PAUSED, loop.getState());
     }
@@ -135,7 +135,7 @@ final class SceneManagerLoopTest
 
         manager.clear();
 
-        assertEquals(List.of(first.record(UPDATE), first.record(EXIT), first.record(DISPOSE)), calls);
+        assertEquals(List.of(first.entry(UPDATE), first.entry(EXIT), first.entry(DISPOSE)), calls);
     }
 
     /**
@@ -151,7 +151,7 @@ final class SceneManagerLoopTest
         manager.clear();
 
         assertEquals(LoopState.STOPPED, loop.getState());
-        assertEquals(List.of(first.record(UPDATE), first.record(RENDER), first.record(EXIT), first.record(DISPOSE)),
+        assertEquals(List.of(first.entry(UPDATE), first.entry(RENDER), first.entry(EXIT), first.entry(DISPOSE)),
                      calls);
     }
 

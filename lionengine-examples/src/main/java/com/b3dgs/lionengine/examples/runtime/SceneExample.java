@@ -122,6 +122,8 @@ public final class SceneExample
         private final LoopControl loop;
         /** Lifecycle calls of the scenes. */
         private final StringBuilder journal = new StringBuilder();
+        /** Written before the next call in the journal. */
+        private String separator = "";
         /** Number of fixed steps run by the scenes. */
         private long updates;
 
@@ -138,69 +140,44 @@ public final class SceneExample
         }
 
         /**
-         * Records a lifecycle call.
+         * Writes a lifecycle call in the journal.
          *
          * @param scene The scene name.
          * @param call The lifecycle method.
          */
-        void record(String scene, String call)
+        void note(String scene, String call)
         {
-            if (journal.length() > 0)
-            {
-                journal.append(", ");
-            }
-            journal.append(scene).append(' ').append(call);
+            journal.append(separator).append(scene).append(' ').append(call);
+            separator = ", ";
         }
     }
 
     /**
-     * Scene that lasts a given time, then calls {@link #finish()} once.
+     * Scene that writes its lifecycle calls in the journal and draws nothing.
      */
-    private abstract static class TimedScene implements Scene
+    private abstract static class JournalScene implements Scene
     {
         /** Shared state. */
         protected final Game game;
-        /** Name in the records. */
+        /** Name in the journal. */
         private final String name;
-        /** Duration, in seconds. */
-        private final double seconds;
-        /** Number of steps run. */
-        private long steps;
 
         /**
          * Creates the scene.
          *
          * @param game The shared state.
-         * @param name The name in the records.
-         * @param seconds The duration, in seconds.
+         * @param name The name in the journal.
          */
-        TimedScene(Game game, String name, double seconds)
+        JournalScene(Game game, String name)
         {
             this.game = game;
             this.name = name;
-            this.seconds = seconds;
         }
-
-        /**
-         * Called once, at the step where the duration is reached.
-         */
-        protected abstract void finish();
 
         @Override
         public void enter()
         {
-            game.record(name, "enter");
-        }
-
-        @Override
-        public void update(double stepSeconds)
-        {
-            steps++;
-            game.updates++;
-            if (steps == Math.round(seconds / stepSeconds))
-            {
-                finish();
-            }
+            game.note(name, "enter");
         }
 
         @Override
@@ -212,13 +189,53 @@ public final class SceneExample
         @Override
         public void exit()
         {
-            game.record(name, "exit");
+            game.note(name, "exit");
         }
 
         @Override
         public void dispose()
         {
-            game.record(name, "dispose");
+            game.note(name, "dispose");
+        }
+    }
+
+    /**
+     * Scene that lasts a given time, then calls {@link #finish()} once.
+     */
+    private abstract static class TimedScene extends JournalScene
+    {
+        /** Duration, in seconds. */
+        private final double seconds;
+        /** Number of steps run. */
+        private long steps;
+
+        /**
+         * Creates the scene.
+         *
+         * @param game The shared state.
+         * @param name The name in the journal.
+         * @param seconds The duration, in seconds.
+         */
+        TimedScene(Game game, String name, double seconds)
+        {
+            super(game, name);
+            this.seconds = seconds;
+        }
+
+        /**
+         * Called once, at the step where the duration is reached.
+         */
+        protected abstract void finish();
+
+        @Override
+        public void update(double stepSeconds)
+        {
+            steps++;
+            game.updates++;
+            if (steps == Math.round(seconds / stepSeconds))
+            {
+                finish();
+            }
         }
     }
 
