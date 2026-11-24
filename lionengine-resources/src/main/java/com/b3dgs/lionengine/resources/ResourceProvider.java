@@ -63,7 +63,8 @@ public interface ResourceProvider
     boolean isWritable();
 
     /**
-     * Opens the resource for writing, creating or replacing it. Runtime thread only.
+     * Opens the resource for writing, creating or replacing it. Runtime thread only. The written content is readable
+     * through {@link #open(ResourceKey)} once the stream is closed.
      *
      * @param key The resource key (never {@code null}).
      * @return A new stream, owned and closed by the caller.

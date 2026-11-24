@@ -68,12 +68,12 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-RT-008 | Must | VALIDATED | ADR-0020 | — | — | no test yet |
 | REQ-RT-009 | Must | VALIDATED | ADR-0031, ADR-0040 | — | `GameLoopInboxTest.testOverflow` (counted, reported once, control requests while full), `testConcurrentPosts` | verified by tests |
 | REQ-RT-010 | Should | VALIDATED | ADR-0031, ADR-0040 | — | — | no test yet |
-| REQ-RES-001 | Must | VALIDATED | ADR-0005, ADR-0032 | — | — | no test yet |
-| REQ-RES-002 | Should | VALIDATED | ADR-0005, ADR-0032 | — | — | no test yet |
-| REQ-RES-003 | Must | VALIDATED | ADR-0005, ADR-0019 | — | — | no test yet |
+| REQ-RES-001 | Must | VALIDATED | ADR-0005, ADR-0032 | — | `ResourceProviderContract` bound by `StreamProviderTest`, `MemoryProviderTest`, `FileProviderTest`; `ResourcesTest`; `ResourcesExampleTest` | verified by tests |
+| REQ-RES-002 | Should | VALIDATED | ADR-0005, ADR-0032 | — | `FileProviderTest`, `MemoryProviderTest`, `StreamProviderTest` (with the provider suite) | partial: archive and Android asset providers pending |
+| REQ-RES-003 | Must | VALIDATED | ADR-0005, ADR-0019 | — | `ResourceProviderContract.testCloseTwice`, `testOpenNewStream`; `ResourcesTest.testCallerOwnsStream`; `FileProviderTest` (no `File` in the contract, key mapped under the root) | verified by tests |
 | REQ-RES-004 | Must | VALIDATED | ADR-0005, ADR-0007, ADR-0045 | — | — | no test yet |
 | REQ-RES-005 | Must | VALIDATED | ADR-0007 | — | `ResourceKeyTest` (key rules, equality) | partial: release convention pending |
-| REQ-RES-006 | Must | VALIDATED | ADR-0032 | — | `ResourceExceptionTest` (reasons, key, cause) | partial: providers pending |
+| REQ-RES-006 | Must | VALIDATED | ADR-0032 | — | `ResourceExceptionTest` (reasons, key, cause); `ResourcesTest` (order, override, no fallback, read-only refusal, first writable); `ResourceProviderContract` (error reasons, `testConcurrentReads`) bound by every provider | verified by tests |
 | REQ-AUDIO-001 | Should | VALIDATED | ADR-0004, ADR-0022 | — | — | no test yet |
 | REQ-AUDIO-002 | Should | VALIDATED | ADR-0027, ADR-0033 | — | — | no test yet |
 | REQ-AUDIO-003 | Must | VALIDATED | ADR-0004, ADR-0027, ADR-0041, ADR-0044 | — | — | no test yet |
