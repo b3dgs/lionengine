@@ -81,6 +81,15 @@ Nanoseconds inside the loop, seconds in every callback. `System.nanoTime` to ver
 
 Controllable-clock tests: exact update counts for given elapsed times; `alpha` bounds; no drift over 10⁶ steps; long frame capped and reported; pause and resume with zero catch-up; time scale 0.25 gives a quarter of the updates with unchanged render calls; snapping at and beyond the tolerance; failure in update, render and listener; stop during an iteration; inbox order, overflow, registration during delivery; handle states with a fake worker pool.
 
+## State (2026-11-24)
+
+Batches 1 to 3 are implemented in `runtime`, with the example `GameLoopExample` and its API-index row; batch 4 (asynchronous handles and load groups, Phase 2) is not. Names and details chosen by the batches, within this page, ADR-0017, ADR-0031 and ADR-0040:
+- `LoopConfig` is a record of the five values with their default and range constants and `DEFAULT`; `stepNanos()` and `stepSeconds()` derive the step. The snapping tolerance is only required to be finite and not negative: the elapsed time is compared with the nearest multiple of the step.
+- `GameLoop` implements `LoopDriver`. Its constructors take the configuration, the clock (`System.nanoTime` by default), the `Log` of the inbox reports and the two callbacks. `LoopState` gives the state; `getDroppedLagCount()`, `getDroppedLagSeconds()` and `setLagListener()` report the lag; `getTimeScale()` returns the scale applied by the last iteration. The control requests are volatile fields: the last pause or resume request before a frame boundary wins.
+- At the iteration where the loop resumes, the elapsed time is discarded and the accumulator cleared, so the factor is `0`. The lag listener is called before the updates of its iteration.
+- The inbox implementation, package-private in `runtime`, is a ring buffer behind a short private lock; a delivery takes the events accepted so far and runs them outside the lock, so an event posted during it waits for the next one; an event that throws fails the loop and the rest of that delivery is discarded; a nested delivery is refused. Rejected events are reported as one warning per delivery: `Inbox full, events dropped: <count>`.
+- Test fixtures (ADR-0045): `ControllableClock` in the `runtime` test JAR; `ManualLoopDriver`, `InboxSpy`, `FakeWorkerPool` and the abstract `LoopDriverContract` suite in the `core` test JAR. `GameLoop` and `ManualLoopDriver` both pass the contract suite.
+
 ## Acceptance criteria
 
 - [ ] Requirements covered; complete Javadoc; headless example (start, update 3 seconds of simulated time, stop); API-index entry.

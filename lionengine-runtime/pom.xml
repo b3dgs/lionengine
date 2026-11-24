@@ -21,5 +21,13 @@
             <artifactId>lionengine-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- ADR-0045: the LoopDriver contract suite of the core test JAR, bound by GameLoop. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-core</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
