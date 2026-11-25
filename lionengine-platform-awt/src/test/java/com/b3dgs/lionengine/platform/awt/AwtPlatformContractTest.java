@@ -27,6 +27,7 @@ import java.awt.Insets;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.LockSupport;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -61,24 +62,8 @@ final class AwtPlatformContractTest extends PlatformContract
 
     /** Time given to the window system to apply a size, in nanoseconds. */
     private static final long RESIZE_TIMEOUT_NANOS = 5_000_000_000L;
-    /** Pause between two checks of the size, in milliseconds. */
-    private static final long RESIZE_CHECK_MILLIS = 20L;
-
-    /**
-     * Waits between two checks of the window size, so that the window system can send its configure events.
-     */
-    private static void pause()
-    {
-        try
-        {
-            Thread.sleep(RESIZE_CHECK_MILLIS);
-        }
-        catch (final InterruptedException exception)
-        {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException(exception);
-        }
-    }
+    /** Pause between two checks of the size, in nanoseconds. */
+    private static final long RESIZE_CHECK_NANOS = 20_000_000L;
 
     /**
      * Returns the canvas of a window.
@@ -191,7 +176,8 @@ final class AwtPlatformContractTest extends PlatformContract
             {
                 throw new AssertionError("The window did not keep the size " + surfaceWidth + "x" + surfaceHeight);
             }
-            pause();
+            // Gives the window system time to send its configure events before the next check.
+            LockSupport.parkNanos(RESIZE_CHECK_NANOS);
         }
         AwtFixtures.flush();
     }
