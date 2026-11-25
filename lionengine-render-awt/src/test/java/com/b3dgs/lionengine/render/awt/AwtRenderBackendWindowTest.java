@@ -33,6 +33,7 @@ import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.LockSupport;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -56,6 +57,8 @@ final class AwtRenderBackendWindowTest
     private static final int HEIGHT = 24;
     /** Longest wait for the frames, in nanoseconds. */
     private static final long TIMEOUT = TimeUnit.SECONDS.toNanos(10L);
+    /** Pause between two checks of the surface size, in nanoseconds. */
+    private static final long CHECK_NANOS = TimeUnit.MILLISECONDS.toNanos(1L);
 
     /**
      * Skips the tests without display.
@@ -93,17 +96,15 @@ final class AwtRenderBackendWindowTest
      * @param width The surface width in device pixels.
      * @param height The surface height in device pixels.
      * @return The number of frames presented when the surface size was found.
-     * @throws InterruptedException If interrupted.
      */
     private static int awaitSurface(AwtPlatform platform, PresentingDriver driver, int width, int height)
-            throws InterruptedException
     {
         final long end = System.nanoTime() + TIMEOUT;
         int frames = driver.getFrames();
         while (platform.getSurfaceWidth() != width || platform.getSurfaceHeight() != height)
         {
             assertTrue(System.nanoTime() < end, "Surface size not received in time");
-            Thread.sleep(1L);
+            LockSupport.parkNanos(CHECK_NANOS);
             frames = driver.getFrames();
         }
         return frames;
