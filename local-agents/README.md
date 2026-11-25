@@ -14,14 +14,16 @@ The benchmark (`OQ-170`) answers one question per machine: **does the chosen loc
 
 Nothing is pushed and nothing reaches GitHub: each run happens in its own git worktree, on a `local/bench-random-example-<machine>-<run>` branch that you delete afterwards.
 
-Status: the script has been run end to end only against a stub gateway that answers with text and never calls a tool. **No real local model has run yet**, so expect to adjust the gateway settings on the first run.
+Your three machines run **Windows 11**. The model server runs in a normal terminal (PowerShell), and everything else in this guide runs in **Git Bash** (installed with Git for Windows): open it from the Start menu, then `cd` to the repository.
+
+Status: the scripts have been run end to end only on Linux, against a stub gateway that answers with text and never calls a tool, with a Windows-like setup simulated (a `python3` that fails like the Microsoft Store stub, task files with Windows line endings). **No real local model has run yet and no script has run on a real Windows machine yet**, so expect to adjust the gateway settings, and possibly the scripts, on the first run. If a script fails because of Windows, that is a defect to report, not something to work around by hand.
 
 ## Per machine, once
 
-1. **Software.** Git, JDK 25, Maven 3.9, Python 3, the Claude Code CLI (`claude --version`), and a recent llama.cpp build (its server speaks the Anthropic Messages API).
+1. **Software.** Git for Windows (it provides Git Bash), JDK 25 and Maven 3.9 (both on the PATH of Git Bash, with `JAVA_HOME` set), Python 3 (`python3` itself may be missing or be the Microsoft Store stub: the script copes with that, but Python 3 must be installed), the Claude Code CLI (`claude --version` in Git Bash), and the Windows build of llama.cpp for NVIDIA GPUs (its server speaks the Anthropic Messages API). Once: `git config --global core.longpaths true`, and keep the repository in a short path such as `C:\dev\lionengine`.
 2. **Clone and update the repository:** `git clone` it, or `git pull` on `rewrite/v11`. The script fetches `origin/rewrite/v11` itself before each run.
-3. **Start the model server.** The exact command per machine (model, context size, how many MoE layers stay in RAM) is in [`docs/local-agents.md`](../docs/local-agents.md), section 5 and the table of section 1. Keep it running in its own terminal. Use `--jinja`: without it, tool calls fail.
-4. **Point the shell at it**, in the terminal where you will run the benchmark:
+3. **Start the model server.** The exact command per machine (model, context size, how many MoE layers stay in RAM) is in [`docs/local-agents.md`](../docs/local-agents.md), section 5 and the table of section 1. Keep it running in its own PowerShell window (`llama-server.exe` takes the same arguments). Use `--jinja`: without it, tool calls fail.
+4. **Point the shell at it**, in the Git Bash window where you will run the benchmark (not PowerShell: `export` is the Git Bash syntax):
 
    ```bash
    export ANTHROPIC_BASE_URL=http://127.0.0.1:8080
@@ -32,13 +34,13 @@ Status: the script has been run end to end only against a stub gateway that answ
 
 ## Per run (3 runs per machine)
 
-Run from the repository root. Replace `pc1` with `pc2` or `pc3`.
+Run from the repository root, in Git Bash. Replace `pc1` with `pc2` or `pc3`.
 
 ```bash
-local-agents/run-benchmark.sh --dry-run pc1 1   # check, changes nothing
-local-agents/run-benchmark.sh pc1 1              # real run
-local-agents/run-benchmark.sh pc1 2
-local-agents/run-benchmark.sh pc1 3
+bash local-agents/run-benchmark.sh --dry-run pc1 1   # check, changes nothing
+bash local-agents/run-benchmark.sh pc1 1              # real run
+bash local-agents/run-benchmark.sh pc1 2
+bash local-agents/run-benchmark.sh pc1 3
 ```
 
 Each real run builds Maven modules, so give it a few minutes. When it ends, it prints the report and its path: `../lionengine-local/bench-random-example-<machine>-<run>.report.md`, with logs next to it in a `.logs` folder.
@@ -74,7 +76,7 @@ Easiest: tell Claude Code the numbers (or paste the three reports) and ask it to
 ## Cleaning up
 
 ```bash
-local-agents/run-benchmark.sh --clean pc1 1
+bash local-agents/run-benchmark.sh --clean pc1 1
 ```
 
 This removes the worktree and the local branch of that run and keeps its report and logs. A benchmark branch is never pushed.
@@ -83,7 +85,11 @@ This removes the worktree and the local branch of that run and keeps its report 
 
 | Symptom | Likely cause and fix |
 |---|---|
-| `ANTHROPIC_BASE_URL is not set` | The export of step 4 is missing in this terminal. |
+| `ANTHROPIC_BASE_URL is not set` | The export of step 4 is missing in this Git Bash window. |
+| `$'\r': command not found` | A script was checked out with Windows line endings (an old checkout, before `.gitattributes`). Clone the repository again after pulling the commit that adds `.gitattributes`. |
+| `Python 3 not found` | None of `python3`, `python` and `py -3` runs Python 3. Install Python 3 and open a new Git Bash window. |
+| `mvn: command not found`, or Maven cannot find Java | `JAVA_HOME` and the Maven `bin` folder are missing from the PATH of Git Bash. |
+| `Filename too long`, or Maven fails on a very long path | Run `git config --global core.longpaths true` and move the repository to a shorter path. |
 | `ANTHROPIC_BASE_URL must point to the local gateway` | The URL contains `anthropic.com`: it must be your local server. |
 | `worktree or branch already exists` | A previous run with the same machine and run number was not cleaned: `--clean` it, or use another run number. |
 | Many failed tool calls, the worker answers in plain text and never edits | The server was started without `--jinja`, or the gateway does not support tool calls. Restart it with `--jinja`, or try another Anthropic-compatible gateway. |

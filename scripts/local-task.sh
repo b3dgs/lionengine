@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Run one local worker on a task file, in its own git worktree (docs/local-agents.md, REQ-AGENT-002, ADR-0053).
+# Linux, macOS and Windows 11 (Git Bash of Git for Windows): see docs/local-agents.md, section 5.
 #
 # Usage (from the repository root):
 #   scripts/local-task.sh [--dry-run] <task-file>
@@ -53,11 +54,12 @@ field() {
 
 # Items ("- item") of a "## Title" section of the task file, without backquotes.
 section_items() {
-  awk -v title="## $1" '
+  # The task file may have Windows line endings: the carriage returns are dropped first.
+  tr -d '\r' < "$task_file" | awk -v title="## $1" '
     $0 == title { inside = 1; next }
     /^## / { inside = 0 }
     inside && /^- / { sub(/^- /, ""); gsub(/`/, ""); print }
-  ' "$task_file" | sed 's/[[:space:]]*$//'
+  ' | sed 's/[[:space:]]*$//'
 }
 
 slug=$(field Slug | tr -d '[:space:]')
@@ -151,6 +153,25 @@ if [ "$dry_run" -eq 1 ]; then
   fi
   echo "report:    $report"
   exit 0
+fi
+
+# Windows: "python3" is often missing or the Microsoft Store stub. The gate and the worker call "python3 -I ...";
+# when it does not run Python 3, a wrapper named python3 is put first in the PATH of this script and its children.
+python_ok() {
+  "$@" -c 'import sys; sys.exit(0 if sys.version_info[0] == 3 else 1)' >/dev/null 2>&1
+}
+if ! python_ok python3; then
+  python_cmd=
+  for candidate in python "py -3"; do
+    # shellcheck disable=SC2086
+    if python_ok $candidate; then python_cmd=$candidate; break; fi
+  done
+  [ -n "$python_cmd" ] || fail "Python 3 not found: install it and make 'python3', 'python' or 'py -3' work"
+  shim_dir=$(mktemp -d)
+  trap 'rm -rf "$shim_dir"' EXIT
+  printf '#!/usr/bin/env bash\nexec %s "$@"\n' "$python_cmd" > "$shim_dir/python3"
+  chmod +x "$shim_dir/python3"
+  export PATH="$shim_dir:$PATH"
 fi
 
 # A real run reaches only a local gateway: never the account of the machine, never a cloud key.

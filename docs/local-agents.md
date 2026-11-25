@@ -1,12 +1,12 @@
 # Local agents: delegation, models, task files and merge gate
 
-**Status: PROPOSED — decisions 1A, 2C, 3B, 4A and 5A of the packet of issue #910 (owner comment of 2026-11-25); escalation, hand-off and merge gate ACCEPTED in [ADR-0053](decisions/0053-local-agent-escalation-branch-hand-off-and-merge-gate.md). Requirements `REQ-AGENT-001` to `REQ-AGENT-004` are PROPOSED; `OQ-170` (benchmark results) is open.**
+**Status: VALIDATED — decisions 1A, 2C, 3B, 4A and 5A of the packet of issue #910 (owner comment of 2026-11-25) and the proposal of this page, validated by the owner on 2026-11-25; escalation, hand-off and merge gate in [ADR-0053](decisions/0053-local-agent-escalation-branch-hand-off-and-merge-gate.md) (ACCEPTED). Requirements `REQ-AGENT-001` to `REQ-AGENT-004` are VALIDATED. `OQ-170` (benchmark results of the models) is open; the Windows 11 scripts are verified by simulation only, not yet on a real Windows machine.**
 
 This page extends [`agent-workflow.md`](agent-workflow.md): Claude Code (cloud model) delegates token-heavy, well-specified work to local models on the owner's machines, reviews the result, and keeps high-reasoning work in the cloud. Requirements: `REQ-AGENT-001` to `REQ-AGENT-004` in [`requirements.md`](requirements.md).
 
 ## 1. Machines and model profiles
 
-Decision 5A. The models are the owner's delegated choice; they are confirmed (or replaced) by the benchmark of section 8 (`OQ-170`). Until then they are a starting profile, not a guarantee.
+All three machines run **Windows 11** (owner, 2026-11-25); the scripts run in Git Bash (section 5). Decision 5A. The models are the owner's delegated choice; they are confirmed (or replaced) by the benchmark of section 8 (`OQ-170`). Until then they are a starting profile, not a guarantee.
 
 | Machine | GPU (VRAM) | RAM | Model | Fallback | Mode |
 |---|---|---|---|---|---|
@@ -50,6 +50,17 @@ Done once per machine by the owner. Nothing here is committed: no key, no addres
 2. **Claude Code CLI** installed (`claude --version`), and Git, JDK 25, Maven 3.9 and Python 3 as for any build ([`implementation-guide.md`](implementation-guide.md)).
 3. **Environment of the shell that runs the script**: `ANTHROPIC_BASE_URL=http://127.0.0.1:8080` and, if the gateway serves several models, `LOCAL_AGENT_MODEL=<model name>`. The script refuses to start without `ANTHROPIC_BASE_URL` or with an `anthropic.com` address, gives the worker a placeholder key (`local-gateway`) and unsets the other provider variables, so a local run can never spend cloud tokens or send a real key to the gateway.
 4. **Prompt cache.** The script disables the attribution block of Claude Code (`CLAUDE_CODE_ATTRIBUTION_HEADER=0`, through `--settings`), which changes at every request and otherwise forces the local server to recompute the whole prompt each turn.
+
+**Windows 11 (the three machines).** The scripts are Bash scripts and run in **Git Bash**, which comes with Git for Windows (Claude Code on Windows needs it as well). Differences from Linux:
+
+- **Two terminals.** The model server runs in PowerShell (or any terminal) with the Windows build of llama.cpp (the CUDA build for the NVIDIA GPUs; the arguments of the commands above are the same, with `llama-server.exe`). The scripts run in a Git Bash terminal, where the variables are set with `export`, not with `$env:`.
+- **Line endings.** `.gitattributes` forces Unix line endings on `*.sh`, so the scripts work whatever `core.autocrlf` is. A task file with Windows line endings is accepted. If a script of an older checkout fails with `\r: command not found`, check it out again.
+- **Python.** The gate and the worker call `python3 -I scripts/check-*.py`. On Windows `python3` is often missing or the Microsoft Store stub: when it does not run Python 3, `scripts/local-task.sh` finds `python` or `py -3` and puts a `python3` wrapper first in the PATH of the script and of the worker, so nothing else has to be installed or aliased. Python 3 itself must be installed.
+- **Long paths.** Maven build folders inside `../lionengine-local/<slug>` can pass the 260-character path limit of Windows: run `git config --global core.longpaths true` once, and keep the repository in a short path (for example `C:\dev\lionengine`).
+- **Java and Maven.** JDK 25 and Maven 3.9 on the PATH of Git Bash, with `JAVA_HOME` set; `mvn` is then the `mvn` shell script of the Maven distribution.
+- **No display tool.** The gate of the benchmark does not run the platform tests, so no virtual display is needed.
+
+Status of this support: simulated on Linux (a `python3` that fails like the Store stub, a task file with Windows line endings, a full run against a stub gateway); **not yet run on a real Windows 11 machine**. The first benchmark run on PC1 doubles as that check: a Windows-specific failure is reported as a defect of the script, not worked around by hand.
 
 ## 6. Running a worker
 

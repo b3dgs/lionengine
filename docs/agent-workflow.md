@@ -24,7 +24,7 @@ No agent relies on a conversation history. Everything an agent needs is in the r
 
 ## Delegation to local agents
 
-Claude Code can delegate token-heavy, well-specified work to local models and review the result. Machines, model profiles, machine setup, delegation criteria, task files, escalation and the merge gate are in [`local-agents.md`](local-agents.md) (PROPOSED, issue #910; escalation, hand-off and merge gate in ADR-0053). The hand-off is a task file in, a `local/` branch and a report out; the compact entry file of a local worker is [`local-agent-entry.md`](local-agent-entry.md). The first local run is the benchmark of `OQ-170`.
+Claude Code can delegate token-heavy, well-specified work to local models and review the result. Machines, model profiles, machine setup, delegation criteria, task files, escalation and the merge gate are in [`local-agents.md`](local-agents.md) (VALIDATED, issue #910; escalation, hand-off and merge gate in ADR-0053). The hand-off is a task file in, a `local/` branch and a report out; the compact entry file of a local worker is [`local-agent-entry.md`](local-agent-entry.md). The first local run is the benchmark of `OQ-170`.
 
 ## Making smaller-context agents effective
 
