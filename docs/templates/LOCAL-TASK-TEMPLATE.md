@@ -1,6 +1,6 @@
 # Local task template
 
-**Status: PROPOSED — template of the task file given to a local worker (`REQ-AGENT-002`, [`local-agents.md`](../local-agents.md), [ADR-0053](../decisions/0053-local-agent-escalation-branch-hand-off-and-merge-gate.md)).**
+**Status: VALIDATED (owner, 2026-11-25) — template of the task file given to a local worker (`REQ-AGENT-002`, [`local-agents.md`](../local-agents.md), [ADR-0053](../decisions/0053-local-agent-escalation-branch-hand-off-and-merge-gate.md)).**
 
 Copy the block below into a file outside the committed tree (or where the owner asks), fill every field and pass it to `scripts/local-task.sh`; check it first with `scripts/local-task.sh --dry-run <task-file>`. A field that cannot be filled means the task is not ready to be delegated.
 

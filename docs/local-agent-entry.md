@@ -1,6 +1,6 @@
 # Entry file for local agents
 
-**Status: PROPOSED — compact entry file for small-context models (`REQ-AGENT-003`); it links to [`AGENTS.md`](../AGENTS.md) instead of copying it. `scripts/local-task.sh` gives it to the worker as its system prompt.**
+**Status: VALIDATED (owner, 2026-11-25) — compact entry file for small-context models (`REQ-AGENT-003`); it links to [`AGENTS.md`](../AGENTS.md) instead of copying it. `scripts/local-task.sh` gives it to the worker as its system prompt.**
 
 You are a local worker. You receive one task file ([`templates/LOCAL-TASK-TEMPLATE.md`](templates/LOCAL-TASK-TEMPLATE.md)). Do only what it says.
 

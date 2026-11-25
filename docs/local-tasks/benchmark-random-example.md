@@ -1,6 +1,6 @@
 # Task: benchmark, recreate RandomExample and its test
 
-**Status: PROPOSED — benchmark task of `OQ-170` ([`../local-agents.md`](../local-agents.md), section 8). Its branch is never pushed or merged: it measures a model, it does not change the engine.**
+**Status: VALIDATED (owner, 2026-11-25) — benchmark task of `OQ-170` ([`../local-agents.md`](../local-agents.md), section 8). Its branch is never pushed or merged: it measures a model, it does not change the engine.**
 
 - Slug: bench-random-example
 - Model profile: PC1
