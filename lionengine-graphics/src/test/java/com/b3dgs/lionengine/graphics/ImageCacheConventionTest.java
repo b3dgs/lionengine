@@ -24,8 +24,8 @@ import com.b3dgs.lionengine.resources.Resources;
 import com.b3dgs.lionengine.testsupport.RecordingBackend;
 
 /**
- * Binds the cache convention suite of the {@code resources} test JAR on {@link ImageCache} (ADR-0045, REQ-RES-004,
- * REQ-RES-005, REQ-SPRITE-002).
+ * Binds the cache convention suite of the {@code resources} test JAR on {@link ImageCache} (ADR-0045, ADR-0055,
+ * REQ-RES-004, REQ-RES-005, REQ-RT-003, REQ-RT-005, REQ-SPRITE-002).
  */
 final class ImageCacheConventionTest extends CacheConventionContract<Image>
 {
@@ -72,6 +72,18 @@ final class ImageCacheConventionTest extends CacheConventionContract<Image>
     protected void release(Image handle)
     {
         handle.release();
+    }
+
+    @Override
+    protected void reload(ResourceKey key)
+    {
+        cache.reload(key);
+    }
+
+    @Override
+    protected boolean hasContent(Image handle, int variant)
+    {
+        return handle.getPixel(0, 0) == (0xFF000000 | variant) && handle.getPixel(1, 0) == 0x80FFFFFF;
     }
 
     @Override

@@ -42,7 +42,8 @@ final class ImageCacheExampleTest
     };
 
     /**
-     * The two users share one texture, the copy has its own with the mark, and every texture is released at the end.
+     * The two users share one texture, the copy has its own with the mark, the two images hold 4 pixels of 4 bytes
+     * each, and every texture is released at the end.
      *
      * @throws IOException If the image cannot be written.
      */
@@ -62,6 +63,7 @@ final class ImageCacheExampleTest
         assertNotEquals(result.levelTexture(), result.highlightTexture());
         assertEquals(2, result.cachedInUse());
         assertEquals(0, result.cachedAtEnd());
+        assertEquals(32L, result.bytesInUse());
         assertFalse(backend.isAlive(result.levelTexture()));
         assertFalse(backend.isAlive(result.highlightTexture()));
     }

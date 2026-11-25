@@ -58,7 +58,7 @@ How to meet them in code, with the checkstyle, compiler, Javadoc, Sonar, Android
 
 ## Concurrency
 
-- One runtime thread owns the loop, the update phase, the world, the caches and by default the render phase; the platform runs the loop on the thread it requires (ADR-0018). Every public type documents its thread; the default is "not thread-safe, owned by the runtime thread". The engine starts no thread by itself. Platform events reach the runtime thread through the inbox at the start of an iteration.
+- One runtime thread owns the loop, the update phase, the world, the caches and by default the render phase; the platform runs the loop on the thread it requires (ADR-0018). Every public type documents its thread; the default is "not thread-safe, owned by the runtime thread". The engine starts no thread by itself. Platform events reach the runtime thread through the inbox at the start of an iteration. Caches check it: the thread of their first operation owns them, and another thread is refused with `IllegalStateException` (`ThreadConfinement`, ADR-0055).
 
 ## Data files
 

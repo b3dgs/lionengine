@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,10 +43,11 @@ import com.b3dgs.lionengine.Log;
 import com.b3dgs.lionengine.LogLevel;
 import com.b3dgs.lionengine.RandomSource;
 import com.b3dgs.lionengine.Registry;
+import com.b3dgs.lionengine.ThreadConfinement;
 
 /**
  * Runs {@code core} on Android API 21 (ADR-0044): random generator reference outputs (REQ-DET-003), JSON reader,
- * configuration, registry and log. Expected values are the ones of the JVM tests of {@code lionengine-core}.
+ * configuration, registry, log and thread confinement (ADR-0055). Expected values are the ones of the JVM tests of {@code lionengine-core}.
  */
 @RunWith(AndroidJUnit4.class)
 public final class CoreTest
@@ -217,5 +219,35 @@ public final class CoreTest
         assertEquals(2, written.size());
         assertTrue(written.get(0).startsWith("INFO Count"));
         assertTrue(written.get(1).startsWith("WARNING Seconds"));
+    }
+
+    /**
+     * The thread of the first check owns the object; another thread is refused (ADR-0055).
+     *
+     * @throws InterruptedException If interrupted.
+     */
+    @Test
+    public void testThreadConfinement() throws InterruptedException
+    {
+        final ThreadConfinement confinement = new ThreadConfinement("Cache");
+        confinement.check();
+        final AtomicReference<IllegalStateException> failure = new AtomicReference<>();
+        final Thread other = new Thread(() ->
+        {
+            try
+            {
+                confinement.check();
+            }
+            catch (final IllegalStateException exception)
+            {
+                failure.set(exception);
+            }
+        }, "worker");
+
+        other.start();
+        other.join();
+
+        assertTrue(failure.get().getMessage().startsWith("Cache used on the thread worker"));
+        confinement.check();
     }
 }

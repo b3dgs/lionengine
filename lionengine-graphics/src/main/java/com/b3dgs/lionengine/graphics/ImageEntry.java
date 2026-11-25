@@ -24,7 +24,8 @@ import com.b3dgs.lionengine.render.TextureStore;
  *
  * <p>
  * The pixels are never modified after creation; the texture store shares them read-only. The texture is created with
- * the entry and released with its last reference, when the entry leaves the cache. Runtime thread only.
+ * the entry and released with its last reference, when the entry leaves the cache. A development reload replaces the
+ * pixels and the texture together, with new ones (ADR-0055). Runtime thread only, checked by the cache.
  * </p>
  */
 final class ImageEntry
@@ -36,11 +37,11 @@ final class ImageEntry
     /** The key of the entry in the cache. */
     private final ImageKey key;
     /** Width in pixels. */
-    private final int width;
+    private int width;
     /** Height in pixels. */
-    private final int height;
+    private int height;
     /** The texture of the pixels. */
-    private final int texture;
+    private int texture;
     /** Pixels, packed {@code 0xAARRGGBB}, row-major; {@code null} once the entry left the cache. */
     private int[] argb;
     /** Number of handles not released. */
@@ -81,16 +82,47 @@ final class ImageEntry
 
     /**
      * Releases one reference; the last one releases the texture and removes the entry from the cache.
+     *
+     * @throws IllegalStateException If called on another thread than the owner of the cache; nothing changes then.
      */
     void release()
     {
+        cache.checkThread();
         references--;
         if (references == 0)
         {
             textures.release(texture);
             argb = null;
-            cache.remove(key);
+            cache.remove(key, getBytes());
         }
+    }
+
+    /**
+     * Replaces the pixels and the texture, for a development reload: creates the new texture, then releases the
+     * previous one.
+     *
+     * @param newWidth The new width in pixels.
+     * @param newHeight The new height in pixels.
+     * @param newArgb The new pixels, owned by the entry from now on and never modified.
+     */
+    void replace(int newWidth, int newHeight, int[] newArgb)
+    {
+        final int newTexture = textures.create(newWidth, newHeight, newArgb);
+        textures.release(texture);
+        width = newWidth;
+        height = newHeight;
+        argb = newArgb;
+        texture = newTexture;
+    }
+
+    /**
+     * Returns the bytes held by the pixels.
+     *
+     * @return The bytes, 4 per pixel.
+     */
+    long getBytes()
+    {
+        return ImageCache.bytes(width, height);
     }
 
     /**
@@ -135,9 +167,12 @@ final class ImageEntry
 
     /**
      * Uploads the texture ahead of its first use.
+     *
+     * @throws IllegalStateException If called on another thread than the owner of the cache.
      */
     void prepare()
     {
+        cache.checkThread();
         textures.prepare(texture);
     }
 
