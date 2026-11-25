@@ -66,6 +66,9 @@ Building a game with the engine (humans and agents):
 - [`docs/game-development-guide.md`](docs/game-development-guide.md) — path from nothing to a small game.
 - [`docs/api-index.md`](docs/api-index.md) — find the right types by task.
 - [`docs/agent-workflow.md`](docs/agent-workflow.md) — division of work between local and cloud agents.
+- [`docs/local-agents.md`](docs/local-agents.md) — delegating work to local models: profiles, task files, merge gate (PROPOSED).
+- [`docs/local-agent-entry.md`](docs/local-agent-entry.md) — compact entry file of a local worker.
+- [`docs/templates/LOCAL-TASK-TEMPLATE.md`](docs/templates/LOCAL-TASK-TEMPLATE.md) — task file given to a local worker.
 - [`docs/templates/GAME-AGENTS-TEMPLATE.md`](docs/templates/GAME-AGENTS-TEMPLATE.md) — `AGENTS.md` template for a game repository.
 
 Reference material:
