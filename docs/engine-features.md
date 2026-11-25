@@ -63,7 +63,7 @@ Works now: one active scene, switched by the game at a frame boundary, with ever
 - Object types used by data files are registered by name (`game:enemy`), so data can create them without code changes.
 - A seeded random generator gives the same results on every platform.
 
-Works now: reading JSON data files with exact error positions, typed parameters with strict fields, the registry of data-driven types, logging and the seeded random generator (examples `DefinitionExample` and `RandomExample`). Files are opened by key from a folder, from memory or from streams registered by the game, with providers stacked so that the first one having a key wins (example `ResourcesExample`). ZIP archives, Android assets and the shared caches of loaded data come with the next resources batches.
+Works now: reading JSON data files with exact error positions, typed parameters with strict fields, the registry of data-driven types, logging and the seeded random generator (examples `DefinitionExample` and `RandomExample`). Files are opened by key from a folder, from memory or from streams registered by the game, with providers stacked so that the first one having a key wins (example `ResourcesExample`). Decoded images are cached and shared by the image cache, which follows the cache convention every module that caches decoded data must pass. ZIP archives and Android assets come with the next resources batch.
 
 ## Window, display and rendering
 
@@ -88,7 +88,7 @@ Works now: the scaling of the logical frame to any surface size with the three p
 - Animations from frames and durations: play once, loop or ping-pong; pause, resume, stop.
 - Animations advance with the simulation, so they stay in sync with gameplay.
 
-Works now: decoding PNG images of every kind but interlaced and animated ones into pixels that the game owns and can change, with the same result on every platform, then turning them into textures (example `ImageDecodingExample`). The shared image cache, sprite sheets, sprites and animations come with the next batches.
+Works now: decoding PNG images of every kind but interlaced and animated ones, with the same result on every platform and size limits against oversized files; an image cache that decodes each image once, shares it and its texture between scenes, keeps modified copies as their own images, and frees each image with its last user (examples `ImageDecodingExample`, `ImageCacheExample`). Sprite sheets, sprites and animations come with the next batches.
 
 ## Audio
 

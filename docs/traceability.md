@@ -60,9 +60,9 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-LOOP-012 | Should | VALIDATED | ADR-0031 | — | `GameLoopTest.testSnapping`, `testSnappingDisabled`, unscaled delta during pause and at time scale 0.25 | verified by tests |
 | REQ-RT-001 | Must | VALIDATED | ADR-0018, ADR-0040 | — | `GameLoopInboxTest.testConcurrentPosts` (delivery on the runtime thread); thread rules in the Javadoc | partial: contract tests on a test platform come with `test-support` |
 | REQ-RT-002 | Must | VALIDATED | ADR-0018, ADR-0040 | — | `GameLoopInboxTest` (order, delivery before the updates, posts during a delivery) | verified by tests for the inbox; listener registration rules come with each listener holder |
-| REQ-RT-003 | Must | VALIDATED | ADR-0018, ADR-0007 | — | — | no test yet |
+| REQ-RT-003 | Must | VALIDATED | ADR-0018, ADR-0007 | — | `ImageCacheTest` (decoded pixels never change: copies are separate, `testDerivedImage`); loading is synchronous, so no worker touches the cache | partial: runtime-thread confinement is documented, not asserted (no engine type checks its thread); worker rule checked with asynchronous loading |
 | REQ-RT-004 | Should | VALIDATED | ADR-0019, ADR-0031, ADR-0040 | — | `AwtWorkerPoolTest` (the desktop worker pool) | partial: asynchronous handles come with the loading batch |
-| REQ-RT-005 | Must | VALIDATED | ADR-0019, ADR-0026, ADR-0027 | — | — | no test yet |
+| REQ-RT-005 | Must | VALIDATED | ADR-0019, ADR-0026, ADR-0027 | — | `CacheConventionContract` bound by `ImageCacheConventionTest` (reference counting, release, idempotent release, no eviction); `ImageCacheTest` (texture released with the last handle) | partial: scope release (sheet groups) and reload not yet |
 | REQ-RT-006 | Must | VALIDATED | ADR-0019 | — | — | no test yet |
 | REQ-RT-007 | Must | VALIDATED | ADR-0020, ADR-0032 | — | `RegistryTest` (registration, unknown and duplicate ids, typed parameters, two registries); `DefinitionExampleTest` | verified by tests; the no-reflection check of shared modules is not written yet |
 | REQ-RT-008 | Must | VALIDATED | ADR-0020 | — | `PlatformContract.testUnknownCapability`; `HeadlessPlatformTest.testCapability` (present and absent) | verified by tests |
@@ -71,8 +71,8 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-RES-001 | Must | VALIDATED | ADR-0005, ADR-0032 | — | `ResourceProviderContract` bound by `StreamProviderTest`, `MemoryProviderTest`, `FileProviderTest`; `ResourcesTest`; `ResourcesExampleTest` | verified by tests |
 | REQ-RES-002 | Should | VALIDATED | ADR-0005, ADR-0032 | — | `FileProviderTest`, `MemoryProviderTest`, `StreamProviderTest` (with the provider suite) | partial: archive and Android asset providers pending |
 | REQ-RES-003 | Must | VALIDATED | ADR-0005, ADR-0019 | — | `ResourceProviderContract.testCloseTwice`, `testOpenNewStream`; `ResourcesTest.testCallerOwnsStream`; `FileProviderTest` (no `File` in the contract, key mapped under the root) | verified by tests |
-| REQ-RES-004 | Must | VALIDATED | ADR-0005, ADR-0007, ADR-0045 | — | — | no test yet |
-| REQ-RES-005 | Must | VALIDATED | ADR-0007 | — | `ResourceKeyTest` (key rules, equality) | partial: release convention pending |
+| REQ-RES-004 | Must | VALIDATED | ADR-0005, ADR-0007, ADR-0045 | — | `CacheConventionContract` (`resources` test JAR) bound by `ImageCacheConventionTest` | verified by tests (graphics; audio and tile maps bind it with their caches) |
+| REQ-RES-005 | Must | VALIDATED | ADR-0007 | — | `ResourceKeyTest` (key rules, equality); `CacheConventionContract` (key equality, idempotent release, missing-resource exception) bound by `ImageCacheConventionTest`; `ImageCacheTest` (key and discriminator) | verified by tests |
 | REQ-RES-006 | Must | VALIDATED | ADR-0032 | — | `ResourceExceptionTest` (reasons, key, cause); `ResourcesTest` (order, override, no fallback, read-only refusal, first writable); `ResourceProviderContract` (error reasons, `testConcurrentReads`) bound by every provider | verified by tests |
 | REQ-AUDIO-001 | Should | VALIDATED | ADR-0004, ADR-0022 | — | — | no test yet |
 | REQ-AUDIO-002 | Should | VALIDATED | ADR-0027, ADR-0033 | — | — | no test yet |
@@ -87,10 +87,10 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-AUDIO-011 | Should | VALIDATED | ADR-0027 | — | — | no test yet |
 | REQ-AUDIO-012 | Should | VALIDATED | ADR-0033 | — | — | no test yet |
 | REQ-AUDIO-013 | Should | VALIDATED | ADR-0033 | — | — | no test yet |
-| REQ-SPR-001 | Must | VALIDATED | ADR-0003, ADR-0026 | — | `PixelBufferTest` (pixels changed by the caller, arrays copied in and out); `ImageDecoderContract` (`testNewBuffer`); `ImageDecodingExampleTest` | partial: turning a buffer into a cached source comes with the image cache (sprite sheet batch 2) |
+| REQ-SPR-001 | Must | VALIDATED | ADR-0003, ADR-0026 | — | `PixelBufferTest` (pixels changed by the caller, arrays copied in and out); `ImageDecoderContract` (`testNewBuffer`); `ImageCacheTest` (`testDerivedImage`: a modified copy becomes a derived image, the cached image never changes); `ImageDecodingExampleTest`, `ImageCacheExampleTest` | verified by tests |
 | REQ-SPR-002 | Must | VALIDATED | ADR-0003, ADR-0026 | — | — | no test yet |
 | REQ-SPRITE-001 | Must | VALIDATED | ADR-0003, ADR-0026 | — | — | no test yet |
-| REQ-SPRITE-002 | Must | VALIDATED | ADR-0005, ADR-0007, ADR-0026 | — | — | no test yet |
+| REQ-SPRITE-002 | Must | VALIDATED | ADR-0005, ADR-0007, ADR-0026 | — | `ImageCacheTest` (key and discriminator, hit, miss, textures, release, double release); `CacheConventionContract` bound by `ImageCacheConventionTest`; `ImageCacheExampleTest`; device test `GraphicsTest` on API 21 | verified by tests |
 | REQ-SPRITE-003 | Must | VALIDATED | ADR-0014, ADR-0016, ADR-0026 | — | — | no test yet |
 | REQ-SPRITE-004 | Must | VALIDATED | ADR-0003, ADR-0026 | — | — | no test yet |
 | REQ-SPRITE-005 | Should | VALIDATED | ADR-0003, ADR-0026 | — | — | no test yet |

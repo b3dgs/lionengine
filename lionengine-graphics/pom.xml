@@ -31,5 +31,20 @@
             <artifactId>lionengine-render-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- ADR-0045: the cache convention suite and the fake provider of the resources test JAR, and the recording
+             render backend of test-support as texture store. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-resources</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-test-support</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

@@ -170,6 +170,17 @@ public final class PixelBuffer
     }
 
     /**
+     * Returns the array of the pixels itself, for the {@link ImageCache}, which takes over the buffer that a decoder
+     * returned instead of copying it: nobody uses the buffer afterwards (ADR-0026).
+     *
+     * @return The array of the pixels, row-major.
+     */
+    int[] array()
+    {
+        return argb;
+    }
+
+    /**
      * Replaces the pixels of one row, for the decoders of {@code graphics}.
      *
      * @param y The row, from {@code 0} at the top (in range).
