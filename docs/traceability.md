@@ -11,7 +11,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-TECH-003 | Must | VALIDATED | ADR-0001, ADR-0013 | — | — | no test yet |
 | REQ-TECH-004 | Must | VALIDATED | ADR-0001 | — | — | no test yet |
 | REQ-TECH-005 | Must | VALIDATED | ADR-0001 | — | — | no test yet |
-| REQ-TECH-006 | Must | VALIDATED | ADR-0001, ADR-0012, ADR-0041, ADR-0044, ADR-0049 | — | `android` CI job: `verifyDebugDex` (D8) and `verifyReleaseDex` (R8) on every shared module; device tests `CoreTest`, `RuntimeTest`, `ResourcesTest`, `RenderTest`, `PlatformTest` on an API 21 emulator (`android/verification`) | verified by the Android job |
+| REQ-TECH-006 | Must | VALIDATED | ADR-0001, ADR-0012, ADR-0041, ADR-0044, ADR-0049 | — | `android` CI job: `verifyDebugDex` (D8) and `verifyReleaseDex` (R8) on every shared module; device tests `CoreTest`, `RuntimeTest`, `ResourcesTest`, `RenderTest`, `PlatformTest`, `GraphicsTest` on an API 21 emulator (`android/verification`) | verified by the Android job |
 | REQ-TECH-007 | Must | VALIDATED | ADR-0001, ADR-0012, ADR-0041, ADR-0044 | — | `android` CI job: lint `NewApi` as an error on the shared sources (`android/api-lint`); probes `LanguageProbeTest`, `LibraryProbeTest` on an API 21 emulator; results in `android-compatibility.md` | verified by the Android job |
 | REQ-TECH-008 | Must | VALIDATED | ADR-0001 | — | — | no test yet |
 | REQ-CORE-002 | Must | VALIDATED | ADR-0012, ADR-0015 | — | — | no test yet |
@@ -87,7 +87,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-AUDIO-011 | Should | VALIDATED | ADR-0027 | — | — | no test yet |
 | REQ-AUDIO-012 | Should | VALIDATED | ADR-0033 | — | — | no test yet |
 | REQ-AUDIO-013 | Should | VALIDATED | ADR-0033 | — | — | no test yet |
-| REQ-SPR-001 | Must | VALIDATED | ADR-0003, ADR-0026 | — | — | no test yet |
+| REQ-SPR-001 | Must | VALIDATED | ADR-0003, ADR-0026 | — | `PixelBufferTest` (pixels changed by the caller, arrays copied in and out); `ImageDecoderContract` (`testNewBuffer`); `ImageDecodingExampleTest` | partial: turning a buffer into a cached source comes with the image cache (sprite sheet batch 2) |
 | REQ-SPR-002 | Must | VALIDATED | ADR-0003, ADR-0026 | — | — | no test yet |
 | REQ-SPRITE-001 | Must | VALIDATED | ADR-0003, ADR-0026 | — | — | no test yet |
 | REQ-SPRITE-002 | Must | VALIDATED | ADR-0005, ADR-0007, ADR-0026 | — | — | no test yet |
@@ -97,7 +97,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-SPRITE-006 | Must | VALIDATED | ADR-0003, ADR-0026 | — | — | no test yet |
 | REQ-SPRITE-007 | Must | VALIDATED | ADR-0003, ADR-0026 | — | — | no test yet |
 | REQ-SPRITE-008 | Could | VALIDATED | ADR-0003, ADR-0026 | — | review of `CommandBuffer` (plain entries in parallel arrays, read by rank: a backend may batch consecutive entries of one texture) | verified by review |
-| REQ-SPRITE-009 | Must | VALIDATED | ADR-0026, ADR-0033 | — | — | no test yet |
+| REQ-SPRITE-009 | Must | VALIDATED | ADR-0026, ADR-0033 | — | `PngDecoderTest` (every color type and bit depth with each filter type, scaling, 16-bit reduction, `tRNS`, rejections: interlaced, animated, truncated, CRC, invalid chunks); `ImageDecoderContract` bound by `PngDecoderContractTest`; `PixelBufferTest`; device test `GraphicsTest` on API 21 | verified by tests |
 | REQ-SPRITE-010 | Must | VALIDATED | ADR-0026, ADR-0033, ADR-0047 | — | `CommandBufferTest` (fields, defaults, `testPresentationOrder`, `testStableSort`, viewports, growth, `testSteadyStateAllocatesNothing`); `RenderBackendContract`; `MovingRectangleTest` | partial: nearest-neighbor sampling is checked with `render-awt` (platform batch 3) |
 | REQ-ANIM-001 | Must | VALIDATED | ADR-0026, ADR-0033 | — | — | no test yet |
 | REQ-ANIM-002 | Must | VALIDATED | ADR-0003 | — | — | no test yet |

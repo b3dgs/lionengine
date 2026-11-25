@@ -64,6 +64,19 @@
             <artifactId>lionengine-resources-memory</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-graphics</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- ADR-0045: the PNG writer of the graphics test JAR builds the images of the example tests in memory. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-graphics</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
         <!-- ADR-0045: the headless application kit, for the headless game tests of the examples. -->
         <dependency>
             <groupId>${project.groupId}</groupId>
