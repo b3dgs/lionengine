@@ -68,6 +68,7 @@ Building a game with the engine (humans and agents):
 - [`docs/agent-workflow.md`](docs/agent-workflow.md) — division of work between local and cloud agents.
 - [`docs/local-agents.md`](docs/local-agents.md) — delegating work to local models: profiles, machine setup, task files, escalation, merge gate, benchmark (PROPOSED; ADR-0053).
 - [`docs/local-agent-entry.md`](docs/local-agent-entry.md) — compact entry file of a local worker.
+- [`local-agents/`](local-agents/README.md) — owner's guide, not for agents: how to set up the machines and run the benchmark of the local models.
 - [`docs/templates/LOCAL-TASK-TEMPLATE.md`](docs/templates/LOCAL-TASK-TEMPLATE.md) — task file given to a local worker.
 - [`docs/templates/GAME-AGENTS-TEMPLATE.md`](docs/templates/GAME-AGENTS-TEMPLATE.md) — `AGENTS.md` template for a game repository.
 

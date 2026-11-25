@@ -85,7 +85,7 @@ The worker records a gap in its report and stops that part of the work; Claude C
 
 The benchmark task is [`local-tasks/benchmark-random-example.md`](local-tasks/benchmark-random-example.md): the script removes `RandomExample` and its test from the worktree (field `Remove before start`, used only by benchmarks) and the worker recreates them from the API index and the Javadoc; the gate is the build of `lionengine-examples` and the API-index check.
 
-On each machine, run it 3 times (change the slug each time, for example `bench-random-example-pc1-1`, and the profile line), then delete the branches: a benchmark branch is never pushed. A model is confirmed when at least 2 runs end `PASSED` in under 30 minutes each; otherwise benchmark the fallback. For PC3, copy the task with `Model profile: PC3`; Claude Code applies each answer unchanged and runs the gate; 2 of 3 passing answers confirm the model.
+The owner's step-by-step guide is [`../local-agents/README.md`](../local-agents/README.md); `../local-agents/run-benchmark.sh <pc1|pc2|pc3> <run>` fills the slug and the profile of the task for each run. On each machine, run it 3 times, then delete the branches: a benchmark branch is never pushed. A model is confirmed when at least 2 runs end `PASSED` in under 30 minutes each; otherwise benchmark the fallback. For PC3, copy the task with `Model profile: PC3`; Claude Code applies each answer unchanged and runs the gate; 2 of 3 passing answers confirm the model.
 
 Results (fill from the reports; `OQ-170` is resolved when every machine has a confirmed model):
 
