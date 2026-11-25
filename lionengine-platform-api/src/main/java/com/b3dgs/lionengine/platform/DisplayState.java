@@ -76,7 +76,7 @@ public final class DisplayState
      * written, {@link #SEPARATOR} after. Tracked instead of testing the builder for emptiness, because
      * {@code CharSequence.isEmpty()} is not available on Android API 21 (ADR-0044).
      */
-    private String separator;
+    private String nextSeparator;
 
     /**
      * Creates a state whose surface has the logical frame size. Nothing is resolved yet.
@@ -138,11 +138,11 @@ public final class DisplayState
         final StringBuilder reason = new StringBuilder(reasons);
         if (reasons.isEmpty())
         {
-            separator = NO_SEPARATOR;
+            nextSeparator = NO_SEPARATOR;
         }
         else
         {
-            separator = SEPARATOR;
+            nextSeparator = SEPARATOR;
         }
         if (scaling.policy() != request.scalingPolicy())
         {
@@ -168,8 +168,8 @@ public final class DisplayState
      */
     private void addReason(StringBuilder reasons, String reason)
     {
-        reasons.append(separator).append(reason);
-        separator = SEPARATOR;
+        reasons.append(nextSeparator).append(reason);
+        nextSeparator = SEPARATOR;
     }
 
     /**
