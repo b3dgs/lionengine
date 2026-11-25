@@ -190,12 +190,13 @@ final class ImageCacheTest
     {
         final Image hero = cache.load(HERO);
         final Image red = cache.add(HERO, RED, hero.copyToBuffer());
+        final ResourceKey absent = new ResourceKey("absent.png");
 
         assertEquals(hero.getTexture(), cache.acquire(HERO, ImageCache.DECODED).getTexture());
         assertEquals(red.getTexture(), cache.acquire(HERO, RED).getTexture());
         assertEquals(1, provider.getOpened());
         assertThrows(IllegalStateException.class, () -> cache.acquire(HERO, "blue"));
-        assertThrows(IllegalStateException.class, () -> cache.acquire(new ResourceKey("absent.png"), RED));
+        assertThrows(IllegalStateException.class, () -> cache.acquire(absent, RED));
     }
 
     /**
