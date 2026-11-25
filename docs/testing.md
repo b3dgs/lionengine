@@ -21,7 +21,7 @@
 - Headless tests are the reference for engine logic.
 - A successful Java build does not validate Android compatibility: the Android pipeline must run D8/R8 and produce the expected DEX artifacts.
 - APIs requiring *core library desugaring* must be covered by a verification build and tests on the targeted Android versions.
-- Tests depending on a device or graphical environment are identified as such and must not make unit tests fragile.
+- Tests depending on a device or graphical environment are identified as such and must not make unit tests fragile: they carry the JUnit tag `platform`, which the default build leaves out (`excludedGroups` in the aggregator `pom.xml`), and the Maven profile `platform-tests` runs them. They also skip themselves without a display. The Linux CI jobs, the blocking build and Sonar, run them on the virtual display of `xvfb-run`; the Windows and macOS jobs run the default build.
 - Tests must be deterministic: no dependency on wall-clock time, real sleeping, execution order or random seeds that are not fixed.
 
 ## Envisaged test matrix
@@ -32,7 +32,7 @@
 | Runtime | inbox order, overflow and control requests, asynchronous handles and load groups with a fake worker pool, listener registration during dispatch (REQ-RT-001 to REQ-RT-010) | `platform-api` suites (test JAR) | platform events injected through the headless platform of `test-support` (REQ-PLATFORM-002) |
 | Core | JSON reader (valid, invalid, numbers, escapes, duplicate keys, limits), definition errors with path, registry ids and typed configuration, logging facade, random generator reference vectors (REQ-DEF-*, REQ-CORE-006, REQ-DET-003) | — | definition files loaded through `resources` |
 | Scenes | lifecycle order, switch at a frame boundary, overlay stack, flow resolution order, conditions, single pending transition, validation errors (REQ-SCENE-*) | — | manually driven loop: four-scene flow with pause and exit |
-| Desktop platform (`platform-awt`) | mapping of AWT display modes to neutral values, fallback order | `platform-api` suites from its test JAR (REQ-PLATFORM-001) | real display required: platform tests, kept apart from headless tests |
+| Desktop platform (`platform-awt`, `render-awt`) | mapping of AWT display modes and events to neutral values, device-pixel conversion, frame pacing, drawing of each command field on the logical frame (headless) | `platform-api` suite bound on `AwtPlatform` with a real window, `render-api` suite bound on `AwtRenderBackend` headless (REQ-PLATFORM-001) | real display required: window, runtime thread, screen capture of a presented frame and the desktop example, as platform tests (tag `platform`) |
 | Resources | resolution, errors, streams, key normalization, idempotent release | each provider; key and release suite run by each consuming module (REQ-RES-005) | archive/Android/filesystem |
 | Audio | playback state, commands, seeded variant selection, playlist advance, cache hit and miss | short and long sound suites of the `audio-api` test JAR, run on every backend (REQ-AUDIO-009) | headless fake backend with controllable clock; codec, latency and Android on device (platform tests, later) |
 | Sprites | slicing, animation, mutation | data API | upload and rendering |

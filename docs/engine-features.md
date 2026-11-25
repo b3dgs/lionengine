@@ -9,7 +9,7 @@ One line per capability, no implementation detail. Each area links to its featur
 - **Available**: implemented, tested, with an example.
 - **Planned**: in the roadmap, not yet specified in detail.
 
-Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop without asynchronous loading ([`features/game-loop.md`](features/game-loop.md)), the single-scene manager ([`features/scenes.md`](features/scenes.md)), the file, memory and application-stream resource providers ([`features/resources.md`](features/resources.md)) and the headless platform with the scaling function ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)) exist: resources and data files, the game loop, scenes, and window and display are *In progress*, every other area is *Specified*.
+Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop without asynchronous loading ([`features/game-loop.md`](features/game-loop.md)), the single-scene manager ([`features/scenes.md`](features/scenes.md)), the file, memory and application-stream resource providers ([`features/resources.md`](features/resources.md)) and the platform with rendering, headless and in a desktop window ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)) exist: resources and data files, the game loop, scenes, window and display, and platforms are *In progress*, every other area is *Specified*.
 
 | Area | State | Phase |
 |---|---|---|
@@ -23,7 +23,7 @@ Today the build skeleton, the cross-module contracts ([`features/contract-skelet
 | [Tile maps](#tile-maps) | Specified | 3 |
 | [Camera](#camera) | Specified | 3 |
 | [Input](#input) | Specified | 3–4 |
-| [Platforms](#platforms) | Specified | 1–4 |
+| [Platforms](#platforms) | In progress | 1–4 |
 | [Multiplayer and network](#multiplayer-and-network) | Specified | 5 |
 
 ## Game loop and timing
@@ -76,7 +76,7 @@ Works now: reading JSON data files with exact error positions, typed parameters 
 - The window reports resize, focus, background and close; closing can be confirmed by the game.
 - Version 11 opens on the default monitor; on high-density (HiDPI) screens the scaling works on real device pixels, so whole-multiple scaling stays crisp. Choosing another monitor is not offered yet (ADR-0043).
 
-Works now: the scaling of the logical frame to any surface size with the three policies, and a headless platform on which a game runs and reacts to resize, background, foreground and close, for tests without a window (example `HeadlessGameTest`). Drawing commands and the desktop window come with the next batches.
+Works now: the scaling of the logical frame to any surface size with the three policies; drawing with render commands (textures, positions, scale, rotation, tint, opacity, layers, views); a desktop window that shows the game, scales it when resized, pauses when iconified and stops when closed unless the game vetoes it (example `MovingRectangleDesktop`); and a headless platform with a recording renderer on which a game runs, draws and reacts to resize, background, foreground and close, for tests without a window (examples `HeadlessGameTest`, `MovingRectangle`). The desktop window is windowed only: full screen, display modes and output filters come with their own batches.
 
 ## Images, sprites and animations
 
@@ -144,6 +144,8 @@ Works now: the scaling of the logical frame to any surface size with the three p
 - Android from API level 21, with the same game code (Phase 4).
 - OpenGL rendering on desktop and Android, needed for the CRT filter (Phase 4).
 - A headless mode for automated tests and servers.
+
+Works now: desktop through Java AWT (a window, the loop on its own thread, events, rendering) and the headless platform for tests (examples `MovingRectangleDesktop`, `HeadlessGameTest`). Android and OpenGL are not started.
 
 ## Multiplayer and network
 

@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.Test;
@@ -32,8 +33,12 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.InboxSpy;
 import com.b3dgs.lionengine.LoopDriver;
 import com.b3dgs.lionengine.ManualLoopDriver;
+import com.b3dgs.lionengine.render.CommandBuffer;
 import com.b3dgs.lionengine.render.FrameScaling;
+import com.b3dgs.lionengine.render.OutputFilter;
+import com.b3dgs.lionengine.render.RenderBackend;
 import com.b3dgs.lionengine.render.ScalingPolicy;
+import com.b3dgs.lionengine.render.TextureStore;
 
 /**
  * Contract suite of {@link Platform} (ADR-0018, ADR-0020, ADR-0031, ADR-0040, ADR-0045, ADR-0046, REQ-FE-001,
@@ -389,6 +394,50 @@ public abstract class PlatformContract
     }
 
     /**
+     * The backend is attached before the start only.
+     */
+    @Test
+    void testAttach()
+    {
+        final DeliveringDriver driver = new DeliveringDriver();
+        final Platform platform = createPlatform(WIDTH, HEIGHT, FIT);
+
+        assertThrows(IllegalArgumentException.class, () -> platform.attach(null));
+        platform.attach(new FilterBackend());
+        platform.attach(new FilterBackend());
+        platform.start(driver, driver.inbox);
+        final FilterBackend late = new FilterBackend();
+        assertThrows(IllegalStateException.class, () -> platform.attach(late));
+    }
+
+    /**
+     * The filters applied are those the attached backend implements, in order; the others are skipped and reported;
+     * {@code NONE} is no filter (REQ-FILTER-002).
+     */
+    @Test
+    void testFiltersOfBackend()
+    {
+        final DisplayRequest request = new DisplayRequest(ScreenMode.WINDOWED,
+                                                          null,
+                                                          ScalingPolicy.FIT,
+                                                          List.of(OutputFilter.NONE,
+                                                                  OutputFilter.BILINEAR,
+                                                                  OutputFilter.CRT));
+        final Platform platform = createPlatform(WIDTH, HEIGHT, request);
+        final EffectiveResult without = platform.getEffectiveResult();
+        assertTrue(without.effective().filters().isEmpty());
+        assertTrue(without.degraded());
+
+        platform.attach(new FilterBackend());
+
+        final EffectiveResult with = platform.getEffectiveResult();
+        assertSame(request, with.requested());
+        assertEquals(List.of(OutputFilter.BILINEAR), with.effective().filters());
+        assertTrue(with.degraded());
+        assertTrue(with.reason().contains(OutputFilter.CRT.id()));
+    }
+
+    /**
      * {@code null} requests and listeners are rejected; removing an unknown listener has no effect.
      */
     @Test
@@ -408,6 +457,60 @@ public abstract class PlatformContract
     private interface UnknownCapability
     {
         // Marker of the suite.
+    }
+
+    /**
+     * Backend that implements {@code NONE} and bilinear filtering, and draws nothing.
+     */
+    private static final class FilterBackend implements RenderBackend, TextureStore
+    {
+        /** Last texture handle. */
+        private int textures;
+
+        /**
+         * Creates the backend.
+         */
+        FilterBackend()
+        {
+            super();
+        }
+
+        @Override
+        public TextureStore getTextureStore()
+        {
+            return this;
+        }
+
+        @Override
+        public boolean isSupported(OutputFilter filter)
+        {
+            return OutputFilter.NONE.equals(filter) || OutputFilter.BILINEAR.equals(filter);
+        }
+
+        @Override
+        public void present(CommandBuffer commands)
+        {
+            // Draws nothing.
+        }
+
+        @Override
+        public int create(int width, int height, int[] argb)
+        {
+            textures++;
+            return textures;
+        }
+
+        @Override
+        public void prepare(int texture)
+        {
+            // Nothing to upload.
+        }
+
+        @Override
+        public void release(int texture)
+        {
+            // Nothing to release.
+        }
     }
 
     /**

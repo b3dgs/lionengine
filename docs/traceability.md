@@ -19,7 +19,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-CORE-004 | Must | VALIDATED | ADR-0012, ADR-0045, ADR-0049, ADR-0050 | — | — | no test yet |
 | REQ-CORE-005 | Must | VALIDATED | ADR-0012, ADR-0015, ADR-0040, ADR-0042, ADR-0045, ADR-0046, ADR-0047, ADR-0048, ADR-0049 | — | `radial-encapsulation-maven-plugin` per module, `scripts/check-modules.py`, Maven graph; probes: sibling package, undeclared module, row and test-scope violations | verified by the build (probes) |
 | REQ-CORE-006 | Should | VALIDATED | ADR-0031 | — | `LogTest` (levels, arguments, sink replacement, allocation with a disabled level), `SystemErrSinkTest` | verified by tests |
-| REQ-TEST-001 | Must | VALIDATED | ADR-0017, ADR-0022, ADR-0045, ADR-0050 | — | `ControllableClock` (runtime test JAR) used by `GameLoopTest`; `HeadlessPlatform` (`test-support`) bound to `PlatformContract` by `HeadlessPlatformTest`; `HeadlessGameTest` (examples) | partial: the recording render backend comes with platform batch 2 |
+| REQ-TEST-001 | Must | VALIDATED | ADR-0017, ADR-0022, ADR-0045, ADR-0050 | — | `ControllableClock` (runtime test JAR) used by `GameLoopTest`; `HeadlessPlatform` (`test-support`) bound to `PlatformContract` by `HeadlessPlatformTest`; `RecordingBackend` bound to `RenderBackendContract` by `RecordingBackendTest`; `HeadlessGameTest`, `MovingRectangleTest` (examples) | verified by tests |
 | REQ-DOC-001 | Must | VALIDATED | ADR-0023, ADR-0042 | — | `DefinitionExampleTest`, `RandomExampleTest`, `GameLoopExampleTest` run the examples in the build | partial: `core` and `runtime` examples only |
 | REQ-DOC-002 | Should | VALIDATED | ADR-0023 | — | `scripts/check-api-index.py` on the `core` and `runtime` rows | partial: `core` and `runtime` rows only |
 | REQ-DOC-003 | Should | VALIDATED | ADR-0023 | — | — | no test yet |
@@ -27,10 +27,10 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-DOC-005 | Should | VALIDATED | ADR-0023, ADR-0032, ADR-0042 | — | `scripts/check-api-index.py`; probe: unknown type and example fail | check in place; the index names no type yet |
 | REQ-DOC-006 | Should | VALIDATED | ADR-0023, ADR-0032, ADR-0042 | — | `scripts/check-provenance.py`; probes: missing entry and incomplete generated entry fail | check in place; no asset yet |
 | REQ-DOC-007 | Must | VALIDATED | ADR-0012, ADR-0032 | — | — | no test yet |
-| REQ-FE-001 | Must | VALIDATED | ADR-0022 | — | `PlatformContract` (`platform-api` test JAR), bound by `HeadlessPlatformTest` | partial: one platform binds the suite; `platform-awt` comes with platform batch 3 |
-| REQ-FE-002 | Should | VALIDATED | ADR-0022 | — | — | no test yet |
-| REQ-FE-003 | Must | VALIDATED | ADR-0002, ADR-0008 | — | `PlatformContract.testInitialState`, `testApplyAtFrameBoundary`; `scripts/check-modules.py` (no frontend dependency of `platform-api`) | partial: presentation by a backend comes with platform batch 2 |
-| REQ-PLATFORM-001 | Must | VALIDATED | ADR-0008, ADR-0022, ADR-0033, ADR-0045 | — | — | no test yet |
+| REQ-FE-001 | Must | VALIDATED | ADR-0022 | — | `PlatformContract` (`platform-api` test JAR), bound by `HeadlessPlatformTest` and `AwtPlatformContractTest` (platform test) | verified by tests |
+| REQ-FE-002 | Should | VALIDATED | ADR-0022 | — | `AwtPlatformContractTest`, `AwtRenderBackendContractTest`, `HeadlessPlatformTest`, `RecordingBackendTest` | partial: desktop AWT and headless exist; the capability matrix per frontend and Android come later |
+| REQ-FE-003 | Must | VALIDATED | ADR-0002, ADR-0008 | — | `PlatformContract.testInitialState`, `testApplyAtFrameBoundary`, `testFiltersOfBackend`; `RenderBackendContract`; `scripts/check-modules.py` (no frontend dependency of `platform-api` or `render-api`); `MovingRectangleDesktopTest` (platform test) | verified by tests |
+| REQ-PLATFORM-001 | Must | VALIDATED | ADR-0008, ADR-0022, ADR-0033, ADR-0045 | — | `AwtPlatformContractTest`, `AwtPlatformWindowTest`, `AwtRenderBackendWindowTest` (platform tests); `scripts/check-modules.py` | partial: the Android build check (no `java.desktop`) comes with the Android job |
 | REQ-PLATFORM-002 | Must | VALIDATED | ADR-0017, ADR-0018, ADR-0031, ADR-0040, ADR-0045, ADR-0046 | — | `PlatformContract` (`testBackgroundAndForeground`, `testCloseStops`, `testCloseVeto`, `testListenerAddedDuringDelivery`, `testResize`, `testInformationalEvents`) bound by `HeadlessPlatformTest`; `HeadlessGameTest` | partial: context loss and recovery by a backend come with platform batches 2 and 3 |
 | REQ-DISPLAY-001 | Must | VALIDATED | ADR-0002, ADR-0043 | — | — | no test yet |
 | REQ-DISPLAY-002 | Must | VALIDATED | ADR-0002, ADR-0006 | — | — | no test yet |
@@ -41,9 +41,9 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-DISPLAY-007 | Must | VALIDATED | ADR-0006, ADR-0046 | — | `FrameScalingTest` (`FIT`, `INTEGER`, `STRETCH`, `INTEGER` fallback, empty surface); `PlatformContract.testIntegerFallback` (effective policy reported) | verified by tests |
 | REQ-DISPLAY-008 | Must | VALIDATED | ADR-0006, ADR-0018, ADR-0046 | — | `DisplayRequestTest` (request and effective-result values) | partial: delivery at the frame boundary pending |
 | REQ-DISPLAY-009 | Should | VALIDATED | ADR-0025, ADR-0043 | — | — | no test yet |
-| REQ-DISPLAY-010 | Should | VALIDATED | ADR-0043 | — | — | no test yet |
+| REQ-DISPLAY-010 | Should | VALIDATED | ADR-0043 | — | `AwtWindowEventsTest.testDevicePixels` (conversion with a fake scale) | partial: the platform test on a scaled desktop display is a hardware test, not run |
 | REQ-FILTER-001 | Must | VALIDATED | ADR-0002, ADR-0025 | — | `OutputFilterTest` (standard identifiers) | partial: capability query pending |
-| REQ-FILTER-002 | Should | VALIDATED | ADR-0002, ADR-0006, ADR-0046 | — | — | no test yet |
+| REQ-FILTER-002 | Should | VALIDATED | ADR-0002, ADR-0006, ADR-0046 | — | `PlatformContract.testFiltersOfBackend` (unsupported filter skipped and reported) | partial: fallback replacements come with output filtering |
 | REQ-FILTER-003 | Could | VALIDATED | ADR-0002, ADR-0033, ADR-0047 | — | `OutputFilterTest` (custom ids) | partial: registration on the backend pending |
 | REQ-FILTER-004 | Should | VALIDATED | ADR-0025, ADR-0033 | — | — | no test yet |
 | REQ-LOOP-001 | Must | VALIDATED | ADR-0017 | — | `LoopDriverContract` (core test JAR), bound by `GameLoopContractTest` and `ManualLoopDriverTest` | verified by tests |
@@ -61,7 +61,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-RT-001 | Must | VALIDATED | ADR-0018, ADR-0040 | — | `GameLoopInboxTest.testConcurrentPosts` (delivery on the runtime thread); thread rules in the Javadoc | partial: contract tests on a test platform come with `test-support` |
 | REQ-RT-002 | Must | VALIDATED | ADR-0018, ADR-0040 | — | `GameLoopInboxTest` (order, delivery before the updates, posts during a delivery) | verified by tests for the inbox; listener registration rules come with each listener holder |
 | REQ-RT-003 | Must | VALIDATED | ADR-0018, ADR-0007 | — | — | no test yet |
-| REQ-RT-004 | Should | VALIDATED | ADR-0019, ADR-0031, ADR-0040 | — | — | no test yet |
+| REQ-RT-004 | Should | VALIDATED | ADR-0019, ADR-0031, ADR-0040 | — | `AwtWorkerPoolTest` (the desktop worker pool) | partial: asynchronous handles come with the loading batch |
 | REQ-RT-005 | Must | VALIDATED | ADR-0019, ADR-0026, ADR-0027 | — | — | no test yet |
 | REQ-RT-006 | Must | VALIDATED | ADR-0019 | — | — | no test yet |
 | REQ-RT-007 | Must | VALIDATED | ADR-0020, ADR-0032 | — | `RegistryTest` (registration, unknown and duplicate ids, typed parameters, two registries); `DefinitionExampleTest` | verified by tests; the no-reflection check of shared modules is not written yet |
@@ -96,9 +96,9 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-SPRITE-005 | Should | VALIDATED | ADR-0003, ADR-0026 | — | — | no test yet |
 | REQ-SPRITE-006 | Must | VALIDATED | ADR-0003, ADR-0026 | — | — | no test yet |
 | REQ-SPRITE-007 | Must | VALIDATED | ADR-0003, ADR-0026 | — | — | no test yet |
-| REQ-SPRITE-008 | Could | VALIDATED | ADR-0003, ADR-0026 | — | — | no test yet |
+| REQ-SPRITE-008 | Could | VALIDATED | ADR-0003, ADR-0026 | — | review of `CommandBuffer` (plain entries in parallel arrays, read by rank: a backend may batch consecutive entries of one texture) | verified by review |
 | REQ-SPRITE-009 | Must | VALIDATED | ADR-0026, ADR-0033 | — | — | no test yet |
-| REQ-SPRITE-010 | Must | VALIDATED | ADR-0026, ADR-0033, ADR-0047 | — | — | no test yet |
+| REQ-SPRITE-010 | Must | VALIDATED | ADR-0026, ADR-0033, ADR-0047 | — | `CommandBufferTest` (fields, defaults, `testPresentationOrder`, `testStableSort`, viewports, growth, `testSteadyStateAllocatesNothing`); `RenderBackendContract`; `MovingRectangleTest` | partial: nearest-neighbor sampling is checked with `render-awt` (platform batch 3) |
 | REQ-ANIM-001 | Must | VALIDATED | ADR-0026, ADR-0033 | — | — | no test yet |
 | REQ-ANIM-002 | Must | VALIDATED | ADR-0003 | — | — | no test yet |
 | REQ-ANIM-003 | Must | VALIDATED | ADR-0003, ADR-0017 | — | — | no test yet |

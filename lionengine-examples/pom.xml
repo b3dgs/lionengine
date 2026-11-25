@@ -13,6 +13,9 @@
     <name>LionEngine Examples</name>
     <description>Minimal and demonstration applications, headless first, compiled and run by the build</description>
     <properties>
+        <!-- The desktop examples use the desktop-only modules, whose class files are Java 25 (ADR-0044); the examples
+             are never part of an Android build. -->
+        <jdk.version>25</jdk.version>
         <radial.base-package>com.b3dgs.lionengine.examples</radial.base-package>
     </properties>
     <dependencies>
@@ -24,6 +27,26 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>lionengine-runtime</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-render-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-platform-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-platform-awt</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-render-awt</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

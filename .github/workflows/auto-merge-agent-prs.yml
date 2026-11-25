@@ -143,6 +143,9 @@ jobs:
                 echo "::error::The sonar check ended with: $result. The pull request is not merged."
                 exit 1
                 ;;
+              *)
+                echo "Sonar check not completed yet: $result"
+                ;;
             esac
             sleep 30
           done
