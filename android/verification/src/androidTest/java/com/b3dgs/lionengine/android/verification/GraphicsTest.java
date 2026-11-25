@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.android.verification;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
@@ -517,6 +518,41 @@ public final class GraphicsTest
         second.release();
         red.release();
         assertEquals(0, cache.size());
+        assertTrue(textures.alive.isEmpty());
+    }
+
+    /**
+     * The image cache counts its memory, refuses an image above its limit, and reloads a changed image (ADR-0055).
+     *
+     * @throws IOException If the image cannot be written.
+     */
+    @Test
+    public void testImageCacheLimitAndReload() throws IOException
+    {
+        final ResourceKey key = new ResourceKey("sprites/hero.png");
+        final MemoryProvider memory = new MemoryProvider();
+        try (OutputStream output = memory.openWrite(key))
+        {
+            output.write(png(2, 2, 8, GRAY, 0, null, null, 0, 85, 170, 255));
+        }
+        final Textures textures = new Textures();
+        final ImageCache cache = new ImageCache(new Resources(memory), textures, 20L);
+
+        final Image hero = cache.load(key);
+        final int previous = hero.getTexture();
+        assertEquals(16L, cache.getUsedBytes());
+        assertThrows(IllegalStateException.class, () -> cache.add(key, "red", new PixelBuffer(2, 1)));
+        try (OutputStream output = memory.openWrite(key))
+        {
+            output.write(png(1, 1, 8, GRAY, 0, null, null, 255));
+        }
+        cache.reload(key);
+
+        assertEquals(1, hero.getWidth());
+        assertEquals(0xFFFFFFFF, hero.getPixel(0, 0));
+        assertFalse(textures.alive.contains(Integer.valueOf(previous)));
+        assertEquals(4L, cache.getUsedBytes());
+        hero.release();
         assertTrue(textures.alive.isEmpty());
     }
 

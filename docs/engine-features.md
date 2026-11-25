@@ -88,7 +88,7 @@ Works now: the scaling of the logical frame to any surface size with the three p
 - Animations from frames and durations: play once, loop or ping-pong; pause, resume, stop.
 - Animations advance with the simulation, so they stay in sync with gameplay.
 
-Works now: decoding PNG images of every kind but interlaced and animated ones, with the same result on every platform and size limits against oversized files; an image cache that decodes each image once, shares it and its texture between scenes, keeps modified copies as their own images, and frees each image with its last user (examples `ImageDecodingExample`, `ImageCacheExample`). Sprite sheets, sprites and animations come with the next batches.
+Works now: decoding PNG images of every kind but interlaced and animated ones, with the same result on every platform and size limits against oversized files; an image cache that decodes each image once, shares it and its texture between scenes, keeps modified copies as their own images, frees each image with its last user, reports its memory with an optional limit, reloads a changed image during development, and refuses use from another thread than the game's (examples `ImageDecodingExample`, `ImageCacheExample`). Sprite sheets, sprites and animations come with the next batches.
 
 ## Audio
 

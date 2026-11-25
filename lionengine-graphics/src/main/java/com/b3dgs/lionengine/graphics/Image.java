@@ -32,7 +32,14 @@ import com.b3dgs.lionengine.resources.ResourceKey;
  * <p>
  * The pixels are packed {@code 0xAARRGGBB}, row-major from the top-left, with straight alpha (ADR-0033), and never
  * change: a game that needs modified pixels takes a copy with {@link #copyToBuffer()} and adds it to the cache under
- * a discriminator ({@link ImageCache#add(ResourceKey, String, PixelBuffer)}). Runtime thread only (ADR-0018).
+ * a discriminator ({@link ImageCache#add(ResourceKey, String, PixelBuffer)}). Only a development reload
+ * ({@link ImageCache#reload(ResourceKey)}) gives a decoded image new pixels, a new size and a new texture, in new
+ * arrays: pixels already copied or read keep their values.
+ * </p>
+ *
+ * <p>
+ * Threads: runtime thread only (ADR-0018); {@link #release()} and {@link #prepare()} throw an
+ * {@link IllegalStateException} on another thread than the owner of the cache (ADR-0055).
  * </p>
  *
  * @since 11.0.0
@@ -147,7 +154,8 @@ public final class Image
     /**
      * Uploads the texture ahead of its first use, to avoid a hitch at the first frame that draws it (ADR-0026).
      *
-     * @throws IllegalStateException If the handle is released.
+     * @throws IllegalStateException If the handle is released, or if called on another thread than the owner of the
+     *             cache.
      */
     public void prepare()
     {
@@ -168,13 +176,16 @@ public final class Image
     /**
      * Releases this acquisition. Idempotent: a second call has no effect. The last release of an image removes it from
      * the cache and releases its texture.
+     *
+     * @throws IllegalStateException If called on another thread than the owner of the cache; the handle stays
+     *             acquired then.
      */
     public void release()
     {
         if (!released)
         {
-            released = true;
             entry.release();
+            released = true;
         }
     }
 

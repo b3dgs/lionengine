@@ -55,6 +55,8 @@ final class ImageCacheTest
     {
         0xFF102030, 0x80405060, 0x00708090, 0xFFFFFFFF, 0xFF000000, 0x40A0B0C0
     };
+    /** Bytes of the test image: 3 by 2 pixels, 4 bytes each. */
+    private static final long HERO_BYTES = 24L;
     /** Discriminator of a derived image. */
     private static final String RED = "red";
 
@@ -339,5 +341,199 @@ final class ImageCacheTest
         assertThrows(IllegalArgumentException.class, () -> cache.acquire(HERO, null));
         assertThrows(IllegalArgumentException.class, () -> cache.has(null, RED));
         assertThrows(IllegalArgumentException.class, () -> cache.has(HERO, null));
+        assertThrows(IllegalArgumentException.class, () -> cache.reload(null));
+    }
+
+    /**
+     * The cache counts 4 bytes per cached pixel, decoded and derived, and has no limit by default (ADR-0055).
+     */
+    @Test
+    void testUsedBytes()
+    {
+        assertEquals(ImageCache.NO_LIMIT, cache.getMaxBytes());
+        assertEquals(0L, cache.getUsedBytes());
+
+        final Image hero = cache.load(HERO);
+        final Image again = cache.load(HERO);
+        assertEquals(HERO_BYTES, cache.getUsedBytes());
+        final Image red = cache.add(HERO, RED, new PixelBuffer(2, 2));
+        assertEquals(HERO_BYTES + 16L, cache.getUsedBytes());
+
+        hero.release();
+        assertEquals(HERO_BYTES + 16L, cache.getUsedBytes());
+        again.release();
+        red.release();
+        assertEquals(0L, cache.getUsedBytes());
+    }
+
+    /**
+     * With a limit, an image that would exceed it is refused and nothing is cached; an image that fits is accepted,
+     * also when it reaches the limit exactly (ADR-0055).
+     */
+    @Test
+    void testLimit()
+    {
+        final ImageCache limited = new ImageCache(new Resources(provider), backend, HERO_BYTES + 8L);
+        final Image hero = limited.load(HERO);
+
+        final IllegalStateException exception = assertThrows(IllegalStateException.class,
+                                                             () -> limited.add(HERO, RED, new PixelBuffer(3, 1)));
+        assertEquals("Image cache limit exceeded by sprites/hero.png: 12 bytes needed, 24 of 32 bytes used",
+                     exception.getMessage());
+        assertFalse(limited.has(HERO, RED));
+        limited.add(HERO, RED, new PixelBuffer(2, 1));
+        assertEquals(HERO_BYTES + 8L, limited.getUsedBytes());
+        assertEquals(HERO_BYTES + 8L, limited.getMaxBytes());
+
+        hero.release();
+        final ResourceKey other = new ResourceKey("sprites/other.png");
+        provider.put(other, PngWriter.rgba(4, 2, new int[8]).write());
+        assertThrows(IllegalStateException.class, () -> limited.load(other));
+        assertFalse(limited.has(other, ImageCache.DECODED));
+        assertEquals(0, provider.getUnclosed());
+        assertEquals(8L, limited.getUsedBytes());
+    }
+
+    /**
+     * A limit must be positive.
+     *
+     * @param maxBytes The limit.
+     */
+    @ParameterizedTest
+    @ValueSource(longs =
+    {
+        0L, -1L, Long.MIN_VALUE
+    })
+    void testInvalidLimit(long maxBytes)
+    {
+        final Resources resources = new Resources(provider);
+
+        assertThrows(IllegalArgumentException.class, () -> new ImageCache(resources, backend, maxBytes));
+    }
+
+    /**
+     * A reload gives every handle the new size, pixels and texture; the previous texture is released, derived images
+     * and copies keep their pixels (ADR-0019, ADR-0055).
+     */
+    @Test
+    void testReload()
+    {
+        final Image hero = cache.load(HERO);
+        final Image red = cache.add(HERO, RED, hero.copyToBuffer());
+        final PixelBuffer copy = hero.copyToBuffer();
+        final int previous = hero.getTexture();
+        provider.put(HERO, PngWriter.rgba(1, 2, 0xFF00FF00, 0xFF0000FF).write());
+
+        cache.reload(HERO);
+
+        assertEquals(1, hero.getWidth());
+        assertEquals(2, hero.getHeight());
+        assertEquals(0xFF0000FF, hero.getPixel(0, 1));
+        assertNotEquals(previous, hero.getTexture());
+        assertFalse(backend.isAlive(previous));
+        assertArrayEquals(new int[]
+        {
+            0xFF00FF00, 0xFF0000FF
+        }, backend.getPixels(hero.getTexture()));
+        assertEquals(PIXELS[5], red.getPixel(2, 1));
+        assertEquals(PIXELS[5], copy.getPixel(2, 1));
+        assertEquals(HERO_BYTES + 8L, cache.getUsedBytes());
+        hero.prepare();
+        assertTrue(backend.isPrepared(hero.getTexture()));
+
+        hero.release();
+        assertEquals(HERO_BYTES, cache.getUsedBytes());
+    }
+
+    /**
+     * A reload that would exceed the limit is refused and leaves the image unchanged; a smaller image always fits.
+     */
+    @Test
+    void testReloadLimit()
+    {
+        final ImageCache limited = new ImageCache(new Resources(provider), backend, HERO_BYTES);
+        final Image hero = limited.load(HERO);
+        final int texture = hero.getTexture();
+        provider.put(HERO, PngWriter.rgba(4, 2, new int[8]).write());
+
+        assertThrows(IllegalStateException.class, () -> limited.reload(HERO));
+        assertEquals(3, hero.getWidth());
+        assertEquals(texture, hero.getTexture());
+        assertTrue(backend.isAlive(texture));
+
+        provider.put(HERO, PngWriter.rgba(1, 1, 0).write());
+        limited.reload(HERO);
+        assertEquals(4L, limited.getUsedBytes());
+    }
+
+    /**
+     * Only the decoded image of a key is reloaded: a key holding only derived images is refused.
+     */
+    @Test
+    void testReloadDerivedOnly()
+    {
+        cache.add(HERO, RED, new PixelBuffer(1, 1));
+
+        assertThrows(IllegalStateException.class, () -> cache.reload(HERO));
+        assertEquals(0, provider.getOpened());
+    }
+
+    /**
+     * Another thread than the owner cannot use the cache or release and prepare its handles; reading the immutable
+     * pixels of a handle stays possible (ADR-0018, ADR-0055, REQ-RT-003).
+     *
+     * @throws InterruptedException If interrupted.
+     */
+    @Test
+    void testOtherThread() throws InterruptedException
+    {
+        final Image hero = cache.load(HERO);
+        final PixelBuffer pixels = new PixelBuffer(1, 1);
+        final ImageDecoder decoder = new PngDecoder();
+        final int[] read = new int[1];
+
+        assertOtherThreadRefused(() -> cache.add(HERO, RED, pixels));
+        assertOtherThreadRefused(() -> cache.acquire(HERO, ImageCache.DECODED));
+        assertOtherThreadRefused(() -> cache.has(HERO, ImageCache.DECODED));
+        assertOtherThreadRefused(() -> cache.setDecoder("png", decoder));
+        assertOtherThreadRefused(cache::getUsedBytes);
+        assertOtherThreadRefused(hero::prepare);
+        assertOtherThreadRefused(hero::release);
+        final Thread reader = new Thread(() -> read[0] = hero.getPixel(2, 1));
+        reader.start();
+        reader.join();
+
+        assertEquals(PIXELS[5], read[0]);
+        assertFalse(hero.isReleased());
+        assertFalse(backend.isPrepared(hero.getTexture()));
+        assertEquals(1, cache.size());
+    }
+
+    /**
+     * Runs an action on another thread and checks that it throws an {@link IllegalStateException}.
+     *
+     * @param action The action.
+     * @throws InterruptedException If interrupted.
+     */
+    private static void assertOtherThreadRefused(Runnable action) throws InterruptedException
+    {
+        final IllegalStateException[] failure = new IllegalStateException[1];
+        final Thread thread = new Thread(() ->
+        {
+            try
+            {
+                action.run();
+            }
+            catch (final IllegalStateException exception)
+            {
+                failure[0] = exception;
+            }
+        }, "worker");
+        thread.start();
+        thread.join();
+
+        assertInstanceOf(IllegalStateException.class, failure[0]);
+        assertTrue(failure[0].getMessage().startsWith("ImageCache used on the thread worker"),
+                   failure[0].getMessage());
     }
 }

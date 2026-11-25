@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.ThreadConfinement;
 import com.b3dgs.lionengine.render.TextureStore;
 import com.b3dgs.lionengine.resources.ResourceException;
 import com.b3dgs.lionengine.resources.ResourceKey;
@@ -28,7 +29,7 @@ import com.b3dgs.lionengine.resources.Resources;
 
 /**
  * Cache of decoded images, owned by the game and shared by its scenes (ADR-0005, ADR-0007, ADR-0018, ADR-0019,
- * ADR-0026, ADR-0047, REQ-SPRITE-002, REQ-RES-004, REQ-RES-005, REQ-RT-003, REQ-RT-005, REQ-SPR-001).
+ * ADR-0026, ADR-0047, ADR-0055, REQ-SPRITE-002, REQ-RES-004, REQ-RES-005, REQ-RT-003, REQ-RT-005, REQ-SPR-001).
  *
  * <p>
  * An image is cached under its resource key and a discriminator: {@link #DECODED} for the image decoded from the
@@ -36,7 +37,13 @@ import com.b3dgs.lionengine.resources.Resources;
  * {@link #load(ResourceKey)} decodes the image at its first acquisition, through {@link Resources} and the decoder
  * registered for the extension of the key, then shares it: every acquisition returns a new {@link Image} handle on the
  * same immutable pixels and texture. Each handle is released by the code that acquired it; an image leaves the cache,
- * and its texture is released, with its last handle. Nothing is evicted automatically and there is no size limit.
+ * and its texture is released, with its last handle. Nothing is evicted automatically.
+ * </p>
+ *
+ * <p>
+ * Memory: {@link #getUsedBytes()} counts 4 bytes per cached pixel. A limit in bytes is opt-in, none by default
+ * ({@link #NO_LIMIT}): with a limit, an image that would exceed it is refused with an {@link IllegalStateException}
+ * and nothing is cached, since every cached image is in use and nothing can be evicted (ADR-0055).
  * </p>
  *
  * <p>
@@ -48,13 +55,17 @@ import com.b3dgs.lionengine.resources.Resources;
  *
  * <p>
  * Textures: the cache creates the texture of an image when the image enters the cache (no GPU work happens then), and
- * releases it when the image leaves; the pixels are shared read-only with the texture store (ADR-0047). The upload
- * happens at the first frame that draws the image, or at {@link Image#prepare()}.
+ * releases it when the image leaves; the pixels are shared read-only with the texture store (ADR-0047), which keeps
+ * them to upload the texture again after a lost rendering context, so a context loss needs nothing from the cache. The
+ * upload happens at the first frame that draws the image, or at {@link Image#prepare()}. During development,
+ * {@link #reload(ResourceKey)} decodes an image again after its file changed (ADR-0019).
  * </p>
  *
  * <p>
- * Threads: every method runs on the runtime thread; the cache is not thread-safe and loading workers never touch it
- * (ADR-0018). Loading is synchronous; asynchronous loading comes in a later batch (ADR-0019).
+ * Threads: runtime thread only (ADR-0018). The cache is not thread-safe and loading workers never touch it; the thread
+ * of its first operation becomes its owner, and every operation of the cache, and the release and preparation of its
+ * handles, on another thread throws an {@link IllegalStateException} (ADR-0055). Loading is synchronous; asynchronous
+ * loading comes with the asynchronous handles of the game loop (ADR-0019).
  * </p>
  *
  * @since 11.0.0
@@ -63,6 +74,11 @@ public final class ImageCache
 {
     /** Discriminator of the image decoded from its resource: empty. */
     public static final String DECODED = "";
+    /** Limit of a cache without limit, in bytes: the default. */
+    public static final long NO_LIMIT = Long.MAX_VALUE;
+
+    /** Bytes held per cached pixel: one packed {@code int}. */
+    private static final long BYTES_PER_PIXEL = 4L;
 
     /** Extension of the PNG images. */
     private static final String PNG = "png";
@@ -90,6 +106,18 @@ public final class ImageCache
     private static final String ERROR_NOT_CACHED = "Image not cached: ";
     /** Separator of a key and its discriminator in messages. */
     private static final String SEPARATOR = " / ";
+    /** Separator of a key and a detail in messages. */
+    private static final String COLON = ": ";
+    /** Error message of a limit that is not positive. */
+    private static final String ERROR_MAX_BYTES = "Limit not positive: ";
+    /** Error message of an exceeded limit: key. */
+    private static final String ERROR_LIMIT = "Image cache limit exceeded by ";
+    /** Error message of an exceeded limit: bytes needed. */
+    private static final String ERROR_LIMIT_NEEDED = " bytes needed, ";
+    /** Error message of an exceeded limit: bytes used. */
+    private static final String ERROR_LIMIT_USED = " of ";
+    /** Error message of an exceeded limit: unit. */
+    private static final String ERROR_LIMIT_UNIT = " bytes used";
 
     /**
      * Checks that an argument is not {@code null}.
@@ -104,6 +132,18 @@ public final class ImageCache
         {
             throw new IllegalArgumentException(name + ERROR_NULL);
         }
+    }
+
+    /**
+     * Returns the bytes held by pixels.
+     *
+     * @param width The width in pixels.
+     * @param height The height in pixels.
+     * @return The bytes, 4 per pixel.
+     */
+    static long bytes(int width, int height)
+    {
+        return BYTES_PER_PIXEL * width * height;
     }
 
     /**
@@ -136,9 +176,15 @@ public final class ImageCache
     private final Map<String, ImageDecoder> decoders = new HashMap<>();
     /** Cached images. */
     private final Map<ImageKey, ImageEntry> entries = new HashMap<>();
+    /** The runtime thread check. */
+    private final ThreadConfinement thread = new ThreadConfinement("ImageCache");
+    /** The limit of the cached pixels in bytes, {@link #NO_LIMIT} if none. */
+    private final long maxBytes;
+    /** The bytes held by the cached pixels. */
+    private long usedBytes;
 
     /**
-     * Creates an empty cache, with {@link PngDecoder} registered for {@code png}.
+     * Creates an empty cache without limit, with {@link PngDecoder} registered for {@code png}.
      *
      * @param resources The resources the images are read from (never {@code null}).
      * @param textures The texture store of the render backend, which receives the texture of every cached image
@@ -147,12 +193,31 @@ public final class ImageCache
      */
     public ImageCache(Resources resources, TextureStore textures)
     {
+        this(resources, textures, NO_LIMIT);
+    }
+
+    /**
+     * Creates an empty cache with a limit, with {@link PngDecoder} registered for {@code png}.
+     *
+     * @param resources The resources the images are read from (never {@code null}).
+     * @param textures The texture store of the render backend, which receives the texture of every cached image
+     *            (never {@code null}).
+     * @param maxBytes The limit of the cached pixels in bytes, 4 per pixel (positive; {@link #NO_LIMIT} for none).
+     * @throws IllegalArgumentException If an argument is {@code null} or the limit is not positive.
+     */
+    public ImageCache(Resources resources, TextureStore textures, long maxBytes)
+    {
         super();
 
         checkNotNull(resources, "Resources");
         checkNotNull(textures, "Textures");
+        if (maxBytes <= 0L)
+        {
+            throw new IllegalArgumentException(ERROR_MAX_BYTES + maxBytes);
+        }
         this.resources = resources;
         this.textures = textures;
+        this.maxBytes = maxBytes;
         decoders.put(PNG, new PngDecoder());
     }
 
@@ -163,9 +228,11 @@ public final class ImageCache
      * @param decoder The decoder (never {@code null}).
      * @throws IllegalArgumentException If the extension is {@code null}, empty or has a dot, or the decoder is
      *             {@code null}.
+     * @throws IllegalStateException If called on another thread than the owner of the cache.
      */
     public void setDecoder(String extension, ImageDecoder decoder)
     {
+        thread.check();
         checkNotNull(extension, "Extension");
         checkNotNull(decoder, "Decoder");
         if (extension.isEmpty() || extension.indexOf(DOT) >= 0)
@@ -185,17 +252,23 @@ public final class ImageCache
      *             ({@code INACCESSIBLE}).
      * @throws ImageDecodingException If no decoder is registered for the extension of the key, or the content is not
      *             a valid image; the message starts with the key.
+     * @throws IllegalStateException If the image would exceed the limit of the cache, or if called on another thread
+     *             than the owner of the cache.
      */
     public Image load(ResourceKey key)
     {
+        thread.check();
         checkNotNull(key, NAME_KEY);
         final ImageKey imageKey = new ImageKey(key, DECODED);
         ImageEntry entry = entries.get(imageKey);
         if (entry == null)
         {
             final PixelBuffer pixels = decode(key);
+            final long bytes = bytes(pixels.getWidth(), pixels.getHeight());
+            reserve(key, bytes, 0L);
             entry = new ImageEntry(this, imageKey, pixels.getWidth(), pixels.getHeight(), pixels.array());
             entries.put(imageKey, entry);
+            usedBytes += bytes;
         }
         return entry.acquire();
     }
@@ -210,10 +283,12 @@ public final class ImageCache
      * @param pixels The pixels, copied: the caller keeps its buffer (never {@code null}).
      * @return A new handle on the image, to release once it is no longer needed.
      * @throws IllegalArgumentException If an argument is {@code null} or the discriminator is empty.
-     * @throws IllegalStateException If an image is already cached under this key and discriminator.
+     * @throws IllegalStateException If an image is already cached under this key and discriminator, if the image
+     *             would exceed the limit of the cache, or if called on another thread than the owner of the cache.
      */
     public Image add(ResourceKey key, String discriminator, PixelBuffer pixels)
     {
+        thread.check();
         checkNotNull(key, NAME_KEY);
         checkNotNull(discriminator, NAME_DISCRIMINATOR);
         checkNotNull(pixels, "Pixels");
@@ -226,12 +301,15 @@ public final class ImageCache
         {
             throw new IllegalStateException(ERROR_CACHED + key + SEPARATOR + discriminator);
         }
+        final long bytes = bytes(pixels.getWidth(), pixels.getHeight());
+        reserve(key, bytes, 0L);
         final ImageEntry entry = new ImageEntry(this,
                                                 imageKey,
                                                 pixels.getWidth(),
                                                 pixels.getHeight(),
                                                 pixels.copyPixels());
         entries.put(imageKey, entry);
+        usedBytes += bytes;
         return entry.acquire();
     }
 
@@ -242,11 +320,12 @@ public final class ImageCache
      * @param discriminator The discriminator, {@link #DECODED} for the decoded image (never {@code null}).
      * @return A new handle on the image, to release once it is no longer needed.
      * @throws IllegalArgumentException If an argument is {@code null}.
-     * @throws IllegalStateException If no image is cached under this key and discriminator; see
-     *             {@link #has(ResourceKey, String)}.
+     * @throws IllegalStateException If no image is cached under this key and discriminator (see
+     *             {@link #has(ResourceKey, String)}), or if called on another thread than the owner of the cache.
      */
     public Image acquire(ResourceKey key, String discriminator)
     {
+        thread.check();
         checkNotNull(key, NAME_KEY);
         checkNotNull(discriminator, NAME_DISCRIMINATOR);
         final ImageEntry entry = entries.get(new ImageKey(key, discriminator));
@@ -264,9 +343,11 @@ public final class ImageCache
      * @param discriminator The discriminator, {@link #DECODED} for the decoded image (never {@code null}).
      * @return {@code true} while at least one handle on the image is not released.
      * @throws IllegalArgumentException If an argument is {@code null}.
+     * @throws IllegalStateException If called on another thread than the owner of the cache.
      */
     public boolean has(ResourceKey key, String discriminator)
     {
+        thread.check();
         checkNotNull(key, NAME_KEY);
         checkNotNull(discriminator, NAME_DISCRIMINATOR);
         return entries.containsKey(new ImageKey(key, discriminator));
@@ -276,10 +357,80 @@ public final class ImageCache
      * Returns the number of cached images, for example to check that a scene released everything it acquired.
      *
      * @return The number of images with at least one handle not released.
+     * @throws IllegalStateException If called on another thread than the owner of the cache.
      */
     public int size()
     {
+        thread.check();
         return entries.size();
+    }
+
+    /**
+     * Decodes again the image of a resource, during development, after its file changed (ADR-0019, ADR-0055).
+     *
+     * <p>
+     * Only the decoded image ({@link #DECODED}) is read again; images derived from it keep their pixels. On success,
+     * every handle on the image gives the new size, pixels and texture: the cache creates the new texture and releases
+     * the previous one. Call it between two frames, from the update phase or from an inbox event (for example a
+     * development key), never while the render phase is writing commands that name the previous texture. On failure
+     * the image is unchanged.
+     * </p>
+     *
+     * @param key The resource key of a cached image (never {@code null}).
+     * @throws IllegalArgumentException If the key is {@code null}.
+     * @throws IllegalStateException If the decoded image of the key is not cached, if the new image would exceed the
+     *             limit of the cache, or if called on another thread than the owner of the cache.
+     * @throws ResourceException If the resource is missing ({@code MISSING}) or cannot be read
+     *             ({@code INACCESSIBLE}).
+     * @throws ImageDecodingException If the content is not a valid image; the message starts with the key.
+     */
+    public void reload(ResourceKey key)
+    {
+        thread.check();
+        checkNotNull(key, NAME_KEY);
+        final ImageEntry entry = entries.get(new ImageKey(key, DECODED));
+        if (entry == null)
+        {
+            throw new IllegalStateException(ERROR_NOT_CACHED + key + SEPARATOR + DECODED);
+        }
+        final PixelBuffer pixels = decode(key);
+        final long bytes = bytes(pixels.getWidth(), pixels.getHeight());
+        final long previous = entry.getBytes();
+        reserve(key, bytes, previous);
+        entry.replace(pixels.getWidth(), pixels.getHeight(), pixels.array());
+        usedBytes += bytes - previous;
+    }
+
+    /**
+     * Returns the memory held by the cached pixels.
+     *
+     * @return The bytes of the cached images, 4 per pixel, derived images included.
+     * @throws IllegalStateException If called on another thread than the owner of the cache.
+     */
+    public long getUsedBytes()
+    {
+        thread.check();
+        return usedBytes;
+    }
+
+    /**
+     * Returns the limit of the cached pixels.
+     *
+     * @return The limit in bytes, {@link #NO_LIMIT} if the cache has none.
+     */
+    public long getMaxBytes()
+    {
+        return maxBytes;
+    }
+
+    /**
+     * Checks that the calling thread owns the cache, for the handles.
+     *
+     * @throws IllegalStateException If called on another thread than the owner of the cache.
+     */
+    void checkThread()
+    {
+        thread.check();
     }
 
     /**
@@ -296,10 +447,36 @@ public final class ImageCache
      * Removes an entry whose last handle was released.
      *
      * @param key The key of the entry.
+     * @param bytes The bytes held by its pixels.
      */
-    void remove(ImageKey key)
+    void remove(ImageKey key, long bytes)
     {
         entries.remove(key);
+        usedBytes -= bytes;
+    }
+
+    /**
+     * Checks that pixels fit the limit of the cache.
+     *
+     * @param key The resource key of the image, for the message.
+     * @param bytes The bytes of the pixels to cache.
+     * @param freed The bytes freed at the same time, by an image replaced.
+     * @throws IllegalStateException If the pixels would exceed the limit.
+     */
+    private void reserve(ResourceKey key, long bytes, long freed)
+    {
+        if (bytes > maxBytes - usedBytes + freed)
+        {
+            throw new IllegalStateException(ERROR_LIMIT
+                                            + key
+                                            + COLON
+                                            + bytes
+                                            + ERROR_LIMIT_NEEDED
+                                            + usedBytes
+                                            + ERROR_LIMIT_USED
+                                            + maxBytes
+                                            + ERROR_LIMIT_UNIT);
+        }
     }
 
     /**
@@ -327,7 +504,7 @@ public final class ImageCache
         }
         catch (final ImageDecodingException exception)
         {
-            throw new ImageDecodingException(key + ": " + exception.getMessage(), exception);
+            throw new ImageDecodingException(key + COLON + exception.getMessage(), exception);
         }
     }
 }
