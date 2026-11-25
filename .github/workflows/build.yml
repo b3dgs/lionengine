@@ -1,4 +1,6 @@
 # Build and structural checks of the engine (features/build-skeleton.md, ADR-0012, ADR-0042, ADR-0044, ADR-0045).
+# The Linux jobs also run the platform tests (tag "platform", profile platform-tests, docs/testing.md) on the virtual
+# display of xvfb-run; the desktop jobs run the default build without them.
 # The documentation check runs in docs-check.yml. The Android/DEX job (ADR-0044) is added by the batch that
 # writes the android/ Gradle build: see docs/agent-workflow.md, "Handoff".
 # Actions are pinned to the commits used by the master workflow ci-cd.yml.
@@ -62,8 +64,8 @@ jobs:
         with:
           maven-version: 3.9.14
 
-      - name: Build, checkstyle, package rule, tests, Javadoc
-        run: mvn -B -ntp verify
+      - name: Build, checkstyle, package rule, tests including the platform tests (Xvfb display), Javadoc
+        run: xvfb-run -a mvn -B -ntp verify -Pplatform-tests
 
       - name: Module dependencies (REQ-CORE-005, ADR-0045)
         run: python3 -I scripts/check-modules.py
@@ -173,7 +175,7 @@ jobs:
       - name: Sonar
         if: env.SONAR_TOKEN != ''
         run: >
-          mvn -B -ntp verify -Psonar
+          xvfb-run -a mvn -B -ntp verify -Psonar,platform-tests
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.organization=b3dgs
           -Dsonar.projectKey=b3dgs_lionengine

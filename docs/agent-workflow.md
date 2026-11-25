@@ -56,9 +56,9 @@ Next batches, in this order. Each one starts from its feature page and [`impleme
 6. **Platform and rendering** ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)), in the order chosen by the owner on 2026-11-24:
    - batch 1, done by a cloud agent (2026-11-24): the `Platform` suite, the headless platform in `test-support` and the scaling function `FrameScaling`; see the page's "State" section;
    - batch 2, done by a cloud agent (2026-11-24): `CommandBuffer`, the `RenderBackend` contract and its suite, `Platform.attach`, and `RecordingBackend` in `test-support`;
-   - batch 3: the `platform-awt` window and loop thread, and `render-awt` implementing the backend contract.
+   - batch 3, done by a cloud agent (2026-11-25): `AwtPlatform` and `AwtSurface` in `platform-awt`, `AwtRenderBackend` in `render-awt`, the desktop example `MovingRectangleDesktop`, and the platform tests (tag `platform`, profile `platform-tests`) run under Xvfb on the Linux CI jobs.
 7. **Examples and API index**: each batch adds its example and API-index row; the `core` ones exist (`DefinitionExample`, `RandomExample`) (REQ-DOC-001, REQ-DOC-002).
 
-Batches 2 to 5 and the first batch of 6 are done; the next batches depend only on what is merged, as long as each pull request keeps `mvn -B verify` green on the merge result.
+Batches 2 to 6 are done; the next batches depend only on what is merged, as long as each pull request keeps `mvn -B verify` green on the merge result.
 
 No question is open: `OQ-166` and `OQ-167` are resolved by ADR-0050 (latest stable JUnit) and ADR-0051 (`b3dgs-parent` 3.0.0-SNAPSHOT). The parent is a snapshot: a build that starts failing after a parent update is fixed in the engine code or reported to the owner.

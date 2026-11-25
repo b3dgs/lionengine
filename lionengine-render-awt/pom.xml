@@ -16,9 +16,6 @@
         <!-- Desktop-only module: Java 25 class files are allowed (ADR-0044); excluded from Android builds. -->
         <jdk.version>25</jdk.version>
         <radial.base-package>com.b3dgs.lionengine.render.awt</radial.base-package>
-        <!-- No public type yet: javadoc refuses an empty module. The batch that adds the first public type
-             removes this property (REQ-CORE-003). -->
-        <maven.javadoc.skip>true</maven.javadoc.skip>
     </properties>
     <dependencies>
         <dependency>
@@ -35,6 +32,21 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>lionengine-platform-awt</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <!-- ADR-0045: the RenderBackend contract suite, bound by the AWT backend. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-render-api</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <!-- ADR-0045: the headless platform, carrying a fake AWT surface for the headless tests. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-test-support</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

@@ -34,6 +34,7 @@ Requirements: JDK 25 or later and Maven 3.9 (the build refuses an older JDK), Py
 
 - Build, checkstyle, package rule, tests and Javadoc: `mvn -B verify`.
 - One module and what it needs: `mvn -B -pl lionengine-<module> -am verify`.
+- With the platform tests, which open windows and need a display: `mvn -B verify -Pplatform-tests` (on Linux without a display: `xvfb-run -a mvn -B verify -Pplatform-tests`).
 - Structural checks: `python3 -I scripts/check-modules.py`, `python3 -I scripts/check-api-index.py` (after the build), `python3 -I scripts/check-provenance.py`, `python3 -I scripts/check-docs.py`.
 
 Before writing engine code, read [`docs/implementation-guide.md`](docs/implementation-guide.md): the code-quality gates (b3dgs checkstyle, compiler and Javadoc settings, Sonar) and the Android and performance constraints.
