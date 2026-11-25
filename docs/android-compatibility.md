@@ -142,6 +142,6 @@ Harness (ADR-0050): the engine tests are JUnit 6 Jupiter tests, which need a Jav
 | D8 | every class of the 17 shared modules is in the debug APK (70 classes; 10 modules hold only their package description so far) |
 | R8 release build | passes with every engine class kept, no missing class; the release APK is not run on a device |
 | Emulator tests | 50 tests: the 24 device tests and the 5 language probes pass; the library probes give the tables above |
-| `java.desktop` in a shared module | refused: the compilation of `api-lint` fails (`package java.awt does not exist`) and R8 reports the missing class; the probe was shown failing once in pull request #909, then removed |
+| `java.desktop` in a shared module | refused, while the Maven build accepts it: in pull request #909 (commit `60fd53c`, then removed) the `android` job failed at the compilation of `api-lint` (`package java.awt does not exist`); run locally, R8 also stops on the missing class (`Missing class java.awt.Point`) |
 
 Known limits: release builds are verified by R8 only, not run; the job runs on one emulator image (API 21, x86_64), not on a real device or another API level; the option `android.builtInKotlin=false` of `android/gradle.properties` (no Kotlin source in the build) is deprecated by the Android Gradle Plugin 9 and must be removed before the Android Gradle Plugin 10.

@@ -53,7 +53,7 @@ Only build and test tools listed in `dependencies.md`; each new one is recorded 
 ## Acceptance criteria
 
 - [x] Every module listed above builds, with its root package and `package-info.java`.
-- [x] Every check of item 5 runs in CI and fails on a probe violation: the Maven build, the package rule, checkstyle, doclint, the module-dependency check, the API index and the provenance checks, and the Android/DEX job (each probe shown once, then removed; the `java.desktop` probe in pull request #909).
+- [x] Every check of item 5 runs in CI and fails on a probe violation: the Maven build, the package rule, checkstyle, doclint, the module-dependency check, the API index and the provenance checks, and the Android/DEX job (each probe shown once, then removed; the `java.desktop` probe in pull request #909, commit `60fd53c`, refused by the compilation of `android/api-lint`).
 - [x] Commands recorded in `README.md` and `AGENTS.md`; Android job versions, lint `NewApi` result and first R8 release-build result recorded in `android-compatibility.md` (ADR-0044).
 
 ## State (2026-11-24)
