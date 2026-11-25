@@ -49,6 +49,20 @@ public final class SheetGroup
     /** Error message of a released handle. */
     private static final String ERROR_RELEASED = "Sheet group released";
 
+    /**
+     * Checks that the grid is not {@code null}.
+     *
+     * @param grid The grid.
+     * @throws IllegalArgumentException If the grid is {@code null}.
+     */
+    private static void checkNotNull(SheetGrid grid)
+    {
+        if (grid == null)
+        {
+            throw new IllegalArgumentException("Grid null");
+        }
+    }
+
     /** The shared group. */
     private final SheetGroupEntry entry;
     /** {@code true} once released. */
@@ -100,7 +114,49 @@ public final class SheetGroup
     public SpriteSheet add(ResourceKey id, ResourceKey image, SheetGrid grid)
     {
         checkUsable();
-        return entry.add(id, image, grid);
+        checkNotNull(grid);
+        return entry.add(id, image, grid, grid.cellWidth() / 2.0, grid.cellHeight() / 2.0, null);
+    }
+
+    /**
+     * Adds a sheet with the pivot of its cells: loads its image through the cache and cuts it into the grid.
+     *
+     * @param id The id of the sheet, unique in the group (never {@code null}).
+     * @param image The resource key of the image (never {@code null}).
+     * @param grid The grid of the sheet (never {@code null}).
+     * @param pivotX The horizontal pivot of the cells, in pixels from their left edge (finite; may be outside the
+     *            cell).
+     * @param pivotY The vertical pivot of the cells, in pixels from their top edge (finite; may be outside the cell).
+     * @return The sheet, also returned by {@link #get(ResourceKey)}.
+     * @throws IllegalArgumentException If an argument is {@code null}, a pivot is not finite, or the grid does not
+     *             fit in the image: no cell fits, or the given columns or rows do not; nothing is added and the image
+     *             is released.
+     * @throws IllegalStateException If the id is already in the group, if the handle is released, if the image would
+     *             exceed the limit of the cache, or if called on another thread than the owner of the cache.
+     * @throws com.b3dgs.lionengine.resources.ResourceException If the image is missing or cannot be read.
+     * @throws ImageDecodingException If the image cannot be decoded.
+     */
+    public SpriteSheet add(ResourceKey id, ResourceKey image, SheetGrid grid, double pivotX, double pivotY)
+    {
+        checkUsable();
+        return entry.add(id, image, grid, pivotX, pivotY, null);
+    }
+
+    /**
+     * Adds a sheet read from a definition, after a check of the image size, for {@link SheetLoader}.
+     *
+     * @param id The id of the sheet.
+     * @param image The resource key of the image.
+     * @param grid The grid of the sheet.
+     * @param pivotX The horizontal pivot of the cells, in pixels.
+     * @param pivotY The vertical pivot of the cells, in pixels.
+     * @param check The check of the image size, which may throw before the sheet is created.
+     * @return The sheet.
+     */
+    SpriteSheet add(ResourceKey id, ResourceKey image, SheetGrid grid, double pivotX, double pivotY, SheetCheck check)
+    {
+        checkUsable();
+        return entry.add(id, image, grid, pivotX, pivotY, check);
     }
 
     /**
@@ -193,7 +249,7 @@ public final class SheetGroup
      * @throws IllegalStateException If called on another thread than the owner of the cache, or if the handle is
      *             released.
      */
-    private void checkUsable()
+    void checkUsable()
     {
         entry.checkThread();
         if (released)

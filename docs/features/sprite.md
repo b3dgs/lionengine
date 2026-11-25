@@ -36,7 +36,7 @@ Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.m
 1. Source, instance, transform and pivot, command emission (`REQ-SPRITE-001`, `REQ-SPRITE-003`, `REQ-SPRITE-006`, `REQ-SPRITE-007`, `REQ-SPRITE-010`).
 2. Cache sharing (`REQ-SPRITE-002`).
 3. Color transforms: capability query, per-frame tint and alpha, CPU bake (`REQ-SPRITE-004`).
-4. Template color variants (`REQ-SPRITE-005`).
+4. Template color variants (`REQ-SPRITE-005`). The sheet loader of [`sprite-sheet.md`](sprite-sheet.md) batch 4 already checks the `templates` of a definition and keeps nothing; this batch builds the color mappings from them.
 
 ## Lifecycle and concurrency
 
