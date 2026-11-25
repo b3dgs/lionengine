@@ -1,20 +1,20 @@
 # Local agents: delegation, models, task files and merge gate
 
-**Status: PROPOSED — decisions 1A, 2C, 3B, 4A and 5A of the packet of issue #910 (owner comment of 2026-11-25). Requirements `REQ-AGENT-001` to `REQ-AGENT-004` are PROPOSED; the open points are `OQ-170` to `OQ-173`.**
+**Status: PROPOSED — decisions 1A, 2C, 3B, 4A and 5A of the packet of issue #910 (owner comment of 2026-11-25); escalation, hand-off and merge gate ACCEPTED in [ADR-0053](decisions/0053-local-agent-escalation-branch-hand-off-and-merge-gate.md). Requirements `REQ-AGENT-001` to `REQ-AGENT-004` are PROPOSED; `OQ-170` (benchmark results) is open.**
 
-This page extends [`agent-workflow.md`](agent-workflow.md): Claude Code (cloud) delegates token-heavy, well-specified work to local models on the owner's machines, reviews the result, and keeps high-reasoning work in the cloud. Requirements: `REQ-AGENT-001` to `REQ-AGENT-004` in [`requirements.md`](requirements.md).
+This page extends [`agent-workflow.md`](agent-workflow.md): Claude Code (cloud model) delegates token-heavy, well-specified work to local models on the owner's machines, reviews the result, and keeps high-reasoning work in the cloud. Requirements: `REQ-AGENT-001` to `REQ-AGENT-004` in [`requirements.md`](requirements.md).
 
 ## 1. Machines and model profiles
 
-Decision 5A. The models are the owner's delegated choice; they are confirmed (or replaced) by a benchmark task, `OQ-170`. Until then they are a starting profile, not a guarantee.
+Decision 5A. The models are the owner's delegated choice; they are confirmed (or replaced) by the benchmark of section 8 (`OQ-170`). Until then they are a starting profile, not a guarantee.
 
-| Machine | GPU (VRAM) | RAM | Model | Mode |
-|---|---|---|---|---|
-| PC1 | RTX 5070 Ti (16 GB) | 64 GB | Qwen3.6-35B-A3B, 4-bit, the part that does not fit in VRAM held in RAM, 64K context; fallback gpt-oss-20b | Agent loop |
-| PC2 | RTX 4070 (12 GB) | 32 GB | the same model with the MoE experts offloaded to RAM, or Qwen3-Coder-30B-A3B | Agent loop |
-| PC3 | RTX 2060 (8 GB) | 16 GB | Qwen3-Coder 8B, small quantization | Single-shot jobs only (Javadoc, documentation); no agent loop |
+| Machine | GPU (VRAM) | RAM | Model | Fallback | Mode |
+|---|---|---|---|---|---|
+| PC1 | RTX 5070 Ti (16 GB) | 64 GB | Qwen3.6-35B-A3B, 4-bit (Q4_K_M), the MoE experts that do not fit in VRAM held in RAM, 64K context | gpt-oss-20b | Agent loop |
+| PC2 | RTX 4070 (12 GB) | 32 GB | Qwen3.6-35B-A3B, 4-bit, more MoE experts in RAM than on PC1, 64K context | Qwen3-Coder-30B-A3B, 4-bit | Agent loop |
+| PC3 | RTX 2060 (8 GB) | 16 GB | Qwen3.5-9B, 4-bit (Q4_K_M), 16K context | none | Single-shot jobs only (Javadoc, documentation); no agent loop |
 
-Hardware confirmed by the owner on 2026-11-25: the RTX 4070 has 12 GB of VRAM (32 GB of RAM) and the RTX 2060 has 8 GB of VRAM (16 GB of RAM). The PC3 profile stays single-shot: a task given to PC3 is one prompt and one answer applied by Claude Code, never a multi-step tool loop.
+Hardware confirmed by the owner on 2026-11-25: the RTX 4070 has 12 GB of VRAM (32 GB of RAM) and the RTX 2060 has 8 GB of VRAM (16 GB of RAM). The PC3 profile stays single-shot: a task given to PC3 is one prompt and one answer applied by Claude Code, never a multi-step tool loop. The packet named "Qwen3-Coder 8B" for PC3, which is not a published model; Qwen3.5-9B replaces it (ADR-0053).
 
 ## 2. What is delegated (decision 2C)
 
@@ -32,33 +32,72 @@ Never delegated: ADRs, answers to open questions, cross-module consistency revie
 
 ## 3. Entry file for small contexts
 
-[`local-agent-entry.md`](local-agent-entry.md) is the compact entry file of a local worker (`REQ-AGENT-003`). It lists the rules in a few lines and links to the sections of [`AGENTS.md`](../AGENTS.md) instead of copying them, so a rule has a single source.
+[`local-agent-entry.md`](local-agent-entry.md) is the compact entry file of a local worker (`REQ-AGENT-003`). It lists the rules in a few lines and links to the sections of [`AGENTS.md`](../AGENTS.md) instead of copying them, so a rule has a single source. The script gives it to the worker as its system prompt addition and runs Claude Code in minimal mode (`--bare`), so `CLAUDE.md` is not loaded automatically: the worker reads `AGENTS.md` only through the links it needs.
 
 ## 4. Task file
 
-A task is a Markdown file written by Claude Code from [`templates/LOCAL-TASK-TEMPLATE.md`](templates/LOCAL-TASK-TEMPLATE.md) (`REQ-AGENT-002`): the batch page, the files in scope, the acceptance commands and the stop conditions. The task file is the hand-off: the worker relies on no conversation history. Task files are working material for the delegation and are not committed unless the owner asks.
+A task is a Markdown file written by Claude Code from [`templates/LOCAL-TASK-TEMPLATE.md`](templates/LOCAL-TASK-TEMPLATE.md) (`REQ-AGENT-002`): the batch page, the files in scope, the acceptance commands and the stop conditions. The task file is the hand-off: the worker relies on no conversation history. Task files are working material for the delegation and are not committed unless the owner asks; the benchmark task of section 8 is the exception.
 
-## 5. Running a worker
+The script checks the task file before it starts: a slug, a profile `PC1`, `PC2` or `PC3`, at least one file in scope (no absolute path, no `..`, nothing under `.github/` or `docs/decisions/`), and acceptance commands limited to `mvn -B ...` and `python3 -I scripts/check-*.py`, with no shell character and no skip flag. The commands are run without a shell.
 
-Decision 4A. `scripts/local-task.sh <task-file>` creates a git worktree of its own on a branch `local/<slug>` cut from `rewrite/v11`, then runs a headless `claude -p` there through a local gateway (an Anthropic-compatible endpoint in front of the local model, configured by the environment of the owner's machine, never by the script). After the worker, the script runs the four structural checks in the worktree and reports their results. `scripts/local-task.sh --dry-run <task-file>` prints what it would do and changes nothing.
+## 5. Setting up a machine
 
-Rules of the script:
+Done once per machine by the owner. Nothing here is committed: no key, no address.
 
-- it contains no secret and no permission-skip flag; the worker has an explicit list of allowed tools;
-- the worker works only in its worktree and never on `rewrite/v11`; the script refuses to reuse an existing worktree or branch;
-- the script does not push and does not open a pull request: the worker hands a branch to Claude Code (default taken for `OQ-172`).
+1. **Gateway.** Install a recent llama.cpp build (its server speaks the Anthropic Messages API since January 2026) and start the profile's model, for example on PC1:
+   `llama-server -hf ggml-org/Qwen3.6-35B-A3B-GGUF:Q4_K_M --jinja -c 65536 -ngl 99 --n-cpu-moe <n> --host 127.0.0.1 --port 8080`
+   where `<n>` is the number of MoE layers kept in RAM: the smallest value with which the model loads (raise it on PC2). `--jinja` is needed for tool calls. On PC3: `llama-server -hf <a Qwen3.5-9B GGUF>:Q4_K_M --jinja -c 16384 -ngl 99 --host 127.0.0.1 --port 8080`. Another gateway with an Anthropic-compatible endpoint (Ollama, LM Studio, vLLM) is acceptable if it handles tool calls; record which one in the benchmark results.
+2. **Claude Code CLI** installed (`claude --version`), and Git, JDK 25, Maven 3.9 and Python 3 as for any build ([`implementation-guide.md`](implementation-guide.md)).
+3. **Environment of the shell that runs the script**: `ANTHROPIC_BASE_URL=http://127.0.0.1:8080` and, if the gateway serves several models, `LOCAL_AGENT_MODEL=<model name>`. The script refuses to start without `ANTHROPIC_BASE_URL` or with an `anthropic.com` address, gives the worker a placeholder key (`local-gateway`) and unsets the other provider variables, so a local run can never spend cloud tokens or send a real key to the gateway.
+4. **Prompt cache.** The script disables the attribution block of Claude Code (`CLAUDE_CODE_ATTRIBUTION_HEADER=0`, through `--settings`), which changes at every request and otherwise forces the local server to recompute the whole prompt each turn.
 
-## 6. Escalation
+## 6. Running a worker
 
-A task returns to a cloud agent when:
+Decision 4A. `scripts/local-task.sh <task-file>` fetches `rewrite/v11` from `origin`, creates a git worktree of its own (`../lionengine-local/<slug>`) on a branch `local/<slug>` cut from it, and runs the worker there:
+
+- **Agent loop (PC1, PC2).** A headless `claude -p --bare` with the tools `Read`, `Edit`, `Write`, `Glob`, `Grep` and `Bash`, an explicit allow-list (Maven in batch mode, the four checks, `git status`, `diff`, `add`, `commit`, `log`), a deny-list (`git push`, `checkout`, `switch`, `reset`, `rebase`, `worktree`, web tools), the permission mode `dontAsk` (anything not allowed is refused, never asked), no MCP server and at most 60 turns. Then the gate runs: the Maven acceptance commands of the task file, a compilation of the whole reactor (`mvn -B -ntp -q test-compile`, because `check-api-index.py` reads the compiled classes of every module), then the check commands of the task file and the four structural checks. A failed gate gives the worker its log and another run, at most 3 gate runs in all (section 7).
+- **Single shot (PC3).** One prompt: the task file and the current content of the files in scope; no tool; the entry file as the whole system prompt. The answer is saved to `../lionengine-local/<slug>.answer.md`; Claude Code applies it in the worktree and runs the gate itself.
+
+The script writes a report, `../lionengine-local/<slug>.report.md`: worker runs with turns, duration and failed tool calls, each gate command and its result, files changed, files out of scope, uncommitted entries, and a verdict: `PASSED`, `ESCALATE` or, for a single shot, `ANSWER READY`. Logs (the worker's stream and the gate output) are in `../lionengine-local/<slug>.logs/`. `scripts/local-task.sh --dry-run <task-file>` validates the task file, prints what it would run and changes nothing.
+
+Rules of the script: it contains no secret and no permission-skip flag; the worker works only in its worktree and never on `rewrite/v11`; the script refuses to reuse an existing worktree or branch; it does not push and does not open a pull request. Clean up after the review with `git worktree remove ../lionengine-local/<slug>` and `git branch -D local/<slug>`.
+
+## 7. Escalation, hand-off and merge gate (ADR-0053)
+
+**Escalation.** A task returns to a cloud agent, with its branch and report, when:
 
 - a stop condition of the task file is met (for example a `TO BE DEFINED` point, a needed public API without a validated contract, an Android/DEX doubt);
-- the acceptance commands still fail after a number of gate runs that is not decided yet (`OQ-171`).
+- the gate still fails after 3 gate runs;
+- the worker changed a file outside the scope of the task file.
 
-The worker records a gap in its report (or in [`open-questions.md`](open-questions.md) through Claude Code) and stops that part of the work; it does not decide (`agent-workflow.md`, "Rules that never depend on the agent").
+The worker records a gap in its report and stops that part of the work; Claude Code records it in [`open-questions.md`](open-questions.md) if it is one; nobody decides it locally (`agent-workflow.md`, "Rules that never depend on the agent"). An escalated task is not retried locally.
 
-## 7. Merge gate (decision 3B)
+**Hand-off.** The worker holds no GitHub credential and no signing key. Claude Code, on the owner's machine with a cloud model, reads the report and the diff (`git -C ../lionengine-local/<slug> diff origin/rewrite/v11...`), fixes nothing silently, then pushes the same branch `local/<slug>` and opens the pull request into `rewrite/v11`. The commits of the branch need no signature: only the squash commit reaches `rewrite/v11`, and GitHub signs it.
 
-A pull request that comes from a local agent is **not auto-merged** until a cloud review has approved it (`REQ-AGENT-004`). Local-agent branches are identifiable by the prefix `local/`. The CI results still decide whether a batch is accepted, the `android` job remaining the arbiter for shared code.
+**Merge gate** (decision 3B, `REQ-AGENT-004`). A `local/` pull request is not auto-merged until a cloud review has approved it:
 
-State of the implementation: the workflow `.github/workflows/auto-merge-agent-prs.yml` is **not changed** by this change. Today it merges only branches `packet/*` and `claude/*` of the allow-listed authors, so a `local/*` branch is not matched and is not auto-merged. The gate is complete only when three gaps are settled, recorded as `OQ-173`: how a pull request is marked when Claude Code opens it under `claude/` from a `local/` branch (label or prefix), who counts as a cloud review, and who merges after approval. The workflow is edited after `OQ-173` is answered, and after the plan is reviewed.
+1. Claude Code with a cloud model (or the owner), not the worker, reviews the diff against the task file, the batch page and [`local-agent-entry.md`](local-agent-entry.md).
+2. It posts its review as a comment and, if it approves, adds the label `cloud-reviewed` from an allow-listed account (`claude[bot]`, `DjThunder`, `b3dgs`).
+3. The label starts `.github/workflows/auto-merge-agent-prs.yml`, which runs the same checks as for the other agent pull requests (documentation, build and tests on the merge result, the `sonar` and `android` checks of the head commit) and squash-merges.
+4. Any push to the pull request removes the label: a new review is needed. Local work is never re-pushed under `claude/` or `packet/`, which would bypass the review.
+
+## 8. Benchmark (`OQ-170`)
+
+The benchmark task is [`local-tasks/benchmark-random-example.md`](local-tasks/benchmark-random-example.md): the script removes `RandomExample` and its test from the worktree (field `Remove before start`, used only by benchmarks) and the worker recreates them from the API index and the Javadoc; the gate is the build of `lionengine-examples` and the API-index check.
+
+On each machine, run it 3 times (change the slug each time, for example `bench-random-example-pc1-1`, and the profile line), then delete the branches: a benchmark branch is never pushed. A model is confirmed when at least 2 runs end `PASSED` in under 30 minutes each; otherwise benchmark the fallback. For PC3, copy the task with `Model profile: PC3`; Claude Code applies each answer unchanged and runs the gate; 2 of 3 passing answers confirm the model.
+
+Results (fill from the reports; `OQ-170` is resolved when every machine has a confirmed model):
+
+| Machine | Model and quantization | Gateway | Runs passed | Gate runs per run | Duration per run | Failed tool calls | Confirmed |
+|---|---|---|---|---|---|---|---|
+| PC1 | | | | | | | |
+| PC2 | | | | | | | |
+| PC3 | | | | | | | |
+
+## 9. Checklist for Claude Code delegating a task
+
+1. The task meets the criteria of section 2, and the benchmark of the profile has passed (until then, only the benchmark is run).
+2. Write the task file from the template; run `scripts/local-task.sh --dry-run <task-file>`.
+3. Ask the owner to run `scripts/local-task.sh <task-file>` on the machine of the profile (or run it there when Claude Code runs on that machine).
+4. Read the report. `ESCALATE`: take the task back. `PASSED` or an applied `ANSWER READY`: review, push `local/<slug>`, open the pull request, review it as in section 7.

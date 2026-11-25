@@ -24,7 +24,7 @@ No agent relies on a conversation history. Everything an agent needs is in the r
 
 ## Delegation to local agents
 
-Claude Code can delegate token-heavy, well-specified work to local models and review the result. Machines, model profiles, delegation criteria, task files, escalation and the merge gate are in [`local-agents.md`](local-agents.md) (PROPOSED, issue #910). The hand-off is a task file in, a `local/` branch out; the compact entry file of a local worker is [`local-agent-entry.md`](local-agent-entry.md).
+Claude Code can delegate token-heavy, well-specified work to local models and review the result. Machines, model profiles, machine setup, delegation criteria, task files, escalation and the merge gate are in [`local-agents.md`](local-agents.md) (PROPOSED, issue #910; escalation, hand-off and merge gate in ADR-0053). The hand-off is a task file in, a `local/` branch and a report out; the compact entry file of a local worker is [`local-agent-entry.md`](local-agent-entry.md). The first local run is the benchmark of `OQ-170`.
 
 ## Making smaller-context agents effective
 
@@ -60,4 +60,4 @@ Next batches, in this order. Each one starts from its feature page and [`impleme
 
 Batches 1 to 6 are done; the next batches depend only on what is merged, as long as each pull request keeps `mvn -B verify` and the `android` job green on the merge result.
 
-No question is open: `OQ-168` and `OQ-169` are resolved by ADR-0052 (background frame rate, disposal after a failed scene call), and `OQ-166` and `OQ-167` are resolved by ADR-0050 (latest stable JUnit) and ADR-0051 (`b3dgs-parent` 3.0.0-SNAPSHOT). The parent is a snapshot: a build that starts failing after a parent update is fixed in the engine code or reported to the owner.
+One question is open: `OQ-170`, the benchmark of the local models (run on the owner's machines, [`local-agents.md`](local-agents.md), section 8); `OQ-171` to `OQ-173` are resolved by ADR-0053, `OQ-168` and `OQ-169` by ADR-0052 (background frame rate, disposal after a failed scene call), and `OQ-166` and `OQ-167` by ADR-0050 (latest stable JUnit) and ADR-0051 (`b3dgs-parent` 3.0.0-SNAPSHOT). The parent is a snapshot: a build that starts failing after a parent update is fixed in the engine code or reported to the owner.
