@@ -84,7 +84,7 @@ final class AwtRenderBackendTest
     }
 
     /** Backend of the test. */
-    private final AwtRenderBackend backend = new AwtRenderBackend(AwtRenderTests.platform(WIDTH, HEIGHT));
+    private final AwtRenderBackend backend = new AwtRenderBackend(AwtRenderFixtures.platform(WIDTH, HEIGHT));
     /** Textures of the backend. */
     private final TextureStore textures = backend.getTextureStore();
     /** Commands of the test. */
@@ -127,8 +127,8 @@ final class AwtRenderBackendTest
     {
         final HeadlessPlatform platform = new HeadlessPlatform(WIDTH,
                                                                HEIGHT,
-                                                               AwtRenderTests.REQUEST,
-                                                               AwtRenderTests.SINK);
+                                                               AwtRenderFixtures.REQUEST,
+                                                               AwtRenderFixtures.SINK);
 
         assertThrows(IllegalArgumentException.class, () -> new AwtRenderBackend(null));
         assertThrows(IllegalArgumentException.class, () -> new AwtRenderBackend(platform));

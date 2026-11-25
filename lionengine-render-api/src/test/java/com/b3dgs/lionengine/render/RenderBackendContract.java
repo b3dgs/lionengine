@@ -93,11 +93,13 @@ public abstract class RenderBackendContract
     void testInvalidTextures()
     {
         final TextureStore store = createBackend().getTextureStore();
+        final int[] one = pixels(1, 1);
+        final int[] tooShort = pixels(1, 3);
 
-        assertThrows(IllegalArgumentException.class, () -> store.create(0, 1, pixels(1, 1)));
-        assertThrows(IllegalArgumentException.class, () -> store.create(1, 0, pixels(1, 1)));
+        assertThrows(IllegalArgumentException.class, () -> store.create(0, 1, one));
+        assertThrows(IllegalArgumentException.class, () -> store.create(1, 0, one));
         assertThrows(IllegalArgumentException.class, () -> store.create(1, 1, null));
-        assertThrows(IllegalArgumentException.class, () -> store.create(2, 2, pixels(1, 3)));
+        assertThrows(IllegalArgumentException.class, () -> store.create(2, 2, tooShort));
         assertThrows(IllegalArgumentException.class, () -> store.prepare(Integer.MIN_VALUE));
         assertDoesNotThrow(() -> store.release(Integer.MIN_VALUE));
     }

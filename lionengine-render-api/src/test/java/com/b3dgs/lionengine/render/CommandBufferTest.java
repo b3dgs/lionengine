@@ -316,7 +316,7 @@ final class CommandBufferTest
                 {
                     buffer.setViewport(viewport);
                 }
-                buffer.add(i, 0, 0, SIZE, SIZE).position(i, frame).layer(63 - i);
+                buffer.add(i, 0, 0, SIZE, SIZE).position((float) i, (float) frame).layer(63 - i);
             }
             for (int rank = 0; rank < buffer.size(); rank++)
             {

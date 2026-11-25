@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.render.CommandBuffer;
 /**
  * Test of the AWT renderer in a real window of the AWT platform (platform test, REQ-PLATFORM-001, REQ-FE-003).
  */
-@Tag(AwtRenderTests.PLATFORM)
+@Tag(AwtRenderFixtures.PLATFORM)
 final class AwtRenderBackendWindowTest
 {
     /** Logical frame width. */
@@ -118,7 +118,7 @@ final class AwtRenderBackendWindowTest
     @Test
     void testPresent() throws AWTException, InterruptedException, InvocationTargetException
     {
-        final AwtPlatform platform = new AwtPlatform(WIDTH, HEIGHT, AwtRenderTests.REQUEST, AwtRenderTests.SINK);
+        final AwtPlatform platform = new AwtPlatform(WIDTH, HEIGHT, AwtRenderFixtures.REQUEST, AwtRenderFixtures.SINK);
         final AwtRenderBackend backend = new AwtRenderBackend(platform);
         platform.attach(backend);
         final int[] pixels = new int[WIDTH * HEIGHT];

@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.LogSink;
 /**
  * Shared fixtures of the AWT platform tests.
  */
-final class AwtTests
+final class AwtFixtures
 {
     /** Tag of the tests needing a real display (testing.md, platform tests). */
     static final String PLATFORM = "platform";
@@ -71,7 +71,7 @@ final class AwtTests
     /**
      * Private constructor.
      */
-    private AwtTests()
+    private AwtFixtures()
     {
         throw new AssertionError();
     }

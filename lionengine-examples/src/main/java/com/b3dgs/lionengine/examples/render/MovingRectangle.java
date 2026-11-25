@@ -72,7 +72,7 @@ public final class MovingRectangle implements Scene
         this.textures = textures;
         this.commands = commands;
         this.width = width;
-        y = (height - SIZE) / 2.0F;
+        y = (float) ((height - SIZE) / 2.0);
     }
 
     /**

@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.testsupport.HeadlessPlatform;
 /**
  * Shared fixtures of the AWT renderer tests.
  */
-final class AwtRenderTests
+final class AwtRenderFixtures
 {
     /** Tag of the tests needing a real display (testing.md, platform tests). */
     static final String PLATFORM = "platform";
@@ -62,7 +62,7 @@ final class AwtRenderTests
     /**
      * Private constructor.
      */
-    private AwtRenderTests()
+    private AwtRenderFixtures()
     {
         throw new AssertionError();
     }

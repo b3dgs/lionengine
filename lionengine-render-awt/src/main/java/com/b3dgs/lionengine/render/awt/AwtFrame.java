@@ -43,7 +43,7 @@ final class AwtFrame
     static final int CLEAR = 0xFF000000;
 
     /** Maximum value of a color channel. */
-    private static final float CHANNEL_MAX = 255.0F;
+    private static final double CHANNEL_MAX = 255.0;
     /** Mask of a color channel. */
     private static final int CHANNEL = 0xFF;
     /** Mask of the color channels of a tint. */
@@ -145,14 +145,15 @@ final class AwtFrame
         final int viewportY = commands.getViewportY(entry);
         graphics.setTransform(identity);
         clip(viewportX, viewportY, commands.getViewportWidth(entry), commands.getViewportHeight(entry));
-        transform.setToTranslation(viewportX + commands.getX(entry), viewportY + commands.getY(entry));
+        transform.setToTranslation(viewportX + (double) commands.getX(entry),
+                                   viewportY + (double) commands.getY(entry));
         transform.rotate(-Math.toRadians(commands.getRotation(entry)));
         transform.scale(commands.getScaleX(entry), commands.getScaleY(entry));
         transform.translate(-commands.getPivotX(entry), -commands.getPivotY(entry));
         graphics.setTransform(transform);
 
         final int argb = commands.getTint(entry);
-        graphics.setComposite(composite(commands.getAlpha(entry) * ((argb >>> ALPHA_SHIFT) / CHANNEL_MAX)));
+        graphics.setComposite(composite((float) (commands.getAlpha(entry) * ((argb >>> ALPHA_SHIFT) / CHANNEL_MAX))));
         final int sourceX = commands.getSourceX(entry);
         final int sourceY = commands.getSourceY(entry);
         final int sourceWidth = commands.getSourceWidth(entry);
@@ -269,9 +270,9 @@ final class AwtFrame
             tint = argb;
             tintOperation = new RescaleOp(new float[]
             {
-                ((argb >> RED_SHIFT) & CHANNEL) / CHANNEL_MAX,
-                ((argb >> GREEN_SHIFT) & CHANNEL) / CHANNEL_MAX,
-                (argb & CHANNEL) / CHANNEL_MAX,
+                (float) (((argb >> RED_SHIFT) & CHANNEL) / CHANNEL_MAX),
+                (float) (((argb >> GREEN_SHIFT) & CHANNEL) / CHANNEL_MAX),
+                (float) ((argb & CHANNEL) / CHANNEL_MAX),
                 1.0F
             }, NO_OFFSET, null);
         }
