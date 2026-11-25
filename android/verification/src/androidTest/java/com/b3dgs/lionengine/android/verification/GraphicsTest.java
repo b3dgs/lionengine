@@ -39,10 +39,10 @@ import com.b3dgs.lionengine.graphics.PixelBuffer;
 import com.b3dgs.lionengine.graphics.PngDecoder;
 
 /**
- * Runs {@code graphics} on Android API 21 (ADR-0044): the pixel buffer and the PNG decoder, whose
- * {@code java.util.zip.Inflater} and {@code CRC32} are verified by the probes. The images are written here with the
- * API 21 methods only, as the JVM fixture {@code PngWriter} writes them; expected values are the ones of the JVM tests
- * (PixelBufferTest, PngDecoderTest, PngDecoderContractTest).
+ * Runs {@code graphics} on Android API 21 (ADR-0044): the pixel buffer and the PNG decoder with its size limits
+ * (ADR-0054), whose {@code java.util.zip.Inflater} and {@code CRC32} are verified by the probes. The images are
+ * written here with the API 21 methods only, as the JVM fixture {@code PngWriter} writes them; expected values are the
+ * ones of the JVM tests (PixelBufferTest, PngDecoderTest, PngDecoderContractTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class GraphicsTest
@@ -440,6 +440,36 @@ public final class GraphicsTest
         {
             assertEquals(String.valueOf(length), ImageDecodingException.class.getName(), rejectedName(image, length));
         }
+    }
+
+    /**
+     * The size limits of ADR-0054: a width above 1,000,000 pixels, and more pixels than the limit of the decoder, are
+     * refused from the header.
+     *
+     * @throws IOException If reading fails.
+     */
+    @Test
+    public void testSizeLimits() throws IOException
+    {
+        final byte[] image = png(2, 2, 8, GRAY, 0, null, null, 1, 2, 3, 4);
+        final PngDecoder belowLimit = new PngDecoder(3);
+        final ByteArrayOutputStream wide = new ByteArrayOutputStream();
+        wide.write(SIGNATURE, 0, SIGNATURE.length);
+        final ByteArrayOutputStream header = new ByteArrayOutputStream();
+        writeInt(header, PngDecoder.MAX_DIMENSION + 1);
+        writeInt(header, 1);
+        header.write(8);
+        header.write(GRAY);
+        header.write(0);
+        header.write(0);
+        header.write(0);
+        chunk(wide, "IHDR", header.toByteArray());
+
+        assertEquals(1_000_000, PngDecoder.MAX_DIMENSION);
+        assertEquals(89_478_485, PngDecoder.DEFAULT_MAX_PIXELS);
+        assertEquals(2, new PngDecoder(4).decode(new ByteArrayInputStream(image)).getWidth());
+        assertThrows(ImageDecodingException.class, () -> belowLimit.decode(new ByteArrayInputStream(image)));
+        assertTrue(assertRejected(wide.toByteArray()).contains("limits"));
     }
 
     /**

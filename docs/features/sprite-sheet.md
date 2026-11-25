@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 2, see `roadmap.md` (batch order: sprite sheet, sprite, animated sprite)
 - Affected modules: `graphics`, `resources`, `core` (JSON reader), `test-support`, `examples`
 - Requirements: `REQ-SHEET-001` to `REQ-SHEET-003`, `REQ-SPRITE-009`, `REQ-RES-004`, `REQ-RES-005`, `REQ-DEF-001`, `REQ-DEF-002`
-- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0047`](../decisions/0047-render-api-texture-pixel-data-and-shader-resource-keys.md)
+- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0047`](../decisions/0047-render-api-texture-pixel-data-and-shader-resource-keys.md), [`ADR-0054`](../decisions/0054-decoded-image-size-limits.md)
 - Open questions involved: none
 
 ## Objective
@@ -20,6 +20,7 @@ Sprite rendering and animation playback (see [`sprite.md`](sprite.md), [`animate
 ## Expected behavior
 
 - The pixel buffer is packed `int` ARGB, row-major, top-left origin, straight alpha. The built-in pure-Java PNG decoder handles non-interlaced images of every color type, depths 1 to 8 and 16 (reduced to 8), and `tRNS`; interlaced images fail with the `graphics` decoding exception.
+- Size limits (ADR-0054): every decoder refuses with the decoding exception, from the header and before allocating the pixels, an image whose width or height is above 1,000,000 pixels, or whose pixel count is above the decoder's limit, 89,478,485 by default and set when the decoder is created.
 - Images are held by the cache of a `graphics` instance: key = resource key (plus a discriminator for derived images), explicit reference counting, idempotent release, no automatic eviction.
 - A sheet is a grid: cell width and height, columns, rows, optional margin and spacing, in pixels; cells are numbered row by row from the top-left, starting at 0; an out-of-range index fails with `IndexOutOfBoundsException`.
 - Sheets are grouped and retrieved by a unique string id in the resource-key form; a duplicate id fails at registration, an unknown id fails at lookup, both with a defined exception naming the id. A group is reference-counted; whoever acquires it releases it, normally the scene on exit.
@@ -49,7 +50,7 @@ Batch 1 is implemented in `graphics`, with the example `ImageDecodingExample` an
 
 Not in this batch: how a loader chooses the decoder of a key (by extension or registration) and the default registration of `PngDecoder` come with the image cache (batch 2), which opens keys through `Resources`.
 
-Gaps found by the batch: no configurable limit on the size of a decoded image, so a small file declaring a huge image can exhaust the memory (only images of more than `Integer.MAX_VALUE` pixels are refused); an untrusted image (a mod) needs one before it is loaded.
+Gap found by the batch, then closed: there was no limit on the size of a decoded image, so a small file declaring a huge image could exhaust the memory. ADR-0054 (2026-11-25, owner delegation) sets the limits: `PngDecoder.MAX_DIMENSION` (1,000,000 pixels of width or height, libpng's default) and a pixel limit per decoder, `PngDecoder.DEFAULT_MAX_PIXELS` (89,478,485, Pillow's default) unless given to `new PngDecoder(maxPixels)`; `ImageDecoderContract` checks the pixel limit of every decoder.
 
 ## Lifecycle and concurrency
 

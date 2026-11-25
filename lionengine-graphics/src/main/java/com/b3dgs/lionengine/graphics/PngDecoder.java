@@ -35,8 +35,9 @@ import java.io.InputStream;
  * Rejected with an {@link ImageDecodingException}: a stream that is not a PNG image, a truncated or corrupted one (the
  * CRC of every chunk is checked), an invalid header, color type or bit depth, Adam7 interlacing, an animated PNG
  * (chunks {@code acTL}, {@code fcTL}, {@code fdAT}), a palette image without palette or with an index outside it, an
- * unknown critical chunk, and an image of more than {@link Integer#MAX_VALUE} pixels (the size of one
- * {@link PixelBuffer}).
+ * unknown critical chunk, and an image above the size limits of ADR-0054: a width or a height above
+ * {@link #MAX_DIMENSION}, or more pixels than the limit of the decoder, {@link #DEFAULT_MAX_PIXELS} by default. The
+ * limits are checked from the header, before the pixels are allocated.
  * </p>
  *
  * <p>
@@ -49,12 +50,22 @@ import java.io.InputStream;
  */
 public final class PngDecoder implements ImageDecoder
 {
+    /** Largest width and largest height of a decoded image, in pixels: libpng's default user limits (ADR-0054). */
+    public static final int MAX_DIMENSION = 1_000_000;
+    /**
+     * Default limit of the pixel count of a decoded image: Pillow's default {@code MAX_IMAGE_PIXELS}, 341 MiB as a
+     * {@link PixelBuffer} (ADR-0054).
+     */
+    public static final int DEFAULT_MAX_PIXELS = 89_478_485;
+
     /** Error message of a {@code null} stream. */
     private static final String ERROR_INPUT = "Input null";
     /** Error message of an animated image. */
     private static final String ERROR_ANIMATED = "Animated PNG (APNG) not supported";
     /** Error message of a critical chunk out of place or unknown. */
     private static final String ERROR_CRITICAL = "PNG chunk unexpected: ";
+    /** Error message of an invalid pixel limit. */
+    private static final String ERROR_LIMIT = "Pixel limit not positive: ";
 
     /**
      * Reads the chunks before the image data: palette, transparency, and skipped ancillary chunks.
@@ -152,12 +163,34 @@ public final class PngDecoder implements ImageDecoder
         }
     }
 
+    /** Largest pixel count of a decoded image. */
+    private final int maxPixels;
+
     /**
-     * Creates the decoder.
+     * Creates the decoder with the default pixel limit, {@link #DEFAULT_MAX_PIXELS}.
      */
     public PngDecoder()
     {
+        this(DEFAULT_MAX_PIXELS);
+    }
+
+    /**
+     * Creates the decoder with a pixel limit (ADR-0054).
+     *
+     * @param maxPixels The largest pixel count (width times height) of a decoded image (positive); a game that loads
+     *            untrusted images, or that targets devices with little memory, sets it below
+     *            {@link #DEFAULT_MAX_PIXELS}.
+     * @throws IllegalArgumentException If {@code maxPixels} is not positive.
+     */
+    public PngDecoder(int maxPixels)
+    {
         super();
+
+        if (maxPixels <= 0)
+        {
+            throw new IllegalArgumentException(ERROR_LIMIT + maxPixels);
+        }
+        this.maxPixels = maxPixels;
     }
 
     @Override
@@ -169,7 +202,7 @@ public final class PngDecoder implements ImageDecoder
         }
         final PngChunks chunks = new PngChunks(input);
         chunks.readSignature();
-        final PngHeader header = PngHeader.read(chunks);
+        final PngHeader header = PngHeader.read(chunks, maxPixels);
         final PngColors colors = new PngColors(header);
         readBeforeData(chunks, colors);
         final PixelBuffer pixels = readData(chunks, header, colors);

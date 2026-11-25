@@ -31,6 +31,13 @@ import java.io.InputStream;
  * </p>
  *
  * <p>
+ * Size limits (ADR-0054): every decoder refuses, with an {@link ImageDecodingException} and before allocating the
+ * pixels, an image whose width or height is above {@link PngDecoder#MAX_DIMENSION} (1,000,000 pixels), or whose pixel
+ * count is above the limit given when the decoder is created, {@link PngDecoder#DEFAULT_MAX_PIXELS} (89,478,485) by
+ * default. A small file can therefore not make a decoder allocate an unbounded amount of memory.
+ * </p>
+ *
+ * <p>
  * Ownership: the caller opens the stream, for example through {@code Resources}, and closes it; the decoder reads it
  * and never closes it. The returned buffer is new and belongs to the caller; the decoder keeps no reference to it.
  * </p>
@@ -53,7 +60,7 @@ public interface ImageDecoder
      * @return The pixels of the image, in a new buffer owned by the caller.
      * @throws IOException If reading the stream fails; the caller reports it as an inaccessible resource (ADR-0007).
      * @throws ImageDecodingException If the bytes are not a valid image of the decoder's format, are truncated or
-     *             corrupted, or use a feature the decoder rejects.
+     *             corrupted, use a feature the decoder rejects, or the image is above the size limits.
      * @throws IllegalArgumentException If {@code input} is {@code null}.
      */
     PixelBuffer decode(InputStream input) throws IOException;

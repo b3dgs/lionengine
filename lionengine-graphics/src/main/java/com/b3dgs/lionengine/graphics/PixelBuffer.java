@@ -46,7 +46,7 @@ import java.util.Arrays;
 public final class PixelBuffer
 {
     /** Largest number of pixels, the largest size of one {@code int[]}. */
-    static final long MAX_PIXELS = Integer.MAX_VALUE;
+    private static final long MAX_PIXELS = Integer.MAX_VALUE;
 
     /** Separator of a width and a height in messages. */
     private static final String TIMES = " x ";

@@ -711,7 +711,7 @@ final class PngDecoderTest
     }
 
     /**
-     * Empty, negative and oversized images are rejected.
+     * Empty and negative sizes are rejected.
      *
      * @param width The width written in the header.
      * @param height The height written in the header.
@@ -719,20 +719,81 @@ final class PngDecoderTest
     @ParameterizedTest
     @CsvSource(
     {
-        "0, 1", "1, 0", "-1, 1", "1, -1", "65536, 32768", "2147483647, 2"
+        "0, 1", "1, 0", "-1, 1", "1, -1", "0, 0"
     })
     void testSize(int width, int height)
     {
-        assertRejected(new PngWriter(width, height, 8, PngWriter.GRAY).setImageData(SOME).write(), "size");
+        assertRejected(new PngWriter(width, height, 8, PngWriter.GRAY).setImageData(SOME).write(), "size invalid");
     }
 
     /**
-     * A row longer than the largest array is rejected.
+     * Sizes above the limits of ADR-0054 are rejected from the header: a width or a height above 1,000,000 pixels, or
+     * more than 89,478,485 pixels by default.
+     *
+     * @param width The width written in the header.
+     * @param height The height written in the header.
+     */
+    @ParameterizedTest
+    @CsvSource(
+    {
+        "1000001, 1", "1, 1000001", "2147483647, 1", "9460, 9460", "1000000, 90", "65536, 32768"
+    })
+    void testSizeLimits(int width, int height)
+    {
+        assertRejected(new PngWriter(width, height, 16, PngWriter.RGBA).setImageData(SOME).write(), "limits");
+    }
+
+    /**
+     * The default pixel limit is the one of ADR-0054, and the largest width is accepted.
+     *
+     * @throws IOException If reading fails.
      */
     @Test
-    void testRowSize()
+    void testLimitValues() throws IOException
     {
-        assertRejected(new PngWriter(Integer.MAX_VALUE, 1, 16, PngWriter.RGBA).setImageData(SOME).write(), "size");
+        final int[] samples = new int[PngDecoder.MAX_DIMENSION];
+        samples[PngDecoder.MAX_DIMENSION - 1] = 0xFF;
+
+        final PngWriter widest = new PngWriter(PngDecoder.MAX_DIMENSION, 1, 8, PngWriter.GRAY).setSamples(samples);
+        final PixelBuffer pixels = decode(widest.write());
+
+        assertEquals(1_000_000, PngDecoder.MAX_DIMENSION);
+        assertEquals(89_478_485, PngDecoder.DEFAULT_MAX_PIXELS);
+        assertEquals(0xFFFFFFFF, pixels.getPixel(PngDecoder.MAX_DIMENSION - 1, 0));
+    }
+
+    /**
+     * A decoder created with a pixel limit accepts an image at the limit and rejects a larger one.
+     *
+     * @throws IOException If reading fails.
+     */
+    @Test
+    void testPixelLimit() throws IOException
+    {
+        final byte[] image = writer(PngWriter.RGB, 8).write();
+        final PngDecoder atLimit = new PngDecoder(WIDTH * HEIGHT);
+        final PngDecoder belowLimit = new PngDecoder(WIDTH * HEIGHT - 1);
+        final InputStream input = new ByteArrayInputStream(image);
+
+        assertEquals(WIDTH, atLimit.decode(new ByteArrayInputStream(image)).getWidth());
+        final ImageDecodingException exception = assertThrows(ImageDecodingException.class,
+                                                              () -> belowLimit.decode(input));
+        assertTrue(exception.getMessage().contains("limits"), exception.getMessage());
+    }
+
+    /**
+     * A pixel limit that is not positive is rejected.
+     *
+     * @param maxPixels The pixel limit.
+     */
+    @ParameterizedTest
+    @ValueSource(ints =
+    {
+        0, -1, Integer.MIN_VALUE
+    })
+    void testInvalidPixelLimit(int maxPixels)
+    {
+        assertThrows(IllegalArgumentException.class, () -> new PngDecoder(maxPixels));
     }
 
     /**

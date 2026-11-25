@@ -39,13 +39,14 @@ import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.Test;
 
 /**
- * Contract suite of {@link ImageDecoder} (ADR-0007, ADR-0019, ADR-0026, ADR-0045, REQ-SPRITE-009).
+ * Contract suite of {@link ImageDecoder} (ADR-0007, ADR-0019, ADR-0026, ADR-0045, ADR-0054, REQ-SPRITE-009).
  *
  * <p>
  * Published in the {@code graphics} test JAR: every decoder binds it by extending this class, creating the decoder and
  * giving one valid image of its format with the pixels it must produce, so that all decoders behave the same for the
  * code that loads images through them: a new buffer per call, the stream left open, read failures reported as
- * {@link IOException}, invalid content as {@link ImageDecodingException}, and decoding on several threads at once.
+ * {@link IOException}, invalid content as {@link ImageDecodingException}, the pixel limit given at creation, and
+ * decoding on several threads at once.
  * </p>
  */
 public abstract class ImageDecoderContract
@@ -58,11 +59,19 @@ public abstract class ImageDecoderContract
     private static final long TIMEOUT_SECONDS = 30L;
 
     /**
-     * Creates the decoder under test.
+     * Creates the decoder under test, with the default pixel limit of ADR-0054.
      *
      * @return The decoder.
      */
     protected abstract ImageDecoder createDecoder();
+
+    /**
+     * Creates the decoder under test with a pixel limit.
+     *
+     * @param maxPixels The largest pixel count of a decoded image.
+     * @return The decoder.
+     */
+    protected abstract ImageDecoder createDecoder(int maxPixels);
 
     /**
      * Returns a valid image in the format of the decoder, with at least two different pixels.
@@ -112,6 +121,23 @@ public abstract class ImageDecoderContract
     void testDecode() throws IOException
     {
         assertExpected(decode(getImage()));
+    }
+
+    /**
+     * A decoder decodes an image of exactly its pixel limit, and refuses it with one pixel less (ADR-0054).
+     *
+     * @throws IOException If reading fails.
+     */
+    @Test
+    void testPixelLimit() throws IOException
+    {
+        final PixelBuffer expected = getExpected();
+        final int pixels = expected.getWidth() * expected.getHeight();
+        final ImageDecoder below = createDecoder(pixels - 1);
+        final InputStream input = new ByteArrayInputStream(getImage());
+
+        assertExpected(createDecoder(pixels).decode(new ByteArrayInputStream(getImage())));
+        assertThrows(ImageDecodingException.class, () -> below.decode(input));
     }
 
     /**
