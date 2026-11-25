@@ -773,10 +773,11 @@ final class PngDecoderTest
         final byte[] image = writer(PngWriter.RGB, 8).write();
         final PngDecoder atLimit = new PngDecoder(WIDTH * HEIGHT);
         final PngDecoder belowLimit = new PngDecoder(WIDTH * HEIGHT - 1);
+        final InputStream input = new ByteArrayInputStream(image);
 
         assertEquals(WIDTH, atLimit.decode(new ByteArrayInputStream(image)).getWidth());
         final ImageDecodingException exception = assertThrows(ImageDecodingException.class,
-                                                              () -> belowLimit.decode(new ByteArrayInputStream(image)));
+                                                              () -> belowLimit.decode(input));
         assertTrue(exception.getMessage().contains("limits"), exception.getMessage());
     }
 
