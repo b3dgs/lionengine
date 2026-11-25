@@ -16,6 +16,10 @@
  */
 package com.b3dgs.lionengine.graphics;
 
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
+
 import com.b3dgs.lionengine.Configuration;
 import com.b3dgs.lionengine.DefinitionException;
 import com.b3dgs.lionengine.JsonObject;
@@ -41,6 +45,8 @@ final class SheetTemplates
     private static final String ERROR_KEY = "Invalid key color, expected #RRGGBB or #AARRGGBB: ";
     /** Error message of an invalid target color. */
     private static final String ERROR_TARGET = "Invalid target color, expected #RRGGBB or #AARRGGBB: ";
+    /** Error message of a key color given twice, in another letter case. */
+    private static final String ERROR_DUPLICATE = "Key color given twice: ";
 
     /**
      * Tells whether a text is a color, {@code #RRGGBB} or {@code #AARRGGBB}.
@@ -94,11 +100,16 @@ final class SheetTemplates
     private static void readTemplate(Configuration template, JsonObject mapping)
     {
         final int count = mapping.size();
+        final Set<String> colors = new HashSet<>();
         for (int i = 0; i < count; i++)
         {
             final String key = mapping.getKey(i);
             if (!Configuration.COMMENT.equals(key))
             {
+                if (!colors.add(key.toUpperCase(Locale.ROOT)))
+                {
+                    throw template.createError(key, ERROR_DUPLICATE + key);
+                }
                 final String target = template.getString(key);
                 if (!isColor(key))
                 {

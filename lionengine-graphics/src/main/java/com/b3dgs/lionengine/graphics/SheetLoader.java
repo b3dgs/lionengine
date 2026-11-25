@@ -48,7 +48,8 @@ import com.b3dgs.lionengine.resources.Resources;
  * frame) and {@code loop} ({@code once}, {@code loop} or {@code ping-pong}) (optional);</li>
  * <li>{@code templates}: an object of named color mappings, each mapping key colors to target colors, written
  * {@code #RRGGBB} or {@code #AARRGGBB} (optional);</li>
- * <li>{@code comment}: documentation, at any level (optional).</li>
+ * <li>{@code comment}: documentation, at any level (optional); so no animation, template or key color can be named
+ * {@code comment}.</li>
  * </ul>
  *
  * <p>

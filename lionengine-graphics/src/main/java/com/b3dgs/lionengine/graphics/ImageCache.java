@@ -371,9 +371,10 @@ public final class ImageCache
      * <p>
      * Only the decoded image ({@link #DECODED}) is read again; images derived from it keep their pixels. On success,
      * every handle on the image gives the new size, pixels and texture: the cache creates the new texture and releases
-     * the previous one. Call it between two frames, from the update phase or from an inbox event (for example a
-     * development key), never while the render phase is writing commands that name the previous texture. On failure
-     * the image is unchanged.
+     * the previous one. Sprite sheets over the image keep the grid computed when they were added: after a reload that
+     * changes the size, release and add them again. Call it between two frames, from the update phase or from an
+     * inbox event (for example a development key), never while the render phase is writing commands that name the
+     * previous texture. On failure the image is unchanged.
      * </p>
      *
      * @param key The resource key of a cached image (never {@code null}).
