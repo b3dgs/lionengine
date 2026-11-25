@@ -83,6 +83,33 @@ final class AwtRenderBackendWindowTest
     }
 
     /**
+     * Waits until the platform has the surface size, which it takes from the resize event of the canvas. The window
+     * system delivers that event after the resize, so frames presented before it are drawn with the earlier size. The
+     * surface size is written by the loop thread before it presents a frame: the volatile frame counter is read before
+     * each check, which makes the size visible to this thread.
+     *
+     * @param platform The platform.
+     * @param driver The driver, whose frame counter is read.
+     * @param width The surface width in device pixels.
+     * @param height The surface height in device pixels.
+     * @return The number of frames presented when the surface size was found.
+     * @throws InterruptedException If interrupted.
+     */
+    private static int awaitSurface(AwtPlatform platform, PresentingDriver driver, int width, int height)
+            throws InterruptedException
+    {
+        final long end = System.nanoTime() + TIMEOUT;
+        int frames = driver.getFrames();
+        while (platform.getSurfaceWidth() != width || platform.getSurfaceHeight() != height)
+        {
+            assertTrue(System.nanoTime() < end, "Surface size not received in time");
+            Thread.sleep(1L);
+            frames = driver.getFrames();
+        }
+        return frames;
+    }
+
+    /**
      * Resizes the window so that the canvas has a size, and waits for the AWT event thread.
      *
      * @param canvas The canvas.
@@ -138,7 +165,7 @@ final class AwtRenderBackendWindowTest
         final double scale = canvas.getGraphicsConfiguration().getDefaultTransform().getScaleX();
         assumeTrue(Double.compare(scale, 1.0) == 0, "Pixel checks written for a scale of 1");
         resize(canvas, 3 * WIDTH, 2 * HEIGHT);
-        await(driver, driver.getFrames() + 5);
+        await(driver, awaitSurface(platform, driver, 3 * WIDTH, 2 * HEIGHT) + 5);
 
         final BufferedImage screen = new Robot().createScreenCapture(new Rectangle(canvas.getLocationOnScreen(),
                                                                                    canvas.getSize()));
