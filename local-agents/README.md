@@ -4,6 +4,7 @@ This folder is for **you, the owner**. It is not read by agents: a local worker 
 
 | File | What it is |
 |---|---|
+| `INSTALL.md` | Install a PC from scratch: tools, llama.cpp, models, model server (Windows 11). Start here on a new machine. |
 | `README.md` | This procedure. |
 | `run-benchmark.sh` | Runs one benchmark run on one machine, or cleans it up. |
 | `benchmark-task.template.md` | The benchmark task; the script fills in the slug and the machine profile. |
@@ -20,14 +21,14 @@ Status: the scripts have been run end to end only on Linux, against a stub gatew
 
 ## Per machine, once
 
-1. **Software.** Git for Windows (it provides Git Bash), JDK 25 and Maven 3.9 (both on the PATH of Git Bash, with `JAVA_HOME` set), Python 3 (`python3` itself may be missing or be the Microsoft Store stub: the script copes with that, but Python 3 must be installed), the Claude Code CLI (`claude --version` in Git Bash), and the Windows build of llama.cpp for NVIDIA GPUs (its server speaks the Anthropic Messages API). Once: `git config --global core.longpaths true`, and keep the repository in a short path such as `C:\dev\lionengine`.
-2. **Clone and update the repository:** `git clone` it, or `git pull` on `rewrite/v11`. The script fetches `origin/rewrite/v11` itself before each run.
-3. **Start the model server.** The exact command per machine (model, context size, how many MoE layers stay in RAM) is in [`docs/local-agents.md`](../docs/local-agents.md), section 5 and the table of section 1. Keep it running in its own PowerShell window (`llama-server.exe` takes the same arguments). Use `--jinja`: without it, tool calls fail.
-4. **Point the shell at it**, in the Git Bash window where you will run the benchmark (not PowerShell: `export` is the Git Bash syntax):
+1. **Install the machine** once, from scratch, with [`INSTALL.md`](INSTALL.md): tools, llama.cpp, the models of the machine, the model server. Keep the model server running in its own PowerShell window.
+2. **Update the repository:** `git pull` on `rewrite/v11` in `C:\dev\lionengine`. The script fetches `origin/rewrite/v11` itself before each run.
+3. **Check the server answers** (`curl -s http://127.0.0.1:8080/health` in Git Bash).
+4. **Point the shell at it** (step 6 of [`INSTALL.md`](INSTALL.md) does the same and tests it), in the Git Bash window where you will run the benchmark (not PowerShell: `export` is the Git Bash syntax):
 
    ```bash
    export ANTHROPIC_BASE_URL=http://127.0.0.1:8080
-   export LOCAL_AGENT_MODEL=<the model name your server reports>   # only if it serves several
+   export LOCAL_AGENT_MODEL=<the --alias of the model server, step 5 of INSTALL.md>
    ```
 
    The script refuses to start without `ANTHROPIC_BASE_URL`, and refuses any `anthropic.com` address: a benchmark can never spend cloud tokens. It sends a placeholder key, never a real one.
