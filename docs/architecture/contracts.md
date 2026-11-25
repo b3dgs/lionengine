@@ -113,7 +113,7 @@ Details: [`features/audio-short-and-long-sounds.md`](../features/audio-short-and
 - Transform: scale, then rotation, then translation, about the pivot (pixels from the frame top-left, default the frame center); rotation counter-clockwise on screen, in degrees.
 - Template color variants: exact key colors mapped to targets in the sheet definition, cached by (source image, mapping).
 - Animation: frame indices, frame duration in seconds (optional per-frame durations), loop mode `once`, `loop` or `ping-pong`; time advances with the simulation step only.
-- Sprite sheet: grid (cell size, columns, rows, margin, spacing) and cells by index; sheets grouped by a unique string id, reference-counted, released by their acquirer (normally the scene). Definition file format `lionengine.sheet`.
+- Sprite sheet: grid (cell size, columns, rows, margin, spacing; counts derived from the image as in Tiled) and cells by index; sheets grouped by an id in the resource-key form, unique in the group; a group is reference-counted through its handles, each released by its acquirer (normally the scene, and the tile map for its tileset), the last release freeing every image together. Definition file format `lionengine.sheet`.
 
 Details: [`features/sprite-sheet.md`](../features/sprite-sheet.md), [`features/sprite.md`](../features/sprite.md), [`features/animated-sprite.md`](../features/animated-sprite.md).
 

@@ -43,6 +43,9 @@ import com.b3dgs.lionengine.graphics.ImageCache;
 import com.b3dgs.lionengine.graphics.ImageDecodingException;
 import com.b3dgs.lionengine.graphics.PixelBuffer;
 import com.b3dgs.lionengine.graphics.PngDecoder;
+import com.b3dgs.lionengine.graphics.SheetGrid;
+import com.b3dgs.lionengine.graphics.SheetGroup;
+import com.b3dgs.lionengine.graphics.SpriteSheet;
 import com.b3dgs.lionengine.render.TextureStore;
 import com.b3dgs.lionengine.resources.ResourceKey;
 import com.b3dgs.lionengine.resources.Resources;
@@ -553,6 +556,42 @@ public final class GraphicsTest
         assertFalse(textures.alive.contains(Integer.valueOf(previous)));
         assertEquals(4L, cache.getUsedBytes());
         hero.release();
+        assertTrue(textures.alive.isEmpty());
+    }
+
+    /**
+     * A sheet group cuts an image into cells, refuses a duplicate and an unknown id, and releases the image of every
+     * sheet with its last handle (REQ-SHEET-001, REQ-SHEET-002).
+     *
+     * @throws IOException If the image cannot be written.
+     */
+    @Test
+    public void testSpriteSheet() throws IOException
+    {
+        final ResourceKey key = new ResourceKey("tiles/forest.png");
+        final ResourceKey id = new ResourceKey("tiles/forest.tsj");
+        final MemoryProvider memory = new MemoryProvider();
+        try (OutputStream output = memory.openWrite(key))
+        {
+            output.write(png(5, 2, 8, GRAY, 0, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+        }
+        final Textures textures = new Textures();
+        final ImageCache cache = new ImageCache(new Resources(memory), textures);
+        final SheetGroup group = new SheetGroup(cache);
+
+        final SpriteSheet sheet = group.add(id, key, new SheetGrid(2, 2, SheetGrid.DERIVED, SheetGrid.DERIVED, 0, 1));
+        final SheetGroup map = group.acquire();
+
+        assertEquals(2, sheet.getColumns());
+        assertEquals(1, sheet.getRows());
+        assertEquals(3, sheet.getCellX(1));
+        assertThrows(IndexOutOfBoundsException.class, () -> sheet.getCellX(2));
+        assertThrows(IllegalStateException.class, () -> group.add(id, key, new SheetGrid(1, 1)));
+        assertThrows(IllegalStateException.class, () -> group.get(key));
+        group.release();
+        assertEquals(1, cache.size());
+        map.release();
+        assertEquals(0, cache.size());
         assertTrue(textures.alive.isEmpty());
     }
 

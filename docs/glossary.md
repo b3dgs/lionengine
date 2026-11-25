@@ -83,6 +83,7 @@
 | Split-screen | Simultaneous presentation of several views/players on one screen. |
 | Sprite | Lightweight instance (transform, color transform, pivot, alpha) over a shared immutable source (image + region) (ADR-0003). |
 | Sprite sheet | Image grouping several sprite regions as a grid (cell size, columns, rows, optional margin/spacing), giving access to cells by index; sheets are grouped by unique id (ADR-0003). Also written "spritesheet". |
+| Sheet group | Sprite sheets held under ids unique in the group (`SheetGroup`), acquired and released together; reference-counted through its handles, the last release frees every image (ADR-0026, REQ-SHEET-002). |
 | System | In ECS, logic that processes the objects of a query during the update phase, in slot order. |
 | Template color mapping | Static transform mapping exact key colors to target colors, producing a cached color variant of one sprite (e.g. team colors) (ADR-0026). |
 | Test JAR | The published test sources of a module (Maven classifier `tests`): the fakes and abstract contract suites of its contracts, used in test scope by the modules that depend on it (ADR-0045). |
