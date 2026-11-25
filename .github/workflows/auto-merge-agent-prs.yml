@@ -20,12 +20,16 @@
 # - Pull requests that accept an ADR or validate a requirement are merged too (owner decision of
 #   2026-11-22): an agent opens such a pull request only on the owner's explicit request. They are
 #   flagged with a notice in the run log, so they stay easy to find and revert.
+# - Local-agent pull requests (branches local/*, ADR-0053) are merged only after a cloud review: the
+#   reviewer adds the label "cloud-reviewed" from an allow-listed account, which starts this workflow on the
+#   "labeled" event; the checks are the same. Any push to a local/* pull request removes the label
+#   ("reset-review" job), so the approval always covers the head commit.
 # - Actions are pinned to the commits used by the master workflow ci-cd.yml.
 name: auto-merge-agent-prs
 
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review, synchronize]
+    types: [opened, reopened, ready_for_review, synchronize, labeled]
     branches: [rewrite/v11]
 
 # One merge at a time, so that each check runs on the result of the previous merge.
@@ -36,12 +40,35 @@ concurrency:
 permissions: {}
 
 jobs:
+  # A new push to a local-agent pull request invalidates its cloud review (ADR-0053). Runs no code of the pull request.
+  reset-review:
+    if: >
+      github.event.action == 'synchronize' &&
+      startsWith(github.head_ref, 'local/') &&
+      contains(github.event.pull_request.labels.*.name, 'cloud-reviewed')
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      URL: ${{ github.event.pull_request.html_url }}
+    steps:
+      - name: Remove the label cloud-reviewed
+        run: gh pr edit "$URL" --remove-label cloud-reviewed
+
+  # Agent branches packet/* and claude/* on every event but "labeled"; local-agent branches local/* only on
+  # the label "cloud-reviewed" added by an allow-listed account (ADR-0053).
   verify:
     if: >
       !github.event.pull_request.draft &&
       github.event.pull_request.head.repo.full_name == github.repository &&
-      (startsWith(github.head_ref, 'packet/') || startsWith(github.head_ref, 'claude/')) &&
-      contains(fromJSON('["claude[bot]", "DjThunder", "b3dgs"]'), github.event.pull_request.user.login)
+      contains(fromJSON('["claude[bot]", "DjThunder", "b3dgs"]'), github.event.pull_request.user.login) &&
+      (((startsWith(github.head_ref, 'packet/') || startsWith(github.head_ref, 'claude/')) &&
+        github.event.action != 'labeled') ||
+       (startsWith(github.head_ref, 'local/') &&
+        github.event.action == 'labeled' &&
+        github.event.label.name == 'cloud-reviewed' &&
+        contains(fromJSON('["claude[bot]", "DjThunder", "b3dgs"]'), github.event.sender.login)))
     runs-on: ubuntu-latest
     permissions:
       contents: read

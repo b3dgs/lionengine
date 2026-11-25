@@ -206,9 +206,9 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-PERF-001 | Should | VALIDATED | ADR-0024, ADR-0031 | — | — | no test yet |
 | REQ-PERF-002 | Should | VALIDATED | ADR-0024, ADR-0041, ADR-0044 | — | — | no test yet |
 | REQ-SUPPORT-001 | Should | VALIDATED | ADR-0024, ADR-0031, ADR-0042 | — | — | no test yet |
-| REQ-AGENT-001 | Should | PROPOSED | — | OQ-170, OQ-171, OQ-172, OQ-173 | — | no test yet |
-| REQ-AGENT-002 | Should | PROPOSED | — | OQ-171, OQ-172 | `scripts/local-task.sh --dry-run` | dry run only |
+| REQ-AGENT-001 | Should | PROPOSED | ADR-0053 | OQ-170 | — | no test yet |
+| REQ-AGENT-002 | Should | PROPOSED | ADR-0053 | OQ-170 | `scripts/local-task.sh --dry-run`; run against a stub gateway (gate, escalation, scope check) | script exercised without a model |
 | REQ-AGENT-003 | Should | PROPOSED | — | — | — | no test yet |
-| REQ-AGENT-004 | Should | PROPOSED | — | OQ-173 | — | no test yet: the workflow is not changed yet |
+| REQ-AGENT-004 | Should | PROPOSED | ADR-0053 | — | `auto-merge-agent-prs.yml` (jobs `reset-review`, `verify` on the label) | no test yet: checked on the first `local/` pull request |
 
 Retired identifiers are listed in `requirements.md`.

@@ -322,7 +322,7 @@ Constraints on Android versions, the DEX toolchain, concurrency, memory manageme
 | REQ-AGENT-001 | [`local-agents.md`](local-agents.md) documents the local machines and model profiles, the delegation criteria, the task-file format, the escalation rule and the merge gate (issue #910). | Should | PROPOSED | Review of the page; `scripts/check-docs.py` links. |
 | REQ-AGENT-002 | A task-file template under `docs/templates/` states the batch file link, the files in scope, the acceptance commands and the stop conditions; `scripts/local-task.sh` runs a local worker from it in its own git worktree on a `local/` branch, without secret or skip flag. | Should | PROPOSED | Dry run of `scripts/local-task.sh --dry-run`. |
 | REQ-AGENT-003 | A compact entry file for small-context models links to the sections of `AGENTS.md` instead of duplicating them ([`local-agent-entry.md`](local-agent-entry.md)). | Should | PROPOSED | Review; `scripts/check-docs.py` links. |
-| REQ-AGENT-004 | Local-agent pull requests are identifiable (branch prefix `local/`) and are not auto-merged until a cloud review approves; the workflow change waits for `OQ-173`. | Should | PROPOSED | Review of `local-agents.md`; workflow check once `OQ-173` is answered. |
+| REQ-AGENT-004 | Local-agent pull requests are identifiable (branch prefix `local/`) and are not auto-merged until a cloud review approves (label `cloud-reviewed` from an allow-listed account, removed by any push; ADR-0053). | Should | PROPOSED | Workflow `auto-merge-agent-prs.yml`: the first `local/` pull request is not merged before the label and loses it on a push. |
 
 ## Retired identifiers
 
