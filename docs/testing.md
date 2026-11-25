@@ -21,6 +21,7 @@
 - Headless tests are the reference for engine logic.
 - A successful Java build does not validate Android compatibility: the Android pipeline must run D8/R8 and produce the expected DEX artifacts.
 - APIs requiring *core library desugaring* must be covered by a verification build and tests on the targeted Android versions.
+- Android/DEX tests (level 6) live in the `android/` Gradle build ([`android-compatibility.md`](android-compatibility.md), section "Android verification job"): lint `NewApi` on the shared sources, D8 and R8 builds of the installed shared modules with a check of their DEX content, and instrumentation tests on an API 21 emulator. Their harness is AndroidX Test with JUnit 4, because the JUnit 6 Jupiter tests run on the JVM only (ADR-0050): the device tests in `android/verification/src/androidTest` take their cases and expected values from the JVM tests of each shared module, so a shared behavior is tested on both sides with the same values.
 - Tests depending on a device or graphical environment are identified as such and must not make unit tests fragile: they carry the JUnit tag `platform`, which the default build leaves out (`excludedGroups` in the aggregator `pom.xml`), and the Maven profile `platform-tests` runs them. They also skip themselves without a display. The Linux CI jobs, the blocking build and Sonar, run them on the virtual display of `xvfb-run`; the Windows and macOS jobs run the default build.
 - Tests must be deterministic: no dependency on wall-clock time, real sleeping, execution order or random seeds that are not fixed.
 
@@ -46,7 +47,7 @@
 | Multiplayer (local) | per-player device sets and views (REQ-MP-001) | — | split-screen demonstrator |
 | Network | wire encoding, checksum, sequence wrap-around, acks, reliable ordering, resend, window, overflow, fragmentation, join checks and their order, names, properties, timeouts, chat filter and rate limit, statistics (REQ-NET-*) | transport suite of the `network` test JAR, run on loopback and UDP | server and clients over the conditioned transport with fixed seeds; UDP on the local address; real network and Android multicast as platform tests |
 | Multiplayer (network) | codecs, content hash, delta against a baseline, removal by absence, input frames (missing, late, quantized), pacing, prediction comparison, replay and snap, epochs (REQ-MP-004 to REQ-MP-015) | codec suite of the `multiplayer` test JAR | convergence suite under loss, duplication, reordering and latency; predicted avatar; 1,000-unit RTS scenario; allocation of per-step paths |
-| Java/Android compatibility | check of the APIs used | — | D8/R8 compilation, DEX and device/emulator tests |
+| Java/Android compatibility | check of the APIs used (lint `NewApi` on the shared sources) | — | D8/R8 compilation and DEX content of every shared module; device tests per shared module and Java feature probes on an API 21 emulator (`android/verification`) |
 | Architecture rules | — | — | forbidden-dependency and cycle check (REQ-CORE-005) |
 
 ## Feature acceptance criteria
@@ -64,7 +65,7 @@
 
 Fixtures (ADR-0045): the fakes and abstract contract suites of a module's contracts are in that module's test sources, published as its test JAR; a module depends in test scope only on the test JARs of modules it already depends on, and on `test-support` (the headless platform, recording render backend and manually driven loop, built on `core`, `runtime`, `platform-api` and `render-api`) when `test-support` does not depend on it. The fixture placement table is in ADR-0045.
 
-Framework: JUnit 6 (Jupiter), the latest stable release, 6.1.3, pinned in the aggregator `pom.xml` (ADR-0050); coverage with JaCoCo 0.8.16 (XML report per module), analyzed by SonarCloud. Commands are in `README.md` (Getting started) and [`implementation-guide.md`](implementation-guide.md); the coverage target of new code is 80 %.
+Framework: JUnit 6 (Jupiter), the latest stable release, 6.1.3, pinned in the aggregator `pom.xml` (ADR-0050); on the API 21 emulator, AndroidX Test 1.7.0 with JUnit 4.13.2 ([`dependencies.md`](dependencies.md)); coverage with JaCoCo 0.8.16 (XML report per module), analyzed by SonarCloud. Commands are in `README.md` (Getting started) and [`implementation-guide.md`](implementation-guide.md); the coverage target of new code is 80 %.
 
 - Allocation tests use the per-thread allocation counter of the JVM (`com.sun.management.ThreadMXBean`), in JVM-only test code; they assert zero bytes over many steady-state steps after warm-up (ADR-0030).
 - Benchmarks use the project's own harness (warm-up, median over many steps); CI asserts allocation and linear scaling only; wall-clock results go to a non-blocking trend job on the standard Linux runner (ADR-0030, ADR-0034).

@@ -145,7 +145,7 @@ Works now: the scaling of the logical frame to any surface size with the three p
 - OpenGL rendering on desktop and Android, needed for the CRT filter (Phase 4).
 - A headless mode for automated tests and servers.
 
-Works now: desktop through Java AWT (a window, the loop on its own thread, events, rendering) and the headless platform for tests (examples `MovingRectangleDesktop`, `HeadlessGameTest`). Android and OpenGL are not started.
+Works now: desktop through Java AWT (a window, the loop on its own thread, events, rendering) and the headless platform for tests (examples `MovingRectangleDesktop`, `HeadlessGameTest`). The Android frontend and OpenGL are not started; the shared modules already dex and run on an Android API 21 emulator in CI (Android/DEX job, [`android-compatibility.md`](android-compatibility.md)).
 
 ## Multiplayer and network
 

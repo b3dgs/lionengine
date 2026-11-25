@@ -36,6 +36,8 @@ JDK 25 and Maven 3.9 (the build refuses an older JDK). From the repository root:
 | With the platform tests (tag `platform`: real windows, need a display), as the Linux CI jobs run them | `mvn -B verify -Pplatform-tests`; on Linux without a display, `xvfb-run -a mvn -B verify -Pplatform-tests` |
 | Tests of one module | `mvn -B -pl lionengine-<module> -am test` |
 | Checkstyle only (fast) | `mvn -B validate` |
+| Android/DEX: lint `NewApi` on the shared sources, D8 and R8 builds of the installed modules (Android SDK needed, `ANDROID_HOME` set) | `mvn -B install`, then in `android/`: `./gradlew :api-lint:lintDebug :verification:verifyDebugDex :verification:verifyReleaseDex` |
+| Android/DEX: the device tests and Java feature probes on an API 21 emulator or device (CI job `android`) | in `android/`: `./gradlew :verification:connectedDebugAndroidTest` |
 | Sonar analysis (needs the owner's token) | `mvn -B verify -Psonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=b3dgs -Dsonar.projectKey=b3dgs_lionengine -Dsonar.token=<token>` |
 | Sonar results of a pull request (no token) | `curl -s "https://sonarcloud.io/api/issues/search?componentKeys=b3dgs_lionengine&pullRequest=<number>&resolved=false"`; quality gate: `api/qualitygates/project_status?projectKey=b3dgs_lionengine&pullRequest=<number>` |
 
@@ -103,20 +105,12 @@ Rules that most often fire on engine code:
 ## 6. Android/DEX constraints (shared modules)
 
 Shared code is everything except the five desktop-only modules. It must dex and run on API 21 (ADR-0012, ADR-0044, [`android-compatibility.md`](android-compatibility.md)):
-- **Forbidden:** qualified enum constants in a pattern `switch` over a sealed interface, virtual threads, `String.lines()`, `HexFormat`, sequenced-collection methods.
-- **Not verified, so not used:**
-  - default and static interface methods;
-  - `List.copyOf` and `Map.copyOf`;
-  - `String.formatted`;
-  - `java.nio.file`;
-  - `java.util.Base64`;
-  - `SplittableRandom`;
-  - `Cleaner`;
-  - `VarHandle`;
-  - anything newer than API 21 that is not in the verified list.
-
-  When a task needs one, use the basic alternative (`Collections.unmodifiableList(new ArrayList<>(list))`, a hand-written loop) and say so in the pull request. The Android job batch verifies the first group and updates the lists.
-- **Verified:** lambdas, `var`, switch expressions, text blocks, records, sealed classes, pattern matching for `switch`, `List.of`, `Map.of`, `Set.of`.
+- **Forbidden** (failure observed on API 21; alternatives in [`android-compatibility.md`](android-compatibility.md)):
+  - qualified enum constants in a pattern `switch` over a sealed interface, virtual threads, `VarHandle` (the build fails);
+  - `String.lines()`, `HexFormat`, sequenced-collection methods (`getFirst`, `addFirst`, `reversed`, ... on a `List` or a `LinkedHashSet`), `CharSequence.isEmpty()` (also on a `StringBuilder`), `String.formatted`, `InputStream.readAllBytes`, `Collectors.teeing`;
+  - `java.nio.file`, `SplittableRandom`, `Cleaner`.
+- **Not verified, so not used:** anything newer than API 21 that is not in the verified list. When a task needs one, use the basic alternative (a hand-written loop, `java.io`) and say so in the pull request; the Android job then shows whether it works (lint `NewApi`, emulator tests), and a new probe in `android/verification` records it.
+- **Verified:** lambdas, `var`, switch expressions, text blocks, records, sealed classes, pattern matching for `switch` and `instanceof`, default, static and private interface methods, `List.of`, `Map.of`, `Set.of`, `List.copyOf`, `Set.copyOf`, `Map.copyOf`, `String.isBlank`, `strip`, `repeat`, `Math.clamp`, `java.util.zip`.
 - **Never** in shared public APIs or hot paths: `java.util.function`, `Optional`, streams, `java.time` (ADR-0037). No reflection, `ServiceLoader` or class scanning (ADR-0020). No `java.desktop` type outside the desktop-only modules.
 
 ## 7. Performance (per-step and per-frame paths)

@@ -53,12 +53,12 @@ Only build and test tools listed in `dependencies.md`; each new one is recorded 
 ## Acceptance criteria
 
 - [x] Every module listed above builds, with its root package and `package-info.java`.
-- [ ] Every check of item 5 runs in CI and fails on a probe violation. Done for the Maven build, the package rule, checkstyle, doclint, the module-dependency check, the API index and the provenance checks (each probe shown once, then removed); the Android/DEX job remains (next batch).
-- [ ] Commands recorded in `README.md` and `AGENTS.md` (done); Android job versions and lint `NewApi` result recorded in `android-compatibility.md` (ADR-0044) remain.
+- [x] Every check of item 5 runs in CI and fails on a probe violation: the Maven build, the package rule, checkstyle, doclint, the module-dependency check, the API index and the provenance checks, and the Android/DEX job (each probe shown once, then removed; the `java.desktop` probe in pull request #909, commit `60fd53c`, refused by the compilation of `android/api-lint`).
+- [x] Commands recorded in `README.md` and `AGENTS.md`; Android job versions, lint `NewApi` result and first R8 release-build result recorded in `android-compatibility.md` (ADR-0044).
 
 ## State (2026-11-24)
 
-Done: items 1, 2, 3, 5 (except the Android/DEX job) and 6.
+Done: items 1 to 6; item 4 and the Android/DEX job of item 5 by the Android/DEX batch of 2026-11-25 (below).
 
 Decisions of the batch:
 - parent `b3dgs-parent` 3.0.0-SNAPSHOT, with the snapshot repository declared in the aggregator to resolve it (ADR-0051, resolving `OQ-167`; checkstyle 14.1.0);
@@ -68,6 +68,12 @@ Decisions of the batch:
 - a test JAR in every module (ADR-0045);
 - `maven.javadoc.skip` in each module without a public type, removed by the batch that adds its first one (javadoc refuses an empty module).
 
-Remaining: item 4, the `android/` Gradle build and its CI job, which needs the Android SDK and an emulator ([`../agent-workflow.md`](../agent-workflow.md), Handoff). The `java.desktop` probe of the Tests section belongs to that batch.
+Android/DEX batch (2026-11-25, pull request #909): the `android/` Gradle build and the `android` job of `build.yml`, described with their commands, versions and results in [`../android-compatibility.md`](../android-compatibility.md), section "Android verification job". Decisions of the batch:
+- the shared modules are read from the aggregator `pom.xml`: every module without a `jdk.version` override, except `test-support`;
+- lint `NewApi` runs on a library module (`api-lint`) compiling the shared sources, because lint does not analyze the bytecode of dependencies; D8 and R8 run on the Maven artifacts in an application module (`verification`), which checks the DEX content of its APKs;
+- the instrumentation harness of the API 21 emulator tests is AndroidX Test with JUnit 4 (ADR-0050 leaves the choice to this batch; recorded in [`../dependencies.md`](../dependencies.md)); the device tests take the cases and expected values of the JVM tests;
+- the Android Gradle Plugin stays at the 9.2.1 baseline of ADR-0012;
+- the first lint run found `CharSequence.isEmpty()` (API 35) in `DisplayState`, replaced by a separator field, with a JVM regression test and a device test;
+- the probes moved the unverified items of [`../implementation-guide.md`](../implementation-guide.md), section 6, to the verified or forbidden lists.
 
 Next batch: [`contract-skeleton.md`](contract-skeleton.md) declares the cross-module contracts in these modules (ADR-0049).

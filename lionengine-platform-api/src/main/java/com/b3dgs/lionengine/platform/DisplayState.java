@@ -47,6 +47,8 @@ public final class DisplayState
 {
     /** Separator of the reasons. */
     private static final String SEPARATOR = "; ";
+    /** Separator before the first reason: none. */
+    private static final String NO_SEPARATOR = "";
     /** Reason of the scaling fallback. */
     private static final String REASON_INTEGER = "INTEGER scaling falls back to FIT: the surface is smaller than the "
                                                  + "logical frame";
@@ -54,21 +56,6 @@ public final class DisplayState
     private static final String REASON_NO_BACKEND = "Output filters not applied: no render backend attached";
     /** Reason of a filter the backend does not implement, followed by its identifier. */
     private static final String REASON_SKIPPED = "Output filter not implemented by the render backend, skipped: ";
-
-    /**
-     * Appends a reason after the previous ones.
-     *
-     * @param reasons The reasons so far.
-     * @param reason The reason to add (not empty).
-     */
-    private static void addReason(StringBuilder reasons, String reason)
-    {
-        if (!reasons.isEmpty())
-        {
-            reasons.append(SEPARATOR);
-        }
-        reasons.append(reason);
-    }
 
     /** Logical frame width in pixels. */
     private final int logicalWidth;
@@ -84,6 +71,12 @@ public final class DisplayState
     private EffectiveResult result;
     /** Last presentation geometry, {@code null} until the first resolution. */
     private PresentationGeometry geometry;
+    /**
+     * Separator written before the next reason of the current resolution: {@link #NO_SEPARATOR} while no reason is
+     * written, {@link #SEPARATOR} after. Tracked instead of testing the builder for emptiness, because
+     * {@code CharSequence.isEmpty()} is not available on Android API 21 (ADR-0044).
+     */
+    private String nextSeparator;
 
     /**
      * Creates a state whose surface has the logical frame size. Nothing is resolved yet.
@@ -143,19 +136,40 @@ public final class DisplayState
                                                      surfaceWidth,
                                                      surfaceHeight);
         final StringBuilder reason = new StringBuilder(reasons);
+        if (reasons.isEmpty())
+        {
+            nextSeparator = NO_SEPARATOR;
+        }
+        else
+        {
+            nextSeparator = SEPARATOR;
+        }
         if (scaling.policy() != request.scalingPolicy())
         {
             addReason(reason, REASON_INTEGER);
         }
         final List<OutputFilter> filters = selectFilters(request.filters(), reason);
         final DisplayRequest effective = new DisplayRequest(screenMode, displayMode, scaling.policy(), filters);
-        result = new EffectiveResult(request, effective, !reason.isEmpty(), reason.toString());
+        final String text = reason.toString();
+        result = new EffectiveResult(request, effective, !text.isEmpty(), text);
         geometry = new PresentationGeometry(scaling.x(),
                                             scaling.y(),
                                             scaling.width(),
                                             scaling.height(),
                                             scaling.scaleX(),
                                             scaling.scaleY());
+    }
+
+    /**
+     * Appends a reason after the previous ones of the current resolution.
+     *
+     * @param reasons The reasons so far.
+     * @param reason The reason to add (not empty).
+     */
+    private void addReason(StringBuilder reasons, String reason)
+    {
+        reasons.append(nextSeparator).append(reason);
+        nextSeparator = SEPARATOR;
     }
 
     /**

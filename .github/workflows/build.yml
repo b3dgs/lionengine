@@ -1,8 +1,8 @@
 # Build and structural checks of the engine (features/build-skeleton.md, ADR-0012, ADR-0042, ADR-0044, ADR-0045).
 # The Linux jobs also run the platform tests (tag "platform", profile platform-tests, docs/testing.md) on the virtual
 # display of xvfb-run; the desktop jobs run the default build without them.
-# The documentation check runs in docs-check.yml. The Android/DEX job (ADR-0044) is added by the batch that
-# writes the android/ Gradle build: see docs/agent-workflow.md, "Handoff".
+# The documentation check runs in docs-check.yml. The android job runs the Android/DEX verification of the
+# android/ Gradle build (ADR-0012, ADR-0044, docs/android-compatibility.md).
 # Actions are pinned to the commits used by the master workflow ci-cd.yml.
 name: build
 
@@ -124,6 +124,93 @@ jobs:
 
       - name: Build and tests
         run: mvn -B -ntp verify
+
+  android:
+    # Android/DEX verification (ADR-0012, ADR-0044, REQ-TECH-006, REQ-TECH-007), blocking: the modules installed by
+    # Maven are checked by lint NewApi from their sources, dexed by D8 (debug) and R8 (release), and run on an API 21
+    # emulator by the instrumentation tests of android/verification. Commands: docs/android-compatibility.md.
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 1
+
+      - name: Cache
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: android-${{ hashFiles('**/pom.xml', 'android/**/*.kts', 'android/gradle/**') }}
+          restore-keys: android-
+
+      - name: Java
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - name: Maven
+        id: maven
+        continue-on-error: true
+        uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
+        with:
+          maven-version: 3.9.14
+
+      - name: Wait before retrying the Maven download (rate limit of Maven Central)
+        if: steps.maven.outcome == 'failure'
+        run: sleep 60
+
+      - name: Maven (retry)
+        if: steps.maven.outcome == 'failure'
+        uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
+        with:
+          maven-version: 3.9.14
+
+      - name: Install the engine modules in the local Maven repository
+        run: mvn -B -ntp install
+
+      - name: Lint NewApi on the shared sources, D8 and R8 builds, DEX content, test APK
+        working-directory: android
+        run: >
+          ./gradlew --no-daemon
+          :api-lint:lintDebug
+          :verification:verifyDebugDex
+          :verification:verifyReleaseDex
+          :verification:assembleDebugAndroidTest
+
+      - name: Enable KVM for the emulator
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Instrumentation tests on an API 21 emulator
+        # reactivecircus/android-emulator-runner v2.38.0
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d
+        with:
+          api-level: 21
+          target: default
+          arch: x86_64
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          working-directory: android
+          script: ./gradlew --no-daemon :verification:connectedDebugAndroidTest
+
+      - name: Upload the lint, DEX and test reports
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
+        with:
+          name: android-reports
+          path: |
+            android/api-lint/build/reports/
+            android/verification/build/reports/
+            android/verification/build/outputs/androidTest-results/
+          if-no-files-found: ignore
 
   sonar:
     # SonarCloud analysis with the master project settings; skipped when the token is not available

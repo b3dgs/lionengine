@@ -68,7 +68,7 @@ How to meet them in code, with the checkstyle, compiler, Javadoc, Sonar, Android
 ## Java language and APIs
 
 - Java 25+ for development, restricted by ADR-0001 to what is verified as Android/DEX-compatible; check each new language feature or API with [`android-compatibility.md`](android-compatibility.md) and record dependencies in [`dependencies.md`](dependencies.md).
-- Shared code is compiled at Java 21 (`--release 21`) and follows the forbidden and verified lists of [`android-compatibility.md`](android-compatibility.md) (ADR-0044): no Java 22 to 25 feature, no qualified enum constant in a pattern `switch` over a sealed interface, no virtual threads, `String.lines()`, `HexFormat` or sequenced-collection methods.
+- Shared code is compiled at Java 21 (`--release 21`) and follows the forbidden and verified lists of [`android-compatibility.md`](android-compatibility.md) (ADR-0044): no Java 22 to 25 feature, no qualified enum constant in a pattern `switch` over a sealed interface, no virtual threads, `VarHandle`, `String.lines()`, `String.formatted`, `CharSequence.isEmpty()`, `InputStream.readAllBytes`, `Collectors.teeing`, `HexFormat`, `java.nio.file`, `SplittableRandom`, `Cleaner` or sequenced-collection methods; the Android verification job checks these lists on every pull request.
 - Preview features are forbidden in shared code.
 - Platform-specific code stays in the platform modules.
 

@@ -13,7 +13,7 @@
 
 ## Architecture
 
-> Status: **VALIDATED specification** — every requirement and document is validated and backed by the decisions in `docs/decisions/` (ADR-0001 to ADR-0052). The build skeleton, the contract skeleton and the first Phase 1 and 2 batches (core foundation, game loop, scenes, resources, platform and rendering with a desktop window) are implemented; the next steps are the Android/DEX job and the remaining batches ([`docs/engine-features.md`](docs/engine-features.md), [`docs/agent-workflow.md`](docs/agent-workflow.md), Handoff). Open points: [`docs/open-questions.md`](docs/open-questions.md).
+> Status: **VALIDATED specification** — every requirement and document is validated and backed by the decisions in `docs/decisions/` (ADR-0001 to ADR-0052). The build skeleton, the contract skeleton and the first Phase 1 and 2 batches (core foundation, game loop, scenes, resources, platform and rendering with a desktop window) are implemented; the Android/DEX job proves on every pull request that the shared modules dex and run on Android API 21; the next steps are the remaining batches ([`docs/engine-features.md`](docs/engine-features.md), [`docs/agent-workflow.md`](docs/agent-workflow.md), Handoff). Open points: [`docs/open-questions.md`](docs/open-questions.md).
 
 **New here? Start with [`docs/how-the-engine-works.md`](docs/how-the-engine-works.md)**: a short, diagram-based explanation readable by anybody.
 
@@ -26,7 +26,7 @@ Describe the architecture of a 2D Java game engine that is independent of its ru
 - documentation consistent with the code;
 - AI agents to work without implicit architectural decisions.
 
-This branch contains the build skeleton (24 Maven modules, structural checks, CI), the contract skeleton (the cross-module contracts of Phases 1 and 2, compiled and documented) and the complete architecture documentation. The first engine behaviors exist: the core foundation, the fixed-step game loop, the scene manager, the resource providers, and rendering headless and in an AWT window, each with its example (state per area in [`docs/engine-features.md`](docs/engine-features.md)). The Android/DEX job and the other batches come next (`docs/roadmap.md`).
+This branch contains the build skeleton (24 Maven modules, structural checks, CI), the contract skeleton (the cross-module contracts of Phases 1 and 2, compiled and documented) and the complete architecture documentation. The first engine behaviors exist: the core foundation, the fixed-step game loop, the scene manager, the resource providers, and rendering headless and in an AWT window, each with its example (state per area in [`docs/engine-features.md`](docs/engine-features.md)). The Android/DEX job (`android/`, [`docs/android-compatibility.md`](docs/android-compatibility.md)) dexes the shared modules and runs them on an API 21 emulator in CI. The other batches come next (`docs/roadmap.md`).
 
 ### Getting started
 
@@ -36,6 +36,7 @@ Requirements: JDK 25 or later and Maven 3.9 (the build refuses an older JDK), Py
 - One module and what it needs: `mvn -B -pl lionengine-<module> -am verify`.
 - With the platform tests, which open windows and need a display: `mvn -B verify -Pplatform-tests` (on Linux without a display: `xvfb-run -a mvn -B verify -Pplatform-tests`).
 - Structural checks: `python3 -I scripts/check-modules.py`, `python3 -I scripts/check-api-index.py` (after the build), `python3 -I scripts/check-provenance.py`, `python3 -I scripts/check-docs.py`.
+- Android/DEX verification (also needs the Android SDK, `ANDROID_HOME` set): `mvn -B install`, then in `android/`: `./gradlew :api-lint:lintDebug :verification:verifyDebugDex :verification:verifyReleaseDex` (lint `NewApi`, D8, R8), and `./gradlew :verification:connectedDebugAndroidTest` with an API 21 emulator running ([`docs/android-compatibility.md`](docs/android-compatibility.md)).
 
 Before writing engine code, read [`docs/implementation-guide.md`](docs/implementation-guide.md): the code-quality gates (b3dgs checkstyle, compiler and Javadoc settings, Sonar) and the Android and performance constraints.
 

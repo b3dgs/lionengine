@@ -135,6 +135,30 @@ final class DisplayStateTest
     }
 
     /**
+     * The reasons found by the state are joined with one separator, also when the platform gives none (regression:
+     * the emptiness test of the reasons called {@code CharSequence.isEmpty()}, missing on Android API 21).
+     */
+    @Test
+    void testReasonsJoined()
+    {
+        final DisplayState state = new DisplayState(WIDTH, HEIGHT);
+        state.setSurface(WIDTH / 2, HEIGHT / 2);
+
+        state.resolve(request(ScalingPolicy.INTEGER, OutputFilter.CRT), ScreenMode.WINDOWED, null, "");
+        assertEquals("INTEGER scaling falls back to FIT: the surface is smaller than the logical frame; "
+                     + "Output filters not applied: no render backend attached",
+                     state.getResult().reason());
+
+        state.resolve(request(ScalingPolicy.FIT, OutputFilter.CRT), ScreenMode.WINDOWED, null, "Platform reason");
+        assertEquals("Platform reason; Output filters not applied: no render backend attached",
+                     state.getResult().reason());
+
+        state.resolve(request(ScalingPolicy.FIT), ScreenMode.WINDOWED, null, "");
+        assertFalse(state.getResult().degraded());
+        assertEquals("", state.getResult().reason());
+    }
+
+    /**
      * Without backend a filter is not applied, once; {@code NONE} is never a reason.
      */
     @Test
