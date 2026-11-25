@@ -17,11 +17,13 @@
 package com.b3dgs.lionengine.graphics;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.CRC32;
-import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
 
 /**
  * Writes PNG images in memory for tests, from raw samples, with a chosen filter type, chunk split and extra chunks
@@ -114,23 +116,16 @@ public final class PngWriter
      */
     public static byte[] zlib(byte[] data)
     {
-        final Deflater deflater = new Deflater();
-        try
+        final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try (DeflaterOutputStream deflater = new DeflaterOutputStream(output))
         {
-            deflater.setInput(data);
-            deflater.finish();
-            final ByteArrayOutputStream output = new ByteArrayOutputStream();
-            final byte[] buffer = new byte[256];
-            while (!deflater.finished())
-            {
-                output.write(buffer, 0, deflater.deflate(buffer));
-            }
-            return output.toByteArray();
+            deflater.write(data);
         }
-        finally
+        catch (final IOException exception)
         {
-            deflater.end();
+            throw new UncheckedIOException(exception);
         }
+        return output.toByteArray();
     }
 
     /**

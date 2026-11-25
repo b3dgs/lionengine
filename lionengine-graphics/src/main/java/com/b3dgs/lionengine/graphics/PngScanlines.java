@@ -25,8 +25,10 @@ import java.util.zip.Inflater;
  * (filter types None, Sub, Up, Average and Paeth) (ADR-0026, REQ-SPRITE-009).
  *
  * <p>
- * Only two rows are held at a time, whatever the size of the image. The caller owns the {@link Inflater} and ends it.
- * One instance per decoding; not thread-safe.
+ * Only two rows are held at a time, whatever the size of the image. The reader owns an {@link Inflater}, whose native
+ * memory {@link #end()} releases: the caller calls it in a {@code finally} block. {@code Inflater} is
+ * {@code AutoCloseable} only from Java 25, so shared code, compiled for Java 21 and Android, cannot use it in a
+ * try-with-resources statement (ADR-0044). One instance per decoding; not thread-safe.
  * </p>
  */
 final class PngScanlines
@@ -84,7 +86,7 @@ final class PngScanlines
 
     /** The chunks, at the data of the first {@code IDAT} chunk. */
     private final PngChunks chunks;
-    /** The inflater, owned by the caller. */
+    /** The inflater, ended by {@link #end()}. */
     private final Inflater inflater;
     /** Distance in bytes to the matching byte of the pixel on the left. */
     private final int stride;
@@ -96,21 +98,21 @@ final class PngScanlines
     private byte[] previous;
 
     /**
-     * Creates the reader.
+     * Creates the reader; {@link #end()} must be called once it is no longer used.
      *
      * @param chunks The chunks, at the data of the first {@code IDAT} chunk.
-     * @param inflater The inflater, owned by the caller.
      * @param header The header of the image.
      */
-    PngScanlines(PngChunks chunks, Inflater inflater, PngHeader header)
+    PngScanlines(PngChunks chunks, PngHeader header)
     {
         super();
 
         this.chunks = chunks;
-        this.inflater = inflater;
         stride = header.filterStride();
         current = new byte[header.rowBytes() + 1];
         previous = new byte[current.length];
+        // Last, so that no failure of the constructor leaves its native memory allocated.
+        inflater = new Inflater();
     }
 
     /**
@@ -137,6 +139,14 @@ final class PngScanlines
         }
         unfilter();
         return current;
+    }
+
+    /**
+     * Releases the native memory of the inflater. Idempotent; the reader cannot be used afterwards.
+     */
+    void end()
+    {
+        inflater.end();
     }
 
     /**
@@ -223,7 +233,7 @@ final class PngScanlines
     {
         for (int i = 1 + stride; i < current.length; i++)
         {
-            current[i] = (byte) (current[i] + current[i - stride]);
+            current[i] = (byte) ((current[i] & BYTE_MASK) + (current[i - stride] & BYTE_MASK));
         }
     }
 
@@ -234,7 +244,7 @@ final class PngScanlines
     {
         for (int i = 1; i < current.length; i++)
         {
-            current[i] = (byte) (current[i] + previous[i]);
+            current[i] = (byte) ((current[i] & BYTE_MASK) + (previous[i] & BYTE_MASK));
         }
     }
 
@@ -246,7 +256,7 @@ final class PngScanlines
         for (int i = 1; i < current.length; i++)
         {
             final int left = left(current, i);
-            current[i] = (byte) (current[i] + ((left + (previous[i] & BYTE_MASK)) >>> 1));
+            current[i] = (byte) ((current[i] & BYTE_MASK) + ((left + (previous[i] & BYTE_MASK)) >>> 1));
         }
     }
 
@@ -257,7 +267,8 @@ final class PngScanlines
     {
         for (int i = 1; i < current.length; i++)
         {
-            current[i] = (byte) (current[i] + paeth(left(current, i), previous[i] & BYTE_MASK, left(previous, i)));
+            final int predictor = paeth(left(current, i), previous[i] & BYTE_MASK, left(previous, i));
+            current[i] = (byte) ((current[i] & BYTE_MASK) + predictor);
         }
     }
 

@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.graphics;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.zip.Inflater;
 
 /**
  * Built-in pure-Java PNG decoder, identical on every platform and in headless tests (ADR-0026, ADR-0033,
@@ -42,7 +41,7 @@ import java.util.zip.Inflater;
  *
  * <p>
  * The decoder reads the stream up to the {@code IEND} chunk and does not close it. It decodes row by row, holding two
- * rows besides the result, and uses {@link Inflater} from {@code java.util.zip}, available on Android (ADR-0026). It
+ * rows besides the result, and uses {@code Inflater} from {@code java.util.zip}, available on Android (ADR-0026). It
  * keeps no state: one instance may decode on several threads at once (ADR-0019).
  * </p>
  *
@@ -70,17 +69,11 @@ public final class PngDecoder implements ImageDecoder
         int type = chunks.next();
         while (type != PngChunks.IDAT)
         {
-            if (type == PngChunks.PLTE)
+            switch (type)
             {
-                colors.readPalette(chunks);
-            }
-            else if (type == PngChunks.TRNS)
-            {
-                colors.readTransparency(chunks);
-            }
-            else
-            {
-                checkSkipped(type);
+                case PngChunks.PLTE -> colors.readPalette(chunks);
+                case PngChunks.TRNS -> colors.readTransparency(chunks);
+                default -> checkSkipped(type);
             }
             chunks.end();
             type = chunks.next();
@@ -102,10 +95,9 @@ public final class PngDecoder implements ImageDecoder
     {
         final PixelBuffer pixels = new PixelBuffer(header.width(), header.height());
         final int[] row = new int[header.width()];
-        final Inflater inflater = new Inflater();
+        final PngScanlines scanlines = new PngScanlines(chunks, header);
         try
         {
-            final PngScanlines scanlines = new PngScanlines(chunks, inflater, header);
             for (int y = 0; y < header.height(); y++)
             {
                 colors.convert(scanlines.next(), row);
@@ -114,7 +106,7 @@ public final class PngDecoder implements ImageDecoder
         }
         finally
         {
-            inflater.end();
+            scanlines.end();
         }
         return pixels;
     }

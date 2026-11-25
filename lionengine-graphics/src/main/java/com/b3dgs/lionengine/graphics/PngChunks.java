@@ -50,7 +50,7 @@ final class PngChunks
     static final int FDAT = 0x66644154;
 
     /** The eight bytes of the PNG signature. */
-    private static final long SIGNATURE = 0x89504E470D0A1A0AL;
+    private static final long SIGNATURE = 0x8950_4E47_0D0A_1A0AL;
     /** Number of bytes of the signature. */
     private static final int SIGNATURE_BYTES = 8;
     /** Number of bytes of a chunk length, type or CRC. */
