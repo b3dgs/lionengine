@@ -60,8 +60,8 @@ import com.b3dgs.lionengine.render.RenderBackend;
  * <p>
  * Events: closing the window is a close request, which stops the loop unless a close listener vetoes it (listeners are
  * asked in the order they were added, until the first veto); iconifying the window goes to the background, which
- * pauses the loop, and restoring it comes back to the foreground, which resumes it; the focus of the window gives the
- * focus events; a resize of the canvas changes the surface, never the logical frame.
+ * pauses the loop and slows its frames to 10 Hz, and restoring it comes back to the foreground, which resumes it; the
+ * focus of the window gives the focus events; a resize of the canvas changes the surface, never the logical frame.
  * </p>
  *
  * <p>
@@ -84,6 +84,8 @@ public final class AwtPlatform implements Platform
     private static final String RUNTIME_THREAD = "lionengine-runtime";
     /** Refresh rate used to pace the frames when the default monitor does not report its own, in Hz. */
     private static final int DEFAULT_REFRESH_RATE = 60;
+    /** Frame rate while the window is in the background, in Hz (ADR-0052). */
+    private static final int BACKGROUND_RATE = 10;
     /** Number of loading workers, the desktop default (ADR-0031). */
     private static final int WORKERS = 2;
     /** Nanoseconds per second. */
@@ -128,6 +130,8 @@ public final class AwtPlatform implements Platform
     private final AwtDisplay display;
     /** {@code true} if the frames are run by {@link #iterate()} instead of the runtime thread. */
     private final boolean manual;
+    /** {@code true} while the window is in the background: the loop is paused and paced slowly. */
+    private boolean background;
     /** Request applied at the next frame boundary, {@code null} if none. */
     private DisplayRequest pending;
     /** Loop driver, {@code null} until started. */
@@ -212,8 +216,16 @@ public final class AwtPlatform implements Platform
         switch (event.getKind())
         {
             case SURFACE_RESIZED -> display.resize(event.getSurfaceWidth(), event.getSurfaceHeight());
-            case BACKGROUND -> driver.pause();
-            case FOREGROUND -> driver.resume();
+            case BACKGROUND ->
+            {
+                background = true;
+                driver.pause();
+            }
+            case FOREGROUND ->
+            {
+                background = false;
+                driver.resume();
+            }
             case CLOSE_REQUESTED -> requestClose();
             default ->
             {
@@ -298,6 +310,7 @@ public final class AwtPlatform implements Platform
         final DisplayMode mode = display.getDisplayMode();
         final int rate = mode.isRefreshRateKnown() ? mode.refreshRate() : DEFAULT_REFRESH_RATE;
         final long period = NANOS_PER_SECOND / rate;
+        final long backgroundPeriod = NANOS_PER_SECOND / Math.min(rate, BACKGROUND_RATE);
         long deadline = System.nanoTime();
         try
         {
@@ -305,7 +318,7 @@ public final class AwtPlatform implements Platform
             {
                 applyPending();
                 driver.iterate();
-                deadline = nextDeadline(deadline, period, System.nanoTime());
+                deadline = nextDeadline(deadline, background ? backgroundPeriod : period, System.nanoTime());
                 long remaining = deadline - System.nanoTime();
                 while (remaining > 0L)
                 {

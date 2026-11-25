@@ -17,6 +17,10 @@
 package com.b3dgs.lionengine.render.awt;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.DataBufferInt;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
 import java.util.Arrays;
 
 import com.b3dgs.lionengine.render.TextureStore;
@@ -25,8 +29,9 @@ import com.b3dgs.lionengine.render.TextureStore;
  * Textures of the AWT renderer (ADR-0026, ADR-0047, REQ-SPRITE-010).
  *
  * <p>
- * Each texture keeps the shared pixel array until it is released; its image is created from the array at its first
- * use or at {@link #prepare(int)}, on the runtime thread, which is the render thread. Handles count from {@code 1} and
+ * Each texture keeps the shared pixel array until it is released; its image is created at its first use or at
+ * {@link #prepare(int)}, on the runtime thread, which is the render thread. The image wraps the shared array without
+ * copying it, so a texture is held once in memory (ADR-0047, decision 2). Handles count from {@code 1} and
  * are never reused, so a released handle never draws another texture. Runtime thread only.
  * </p>
  */
@@ -34,6 +39,11 @@ final class AwtTextures implements TextureStore
 {
     /** Initial number of texture slots. */
     private static final int INITIAL_SLOTS = 16;
+    /** Masks of the alpha, red, green and blue channels of a packed {@code 0xAARRGGBB} pixel. */
+    private static final int[] MASKS =
+    {
+        0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000
+    };
 
     /** Pixels by handle, {@code null} for a free slot. */
     private int[][] pixels = new int[INITIAL_SLOTS][];
@@ -70,9 +80,9 @@ final class AwtTextures implements TextureStore
         {
             final int width = widths[texture];
             final int height = heights[texture];
-            final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-            image.getRaster().setDataElements(0, 0, width, height, pixels[texture]);
-            images[texture] = image;
+            final DataBufferInt buffer = new DataBufferInt(pixels[texture], width * height);
+            final WritableRaster raster = Raster.createPackedRaster(buffer, width, height, width, MASKS, null);
+            images[texture] = new BufferedImage(ColorModel.getRGBdefault(), raster, false, null);
         }
         return images[texture];
     }

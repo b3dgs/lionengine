@@ -37,7 +37,7 @@ No agent relies on a conversation history. Everything an agent needs is in the r
 - CI results (build, tests, dependency rules, Android/DEX, compiled examples) decide whether a batch is accepted, not the agent's own report.
 - Every pull request is reviewed by a person or by an independent agent that did not write it.
 
-## Handoff (2026-11-24)
+## Handoff (2026-11-25)
 
 Done by a cloud agent, merged with this section: the Maven part of the build skeleton ([`features/build-skeleton.md`](features/build-skeleton.md), section "State") and the contract skeleton ([`features/contract-skeleton.md`](features/contract-skeleton.md)). Every engine module exists; the cross-module contracts of Phases 1 and 2 are compiled and documented. `mvn -B verify` and the four check scripts pass.
 
@@ -61,4 +61,4 @@ Next batches, in this order. Each one starts from its feature page and [`impleme
 
 Batches 2 to 6 are done; the next batches depend only on what is merged, as long as each pull request keeps `mvn -B verify` green on the merge result.
 
-No question is open: `OQ-166` and `OQ-167` are resolved by ADR-0050 (latest stable JUnit) and ADR-0051 (`b3dgs-parent` 3.0.0-SNAPSHOT). The parent is a snapshot: a build that starts failing after a parent update is fixed in the engine code or reported to the owner.
+No question is open: `OQ-168` and `OQ-169` are resolved by ADR-0052 (background frame rate, disposal after a failed scene call), and `OQ-166` and `OQ-167` are resolved by ADR-0050 (latest stable JUnit) and ADR-0051 (`b3dgs-parent` 3.0.0-SNAPSHOT). The parent is a snapshot: a build that starts failing after a parent update is fixed in the engine code or reported to the owner.
