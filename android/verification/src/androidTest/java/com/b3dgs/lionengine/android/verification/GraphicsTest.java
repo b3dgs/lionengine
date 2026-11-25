@@ -24,8 +24,11 @@ import static org.junit.Assert.assertTrue;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.zip.CRC32;
 import java.util.zip.Deflater;
 
@@ -34,15 +37,22 @@ import org.junit.runner.RunWith;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.b3dgs.lionengine.graphics.Image;
+import com.b3dgs.lionengine.graphics.ImageCache;
 import com.b3dgs.lionengine.graphics.ImageDecodingException;
 import com.b3dgs.lionengine.graphics.PixelBuffer;
 import com.b3dgs.lionengine.graphics.PngDecoder;
+import com.b3dgs.lionengine.render.TextureStore;
+import com.b3dgs.lionengine.resources.ResourceKey;
+import com.b3dgs.lionengine.resources.Resources;
+import com.b3dgs.lionengine.resources.memory.MemoryProvider;
 
 /**
- * Runs {@code graphics} on Android API 21 (ADR-0044): the pixel buffer and the PNG decoder with its size limits
- * (ADR-0054), whose {@code java.util.zip.Inflater} and {@code CRC32} are verified by the probes. The images are
- * written here with the API 21 methods only, as the JVM fixture {@code PngWriter} writes them; expected values are the
- * ones of the JVM tests (PixelBufferTest, PngDecoderTest, PngDecoderContractTest).
+ * Runs {@code graphics} on Android API 21 (ADR-0044): the pixel buffer, the PNG decoder with its size limits
+ * (ADR-0054), whose {@code java.util.zip.Inflater} and {@code CRC32} are verified by the probes, and the image cache
+ * over the memory provider. The images are written here with the API 21 methods only, as the JVM fixture
+ * {@code PngWriter} writes them; expected values are the ones of the JVM tests (PixelBufferTest, PngDecoderTest,
+ * PngDecoderContractTest, ImageCacheTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class GraphicsTest
@@ -473,6 +483,44 @@ public final class GraphicsTest
     }
 
     /**
+     * The image cache decodes an image once, shares its texture between handles, keeps a derived copy apart, and
+     * releases each texture with the last handle of its image.
+     *
+     * @throws IOException If the image cannot be written.
+     */
+    @Test
+    public void testImageCache() throws IOException
+    {
+        final ResourceKey key = new ResourceKey("sprites/hero.png");
+        final MemoryProvider memory = new MemoryProvider();
+        try (OutputStream output = memory.openWrite(key))
+        {
+            output.write(png(2, 2, 8, GRAY, 0, null, null, 0, 85, 170, 255));
+        }
+        final Textures textures = new Textures();
+        final ImageCache cache = new ImageCache(new Resources(memory), textures);
+
+        final Image first = cache.load(key);
+        final Image second = cache.load(key);
+        final PixelBuffer copy = first.copyToBuffer();
+        copy.setPixel(0, 0, 0xFFFF0000);
+        final Image red = cache.add(key, "red", copy);
+
+        assertEquals(first.getTexture(), second.getTexture());
+        assertEquals(0xFF555555, first.getPixel(1, 0));
+        assertEquals(0xFF000000, first.getPixel(0, 0));
+        assertEquals(0xFFFF0000, red.getPixel(0, 0));
+        assertEquals(2, cache.size());
+        first.release();
+        first.release();
+        assertTrue(textures.alive.contains(Integer.valueOf(second.getTexture())));
+        second.release();
+        red.release();
+        assertEquals(0, cache.size());
+        assertTrue(textures.alive.isEmpty());
+    }
+
+    /**
      * Returns the class name of the error raised by a truncated image.
      *
      * @param image The image.
@@ -489,6 +537,45 @@ public final class GraphicsTest
         catch (final ImageDecodingException | IOException exception)
         {
             return exception.getClass().getName();
+        }
+    }
+
+    /**
+     * Texture store that records the textures alive.
+     */
+    private static final class Textures implements TextureStore
+    {
+        /** Textures created and not released. */
+        private final Set<Integer> alive = new HashSet<>();
+        /** Next texture handle. */
+        private int next = 1;
+
+        /**
+         * Creates the store.
+         */
+        Textures()
+        {
+            super();
+        }
+
+        @Override
+        public int create(int width, int height, int[] argb)
+        {
+            final int texture = next++;
+            alive.add(Integer.valueOf(texture));
+            return texture;
+        }
+
+        @Override
+        public void prepare(int texture)
+        {
+            // Nothing to upload.
+        }
+
+        @Override
+        public void release(int texture)
+        {
+            alive.remove(Integer.valueOf(texture));
         }
     }
 }

@@ -43,7 +43,7 @@ State (2026-11-25): done are the `core` foundation, the loop, the controllable c
 ## Phase 2 — 2D rendering and media
 
 - `render-api` command buffer and viewport; `render-awt` executing it (done, with the platform batches of Phase 1);
-- `graphics` in three batches: sprite sheet (pixel buffer, PNG decoder, cache, sheet definition), sprite, animated sprite ([`features/sprite-sheet.md`](features/sprite-sheet.md), [`features/sprite.md`](features/sprite.md), [`features/animated-sprite.md`](features/animated-sprite.md)); the pixel buffer and the PNG decoder are done (2026-11-25);
+- `graphics` in three batches: sprite sheet (pixel buffer, PNG decoder, cache, sheet definition), sprite, animated sprite ([`features/sprite-sheet.md`](features/sprite-sheet.md), [`features/sprite.md`](features/sprite.md), [`features/animated-sprite.md`](features/animated-sprite.md)); the pixel buffer, the PNG decoder with its size limits and the image cache are done (2026-11-25);
 - screen modes, display-mode selection and logical-resolution scaling, then output filtering ([`features/display-modes.md`](features/display-modes.md), [`features/output-filtering.md`](features/output-filtering.md));
 - audio in batches: contracts + fake backend + contract suites; short sounds with cache, voices and variants; long sounds with streaming and playlists; `audio-javasound`; mixer groups and fades ([`features/audio-short-and-long-sounds.md`](features/audio-short-and-long-sounds.md));
 - asynchronous loading and load groups (REQ-RT-004, REQ-RT-010);
