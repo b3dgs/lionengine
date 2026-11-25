@@ -70,7 +70,7 @@ final class SheetDefinition implements SheetCheck
     /** The configuration of the file, for the errors. */
     private final Configuration configuration;
     /** The image key. */
-    private final ResourceKey image;
+    private final ResourceKey imageKey;
     /** The grid. */
     private final SheetGrid grid;
     /** The horizontal pivot in pixels. */
@@ -92,7 +92,7 @@ final class SheetDefinition implements SheetCheck
 
         configuration = new Configuration(root);
         configuration.checkFormat(SheetLoader.FORMAT, SheetLoader.VERSION);
-        image = readImage(configuration);
+        imageKey = readImage(configuration);
         final int cellWidth = readPositive(configuration, CELL_WIDTH);
         final int cellHeight = readPositive(configuration, CELL_HEIGHT);
         final int columns = readCount(configuration, root, COLUMNS);
@@ -194,7 +194,7 @@ final class SheetDefinition implements SheetCheck
      */
     ResourceKey getImage()
     {
-        return image;
+        return imageKey;
     }
 
     /**

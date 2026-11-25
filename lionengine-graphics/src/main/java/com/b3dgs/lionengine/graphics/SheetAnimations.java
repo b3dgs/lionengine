@@ -68,10 +68,11 @@ final class SheetAnimations
      */
     static void read(Configuration sheet, JsonObject root, List<JsonArray> frames)
     {
-        final Configuration animations = sheet.getObject(ANIMATIONS, null);
-        if (animations != null)
+        final JsonValue member = root.get(ANIMATIONS);
+        if (member != null)
         {
-            final JsonObject names = root.get(ANIMATIONS).asObject();
+            final Configuration animations = sheet.getObject(ANIMATIONS);
+            final JsonObject names = member.asObject();
             final int count = names.size();
             for (int i = 0; i < count; i++)
             {

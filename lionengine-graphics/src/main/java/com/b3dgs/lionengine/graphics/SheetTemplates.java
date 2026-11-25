@@ -23,6 +23,7 @@ import java.util.Set;
 import com.b3dgs.lionengine.Configuration;
 import com.b3dgs.lionengine.DefinitionException;
 import com.b3dgs.lionengine.JsonObject;
+import com.b3dgs.lionengine.JsonValue;
 
 /**
  * Check of the {@code templates} of a sprite sheet definition: named color mappings from key colors to target colors,
@@ -74,10 +75,11 @@ final class SheetTemplates
      */
     static void read(Configuration sheet, JsonObject root)
     {
-        final Configuration templates = sheet.getObject(TEMPLATES, null);
-        if (templates != null)
+        final JsonValue member = root.get(TEMPLATES);
+        if (member != null)
         {
-            final JsonObject names = root.get(TEMPLATES).asObject();
+            final Configuration templates = sheet.getObject(TEMPLATES);
+            final JsonObject names = member.asObject();
             final int count = names.size();
             for (int i = 0; i < count; i++)
             {
@@ -106,20 +108,33 @@ final class SheetTemplates
             final String key = mapping.getKey(i);
             if (!Configuration.COMMENT.equals(key))
             {
-                if (!colors.add(key.toUpperCase(Locale.ROOT)))
-                {
-                    throw template.createError(key, ERROR_DUPLICATE + key);
-                }
-                final String target = template.getString(key);
-                if (!isColor(key))
-                {
-                    throw template.createError(key, ERROR_KEY + key);
-                }
-                if (!isColor(target))
-                {
-                    throw template.createError(key, ERROR_TARGET + target);
-                }
+                readColor(template, key, colors);
             }
+        }
+    }
+
+    /**
+     * Reads and checks one key color of a template and its target color.
+     *
+     * @param template The configuration of the template.
+     * @param key The key color.
+     * @param colors The key colors already read, in upper case, receiving this one.
+     * @throws DefinitionException If a color is not valid, or the key color was already given in another case.
+     */
+    private static void readColor(Configuration template, String key, Set<String> colors)
+    {
+        if (!isColor(key))
+        {
+            throw template.createError(key, ERROR_KEY + key);
+        }
+        if (!colors.add(key.toUpperCase(Locale.ROOT)))
+        {
+            throw template.createError(key, ERROR_DUPLICATE + key);
+        }
+        final String target = template.getString(key);
+        if (!isColor(target))
+        {
+            throw template.createError(key, ERROR_TARGET + target);
         }
     }
 
