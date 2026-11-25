@@ -25,7 +25,9 @@ import java.util.Arrays;
  * <p>
  * Each frame, the render code clears the buffer, then adds one entry per draw with
  * {@link #add(int, int, int, int, int)} and completes the entry just added with the chained setters, for example
- * {@code commands.add(texture, 0, 0, 16, 16).position(x, y).layer(2)}. Unset fields keep their defaults: position
+ * {@code commands.add(texture, 0, 0, 16, 16).position(x, y).layer(2)}. Each setter changes one field of the last entry
+ * added and nothing else: the setters can be called in any order, a second call to the same setter replaces the first
+ * value, and no setter applies to the entries added later. Unset fields keep their defaults: position
  * {@code (0, 0)}, scale {@code 1}, rotation {@code 0}, pivot {@code (0, 0)}, no tint ({@link #NO_TINT}), alpha
  * {@code 1}, layer {@code 0}. Positions are logical-frame pixels relative to the viewport, and give where the pivot is
  * drawn; the pivot is in pixels from the top-left of the source rectangle; rotations are degrees, counter-clockwise on

@@ -127,6 +127,24 @@ final class CommandBufferTest
     }
 
     /**
+     * The setters can be called in any order, a second call replaces the first value, and a setter never changes an
+     * entry added before the last one.
+     */
+    @Test
+    void testSettersOrderAndReplacement()
+    {
+        final CommandBuffer buffer = new CommandBuffer(WIDTH, HEIGHT, 1);
+        buffer.add(TEXTURE, 0, 0, SIZE, SIZE).layer(2).position(VALUE, VALUE).layer(1);
+        buffer.add(TEXTURE, 0, 0, SIZE, SIZE).position(-VALUE, 0.0F);
+
+        assertEquals(1, buffer.getLayer(0));
+        assertEquals(VALUE, buffer.getX(0));
+        assertEquals(VALUE, buffer.getY(0));
+        assertEquals(0, buffer.getLayer(1));
+        assertEquals(-VALUE, buffer.getX(1));
+    }
+
+    /**
      * Entries are presented by ascending layer, then submission order.
      */
     @Test
