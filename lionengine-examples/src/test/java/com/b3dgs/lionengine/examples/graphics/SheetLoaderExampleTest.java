@@ -105,6 +105,6 @@ final class SheetLoaderExampleTest
         assertEquals(1, result.sheets());
         assertEquals("Frame outside the sheet of 8 cells: 30 (sheets/broken.json:8:34, $.animations.walk.frames[3], "
                      + "frames)",
-                     result.error());
+                     result.error().getMessage());
     }
 }

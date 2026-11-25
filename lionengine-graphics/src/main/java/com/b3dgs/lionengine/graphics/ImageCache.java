@@ -92,8 +92,8 @@ public final class ImageCache
     private static final String NAME_KEY = "Key";
     /** Name of the discriminator argument, for the messages. */
     private static final String NAME_DISCRIMINATOR = "Discriminator";
-    /** Error message of a {@code null} argument. */
-    private static final String ERROR_NULL = " null";
+    /** Error message of a {@code null} argument, after its name, as in the other modules. */
+    private static final String ERROR_NULL = " must not be null";
     /** Error message of an invalid extension. */
     private static final String ERROR_EXTENSION = "Extension empty or with a dot: ";
     /** Error message of a key without decoder. */
@@ -120,13 +120,13 @@ public final class ImageCache
     private static final String ERROR_LIMIT_UNIT = " bytes used";
 
     /**
-     * Checks that an argument is not {@code null}.
+     * Checks that an argument is not {@code null}, for the public types of the package.
      *
      * @param value The argument.
      * @param name The name of the argument, for the message.
      * @throws IllegalArgumentException If the argument is {@code null}.
      */
-    private static void checkNotNull(Object value, String name)
+    static void checkNotNull(Object value, String name)
     {
         if (value == null)
         {
@@ -371,9 +371,10 @@ public final class ImageCache
      * <p>
      * Only the decoded image ({@link #DECODED}) is read again; images derived from it keep their pixels. On success,
      * every handle on the image gives the new size, pixels and texture: the cache creates the new texture and releases
-     * the previous one. Call it between two frames, from the update phase or from an inbox event (for example a
-     * development key), never while the render phase is writing commands that name the previous texture. On failure
-     * the image is unchanged.
+     * the previous one. Sprite sheets over the image keep the grid computed when they were added: after a reload that
+     * changes the size, release and add them again. Call it between two frames, from the update phase or from an
+     * inbox event (for example a development key), never while the render phase is writing commands that name the
+     * previous texture. On failure the image is unchanged.
      * </p>
      *
      * @param key The resource key of a cached image (never {@code null}).

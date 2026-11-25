@@ -16,9 +16,14 @@
  */
 package com.b3dgs.lionengine.graphics;
 
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
+
 import com.b3dgs.lionengine.Configuration;
 import com.b3dgs.lionengine.DefinitionException;
 import com.b3dgs.lionengine.JsonObject;
+import com.b3dgs.lionengine.JsonValue;
 
 /**
  * Check of the {@code templates} of a sprite sheet definition: named color mappings from key colors to target colors,
@@ -41,6 +46,8 @@ final class SheetTemplates
     private static final String ERROR_KEY = "Invalid key color, expected #RRGGBB or #AARRGGBB: ";
     /** Error message of an invalid target color. */
     private static final String ERROR_TARGET = "Invalid target color, expected #RRGGBB or #AARRGGBB: ";
+    /** Error message of a key color given twice, in another letter case. */
+    private static final String ERROR_DUPLICATE = "Key color given twice: ";
 
     /**
      * Tells whether a text is a color, {@code #RRGGBB} or {@code #AARRGGBB}.
@@ -68,10 +75,11 @@ final class SheetTemplates
      */
     static void read(Configuration sheet, JsonObject root)
     {
-        final Configuration templates = sheet.getObject(TEMPLATES, null);
-        if (templates != null)
+        final JsonValue member = root.get(TEMPLATES);
+        if (member != null)
         {
-            final JsonObject names = root.get(TEMPLATES).asObject();
+            final Configuration templates = sheet.getObject(TEMPLATES);
+            final JsonObject names = member.asObject();
             final int count = names.size();
             for (int i = 0; i < count; i++)
             {
@@ -94,21 +102,39 @@ final class SheetTemplates
     private static void readTemplate(Configuration template, JsonObject mapping)
     {
         final int count = mapping.size();
+        final Set<String> colors = new HashSet<>();
         for (int i = 0; i < count; i++)
         {
             final String key = mapping.getKey(i);
             if (!Configuration.COMMENT.equals(key))
             {
-                final String target = template.getString(key);
-                if (!isColor(key))
-                {
-                    throw template.createError(key, ERROR_KEY + key);
-                }
-                if (!isColor(target))
-                {
-                    throw template.createError(key, ERROR_TARGET + target);
-                }
+                readColor(template, key, colors);
             }
+        }
+    }
+
+    /**
+     * Reads and checks one key color of a template and its target color.
+     *
+     * @param template The configuration of the template.
+     * @param key The key color.
+     * @param colors The key colors already read, in upper case, receiving this one.
+     * @throws DefinitionException If a color is not valid, or the key color was already given in another case.
+     */
+    private static void readColor(Configuration template, String key, Set<String> colors)
+    {
+        if (!isColor(key))
+        {
+            throw template.createError(key, ERROR_KEY + key);
+        }
+        if (!colors.add(key.toUpperCase(Locale.ROOT)))
+        {
+            throw template.createError(key, ERROR_DUPLICATE + key);
+        }
+        final String target = template.getString(key);
+        if (!isColor(target))
+        {
+            throw template.createError(key, ERROR_TARGET + target);
         }
     }
 

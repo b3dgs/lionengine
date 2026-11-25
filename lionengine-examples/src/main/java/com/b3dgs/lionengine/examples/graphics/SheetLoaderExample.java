@@ -90,14 +90,14 @@ public final class SheetLoaderExample
         final SheetLoader loader = new SheetLoader(resources);
 
         final SpriteSheet hero = loader.load(group, HERO);
-        String error = null;
+        DefinitionException error = null;
         try
         {
             loader.load(group, BROKEN);
         }
         catch (final DefinitionException exception)
         {
-            error = exception.getMessage();
+            error = exception;
         }
         final Result result = new Result(hero.getColumns(),
                                          hero.getRows(),
@@ -117,10 +117,10 @@ public final class SheetLoaderExample
      * @param pivotY The vertical pivot of the hero sheet, from its definition, in pixels.
      * @param frameY The top edge of {@link #FRAME} in the image, in pixels.
      * @param sheets The number of sheets in the group after both loads.
-     * @param error The message of the error of the broken definition.
+     * @param error The error of the broken definition: its message gives the file, line, column, JSON path and field.
      * @since 11.0.0
      */
-    public record Result(int columns, int rows, double pivotY, int frameY, int sheets, String error)
+    public record Result(int columns, int rows, double pivotY, int frameY, int sheets, DefinitionException error)
     {
         // Value type of the example.
     }

@@ -375,9 +375,10 @@ final class ImageCacheTest
     {
         final ImageCache limited = new ImageCache(new Resources(provider), backend, HERO_BYTES + 8L);
         final Image hero = limited.load(HERO);
+        final PixelBuffer wide = new PixelBuffer(3, 1);
 
         final IllegalStateException exception = assertThrows(IllegalStateException.class,
-                                                             () -> limited.add(HERO, RED, new PixelBuffer(3, 1)));
+                                                             () -> limited.add(HERO, RED, wide));
         assertEquals("Image cache limit exceeded by sprites/hero.png: 12 bytes needed, 24 of 32 bytes used",
                      exception.getMessage());
         assertFalse(limited.has(HERO, RED));

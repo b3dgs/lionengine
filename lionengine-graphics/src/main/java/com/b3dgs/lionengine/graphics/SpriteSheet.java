@@ -68,7 +68,7 @@ public final class SpriteSheet
             result = count;
         }
         final int fitting;
-        if (result <= 0 || (long) margin + result * cell + (result - 1) * spacing > size)
+        if (result <= 0 || margin + result * cell + (result - 1) * spacing > size)
         {
             fitting = 0;
         }

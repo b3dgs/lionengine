@@ -59,7 +59,7 @@ public final class PngDecoder implements ImageDecoder
     public static final int DEFAULT_MAX_PIXELS = 89_478_485;
 
     /** Error message of a {@code null} stream. */
-    private static final String ERROR_INPUT = "Input null";
+    private static final String ERROR_INPUT = "Input must not be null";
     /** Error message of an animated image. */
     private static final String ERROR_ANIMATED = "Animated PNG (APNG) not supported";
     /** Error message of a critical chunk out of place or unknown. */

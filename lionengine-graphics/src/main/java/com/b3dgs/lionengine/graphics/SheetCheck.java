@@ -28,6 +28,8 @@ interface SheetCheck
      *
      * @param width The width of the image in pixels.
      * @param height The height of the image in pixels.
+     * @throws com.b3dgs.lionengine.DefinitionException If the image does not suit the definition of the sheet; the
+     *             only exception a check throws.
      */
     void check(int width, int height);
 }

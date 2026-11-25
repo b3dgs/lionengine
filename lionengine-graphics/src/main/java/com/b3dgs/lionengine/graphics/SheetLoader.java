@@ -48,7 +48,8 @@ import com.b3dgs.lionengine.resources.Resources;
  * frame) and {@code loop} ({@code once}, {@code loop} or {@code ping-pong}) (optional);</li>
  * <li>{@code templates}: an object of named color mappings, each mapping key colors to target colors, written
  * {@code #RRGGBB} or {@code #AARRGGBB} (optional);</li>
- * <li>{@code comment}: documentation, at any level (optional).</li>
+ * <li>{@code comment}: documentation, at any level (optional); so no animation, template or key color can be named
+ * {@code comment}.</li>
  * </ul>
  *
  * <p>
@@ -75,21 +76,6 @@ public final class SheetLoader
 
     /** Size of the read buffer in bytes. */
     private static final int BUFFER_SIZE = 4096;
-
-    /**
-     * Checks that an argument is not {@code null}.
-     *
-     * @param value The argument.
-     * @param name The name of the argument, for the message.
-     * @throws IllegalArgumentException If the argument is {@code null}.
-     */
-    private static void checkNotNull(Object value, String name)
-    {
-        if (value == null)
-        {
-            throw new IllegalArgumentException(name + " null");
-        }
-    }
 
     /** The resources of the definitions. */
     private final Resources resources;
@@ -118,8 +104,8 @@ public final class SheetLoader
     {
         super();
 
-        checkNotNull(resources, "Resources");
-        checkNotNull(reader, "Reader");
+        ImageCache.checkNotNull(resources, "Resources");
+        ImageCache.checkNotNull(reader, "Reader");
         this.resources = resources;
         this.reader = reader;
     }
@@ -142,8 +128,8 @@ public final class SheetLoader
      */
     public SpriteSheet load(SheetGroup group, ResourceKey key)
     {
-        checkNotNull(group, "Group");
-        checkNotNull(key, "Key");
+        ImageCache.checkNotNull(group, "Group");
+        ImageCache.checkNotNull(key, "Key");
         group.checkUsable();
         final JsonObject root = reader.read(read(key), key.path()).asObject();
         final SheetDefinition definition = new SheetDefinition(root);

@@ -42,6 +42,11 @@ fail() {
   exit 2
 }
 
+# mapfile and empty arrays under "set -u" need Bash 4.4: Git Bash and Linux have it, macOS ships 3.2.
+if [ "${BASH_VERSINFO[0]}" -lt 4 ] || { [ "${BASH_VERSINFO[0]}" -eq 4 ] && [ "${BASH_VERSINFO[1]}" -lt 4 ]; }; then
+  fail "Bash 4.4 or newer is needed, this is $BASH_VERSION (macOS: install a recent bash, for example with Homebrew)"
+fi
+
 task_file=$1
 repo_root=$(git rev-parse --show-toplevel)
 [ -f "$task_file" ] || fail "task file not found: $task_file"

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.b3dgs.lionengine.DefinitionException;
 import com.b3dgs.lionengine.resources.ResourceKey;
 
 /**
@@ -40,21 +41,6 @@ final class SheetGroupEntry
     private static final String ERROR_UNKNOWN = "Sheet id not in the group: ";
     /** Name of the id argument, for the messages. */
     private static final String NAME_ID = "Id";
-
-    /**
-     * Checks that an argument is not {@code null}.
-     *
-     * @param value The argument.
-     * @param name The name of the argument, for the message.
-     * @throws IllegalArgumentException If the argument is {@code null}.
-     */
-    private static void checkNotNull(Object value, String name)
-    {
-        if (value == null)
-        {
-            throw new IllegalArgumentException(name + " null");
-        }
-    }
 
     /** The cache of the images. */
     private final ImageCache cache;
@@ -103,9 +89,9 @@ final class SheetGroupEntry
      */
     SpriteSheet add(ResourceKey id, ResourceKey image, SheetGrid grid, double pivotX, double pivotY, SheetCheck check)
     {
-        checkNotNull(id, NAME_ID);
-        checkNotNull(image, "Image");
-        checkNotNull(grid, "Grid");
+        ImageCache.checkNotNull(id, NAME_ID);
+        ImageCache.checkNotNull(image, "Image");
+        ImageCache.checkNotNull(grid, "Grid");
         if (!Double.isFinite(pivotX) || !Double.isFinite(pivotY))
         {
             throw new IllegalArgumentException("Pivot not finite: " + pivotX + ", " + pivotY);
@@ -115,7 +101,7 @@ final class SheetGroupEntry
             throw new IllegalStateException(ERROR_DUPLICATE + id);
         }
         final Image handle = cache.load(image);
-        SpriteSheet sheet = null;
+        final SpriteSheet sheet;
         try
         {
             if (check != null)
@@ -123,16 +109,14 @@ final class SheetGroupEntry
                 check.check(handle.getWidth(), handle.getHeight());
             }
             sheet = new SpriteSheet(id, handle, grid, pivotX, pivotY);
-            sheets.put(id, sheet);
-            order.add(sheet);
         }
-        finally
+        catch (final IllegalArgumentException | DefinitionException exception)
         {
-            if (sheet == null)
-            {
-                handle.release();
-            }
+            handle.release();
+            throw exception;
         }
+        sheets.put(id, sheet);
+        order.add(sheet);
         return sheet;
     }
 
@@ -146,7 +130,7 @@ final class SheetGroupEntry
      */
     SpriteSheet get(ResourceKey id)
     {
-        checkNotNull(id, NAME_ID);
+        ImageCache.checkNotNull(id, NAME_ID);
         final SpriteSheet sheet = sheets.get(id);
         if (sheet == null)
         {
@@ -164,7 +148,7 @@ final class SheetGroupEntry
      */
     boolean has(ResourceKey id)
     {
-        checkNotNull(id, NAME_ID);
+        ImageCache.checkNotNull(id, NAME_ID);
         return sheets.containsKey(id);
     }
 
