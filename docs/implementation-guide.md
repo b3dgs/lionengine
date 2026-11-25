@@ -36,6 +36,8 @@ JDK 25 and Maven 3.9 (the build refuses an older JDK). From the repository root:
 | With the platform tests (tag `platform`: real windows, need a display), as the Linux CI jobs run them | `mvn -B verify -Pplatform-tests`; on Linux without a display, `xvfb-run -a mvn -B verify -Pplatform-tests` |
 | Tests of one module | `mvn -B -pl lionengine-<module> -am test` |
 | Checkstyle only (fast) | `mvn -B validate` |
+| Android/DEX: lint `NewApi` on the shared sources, D8 and R8 builds of the installed modules (Android SDK needed, `ANDROID_HOME` set) | `mvn -B install`, then in `android/`: `./gradlew :api-lint:lintDebug :verification:verifyDebugDex :verification:verifyReleaseDex` |
+| Android/DEX: the device tests and Java feature probes on an API 21 emulator or device (CI job `android`) | in `android/`: `./gradlew :verification:connectedDebugAndroidTest` |
 | Sonar analysis (needs the owner's token) | `mvn -B verify -Psonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=b3dgs -Dsonar.projectKey=b3dgs_lionengine -Dsonar.token=<token>` |
 | Sonar results of a pull request (no token) | `curl -s "https://sonarcloud.io/api/issues/search?componentKeys=b3dgs_lionengine&pullRequest=<number>&resolved=false"`; quality gate: `api/qualitygates/project_status?projectKey=b3dgs_lionengine&pullRequest=<number>` |
 

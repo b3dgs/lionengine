@@ -11,8 +11,8 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-TECH-003 | Must | VALIDATED | ADR-0001, ADR-0013 | — | — | no test yet |
 | REQ-TECH-004 | Must | VALIDATED | ADR-0001 | — | — | no test yet |
 | REQ-TECH-005 | Must | VALIDATED | ADR-0001 | — | — | no test yet |
-| REQ-TECH-006 | Must | VALIDATED | ADR-0001, ADR-0012, ADR-0041, ADR-0044, ADR-0049 | — | — | no test yet |
-| REQ-TECH-007 | Must | VALIDATED | ADR-0001, ADR-0012, ADR-0041, ADR-0044 | — | — | no test yet |
+| REQ-TECH-006 | Must | VALIDATED | ADR-0001, ADR-0012, ADR-0041, ADR-0044, ADR-0049 | — | `android` CI job: `verifyDebugDex` (D8) and `verifyReleaseDex` (R8) on every shared module; device tests `CoreTest`, `RuntimeTest`, `ResourcesTest`, `RenderTest`, `PlatformTest` on an API 21 emulator (`android/verification`) | verified by the Android job |
+| REQ-TECH-007 | Must | VALIDATED | ADR-0001, ADR-0012, ADR-0041, ADR-0044 | — | `android` CI job: lint `NewApi` as an error on the shared sources (`android/api-lint`); probes `LanguageProbeTest`, `LibraryProbeTest` on an API 21 emulator; results in `android-compatibility.md` | verified by the Android job |
 | REQ-TECH-008 | Must | VALIDATED | ADR-0001 | — | — | no test yet |
 | REQ-CORE-002 | Must | VALIDATED | ADR-0012, ADR-0015 | — | — | no test yet |
 | REQ-CORE-003 | Must | VALIDATED | ADR-0012, ADR-0032, ADR-0042, ADR-0049, ADR-0051 | — | javadoc doclint `all`, `failOnWarnings`; probe: an undocumented public class fails the build | verified by the build (probe) |
@@ -30,7 +30,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-FE-001 | Must | VALIDATED | ADR-0022 | — | `PlatformContract` (`platform-api` test JAR), bound by `HeadlessPlatformTest` and `AwtPlatformContractTest` (platform test) | verified by tests |
 | REQ-FE-002 | Should | VALIDATED | ADR-0022 | — | `AwtPlatformContractTest`, `AwtRenderBackendContractTest`, `HeadlessPlatformTest`, `RecordingBackendTest` | partial: desktop AWT and headless exist; the capability matrix per frontend and Android come later |
 | REQ-FE-003 | Must | VALIDATED | ADR-0002, ADR-0008 | — | `PlatformContract.testInitialState`, `testApplyAtFrameBoundary`, `testFiltersOfBackend`; `RenderBackendContract`; `scripts/check-modules.py` (no frontend dependency of `platform-api` or `render-api`); `MovingRectangleDesktopTest` (platform test) | verified by tests |
-| REQ-PLATFORM-001 | Must | VALIDATED | ADR-0008, ADR-0022, ADR-0033, ADR-0045 | — | `AwtPlatformContractTest`, `AwtPlatformWindowTest`, `AwtRenderBackendWindowTest` (platform tests); `scripts/check-modules.py` | partial: the Android build check (no `java.desktop`) comes with the Android job |
+| REQ-PLATFORM-001 | Must | VALIDATED | ADR-0008, ADR-0022, ADR-0033, ADR-0045 | — | `AwtPlatformContractTest`, `AwtPlatformWindowTest`, `AwtRenderBackendWindowTest` (platform tests); `scripts/check-modules.py`; `android` CI job: desktop-only modules are outside the Android build, and `java.desktop` in a shared module fails it (compilation of `android/api-lint`, R8 missing class; probe shown in pull request #909) | verified by the build and the Android job |
 | REQ-PLATFORM-002 | Must | VALIDATED | ADR-0017, ADR-0018, ADR-0031, ADR-0040, ADR-0045, ADR-0046 | — | `PlatformContract` (`testBackgroundAndForeground`, `testCloseStops`, `testCloseVeto`, `testListenerAddedDuringDelivery`, `testResize`, `testInformationalEvents`) bound by `HeadlessPlatformTest`; `HeadlessGameTest` | partial: context loss and recovery by a backend come with platform batches 2 and 3 |
 | REQ-DISPLAY-001 | Must | VALIDATED | ADR-0002, ADR-0043 | — | — | no test yet |
 | REQ-DISPLAY-002 | Must | VALIDATED | ADR-0002, ADR-0006 | — | — | no test yet |
