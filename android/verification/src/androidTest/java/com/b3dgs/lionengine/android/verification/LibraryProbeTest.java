@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.android.verification;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -56,8 +55,9 @@ import androidx.test.platform.app.InstrumentationRegistry;
  * <p>
  * Each probe is a separate class, so that a missing class or method fails its own test only: on API 21 the call
  * throws a {@link LinkageError} ({@code NoSuchMethodError}, {@code NoClassDefFoundError}) when it runs. A probe of an
- * API that works asserts its result; a probe of an API that does not exist on API 21 asserts the failure, so that the
- * tables of docs/android-compatibility.md stay true when the toolchain changes. {@code VarHandle} has no probe: its
+ * API that works asserts its result; a probe of an API that does not exist on API 21 asserts the failure (the tests
+ * named {@code ...Fails} and {@code ...Missing}), so that the tables of docs/android-compatibility.md stay true when the
+ * toolchain changes: a failure that disappears fails the test and the tables are updated. {@code VarHandle} has no probe: its
  * signature-polymorphic calls fail the D8 build below API 26.
  * </p>
  */
@@ -426,12 +426,12 @@ public final class LibraryProbeTest
     }
 
     /**
-     * {@code Collectors.teeing}.
+     * {@code Collectors.teeing} is missing from desugar_jdk_libs 2.1.5: {@code NoSuchMethodError}.
      */
     @Test
-    public void testTeeing()
+    public void testTeeingMissing()
     {
-        assertEquals("3/6", Teeing.run());
+        assertThrows(LinkageError.class, Teeing::run);
     }
 
     /**
@@ -453,12 +453,12 @@ public final class LibraryProbeTest
     }
 
     /**
-     * {@code String.formatted}.
+     * {@code String.formatted} is missing on API 21: {@code NoSuchMethodError}.
      */
     @Test
-    public void testFormatted()
+    public void testFormattedMissing()
     {
-        assertEquals("1-a", Formatted.run());
+        assertThrows(LinkageError.class, Formatted::run);
     }
 
     /**
@@ -498,48 +498,48 @@ public final class LibraryProbeTest
     }
 
     /**
-     * {@code SplittableRandom}.
+     * {@code SplittableRandom} is missing on API 21: {@code NoClassDefFoundError}.
      */
     @Test
-    public void testSplittableRandom()
+    public void testSplittableRandomMissing()
     {
-        assertEquals(Integer.valueOf(1), SplittableRandomProbe.run());
+        assertThrows(LinkageError.class, SplittableRandomProbe::run);
     }
 
     /**
-     * {@code Cleaner}.
+     * {@code Cleaner} is missing on API 21: {@code NoClassDefFoundError}.
      */
     @Test
-    public void testCleaner()
+    public void testCleanerMissing()
     {
-        assertTrue(CleanerProbe.run() != null);
+        assertThrows(LinkageError.class, CleanerProbe::run);
     }
 
     /**
-     * {@code java.nio.file}.
+     * {@code java.nio.file} is missing on API 21 and not desugared: {@code NoClassDefFoundError}.
      */
     @Test
-    public void testNioFiles()
+    public void testNioFilesMissing()
     {
-        assertEquals(TEXT, NioFiles.run());
+        assertThrows(LinkageError.class, NioFiles::run);
     }
 
     /**
-     * {@code InputStream.readAllBytes}.
+     * {@code InputStream.readAllBytes} is missing on API 21: {@code NoSuchMethodError}.
      */
     @Test
-    public void testReadAllBytes()
+    public void testReadAllBytesMissing()
     {
-        assertEquals(Integer.valueOf(3), ReadAllBytes.run());
+        assertThrows(LinkageError.class, ReadAllBytes::run);
     }
 
     /**
-     * {@code CharSequence.isEmpty} on a {@code StringBuilder}.
+     * {@code CharSequence.isEmpty} on a {@code StringBuilder} is missing on API 21: {@code NoSuchMethodError}.
      */
     @Test
-    public void testCharSequenceIsEmpty()
+    public void testCharSequenceIsEmptyMissing()
     {
-        assertEquals(Boolean.TRUE, CharSequenceIsEmpty.run());
+        assertThrows(LinkageError.class, CharSequenceIsEmpty::run);
     }
 
     /**
@@ -570,20 +570,21 @@ public final class LibraryProbeTest
     }
 
     /**
-     * {@code addFirst}, {@code addLast}, {@code removeFirst}, {@code removeLast} on a {@code List}.
+     * {@code addFirst}, {@code addLast}, {@code removeFirst}, {@code removeLast} on a {@code List} are missing on API 21:
+     * {@code NoSuchMethodError}.
      */
     @Test
-    public void testSequencedListWrite()
+    public void testSequencedListWriteMissing()
     {
-        assertEquals(Integer.valueOf(3), SequencedListWrite.run());
+        assertThrows(LinkageError.class, SequencedListWrite::run);
     }
 
     /**
-     * {@code addFirst}, {@code removeFirst} on a {@code LinkedHashSet}.
+     * {@code addFirst}, {@code removeFirst} on a {@code LinkedHashSet} are missing on API 21: {@code NoSuchMethodError}.
      */
     @Test
-    public void testSequencedSetWrite()
+    public void testSequencedSetWriteMissing()
     {
-        assertEquals(Integer.valueOf(1), SequencedSetWrite.run());
+        assertThrows(LinkageError.class, SequencedSetWrite::run);
     }
 }

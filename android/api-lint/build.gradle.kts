@@ -31,7 +31,7 @@ android {
 
     sourceSets {
         getByName("main") {
-            java.srcDirs(sharedModules.map { repositoryRoot.resolve("$it/src/main/java") })
+            java.directories += sharedModules.map { repositoryRoot.resolve("$it/src/main/java").path }
         }
     }
 
