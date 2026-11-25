@@ -1,6 +1,6 @@
 # Open questions
 
-**Status: VALIDATED — single registry of every `TO BE DEFINED` item. No question is open today (`OQ-166` and `OQ-167`, raised by the build skeleton on 2026-11-24, and `OQ-168` and `OQ-169`, raised by the consistency review of 2026-11-25, are resolved by ADR-0050, ADR-0051 and ADR-0052); a new question is added only when a gap is found.**
+**Status: VALIDATED — single registry of every `TO BE DEFINED` item. Four questions are open (`OQ-170` to `OQ-173`, raised by issue #910 on 2026-11-25, local agents). Otherwise no question is open (`OQ-166` and `OQ-167`, raised by the build skeleton on 2026-11-24, and `OQ-168` and `OQ-169`, raised by the consistency review of 2026-11-25, are resolved by ADR-0050, ADR-0051 and ADR-0052); a new question is added only when a gap is found.**
 
 Rules:
 - Do not guess the answer to an open question in code or documentation. Ask, or record the assumption you made and keep it reversible.
@@ -256,6 +256,15 @@ Raised by the owner packet "ECS dynamic objects, traits & standard trait package
 | OQ-144 | **RESOLVED** by [ADR-0030](decisions/0030-ecs-details-ids-flush-scheduling-collision-and-traits.md): controller intent, render link, tag first; friction/drag and health next; parent link last; `Transformable` in `double` with previous position. Original question: Further standard traits (friction/drag, health, parent link, controller intent, render link, tag) and the numeric type and interpolation use of `Transformable` (OQ-013, OQ-022): which are standard and in which batch. | When one is requested |
 | OQ-145 | **RESOLVED** by [ADR-0030](decisions/0030-ecs-details-ids-flush-scheduling-collision-and-traits.md): deterministic for the same operation sequence, not creation order, no logic on order, explicit sort key or ID sort. Original question: Iteration-order guarantee: swap-removal reorders dense arrays; whether the order must be stable and reproducible for deterministic simulation or replay, and its consequence for any later network mode (OQ-060). | Before the query batch |
 | OQ-146 | **RESOLVED** by [ADR-0021](decisions/0021-scene-world-viewport-and-object-model.md): `World` is the container type of the `ecs` module; no separate `world` module. Original question: Relation of `world` (scenes, objects, queries) to `ecs`: wrapper, shared contract or replacement, and whether classic objects and ECS objects share a contract (OQ-041, OQ-042, OQ-044). | Phase 3 |
+
+## Local agents (issue #910, 2026-11-25)
+
+| ID | Question | Needed by |
+|---|---|---|
+| OQ-170 | Which local model runs on which machine? The profiles of decision 5A of issue #910 ([`local-agents.md`](local-agents.md), section 1) are a starting point; confirm them by running one small real task (for example one API-index row and its example) on each machine and recording pass rate, speed and tool-call failures. | First local run |
+| OQ-171 | Escalation threshold: how many failed runs of the acceptance commands before a local task returns to a cloud agent. Assumption until answered: the task file states it; none is assumed by the script. | First local run |
+| OQ-172 | Does the local worker open pull requests itself or hand a branch to Claude Code? Default kept for now (owner comment of 2026-11-25): the worker hands a `local/` branch to Claude Code and does not open pull requests. Still to define: the signing-key decision, since the ruleset requires signed commits. | First local run |
+| OQ-173 | Merge gate of local-agent pull requests (decision 3B): (1) label or branch prefix when Claude Code opens the pull request under `claude/` from a `local/` branch; (2) who counts as a cloud review; (3) who merges after approval. Needed before `.github/workflows/auto-merge-agent-prs.yml` is edited; the workflow is unchanged meanwhile. | Before the workflow change |
 
 ## Build skeleton (2026-11-24)
 

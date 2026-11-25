@@ -22,6 +22,10 @@ No agent relies on a conversation history. Everything an agent needs is in the r
 | Asset generation (sprites) and anything needing local GPUs | Local | Hardware is local; provenance and licensing recorded per asset (ADR-0023) |
 | Android/DEX verification, long builds and device tests | Wherever the pipeline runs | CI is the arbiter, not the agent |
 
+## Delegation to local agents
+
+Claude Code can delegate token-heavy, well-specified work to local models and review the result. Machines, model profiles, delegation criteria, task files, escalation and the merge gate are in [`local-agents.md`](local-agents.md) (PROPOSED, issue #910). The hand-off is a task file in, a `local/` branch out; the compact entry file of a local worker is [`local-agent-entry.md`](local-agent-entry.md).
+
 ## Making smaller-context agents effective
 
 - Keep batches small: one module, one contract, its tests (see `templates/FEATURE-TEMPLATE.md`).
