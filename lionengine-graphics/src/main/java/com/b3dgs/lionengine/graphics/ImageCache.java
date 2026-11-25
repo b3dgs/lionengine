@@ -92,8 +92,8 @@ public final class ImageCache
     private static final String NAME_KEY = "Key";
     /** Name of the discriminator argument, for the messages. */
     private static final String NAME_DISCRIMINATOR = "Discriminator";
-    /** Error message of a {@code null} argument. */
-    private static final String ERROR_NULL = " null";
+    /** Error message of a {@code null} argument, after its name, as in the other modules. */
+    private static final String ERROR_NULL = " must not be null";
     /** Error message of an invalid extension. */
     private static final String ERROR_EXTENSION = "Extension empty or with a dot: ";
     /** Error message of a key without decoder. */
@@ -120,13 +120,13 @@ public final class ImageCache
     private static final String ERROR_LIMIT_UNIT = " bytes used";
 
     /**
-     * Checks that an argument is not {@code null}.
+     * Checks that an argument is not {@code null}, for the public types of the package.
      *
      * @param value The argument.
      * @param name The name of the argument, for the message.
      * @throws IllegalArgumentException If the argument is {@code null}.
      */
-    private static void checkNotNull(Object value, String name)
+    static void checkNotNull(Object value, String name)
     {
         if (value == null)
         {

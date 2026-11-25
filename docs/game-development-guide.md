@@ -16,7 +16,8 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
 2. **Hello engine** — the smallest headless application: start, update, stop. *Example: `GameLoopExample` (runtime), `HeadlessGameTest` (a game without a window); see [`api-index.md`](api-index.md).*
 3. **Concepts, in order of use** — start with [`how-the-engine-works.md`](how-the-engine-works.md); then runtime and game loop, scenes, resources and definition files, graphics (sprite, animation), world and objects (ECS, ADR-0021), tilemap, camera, input, audio.
 4. **Recipes** — one short, tested recipe per common task:
-   - display and animate a sprite, including two color variants of one sprite and a sprite sheet (ADR-0003; example to be created);
+   - load images once and share them between scenes (example `ImageCacheExample`); cut an image into a sprite sheet and group sheets (example `SpriteSheetExample`); load a sheet from its definition file (example `SheetLoaderExample`);
+   - display and animate a sprite, including two color variants of one sprite (ADR-0003; example to be created);
    - load a map and scroll the camera (camera contract: [`features/camera.md`](features/camera.md), ADR-0010);
    - read player input;
    - detect a collision;
@@ -26,6 +27,7 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
    - World units are meters and seconds; pixels exist only at presentation (ADR-0001).
    - An extrapolated state is never reused as simulation input.
    - Closing and ownership of resources (REQ-RES-003); modules handling resources follow one convention for keys and release: normalized logical path keys, idempotent release (REQ-RES-004, REQ-RES-005, ADR-0007).
+   - Caches, sheet groups and their handles belong to the runtime thread, the thread of their first operation: use them from scenes and inbox events, never from a loading worker or a platform callback, which get an `IllegalStateException` (ADR-0018, ADR-0055).
    - Audio completion callbacks (playlist advance) must not mutate simulation state from the audio thread (ADR-0004).
    - Not every capability exists on every platform; look it up on the platform object before using it (ADR-0020).
    - Objects created or removed during a step exist or vanish only at the end of the step (the flush, ADR-0030).

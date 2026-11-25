@@ -49,20 +49,6 @@ public final class SheetGroup
     /** Error message of a released handle. */
     private static final String ERROR_RELEASED = "Sheet group released";
 
-    /**
-     * Checks that the grid is not {@code null}.
-     *
-     * @param grid The grid.
-     * @throws IllegalArgumentException If the grid is {@code null}.
-     */
-    private static void checkNotNull(SheetGrid grid)
-    {
-        if (grid == null)
-        {
-            throw new IllegalArgumentException("Grid null");
-        }
-    }
-
     /** The shared group. */
     private final SheetGroupEntry entry;
     /** {@code true} once released. */
@@ -78,10 +64,7 @@ public final class SheetGroup
     {
         super();
 
-        if (cache == null)
-        {
-            throw new IllegalArgumentException("Cache null");
-        }
+        ImageCache.checkNotNull(cache, "Cache");
         entry = new SheetGroupEntry(cache);
     }
 
@@ -114,7 +97,7 @@ public final class SheetGroup
     public SpriteSheet add(ResourceKey id, ResourceKey image, SheetGrid grid)
     {
         checkUsable();
-        checkNotNull(grid);
+        ImageCache.checkNotNull(grid, "Grid");
         return entry.add(id, image, grid, grid.cellWidth() / 2.0, grid.cellHeight() / 2.0, null);
     }
 

@@ -64,7 +64,7 @@ public final class ThreadConfinement
 
         if (name == null)
         {
-            throw new IllegalArgumentException("Name null");
+            throw new IllegalArgumentException("Name must not be null");
         }
         this.name = name;
     }

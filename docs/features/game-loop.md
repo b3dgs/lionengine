@@ -63,7 +63,7 @@ Wiring (ADR-0040): the application or `composition` sets the update callback to 
 1. `Clock`, controllable clock, `LoopConfig`, loop with update/render, catch-up, `alpha`, states and fail-fast (`REQ-LOOP-001` to `REQ-LOOP-007`, `REQ-LOOP-010`, `REQ-TEST-001`).
 2. Lag cap and report, pause, time scale, remainder carry, snapping, unscaled delta (`REQ-LOOP-008`, `REQ-LOOP-009`, `REQ-LOOP-011`, `REQ-LOOP-012`).
 3. Inbox and runtime-thread rules (`REQ-RT-001`, `REQ-RT-002`, `REQ-RT-009`).
-4. Asynchronous handles and load groups (`REQ-RT-004`, `REQ-RT-010`).
+4. Asynchronous handles and load groups (`REQ-RT-004`, `REQ-RT-010`); the asynchronous request of the image cache follows them (ADR-0055, decision 6): the worker only decodes, and the runtime thread inserts the result, under the thread check and the memory limit of the cache.
 
 ## Lifecycle and concurrency
 

@@ -19,7 +19,7 @@ Hardware confirmed by the owner on 2026-11-25: the RTX 4070 has 12 GB of VRAM (3
 ## 2. What is delegated (decision 2C)
 
 1. **First**: examples, API-index rows and Javadoc for an API that already landed.
-2. **Then**, once the first stage has passed the benchmark of `OQ-170`: bounded batches, starting with Resources batches 3 and 4 and Game loop batch 4 ([`features/resources.md`](features/resources.md), [`features/game-loop.md`](features/game-loop.md)).
+2. **Then**, once the first stage has passed the benchmark of `OQ-170`: bounded batches, starting with Resources batch 4 (Resources batch 3 was done by a cloud agent on 2026-11-25) and Game loop batch 4 ([`features/resources.md`](features/resources.md), [`features/game-loop.md`](features/game-loop.md)).
 
 Delegation criteria (all must hold):
 
