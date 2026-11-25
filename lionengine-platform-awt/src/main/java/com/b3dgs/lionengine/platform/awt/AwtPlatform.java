@@ -134,8 +134,11 @@ public final class AwtPlatform implements Platform
     private LoopDriver driver;
     /** Inbox of the loop, {@code null} until started. */
     private Inbox inbox;
-    /** Failure of the loop, {@code null} if none. */
-    private volatile Throwable failure;
+    /**
+     * Failure of the loop, {@code null} if none: written by the handler of uncaught exceptions of the runtime thread,
+     * which runs on that thread before it ends, and read after joining it.
+     */
+    private Throwable failure;
 
     /**
      * Creates a desktop platform; the window is opened by {@link #start(LoopDriver, Inbox)}.
@@ -270,7 +273,7 @@ public final class AwtPlatform implements Platform
         {
             runtime.join();
         }
-        catch (final InterruptedException exception)
+        catch (InterruptedException _)
         {
             driver.stop();
             Thread.currentThread().interrupt();

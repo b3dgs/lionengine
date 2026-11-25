@@ -77,7 +77,7 @@ final class AwtWindow
         }
         catch (final InvocationTargetException exception)
         {
-            throw new IllegalStateException("Failure on the AWT event thread", exception.getCause());
+            throw new IllegalStateException("Failure on the AWT event thread", exception);
         }
     }
 

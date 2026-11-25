@@ -28,6 +28,6 @@ final class AwtRenderBackendContractTest extends RenderBackendContract
     @Override
     protected RenderBackend createBackend()
     {
-        return new AwtRenderBackend(AwtRenderTests.platform(WIDTH, HEIGHT));
+        return new AwtRenderBackend(AwtRenderFixtures.platform(WIDTH, HEIGHT));
     }
 }

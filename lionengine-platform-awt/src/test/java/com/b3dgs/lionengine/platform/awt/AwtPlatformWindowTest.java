@@ -38,6 +38,7 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.InboxSpy;
 import com.b3dgs.lionengine.LoopDriver;
+import com.b3dgs.lionengine.WorkerPool;
 import com.b3dgs.lionengine.platform.DisplayMode;
 import com.b3dgs.lionengine.platform.DisplayRequest;
 import com.b3dgs.lionengine.platform.ScreenMode;
@@ -47,7 +48,7 @@ import com.b3dgs.lionengine.render.ScalingPolicy;
  * Test of the window and of the runtime thread of {@link AwtPlatform}, with a real display (platform test,
  * REQ-PLATFORM-001).
  */
-@Tag(AwtTests.PLATFORM)
+@Tag(AwtFixtures.PLATFORM)
 final class AwtPlatformWindowTest
 {
     /** Logical frame width. */
@@ -84,7 +85,7 @@ final class AwtPlatformWindowTest
         {
             platform.close();
         }
-        AwtTests.flush();
+        AwtFixtures.flush();
     }
 
     /**
@@ -93,14 +94,14 @@ final class AwtPlatformWindowTest
     @Test
     void testWindow()
     {
-        platform = new AwtPlatform(WIDTH, HEIGHT, REQUEST, AwtTests.SINK, true);
+        platform = new AwtPlatform(WIDTH, HEIGHT, REQUEST, AwtFixtures.SINK, true);
         final Canvas canvas = platform.getCapability(AwtSurface.class).getCanvas();
         assertTrue(platform.hasCapability(AwtSurface.class));
         assertNotNull(canvas);
         final InboxSpy inbox = new InboxSpy();
 
         platform.start(new StoppingDriver(inbox, Integer.MAX_VALUE, null), inbox);
-        AwtTests.flush();
+        AwtFixtures.flush();
         platform.iterate();
 
         final Frame window = platform.getWindow();
@@ -124,7 +125,7 @@ final class AwtPlatformWindowTest
     @Test
     void testRun()
     {
-        platform = new AwtPlatform(WIDTH, HEIGHT, REQUEST, AwtTests.SINK);
+        platform = new AwtPlatform(WIDTH, HEIGHT, REQUEST, AwtFixtures.SINK);
         final InboxSpy inbox = new InboxSpy();
         final StoppingDriver driver = new StoppingDriver(inbox, 6, null);
         final DisplayMode mode = platform.getEffectiveResult().effective().displayMode();
@@ -137,9 +138,10 @@ final class AwtPlatformWindowTest
         assertEquals(6, driver.getIterations());
         assertEquals("lionengine-runtime", driver.getThreadName());
         assertTrue(elapsed >= 6 * NANOS_PER_SECOND / rate, String.valueOf(elapsed));
-        AwtTests.flush();
+        AwtFixtures.flush();
         assertFalse(platform.getWindow().isDisplayable());
-        assertThrows(IllegalStateException.class, () -> platform.getWorkerPool().submit(() -> driver.stop()));
+        final WorkerPool pool = platform.getWorkerPool();
+        assertThrows(IllegalStateException.class, () -> pool.submit(driver::stop));
         assertThrows(IllegalStateException.class, () -> platform.start(driver, inbox));
     }
 
@@ -149,16 +151,16 @@ final class AwtPlatformWindowTest
     @Test
     void testFailure()
     {
-        platform = new AwtPlatform(WIDTH, HEIGHT, REQUEST, AwtTests.SINK);
+        platform = new AwtPlatform(WIDTH, HEIGHT, REQUEST, AwtFixtures.SINK);
         final InboxSpy inbox = new InboxSpy();
         final IllegalStateException failure = new IllegalStateException("Failure of the test");
+        final StoppingDriver driver = new StoppingDriver(inbox, 2, failure);
 
         final IllegalStateException thrown = assertThrows(IllegalStateException.class,
-                                                          () -> platform.start(new StoppingDriver(inbox, 2, failure),
-                                                                               inbox));
+                                                          () -> platform.start(driver, inbox));
 
         assertSame(failure, thrown);
-        AwtTests.flush();
+        AwtFixtures.flush();
         assertFalse(platform.getWindow().isDisplayable());
     }
 
@@ -170,7 +172,7 @@ final class AwtPlatformWindowTest
     @Test
     void testInterrupted() throws InterruptedException
     {
-        platform = new AwtPlatform(WIDTH, HEIGHT, REQUEST, AwtTests.SINK);
+        platform = new AwtPlatform(WIDTH, HEIGHT, REQUEST, AwtFixtures.SINK);
         final InboxSpy inbox = new InboxSpy();
         final StoppingDriver driver = new StoppingDriver(inbox, Integer.MAX_VALUE, null);
         final AtomicBoolean interrupted = new AtomicBoolean();
@@ -198,11 +200,11 @@ final class AwtPlatformWindowTest
     @Test
     void testStartOnEventThread()
     {
-        platform = new AwtPlatform(WIDTH, HEIGHT, REQUEST, AwtTests.SINK, true);
+        platform = new AwtPlatform(WIDTH, HEIGHT, REQUEST, AwtFixtures.SINK, true);
         final InboxSpy inbox = new InboxSpy();
         final AtomicReference<RuntimeException> thrown = new AtomicReference<>();
 
-        AwtTests.onEventThread(() ->
+        AwtFixtures.onEventThread(() ->
         {
             try
             {

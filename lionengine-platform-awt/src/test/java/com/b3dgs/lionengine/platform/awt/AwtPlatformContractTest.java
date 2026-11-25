@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.platform.PlatformEvent;
  * them. The frames run on the test thread, which plays the runtime thread.
  * </p>
  */
-@Tag(AwtTests.PLATFORM)
+@Tag(AwtFixtures.PLATFORM)
 final class AwtPlatformContractTest extends PlatformContract
 {
     /**
@@ -69,13 +69,13 @@ final class AwtPlatformContractTest extends PlatformContract
         {
             platform.close();
         }
-        AwtTests.flush();
+        AwtFixtures.flush();
     }
 
     @Override
     protected Platform createPlatform(int logicalWidth, int logicalHeight, DisplayRequest request)
     {
-        final AwtPlatform platform = new AwtPlatform(logicalWidth, logicalHeight, request, AwtTests.SINK, true);
+        final AwtPlatform platform = new AwtPlatform(logicalWidth, logicalHeight, request, AwtFixtures.SINK, true);
         platforms.add(platform);
         return platform;
     }
@@ -98,7 +98,7 @@ final class AwtPlatformContractTest extends PlatformContract
         else
         {
             final Frame window = awt.getWindow();
-            AwtTests.onEventThread(() -> window.dispatchEvent(new WindowEvent(window, id)));
+            AwtFixtures.onEventThread(() -> window.dispatchEvent(new WindowEvent(window, id)));
         }
     }
 
@@ -106,7 +106,7 @@ final class AwtPlatformContractTest extends PlatformContract
     protected void resize(Platform platform, int surfaceWidth, int surfaceHeight)
     {
         final Frame window = ((AwtPlatform) platform).getWindow();
-        AwtTests.onEventThread(() ->
+        AwtFixtures.onEventThread(() ->
         {
             final Insets insets = window.getInsets();
             final double scaleX = window.getGraphicsConfiguration().getDefaultTransform().getScaleX();
@@ -115,13 +115,13 @@ final class AwtPlatformContractTest extends PlatformContract
                            AwtWindow.toUnits(surfaceHeight, scaleY) + insets.top + insets.bottom);
             window.validate();
         });
-        AwtTests.flush();
+        AwtFixtures.flush();
     }
 
     @Override
     protected void frame(Platform platform)
     {
-        AwtTests.flush();
+        AwtFixtures.flush();
         ((AwtPlatform) platform).iterate();
     }
 }

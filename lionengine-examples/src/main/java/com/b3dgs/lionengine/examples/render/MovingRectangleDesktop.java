@@ -82,12 +82,10 @@ public final class MovingRectangleDesktop
     }
 
     /**
-     * Opens the window and runs the game until the window is closed.
-     *
-     * @param args Unused.
+     * Opens the window and runs the game until the window is closed. A Java 25 launch entry point, without arguments.
      */
     // CHECKSTYLE IGNORE LINE: UncommentedMain
-    public static void main(String[] args)
+    public static void main()
     {
         create(new Log()).run();
     }

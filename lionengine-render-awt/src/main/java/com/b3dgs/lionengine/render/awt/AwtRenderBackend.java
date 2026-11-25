@@ -77,12 +77,17 @@ public final class AwtRenderBackend implements RenderBackend
      */
     public AwtRenderBackend(Platform platform)
     {
-        if (platform == null || !platform.hasCapability(AwtSurface.class))
+        if (platform == null)
+        {
+            throw new IllegalArgumentException("Platform must not be null");
+        }
+        final AwtSurface surface = platform.getCapability(AwtSurface.class);
+        if (surface == null)
         {
             throw new IllegalArgumentException("Platform without AWT surface: " + platform);
         }
         this.platform = platform;
-        canvas = platform.getCapability(AwtSurface.class).getCanvas();
+        canvas = surface.getCanvas();
         frame = new AwtFrame(platform.getLogicalWidth(), platform.getLogicalHeight());
     }
 
