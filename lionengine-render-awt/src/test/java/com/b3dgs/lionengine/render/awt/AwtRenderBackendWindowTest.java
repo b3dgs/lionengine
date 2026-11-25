@@ -33,6 +33,7 @@ import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.LockSupport;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -56,6 +57,8 @@ final class AwtRenderBackendWindowTest
     private static final int HEIGHT = 24;
     /** Longest wait for the frames, in nanoseconds. */
     private static final long TIMEOUT = TimeUnit.SECONDS.toNanos(10L);
+    /** Pause between two checks of the surface size, in nanoseconds. */
+    private static final long CHECK_NANOS = TimeUnit.MILLISECONDS.toNanos(1L);
 
     /**
      * Skips the tests without display.
@@ -80,6 +83,31 @@ final class AwtRenderBackendWindowTest
             assertTrue(System.nanoTime() < end, "Frames not presented in time");
             Thread.onSpinWait();
         }
+    }
+
+    /**
+     * Waits until the platform has the surface size, which it takes from the resize event of the canvas. The window
+     * system delivers that event after the resize, so frames presented before it are drawn with the earlier size. The
+     * surface size is written by the loop thread before it presents a frame: the volatile frame counter is read before
+     * each check, which makes the size visible to this thread.
+     *
+     * @param platform The platform.
+     * @param driver The driver, whose frame counter is read.
+     * @param width The surface width in device pixels.
+     * @param height The surface height in device pixels.
+     * @return The number of frames presented when the surface size was found.
+     */
+    private static int awaitSurface(AwtPlatform platform, PresentingDriver driver, int width, int height)
+    {
+        final long end = System.nanoTime() + TIMEOUT;
+        int frames = driver.getFrames();
+        while (platform.getSurfaceWidth() != width || platform.getSurfaceHeight() != height)
+        {
+            assertTrue(System.nanoTime() < end, "Surface size not received in time");
+            LockSupport.parkNanos(CHECK_NANOS);
+            frames = driver.getFrames();
+        }
+        return frames;
     }
 
     /**
@@ -138,7 +166,7 @@ final class AwtRenderBackendWindowTest
         final double scale = canvas.getGraphicsConfiguration().getDefaultTransform().getScaleX();
         assumeTrue(Double.compare(scale, 1.0) == 0, "Pixel checks written for a scale of 1");
         resize(canvas, 3 * WIDTH, 2 * HEIGHT);
-        await(driver, driver.getFrames() + 5);
+        await(driver, awaitSurface(platform, driver, 3 * WIDTH, 2 * HEIGHT) + 5);
 
         final BufferedImage screen = new Robot().createScreenCapture(new Rectangle(canvas.getLocationOnScreen(),
                                                                                    canvas.getSize()));
