@@ -90,6 +90,9 @@ final class SheetGroupTest
         assertEquals(8, hero.getCellCount());
         assertEquals(16, tiles.getCellCount());
         assertEquals(HERO_IMAGE, hero.getImage().getKey());
+        assertEquals(8.0, hero.getPivotX());
+        assertEquals(8.0, hero.getPivotY());
+        assertEquals(4.0, tiles.getPivotX());
         assertTrue(cache.has(HERO_IMAGE, ImageCache.DECODED));
         assertEquals(2, cache.size());
     }
@@ -230,6 +233,24 @@ final class SheetGroupTest
     }
 
     /**
+     * A pivot given with the sheet is kept, also outside the cell; a pivot that is not finite is refused.
+     */
+    @Test
+    void testPivot()
+    {
+        final SpriteSheet hero = group.add(HERO, HERO_IMAGE, GRID, 8.0, 18.5);
+        final ResourceKey other = new ResourceKey("sheets/other.json");
+
+        assertEquals(8.0, hero.getPivotX());
+        assertEquals(18.5, hero.getPivotY());
+        assertThrows(IllegalArgumentException.class, () -> group.add(other, HERO_IMAGE, GRID, Double.NaN, 0.0));
+        assertThrows(IllegalArgumentException.class,
+                     () -> group.add(other, HERO_IMAGE, GRID, 0.0, Double.POSITIVE_INFINITY));
+        assertEquals(1, group.size());
+        assertEquals(1, cache.size());
+    }
+
+    /**
      * {@code null} arguments are refused.
      */
     @Test
@@ -239,6 +260,7 @@ final class SheetGroupTest
         assertThrows(IllegalArgumentException.class, () -> group.add(null, HERO_IMAGE, GRID));
         assertThrows(IllegalArgumentException.class, () -> group.add(HERO, null, GRID));
         assertThrows(IllegalArgumentException.class, () -> group.add(HERO, HERO_IMAGE, null));
+        assertThrows(IllegalArgumentException.class, () -> group.add(HERO, HERO_IMAGE, null, 0.0, 0.0));
         assertThrows(IllegalArgumentException.class, () -> group.get(null));
         assertThrows(IllegalArgumentException.class, () -> group.has(null));
         assertEquals(0, cache.size());

@@ -93,15 +93,23 @@ final class SheetGroupEntry
      * @param id The id of the sheet.
      * @param image The resource key of its image.
      * @param grid The grid.
+     * @param pivotX The horizontal pivot in pixels, finite.
+     * @param pivotY The vertical pivot in pixels, finite.
+     * @param check The check of the image size before the sheet is created, {@code null} if none.
      * @return The sheet.
-     * @throws IllegalArgumentException If an argument is {@code null}, or the grid does not fit in the image.
+     * @throws IllegalArgumentException If an argument is {@code null}, a pivot is not finite, or the grid does not fit
+     *             in the image.
      * @throws IllegalStateException If the id is already in the group.
      */
-    SpriteSheet add(ResourceKey id, ResourceKey image, SheetGrid grid)
+    SpriteSheet add(ResourceKey id, ResourceKey image, SheetGrid grid, double pivotX, double pivotY, SheetCheck check)
     {
         checkNotNull(id, NAME_ID);
         checkNotNull(image, "Image");
         checkNotNull(grid, "Grid");
+        if (!Double.isFinite(pivotX) || !Double.isFinite(pivotY))
+        {
+            throw new IllegalArgumentException("Pivot not finite: " + pivotX + ", " + pivotY);
+        }
         if (sheets.containsKey(id))
         {
             throw new IllegalStateException(ERROR_DUPLICATE + id);
@@ -110,7 +118,11 @@ final class SheetGroupEntry
         SpriteSheet sheet = null;
         try
         {
-            sheet = new SpriteSheet(id, handle, grid);
+            if (check != null)
+            {
+                check.check(handle.getWidth(), handle.getHeight());
+            }
+            sheet = new SpriteSheet(id, handle, grid, pivotX, pivotY);
             sheets.put(id, sheet);
             order.add(sheet);
         }

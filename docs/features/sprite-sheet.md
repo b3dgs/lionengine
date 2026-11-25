@@ -40,7 +40,7 @@ Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.m
 
 ## State (2026-11-25)
 
-Batches 1 to 3 are implemented in `graphics`, with the examples `ImageDecodingExample`, `ImageCacheExample` and `SpriteSheetExample` and their API-index rows; batch 4 is not. Names and details chosen by batch 1, within this page, ADR-0026, ADR-0033 and ADR-0047:
+Batches 1 to 4 are implemented in `graphics`, with the examples `ImageDecodingExample`, `ImageCacheExample`, `SpriteSheetExample` and `SheetLoaderExample` and their API-index rows: the feature is complete. Names and details chosen by batch 1, within this page, ADR-0026, ADR-0033 and ADR-0047:
 - `PixelBuffer`: a final class created with its width and height (positive, at most `Integer.MAX_VALUE` pixels), transparent black; `getPixel(x, y)` and `setPixel(x, y, argb)` throw `IndexOutOfBoundsException` outside it; `copyPixels()` returns a new row-major array, ready for `TextureStore.create`, and `setPixels(int[])` copies exactly `width * height` values. The buffer never shares its array, so a cached image can never be changed through it.
 - *Image decoder contract*: `ImageDecoder`, one method `decode(InputStream)` returning a new `PixelBuffer` owned by the caller. The caller opens and closes the stream; an `IOException` of the stream propagates unchanged, so that the loader reports an inaccessible resource (ADR-0007); invalid content is an `ImageDecodingException`. Implementations are thread-safe, for decoding on loading workers. Contract suite: the abstract `ImageDecoderContract` of the `graphics` test JAR (decoding, a new buffer per call, stream left open, read failure, empty and non-image content, `null`, two threads).
 - `ImageDecodingException`: unchecked, message and optional cause, like `ResourceException`.
@@ -72,6 +72,12 @@ Batch 3 (2026-11-25), grid, cells, groups and ids. Names and details chosen by t
 - Reference counting: `acquire()` returns a new handle on the same group, for another user such as the tile map that keeps its tileset (ADR-0028); each handle is released by its acquirer, idempotently; the last release releases the images of every sheet, in the order they were added (the scope release of ADR-0019 and ADR-0055). A released handle refuses every call but `isReleased` and `release`. The group checks the thread of its cache (ADR-0055).
 - No group id and no group cache: a group is shared by handing a handle (`acquire()`) to its other users, such as the map loader.
 
+Batch 4 (2026-11-25), the sheet definition loader. Names and details chosen by the batch, within this page, ADR-0026, ADR-0032 and ADR-0033:
+- `SheetLoader`, created with the `Resources` of the definitions and optionally a `JsonReader` with other limits (the defaults of ADR-0032 otherwise); `FORMAT` (`lionengine.sheet`) and `VERSION` (`1`). `load(group, key)` reads the file through the resources (at most one byte more than the document limit, so a larger file is refused without being read entirely), checks it, and adds the sheet to the group under the key of the file, which is the id a tile map or a game uses; it returns the sheet. It checks the group handle and the thread before reading anything.
+- Fields: `image` (a valid resource key), `cellWidth` and `cellHeight` (positive `int`, required); `columns` and `rows` (positive `int` when present, derived when absent); `margin` and `spacing` (`int`, zero or positive, `0` by default); `pivotX` and `pivotY` (numbers, any value, the cell center by default, kept by the sheet: `SpriteSheet.getPivotX()` and `getPivotY()`, also given in code with `SheetGroup.add(id, image, grid, pivotX, pivotY)`).
+- `animations`: an object of named animations, each with `frames` (an array of at least one `int`, each zero or positive and below the cell count of the sheet), `frameDuration` (positive seconds, required), `frameDurations` (optional, one positive number of seconds per frame) and `loop` (`once`, `loop` or `ping-pong`, required). `templates`: an object of named mappings, each mapping key colors to target colors written `#RRGGBB` or `#AARRGGBB` (hexadecimal digits in any case); an empty mapping is accepted. A member `comment` is documentation at every level, also inside `animations`, an animation, `templates` and a mapping. Animations and templates are checked and not kept: the animated-sprite batch 1 and the sprite batch 4 turn them into their own types.
+- Errors: every mistake of the file is a `DefinitionException` with the key of the file, the line, the column and the JSON path of the faulty value (the object, for a missing field) and the field name; the grid is checked against the image (located at `columns` or `rows` when given, at `cellWidth` or `cellHeight` otherwise) and the frames against the cells, after the image is loaded and before the sheet is created, so a failed load adds nothing to the group and leaves nothing cached. A missing or unreadable file or image is the `ResourceException` of its key, an invalid image an `ImageDecodingException`, an id already in the group an `IllegalStateException`.
+
 ## Lifecycle and concurrency
 
 Cache and group operations on the runtime thread only (ADR-0018), checked by the cache (ADR-0055). Synchronous loading first; asynchronous decoding on workers in a later batch (ADR-0019). GPU upload happens at first render or at an explicit prepare call, never on a worker: the cache hands the immutable `int[]` of a source to the `render-api` texture contract and releases the texture with the source (ADR-0047).
@@ -92,10 +98,10 @@ Pixels. The PNG decoder uses `java.util.zip.Inflater` (to verify on API 21, `and
 
 ## Acceptance criteria
 
-- [ ] Requirements covered.
-- [ ] API reviewed in the pull request.
-- [ ] Automated tests added and passing.
-- [ ] Complete Javadoc.
-- [ ] Headless example, API-index entry, traceability updated (REQ-DOC-001, REQ-DOC-002).
-- [ ] No forbidden coupling (REQ-CORE-005).
-- [ ] Android/DEX compatibility verified.
+- [x] Requirements covered.
+- [x] API reviewed in the pull request.
+- [x] Automated tests added and passing.
+- [x] Complete Javadoc.
+- [x] Headless example, API-index entry, traceability updated (REQ-DOC-001, REQ-DOC-002).
+- [x] No forbidden coupling (REQ-CORE-005).
+- [x] Android/DEX compatibility verified.

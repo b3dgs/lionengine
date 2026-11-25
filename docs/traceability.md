@@ -20,7 +20,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-CORE-005 | Must | VALIDATED | ADR-0012, ADR-0015, ADR-0040, ADR-0042, ADR-0045, ADR-0046, ADR-0047, ADR-0048, ADR-0049 | — | `radial-encapsulation-maven-plugin` per module, `scripts/check-modules.py`, Maven graph; probes: sibling package, undeclared module, row and test-scope violations | verified by the build (probes) |
 | REQ-CORE-006 | Should | VALIDATED | ADR-0031 | — | `LogTest` (levels, arguments, sink replacement, allocation with a disabled level), `SystemErrSinkTest` | verified by tests |
 | REQ-TEST-001 | Must | VALIDATED | ADR-0017, ADR-0022, ADR-0045, ADR-0050 | — | `ControllableClock` (runtime test JAR) used by `GameLoopTest`; `HeadlessPlatform` (`test-support`) bound to `PlatformContract` by `HeadlessPlatformTest`; `RecordingBackend` bound to `RenderBackendContract` by `RecordingBackendTest`; `HeadlessGameTest`, `MovingRectangleTest` (examples) | verified by tests |
-| REQ-DOC-001 | Must | VALIDATED | ADR-0023, ADR-0042 | — | `DefinitionExampleTest`, `RandomExampleTest`, `GameLoopExampleTest`, `SceneExampleTest`, `ResourcesExampleTest`, `ImageDecodingExampleTest`, `ImageCacheExampleTest`, `SpriteSheetExampleTest`, `HeadlessGameTest`, `MovingRectangleTest` and `MovingRectangleDesktopTest` (platform test) run the examples in the build | partial: examples of `core`, `runtime`, `resources`, `graphics` and the platform and rendering batches; the other modules have none yet |
+| REQ-DOC-001 | Must | VALIDATED | ADR-0023, ADR-0042 | — | `DefinitionExampleTest`, `RandomExampleTest`, `GameLoopExampleTest`, `SceneExampleTest`, `ResourcesExampleTest`, `ImageDecodingExampleTest`, `ImageCacheExampleTest`, `SpriteSheetExampleTest`, `SheetLoaderExampleTest`, `HeadlessGameTest`, `MovingRectangleTest` and `MovingRectangleDesktopTest` (platform test) run the examples in the build | partial: examples of `core`, `runtime`, `resources`, `graphics` and the platform and rendering batches; the other modules have none yet |
 | REQ-DOC-002 | Should | VALIDATED | ADR-0023 | — | `scripts/check-api-index.py` on every filled row (`core`, `runtime`, `resources`, `graphics`, `platform-api`, `render-api`, `platform-awt`, `render-awt`, `test-support`) | partial: the other modules have no row filled yet |
 | REQ-DOC-003 | Should | VALIDATED | ADR-0023 | — | — | no test yet |
 | REQ-DOC-004 | Should | VALIDATED | ADR-0023, ADR-0042 | — | sources and Javadoc JARs built by `mvn -B verify` | verified by the build |
@@ -104,7 +104,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-ANIM-003 | Must | VALIDATED | ADR-0003, ADR-0017 | — | — | no test yet |
 | REQ-SHEET-001 | Must | VALIDATED | ADR-0003, ADR-0033 | — | `SpriteSheetTest` (index math, margin, spacing, derived and given counts, grid outside the image, out-of-range indexes, no allocation per lookup); `SheetGridTest`; `SpriteSheetExampleTest`; device test `GraphicsTest.testSpriteSheet` on API 21 | verified by tests |
 | REQ-SHEET-002 | Should | VALIDATED | ADR-0007, ADR-0026, ADR-0028 | — | `SheetGroupTest` (duplicate and unknown ids, shared images, handles, release, failures, other thread); `SpriteSheetExampleTest`; device test `GraphicsTest.testSpriteSheet` on API 21 | verified by tests |
-| REQ-SHEET-003 | Must | VALIDATED | ADR-0032, ADR-0033 | — | — | no test yet |
+| REQ-SHEET-003 | Must | VALIDATED | ADR-0032, ADR-0033 | — | `SheetLoaderTest` (valid file with every field, defaults, each missing field, each invalid field including animations and templates, unknown fields, frames and grid against the image, resource errors, limits); `SheetLoaderExampleTest`; device test `GraphicsTest.testSheetLoader` on API 21 | verified by tests |
 | REQ-CAM-001 | Must | VALIDATED | ADR-0010, ADR-0014 | — | — | no test yet |
 | REQ-CAM-002 | Must | VALIDATED | ADR-0029, ADR-0034 | — | — | no test yet |
 | REQ-CAM-003 | Must | VALIDATED | ADR-0010 | — | — | no test yet |
@@ -138,7 +138,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-WORLD-001 | Must | VALIDATED | ADR-0021, ADR-0024 | — | — | no test yet |
 | REQ-PHYS-001 | Should | VALIDATED | ADR-0021, ADR-0028, ADR-0030 | — | — | no test yet |
 | REQ-DEF-001 | Must | VALIDATED | ADR-0020, ADR-0028 | — | `JsonReaderTest` (every error with line, column and path; numbers; escapes; limits), `JsonValueTest`, `DefinitionExceptionTest` | verified by tests |
-| REQ-DEF-002 | Must | VALIDATED | ADR-0032 | — | `ConfigurationTest` (format and version, strict fields, comment), `JsonReaderTest` (limits), `RegistryTest` | verified by tests |
+| REQ-DEF-002 | Must | VALIDATED | ADR-0032 | — | `ConfigurationTest` (format and version, strict fields, comment), `JsonReaderTest` (limits), `RegistryTest`; `SheetLoaderTest` (first definition format of a module) | verified by tests |
 | REQ-DEF-003 | Must | VALIDATED | ADR-0020, ADR-0032 | — | `RegistryTest` (id validation), `ConfigurationTest` (typed getters with and without defaults) | verified by tests |
 | REQ-ECS-001 | Must | VALIDATED | ADR-0011, ADR-0030 | — | — | no test yet |
 | REQ-ECS-002 | Must | VALIDATED | ADR-0011, ADR-0030 | — | — | no test yet |

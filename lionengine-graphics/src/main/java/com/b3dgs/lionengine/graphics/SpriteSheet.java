@@ -30,6 +30,11 @@ import com.b3dgs.lionengine.resources.ResourceKey;
  * </p>
  *
  * <p>
+ * The pivot of the cells, the point a sprite is placed, scaled and rotated about, is in pixels from the top-left
+ * corner of a cell, the cell center by default (ADR-0026, ADR-0033).
+ * </p>
+ *
+ * <p>
  * The grid never changes. Once the group is released, the geometry stays readable but the image is released.
  * Runtime thread only, like its group (ADR-0018).
  * </p>
@@ -44,16 +49,14 @@ public final class SpriteSheet
     /**
      * Counts the cells along an axis.
      *
-     * @param id The sheet id, for the messages.
      * @param size The size of the image along the axis, in pixels.
      * @param cell The size of a cell along the axis, in pixels.
      * @param count The number of cells requested, {@link SheetGrid#DERIVED} to derive it.
      * @param margin The margin in pixels.
      * @param spacing The spacing in pixels.
-     * @return The number of cells.
-     * @throws IllegalArgumentException If no cell fits, or the requested cells do not fit in the image.
+     * @return The number of cells, {@code 0} if no cell fits or the requested cells do not fit in the image.
      */
-    private static int count(ResourceKey id, int size, int cell, int count, int margin, int spacing)
+    static int count(int size, int cell, int count, int margin, int spacing)
     {
         final long result;
         if (count == SheetGrid.DERIVED)
@@ -64,18 +67,45 @@ public final class SpriteSheet
         {
             result = count;
         }
+        final int fitting;
         if (result <= 0 || (long) margin + result * cell + (result - 1) * spacing > size)
+        {
+            fitting = 0;
+        }
+        else
+        {
+            fitting = (int) result;
+        }
+        return fitting;
+    }
+
+    /**
+     * Counts the cells along an axis, or fails.
+     *
+     * @param id The sheet id, for the messages.
+     * @param size The size of the image along the axis, in pixels.
+     * @param cell The size of a cell along the axis, in pixels.
+     * @param count The number of cells requested, {@link SheetGrid#DERIVED} to derive it.
+     * @param margin The margin in pixels.
+     * @param spacing The spacing in pixels.
+     * @return The number of cells.
+     * @throws IllegalArgumentException If no cell fits, or the requested cells do not fit in the image.
+     */
+    private static int countOrFail(ResourceKey id, int size, int cell, int count, int margin, int spacing)
+    {
+        final int result = count(size, cell, count, margin, spacing);
+        if (result == 0)
         {
             throw new IllegalArgumentException("Sheet grid outside its image: "
                                                + id
                                                + ", "
-                                               + result
+                                               + count
                                                + " cells of "
                                                + cell
                                                + " pixels in "
                                                + size);
         }
-        return (int) result;
+        return result;
     }
 
     /** The id of the sheet in its group. */
@@ -96,6 +126,10 @@ public final class SpriteSheet
     private final int spacing;
     /** Number of cells. */
     private final int cellCount;
+    /** Horizontal pivot in pixels from the left edge of a cell. */
+    private final double pivotX;
+    /** Vertical pivot in pixels from the top edge of a cell. */
+    private final double pivotY;
 
     /**
      * Creates a sheet over an image, for {@link SheetGroup} only.
@@ -103,9 +137,11 @@ public final class SpriteSheet
      * @param id The id of the sheet.
      * @param image The image, held by the group.
      * @param grid The grid; derived numbers of columns and rows are computed from the size of the image.
+     * @param pivotX The horizontal pivot in pixels from the left edge of a cell.
+     * @param pivotY The vertical pivot in pixels from the top edge of a cell.
      * @throws IllegalArgumentException If no cell fits, or the requested cells do not fit in the image.
      */
-    SpriteSheet(ResourceKey id, Image image, SheetGrid grid)
+    SpriteSheet(ResourceKey id, Image image, SheetGrid grid, double pivotX, double pivotY)
     {
         super();
 
@@ -115,9 +151,11 @@ public final class SpriteSheet
         cellHeight = grid.cellHeight();
         margin = grid.margin();
         spacing = grid.spacing();
-        columns = count(id, image.getWidth(), cellWidth, grid.columns(), margin, spacing);
-        rows = count(id, image.getHeight(), cellHeight, grid.rows(), margin, spacing);
+        columns = countOrFail(id, image.getWidth(), cellWidth, grid.columns(), margin, spacing);
+        rows = countOrFail(id, image.getHeight(), cellHeight, grid.rows(), margin, spacing);
         cellCount = columns * rows;
+        this.pivotX = pivotX;
+        this.pivotY = pivotY;
     }
 
     /**
@@ -208,6 +246,26 @@ public final class SpriteSheet
     public int getCellCount()
     {
         return cellCount;
+    }
+
+    /**
+     * Returns the horizontal pivot of the cells.
+     *
+     * @return The pivot in pixels from the left edge of a cell, half the cell width by default.
+     */
+    public double getPivotX()
+    {
+        return pivotX;
+    }
+
+    /**
+     * Returns the vertical pivot of the cells.
+     *
+     * @return The pivot in pixels from the top edge of a cell, half the cell height by default.
+     */
+    public double getPivotY()
+    {
+        return pivotY;
     }
 
     /**

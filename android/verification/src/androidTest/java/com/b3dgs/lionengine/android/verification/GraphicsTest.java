@@ -38,6 +38,7 @@ import org.junit.runner.RunWith;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.b3dgs.lionengine.DefinitionException;
 import com.b3dgs.lionengine.graphics.Image;
 import com.b3dgs.lionengine.graphics.ImageCache;
 import com.b3dgs.lionengine.graphics.ImageDecodingException;
@@ -45,6 +46,7 @@ import com.b3dgs.lionengine.graphics.PixelBuffer;
 import com.b3dgs.lionengine.graphics.PngDecoder;
 import com.b3dgs.lionengine.graphics.SheetGrid;
 import com.b3dgs.lionengine.graphics.SheetGroup;
+import com.b3dgs.lionengine.graphics.SheetLoader;
 import com.b3dgs.lionengine.graphics.SpriteSheet;
 import com.b3dgs.lionengine.render.TextureStore;
 import com.b3dgs.lionengine.resources.ResourceKey;
@@ -593,6 +595,49 @@ public final class GraphicsTest
         map.release();
         assertEquals(0, cache.size());
         assertTrue(textures.alive.isEmpty());
+    }
+
+    /**
+     * The sheet loader reads a definition into a group, and refuses a frame outside the sheet with its position
+     * (REQ-SHEET-003).
+     *
+     * @throws IOException If a resource cannot be written.
+     */
+    @Test
+    public void testSheetLoader() throws IOException
+    {
+        final ResourceKey image = new ResourceKey("tiles/forest.png");
+        final ResourceKey key = new ResourceKey("sheets/forest.json");
+        final ResourceKey broken = new ResourceKey("sheets/broken.json");
+        final MemoryProvider memory = new MemoryProvider();
+        try (OutputStream output = memory.openWrite(image))
+        {
+            output.write(png(4, 2, 8, GRAY, 0, null, null, 0, 0, 0, 0, 0, 0, 0, 0));
+        }
+        final String header = "{\"format\": \"lionengine.sheet\", \"version\": 1, \"image\": \"tiles/forest.png\", "
+                              + "\"cellWidth\": 2, \"cellHeight\": 2, ";
+        try (OutputStream output = memory.openWrite(key))
+        {
+            output.write((header + "\"pivotY\": 2, \"animations\": {\"wave\": {\"frames\": [0, 1], "
+                          + "\"frameDuration\": 0.5, \"loop\": \"ping-pong\"}}}").getBytes(StandardCharsets.UTF_8));
+        }
+        try (OutputStream output = memory.openWrite(broken))
+        {
+            output.write((header + "\"animations\": {\"wave\": {\"frames\": [2], \"frameDuration\": 0.5, "
+                          + "\"loop\": \"loop\"}}}").getBytes(StandardCharsets.UTF_8));
+        }
+        final Resources resources = new Resources(memory);
+        final SheetGroup group = new SheetGroup(new ImageCache(resources, new Textures()));
+        final SheetLoader loader = new SheetLoader(resources);
+
+        final SpriteSheet sheet = loader.load(group, key);
+        final DefinitionException error = assertThrows(DefinitionException.class, () -> loader.load(group, broken));
+
+        assertEquals(2, sheet.getColumns());
+        assertEquals(2.0, sheet.getPivotY(), 0.0);
+        assertEquals("$.animations.wave.frames[0]", error.getPath());
+        assertEquals(1, group.size());
+        group.release();
     }
 
     /**

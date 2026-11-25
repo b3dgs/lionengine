@@ -31,7 +31,7 @@ Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.m
 
 ## Batches (order)
 
-1. Animation value and loader from the sheet definition (`REQ-ANIM-001`).
+1. Animation value and loader from the sheet definition (`REQ-ANIM-001`). The sheet loader of [`sprite-sheet.md`](sprite-sheet.md) batch 4 already checks the `animations` of a definition, frames against the cells included, and keeps nothing; this batch builds the animation values from them.
 2. Animator state machine and loop modes (`REQ-ANIM-002`).
 3. Animated sprite driven by the update step (`REQ-ANIM-003`).
 

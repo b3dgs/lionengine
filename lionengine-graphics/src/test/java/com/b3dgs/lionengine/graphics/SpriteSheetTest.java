@@ -84,7 +84,7 @@ final class SpriteSheetTest
     void testPlainGrid()
     {
         final Image image = image(64, 32);
-        final SpriteSheet sheet = new SpriteSheet(ID, image, new SheetGrid(16, 16));
+        final SpriteSheet sheet = new SpriteSheet(ID, image, new SheetGrid(16, 16), 0.0, 0.0);
 
         assertSame(ID, sheet.getId());
         assertSame(image, sheet.getImage());
@@ -120,7 +120,8 @@ final class SpriteSheetTest
     })
     void testMarginAndSpacing(int width, int height, int columns, int rows)
     {
-        final SpriteSheet sheet = new SpriteSheet(ID, image(width, height), new SheetGrid(10, 8, 0, 0, 2, 3));
+        final SheetGrid grid = new SheetGrid(10, 8, 0, 0, 2, 3);
+        final SpriteSheet sheet = new SpriteSheet(ID, image(width, height), grid, 0.0, 0.0);
 
         assertEquals(2, sheet.getMargin());
         assertEquals(3, sheet.getSpacing());
@@ -138,7 +139,7 @@ final class SpriteSheetTest
     @Test
     void testGivenCounts()
     {
-        final SpriteSheet sheet = new SpriteSheet(ID, image(64, 32), new SheetGrid(16, 16, 2, 1, 0, 0));
+        final SpriteSheet sheet = new SpriteSheet(ID, image(64, 32), new SheetGrid(16, 16, 2, 1, 0, 0), 0.0, 0.0);
 
         assertEquals(2, sheet.getColumns());
         assertEquals(1, sheet.getRows());
@@ -166,7 +167,7 @@ final class SpriteSheetTest
         final SheetGrid grid = new SheetGrid(16, 16, columns, rows, margin, spacing);
 
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                                                                () -> new SpriteSheet(ID, image, grid));
+                                                                () -> new SpriteSheet(ID, image, grid, 0.0, 0.0));
         assertTrue(exception.getMessage().contains(ID.path()), exception.getMessage());
     }
 
@@ -182,7 +183,7 @@ final class SpriteSheetTest
     })
     void testIndexOutside(int index)
     {
-        final SpriteSheet sheet = new SpriteSheet(ID, image(64, 32), new SheetGrid(16, 16));
+        final SpriteSheet sheet = new SpriteSheet(ID, image(64, 32), new SheetGrid(16, 16), 0.0, 0.0);
 
         assertThrows(IndexOutOfBoundsException.class, () -> sheet.getCellX(index));
         assertThrows(IndexOutOfBoundsException.class, () -> sheet.getCellY(index));
@@ -194,7 +195,7 @@ final class SpriteSheetTest
     @Test
     void testLookupAllocatesNothing()
     {
-        final SpriteSheet sheet = new SpriteSheet(ID, image(64, 32), new SheetGrid(16, 16));
+        final SpriteSheet sheet = new SpriteSheet(ID, image(64, 32), new SheetGrid(16, 16), 0.0, 0.0);
         final ThreadMXBean bean = (ThreadMXBean) ManagementFactory.getThreadMXBean();
         int sum = 0;
 
