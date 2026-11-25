@@ -38,9 +38,10 @@ package com.b3dgs.lionengine.runtime;
  *
  * <p>
  * An exception thrown by a scene propagates unchanged, so the game loop fails (ADR-0017). A scene whose
- * {@link Scene#enter()} or {@link Scene#exit()} threw receives no further call; when the exit of the current scene
- * throws, the next scene is not entered. At the end of the game, once the loop has stopped or failed, {@link #clear()}
- * exits and disposes the active scene.
+ * {@link Scene#enter()} or {@link Scene#exit()} threw is still disposed, once, and receives no other call
+ * (ADR-0052); an exception thrown by that disposal is added to the first one as a suppressed exception. When the exit
+ * of the current scene throws, the next scene is not entered. At the end of the game, once the loop has stopped or
+ * failed, {@link #clear()} exits and disposes the active scene.
  * </p>
  *
  * <p>
@@ -59,6 +60,8 @@ public final class SceneManager implements UpdateCallback, RenderCallback
     private boolean frameStarted;
     /** {@code true} while a scene method called by this manager runs. */
     private boolean calling;
+    /** Guard disposing a scene, reused by every switch (no allocation). */
+    private final Disposal disposal = new Disposal();
 
     /**
      * Creates a manager without scene: until the first switch applies, updates and renders do nothing.
@@ -148,13 +151,40 @@ public final class SceneManager implements UpdateCallback, RenderCallback
             calling = true;
             try
             {
-                previous.exit();
-                previous.dispose();
+                leave(previous);
             }
             finally
             {
                 calling = false;
             }
+        }
+    }
+
+    /**
+     * Exits then disposes a scene. If its exit throws, it is still disposed before the exception propagates.
+     *
+     * @param scene The scene to leave.
+     */
+    private void leave(Scene scene)
+    {
+        try (Disposal guard = disposal.guard(scene))
+        {
+            scene.exit();
+            guard.keep(false);
+        }
+    }
+
+    /**
+     * Enters a scene. If its enter throws, it is disposed (not exited) before the exception propagates.
+     *
+     * @param scene The scene to enter.
+     */
+    private void enter(Scene scene)
+    {
+        try (Disposal guard = disposal.guard(scene))
+        {
+            scene.enter();
+            guard.keep(true);
         }
     }
 
@@ -187,10 +217,9 @@ public final class SceneManager implements UpdateCallback, RenderCallback
         {
             if (previous != null)
             {
-                previous.exit();
-                previous.dispose();
+                leave(previous);
             }
-            next.enter();
+            enter(next);
             active = next;
         }
         finally
@@ -260,6 +289,60 @@ public final class SceneManager implements UpdateCallback, RenderCallback
             finally
             {
                 calling = false;
+            }
+        }
+    }
+
+    /**
+     * Disposes a scene when closed, unless kept. Used in a try-with-resources, so that a failure of the disposal is
+     * added to the exception already thrown by the scene instead of replacing it.
+     */
+    private static final class Disposal implements AutoCloseable
+    {
+        /** Scene to dispose. */
+        private Scene scene;
+        /** {@code true} if the scene is kept when closed. */
+        private boolean kept;
+
+        /**
+         * Creates an empty guard.
+         */
+        Disposal()
+        {
+            super();
+        }
+
+        /**
+         * Guards a scene.
+         *
+         * @param guarded The scene to dispose when closed.
+         * @return This guard.
+         */
+        Disposal guard(Scene guarded)
+        {
+            scene = guarded;
+            kept = false;
+            return this;
+        }
+
+        /**
+         * Tells whether the guarded scene is kept when closed.
+         *
+         * @param keep {@code true} to keep it, {@code false} to dispose it.
+         */
+        void keep(boolean keep)
+        {
+            kept = keep;
+        }
+
+        @Override
+        public void close()
+        {
+            final Scene guarded = scene;
+            scene = null;
+            if (!kept)
+            {
+                guarded.dispose();
             }
         }
     }

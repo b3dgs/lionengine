@@ -84,7 +84,7 @@ public final class AwtPlatform implements Platform
     private static final String RUNTIME_THREAD = "lionengine-runtime";
     /** Refresh rate used to pace the frames when the default monitor does not report its own, in Hz. */
     private static final int DEFAULT_REFRESH_RATE = 60;
-    /** Frame rate while the window is in the background, in Hz (assumption recorded as OQ-168). */
+    /** Frame rate while the window is in the background, in Hz (ADR-0052). */
     private static final int BACKGROUND_RATE = 10;
     /** Number of loading workers, the desktop default (ADR-0031). */
     private static final int WORKERS = 2;

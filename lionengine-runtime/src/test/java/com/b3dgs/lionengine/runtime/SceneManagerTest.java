@@ -275,7 +275,7 @@ final class SceneManagerTest
     }
 
     /**
-     * A scene whose enter throws receives no further call, and the manager has no active scene.
+     * A scene whose enter throws is disposed, not exited, and the manager has no active scene (ADR-0052).
      */
     @Test
     void testEnterFailure()
@@ -288,12 +288,13 @@ final class SceneManagerTest
         manager.render(ALPHA, STEP);
         manager.clear();
 
-        assertEquals(List.of(first.entry(EXIT), first.entry(DISPOSE), second.entry(ENTER)), calls);
+        assertEquals(List.of(first.entry(EXIT), first.entry(DISPOSE), second.entry(ENTER), second.entry(DISPOSE)),
+                     calls);
         assertFalse(manager.hasActive());
     }
 
     /**
-     * A scene whose exit throws is not disposed, and the next scene is not entered.
+     * A scene whose exit throws is still disposed, and the next scene is not entered (ADR-0052).
      */
     @Test
     void testExitFailure()
@@ -305,7 +306,7 @@ final class SceneManagerTest
         assertThrows(IllegalStateException.class, () -> manager.update(STEP));
         manager.clear();
 
-        assertEquals(List.of(first.entry(EXIT)), calls);
+        assertEquals(List.of(first.entry(EXIT), first.entry(DISPOSE)), calls);
         assertFalse(manager.hasActive());
         assertFalse(manager.isSwitchPending());
     }
@@ -326,7 +327,7 @@ final class SceneManagerTest
     }
 
     /**
-     * A failing exit during clear leaves no active scene and does not dispose it.
+     * A failing exit during clear leaves no active scene and still disposes it.
      */
     @Test
     void testClearExitFailure()
@@ -337,7 +338,34 @@ final class SceneManagerTest
         assertThrows(IllegalStateException.class, manager::clear);
         manager.clear();
 
-        assertEquals(List.of(first.entry(EXIT)), calls);
+        assertEquals(List.of(first.entry(EXIT), first.entry(DISPOSE)), calls);
         assertFalse(manager.hasActive());
+    }
+
+    /**
+     * A disposal that fails after a failed exit is added to the first exception as a suppressed one, and the first
+     * exception is the one that propagates.
+     */
+    @Test
+    void testDisposeFailureAfterExitFailure()
+    {
+        startFirst();
+        first.setAction(EXIT, () ->
+        {
+            throw new IllegalStateException("exit");
+        });
+        first.setAction(DISPOSE, () ->
+        {
+            throw new IllegalStateException("dispose");
+        });
+        manager.switchTo(second);
+
+        final IllegalStateException exception = assertThrows(IllegalStateException.class,
+                                                              () -> manager.update(STEP));
+
+        assertEquals("exit", exception.getMessage());
+        assertEquals(1, exception.getSuppressed().length);
+        assertEquals("dispose", exception.getSuppressed()[0].getMessage());
+        assertEquals(List.of(first.entry(EXIT), first.entry(DISPOSE)), calls);
     }
 }

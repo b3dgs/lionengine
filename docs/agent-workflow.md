@@ -61,4 +61,4 @@ Next batches, in this order. Each one starts from its feature page and [`impleme
 
 Batches 2 to 6 are done; the next batches depend only on what is merged, as long as each pull request keeps `mvn -B verify` green on the merge result.
 
-Two questions are open, `OQ-168` (frame rate in the background) and `OQ-169` (disposal of a scene whose `exit` or `enter` threw), with the assumption made for the first. `OQ-166` and `OQ-167` are resolved by ADR-0050 (latest stable JUnit) and ADR-0051 (`b3dgs-parent` 3.0.0-SNAPSHOT). The parent is a snapshot: a build that starts failing after a parent update is fixed in the engine code or reported to the owner.
+No question is open: `OQ-168` and `OQ-169` are resolved by ADR-0052 (background frame rate, disposal after a failed scene call), and `OQ-166` and `OQ-167` are resolved by ADR-0050 (latest stable JUnit) and ADR-0051 (`b3dgs-parent` 3.0.0-SNAPSHOT). The parent is a snapshot: a build that starts failing after a parent update is fixed in the engine code or reported to the owner.
