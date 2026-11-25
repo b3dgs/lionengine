@@ -9,7 +9,7 @@ One line per capability, no implementation detail. Each area links to its featur
 - **Available**: implemented, tested, with an example.
 - **Planned**: in the roadmap, not yet specified in detail.
 
-Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop without asynchronous loading ([`features/game-loop.md`](features/game-loop.md)), the single-scene manager ([`features/scenes.md`](features/scenes.md)), the file, memory and application-stream resource providers ([`features/resources.md`](features/resources.md)) and the platform with rendering, headless and in a desktop window ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)) exist: resources and data files, the game loop, scenes, window and display, and platforms are *In progress*, every other area is *Specified*.
+Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop without asynchronous loading ([`features/game-loop.md`](features/game-loop.md)), the single-scene manager ([`features/scenes.md`](features/scenes.md)), the file, memory and application-stream resource providers ([`features/resources.md`](features/resources.md)), the platform with rendering, headless and in a desktop window ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)), and the PNG decoder ([`features/sprite-sheet.md`](features/sprite-sheet.md)) exist: resources and data files, the game loop, scenes, window and display, images, and platforms are *In progress*, every other area is *Specified*.
 
 | Area | State | Phase |
 |---|---|---|
@@ -17,7 +17,7 @@ Today the build skeleton, the cross-module contracts ([`features/contract-skelet
 | [Scenes and navigation](#scenes-and-navigation) | In progress | 1–2 |
 | [Resources and data files](#resources-and-data-files) | In progress | 1 |
 | [Window, display and rendering](#window-display-and-rendering) | In progress | 1–2 |
-| [Images, sprites and animations](#images-sprites-and-animations) | Specified | 2 |
+| [Images, sprites and animations](#images-sprites-and-animations) | In progress | 2 |
 | [Audio](#audio) | Specified | 2 |
 | [Objects and behaviors](#objects-and-behaviors) | Specified | 3 |
 | [Tile maps](#tile-maps) | Specified | 3 |
@@ -87,6 +87,8 @@ Works now: the scaling of the logical frame to any surface size with the three p
 - Color variants of one sprite (team colors) from a color mapping, without extra image files.
 - Animations from frames and durations: play once, loop or ping-pong; pause, resume, stop.
 - Animations advance with the simulation, so they stay in sync with gameplay.
+
+Works now: decoding PNG images of every kind but interlaced and animated ones into pixels that the game owns and can change, with the same result on every platform, then turning them into textures (example `ImageDecodingExample`). The shared image cache, sprite sheets, sprites and animations come with the next batches.
 
 ## Audio
 

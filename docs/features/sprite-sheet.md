@@ -37,6 +37,20 @@ Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.m
 3. Grid, cells, groups and ids (`REQ-SHEET-001`, `REQ-SHEET-002`).
 4. Sheet definition loader (`REQ-SHEET-003`).
 
+## State (2026-11-25)
+
+Batch 1 is implemented in `graphics`, with the example `ImageDecodingExample` and its API-index row; batches 2 to 4 are not. Names and details chosen by the batch, within this page, ADR-0026, ADR-0033 and ADR-0047:
+- `PixelBuffer`: a final class created with its width and height (positive, at most `Integer.MAX_VALUE` pixels), transparent black; `getPixel(x, y)` and `setPixel(x, y, argb)` throw `IndexOutOfBoundsException` outside it; `copyPixels()` returns a new row-major array, ready for `TextureStore.create`, and `setPixels(int[])` copies exactly `width * height` values. The buffer never shares its array, so a cached image can never be changed through it.
+- *Image decoder contract*: `ImageDecoder`, one method `decode(InputStream)` returning a new `PixelBuffer` owned by the caller. The caller opens and closes the stream; an `IOException` of the stream propagates unchanged, so that the loader reports an inaccessible resource (ADR-0007); invalid content is an `ImageDecodingException`. Implementations are thread-safe, for decoding on loading workers. Contract suite: the abstract `ImageDecoderContract` of the `graphics` test JAR (decoding, a new buffer per call, stream left open, read failure, empty and non-image content, `null`, two threads).
+- `ImageDecodingException`: unchecked, message and optional cause, like `ResourceException`.
+- `PngDecoder`: the built-in decoder. 16-bit samples keep their most significant byte; samples of 1, 2 and 4 bits are multiplied by 255, 85 and 17; a `tRNS` transparent color is compared at the depth of the image, before the reduction to 8 bits. The CRC of every chunk is checked. Rejected: Adam7 interlacing, animated PNG (any `acTL`, `fcTL` or `fdAT` chunk), an unknown critical chunk or a critical chunk out of place, a palette image without palette or with an index outside it, a palette of more than 256 entries, a `tRNS` chunk longer than the palette or before it. Accepted as other decoders do: a suggested palette of an RGB or RGBA image and a `tRNS` chunk of an image with an alpha channel (both ignored), empty `IDAT` chunks, and data chunks after the last row. The decoder holds two rows besides the result, reads the stream up to the `IEND` chunk and always ends its `Inflater`.
+- Test fixture (ADR-0045): `PngWriter` in the `graphics` test JAR writes PNG images in memory from raw samples, with a chosen filter type, chunk split and extra chunks, valid or not, so that the later batches and the examples can build their images in memory instead of storing image files.
+- Verification: the tests decode every color type and bit depth with each of the five filter types and with a filter per row, against pixels computed from the samples; during the batch, the decoder was also checked against an independent encoder (16 images written by Pillow: every color type and depth Pillow writes, with and without `tRNS`), all identical. The device test `GraphicsTest` runs the same cases on the API 21 emulator.
+
+Not in this batch: how a loader chooses the decoder of a key (by extension or registration) and the default registration of `PngDecoder` come with the image cache (batch 2), which opens keys through `Resources`.
+
+Gaps found by the batch: no configurable limit on the size of a decoded image, so a small file declaring a huge image can exhaust the memory (only images of more than `Integer.MAX_VALUE` pixels are refused); an untrusted image (a mod) needs one before it is loaded.
+
 ## Lifecycle and concurrency
 
 Cache and group operations on the runtime thread only (ADR-0018). Synchronous loading first; asynchronous decoding on workers in a later batch (ADR-0019). GPU upload happens at first render or at an explicit prepare call, never on a worker: the cache hands the immutable `int[]` of a source to the `render-api` texture contract and releases the texture with the source (ADR-0047).

@@ -66,7 +66,7 @@ By the probes of the Android verification job (2026-11-25, `LanguageProbeTest`, 
 - `java.util.zip`: `Deflater`, `Inflater`, `CRC32`, `GZIPInputStream`, `GZIPOutputStream`.
 - `ArrayDeque` through `Deque`: `addFirst`, `addLast`, `removeFirst`, `removeLast`.
 
-By the device tests of the shared modules (`CoreTest`, `RuntimeTest`, `ResourcesTest`, `RenderTest`, `PlatformTest`), with the expected values of their JVM tests: `System.nanoTime`, `Thread` start and join, `java.util.concurrent.atomic`, `java.io.File` and file streams in the application cache folder, `StandardCharsets` and the UTF-8 decoder, `Arrays.copyOf`, `HashMap`, and the `double` and `long` arithmetic of the random generator and of the scaling function.
+By the device tests of the shared modules (`CoreTest`, `RuntimeTest`, `ResourcesTest`, `RenderTest`, `PlatformTest`, `GraphicsTest`), with the expected values of their JVM tests: `System.nanoTime`, `Thread` start and join, `java.util.concurrent.atomic`, `java.io.File` and file streams in the application cache folder, `StandardCharsets` and the UTF-8 decoder, `Arrays.copyOf`, `HashMap`, and the `double` and `long` arithmetic of the random generator and of the scaling function.
 
 The rules of ADR-0037 still apply on top: no `java.util.function`, `Optional`, streams or `java.time` in shared public APIs or hot paths.
 
@@ -97,7 +97,7 @@ Nothing here is verified yet, so every item is **not compatible yet** until it i
 |---|---|---|
 | Screen and display modes (ADR-0002) | Mode selection through Android APIs, isolated in `platform-android`; refresh-rate and color-depth selection may be unavailable and is then reported through the effective result | not compatible yet |
 | Output filtering (ADR-0002) | common GLSL/GLSL ES shader subset and own filter implementations (ADR-0025, ADR-0033); headers `#version 100` on Android | not compatible yet |
-| Sprites and sprite sheets (ADR-0003) | Pure-Java PNG decoder in shared code (`java.util.zip.Inflater`, verified on API 21 by the job probe); optional platform decoders (ADR-0026) | `Inflater` compatible; decoder not written yet |
+| Sprites and sprite sheets (ADR-0003) | Pure-Java PNG decoder in shared code (`java.util.zip.Inflater` and `CRC32`, verified on API 21 by the job probe); optional platform decoders (ADR-0026) | PNG decoder and pixel buffer run by the device test `GraphicsTest` with the JVM expected values (sprite sheet batch 1); platform decoders not written yet |
 | Audio (ADR-0004) | No `javax.sound` in `audio-api`; PCM WAV baseline, OGG Vorbis decoded by the platform; latency target 100 ms best effort to measure (ADR-0027, ADR-0033) | not compatible yet |
 | Desktop platform (ADR-0008) | `platform-awt` uses `java.desktop`, which does not exist on Android: it must stay out of every Android build | platform module only; enforced by the Android job (desktop modules are not in the Android build, and `java.desktop` in a shared module fails it) |
 | Desktop renderer and input (ADR-0022, ADR-0035) | `render-awt`, `input-awt`, `audio-javasound`, `graphics-imageio` use `java.desktop` | platform module only |
@@ -121,7 +121,7 @@ Where: the Gradle build in `android/` and the `android` job of `.github/workflow
 | Static API check | `:api-lint:lintDebug` | `api-lint` compiles the shared sources against `android.jar` (minimum API 21, desugaring on) and runs lint with `NewApi` as an error: a type Android does not have (`java.desktop`) fails the compilation, a call above API 21 that desugaring does not cover fails lint |
 | DEX with D8 | `:verification:verifyDebugDex` | the `verification` application depends on the shared artifacts like a game; its debug build runs D8 with desugaring, then the task checks that every class of every shared JAR is in the DEX files of the APK |
 | DEX with R8 | `:verification:verifyReleaseDex` | release build with R8 (shrinking and optimization on, every `com.b3dgs.lionengine` class kept by `proguard-rules.pro`), same check; a missing class is an R8 error |
-| Run time on API 21 | `:verification:connectedDebugAndroidTest` | instrumentation tests on an API 21 emulator or device: the device tests of the shared modules (`CoreTest`, `RuntimeTest`, `ResourcesTest`, `RenderTest`, `PlatformTest`, with the expected values of the JVM tests) and the probes (`LanguageProbeTest`, `LibraryProbeTest`) |
+| Run time on API 21 | `:verification:connectedDebugAndroidTest` | instrumentation tests on an API 21 emulator or device: the device tests of the shared modules (`CoreTest`, `RuntimeTest`, `ResourcesTest`, `RenderTest`, `PlatformTest`, `GraphicsTest`, with the expected values of the JVM tests) and the probes (`LanguageProbeTest`, `LibraryProbeTest`) |
 
 Commands, from the repository root, with JDK 25 and the Android SDK (`ANDROID_HOME` set): `mvn -B install`, then `cd android` and `./gradlew :api-lint:lintDebug :verification:verifyDebugDex :verification:verifyReleaseDex`; with an API 21 emulator running or a device attached, `./gradlew :verification:connectedDebugAndroidTest`. The CI job starts the emulator with `reactivecircus/android-emulator-runner` ([`dependencies.md`](dependencies.md)).
 
