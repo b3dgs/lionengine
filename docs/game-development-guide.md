@@ -13,7 +13,7 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
 ## Outline
 
 1. **Prerequisites** — Java/Maven versions (ADR-0001), how to depend on the engine: pinned Maven version with sources and Javadoc JARs (ADR-0023).
-2. **Hello engine** — the smallest headless application: start, update, stop. *Example: to be created in Phase 1.*
+2. **Hello engine** — the smallest headless application: start, update, stop. *Example: `GameLoopExample` (runtime), `HeadlessGameTest` (a game without a window); see [`api-index.md`](api-index.md).*
 3. **Concepts, in order of use** — start with [`how-the-engine-works.md`](how-the-engine-works.md); then runtime and game loop, scenes, resources and definition files, graphics (sprite, animation), world and objects (ECS, ADR-0021), tilemap, camera, input, audio.
 4. **Recipes** — one short, tested recipe per common task:
    - display and animate a sprite, including two color variants of one sprite and a sprite sheet (ADR-0003; example to be created);

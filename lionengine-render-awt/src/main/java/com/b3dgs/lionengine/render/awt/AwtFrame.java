@@ -34,7 +34,9 @@ import com.b3dgs.lionengine.render.CommandBuffer;
  * Each frame starts cleared to opaque black. Each entry is clipped to its viewport and offset by it, then drawn with
  * nearest-neighbor sampling: its pivot at its position, rotated counter-clockwise on screen, scaled, its colors
  * multiplied by the tint, and its opacity multiplied by the alpha of the tint and by its alpha. A tinted entry first
- * copies its source rectangle on the CPU. Runtime thread only.
+ * copies its source rectangle on the CPU. A frame allocates only when the opacity of an entry differs from the previous
+ * one (a new composite) or when a tinted entry needs a larger scratch image; the command buffer itself never
+ * allocates. Runtime thread only.
  * </p>
  */
 final class AwtFrame
