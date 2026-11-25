@@ -97,7 +97,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-SPRITE-006 | Must | VALIDATED | ADR-0003, ADR-0026 | — | — | no test yet |
 | REQ-SPRITE-007 | Must | VALIDATED | ADR-0003, ADR-0026 | — | — | no test yet |
 | REQ-SPRITE-008 | Could | VALIDATED | ADR-0003, ADR-0026 | — | review of `CommandBuffer` (plain entries in parallel arrays, read by rank: a backend may batch consecutive entries of one texture) | verified by review |
-| REQ-SPRITE-009 | Must | VALIDATED | ADR-0026, ADR-0033 | — | `PngDecoderTest` (every color type and bit depth with each filter type, scaling, 16-bit reduction, `tRNS`, rejections: interlaced, animated, truncated, CRC, invalid chunks); `ImageDecoderContract` bound by `PngDecoderContractTest`; `PixelBufferTest`; device test `GraphicsTest` on API 21 | verified by tests |
+| REQ-SPRITE-009 | Must | VALIDATED | ADR-0026, ADR-0033, ADR-0054 | — | `PngDecoderTest` (every color type and bit depth with each filter type, scaling, 16-bit reduction, `tRNS`, rejections: interlaced, animated, truncated, CRC, invalid chunks, size limits); `ImageDecoderContract` bound by `PngDecoderContractTest`; `PixelBufferTest`; device test `GraphicsTest` on API 21 | verified by tests |
 | REQ-SPRITE-010 | Must | VALIDATED | ADR-0026, ADR-0033, ADR-0047 | — | `CommandBufferTest` (fields, defaults, `testPresentationOrder`, `testStableSort`, viewports, growth, `testSteadyStateAllocatesNothing`); `RenderBackendContract`; `MovingRectangleTest` | partial: nearest-neighbor sampling is checked with `render-awt` (platform batch 3) |
 | REQ-ANIM-001 | Must | VALIDATED | ADR-0026, ADR-0033 | — | — | no test yet |
 | REQ-ANIM-002 | Must | VALIDATED | ADR-0003 | — | — | no test yet |

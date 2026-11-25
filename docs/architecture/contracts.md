@@ -108,7 +108,7 @@ Details: [`features/audio-short-and-long-sounds.md`](../features/audio-short-and
 ## Images, sprites and animations (ADR-0003, ADR-0026, ADR-0033)
 
 - A shared immutable **source** (image + region, held by the reference-counted cache of a `graphics` instance) is separate from a lightweight mutable **sprite instance** (transform, color transform, pivot, alpha) changed in the update phase only.
-- Decoding: built-in pure-Java PNG decoder (non-interlaced, every color type, depths 1 to 8 and 16 reduced to 8, `tRNS`); other formats through optional decoder modules (`graphics-imageio`, `graphics-android`) registered explicitly. Modifiable pixels are a separate caller-owned buffer; turning it into a source copies it.
+- Decoding: built-in pure-Java PNG decoder (non-interlaced, every color type, depths 1 to 8 and 16 reduced to 8, `tRNS`); every decoder refuses from the header an image wider or higher than 1,000,000 pixels or with more pixels than its limit, 89,478,485 by default (ADR-0054); other formats through optional decoder modules (`graphics-imageio`, `graphics-android`) registered explicitly. Modifiable pixels are a separate caller-owned buffer; turning it into a source copies it.
 - Transform: scale, then rotation, then translation, about the pivot (pixels from the frame top-left, default the frame center); rotation counter-clockwise on screen, in degrees.
 - Template color variants: exact key colors mapped to targets in the sheet definition, cached by (source image, mapping).
 - Animation: frame indices, frame duration in seconds (optional per-frame durations), loop mode `once`, `loop` or `ping-pong`; time advances with the simulation step only.

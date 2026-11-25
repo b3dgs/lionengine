@@ -19,11 +19,12 @@ package com.b3dgs.lionengine.graphics;
 import java.io.IOException;
 
 /**
- * Header of a PNG image, read from its {@code IHDR} chunk and checked (ADR-0033, REQ-SPRITE-009).
+ * Header of a PNG image, read from its {@code IHDR} chunk and checked (ADR-0033, ADR-0054, REQ-SPRITE-009).
  *
  * <p>
  * Every color type is accepted with the bit depths of the PNG specification: grayscale 1, 2, 4, 8 and 16; RGB 8 and
- * 16; palette 1, 2, 4 and 8; grayscale with alpha 8 and 16; RGBA 8 and 16. Adam7 interlacing is rejected (ADR-0033).
+ * 16; palette 1, 2, 4 and 8; grayscale with alpha 8 and 16; RGBA 8 and 16. Adam7 interlacing is rejected (ADR-0033),
+ * and so is a size above the limits of ADR-0054.
  * </p>
  *
  * @param width The width in pixels (positive).
@@ -79,6 +80,8 @@ record PngHeader(int width, int height, int bitDepth, int colorType)
     private static final String ERROR_FIRST = "PNG header (IHDR) not first";
     /** Error message of an invalid size. */
     private static final String ERROR_SIZE = "PNG size invalid: ";
+    /** Error message of a size above the limits. */
+    private static final String ERROR_LIMIT = "PNG size above the limits (ADR-0054): ";
     /** Error message of an invalid color type or bit depth. */
     private static final String ERROR_FORMAT = "PNG color type and bit depth invalid: ";
     /** Error message of an unknown method. */
@@ -92,11 +95,13 @@ record PngHeader(int width, int height, int bitDepth, int colorType)
      * Reads the header from the first chunk.
      *
      * @param chunks The chunks, just after the signature.
+     * @param maxPixels The largest pixel count of the image.
      * @return The header.
      * @throws IOException If reading fails.
-     * @throws ImageDecodingException If the first chunk is not a valid header, or the image is interlaced.
+     * @throws ImageDecodingException If the first chunk is not a valid header, the image is above the size limits,
+     *             or it is interlaced.
      */
-    static PngHeader read(PngChunks chunks) throws IOException
+    static PngHeader read(PngChunks chunks, int maxPixels) throws IOException
     {
         if (chunks.next() != PngChunks.IHDR)
         {
@@ -110,7 +115,7 @@ record PngHeader(int width, int height, int bitDepth, int colorType)
                                                toInt(data, OFFSET_HEIGHT),
                                                data[OFFSET_DEPTH] & BYTE_MASK,
                                                data[OFFSET_COLOR] & BYTE_MASK);
-        header.check();
+        header.check(maxPixels);
         final int interlace = data[OFFSET_INTERLACE] & BYTE_MASK;
         if (data[OFFSET_COMPRESSION] != 0 || data[OFFSET_FILTER] != 0 || interlace > ADAM7)
         {
@@ -159,11 +164,11 @@ record PngHeader(int width, int height, int bitDepth, int colorType)
     /**
      * Returns the number of bytes of a filtered row, without its filter type byte.
      *
-     * @return The number of bytes.
+     * @return The number of bytes, at most 8,000,000 within the size limits.
      */
     int rowBytes()
     {
-        return (int) rowBytesLong();
+        return (width * samples() * bitDepth + BYTE_BITS - 1) / BYTE_BITS;
     }
 
     /**
@@ -177,28 +182,44 @@ record PngHeader(int width, int height, int bitDepth, int colorType)
     }
 
     /**
-     * Returns the number of bytes of a filtered row, without its filter type byte, without overflow.
+     * Checks the size, the color type and the bit depth.
      *
-     * @return The number of bytes.
+     * @param maxPixels The largest pixel count of the image.
+     * @throws ImageDecodingException If one is invalid, or the size is above the limits.
      */
-    private long rowBytesLong()
+    private void check(int maxPixels)
     {
-        return ((long) width * samples() * bitDepth + BYTE_BITS - 1) / BYTE_BITS;
+        checkSize(maxPixels);
+        checkFormat();
     }
 
     /**
-     * Checks the size, the color type and the bit depth.
+     * Checks the size against the limits of ADR-0054.
      *
-     * @throws ImageDecodingException If one is invalid.
+     * @param maxPixels The largest pixel count of the image.
+     * @throws ImageDecodingException If the size is not positive, or above the limits.
      */
-    private void check()
+    private void checkSize(int maxPixels)
     {
-        if (width <= 0 || height <= 0 || (long) width * height > PixelBuffer.MAX_PIXELS)
+        if (width <= 0 || height <= 0)
         {
             throw new ImageDecodingException(ERROR_SIZE + Integer.toUnsignedString(width)
                                              + SEPARATOR
                                              + Integer.toUnsignedString(height));
         }
+        if (width > PngDecoder.MAX_DIMENSION || height > PngDecoder.MAX_DIMENSION || (long) width * height > maxPixels)
+        {
+            throw new ImageDecodingException(ERROR_LIMIT + width + SEPARATOR + height);
+        }
+    }
+
+    /**
+     * Checks the color type and the bit depth.
+     *
+     * @throws ImageDecodingException If the pair is not one of the PNG specification.
+     */
+    private void checkFormat()
+    {
         final int depths = switch (colorType)
         {
             case GRAY -> DEPTHS_GRAY;
@@ -209,10 +230,6 @@ record PngHeader(int width, int height, int bitDepth, int colorType)
         if (bitDepth > DEPTH_16 || ((depths >>> bitDepth) & 1) == 0)
         {
             throw new ImageDecodingException(ERROR_FORMAT + colorType + SEPARATOR + bitDepth);
-        }
-        if (rowBytesLong() >= Integer.MAX_VALUE)
-        {
-            throw new ImageDecodingException(ERROR_SIZE + width + SEPARATOR + height);
         }
     }
 }

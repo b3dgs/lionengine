@@ -38,6 +38,12 @@ final class PngDecoderContractTest extends ImageDecoderContract
     }
 
     @Override
+    protected ImageDecoder createDecoder(int maxPixels)
+    {
+        return new PngDecoder(maxPixels);
+    }
+
+    @Override
     protected byte[] getImage()
     {
         return PngWriter.rgba(WIDTH, HEIGHT, PIXELS).write();
