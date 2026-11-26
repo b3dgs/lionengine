@@ -17,15 +17,17 @@
 package com.b3dgs.lionengine.audio;
 
 /**
- * Audio system of the game: plays short sounds on a bounded number of voices of an {@link AudioBackend}, with
- * priorities and an overflow policy (ADR-0004, ADR-0018, ADR-0027, ADR-0033, ADR-0065, ADR-0066, REQ-AUDIO-001,
- * REQ-AUDIO-003, REQ-AUDIO-004, REQ-AUDIO-010).
+ * Audio system of the game: plays short sounds and variant sets on a bounded number of voices of an
+ * {@link AudioBackend}, with priorities and an overflow policy (ADR-0004, ADR-0018, ADR-0027, ADR-0033, ADR-0065,
+ * ADR-0066, ADR-0067, REQ-AUDIO-001, REQ-AUDIO-003, REQ-AUDIO-004, REQ-AUDIO-005, REQ-AUDIO-010).
  *
  * <p>
  * The game creates one {@code Audio} over its backend and keeps it for its whole life: it is the only user of the
  * backend and its voice listener. {@link #play(ShortSound, int)} starts a short sound at once on a new voice, an
  * {@code int} returned to the caller, which can {@link #stop(int)} it; stopping a voice that already ended has no
- * effect. Voices are never reused, so a stale voice never stops another sound.
+ * effect. Voices are never reused, so a stale voice never stops another sound. A {@link VariantSet} plays one
+ * variant chosen by the set with {@link #play(VariantSet, int)}, or every layer of a composed set at once with
+ * {@link #play(VariantSet, int, int[])}, which writes the voices to an array of the caller.
  * </p>
  *
  * <p>
@@ -39,8 +41,8 @@ package com.b3dgs.lionengine.audio;
  *
  * <p>
  * Threads: runtime thread only (ADR-0018), not thread-safe; the backend calls the listener at the inbox delivery, on
- * the runtime thread. Playing, stopping and the end of a voice allocate nothing, except the first play of a lazy
- * short sound, which decodes it (ADR-0019).
+ * the runtime thread. Playing a sound or a variant set, stopping and the end of a voice allocate nothing, except the
+ * first play of a lazy short sound, which decodes it (ADR-0019).
  * </p>
  *
  * @since 11.0.0
@@ -58,6 +60,10 @@ public final class Audio
 
     /** No slot found. */
     private static final int NONE = -1;
+    /** End of the messages of busy voices. */
+    private static final String ERROR_PLAYING = " voices playing";
+    /** Name of the variant set argument. */
+    private static final String NAME_SET = "Set";
 
     /** The backend. */
     private final AudioBackend backend;
@@ -157,23 +163,106 @@ public final class Audio
     public int play(ShortSound sound, int priority)
     {
         ShortSoundCache.checkNotNull(sound, "Sound");
-        if (priority < MIN_PRIORITY || priority > MAX_PRIORITY)
+        checkPriority(priority);
+        return start(sound.getBuffer(), priority, count);
+    }
+
+    /**
+     * Plays a random variant set at {@link #DEFAULT_PRIORITY}.
+     *
+     * @param set The random set, of which no variant is released (never {@code null}).
+     * @return The voice playing the chosen variant, positive; {@link AudioBackend#NO_VOICE} if it was not played.
+     * @throws IllegalArgumentException If {@code set} is {@code null} or composed.
+     * @throws IllegalStateException As {@link #play(VariantSet, int)}.
+     * @see #play(VariantSet, int)
+     */
+    public int play(VariantSet set)
+    {
+        return play(set, DEFAULT_PRIORITY);
+    }
+
+    /**
+     * Plays a random variant set: the set chooses a variant (ADR-0027, ADR-0067), which is played as
+     * {@link #play(ShortSound, int)} plays a sound. The choice counts as the last play of the set even when the
+     * variant is not played.
+     *
+     * @param set The random set, of which no variant is released (never {@code null}).
+     * @param priority The priority of the voice, from {@link #MIN_PRIORITY} to {@link #MAX_PRIORITY}.
+     * @return The voice playing the chosen variant, positive; {@link AudioBackend#NO_VOICE} if it was not played
+     *         (every voice busy under the policy, or no voice free in the backend).
+     * @throws IllegalArgumentException If {@code set} is {@code null} or composed, or the priority is outside its
+     *             range.
+     * @throws IllegalStateException If the chosen variant is released, for the errors of a lazy variant decoded now,
+     *             or if every voice is busy under {@link VoicePolicy#REFUSE}.
+     * @throws com.b3dgs.lionengine.resources.ResourceException If the resource of a lazy variant is missing or
+     *             unreadable.
+     * @throws AudioDecodingException If the content of a lazy variant is invalid or too long.
+     * @see #play(VariantSet, int, int[])
+     */
+    public int play(VariantSet set, int priority)
+    {
+        ShortSoundCache.checkNotNull(set, NAME_SET);
+        if (set.isComposed())
         {
-            throw new IllegalArgumentException("Priority outside 0 to 100: " + priority);
+            throw new IllegalArgumentException("Composed variant set: play it with a voices array");
         }
-        final PcmBuffer buffer = sound.getBuffer();
-        int voice = AudioBackend.NO_VOICE;
-        if (count < maxVoices || freeVoice(priority))
+        checkPriority(priority);
+        return start(set.getSound(set.select()).getBuffer(), priority, count);
+    }
+
+    /**
+     * Plays a variant set of either kind and writes its voices to an array, allocating nothing.
+     *
+     * <ul>
+     * <li>A random set plays one chosen variant as {@link #play(VariantSet, int)} does; its voice is written to
+     * {@code voices[0]}.</li>
+     * <li>A composed set starts every layer in this call, in its order, so that they start together; the voice of
+     * layer {@code i} is written to {@code voices[i]}. Every layer is decoded and checked before any starts. Under
+     * {@link VoicePolicy#REFUSE}, the set is refused before any layer starts unless a voice is free for each layer;
+     * under the other policies, each layer takes a voice as a single play would, but never a voice of another layer of
+     * the same play, and a layer that finds no voice gets {@link AudioBackend#NO_VOICE}.</li>
+     * </ul>
+     *
+     * <p>
+     * Each started voice is stopped with {@link #stop(int)} and ends by itself as any voice.
+     * </p>
+     *
+     * @param set The set, of which no sound is released (never {@code null}).
+     * @param priority The priority of the voices, from {@link #MIN_PRIORITY} to {@link #MAX_PRIORITY}.
+     * @param voices The array receiving the voices, at least {@link VariantSet#getVoicesPerPlay()} long; its first
+     *            {@link VariantSet#getVoicesPerPlay()} entries are written, positive or {@link AudioBackend#NO_VOICE},
+     *            the others are left as they are (never {@code null}).
+     * @return The number of voices started, from {@code 0} to {@link VariantSet#getVoicesPerPlay()}.
+     * @throws IllegalArgumentException If an argument is {@code null}, the priority is outside its range, or the array
+     *             is too short; nothing starts then.
+     * @throws IllegalStateException If a sound to play is released, if a lazy sound would exceed the limit of its
+     *             cache, if called on another thread than the owner of the cache of a lazy sound, or if the voices are
+     *             too few under {@link VoicePolicy#REFUSE}; no layer of a composed set starts then.
+     * @throws com.b3dgs.lionengine.resources.ResourceException If the resource of a lazy sound is missing or
+     *             unreadable.
+     * @throws AudioDecodingException If the content of a lazy sound is invalid or too long.
+     */
+    public int play(VariantSet set, int priority, int[] voices)
+    {
+        ShortSoundCache.checkNotNull(set, NAME_SET);
+        ShortSoundCache.checkNotNull(voices, "Voices");
+        checkPriority(priority);
+        final int needed = set.getVoicesPerPlay();
+        if (voices.length < needed)
         {
-            voice = backend.play(buffer);
-            if (voice != AudioBackend.NO_VOICE)
-            {
-                voices[count] = voice;
-                priorities[count] = priority;
-                count++;
-            }
+            throw new IllegalArgumentException("Voices array of " + voices.length + " entries, " + needed + " needed");
         }
-        return voice;
+        final int started;
+        if (set.isComposed())
+        {
+            started = playLayers(set, priority, voices);
+        }
+        else
+        {
+            voices[0] = play(set, priority);
+            started = voices[0] == AudioBackend.NO_VOICE ? 0 : 1;
+        }
+        return started;
     }
 
     /**
@@ -245,31 +334,113 @@ public final class Audio
     }
 
     /**
-     * Frees a voice for a new sound when every voice is busy, according to the policy.
+     * Checks a priority.
      *
-     * @param priority The priority of the new sound.
-     * @return {@code true} if a voice was stolen, {@code false} if the new sound is dropped.
-     * @throws IllegalStateException Under {@link VoicePolicy#REFUSE}.
+     * @param priority The priority.
+     * @throws IllegalArgumentException If it is outside {@link #MIN_PRIORITY} to {@link #MAX_PRIORITY}.
      */
-    private boolean freeVoice(int priority)
+    private static void checkPriority(int priority)
     {
-        if (policy == VoicePolicy.REFUSE)
+        if (priority < MIN_PRIORITY || priority > MAX_PRIORITY)
         {
-            throw new IllegalStateException("Every short voice is busy: " + maxVoices + " voices playing");
+            throw new IllegalArgumentException("Priority outside 0 to 100: " + priority);
         }
-        return policy == VoicePolicy.STEAL && steal(priority);
     }
 
     /**
-     * Stops the oldest voice of the lowest priority, if that priority is not above a new sound's.
+     * Starts every layer of a composed set, after decoding and checking them all.
+     *
+     * @param set The composed set.
+     * @param priority The priority of the voices, checked.
+     * @param voices The array receiving the voices, long enough.
+     * @return The number of voices started.
+     * @throws IllegalStateException If a layer is released or cannot be decoded now, or if the voices are too few
+     *             under {@link VoicePolicy#REFUSE}.
+     */
+    private int playLayers(VariantSet set, int priority, int[] voices)
+    {
+        final int layers = set.size();
+        for (int i = 0; i < layers; i++)
+        {
+            set.getSound(i).getBuffer();
+        }
+        if (policy == VoicePolicy.REFUSE && maxVoices - count < layers)
+        {
+            throw new IllegalStateException("Short voices too few for a composed set of "
+                                            + layers
+                                            + " layers: "
+                                            + count
+                                            + " of "
+                                            + maxVoices
+                                            + ERROR_PLAYING);
+        }
+        int started = 0;
+        for (int i = 0; i < layers; i++)
+        {
+            // The voices of this play are the last slots: only the slots before them may be stolen.
+            voices[i] = start(set.getSound(i).getBuffer(), priority, count - started);
+            if (voices[i] != AudioBackend.NO_VOICE)
+            {
+                started++;
+            }
+        }
+        return started;
+    }
+
+    /**
+     * Starts samples on a new voice, freeing one first if every voice is busy.
+     *
+     * @param buffer The samples.
+     * @param priority The priority of the voice, checked.
+     * @param candidates The number of the oldest slots that may be stolen.
+     * @return The voice, or {@link AudioBackend#NO_VOICE}.
+     * @throws IllegalStateException If every voice is busy under {@link VoicePolicy#REFUSE}.
+     */
+    private int start(PcmBuffer buffer, int priority, int candidates)
+    {
+        int voice = AudioBackend.NO_VOICE;
+        if (count < maxVoices || freeVoice(priority, candidates))
+        {
+            voice = backend.play(buffer);
+            if (voice != AudioBackend.NO_VOICE)
+            {
+                voices[count] = voice;
+                priorities[count] = priority;
+                count++;
+            }
+        }
+        return voice;
+    }
+
+    /**
+     * Frees a voice for a new sound when every voice is busy, according to the policy.
      *
      * @param priority The priority of the new sound.
+     * @param candidates The number of the oldest slots that may be stolen.
+     * @return {@code true} if a voice was stolen, {@code false} if the new sound is dropped.
+     * @throws IllegalStateException Under {@link VoicePolicy#REFUSE}.
+     */
+    private boolean freeVoice(int priority, int candidates)
+    {
+        if (policy == VoicePolicy.REFUSE)
+        {
+            throw new IllegalStateException("Every short voice is busy: " + maxVoices + ERROR_PLAYING);
+        }
+        return policy == VoicePolicy.STEAL && candidates > 0 && steal(priority, candidates);
+    }
+
+    /**
+     * Stops the oldest voice of the lowest priority among the oldest slots, if that priority is not above a new
+     * sound's.
+     *
+     * @param priority The priority of the new sound.
+     * @param candidates The number of the oldest slots that may be stolen, positive.
      * @return {@code true} if a voice was stopped.
      */
-    private boolean steal(int priority)
+    private boolean steal(int priority, int candidates)
     {
         int victim = 0;
-        for (int i = 1; i < count; i++)
+        for (int i = 1; i < candidates; i++)
         {
             if (priorities[i] < priorities[victim])
             {

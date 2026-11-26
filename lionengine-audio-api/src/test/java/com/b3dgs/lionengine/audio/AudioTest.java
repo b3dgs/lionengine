@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.lang.management.ManagementFactory;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +31,6 @@ import com.b3dgs.lionengine.resources.FakeResourceProvider;
 import com.b3dgs.lionengine.resources.ResourceException;
 import com.b3dgs.lionengine.resources.ResourceKey;
 import com.b3dgs.lionengine.resources.Resources;
-import com.sun.management.ThreadMXBean;
 
 /**
  * Test {@link Audio}: playing and stopping short sounds, the voice limit, priorities and each overflow policy, on the
@@ -253,7 +251,7 @@ final class AudioTest
 
         assertThrows(ResourceException.class, () -> audio.play(lazy));
         assertThrows(IllegalStateException.class, () -> audio.play(released));
-        assertThrows(IllegalArgumentException.class, () -> audio.play(null));
+        assertThrows(IllegalArgumentException.class, () -> audio.play((ShortSound) null));
         assertThrows(IllegalArgumentException.class, () -> audio.play(shot, -1));
         assertThrows(IllegalArgumentException.class, () -> audio.play(shot, 101));
         assertThrows(IllegalArgumentException.class, () -> new Audio(null));
@@ -270,15 +268,12 @@ final class AudioTest
     @Test
     void testAllocatesNothing()
     {
-        final SilentBackend silent = new SilentBackend();
+        final SilentAudioBackend silent = new SilentAudioBackend();
         final Audio audio = new Audio(silent, 4, VoicePolicy.STEAL);
         final PcmBuffer buffer = shot.getBuffer();
-        final ThreadMXBean bean = (ThreadMXBean) ManagementFactory.getThreadMXBean();
-        run(audio, silent);
+        final Runnable workload = () -> run(audio, silent);
 
-        final long before = bean.getCurrentThreadAllocatedBytes();
-        run(audio, silent);
-        final long allocated = bean.getCurrentThreadAllocatedBytes() - before;
+        final long allocated = SilentAudioBackend.steadyAllocation(workload);
 
         assertTrue(allocated < ALLOCATION_TOLERANCE, () -> "Allocated bytes: " + allocated);
         assertEquals(buffer, shot.getBuffer());
@@ -290,7 +285,7 @@ final class AudioTest
      * @param audio The audio system.
      * @param silent The backend.
      */
-    private void run(Audio audio, SilentBackend silent)
+    private void run(Audio audio, SilentAudioBackend silent)
     {
         for (int i = 0; i < ITERATIONS; i++)
         {
@@ -305,70 +300,5 @@ final class AudioTest
             }
         }
         audio.stopAll();
-    }
-
-    /**
-     * Backend that plays nothing and allocates nothing, for the allocation test.
-     */
-    private static final class SilentBackend implements AudioBackend
-    {
-        /** The listener. */
-        private VoiceListener listener;
-        /** Next voice. */
-        private int next = 1;
-
-        /**
-         * Creates the backend.
-         */
-        SilentBackend()
-        {
-            super();
-        }
-
-        /**
-         * Ends a voice by itself, as a delivered end event does.
-         *
-         * @param voice The voice.
-         */
-        void end(int voice)
-        {
-            listener.onVoiceEnded(voice);
-        }
-
-        @Override
-        public int getMaxVoices()
-        {
-            return 8;
-        }
-
-        @Override
-        public void setVoiceListener(VoiceListener listener)
-        {
-            this.listener = listener;
-        }
-
-        @Override
-        public int play(PcmBuffer buffer)
-        {
-            return next++;
-        }
-
-        @Override
-        public void stop(int voice)
-        {
-            // Plays nothing, so nothing to stop.
-        }
-
-        @Override
-        public boolean isPlaying(int voice)
-        {
-            return false;
-        }
-
-        @Override
-        public void close()
-        {
-            // Holds nothing to release.
-        }
     }
 }

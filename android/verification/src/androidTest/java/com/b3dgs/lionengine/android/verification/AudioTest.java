@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.audio.PcmBuffer;
 import com.b3dgs.lionengine.audio.PcmFormat;
 import com.b3dgs.lionengine.audio.ShortSound;
 import com.b3dgs.lionengine.audio.ShortSoundCache;
+import com.b3dgs.lionengine.audio.VariantSet;
 import com.b3dgs.lionengine.audio.VoiceListener;
 import com.b3dgs.lionengine.audio.VoicePolicy;
 import com.b3dgs.lionengine.audio.WavDecoder;
@@ -46,9 +47,10 @@ import com.b3dgs.lionengine.resources.Resources;
 import com.b3dgs.lionengine.resources.StreamProvider;
 
 /**
- * Runs {@code audio-api} on Android API 21 (ADR-0044, ADR-0065, ADR-0066): the PCM format and buffer, a decoder
- * throwing the decoding exception, the WAV decoder, the short-sound cache and the voices of the audio system. Expected
- * values are the ones of the JVM tests (PcmBufferTest, WavDecoderTest, AudioTest).
+ * Runs {@code audio-api} on Android API 21 (ADR-0044, ADR-0065, ADR-0066, ADR-0067): the PCM format and buffer, a
+ * decoder throwing the decoding exception, the WAV decoder, the short-sound cache, the voices of the audio system and
+ * the variant sets. Expected values are the ones of the JVM tests (PcmBufferTest, WavDecoderTest, AudioTest,
+ * VariantSetTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class AudioTest
@@ -193,6 +195,44 @@ public final class AudioTest
         shot.release();
         again.release();
         assertEquals(0, cache.size());
+    }
+
+    /**
+     * A random set chooses the same variants as on the JVM for the same seed, never twice the same in a row; a composed
+     * set starts every layer in one play.
+     */
+    @Test
+    public void testVariantSets()
+    {
+        final byte[] bytes = wav(new short[80]);
+        final StreamProvider provider = new StreamProvider();
+        final ShortSoundCache cache = new ShortSoundCache(new Resources(provider));
+        final ShortSound[] sounds = new ShortSound[3];
+        for (int i = 0; i < sounds.length; i++)
+        {
+            final ResourceKey key = new ResourceKey("sounds/step" + i + ".wav");
+            provider.register(key, () -> new ByteArrayInputStream(bytes));
+            sounds[i] = cache.load(key);
+        }
+        final Audio audio = new Audio(new CountingBackend(), 4, VoicePolicy.STEAL);
+        final VariantSet random = VariantSet.random(2026L, sounds);
+        final int[] chosen = new int[16];
+
+        for (int i = 0; i < chosen.length; i++)
+        {
+            audio.play(random);
+            chosen[i] = random.getLastIndex();
+        }
+        audio.stopAll();
+        final int[] voices = new int[3];
+        final int started = audio.play(VariantSet.composed(sounds), 50, voices);
+
+        assertArrayEquals(new int[]
+        {
+            1, 0, 2, 1, 2, 1, 2, 1, 2, 0, 2, 0, 2, 1, 0, 2
+        }, chosen);
+        assertEquals(3, started);
+        assertEquals(3, audio.getPlayingCount());
     }
 
     /**
