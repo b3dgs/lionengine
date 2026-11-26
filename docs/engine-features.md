@@ -9,7 +9,7 @@ One line per capability, no implementation detail. Each area links to its featur
 - **Available**: implemented, tested, with an example.
 - **Planned**: in the roadmap, not yet specified in detail.
 
-Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop with asynchronous loading ([`features/game-loop.md`](features/game-loop.md)), the scenes with their overlay stack and declared flow ([`features/scenes.md`](features/scenes.md)), the file, memory and application-stream resource providers ([`features/resources.md`](features/resources.md)), the platform with rendering, headless and in a desktop window ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)), the image decoding, image cache and sprite sheets with their definition files ([`features/sprite-sheet.md`](features/sprite-sheet.md)), the sprites drawn with render commands ([`features/sprite.md`](features/sprite.md)), the animated sprites ([`features/animated-sprite.md`](features/animated-sprite.md)), the screen and display modes ([`features/display-modes.md`](features/display-modes.md)), and the output filters on the desktop renderer, batches 1 to 3 ([`features/output-filtering.md`](features/output-filtering.md)) exist: scenes and navigation, and images, sprites and animations are *Available*; resources and data files, the game loop, window and display, and platforms are *In progress*; every other area is *Specified*.
+Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop with asynchronous loading ([`features/game-loop.md`](features/game-loop.md)), the scenes with their overlay stack and declared flow ([`features/scenes.md`](features/scenes.md)), the file, memory and application-stream resource providers ([`features/resources.md`](features/resources.md)), the platform with rendering, headless and in a desktop window ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)), the image decoding, image cache and sprite sheets with their definition files ([`features/sprite-sheet.md`](features/sprite-sheet.md)), the sprites drawn with render commands ([`features/sprite.md`](features/sprite.md)), the animated sprites ([`features/animated-sprite.md`](features/animated-sprite.md)), the screen and display modes ([`features/display-modes.md`](features/display-modes.md)), the output filters of the desktop renderer ([`features/output-filtering.md`](features/output-filtering.md)) and the audio contracts ([`features/audio-short-and-long-sounds.md`](features/audio-short-and-long-sounds.md)) exist: scenes and navigation, and images, sprites and animations are *Available*; resources and data files, the game loop, window and display, audio, and platforms are *In progress*; every other area is *Specified*.
 
 | Area | State | Phase |
 |---|---|---|
@@ -18,7 +18,7 @@ Today the build skeleton, the cross-module contracts ([`features/contract-skelet
 | [Resources and data files](#resources-and-data-files) | In progress | 1 |
 | [Window, display and rendering](#window-display-and-rendering) | In progress | 1–2 |
 | [Images, sprites and animations](#images-sprites-and-animations) | Available | 2 |
-| [Audio](#audio) | Specified | 2 |
+| [Audio](#audio) | In progress | 2 |
 | [Objects and behaviors](#objects-and-behaviors) | Specified | 3 |
 | [Tile maps](#tile-maps) | Specified | 3 |
 | [Camera](#camera) | Specified | 3 |
@@ -99,6 +99,8 @@ Works now: decoding PNG images of every kind but interlaced and animated ones, w
 - Music and ambient sounds streamed with little memory; playlists that chain tracks and can loop.
 - Volume per sound, and per group (music, effects, interface) with fades.
 - WAV everywhere, OGG Vorbis on desktop and Android.
+
+Works now: the audio contracts under every backend: sounds as 16-bit PCM, decoders, and a backend that plays sounds on voices and reports their end; a fake backend with a manual clock tests audio code without a sound card (example `BeepExample`). Short sounds with their cache and voices, variants, music and playlists, and the desktop backend come with the next batches.
 
 ## Objects and behaviors
 

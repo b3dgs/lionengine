@@ -1,0 +1,94 @@
+/*
+ * Copyright (C) 2013-2026 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+package com.b3dgs.lionengine.audio;
+
+/**
+ * Audio backend SPI: plays fully decoded sounds on voices (ADR-0004, ADR-0018, ADR-0027, ADR-0065, REQ-AUDIO-001,
+ * REQ-AUDIO-009).
+ *
+ * <p>
+ * Implementations: {@code audio-javasound} on desktop, {@code audio-android}, and {@code FakeAudioBackend} of the
+ * {@code audio-api} test JAR, which every implementation's contract suite {@code AudioBackendContract} also binds
+ * (ADR-0045). The application creates the backend with the inbox of the loop. The engine's audio logic (voice limit and
+ * overflow policy, variant selection, playlists) stays in {@code audio-api}; a backend only starts and stops voices and
+ * reports their end. Pause, resume, gain and looping come with the controls of the audio batch 5, streaming with
+ * batch 4.
+ * </p>
+ *
+ * <p>
+ * A voice is a positive {@code int}, never reused while the backend lives, so playing allocates no handle. When a
+ * voice ends by itself, the backend posts one event to the inbox from its own thread; at its delivery the
+ * {@link VoiceListener} is called on the runtime thread. A stopped voice posts nothing.
+ * </p>
+ *
+ * <p>
+ * Threads: every method is called on the runtime thread. The backend's own threads read the buffers, which are
+ * immutable, and only post to the inbox.
+ * </p>
+ *
+ * @since 11.0.0
+ */
+public interface AudioBackend
+{
+    /** Voice returned when no voice is free: nothing is played. */
+    int NO_VOICE = 0;
+
+    /**
+     * Returns the number of voices this backend plays at once.
+     *
+     * @return The voice limit (positive); the engine keeps its own limit within it.
+     */
+    int getMaxVoices();
+
+    /**
+     * Sets the listener of the voices that end by themselves; it replaces the previous one.
+     *
+     * @param listener The listener, {@code null} for none.
+     */
+    void setVoiceListener(VoiceListener listener);
+
+    /**
+     * Starts playing a sound at once, from its first frame, at full gain.
+     *
+     * @param buffer The sound (never {@code null}).
+     * @return The voice playing it, positive; {@link #NO_VOICE} if every voice is busy.
+     * @throws IllegalArgumentException If {@code buffer} is {@code null}.
+     * @throws IllegalStateException If the backend is closed.
+     */
+    int play(PcmBuffer buffer);
+
+    /**
+     * Stops a voice; no effect on a voice that ended, was stopped or does not exist. No end event is posted.
+     *
+     * @param voice The voice.
+     */
+    void stop(int voice);
+
+    /**
+     * Tells whether a voice is still playing.
+     *
+     * @param voice The voice.
+     * @return {@code true} until the voice ends or is stopped.
+     */
+    boolean isPlaying(int voice);
+
+    /**
+     * Stops every voice and releases the output; no effect if already closed. End events already posted are still
+     * delivered.
+     */
+    void close();
+}
