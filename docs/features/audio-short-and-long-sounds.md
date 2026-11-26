@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 2, see `roadmap.md` (batches: contracts + fake backend + contract tests; short sounds with cache, voices and variants; long sounds with streaming and playlists; first desktop backend `audio-javasound`; mixer groups and fades; Android backend `audio-android`)
 - Affected modules: `audio-api`, `audio-javasound`, `audio-android`, `audio-codec-ogg`, `resources`, `test-support`, `examples`
 - Requirements: `REQ-AUDIO-001` to `REQ-AUDIO-013`, `REQ-RES-004`, `REQ-RES-005`
-- Applicable ADRs: [`ADR-0004`](../decisions/0004-audio-contracts-short-and-long-sounds.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0022`](../decisions/0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md), [`ADR-0027`](../decisions/0027-audio-policies-formats-latency-and-first-scope.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md)
+- Applicable ADRs: [`ADR-0004`](../decisions/0004-audio-contracts-short-and-long-sounds.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0022`](../decisions/0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md), [`ADR-0027`](../decisions/0027-audio-policies-formats-latency-and-first-scope.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0065`](../decisions/0065-audio-pcm-data-decoder-and-backend-contracts.md)
 - Open questions involved: none (Android latency measurement waits for the DEX job, ADR-0044)
 
 ## Objective
@@ -43,6 +43,19 @@ Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.m
 6. `audio-javasound` (`REQ-AUDIO-002`).
 7. Mixer groups and fades (`REQ-AUDIO-012`).
 8. `audio-codec-ogg` after its register entry; `audio-android` in Phase 4.
+
+## State (2026-11-26)
+
+Batch 1 (2026-11-26), the `audio-api` contracts, fake backend and contract suites, with the example `BeepExample` and its API-index row. The signatures this page leaves to the batch follow ADR-0065 (owner delegation), within ADR-0004, ADR-0018 and ADR-0027:
+- PCM data: `PcmFormat(sampleRate, channels)` (positive Hz, mono or stereo) and `PcmBuffer`, a fully decoded sound of 16-bit signed samples interleaved by frame. The buffer takes over its array without copying, reads frames by copy with `readFrames` (no allocation, the array is never exposed), and gives `getFrames()` and `getDuration()` in seconds. It is immutable, so a backend thread may read it.
+- Decoder contract: `AudioDecoder.decode(InputStream)` returns a new `PcmBuffer`. It reads the stream without closing it, refuses invalid, truncated or unsupported data and sounds above its frame limit with an `AudioDecodingException` before allocating, and is thread-safe. Streaming decoding comes with batch 4, the WAV decoder with batch 2.
+- Backend SPI: `AudioBackend` plays fully decoded buffers on voices, each a positive `int` never reused.
+  - `play(buffer)` returns `NO_VOICE` (`0`) when every voice is busy.
+  - `stop(voice)` posts no end, and has no effect on an ended or unknown voice. `isPlaying`, `getMaxVoices` and an idempotent `close` complete it.
+  - A voice that ends by itself posts one inbox event, which calls the single `VoiceListener` on the runtime thread.
+  - The engine keeps its own voice limit and overflow policy (batch 2). Pause, resume, gain and looping come with batch 5.
+- Test JAR (ADR-0045): `FakeAudioBackend` (plays nothing, counts frames, `advance(frames)` as the clock, records what it played, configurable voice limit) and `RawAudioDecoder` (a raw test format with `encode`); the suites `AudioBackendContract` (voices, the end through the inbox, stop, the voice limit, the listener, close) and `AudioDecoderContract` (decode, frame limit, new buffer, stream left open, read failure, empty, text and truncated data, `null`, two threads).
+- Tests: `PcmBufferTest`; `FakeAudioBackendTest` and `RawAudioDecoderTest`, which bind the suites; `BeepExampleTest` on the fake; device test `AudioTest` on API 21.
 
 ## Lifecycle and concurrency
 

@@ -14,9 +14,6 @@
     <description>Backend-independent audio contracts</description>
     <properties>
         <radial.base-package>com.b3dgs.lionengine.audio</radial.base-package>
-        <!-- No public type yet: javadoc refuses an empty module. The batch that adds the first public type
-             removes this property (REQ-CORE-003). -->
-        <maven.javadoc.skip>true</maven.javadoc.skip>
     </properties>
     <dependencies>
         <dependency>
@@ -28,6 +25,13 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>lionengine-resources</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-core</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

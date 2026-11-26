@@ -74,7 +74,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-RES-004 | Must | VALIDATED | ADR-0005, ADR-0007, ADR-0045 | — | `CacheConventionContract` (`resources` test JAR) bound by `ImageCacheConventionTest` | verified by tests (graphics; audio and tile maps bind it with their caches) |
 | REQ-RES-005 | Must | VALIDATED | ADR-0007 | — | `ResourceKeyTest` (key rules, equality); `CacheConventionContract` (key equality, idempotent release, missing-resource exception) bound by `ImageCacheConventionTest`; `ImageCacheTest` (key and discriminator) | verified by tests |
 | REQ-RES-006 | Must | VALIDATED | ADR-0032 | — | `ResourceExceptionTest` (reasons, key, cause); `ResourcesTest` (order, override, no fallback, read-only refusal, first writable); `ResourceProviderContract` (error reasons, `testConcurrentReads`) bound by every provider | verified by tests |
-| REQ-AUDIO-001 | Should | VALIDATED | ADR-0004, ADR-0022 | — | — | no test yet |
+| REQ-AUDIO-001 | Should | VALIDATED | ADR-0004, ADR-0022, ADR-0065 | — | `AudioBackendContract` on `FakeAudioBackend`; `BeepExampleTest` | partial: the backend-independent contracts of batch 1 exist; sounds, variants and playlists come with batches 2 to 5 |
 | REQ-AUDIO-002 | Should | VALIDATED | ADR-0027, ADR-0033 | — | — | no test yet |
 | REQ-AUDIO-003 | Must | VALIDATED | ADR-0004, ADR-0027, ADR-0041, ADR-0044 | — | — | no test yet |
 | REQ-AUDIO-004 | Must | VALIDATED | ADR-0004 | — | — | no test yet |
@@ -82,7 +82,7 @@ Maps each requirement to its decisions, the questions that are still open for it
 | REQ-AUDIO-006 | Must | VALIDATED | ADR-0004, ADR-0027, ADR-0033 | — | — | no test yet |
 | REQ-AUDIO-007 | Must | VALIDATED | ADR-0004 | — | — | no test yet |
 | REQ-AUDIO-008 | Must | VALIDATED | ADR-0004, ADR-0027, ADR-0033 | — | — | no test yet |
-| REQ-AUDIO-009 | Must | VALIDATED | ADR-0004, ADR-0022, ADR-0045 | — | — | no test yet |
+| REQ-AUDIO-009 | Must | VALIDATED | ADR-0004, ADR-0022, ADR-0045, ADR-0065 | — | `FakeAudioBackend` of the `audio-api` test JAR passing `AudioBackendContract` (`FakeAudioBackendTest`); `AudioDecoderContract` (`RawAudioDecoderTest`); `PcmBufferTest`; `scripts/check-modules.py` (no platform or audio library dependency of `audio-api`); device test `AudioTest` | verified by tests |
 | REQ-AUDIO-010 | Must | VALIDATED | ADR-0027, ADR-0033 | — | — | no test yet |
 | REQ-AUDIO-011 | Should | VALIDATED | ADR-0027 | — | — | no test yet |
 | REQ-AUDIO-012 | Should | VALIDATED | ADR-0033 | — | — | no test yet |

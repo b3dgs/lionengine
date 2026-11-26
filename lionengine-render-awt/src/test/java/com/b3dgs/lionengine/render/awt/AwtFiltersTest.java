@@ -187,7 +187,8 @@ final class AwtFiltersTest
         assertTrue(filters.isSupported(INVERT));
         assertFalse(filters.isSupported(new OutputFilter(INVERT.id(), FilterKind.SCALING)));
         assertFalse(filters.isSupported(gpu));
-        assertThrows(IllegalArgumentException.class, () -> filters.register(custom(OutputFilter.NONE, null)));
+        final CustomFilter standard = custom(OutputFilter.NONE, null);
+        assertThrows(IllegalArgumentException.class, () -> filters.register(standard));
     }
 
     /**
