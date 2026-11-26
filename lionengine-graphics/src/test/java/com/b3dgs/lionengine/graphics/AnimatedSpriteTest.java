@@ -233,7 +233,21 @@ final class AnimatedSpriteTest
     }
 
     /**
-     * Updating and rendering allocate nothing.
+     * Runs update steps and renders, as the game loop would.
+     */
+    private void steps()
+    {
+        for (int i = 0; i < ITERATIONS; i++)
+        {
+            hero.update(STEP);
+            hero.render(commands);
+            commands.clear();
+        }
+    }
+
+    /**
+     * Updating and rendering allocate nothing in the steady state, measured after a first run that loads and
+     * initializes what the first calls need.
      */
     @Test
     void testAllocatesNothing()
@@ -243,14 +257,10 @@ final class AnimatedSpriteTest
             0, 1, 2, 3, 4, 5, 6, 7
         }, STEP, AnimationLoop.PING_PONG));
         final ThreadMXBean bean = (ThreadMXBean) ManagementFactory.getThreadMXBean();
+        steps();
 
         final long before = bean.getCurrentThreadAllocatedBytes();
-        for (int i = 0; i < ITERATIONS; i++)
-        {
-            hero.update(STEP);
-            hero.render(commands);
-            commands.clear();
-        }
+        steps();
         final long allocated = bean.getCurrentThreadAllocatedBytes() - before;
 
         assertTrue(allocated < ALLOCATION_TOLERANCE, "Allocated " + allocated + " bytes");
