@@ -73,9 +73,9 @@ final class VariantSetExampleTest
     void prepare() throws IOException
     {
         memory = new MemoryProvider();
-        for (int i = 0; i < VariantSetExample.STEPS.length; i++)
+        for (int i = 0; i < VariantSetExample.STEPS.size(); i++)
         {
-            write(VariantSetExample.STEPS[i], 200.0 + i * 100.0);
+            write(VariantSetExample.STEPS.get(i), 200.0 + i * 100.0);
         }
         write(VariantSetExample.BLAST, 60.0);
         write(VariantSetExample.DEBRIS, 900.0);

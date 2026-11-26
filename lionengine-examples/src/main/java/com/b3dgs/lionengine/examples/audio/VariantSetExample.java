@@ -46,12 +46,9 @@ import com.b3dgs.lionengine.resources.ResourceKey;
 public final class VariantSetExample
 {
     /** Keys of the footstep variants, in the game data. */
-    public static final ResourceKey[] STEPS =
-    {
-        new ResourceKey("sounds/step-soft.wav"),
-        new ResourceKey("sounds/step-hard.wav"),
-        new ResourceKey("sounds/step-gravel.wav")
-    };
+    public static final List<ResourceKey> STEPS = List.of(new ResourceKey("sounds/step-soft.wav"),
+                                                          new ResourceKey("sounds/step-hard.wav"),
+                                                          new ResourceKey("sounds/step-gravel.wav"));
     /** Weights of the footstep variants: the soft step twice as likely as each other one. */
     private static final double[] STEP_WEIGHTS =
     {
@@ -88,10 +85,10 @@ public final class VariantSetExample
      */
     public static Result run(ShortSoundCache cache, Audio audio)
     {
-        final ShortSound[] steps = new ShortSound[STEPS.length];
-        for (int i = 0; i < STEPS.length; i++)
+        final ShortSound[] steps = new ShortSound[STEPS.size()];
+        for (int i = 0; i < steps.length; i++)
         {
-            steps[i] = cache.load(STEPS[i]);
+            steps[i] = cache.load(STEPS.get(i));
         }
         final ShortSound blast = cache.load(BLAST);
         final ShortSound debris = cache.load(DEBRIS);
