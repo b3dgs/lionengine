@@ -27,6 +27,7 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
+import com.b3dgs.lionengine.render.CustomFilter;
 import com.b3dgs.lionengine.render.OutputFilter;
 import com.b3dgs.lionengine.render.RenderBackend;
 import com.b3dgs.lionengine.render.TextureStore;
@@ -39,7 +40,8 @@ import com.b3dgs.lionengine.render.TextureStore;
  * Each {@link #present(CommandBuffer)} records one frame: the list of the commands in presentation order (ascending
  * layer, then submission order), copied as {@link RecordedCommand}s. Textures are kept with their pixels, so a test
  * can check what was created, prepared and released. The test chooses the output filters it implements;
- * {@link OutputFilter#NONE} always is. It applies every color effect per frame until the test switches one off with
+ * {@link OutputFilter#NONE} always is, and a registered custom filter is when it has a fragment shader, as on a GPU
+ * backend (ADR-0064). It applies every color effect per frame until the test switches one off with
  * {@link #setSupported(ColorEffect, boolean)}, to check the CPU fallback of the rendering code (ADR-0056); the commands
  * are recorded as written either way. Not thread-safe: the test drives it from one thread.
  * </p>
@@ -78,6 +80,8 @@ public final class RecordingBackend implements RenderBackend, TextureStore
 
     /** Filters implemented. */
     private final Set<OutputFilter> filters = new HashSet<>();
+    /** Registered custom filters by registry id. */
+    private final Map<String, CustomFilter> custom = new HashMap<>();
     /** Color effects applied per frame, by ordinal. */
     private final boolean[] effects = new boolean[ColorEffect.values().length];
     /** Recorded frames, oldest first. */
@@ -247,6 +251,29 @@ public final class RecordingBackend implements RenderBackend, TextureStore
     {
         checkEffect(effect);
         return effects[effect.ordinal()];
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>
+     * This backend acts as a GPU backend (ADR-0064): a registered filter is supported when it has a fragment shader,
+     * which is never run.
+     * </p>
+     */
+    @Override
+    public void register(CustomFilter filter)
+    {
+        final OutputFilter id = filter == null ? null : filter.getFilter();
+        if (id == null || id.isStandard() || custom.containsKey(id.id()))
+        {
+            throw new IllegalArgumentException("Invalid custom filter: " + id);
+        }
+        custom.put(id.id(), filter);
+        if (filter.getFragmentShader() != null)
+        {
+            filters.add(id);
+        }
     }
 
     @Override

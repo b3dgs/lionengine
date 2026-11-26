@@ -17,8 +17,10 @@
 package com.b3dgs.lionengine.render;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -58,6 +60,21 @@ final class OutputFilterTest
         assertNull(OutputFilter.NONE.fallback());
         assertNull(OutputFilter.CRT.fallback());
         assertNull(new OutputFilter("game:glow", FilterKind.POST).fallback());
+    }
+
+    /**
+     * The four standard filters are standard, a custom one is not; the id decides, so a standard id under another kind
+     * is standard too and cannot be registered as a custom filter.
+     */
+    @Test
+    void testIsStandard()
+    {
+        assertTrue(OutputFilter.NONE.isStandard());
+        assertTrue(OutputFilter.BILINEAR.isStandard());
+        assertTrue(OutputFilter.HQ2X.isStandard());
+        assertTrue(OutputFilter.CRT.isStandard());
+        assertFalse(new OutputFilter("game:glow", FilterKind.POST).isStandard());
+        assertTrue(new OutputFilter("lionengine:crt", FilterKind.SCALING).isStandard());
     }
 
     /**

@@ -46,6 +46,12 @@ final class RecordingBackendTest extends RenderBackendContract
         return new RecordingBackend();
     }
 
+    @Override
+    protected boolean isGpu()
+    {
+        return true;
+    }
+
     /**
      * Each presentation records a frame with the commands in presentation order and every value.
      */

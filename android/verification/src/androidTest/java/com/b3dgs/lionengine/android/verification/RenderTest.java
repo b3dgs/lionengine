@@ -18,9 +18,11 @@ package com.b3dgs.lionengine.android.verification;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -151,7 +153,8 @@ public final class RenderTest
     }
 
     /**
-     * The fallback order of the output filters is the one of the JVM (OutputFilterTest, ADR-0062).
+     * The fallback order of the output filters and the standard identifiers are the ones of the JVM (OutputFilterTest,
+     * ADR-0062, ADR-0064).
      */
     @Test
     public void testFilterFallback()
@@ -161,5 +164,7 @@ public final class RenderTest
         assertSame(OutputFilter.NONE, new OutputFilter("game:sharp", FilterKind.SCALING).fallback());
         assertNull(OutputFilter.NONE.fallback());
         assertNull(OutputFilter.CRT.fallback());
+        assertTrue(OutputFilter.HQ2X.isStandard());
+        assertFalse(new OutputFilter("game:glow", FilterKind.POST).isStandard());
     }
 }
