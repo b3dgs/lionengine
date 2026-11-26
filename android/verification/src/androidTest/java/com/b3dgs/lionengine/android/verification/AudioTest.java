@@ -34,8 +34,13 @@ import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioBackend;
 import com.b3dgs.lionengine.audio.AudioDecoder;
 import com.b3dgs.lionengine.audio.AudioDecodingException;
+import com.b3dgs.lionengine.audio.LongSound;
+import com.b3dgs.lionengine.audio.LongSoundLoader;
 import com.b3dgs.lionengine.audio.PcmBuffer;
 import com.b3dgs.lionengine.audio.PcmFormat;
+import com.b3dgs.lionengine.audio.PcmSource;
+import com.b3dgs.lionengine.audio.PcmStream;
+import com.b3dgs.lionengine.audio.Playlist;
 import com.b3dgs.lionengine.audio.ShortSound;
 import com.b3dgs.lionengine.audio.ShortSoundCache;
 import com.b3dgs.lionengine.audio.VariantSet;
@@ -47,10 +52,10 @@ import com.b3dgs.lionengine.resources.Resources;
 import com.b3dgs.lionengine.resources.StreamProvider;
 
 /**
- * Runs {@code audio-api} on Android API 21 (ADR-0044, ADR-0065, ADR-0066, ADR-0067): the PCM format and buffer, a
- * decoder throwing the decoding exception, the WAV decoder, the short-sound cache, the voices of the audio system and
- * the variant sets. Expected values are the ones of the JVM tests (PcmBufferTest, WavDecoderTest, AudioTest,
- * VariantSetTest).
+ * Runs {@code audio-api} on Android API 21 (ADR-0044, ADR-0065, ADR-0066, ADR-0067, ADR-0068): the PCM format and
+ * buffer, a decoder throwing the decoding exception, the WAV decoder, the short-sound cache, the voices of the audio
+ * system, the variant sets, and the streamed long sounds with a playlist. Expected values are the ones of the JVM tests
+ * (PcmBufferTest, WavDecoderTest, AudioTest, VariantSetTest, StreamBufferTest, LongSoundTest, PlaylistTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class AudioTest
@@ -236,7 +241,66 @@ public final class AudioTest
     }
 
     /**
-     * Backend that plays nothing and counts the voices stopped.
+     * The WAV decoder streams a file in pieces; a long sound streams through its bounded buffer, which the backend
+     * pulls to its end; the end of its voice starts the next track of a playlist, which stops after its last track.
+     *
+     * @throws IOException If reading fails.
+     */
+    @Test
+    public void testLongSounds() throws IOException
+    {
+        final short[] ramp = new short[10_000];
+        for (int i = 0; i < ramp.length; i++)
+        {
+            ramp[i] = (short) i;
+        }
+        final byte[] bytes = wav(ramp);
+        final PcmSource source = new WavDecoder(1).open(new ByteArrayInputStream(bytes));
+        final short[] piece = new short[3];
+        assertEquals(3, source.read(piece, 0, 3));
+        assertArrayEquals(new short[]
+        {
+            0, 1, 2
+        }, piece);
+
+        final StreamProvider provider = new StreamProvider();
+        final ResourceKey first = new ResourceKey("music/first.wav");
+        final ResourceKey second = new ResourceKey("music/second.wav");
+        provider.register(first, () -> new ByteArrayInputStream(bytes));
+        provider.register(second, () -> new ByteArrayInputStream(bytes));
+        final LongSoundLoader loader = new LongSoundLoader(new Resources(provider));
+        final CountingBackend backend = new CountingBackend();
+        final Audio audio = new Audio(backend, 2, VoicePolicy.STEAL);
+        final LongSound music = loader.stream(first, 2, 1_024);
+        final Playlist playlist = new Playlist(audio, music, loader.stream(second));
+
+        playlist.play();
+        final int voice = playlist.getVoice();
+        final short[] target = new short[4_000];
+        int frames = 0;
+        int read;
+        do
+        {
+            read = backend.stream.read(target, 0, target.length);
+            for (int i = 0; i < read; i++)
+            {
+                assertEquals((short) (frames + i), target[i]);
+            }
+            frames += read;
+        }
+        while (read == target.length);
+        backend.listener.onVoiceEnded(voice);
+
+        assertEquals(10_000, frames);
+        assertEquals(1, playlist.getTrack());
+        assertFalse(music.isPrepared());
+        backend.listener.onVoiceEnded(playlist.getVoice());
+        assertFalse(playlist.isPlaying());
+        assertEquals(LongSoundLoader.DEFAULT_CHUNKS, playlist.getSound(1).getChunks());
+    }
+
+    /**
+     * Backend that plays nothing, counts the voices stopped, and keeps its listener and its last stream.
      */
     private static final class CountingBackend implements AudioBackend
     {
@@ -244,6 +308,10 @@ public final class AudioTest
         private int stopped;
         /** Next voice. */
         private int next = 1;
+        /** The listener. */
+        private VoiceListener listener;
+        /** The last stream played. */
+        private PcmStream stream;
 
         /**
          * Creates the backend.
@@ -262,12 +330,19 @@ public final class AudioTest
         @Override
         public void setVoiceListener(VoiceListener listener)
         {
-            // Voices never end by themselves here.
+            this.listener = listener;
         }
 
         @Override
         public int play(PcmBuffer buffer)
         {
+            return next++;
+        }
+
+        @Override
+        public int play(PcmStream stream)
+        {
+            this.stream = stream;
             return next++;
         }
 

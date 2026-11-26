@@ -148,7 +148,7 @@ public final class ShortSoundCache
      * @param key The key.
      * @return The extension, empty if none.
      */
-    private static String extension(ResourceKey key)
+    static String extension(ResourceKey key)
     {
         final String path = key.path();
         final int dot = path.lastIndexOf(DOT);

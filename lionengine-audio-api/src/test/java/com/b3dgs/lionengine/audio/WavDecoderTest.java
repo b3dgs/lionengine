@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
@@ -248,5 +249,58 @@ final class WavDecoderTest
                                                                                        .contains("limit"));
         assertEquals(WavDecoder.DEFAULT_MAX_FRAMES, new WavDecoder().getMaxFrames());
         assertThrows(IllegalArgumentException.class, () -> new WavDecoder(0));
+    }
+
+    /**
+     * A streamed file gives the samples of the full decoding, in pieces, without frame limit; then nothing; every
+     * depth is converted the same way.
+     *
+     * @throws IOException If reading fails.
+     */
+    @Test
+    void testStream() throws IOException
+    {
+        for (final int bits : new int[]
+        {
+            8, 16, 24, 32
+        })
+        {
+            final byte[] bytes = WavWriter.write(sound(), bits);
+            final PcmSource source = new WavDecoder(1).open(new ByteArrayInputStream(bytes));
+            final short[] streamed = new short[2 * SAMPLES.length];
+
+            assertEquals(MONO, source.getFormat());
+            assertEquals(4, source.read(streamed, 0, 4));
+            assertEquals(SAMPLES.length - 4, source.read(streamed, 4, SAMPLES.length));
+            assertEquals(0, source.read(streamed, 0, 1));
+            assertArrayEquals(samples(decode(bytes)), Arrays.copyOf(streamed, SAMPLES.length));
+        }
+    }
+
+    /**
+     * A streamed file truncated in its samples is refused at the read that reaches the missing bytes; an invalid
+     * header at the opening; invalid ranges and a {@code null} stream are refused.
+     *
+     * @throws IOException If reading fails.
+     */
+    @Test
+    void testStreamRefused() throws IOException
+    {
+        final byte[] bytes = WavWriter.write(sound(), 16);
+        final byte[] truncated = Arrays.copyOf(bytes, bytes.length - 4);
+        final PcmSource source = new WavDecoder().open(new ByteArrayInputStream(truncated));
+        final short[] target = new short[SAMPLES.length];
+        final WavDecoder decoder = new WavDecoder();
+        final InputStream text = new ByteArrayInputStream("not a sound".getBytes(StandardCharsets.US_ASCII));
+
+        assertEquals(4, source.read(target, 0, 4));
+        assertThrows(AudioDecodingException.class, () -> source.read(target, 0, SAMPLES.length - 4));
+        assertThrows(AudioDecodingException.class, () -> decoder.open(text));
+        assertThrows(IllegalArgumentException.class, () -> decoder.open(null));
+        final PcmSource valid = decoder.open(new ByteArrayInputStream(bytes));
+        assertThrows(IllegalArgumentException.class, () -> valid.read(null, 0, 1));
+        assertThrows(IllegalArgumentException.class, () -> valid.read(target, -1, 1));
+        assertThrows(IllegalArgumentException.class, () -> valid.read(target, 0, -1));
+        assertThrows(IllegalArgumentException.class, () -> valid.read(target, 1, SAMPLES.length));
     }
 }

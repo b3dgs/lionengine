@@ -32,7 +32,8 @@ public interface VoiceListener
     /**
      * Notifies that a voice played its sound to the end.
      *
-     * @param voice The voice, as returned by {@link AudioBackend#play(PcmBuffer)}.
+     * @param voice The voice, as returned by {@link AudioBackend#play(PcmBuffer)} or
+     *            {@link AudioBackend#play(PcmStream)}.
      */
     void onVoiceEnded(int voice);
 }

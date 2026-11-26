@@ -16,10 +16,13 @@
  */
 package com.b3dgs.lionengine.audio;
 
+import java.util.Arrays;
+
 /**
  * Audio system of the game: plays short sounds and variant sets on a bounded number of voices of an
- * {@link AudioBackend}, with priorities and an overflow policy (ADR-0004, ADR-0018, ADR-0027, ADR-0033, ADR-0065,
- * ADR-0066, ADR-0067, REQ-AUDIO-001, REQ-AUDIO-003, REQ-AUDIO-004, REQ-AUDIO-005, REQ-AUDIO-010).
+ * {@link AudioBackend}, with priorities and an overflow policy, and long sounds (ADR-0004, ADR-0018, ADR-0027,
+ * ADR-0033, ADR-0065, ADR-0066, ADR-0067, ADR-0068, REQ-AUDIO-001, REQ-AUDIO-003, REQ-AUDIO-004, REQ-AUDIO-005,
+ * REQ-AUDIO-007, REQ-AUDIO-010).
  *
  * <p>
  * The game creates one {@code Audio} over its backend and keeps it for its whole life: it is the only user of the
@@ -28,6 +31,12 @@ package com.b3dgs.lionengine.audio;
  * effect. Voices are never reused, so a stale voice never stops another sound. A {@link VariantSet} plays one
  * variant chosen by the set with {@link #play(VariantSet, int)}, or every layer of a composed set at once with
  * {@link #play(VariantSet, int, int[])}, which writes the voices to an array of the caller.
+ * </p>
+ *
+ * <p>
+ * Long sounds: {@link #play(LongSound)} plays a {@link LongSound} on a voice of the backend outside the short-sound
+ * limit and its policy, and {@link #stop(int)} stops it as any voice; a {@link Playlist} plays its tracks through it.
+ * A long sound plays on one voice at a time.
  * </p>
  *
  * <p>
@@ -42,7 +51,7 @@ package com.b3dgs.lionengine.audio;
  * <p>
  * Threads: runtime thread only (ADR-0018), not thread-safe; the backend calls the listener at the inbox delivery, on
  * the runtime thread. Playing a sound or a variant set, stopping and the end of a voice allocate nothing, except the
- * first play of a lazy short sound, which decodes it (ADR-0019).
+ * first play of a lazy short sound, which decodes it (ADR-0019), and the play of a long sound that is not prepared.
  * </p>
  *
  * @since 11.0.0
@@ -64,6 +73,8 @@ public final class Audio
     private static final String ERROR_PLAYING = " voices playing";
     /** Name of the variant set argument. */
     private static final String NAME_SET = "Set";
+    /** Initial capacity of the long voices, grown when more play at once. */
+    private static final int INITIAL_LONG_VOICES = 2;
 
     /** The backend. */
     private final AudioBackend backend;
@@ -77,6 +88,12 @@ public final class Audio
     private final int[] priorities;
     /** Number of voices playing. */
     private int count;
+    /** Voices playing long sounds, in start order. */
+    private int[] longVoices = new int[INITIAL_LONG_VOICES];
+    /** The long sound of each long voice. */
+    private LongSound[] longSounds = new LongSound[INITIAL_LONG_VOICES];
+    /** Number of long voices playing. */
+    private int longCount;
 
     /**
      * Creates the audio system with {@link #DEFAULT_MAX_VOICES} voices, or fewer if the backend has fewer, and the
@@ -266,9 +283,36 @@ public final class Audio
     }
 
     /**
-     * Stops a voice at once; no effect on a voice that ended, was stopped or does not exist.
+     * Plays a long sound at once from its start, on a voice of the backend outside the short-sound limit; a sound that
+     * is not prepared is prepared first, which reads its resource now (ADR-0068).
      *
-     * @param voice The voice returned by {@link #play(ShortSound, int)}.
+     * <p>
+     * The voice ends by itself at the end of the sound, delivered through the inbox, or is stopped with
+     * {@link #stop(int)}. A streamed sound is no longer prepared once its voice ends or is stopped.
+     * </p>
+     *
+     * @param sound The sound, not released and not playing (never {@code null}).
+     * @return The voice playing it, positive; {@link AudioBackend#NO_VOICE} if no voice of the backend is free, and the
+     *         sound stays prepared.
+     * @throws IllegalArgumentException If {@code sound} is {@code null}.
+     * @throws IllegalStateException If the sound is released or already playing, or if called on another thread than
+     *             the owner of its loader.
+     * @throws com.b3dgs.lionengine.resources.ResourceException If the resource of a sound not prepared is missing or
+     *             unreadable.
+     * @throws AudioDecodingException If the content of a sound not prepared is invalid, or a fully decoded one is above
+     *             the frame limit of its decoder.
+     */
+    public int play(LongSound sound)
+    {
+        ShortSoundCache.checkNotNull(sound, "Long sound");
+        return play(sound, null);
+    }
+
+    /**
+     * Stops a voice at once, of a short sound or of a long sound; no effect on a voice that ended, was stopped or does
+     * not exist.
+     *
+     * @param voice The voice returned by a play.
      */
     public void stop(int voice)
     {
@@ -278,10 +322,20 @@ public final class Audio
             backend.stop(voice);
             remove(slot);
         }
+        else
+        {
+            final int longSlot = longSlot(voice);
+            if (longSlot != NONE)
+            {
+                backend.stop(voice);
+                removeLong(longSlot).stopped();
+            }
+        }
     }
 
     /**
-     * Stops every voice, for example when a scene exits.
+     * Stops every short voice, for example when a scene exits; long sounds and playlists are stopped by their own
+     * voice or {@link Playlist#stop()}.
      */
     public void stopAll()
     {
@@ -293,24 +347,34 @@ public final class Audio
     }
 
     /**
-     * Tells whether a voice is playing.
+     * Tells whether a voice is playing, of a short sound or of a long sound.
      *
      * @param voice The voice.
      * @return {@code true} from its play until it is stopped or its end is delivered.
      */
     public boolean isPlaying(int voice)
     {
-        return slot(voice) != NONE;
+        return slot(voice) != NONE || longSlot(voice) != NONE;
     }
 
     /**
-     * Returns the number of voices playing.
+     * Returns the number of short voices playing.
      *
-     * @return The voices neither stopped nor ended, at most {@link #getMaxVoices()}.
+     * @return The short voices neither stopped nor ended, at most {@link #getMaxVoices()}.
      */
     public int getPlayingCount()
     {
         return count;
+    }
+
+    /**
+     * Returns the number of long voices playing.
+     *
+     * @return The long sounds playing, outside the short-sound limit.
+     */
+    public int getLongPlayingCount()
+    {
+        return longCount;
     }
 
     /**
@@ -331,6 +395,38 @@ public final class Audio
     public VoicePolicy getPolicy()
     {
         return policy;
+    }
+
+    /**
+     * Plays a long sound for a playlist, which listens to its end.
+     *
+     * @param sound The sound, not {@code null}.
+     * @param listener The listener of its end, {@code null} for none.
+     * @return The voice, or {@link AudioBackend#NO_VOICE}.
+     * @throws IllegalStateException As {@link #play(LongSound)}.
+     * @throws com.b3dgs.lionengine.resources.ResourceException As {@link #play(LongSound)}.
+     * @throws AudioDecodingException As {@link #play(LongSound)}.
+     */
+    int play(LongSound sound, TrackListener listener)
+    {
+        if (sound.isPlaying())
+        {
+            throw new IllegalStateException("Long sound already playing: " + sound.getKey());
+        }
+        final int voice = sound.start(backend);
+        if (voice != AudioBackend.NO_VOICE)
+        {
+            if (longCount == longVoices.length)
+            {
+                longVoices = Arrays.copyOf(longVoices, longCount * 2);
+                longSounds = Arrays.copyOf(longSounds, longCount * 2);
+            }
+            longVoices[longCount] = voice;
+            longSounds[longCount] = sound;
+            longCount++;
+            sound.started(this, voice, listener);
+        }
+        return voice;
     }
 
     /**
@@ -468,6 +564,50 @@ public final class Audio
         {
             remove(slot);
         }
+        else
+        {
+            final int longSlot = longSlot(voice);
+            if (longSlot != NONE)
+            {
+                removeLong(longSlot).ended();
+            }
+        }
+    }
+
+    /**
+     * Finds the slot of a long voice.
+     *
+     * @param voice The voice.
+     * @return The index of its slot, {@link #NONE} if it is not playing.
+     */
+    private int longSlot(int voice)
+    {
+        int slot = NONE;
+        for (int i = 0; i < longCount && slot == NONE; i++)
+        {
+            if (longVoices[i] == voice)
+            {
+                slot = i;
+            }
+        }
+        return slot;
+    }
+
+    /**
+     * Removes a long slot, keeping the start order of the others.
+     *
+     * @param slot The index of the slot.
+     * @return The long sound of the slot.
+     */
+    private LongSound removeLong(int slot)
+    {
+        final LongSound sound = longSounds[slot];
+        final int moved = longCount - slot - 1;
+        System.arraycopy(longVoices, slot + 1, longVoices, slot, moved);
+        System.arraycopy(longSounds, slot + 1, longSounds, slot, moved);
+        longCount--;
+        longSounds[longCount] = null;
+        return sound;
     }
 
     /**

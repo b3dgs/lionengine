@@ -92,6 +92,12 @@ final class SilentAudioBackend implements AudioBackend
     }
 
     @Override
+    public int play(PcmStream stream)
+    {
+        return next++;
+    }
+
+    @Override
     public void stop(int voice)
     {
         // Plays nothing, so nothing to stop.
