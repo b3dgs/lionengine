@@ -62,6 +62,12 @@ Batch 3 (2026-11-26), scaling policies and resize handling: no new code, every p
 - Tests: `FrameScalingTest` (each policy, the fallback, an empty surface); `DisplayStateTest.testIntegerFallback`; `PlatformContract` (`testResize`, `testIntegerFallback`, `testDisplayListenerOnResize`) bound on the headless platform and, under a display, on `AwtPlatform`, whose binding resizes the real window; `AwtDisplayTest.testResize`; `AwtWindowEventsTest` (resize in device pixels); `AwtRenderBackendWindowTest` (a presented frame captured on screen).
 - `REQ-PLATFORM-002` stays partial: rendering-context loss and recovery have no AWT source, and come with the OpenGL and Android backends.
 
+Batch 4 (2026-11-26), review of the display settings and the HiDPI constraints (`REQ-DISPLAY-009`, ADR-0025 decisions 3 and 4, ADR-0043). No code change; findings:
+- Settings persistence is the game's: the engine exposes only immutable values (`DisplayRequest` and `EffectiveResult` are records, the filter chain an unmodifiable copy) and has no storage code. No main source of `platform-*`, `render-*` or `test-support` writes a file or uses `java.util.prefs` or `Properties`. A game saves the `requested()` value it chose and applies it again at the next start.
+- No single-monitor assumption: `Platform`, `DisplayState`, `DisplayRequest`, `EffectiveResult` and `PresentationGeometry` neither name nor count monitors. The words "default monitor" in their documentation state the version 11 scope of ADR-0043, so a monitor choice can be added later by a new ADR without breaking them. On `platform-awt` the window opens, fills and goes full screen on the default monitor; its events convert sizes with the scale of the canvas' own graphics configuration, so a window moved to another monitor still reports device pixels.
+- No scale-1.0 assumption: surface sizes, display modes and the presentation geometry are in device pixels. `AwtWindowEventsTest` converts at the scales 1.0, 1.25, 1.5 and 2.0; `render-awt` draws with an identity transform, at device-pixel resolution; no density value is exposed (ADR-0043, decision 3).
+- Gap found: the unit of the AWT display modes on a scaled macOS display is not verified, recorded as `OQ-174` with a check and a proposal. Until it is answered, sizes are taken as AWT reports them, which is right on Windows and Linux.
+
 ## Lifecycle and concurrency
 
 Requests may come from the runtime thread at any time; they apply at the next frame boundary. The platform posts the effective result to the inbox; it is delivered on the runtime thread (ADR-0018). Native windows belong to the platform implementation.
@@ -83,10 +89,10 @@ Pixels, Hz, bits; world units unchanged. Own value types with `int` fields only.
 
 ## Acceptance criteria
 
-- [ ] Requirements covered.
-- [ ] API reviewed in the pull request.
-- [ ] Automated tests added and passing.
-- [ ] Complete Javadoc.
-- [ ] Headless example (list capabilities, request a mode, print the effective result), API-index entry, traceability updated.
-- [ ] No forbidden coupling.
-- [ ] Android/DEX compatibility verified.
+- [x] Requirements covered (`REQ-DISPLAY-001` to `REQ-DISPLAY-009`; `REQ-PLATFORM-002` partial until a backend can lose its context).
+- [x] API proposed in the pull requests of the batches (#938, #939) and merged under the owner's delegation (ADR-0060, ADR-0061).
+- [x] Automated tests added and passing.
+- [x] Complete Javadoc.
+- [x] Headless example (list capabilities, request a mode, print the effective result), API-index entry, traceability updated.
+- [x] No forbidden coupling.
+- [x] Android/DEX compatibility verified.
