@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.platform;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -480,7 +481,7 @@ public abstract class PlatformContract
 
         final EffectiveResult result = platform.getEffectiveResult();
         assertNotNull(result.effective().displayMode());
-        assertFalse(missing.equals(result.effective().displayMode()));
+        assertNotEquals(missing, result.effective().displayMode());
         assertTrue(result.degraded());
         assertTrue(result.reason().startsWith("Display mode 7x5 1Hz 1bits not available, "), result.reason());
         platform.apply(FIT);
