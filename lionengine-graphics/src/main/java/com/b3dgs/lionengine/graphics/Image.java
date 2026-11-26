@@ -190,6 +190,17 @@ public final class Image
     }
 
     /**
+     * Tells whether the image belongs to a cache, for the bake.
+     *
+     * @param cache The cache.
+     * @return {@code true} if the image is held by this cache.
+     */
+    boolean belongsTo(ImageCache cache)
+    {
+        return entry.belongsTo(cache);
+    }
+
+    /**
      * Checks that the handle is not released.
      *
      * @throws IllegalStateException If the handle is released.

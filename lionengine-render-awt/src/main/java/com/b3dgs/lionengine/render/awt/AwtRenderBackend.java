@@ -28,6 +28,7 @@ import java.awt.image.BufferedImage;
 import com.b3dgs.lionengine.platform.Platform;
 import com.b3dgs.lionengine.platform.PresentationGeometry;
 import com.b3dgs.lionengine.platform.awt.AwtSurface;
+import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
 import com.b3dgs.lionengine.render.OutputFilter;
 import com.b3dgs.lionengine.render.RenderBackend;
@@ -160,6 +161,20 @@ public final class AwtRenderBackend implements RenderBackend
             throw new IllegalArgumentException("Filter must not be null");
         }
         return OutputFilter.NONE.equals(filter);
+    }
+
+    /**
+     * Both effects are applied per frame: the tint on a CPU copy of the source rectangle, the alpha with the opacity
+     * of the composite (ADR-0056).
+     */
+    @Override
+    public boolean isSupported(ColorEffect effect)
+    {
+        if (effect == null)
+        {
+            throw new IllegalArgumentException("Effect must not be null");
+        }
+        return true;
     }
 
     @Override

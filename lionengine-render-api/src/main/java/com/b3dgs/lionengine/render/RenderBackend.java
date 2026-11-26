@@ -18,14 +18,17 @@ package com.b3dgs.lionengine.render;
 
 /**
  * Render backend: presents the render commands of a frame on the logical frame, then the logical frame on the output
- * surface (ADR-0006, ADR-0026, ADR-0033, ADR-0040, ADR-0046, ADR-0047, REQ-SPRITE-010, REQ-FILTER-002).
+ * surface (ADR-0006, ADR-0026, ADR-0033, ADR-0040, ADR-0046, ADR-0047, ADR-0056, REQ-SPRITE-004, REQ-SPRITE-010,
+ * REQ-FILTER-002).
  *
  * <p>
  * The application creates the backend for its platform ({@code render-awt} for {@code platform-awt}), attaches it to
  * the platform before starting it, and gives its {@link TextureStore} to the modules that create textures. The
  * platform asks the backend which output filters it implements and reports the others as skipped in its effective
  * result. In the render callback of the loop, the game clears a {@link CommandBuffer}, writes the frame into it, then
- * calls {@link #present(CommandBuffer)}.
+ * calls {@link #present(CommandBuffer)}. As a {@link ColorCapability}, the backend tells which color effects of the
+ * entries it applies per frame; an effect it does not apply is drawn as if the field kept its default, and the
+ * {@code graphics} module bakes it on the CPU instead.
  * </p>
  *
  * <p>
@@ -35,7 +38,7 @@ package com.b3dgs.lionengine.render;
  *
  * @since 11.0.0
  */
-public interface RenderBackend
+public interface RenderBackend extends ColorCapability
 {
     /**
      * Returns the textures of this backend.

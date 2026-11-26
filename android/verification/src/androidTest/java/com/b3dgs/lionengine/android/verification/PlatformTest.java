@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.platform.DisplayRequest;
 import com.b3dgs.lionengine.platform.DisplayState;
 import com.b3dgs.lionengine.platform.PresentationGeometry;
 import com.b3dgs.lionengine.platform.ScreenMode;
+import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
 import com.b3dgs.lionengine.render.OutputFilter;
 import com.b3dgs.lionengine.render.RenderBackend;
@@ -121,6 +122,12 @@ public final class PlatformTest
             public TextureStore getTextureStore()
             {
                 return null;
+            }
+
+            @Override
+            public boolean isSupported(ColorEffect effect)
+            {
+                return true;
             }
 
             @Override

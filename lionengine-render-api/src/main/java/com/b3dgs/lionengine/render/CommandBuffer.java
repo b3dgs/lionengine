@@ -300,7 +300,8 @@ public final class CommandBuffer
     }
 
     /**
-     * Sets the tint of the last entry, multiplied with the texture colors.
+     * Sets the tint of the last entry, multiplied with the texture colors and opacity, by a backend that supports
+     * {@link ColorEffect#TINT}; another backend draws the entry without tint.
      *
      * @param argb The tint, packed {@code 0xAARRGGBB}; {@link #NO_TINT} for none.
      * @return This buffer.
@@ -313,7 +314,8 @@ public final class CommandBuffer
     }
 
     /**
-     * Sets the opacity of the last entry.
+     * Sets the opacity of the last entry, multiplied with the texture opacity, by a backend that supports
+     * {@link ColorEffect#ALPHA}; another backend draws the entry with the opacity of the texture alone.
      *
      * @param alpha The opacity in {@code [0, 1]}, {@code 1} for opaque.
      * @return This buffer.

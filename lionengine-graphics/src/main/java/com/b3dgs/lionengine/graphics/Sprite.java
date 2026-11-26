@@ -20,13 +20,14 @@ import com.b3dgs.lionengine.render.CommandBuffer;
 
 /**
  * Lightweight mutable instance of a shared immutable source: where and how one frame of an image is drawn, by adding
- * one render command (ADR-0003, ADR-0014, ADR-0016, ADR-0026, REQ-SPRITE-001, REQ-SPRITE-003, REQ-SPRITE-006,
- * REQ-SPRITE-007).
+ * one render command (ADR-0003, ADR-0014, ADR-0016, ADR-0026, ADR-0056, REQ-SPRITE-001, REQ-SPRITE-003,
+ * REQ-SPRITE-004, REQ-SPRITE-006, REQ-SPRITE-007).
  *
  * <p>
  * The source is an {@link Image} of an {@link ImageCache}, whose whole area is the only frame, or a
  * {@link SpriteSheet}, whose cells are the frames, numbered as in the sheet; the first frame is shown until
- * {@link #setFrame(int)}. Loading a sprite is loading its image:
+ * {@link #setFrame(int)}. The frames of a sheet can also be drawn from a variant of its image of the same size, such as
+ * one baked with {@link ImageCache#bake(Image, ColorTransform)}. Loading a sprite is loading its image:
  * {@link ImageCache#load(com.b3dgs.lionengine.resources.ResourceKey)} raises the
  * {@link com.b3dgs.lionengine.resources.ResourceException} of a missing resource and the
  * {@link ImageDecodingException} of invalid data, and {@link SheetGroup} and {@link SheetLoader} do the same for a
@@ -48,9 +49,16 @@ import com.b3dgs.lionengine.render.CommandBuffer;
  * </p>
  *
  * <p>
+ * Color (ADR-0056): the tint and the alpha are the per-frame part of a {@link ColorTransform}, written into every
+ * command and applied by a backend that supports them ({@link com.b3dgs.lionengine.render.ColorEffect}); no tint and
+ * full opacity by default. A sprite never bakes: the static part of a transform (grading, mask), and the tint or alpha
+ * a backend cannot apply per frame, are baked into a variant of the image by the cache, which the sprite then draws.
+ * </p>
+ *
+ * <p>
  * Rendering adds one entry to the command buffer and draws nothing directly: the texture of the image, the source
- * rectangle of the frame, the position, scale, rotation and pivot, and the layer; the entry has no tint and full
- * opacity. Entries are presented by ascending layer, then submission order.
+ * rectangle of the frame, the position, scale, rotation and pivot, the tint and alpha, and the layer. Entries are
+ * presented by ascending layer, then submission order.
  * </p>
  *
  * <p>
@@ -70,6 +78,12 @@ public final class Sprite
     private static final String ERROR_SEPARATOR = ", ";
     /** Name of the position, for the messages. */
     private static final String NAME_POSITION = "Position";
+    /** Separator of a name and a detail in the messages. */
+    private static final String COLON = ": ";
+    /** Name of the sheet, for the messages. */
+    private static final String NAME_SHEET = "Sheet";
+    /** Name of the image, for the messages. */
+    private static final String NAME_IMAGE = "Image";
 
     /**
      * Checks that two values are finite.
@@ -85,6 +99,19 @@ public final class Sprite
         {
             throw new IllegalArgumentException(name + ERROR_NOT_FINITE + first + ERROR_SEPARATOR + second);
         }
+    }
+
+    /**
+     * Returns the image of a sheet, for the constructor drawing the sheet from its own image.
+     *
+     * @param sheet The sheet.
+     * @return Its image.
+     * @throws IllegalArgumentException If the sheet is {@code null}.
+     */
+    private static Image imageOf(SpriteSheet sheet)
+    {
+        ImageCache.checkNotNull(sheet, NAME_SHEET);
+        return sheet.getImage();
     }
 
     /** The image of the source, owned by its acquirer. */
@@ -117,6 +144,10 @@ public final class Sprite
     private double pivotX;
     /** Vertical pivot in pixels from the top edge of the frame. */
     private double pivotY;
+    /** Tint of the render command, {@code 0xAARRGGBB}. */
+    private int tint = CommandBuffer.NO_TINT;
+    /** Alpha of the render command, in {@code [0, 1]}. */
+    private double alpha = 1.0;
     /** Layer of the render command. */
     private int layer;
 
@@ -131,7 +162,7 @@ public final class Sprite
     {
         super();
 
-        ImageCache.checkNotNull(image, "Image");
+        ImageCache.checkNotNull(image, NAME_IMAGE);
         this.image = image;
         sheet = null;
         width = image.getWidth();
@@ -150,14 +181,41 @@ public final class Sprite
      */
     public Sprite(SpriteSheet sheet)
     {
+        this(sheet, imageOf(sheet));
+    }
+
+    /**
+     * Creates a sprite showing the cells of a sheet drawn from another image of the same size, such as a variant of
+     * the image of the sheet baked by the cache, its first cell first, with the pivot of the sheet.
+     *
+     * @param sheet The sheet, giving the frames and the pivot (never {@code null}).
+     * @param image The image the frames are drawn from, of the size of the image of the sheet, which stays owned by
+     *            its acquirer (never {@code null}).
+     * @throws IllegalArgumentException If an argument is {@code null}, or the image is not of the size of the image
+     *             of the sheet.
+     * @throws IllegalStateException If the image of the sheet, with its group, or the image is released.
+     */
+    public Sprite(SpriteSheet sheet, Image image)
+    {
         super();
 
-        ImageCache.checkNotNull(sheet, "Sheet");
-        image = sheet.getImage();
-        if (image.isReleased())
+        ImageCache.checkNotNull(sheet, NAME_SHEET);
+        ImageCache.checkNotNull(image, NAME_IMAGE);
+        final Image own = sheet.getImage();
+        if (own.isReleased())
         {
             throw new IllegalStateException("Image of the sheet released: " + sheet.getId());
         }
+        if (image.getWidth() != own.getWidth() || image.getHeight() != own.getHeight())
+        {
+            throw new IllegalArgumentException("Image not of the size of the sheet "
+                                               + sheet.getId()
+                                               + COLON
+                                               + image.getWidth()
+                                               + "x"
+                                               + image.getHeight());
+        }
+        this.image = image;
         this.sheet = sheet;
         width = sheet.getCellWidth();
         height = sheet.getCellHeight();
@@ -230,7 +288,7 @@ public final class Sprite
         {
             throw new IndexOutOfBoundsException("Frame outside the sprite "
                                                 + image.getKey()
-                                                + ": "
+                                                + COLON
                                                 + frame
                                                 + " of "
                                                 + frameCount);
@@ -372,6 +430,53 @@ public final class Sprite
     }
 
     /**
+     * Returns the tint.
+     *
+     * @return The tint, packed {@code 0xAARRGGBB}; {@link CommandBuffer#NO_TINT} by default.
+     */
+    public int getTint()
+    {
+        return tint;
+    }
+
+    /**
+     * Sets the tint of the render command, multiplied with the colors and the opacity of the frame by a backend that
+     * supports {@link com.b3dgs.lionengine.render.ColorEffect#TINT}; bake it with the cache for another backend.
+     *
+     * @param argb The tint, packed {@code 0xAARRGGBB}; {@link CommandBuffer#NO_TINT} for none.
+     */
+    public void setTint(int argb)
+    {
+        tint = argb;
+    }
+
+    /**
+     * Returns the alpha.
+     *
+     * @return The alpha in {@code [0, 1]}, {@code 1} by default.
+     */
+    public double getAlpha()
+    {
+        return alpha;
+    }
+
+    /**
+     * Sets the alpha of the render command, multiplied with the opacity of the frame by a backend that supports
+     * {@link com.b3dgs.lionengine.render.ColorEffect#ALPHA}, for a fade; bake it with the cache for another backend.
+     *
+     * @param value The alpha in {@code [0, 1]}: {@code 1} opaque, {@code 0} invisible.
+     * @throws IllegalArgumentException If the value is outside {@code [0, 1]} or not a number.
+     */
+    public void setAlpha(double value)
+    {
+        if (Double.isNaN(value) || value < 0.0 || value > 1.0)
+        {
+            throw new IllegalArgumentException("Alpha outside [0, 1]: " + value);
+        }
+        alpha = value;
+    }
+
+    /**
      * Returns the layer.
      *
      * @return The layer of the render command, {@code 0} by default.
@@ -422,6 +527,8 @@ public final class Sprite
                 .scale((float) scaleX, (float) scaleY)
                 .rotation((float) rotation)
                 .pivot((float) pivotX, (float) pivotY)
+                .tint(tint)
+                .alpha((float) alpha)
                 .layer(layer);
     }
 }

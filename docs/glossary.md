@@ -15,6 +15,8 @@
 | Batch | A small, verifiable unit of work (one contract, its tests, its example), specified with the feature template before implementation. |
 | Camera | Headless view onto the world: view rectangle in world units, zoom, translation, follow, smoothing and shake (ADR-0010). |
 | Capability | A feature a platform may or may not provide (gamepad, shaders, audio...), found by a typed optional lookup rather than assumed (ADR-0020). |
+| Color matrix | 4 by 5 matrix over red, green, blue and alpha plus offsets (`ColorMatrix`), as Android `ColorMatrix`: the grading part of a color transform, baked on the CPU (ADR-0056). |
+| Color transform | Backend-independent description of a sprite's colors (`ColorTransform`): grading, mask (silhouette fill), tint and alpha, in that order; tint and alpha per frame when the backend supports them, the rest baked once and cached (ADR-0003, ADR-0056). |
 | Command (network) | A game-defined reliable message from a client expressing an order (for example an RTS move order), validated and applied by the server (ADR-0038). |
 | Command buffer | List of deferred structural changes (object and trait add/remove) applied at the flush of a simulation step (ADR-0011). Also, in rendering, the preallocated buffer of render commands (ADR-0026). |
 | Component | In ECS, a plain data holder attached to an entity. In this engine a component is called a trait (ADR-0011). |

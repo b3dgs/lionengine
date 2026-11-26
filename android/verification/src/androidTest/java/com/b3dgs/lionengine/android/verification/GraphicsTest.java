@@ -39,6 +39,8 @@ import org.junit.runner.RunWith;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.b3dgs.lionengine.DefinitionException;
+import com.b3dgs.lionengine.graphics.ColorMatrix;
+import com.b3dgs.lionengine.graphics.ColorTransform;
 import com.b3dgs.lionengine.graphics.Image;
 import com.b3dgs.lionengine.graphics.ImageCache;
 import com.b3dgs.lionengine.graphics.ImageDecodingException;
@@ -49,6 +51,7 @@ import com.b3dgs.lionengine.graphics.SheetGroup;
 import com.b3dgs.lionengine.graphics.SheetLoader;
 import com.b3dgs.lionengine.graphics.Sprite;
 import com.b3dgs.lionengine.graphics.SpriteSheet;
+import com.b3dgs.lionengine.render.ColorCapability;
 import com.b3dgs.lionengine.render.CommandBuffer;
 import com.b3dgs.lionengine.render.TextureStore;
 import com.b3dgs.lionengine.resources.ResourceKey;
@@ -58,9 +61,9 @@ import com.b3dgs.lionengine.resources.memory.MemoryProvider;
 /**
  * Runs {@code graphics} on Android API 21 (ADR-0044): the pixel buffer, the PNG decoder with its size limits
  * (ADR-0054), whose {@code java.util.zip.Inflater} and {@code CRC32} are verified by the probes, the image cache over
- * the memory provider, the sheets and the sprites. The images are written here with the API 21 methods only, as the
- * JVM fixture {@code PngWriter} writes them; expected values are the ones of the JVM tests (PixelBufferTest,
- * PngDecoderTest, PngDecoderContractTest, ImageCacheTest, SpriteTest).
+ * the memory provider, the sheets, the sprites and the color transforms. The images are written here with the API 21
+ * methods only, as the JVM fixture {@code PngWriter} writes them; expected values are the ones of the JVM tests
+ * (PixelBufferTest, PngDecoderTest, PngDecoderContractTest, ImageCacheTest, SpriteTest, ColorTransformTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class GraphicsTest
@@ -681,6 +684,40 @@ public final class GraphicsTest
         assertEquals(0, cache.size());
         assertTrue(textures.alive.isEmpty());
         assertThrows(IllegalStateException.class, () -> icon.render(commands));
+    }
+
+    /**
+     * Color transforms give the JVM values: grading, mask, tint and alpha on the CPU, the split for a backend without
+     * per-frame effects, and a variant baked into the cache (REQ-SPRITE-004, ADR-0056).
+     *
+     * @throws IOException If a resource cannot be written.
+     */
+    @Test
+    public void testColorTransform() throws IOException
+    {
+        final ResourceKey key = new ResourceKey("sprites/hero.png");
+        final MemoryProvider memory = new MemoryProvider();
+        try (OutputStream output = memory.openWrite(key))
+        {
+            output.write(png(1, 1, 8, GRAY, 0, null, null, 0));
+        }
+        final ImageCache cache = new ImageCache(new Resources(memory), new Textures());
+        final Image hero = cache.load(key);
+        final ColorTransform hit = ColorTransform.NONE.withMask(0xFFFFFF, 1.0).withTint(0x80FF0000).withAlpha(0.5);
+        final ColorCapability none = effect -> false;
+
+        assertEquals(0x80363636, ColorTransform.NONE.withGrading(ColorMatrix.saturation(0.0)).apply(0x80FF0000));
+        assertEquals(0xFF800000, ColorTransform.NONE.withMask(0xFF0000, 0.5).apply(0xFF000000));
+        assertEquals(0x40FF0000, ColorTransform.NONE.withTint(0x80FF0000).withAlpha(0.5).apply(0xFFFFFFFF));
+        assertEquals(hit, hit.getBakedPart(none));
+        assertTrue(hit.getFramePart(none).isIdentity());
+        final Image variant = cache.bake(hero, hit.getBakedPart(none));
+        assertEquals(0x40FF0000, variant.getPixel(0, 0));
+        assertEquals("+mask(#FFFFFF,1.0),tint(#80FF0000),alpha(0.5)", variant.getDiscriminator());
+        assertEquals(2, cache.size());
+        variant.release();
+        hero.release();
+        assertEquals(0, cache.size());
     }
 
     /**

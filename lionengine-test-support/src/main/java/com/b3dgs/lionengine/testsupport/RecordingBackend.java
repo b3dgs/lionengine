@@ -18,26 +18,30 @@ package com.b3dgs.lionengine.testsupport;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
 import com.b3dgs.lionengine.render.OutputFilter;
 import com.b3dgs.lionengine.render.RenderBackend;
 import com.b3dgs.lionengine.render.TextureStore;
 
 /**
- * Render backend that records the frames it presents, for headless tests of rendering code (ADR-0045, REQ-TEST-001,
- * REQ-SPRITE-010).
+ * Render backend that records the frames it presents, for headless tests of rendering code (ADR-0045, ADR-0056,
+ * REQ-TEST-001, REQ-SPRITE-004, REQ-SPRITE-010).
  *
  * <p>
  * Each {@link #present(CommandBuffer)} records one frame: the list of the commands in presentation order (ascending
  * layer, then submission order), copied as {@link RecordedCommand}s. Textures are kept with their pixels, so a test
  * can check what was created, prepared and released. The test chooses the output filters it implements;
- * {@link OutputFilter#NONE} always is. Not thread-safe: the test drives it from one thread.
+ * {@link OutputFilter#NONE} always is. It applies every color effect per frame until the test switches one off with
+ * {@link #setSupported(ColorEffect, boolean)}, to check the CPU fallback of the rendering code (ADR-0056); the commands
+ * are recorded as written either way. Not thread-safe: the test drives it from one thread.
  * </p>
  *
  * @since 11.0.0
@@ -58,8 +62,24 @@ public final class RecordingBackend implements RenderBackend, TextureStore
         }
     }
 
+    /**
+     * Checks a color effect.
+     *
+     * @param effect The effect.
+     * @throws IllegalArgumentException If {@code effect} is {@code null}.
+     */
+    private static void checkEffect(ColorEffect effect)
+    {
+        if (effect == null)
+        {
+            throw new IllegalArgumentException("Effect must not be null");
+        }
+    }
+
     /** Filters implemented. */
     private final Set<OutputFilter> filters = new HashSet<>();
+    /** Color effects applied per frame. */
+    private final Set<ColorEffect> effects = EnumSet.allOf(ColorEffect.class);
     /** Recorded frames, oldest first. */
     private final List<List<RecordedCommand>> frames = new ArrayList<>();
     /** Pixels of the live textures by handle. */
@@ -202,10 +222,37 @@ public final class RecordingBackend implements RenderBackend, TextureStore
         return size;
     }
 
+    /**
+     * Tells whether the backend reports a color effect as applied per frame, from now on.
+     *
+     * @param effect The effect (never {@code null}).
+     * @param supported {@code true} to report it as applied per frame (the default), {@code false} as not applied.
+     * @throws IllegalArgumentException If {@code effect} is {@code null}.
+     */
+    public void setSupported(ColorEffect effect, boolean supported)
+    {
+        checkEffect(effect);
+        if (supported)
+        {
+            effects.add(effect);
+        }
+        else
+        {
+            effects.remove(effect);
+        }
+    }
+
     @Override
     public TextureStore getTextureStore()
     {
         return this;
+    }
+
+    @Override
+    public boolean isSupported(ColorEffect effect)
+    {
+        checkEffect(effect);
+        return effects.contains(effect);
     }
 
     @Override

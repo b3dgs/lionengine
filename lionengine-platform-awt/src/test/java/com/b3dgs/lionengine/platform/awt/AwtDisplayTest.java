@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.platform.DisplayRequest;
 import com.b3dgs.lionengine.platform.EffectiveResult;
 import com.b3dgs.lionengine.platform.PresentationGeometry;
 import com.b3dgs.lionengine.platform.ScreenMode;
+import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
 import com.b3dgs.lionengine.render.OutputFilter;
 import com.b3dgs.lionengine.render.RenderBackend;
@@ -196,6 +197,12 @@ final class AwtDisplayTest
         public TextureStore getTextureStore()
         {
             return null;
+        }
+
+        @Override
+        public boolean isSupported(ColorEffect effect)
+        {
+            return true;
         }
 
         @Override

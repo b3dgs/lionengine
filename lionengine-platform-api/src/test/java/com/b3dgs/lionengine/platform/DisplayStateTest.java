@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
 import com.b3dgs.lionengine.render.OutputFilter;
 import com.b3dgs.lionengine.render.RenderBackend;
@@ -69,6 +70,12 @@ final class DisplayStateTest
             public TextureStore getTextureStore()
             {
                 return null;
+            }
+
+            @Override
+            public boolean isSupported(ColorEffect effect)
+            {
+                return true;
             }
 
             @Override
