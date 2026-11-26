@@ -41,6 +41,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.b3dgs.lionengine.DefinitionException;
 import com.b3dgs.lionengine.graphics.Animation;
 import com.b3dgs.lionengine.graphics.AnimationLoop;
+import com.b3dgs.lionengine.graphics.Animator;
+import com.b3dgs.lionengine.graphics.AnimatorState;
 import com.b3dgs.lionengine.graphics.ColorMapping;
 import com.b3dgs.lionengine.graphics.ColorMatrix;
 import com.b3dgs.lionengine.graphics.ColorTransform;
@@ -69,7 +71,7 @@ import com.b3dgs.lionengine.resources.memory.MemoryProvider;
  * written here with the API 21 methods only, as the JVM fixture {@code PngWriter} writes them; expected values are the
  * ones of the JVM tests
  * (PixelBufferTest, PngDecoderTest, PngDecoderContractTest, ImageCacheTest, SpriteTest, ColorTransformTest,
- * ColorMappingTest, TemplateVariantTest, AnimationTest).
+ * ColorMappingTest, TemplateVariantTest, AnimationTest, AnimatorTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class GraphicsTest
@@ -772,6 +774,58 @@ public final class GraphicsTest
             0
         }, Double.NaN, AnimationLoop.LOOP));
         group.release();
+    }
+
+    /**
+     * The animator plays each loop mode with the time carried into the next frame, finishes a {@code once} animation
+     * on its last frame, and refuses calls out of their state (REQ-ANIM-002, REQ-ANIM-003, ADR-0058).
+     */
+    @Test
+    public void testAnimator()
+    {
+        final int[] cells =
+        {
+            10, 11, 12
+        };
+        final Animator animator = new Animator();
+        assertEquals(AnimatorState.STOPPED, animator.getState());
+        assertThrows(IllegalStateException.class, animator::pause);
+
+        animator.play(new Animation(cells, 0.25, AnimationLoop.PING_PONG));
+        final int[] pingPong = new int[6];
+        for (int i = 0; i < pingPong.length; i++)
+        {
+            animator.update(0.25);
+            pingPong[i] = animator.getFrameIndex();
+        }
+        assertArrayEquals(new int[]
+        {
+            1, 2, 1, 0, 1, 2
+        }, pingPong);
+
+        animator.play(new Animation(cells, 0.25, AnimationLoop.LOOP));
+        animator.update(0.375);
+        assertEquals(11, animator.getFrame());
+        assertEquals(0.125, animator.getFrameTime(), 0.0);
+        animator.pause();
+        animator.update(1.0);
+        assertThrows(IllegalStateException.class, animator::pause);
+        animator.resume();
+        assertThrows(IllegalStateException.class, animator::resume);
+        animator.update(1.125);
+        assertEquals(0, animator.getFrameIndex());
+        assertEquals(0.0, animator.getFrameTime(), 0.0);
+
+        animator.play(new Animation(cells, new double[]
+        {
+            0.25, 0.5, 0.25
+        }, AnimationLoop.ONCE));
+        animator.update(1.5);
+        assertEquals(AnimatorState.FINISHED, animator.getState());
+        assertEquals(12, animator.getFrame());
+        animator.stop();
+        assertEquals(10, animator.getFrame());
+        assertThrows(IllegalArgumentException.class, () -> animator.update(-0.1));
     }
 
     /**

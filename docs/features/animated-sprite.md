@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 2, see `roadmap.md` (batch order: sprite sheet, sprite, animated sprite)
 - Affected modules: `graphics`, `render-api`, `resources`, `test-support`, `examples`
 - Requirements: `REQ-ANIM-001` to `REQ-ANIM-003`, `REQ-SPR-002`
-- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0017`](../decisions/0017-fixed-step-game-loop.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md)
+- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0017`](../decisions/0017-fixed-step-game-loop.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0058`](../decisions/0058-animator-transitions-finish-and-frame-advance.md)
 - Open questions involved: none
 
 ## Objective
@@ -43,6 +43,13 @@ Batch 1 (2026-11-26), the animation value and its loader, with the example `Anim
 - Loading: the sheet loader keeps the `animations` of a definition as `Animation` values, `frameDurations` overriding `frameDuration`, frames checked against the cells of the sheet; `SpriteSheet.getAnimation(name)` (`IllegalStateException` for a name the sheet does not have), `hasAnimation(name)` and `getAnimationNames()` (order of the file). A sheet added in code has none. The errors of the file stay those of [`sprite-sheet.md`](sprite-sheet.md) batch 4 (`DefinitionException` with file, line, column and path); a duration that is not finite is refused too.
 - An animation built in code is not bound to a sheet: batch 3 checks its frames against the cells of the sheet of the sprite that plays it. An animation only describes; time advances in the animator of batch 2.
 - Tests: `AnimationTest` (both constructors, copies, equality, text, loop names, invalid values, indexes outside); `SheetLoaderTest.testFullDefinition` and `testDefaults` (animations kept, durations resolved); `SpriteSheetTest` (`testNoAnimation`, `testAnimations`); `AnimationDefinitionExampleTest`; device test `GraphicsTest.testAnimation` on API 21.
+
+Batch 2 (2026-11-26), the animator, with the example `AnimatorExample` and its API-index row. The details this page leaves open follow ADR-0058 (owner delegation), within this page and ADR-0026:
+- `Animator` (`graphics`, canonical name of ADR-0037) and `AnimatorState` (`STOPPED`, `PLAYING`, `PAUSED`, `FINISHED`). An animator is created stopped, without animation. `play(animation)` and `stop()` are valid in every state: `play` starts from the first frame, also when already playing; `stop` returns to the first frame. `pause()` is valid only while playing and keeps the frame and the time spent in it; `resume()` only while paused. Any other call throws `IllegalStateException` naming the state, and changes nothing.
+- `update(stepSeconds)` advances only a playing animator; the step is zero or positive and finite (`IllegalArgumentException` otherwise). The time spent in the frame grows by the step; each time it reaches the duration of the frame, that duration is taken from it and the next frame starts, so the time left over carries into the next frame and a long step crosses several frames.
+- Loop modes: `loop` restarts at the first frame after the last; `ping-pong` turns back at both ends, each end frame shown once per turn (`0 1 2 1 0 1 …`; two frames alternate; one frame stays); `once` becomes finished when its last frame has been shown for its full duration, stays on it and drops the time left over.
+- Reading: `getState()`, `getAnimation()` (`null` before the first play), `getFrameIndex()`, `getFrame()` (the cell to draw; `IllegalStateException` without animation), `getFrameTime()`. Reading changes nothing; updating and reading allocate nothing.
+- Tests: `AnimatorTest` (every call in every state, each loop mode, per-frame durations, carried time, long steps, the end of `once`, 1,000 short steps against 250 long ones, reading, invalid steps, no allocation in 100,000 updates); `AnimatorExampleTest`; device test `GraphicsTest.testAnimator` on API 21.
 
 ## Lifecycle and concurrency
 
