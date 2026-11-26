@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -61,6 +62,61 @@ final class AsyncLoadingTest
         }
     }
 
+    /**
+     * Inbox of one place, already taken, that tells when it refused a post.
+     */
+    private static final class FullInbox implements Inbox
+    {
+        /** The inbox holding the events. */
+        private final InboxSpy spy = new InboxSpy(1);
+        /** Counted down at the first refused post. */
+        private final CountDownLatch refused = new CountDownLatch(1);
+
+        /**
+         * Creates the inbox, with its only place taken.
+         */
+        FullInbox()
+        {
+            spy.post(() ->
+            {
+                // Occupies the only place of the inbox.
+            });
+        }
+
+        @Override
+        public boolean post(InboxEvent event)
+        {
+            final boolean accepted = spy.post(event);
+            if (!accepted)
+            {
+                refused.countDown();
+            }
+            return accepted;
+        }
+
+        @Override
+        public void deliverAll()
+        {
+            spy.deliverAll();
+        }
+
+        @Override
+        public long getDroppedCount()
+        {
+            return spy.getDroppedCount();
+        }
+
+        /**
+         * Waits for a refused post.
+         *
+         * @throws InterruptedException If interrupted.
+         */
+        void awaitRefused() throws InterruptedException
+        {
+            assertTrue(refused.await(TIMEOUT_MILLIS, TimeUnit.MILLISECONDS), "No post refused in time");
+        }
+    }
+
     /** Number of completions run. */
     private final AtomicInteger completions = new AtomicInteger();
     /** Pool with one queued worker. */
@@ -92,22 +148,6 @@ final class AsyncLoadingTest
             completions.incrementAndGet();
             return "loaded " + result;
         });
-    }
-
-    /**
-     * Waits until a condition holds.
-     *
-     * @param condition The condition.
-     * @throws InterruptedException If interrupted.
-     */
-    private static void await(java.util.function.BooleanSupplier condition) throws InterruptedException
-    {
-        final long end = System.currentTimeMillis() + TIMEOUT_MILLIS;
-        while (!condition.getAsBoolean() && System.currentTimeMillis() < end)
-        {
-            Thread.sleep(1L);
-        }
-        assertTrue(condition.getAsBoolean(), "Condition not reached in time");
     }
 
     /**
@@ -271,21 +311,17 @@ final class AsyncLoadingTest
     @Test
     void testWorkerInboxFull() throws InterruptedException
     {
-        inbox = new InboxSpy(1);
-        inbox.post(() ->
-        {
-            // Occupies the only place of the inbox.
-        });
+        final FullInbox full = new FullInbox();
         final ThreadPool pool = new ThreadPool();
 
-        final AsyncHandle<String> handle = submit(pool, "hero");
-        await(() -> inbox.getDroppedCount() > 0);
+        final AsyncHandle<String> handle = AsyncLoading.submit(pool, full, () -> "hero", result -> "loaded " + result);
+        full.awaitRefused();
         assertEquals(AsyncState.PENDING, handle.getState());
 
-        inbox.deliverAll();
+        full.deliverAll();
         pool.thread.join(TIMEOUT_MILLIS);
-        assertEquals(1, inbox.getPendingCount());
-        inbox.deliverAll();
+        assertFalse(pool.thread.isAlive());
+        full.deliverAll();
 
         assertEquals("loaded hero", handle.get());
     }
@@ -298,22 +334,19 @@ final class AsyncLoadingTest
     @Test
     void testInterruptedWorker() throws InterruptedException
     {
-        inbox = new InboxSpy(1);
-        inbox.post(() ->
-        {
-            // Occupies the only place of the inbox.
-        });
+        final FullInbox full = new FullInbox();
         final ThreadPool pool = new ThreadPool();
 
-        final AsyncHandle<String> handle = submit(pool, "hero");
-        await(() -> inbox.getDroppedCount() > 0);
+        final AsyncHandle<String> handle = AsyncLoading.submit(pool, full, () -> "hero", result -> "loaded " + result);
+        full.awaitRefused();
         pool.thread.interrupt();
         pool.thread.join(TIMEOUT_MILLIS);
 
         assertFalse(pool.thread.isAlive());
-        inbox.deliverAll();
+        full.deliverAll();
         assertEquals(AsyncState.PENDING, handle.getState());
-        assertEquals(0, inbox.getPendingCount());
+        full.deliverAll();
+        assertEquals(AsyncState.PENDING, handle.getState());
     }
 
     /**
