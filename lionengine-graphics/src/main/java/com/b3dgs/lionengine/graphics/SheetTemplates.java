@@ -139,16 +139,28 @@ final class SheetTemplates
             final String key = mapping.getKey(i);
             if (!Configuration.COMMENT.equals(key))
             {
-                final int color = readKey(template, key, keys);
-                final String target = template.getString(key);
-                if (!isColor(target))
-                {
-                    throw template.createError(key, ERROR_TARGET + target);
-                }
-                result = result.with(color, parseColor(target));
+                result = result.with(readKey(template, key, keys), readTarget(template, key));
             }
         }
         return result;
+    }
+
+    /**
+     * Reads and checks the target color of a key color, after the key color.
+     *
+     * @param template The configuration of the template.
+     * @param key The key color, as written.
+     * @return The target color, packed {@code 0xAARRGGBB}.
+     * @throws DefinitionException If the target color is not valid.
+     */
+    private static int readTarget(Configuration template, String key)
+    {
+        final String target = template.getString(key);
+        if (!isColor(target))
+        {
+            throw template.createError(key, ERROR_TARGET + target);
+        }
+        return parseColor(target);
     }
 
     /**

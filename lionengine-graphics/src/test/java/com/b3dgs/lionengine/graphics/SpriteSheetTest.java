@@ -117,7 +117,8 @@ final class SpriteSheetTest
         assertEquals(List.of("red", "blue"), sheet.getTemplateNames());
         assertTrue(sheet.hasTemplate("blue"));
         assertEquals(0xFF0000FF, sheet.getTemplate("blue").apply(0xFFFF00FF));
-        assertThrows(UnsupportedOperationException.class, () -> sheet.getTemplateNames().clear());
+        final List<String> names = sheet.getTemplateNames();
+        assertThrows(UnsupportedOperationException.class, names::clear);
     }
 
     /**

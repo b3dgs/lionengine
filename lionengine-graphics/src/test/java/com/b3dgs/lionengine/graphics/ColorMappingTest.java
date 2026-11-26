@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.graphics;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -138,7 +137,7 @@ final class ColorMappingTest
         assertEquals(first.toString(), second.toString());
         assertNotEquals(first, first.with(MAGENTA, BLUE));
         assertNotEquals(first, first.with(BLUE, RED));
-        assertFalse(first.equals(null));
+        assertNotEquals(first, null);
         assertEquals("mapping(#00000001=#FF0000FF,#80FF00FF=#40FF0000,#FFFF00FF=#FFFF0000)", first.toString());
     }
 
