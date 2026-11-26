@@ -187,6 +187,54 @@ final class AwtPlatformWindowTest
     }
 
     /**
+     * The display modes are those of the default monitor; the result reports the mode in effect: the desktop mode
+     * outside {@code FULL_SCREEN}, with the reason, and the desktop mode again once back in a window (ADR-0061). The
+     * full-screen request asks for the desktop size, so the monitor of the test machine is not changed.
+     */
+    @Test
+    void testDisplayModes()
+    {
+        platform = new AwtPlatform(WIDTH, HEIGHT, REQUEST, AwtFixtures.SINK, true);
+        final InboxSpy inbox = new InboxSpy();
+        platform.start(new StoppingDriver(inbox, Integer.MAX_VALUE, null), inbox);
+        AwtFixtures.flush();
+        platform.iterate();
+        final DisplayMode desktop = AwtDisplay.convert(GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                                                          .getDefaultScreenDevice()
+                                                                          .getDisplayMode());
+        final List<DisplayMode> modes = platform.getDisplayModes();
+        assertFalse(modes.isEmpty());
+        assertThrows(UnsupportedOperationException.class, () -> modes.add(desktop));
+        assertEquals(desktop, platform.getEffectiveResult().effective().displayMode());
+
+        final DisplayMode small = new DisplayMode(123, 45, 7, 8);
+        platform.apply(new DisplayRequest(ScreenMode.WINDOWED, small, ScalingPolicy.FIT, Collections.emptyList()));
+        platform.iterate();
+
+        assertEquals(desktop, platform.getEffectiveResult().effective().displayMode());
+        assertTrue(platform.getEffectiveResult().degraded());
+        assertTrue(platform.getEffectiveResult().reason().contains("needs FULL_SCREEN"),
+                   platform.getEffectiveResult().reason());
+
+        final DisplayMode size = new DisplayMode(desktop.width(),
+                                                 desktop.height(),
+                                                 DisplayMode.UNKNOWN,
+                                                 DisplayMode.UNKNOWN);
+        platform.apply(new DisplayRequest(ScreenMode.FULL_SCREEN, size, ScalingPolicy.FIT, Collections.emptyList()));
+        platform.iterate();
+        AwtFixtures.flush();
+
+        final DisplayMode effective = platform.getEffectiveResult().effective().displayMode();
+        assertTrue(modes.contains(effective) || effective.equals(desktop), String.valueOf(effective));
+
+        platform.apply(REQUEST);
+        platform.iterate();
+        AwtFixtures.flush();
+
+        assertEquals(desktop, platform.getEffectiveResult().effective().displayMode());
+    }
+
+    /**
      * The loop runs on the runtime thread, paced at the refresh rate; the start returns when it stops, after closing
      * the window and the worker pool.
      */

@@ -51,9 +51,8 @@ import com.b3dgs.lionengine.render.RenderBackend;
  * Window: a resizable window on the default monitor, without title; its canvas, given to the AWT modules by the
  * {@link AwtSurface} capability, starts at the logical frame size in device pixels. Sizes are reported in device
  * pixels: AWT sizes are multiplied by the scale of the canvas' graphics configuration (ADR-0043). Rendering is active
- * (repaint events are ignored), and the loop is paced at the refresh rate of the default monitor, or
- * 60 Hz when the monitor does not report it, because an AWT window has no vertical
- * synchronization.
+ * (repaint events are ignored), and the loop is paced at the refresh rate of the display mode in effect, or 60 Hz when
+ * the monitor does not report it, because an AWT window has no vertical synchronization.
  * </p>
  *
  * <p>
@@ -64,9 +63,12 @@ import com.b3dgs.lionengine.render.RenderBackend;
  * </p>
  *
  * <p>
- * Display: until the display-mode batches, the window is always {@code WINDOWED} and the display mode is the current
- * one of the default monitor; another request is applied as far as possible and reported as degraded. Requests are
- * applied at the next frame boundary. The worker pool has 2 daemon workers and is closed with the loop.
+ * Display (ADR-0060, ADR-0061): {@code WINDOWED} and {@code FULL_WINDOW} are supported, and {@code FULL_SCREEN} when
+ * the default monitor supports exclusive full screen. The display modes are those of the default monitor; a display
+ * mode is changed only in {@code FULL_SCREEN} and when the monitor allows it, to the offered mode nearest to the
+ * request, and the desktop mode is set back when the window leaves full screen or closes. Requests are applied at the
+ * next frame boundary; what could not be applied is reported in the effective result. The worker pool has 2 daemon
+ * workers and is closed with the loop.
  * </p>
  *
  * <p>
@@ -302,15 +304,25 @@ public final class AwtPlatform implements Platform
     }
 
     /**
-     * Body of the runtime thread: frames paced at the refresh rate until the loop stops or fails, then the window and
-     * the worker pool are closed; a failure leaves the thread to its handler of uncaught exceptions.
+     * Returns the frame period: the refresh rate of the display mode in effect, {@value #DEFAULT_REFRESH_RATE} Hz if
+     * unknown, at most {@value #BACKGROUND_RATE} Hz in the background.
+     *
+     * @return The period in nanoseconds.
      */
-    private void loop()
+    private long getPeriod()
     {
         final DisplayMode mode = display.getDisplayMode();
         final int rate = mode.isRefreshRateKnown() ? mode.refreshRate() : DEFAULT_REFRESH_RATE;
-        final long period = NANOS_PER_SECOND / rate;
-        final long backgroundPeriod = NANOS_PER_SECOND / Math.min(rate, BACKGROUND_RATE);
+        return NANOS_PER_SECOND / (background ? Math.min(rate, BACKGROUND_RATE) : rate);
+    }
+
+    /**
+     * Body of the runtime thread: frames paced at the refresh rate of the display mode in effect until the loop stops
+     * or fails, then the window and the worker pool are closed; a failure leaves the thread to its handler of uncaught
+     * exceptions.
+     */
+    private void loop()
+    {
         long deadline = System.nanoTime();
         try
         {
@@ -318,7 +330,7 @@ public final class AwtPlatform implements Platform
             {
                 applyPending();
                 driver.iterate();
-                deadline = nextDeadline(deadline, background ? backgroundPeriod : period, System.nanoTime());
+                deadline = nextDeadline(deadline, getPeriod(), System.nanoTime());
                 long remaining = deadline - System.nanoTime();
                 while (remaining > 0L)
                 {
@@ -344,7 +356,7 @@ public final class AwtPlatform implements Platform
             final DisplayRequest request = pending;
             pending = null;
             display.apply(request);
-            window.setScreenMode(display.getScreenMode());
+            display.setCurrent(window.realize(display.getScreenMode(), display.getTarget()));
             display.post(inbox);
         }
     }
@@ -410,7 +422,7 @@ public final class AwtPlatform implements Platform
         }
         this.driver = driver;
         this.inbox = inbox;
-        window.open(this::post, display.getScreenMode());
+        display.setCurrent(window.open(this::post, display.getScreenMode(), display.getTarget()));
         if (!manual)
         {
             run();
@@ -486,6 +498,12 @@ public final class AwtPlatform implements Platform
      * supports exclusive full screen (ADR-0060).
      * </p>
      */
+    @Override
+    public List<DisplayMode> getDisplayModes()
+    {
+        return display.getDisplayModes();
+    }
+
     @Override
     public boolean isSupported(ScreenMode mode)
     {

@@ -31,7 +31,7 @@ A feature page is the entry point of an implementation batch: it restates every 
 
 Where the implementation stands, batch by batch: the numbers are those of the "Batches" section of each page. Every batch updates its row in the pull request that implements it, so the merged table always tells the next agent where to start. Details of a finished batch are in the "State" section of its page.
 
-Next batch: [`display-modes.md`](display-modes.md) batch 2 (display-mode enumeration and selection on `platform-awt`), the first unfinished batch in the order of the table; [`resources.md`](resources.md) batch 4 is reserved for the local agents ([`../local-agents.md`](../local-agents.md)).
+Next batch: [`display-modes.md`](display-modes.md) batch 3 (scaling policies and the resize handling of `platform-awt`), the first unfinished batch in the order of the table; [`resources.md`](resources.md) batch 4 is reserved for the local agents ([`../local-agents.md`](../local-agents.md)).
 
 | Phase | Page | Batches | Done | Remaining |
 |---|---|---|---|---|
@@ -45,7 +45,7 @@ Next batch: [`display-modes.md`](display-modes.md) batch 2 (display-mode enumera
 | 2 | [`sprite-sheet.md`](sprite-sheet.md) | 4 | 1 to 4 (2026-11-25) | none |
 | 2 | [`sprite.md`](sprite.md) | 4 | 1 to 3 (2026-11-26), 4 (2026-11-26, #931) | none; `REQ-SPRITE-004` parity waits for the OpenGL and Android backends |
 | 2 | [`animated-sprite.md`](animated-sprite.md) | 3 | 1 (2026-11-26, #932), 2 (2026-11-26, #933), 3 (2026-11-26, #934) | none |
-| 2 | [`display-modes.md`](display-modes.md) | 4 | 1 (2026-11-26); the scaling function of batch 3 was brought forward by platform and rendering batch 1 | 2 to 4 |
+| 2 | [`display-modes.md`](display-modes.md) | 4 | 1 (2026-11-26, #938), 2 (2026-11-26); the scaling function of batch 3 was brought forward by platform and rendering batch 1 | 3 and 4 |
 | 2 | [`output-filtering.md`](output-filtering.md) | 4 | none | 1 to 4 (batch 4 partly Phase 4) |
 | 2 | [`audio-short-and-long-sounds.md`](audio-short-and-long-sounds.md) | 8 | none | 1 to 8 (`audio-android` in Phase 4) |
 | 3 | [`ecs.md`](ecs.md) | 6 | none | 1 to 6 |

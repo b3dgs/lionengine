@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -440,6 +441,47 @@ public abstract class PlatformContract
                            result.reason());
             }
         }
+        platform.apply(FIT);
+        frame(platform);
+    }
+
+    /**
+     * The display modes are listed, at least one, without duplicate, unmodifiable and fixed (REQ-DISPLAY-003,
+     * ADR-0061).
+     */
+    @Test
+    void testDisplayModes()
+    {
+        final Platform platform = createPlatform(WIDTH, HEIGHT, FIT);
+        final List<DisplayMode> modes = platform.getDisplayModes();
+
+        assertFalse(modes.isEmpty());
+        assertEquals(modes.size(), new HashSet<>(modes).size());
+        assertFalse(modes.contains(null));
+        assertThrows(UnsupportedOperationException.class, () -> modes.add(modes.get(0)));
+        assertEquals(modes, platform.getDisplayModes());
+    }
+
+    /**
+     * A display mode that is not listed can be requested without exception: another mode is applied, reported as
+     * degraded with its reason (REQ-DISPLAY-003, ADR-0006, ADR-0061).
+     */
+    @Test
+    void testDisplayModeNotListed()
+    {
+        final DeliveringDriver driver = new DeliveringDriver();
+        final Platform platform = start(driver);
+        final DisplayMode missing = new DisplayMode(7, 5, 1, 1);
+        assertFalse(platform.getDisplayModes().contains(missing));
+
+        platform.apply(new DisplayRequest(ScreenMode.WINDOWED, missing, ScalingPolicy.FIT, List.of()));
+        frame(platform);
+
+        final EffectiveResult result = platform.getEffectiveResult();
+        assertNotNull(result.effective().displayMode());
+        assertFalse(missing.equals(result.effective().displayMode()));
+        assertTrue(result.degraded());
+        assertTrue(result.reason().startsWith("Display mode 7x5 1Hz 1bits not available, "), result.reason());
         platform.apply(FIT);
         frame(platform);
     }

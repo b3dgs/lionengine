@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.platform;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -28,19 +29,20 @@ import com.b3dgs.lionengine.render.RenderBackend;
 
 /**
  * Display state shared by the platform implementations: the surface size, the attached render backend, the supported
- * screen modes, the display listeners, and the resolution of a request into its effective result and presentation
- * geometry (ADR-0006, ADR-0046, ADR-0060, REQ-DISPLAY-001, REQ-DISPLAY-002, REQ-DISPLAY-004, REQ-DISPLAY-007,
- * REQ-DISPLAY-008, REQ-FILTER-002).
+ * screen modes, the display modes, the display listeners, and the resolution of a request into its effective result
+ * and presentation geometry (ADR-0006, ADR-0046, ADR-0060, ADR-0061, REQ-DISPLAY-001, REQ-DISPLAY-002,
+ * REQ-DISPLAY-003, REQ-DISPLAY-004, REQ-DISPLAY-007, REQ-DISPLAY-008, REQ-FILTER-002).
  *
  * <p>
- * A platform declares the screen modes it supports with {@link #setSupported(java.util.Set)}, decides what it can do
- * with the display mode, then calls {@link #resolve(DisplayRequest, DisplayMode, String)} with the display mode it
- * applies and the reasons it already has, and applies the effective screen mode of the result. This class adds the
- * screen-mode fallback (ADR-0006, {@link #selectScreenMode(ScreenMode)}), the scaling fallback ({@code INTEGER} to
- * {@code FIT}, ADR-0006) and the output filters: the
- * effective filters are those the attached backend supports, in the order requested, without {@code NONE}; the others
- * are skipped and explained. The scaling is computed on the current surface size and never changes the logical
- * frame.
+ * A platform declares the screen modes it supports with {@link #setSupported(java.util.Set)} and the display modes it
+ * offers with {@link #setDisplayModes(List)}, selects the display mode to apply with
+ * {@link #selectDisplayMode(DisplayMode, DisplayMode)}, then calls
+ * {@link #resolve(DisplayRequest, DisplayMode, String)} with the display mode it applies and the reasons it already
+ * has, and applies the effective screen mode of the result. This class adds the screen-mode fallback (ADR-0006,
+ * {@link #selectScreenMode(ScreenMode)}), the display-mode reason, the scaling fallback ({@code INTEGER} to
+ * {@code FIT}, ADR-0006) and the output filters: the effective filters are those the attached backend supports, in
+ * the order requested, without {@code NONE}; the others are skipped and explained. The scaling is computed on the
+ * current surface size and never changes the logical frame.
  * </p>
  *
  * <p>
@@ -65,6 +67,10 @@ public final class DisplayState
     private static final String REASON_SCREEN_MODE = " not supported, ";
     /** End of the reason of a screen mode not supported. */
     private static final String REASON_USED = " used";
+    /** Start of the reason of a display mode not applied. */
+    private static final String REASON_DISPLAY_MODE = "Display mode ";
+    /** Middle of the reason of a display mode not applied. */
+    private static final String REASON_NOT_AVAILABLE = " not available, ";
     /** Fallback order after {@link ScreenMode#FULL_SCREEN} (ADR-0006). */
     private static final ScreenMode[] AFTER_FULL_SCREEN =
     {
@@ -95,6 +101,8 @@ public final class DisplayState
     private final List<DisplayListener> listeners = new ArrayList<>();
     /** Screen modes the platform supports, never empty. */
     private Set<ScreenMode> supported = EnumSet.allOf(ScreenMode.class);
+    /** Display modes the platform offers, without duplicates, empty until set. */
+    private List<DisplayMode> displayModes = List.of();
     /** Attached render backend, {@code null} until attached. */
     private RenderBackend backend;
     /** Last result, {@code null} until the first resolution. */
@@ -255,9 +263,155 @@ public final class DisplayState
     }
 
     /**
+     * Tells whether a display mode matches a requested one (ADR-0061): same width and height, and same refresh rate
+     * and bit depth where the requested value is known; an unknown requested value matches any value.
+     *
+     * @param requested The requested display mode (never {@code null}).
+     * @param mode The display mode (never {@code null}).
+     * @return {@code true} if the display mode satisfies the request.
+     */
+    public static boolean matches(DisplayMode requested, DisplayMode mode)
+    {
+        final boolean size = requested.width() == mode.width() && requested.height() == mode.height();
+        final boolean rate = !requested.isRefreshRateKnown() || requested.refreshRate() == mode.refreshRate();
+        final boolean depth = !requested.isBitDepthKnown() || requested.bitDepth() == mode.bitDepth();
+        return size && rate && depth;
+    }
+
+    /**
+     * Formats a display mode for a reason: {@code "800x600 60Hz 32bits"}, an unknown value written {@code 0}.
+     *
+     * @param mode The display mode (never {@code null}).
+     * @return The text.
+     */
+    private static String format(DisplayMode mode)
+    {
+        return mode.width() + "x" + mode.height() + ' ' + mode.refreshRate() + "Hz " + mode.bitDepth() + "bits";
+    }
+
+    /**
+     * Distance between two values.
+     *
+     * @param value The value of a candidate.
+     * @param target The target value.
+     * @return The absolute difference.
+     */
+    private static long distance(int value, int target)
+    {
+        return Math.abs((long) value - target);
+    }
+
+    /**
+     * Tells whether a display mode is strictly nearer to a request than another one: by size, then refresh rate, then
+     * bit depth (ADR-0061).
+     *
+     * @param mode The candidate.
+     * @param best The best mode so far.
+     * @param requested The requested display mode.
+     * @param rate The target refresh rate.
+     * @param depth The target bit depth.
+     * @return {@code true} if the candidate is strictly nearer.
+     */
+    private static boolean isNearer(DisplayMode mode, DisplayMode best, DisplayMode requested, int rate, int depth)
+    {
+        final long size = distance(mode.width(), requested.width()) + distance(mode.height(), requested.height());
+        final long bestSize = distance(best.width(), requested.width()) + distance(best.height(), requested.height());
+        final long rateDistance = distance(mode.refreshRate(), rate);
+        final long bestRate = distance(best.refreshRate(), rate);
+        final int order;
+        if (size != bestSize)
+        {
+            order = Long.compare(size, bestSize);
+        }
+        else if (rateDistance != bestRate)
+        {
+            order = Long.compare(rateDistance, bestRate);
+        }
+        else
+        {
+            order = Long.compare(distance(mode.bitDepth(), depth), distance(best.bitDepth(), depth));
+        }
+        return order < 0;
+    }
+
+    /**
+     * Sets the display modes the platform offers (ADR-0061): copied in the given order, duplicates removed, the first
+     * occurrence kept.
+     *
+     * @param modes The display modes (never {@code null}, not empty, no {@code null} element).
+     * @throws IllegalArgumentException If {@code modes} is {@code null}, empty or holds {@code null}.
+     */
+    public void setDisplayModes(List<DisplayMode> modes)
+    {
+        if (modes == null || modes.isEmpty())
+        {
+            throw new IllegalArgumentException("At least one display mode must be offered");
+        }
+        final List<DisplayMode> copy = new ArrayList<>(modes.size());
+        for (final DisplayMode mode : modes)
+        {
+            if (mode == null)
+            {
+                throw new IllegalArgumentException("Display mode must not be null");
+            }
+            if (!copy.contains(mode))
+            {
+                copy.add(mode);
+            }
+        }
+        displayModes = Collections.unmodifiableList(copy);
+    }
+
+    /**
+     * Returns the display modes the platform offers.
+     *
+     * @return The display modes, unmodifiable, in the order set, empty until set.
+     */
+    public List<DisplayMode> getDisplayModes()
+    {
+        return displayModes;
+    }
+
+    /**
+     * Selects the offered display mode nearest to a requested one (ADR-0006, ADR-0061): the nearest size (smallest
+     * sum of the width and height differences), then the nearest refresh rate, then the nearest bit depth, then the
+     * first in the order offered; an offered mode equal to the request is thus selected. An unknown requested refresh
+     * rate or bit depth is compared to the current mode's, so the monitor keeps it when it can.
+     *
+     * @param requested The requested display mode, {@code null} to keep the current one.
+     * @param current The current display mode (never {@code null}).
+     * @return The selected display mode: {@code current} if {@code requested} is {@code null} or no mode is offered.
+     * @throws IllegalArgumentException If {@code current} is {@code null}.
+     */
+    public DisplayMode selectDisplayMode(DisplayMode requested, DisplayMode current)
+    {
+        if (current == null)
+        {
+            throw new IllegalArgumentException("Current display mode must not be null");
+        }
+        if (requested == null || displayModes.isEmpty())
+        {
+            return current;
+        }
+        final int rate = requested.isRefreshRateKnown() ? requested.refreshRate() : current.refreshRate();
+        final int depth = requested.isBitDepthKnown() ? requested.bitDepth() : current.bitDepth();
+        DisplayMode selected = displayModes.get(0);
+        for (final DisplayMode mode : displayModes)
+        {
+            if (isNearer(mode, selected, requested, rate, depth))
+            {
+                selected = mode;
+            }
+        }
+        return selected;
+    }
+
+    /**
      * Resolves a request into the result and the geometry, read with their getters: the screen mode with its
-     * fallback ({@link #selectScreenMode(ScreenMode)}), the scaling with its fallback, and the filters of the backend.
-     * A screen-mode fallback is the first reason.
+     * fallback ({@link #selectScreenMode(ScreenMode)}), the display mode given by the platform, the scaling with its
+     * fallback, and the filters of the backend. A screen-mode fallback is the first reason; a display mode that does
+     * not {@link #matches(DisplayMode, DisplayMode) match} the requested one comes next, as
+     * {@code "Display mode 800x600 75Hz 32bits not available, 800x600 60Hz 32bits used"}, then the platform's reasons.
      *
      * @param request The request (never {@code null}).
      * @param displayMode The display mode the platform applies, {@code null} if unknown.
@@ -272,6 +426,12 @@ public final class DisplayState
         if (screenMode != request.screenMode())
         {
             addReason(reason, request.screenMode() + REASON_SCREEN_MODE + screenMode + REASON_USED);
+        }
+        final DisplayMode requestedMode = request.displayMode();
+        if (requestedMode != null && displayMode != null && !matches(requestedMode, displayMode))
+        {
+            addReason(reason, REASON_DISPLAY_MODE + format(requestedMode) + REASON_NOT_AVAILABLE + format(displayMode)
+                              + REASON_USED);
         }
         if (!reasons.isEmpty())
         {

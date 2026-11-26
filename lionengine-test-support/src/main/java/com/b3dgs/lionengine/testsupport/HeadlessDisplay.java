@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.testsupport;
 
+import java.util.List;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Inbox;
@@ -29,11 +30,12 @@ import com.b3dgs.lionengine.platform.ScreenMode;
 import com.b3dgs.lionengine.render.RenderBackend;
 
 /**
- * Display state of the headless platform: surface, display mode, effective result and presentation geometry
- * (ADR-0006, ADR-0046, REQ-DISPLAY-007, REQ-DISPLAY-008).
+ * Display state of the headless platform: surface, screen modes, display modes, effective result and presentation
+ * geometry (ADR-0006, ADR-0046, ADR-0060, ADR-0061, REQ-DISPLAY-003, REQ-DISPLAY-007, REQ-DISPLAY-008).
  *
  * <p>
- * Every screen mode and display mode is accepted; the scaling and the output filters are resolved by the shared
+ * The supported screen modes and the offered display modes are fake capabilities set by the test; the screen-mode
+ * fallback, the display-mode selection, the scaling and the output filters are resolved by the shared
  * {@link DisplayState}: the filters are those the attached render backend implements, none without a backend.
  * Runtime thread only.
  * </p>
@@ -56,6 +58,7 @@ final class HeadlessDisplay
     {
         state = new DisplayState(logicalWidth, logicalHeight);
         displayMode = new DisplayMode(logicalWidth, logicalHeight, DisplayMode.UNKNOWN, DisplayMode.UNKNOWN);
+        state.setDisplayModes(List.of(displayMode));
         apply(request);
     }
 
@@ -93,6 +96,32 @@ final class HeadlessDisplay
     boolean isSupported(ScreenMode mode)
     {
         return state.isSupported(mode);
+    }
+
+    /**
+     * Sets the display modes of the fake monitor; the current mode is kept if listed, otherwise it becomes the first.
+     *
+     * @param modes The display modes.
+     * @throws IllegalArgumentException If {@code modes} is {@code null}, empty or holds {@code null}.
+     */
+    void setDisplayModes(List<DisplayMode> modes)
+    {
+        state.setDisplayModes(modes);
+        final List<DisplayMode> listed = state.getDisplayModes();
+        if (!listed.contains(displayMode))
+        {
+            displayMode = listed.get(0);
+        }
+    }
+
+    /**
+     * Returns the display modes of the fake monitor.
+     *
+     * @return The display modes, unmodifiable.
+     */
+    List<DisplayMode> getDisplayModes()
+    {
+        return state.getDisplayModes();
     }
 
     /**
@@ -143,10 +172,7 @@ final class HeadlessDisplay
      */
     void apply(DisplayRequest request)
     {
-        if (request.displayMode() != null)
-        {
-            displayMode = request.displayMode();
-        }
+        displayMode = state.selectDisplayMode(request.displayMode(), displayMode);
         state.resolve(request, displayMode, "");
     }
 

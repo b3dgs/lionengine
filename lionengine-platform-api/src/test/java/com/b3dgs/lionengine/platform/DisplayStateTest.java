@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -281,6 +282,114 @@ final class DisplayStateTest
 
         assertEquals(List.of("first FIT", "first STRETCH", "second STRETCH"), calls);
         assertThrows(IllegalArgumentException.class, () -> state.addListener(null));
+    }
+
+    /**
+     * A display mode matches a request of the same size, and of the same refresh rate and bit depth where they are
+     * known (ADR-0061).
+     */
+    @Test
+    void testMatches()
+    {
+        final DisplayMode mode = new DisplayMode(1920, 1080, 60, 32);
+
+        assertTrue(DisplayState.matches(mode, mode));
+        assertTrue(DisplayState.matches(new DisplayMode(1920, 1080, 0, 0), mode));
+        assertTrue(DisplayState.matches(new DisplayMode(1920, 1080, 60, 0), mode));
+        assertTrue(DisplayState.matches(new DisplayMode(1920, 1080, 0, 32), mode));
+        assertFalse(DisplayState.matches(new DisplayMode(1920, 1080, 75, 0), mode));
+        assertFalse(DisplayState.matches(new DisplayMode(1920, 1080, 0, 16), mode));
+        assertFalse(DisplayState.matches(new DisplayMode(1920, 1000, 60, 32), mode));
+        assertFalse(DisplayState.matches(new DisplayMode(1900, 1080, 60, 32), mode));
+        assertFalse(DisplayState.matches(mode, new DisplayMode(1920, 1080, 0, 0)));
+    }
+
+    /**
+     * The display modes are copied in order without duplicates; none is selected until they are set, and a request
+     * without display mode keeps the current one (ADR-0061).
+     */
+    @Test
+    void testDisplayModes()
+    {
+        final DisplayState state = new DisplayState(WIDTH, HEIGHT);
+        final DisplayMode large = new DisplayMode(1920, 1080, 60, 32);
+        final DisplayMode small = new DisplayMode(640, 480, 60, 32);
+        final DisplayMode requested = new DisplayMode(800, 600, 60, 32);
+        assertTrue(state.getDisplayModes().isEmpty());
+        assertEquals(large, state.selectDisplayMode(requested, large));
+
+        final List<DisplayMode> modes = new ArrayList<>(List.of(small, large, small));
+        state.setDisplayModes(modes);
+        modes.clear();
+
+        assertEquals(List.of(small, large), state.getDisplayModes());
+        assertThrows(UnsupportedOperationException.class, () -> state.getDisplayModes().add(small));
+        assertEquals(large, state.selectDisplayMode(null, large));
+        assertEquals(small, state.selectDisplayMode(requested, large));
+        assertThrows(IllegalArgumentException.class, () -> state.selectDisplayMode(requested, null));
+        assertThrows(IllegalArgumentException.class, () -> state.setDisplayModes(null));
+        assertThrows(IllegalArgumentException.class, () -> state.setDisplayModes(List.of()));
+        assertThrows(IllegalArgumentException.class, () -> state.setDisplayModes(Collections.singletonList(null)));
+    }
+
+    /**
+     * The selection takes the exact mode, then the nearest size, then the nearest refresh rate, then the nearest bit
+     * depth, then the first offered; an unknown requested value is compared to the current mode's (ADR-0006,
+     * ADR-0061).
+     */
+    @Test
+    void testSelectDisplayMode()
+    {
+        final DisplayState state = new DisplayState(WIDTH, HEIGHT);
+        final DisplayMode hd60 = new DisplayMode(1280, 720, 60, 32);
+        final DisplayMode hd75 = new DisplayMode(1280, 720, 75, 32);
+        final DisplayMode hd75low = new DisplayMode(1280, 720, 75, 16);
+        final DisplayMode full = new DisplayMode(1920, 1080, 60, 32);
+        final DisplayMode wide = new DisplayMode(1366, 768, 60, 32);
+        state.setDisplayModes(List.of(full, hd75low, hd75, hd60, wide));
+
+        assertEquals(hd75, state.selectDisplayMode(hd75, full));
+        assertEquals(hd60, state.selectDisplayMode(new DisplayMode(1280, 720, 0, 0), full));
+        assertEquals(hd75, state.selectDisplayMode(new DisplayMode(1280, 720, 0, 0), hd75));
+        assertEquals(hd75, state.selectDisplayMode(new DisplayMode(1280, 720, 72, 0), full));
+        assertEquals(hd75low, state.selectDisplayMode(new DisplayMode(1280, 720, 75, 15), full));
+        assertEquals(hd75low, state.selectDisplayMode(new DisplayMode(1280, 720, 75, 24), full));
+        assertEquals(wide, state.selectDisplayMode(new DisplayMode(1360, 760, 60, 32), full));
+        assertEquals(full, state.selectDisplayMode(new DisplayMode(3840, 2160, 60, 32), full));
+        assertEquals(hd60, state.selectDisplayMode(new DisplayMode(640, 480, 60, 32), full));
+    }
+
+    /**
+     * A display mode given by the platform that does not match the request is reported after the screen-mode
+     * fallback and before the platform's reasons; an unknown requested value is no degradation (ADR-0061).
+     */
+    @Test
+    void testDisplayModeReason()
+    {
+        final DisplayState state = new DisplayState(WIDTH, HEIGHT);
+        final DisplayMode mode = new DisplayMode(1920, 1080, 60, 32);
+        state.setSupported(EnumSet.of(ScreenMode.WINDOWED));
+
+        state.resolve(new DisplayRequest(ScreenMode.FULL_SCREEN,
+                                         new DisplayMode(800, 600, 75, 32),
+                                         ScalingPolicy.FIT,
+                                         List.of()),
+                      mode,
+                      "Platform reason");
+
+        assertEquals("FULL_SCREEN not supported, WINDOWED used; "
+                     + "Display mode 800x600 75Hz 32bits not available, 1920x1080 60Hz 32bits used; Platform reason",
+                     state.getResult().reason());
+
+        state.resolve(new DisplayRequest(ScreenMode.WINDOWED,
+                                         new DisplayMode(1920, 1080, 0, 0),
+                                         ScalingPolicy.FIT,
+                                         List.of()),
+                      mode,
+                      "");
+
+        assertFalse(state.getResult().degraded());
+        assertEquals(mode, state.getResult().effective().displayMode());
     }
 
     /**

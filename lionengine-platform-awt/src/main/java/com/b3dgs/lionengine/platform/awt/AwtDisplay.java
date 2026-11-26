@@ -18,7 +18,9 @@ package com.b3dgs.lionengine.platform.awt;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Inbox;
@@ -32,19 +34,28 @@ import com.b3dgs.lionengine.platform.ScreenMode;
 import com.b3dgs.lionengine.render.RenderBackend;
 
 /**
- * Display state of the AWT platform: surface, screen modes, display mode, effective result and presentation geometry
- * (ADR-0006, ADR-0022, ADR-0043, ADR-0046, ADR-0060, REQ-DISPLAY-001, REQ-DISPLAY-002, REQ-DISPLAY-007,
- * REQ-DISPLAY-008).
+ * Display state of the AWT platform: surface, screen modes, display modes, effective result and presentation geometry
+ * (ADR-0006, ADR-0022, ADR-0043, ADR-0046, ADR-0060, ADR-0061, REQ-DISPLAY-001, REQ-DISPLAY-002, REQ-DISPLAY-003,
+ * REQ-DISPLAY-007, REQ-DISPLAY-008).
  *
  * <p>
  * {@code WINDOWED} and {@code FULL_WINDOW} are supported, and {@code FULL_SCREEN} when the default monitor supports
- * exclusive full screen; the platform realizes the effective screen mode on its window. Until display-mode batch 2,
- * the display mode is the current mode of the default monitor; another one is reported as degraded. The screen-mode
- * fallback, the scaling and the output filters are resolved by the shared {@link DisplayState}. Runtime thread only.
+ * exclusive full screen; the platform realizes the effective screen mode on its window. The display modes are those of
+ * the default monitor. A display mode is changed only in {@code FULL_SCREEN}: the target is the offered mode nearest to
+ * the request, or the current one when the request has none; in the other screen modes the target is the desktop mode,
+ * the mode of the monitor when the platform was created. The window realizes the target and gives back the mode in
+ * effect, which the result reports, with the reason when it differs from the request. The screen-mode fallback, the
+ * display-mode selection, the scaling and the output filters are resolved by the shared {@link DisplayState}. Runtime
+ * thread only.
  * </p>
  */
 final class AwtDisplay
 {
+    /** Reason of a display mode requested outside {@code FULL_SCREEN}. */
+    private static final String REASON_WINDOWED = "Display mode change needs FULL_SCREEN, the desktop mode is kept";
+    /** Reason of a display mode change refused by the system. */
+    private static final String REASON_REFUSED = "Display mode change refused by the system, the current mode is kept";
+
     /**
      * Creates the display state of the default monitor and applies the initial request.
      *
@@ -56,11 +67,17 @@ final class AwtDisplay
     static AwtDisplay create(int logicalWidth, int logicalHeight, DisplayRequest request)
     {
         final GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        return new AwtDisplay(logicalWidth,
-                              logicalHeight,
-                              convert(device.getDisplayMode()),
-                              device.isFullScreenSupported(),
-                              request);
+        final DisplayMode desktop = convert(device.getDisplayMode());
+        final List<DisplayMode> modes = new ArrayList<>();
+        for (final java.awt.DisplayMode mode : device.getDisplayModes())
+        {
+            modes.add(convert(mode));
+        }
+        if (modes.isEmpty())
+        {
+            modes.add(desktop);
+        }
+        return new AwtDisplay(logicalWidth, logicalHeight, modes, desktop, device.isFullScreenSupported(), request);
     }
 
     /**
@@ -80,48 +97,103 @@ final class AwtDisplay
 
     /** Shared display state. */
     private final DisplayState state;
-    /** Current display mode of the default monitor. */
-    private final DisplayMode displayMode;
+    /** Display mode of the default monitor when the platform was created. */
+    private final DisplayMode desktop;
+    /** Display mode in effect on the default monitor. */
+    private DisplayMode current;
+    /** Last applied request. */
+    private DisplayRequest request;
+    /** {@code true} once the window realized the last request. */
+    private boolean realized;
 
     /**
      * Creates the display state and applies the initial request.
      *
      * @param logicalWidth The logical frame width in pixels.
      * @param logicalHeight The logical frame height in pixels.
-     * @param displayMode The current display mode of the default monitor.
+     * @param modes The display modes of the default monitor, not empty.
+     * @param desktop The current display mode of the default monitor.
      * @param fullScreen {@code true} if the default monitor supports exclusive full screen.
      * @param request The initial request.
      */
     AwtDisplay(int logicalWidth,
                int logicalHeight,
-               DisplayMode displayMode,
+               List<DisplayMode> modes,
+               DisplayMode desktop,
                boolean fullScreen,
                DisplayRequest request)
     {
         state = new DisplayState(logicalWidth, logicalHeight);
-        final Set<ScreenMode> modes = EnumSet.of(ScreenMode.WINDOWED, ScreenMode.FULL_WINDOW);
+        final Set<ScreenMode> screenModes = EnumSet.of(ScreenMode.WINDOWED, ScreenMode.FULL_WINDOW);
         if (fullScreen)
         {
-            modes.add(ScreenMode.FULL_SCREEN);
+            screenModes.add(ScreenMode.FULL_SCREEN);
         }
-        state.setSupported(modes);
-        this.displayMode = displayMode;
+        state.setSupported(screenModes);
+        state.setDisplayModes(modes);
+        this.desktop = desktop;
+        current = desktop;
         apply(request);
     }
 
     /**
-     * Applies a request: the screen mode with its fallback, the current display mode of the monitor.
+     * Applies a request, before the window realizes it: the result reports the display mode in effect until then.
      *
      * @param request The request.
      */
     void apply(DisplayRequest request)
     {
-        String reasons = "";
-        if (request.displayMode() != null && !request.displayMode().equals(displayMode))
+        this.request = request;
+        realized = false;
+        resolve();
+    }
+
+    /**
+     * Sets the display mode in effect once the window realized the last request, and resolves it again.
+     *
+     * @param mode The display mode of the default monitor.
+     */
+    void setCurrent(DisplayMode mode)
+    {
+        current = mode;
+        realized = true;
+        resolve();
+    }
+
+    /**
+     * Returns the display mode the window must realize for the last request.
+     *
+     * @return The offered mode nearest to the request in {@code FULL_SCREEN} (the current one if the request has
+     *         none), the desktop mode otherwise.
+     */
+    DisplayMode getTarget()
+    {
+        if (getScreenMode() == ScreenMode.FULL_SCREEN)
         {
-            reasons = "Display mode change not implemented yet, the current mode is kept";
+            return state.selectDisplayMode(request.displayMode(), current);
         }
-        state.resolve(request, displayMode, reasons);
+        return desktop;
+    }
+
+    /**
+     * Resolves the last request with the display mode in effect, and the reason when it was not realized.
+     */
+    private void resolve()
+    {
+        String reasons = "";
+        final DisplayMode requested = request.displayMode();
+        if (requested != null && !DisplayState.matches(requested, current))
+        {
+            if (getScreenMode() != ScreenMode.FULL_SCREEN)
+            {
+                reasons = REASON_WINDOWED;
+            }
+            else if (realized && !current.equals(getTarget()))
+            {
+                reasons = REASON_REFUSED;
+            }
+        }
+        state.resolve(request, current, reasons);
     }
 
     /**
@@ -135,7 +207,7 @@ final class AwtDisplay
     {
         final EffectiveResult previous = state.getResult();
         state.setSurface(width, height);
-        apply(previous.requested());
+        resolve();
         return !previous.equals(state.getResult());
     }
 
@@ -151,13 +223,23 @@ final class AwtDisplay
     }
 
     /**
-     * Returns the effective screen mode.
+     * Returns the display modes of the default monitor.
      *
-     * @return The screen mode of the last result, to realize on the window.
+     * @return The display modes, unmodifiable.
+     */
+    List<DisplayMode> getDisplayModes()
+    {
+        return state.getDisplayModes();
+    }
+
+    /**
+     * Returns the effective screen mode of the last request.
+     *
+     * @return The screen mode, to realize on the window.
      */
     ScreenMode getScreenMode()
     {
-        return state.getResult().effective().screenMode();
+        return state.selectScreenMode(request.screenMode());
     }
 
     /**
@@ -198,17 +280,17 @@ final class AwtDisplay
     void attach(RenderBackend backend)
     {
         state.setBackend(backend);
-        apply(state.getResult().requested());
+        resolve();
     }
 
     /**
-     * Returns the display mode.
+     * Returns the display mode in effect.
      *
-     * @return The current display mode of the default monitor.
+     * @return The display mode of the default monitor.
      */
     DisplayMode getDisplayMode()
     {
-        return displayMode;
+        return current;
     }
 
     /**

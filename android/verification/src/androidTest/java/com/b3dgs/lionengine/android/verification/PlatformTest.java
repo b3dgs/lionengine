@@ -212,4 +212,29 @@ public final class PlatformTest
         assertEquals(Collections.singletonList("WINDOWED"), calls);
         assertEquals("FULL_WINDOW not supported, WINDOWED used", state.getResult().reason());
     }
+
+    /**
+     * The display modes are copied without duplicates and the nearest one is selected: size, then refresh rate, then
+     * depth; a mode that does not match the request is reported (REQ-DISPLAY-003, ADR-0061).
+     */
+    @Test
+    public void testDisplayModes()
+    {
+        final DisplayState state = new DisplayState(320, 240);
+        final DisplayMode full = new DisplayMode(1920, 1080, 60, 32);
+        final DisplayMode hd60 = new DisplayMode(1280, 720, 60, 32);
+        final DisplayMode hd75 = new DisplayMode(1280, 720, 75, 32);
+        state.setDisplayModes(Arrays.asList(full, hd75, hd60, full));
+
+        assertEquals(Arrays.asList(full, hd75, hd60), state.getDisplayModes());
+        assertEquals(hd60, state.selectDisplayMode(new DisplayMode(1300, 700, 0, 0), full));
+        assertEquals(hd75, state.selectDisplayMode(new DisplayMode(1280, 720, 72, 32), full));
+        assertTrue(DisplayState.matches(new DisplayMode(1920, 1080, 0, 0), full));
+
+        state.resolve(new DisplayRequest(ScreenMode.WINDOWED, hd75, ScalingPolicy.FIT, Collections.emptyList()),
+                      full,
+                      "");
+        assertEquals("Display mode 1280x720 75Hz 32bits not available, 1920x1080 60Hz 32bits used",
+                     state.getResult().reason());
+    }
 }
