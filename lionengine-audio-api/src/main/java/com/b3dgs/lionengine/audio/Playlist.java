@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.resources.ResourceException;
  * Failures: a track that fails to prepare or to start, or whose stream fails while it plays, is reported to the
  * {@link PlaylistListener} with the playlist, the index of the track and the exception, then skipped: the next track
  * starts. With {@link #setAbortOnFailure(boolean)}, the playlist stops instead. When every track fails in a row, the
- * playlist stops, even when looping.
+ * playlist stops, even when looping. The listener may stop or play the playlist: the advance then goes no further.
  * </p>
  *
  * <p>
@@ -74,6 +74,8 @@ public final class Playlist
     private int voice = AudioBackend.NO_VOICE;
     /** The track prepared ahead by the playlist, {@code null} if none. */
     private LongSound preparedAhead;
+    /** Count of the stops, so that an advance ends when the listener stops or plays the playlist. */
+    private int stops;
 
     /**
      * Creates a stopped playlist that stops after its last track and skips the tracks that fail.
@@ -168,6 +170,7 @@ public final class Playlist
      */
     public void stop()
     {
+        stops++;
         if (track != NO_TRACK)
         {
             final int current = voice;
@@ -237,9 +240,10 @@ public final class Playlist
      */
     private void advance(int from)
     {
+        final int run = stops;
         int next = from;
         int failures = 0;
-        while (track == NO_TRACK && failures < tracks.length)
+        while (track == NO_TRACK && failures < tracks.length && run == stops)
         {
             if (next == tracks.length)
             {
@@ -380,12 +384,13 @@ public final class Playlist
         public void onTrackEnded(LongSound sound, RuntimeException failure)
         {
             final int ended = track;
+            final int run = stops;
             stopped();
             if (failure != null)
             {
                 report(ended, failure);
             }
-            if (failure == null || !abortOnFailure)
+            if (run == stops && (failure == null || !abortOnFailure))
             {
                 advance(ended + 1);
             }

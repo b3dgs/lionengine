@@ -396,4 +396,30 @@ final class PlaylistTest
         assertThrows(IllegalArgumentException.class, () -> new Playlist(audio));
         assertThrows(IllegalArgumentException.class, () -> new Playlist(audio, first, null));
     }
+
+    /**
+     * A listener that stops the playlist at a failure ends the advance: no later track starts.
+     */
+    @Test
+    void testListenerStops()
+    {
+        final Playlist playlist = new Playlist(audio, loader.stream(MISSING), first);
+        playlist.setListener((list, track, exception) -> list.stop());
+
+        playlist.play();
+
+        assertFalse(playlist.isPlaying());
+        assertFalse(first.isPlaying());
+
+        final Playlist restarted = new Playlist(audio, first, loader.stream(TRUNCATED), second);
+        restarted.setListener((list, track, exception) -> list.stop());
+        restarted.play();
+        play(FIRST_FRAMES);
+        assertEquals(1, restarted.getTrack());
+        play(FIRST_FRAMES);
+        assertFalse(restarted.isPlaying());
+        assertFalse(second.isPlaying());
+        assertFalse(second.isPrepared());
+        assertEquals(0, provider.getUnclosed());
+    }
 }
