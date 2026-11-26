@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.graphics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Configuration;
 import com.b3dgs.lionengine.DefinitionException;
@@ -31,7 +32,7 @@ import com.b3dgs.lionengine.resources.ResourceKey;
  * the sheet once loaded: the grid must fit and every animation frame must be a cell (ADR-0032, ADR-0033,
  * REQ-SHEET-003).
  */
-final class SheetDefinition implements SheetCheck
+final class SheetDefinition
 {
     /** Field of the image key. */
     static final String IMAGE = "image";
@@ -79,6 +80,8 @@ final class SheetDefinition implements SheetCheck
     private final double pivotY;
     /** The frames of every animation, checked against the cells of the sheet. */
     private final List<JsonArray> frames = new ArrayList<>();
+    /** The templates by name, in the order of the file. */
+    private final Map<String, ColorMapping> templates;
 
     /**
      * Reads and checks a definition, except what needs the image.
@@ -106,7 +109,7 @@ final class SheetDefinition implements SheetCheck
         pivotX = configuration.getDouble(PIVOT_X, cellWidth / HALF);
         pivotY = configuration.getDouble(PIVOT_Y, cellHeight / HALF);
         SheetAnimations.read(configuration, root, frames);
-        SheetTemplates.read(configuration, root);
+        templates = SheetTemplates.read(configuration, root);
         configuration.checkAllRead();
     }
 
@@ -227,8 +230,25 @@ final class SheetDefinition implements SheetCheck
         return pivotY;
     }
 
-    @Override
-    public void check(int width, int height)
+    /**
+     * Returns the templates.
+     *
+     * @return The color mappings by name, in the order of the file, unmodifiable; empty if none.
+     */
+    Map<String, ColorMapping> getTemplates()
+    {
+        return templates;
+    }
+
+    /**
+     * Checks the image of the sheet, after it is loaded and before the sheet is created: the grid must fit and every
+     * animation frame must be a cell.
+     *
+     * @param width The width of the image in pixels.
+     * @param height The height of the image in pixels.
+     * @throws DefinitionException If the image does not suit the definition.
+     */
+    void check(int width, int height)
     {
         final int columns = SpriteSheet.count(width,
                                               grid.cellWidth(),

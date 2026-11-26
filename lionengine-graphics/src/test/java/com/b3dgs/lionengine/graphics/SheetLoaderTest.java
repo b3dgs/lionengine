@@ -179,6 +179,10 @@ final class SheetLoaderTest
                          Arguments.of("templates",
                                       "\"templates\": {\"red\": {\"#ff00ff\": \"#FF0000\", \"#FF00FF\": \"#0000FF\"}}",
                                       "$.templates.red['#FF00FF']"),
+                         Arguments.of("templates",
+                                      "\"templates\": {\"red\": {\"#FF00FF\": \"#FF0000\", "
+                                                   + "\"#FFFF00FF\": \"#0000FF\"}}",
+                                      "$.templates.red['#FFFF00FF']"),
                          Arguments.of("columns", "\"columns\": 5", "$.columns"),
                          Arguments.of("rows", "\"rows\": 3", "$.rows"),
                          Arguments.of("cellWidth", "\"cellWidth\": 100", "$.cellWidth"),
@@ -283,6 +287,11 @@ final class SheetLoaderTest
         assertEquals(13.5, sheet.getPivotY());
         assertEquals(37, sheet.getCellX(5));
         assertEquals(17, sheet.getCellY(5));
+        assertEquals(List.of("red", "blue"), sheet.getTemplateNames());
+        assertEquals(ColorMapping.NONE.with(0xFFFF00FF, 0xFFFF0000).with(0x80FFFFFF, 0x80FF0000),
+                     sheet.getTemplate("red"));
+        assertTrue(sheet.getTemplate("blue").isIdentity());
+        assertFalse(sheet.hasTemplate("comment"));
         assertEquals(0, provider.getUnclosed());
     }
 
@@ -303,6 +312,7 @@ final class SheetLoaderTest
         assertEquals(0, sheet.getSpacing());
         assertEquals(8.0, sheet.getPivotX());
         assertEquals(7.5, sheet.getPivotY());
+        assertTrue(sheet.getTemplateNames().isEmpty());
     }
 
     /**

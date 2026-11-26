@@ -39,6 +39,7 @@ import org.junit.runner.RunWith;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.b3dgs.lionengine.DefinitionException;
+import com.b3dgs.lionengine.graphics.ColorMapping;
 import com.b3dgs.lionengine.graphics.ColorMatrix;
 import com.b3dgs.lionengine.graphics.ColorTransform;
 import com.b3dgs.lionengine.graphics.Image;
@@ -61,9 +62,11 @@ import com.b3dgs.lionengine.resources.memory.MemoryProvider;
 /**
  * Runs {@code graphics} on Android API 21 (ADR-0044): the pixel buffer, the PNG decoder with its size limits
  * (ADR-0054), whose {@code java.util.zip.Inflater} and {@code CRC32} are verified by the probes, the image cache over
- * the memory provider, the sheets, the sprites and the color transforms. The images are written here with the API 21
- * methods only, as the JVM fixture {@code PngWriter} writes them; expected values are the ones of the JVM tests
- * (PixelBufferTest, PngDecoderTest, PngDecoderContractTest, ImageCacheTest, SpriteTest, ColorTransformTest).
+ * the memory provider, the sheets, the sprites, the color transforms and the template color variants. The images are
+ * written here with the API 21 methods only, as the JVM fixture {@code PngWriter} writes them; expected values are the
+ * ones of the JVM tests
+ * (PixelBufferTest, PngDecoderTest, PngDecoderContractTest, ImageCacheTest, SpriteTest, ColorTransformTest,
+ * ColorMappingTest, TemplateVariantTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class GraphicsTest
@@ -717,6 +720,66 @@ public final class GraphicsTest
         assertEquals(2, cache.size());
         variant.release();
         hero.release();
+        assertEquals(0, cache.size());
+    }
+
+    /**
+     * The templates of a sheet definition become color mappings, matched exactly on the four channels in one pass,
+     * and baked into variants shared by mapping, whatever the template name (REQ-SPRITE-005, ADR-0057).
+     *
+     * @throws IOException If a resource cannot be written.
+     */
+    @Test
+    public void testTemplateVariant() throws IOException
+    {
+        final ResourceKey image = new ResourceKey("sprites/soldier.png");
+        final ResourceKey key = new ResourceKey("sheets/soldier.json");
+        final MemoryProvider memory = new MemoryProvider();
+        try (OutputStream output = memory.openWrite(image))
+        {
+            output.write(png(2, 1, 8, RGBA, 0, null, null, 255, 0, 255, 255, 255, 0, 255, 128));
+        }
+        final String definition = "{\"format\": \"lionengine.sheet\", \"version\": 1, "
+                                  + "\"image\": \"sprites/soldier.png\", \"cellWidth\": 1, \"cellHeight\": 1, "
+                                  + "\"templates\": {"
+                                  + "\"red\": {\"#FF00FF\": \"#FF0000\", \"#80FF00FF\": \"#80FF0000\"}, "
+                                  + "\"blue\": {\"#FF00FF\": \"#0000FF\"}, "
+                                  + "\"crimson\": {\"#80ff00ff\": \"#80ff0000\", \"#FFFF00FF\": \"#FFFF0000\"}}}";
+        try (OutputStream output = memory.openWrite(key))
+        {
+            output.write(definition.getBytes(StandardCharsets.UTF_8));
+        }
+        final Resources resources = new Resources(memory);
+        final ImageCache cache = new ImageCache(resources, new Textures());
+        final SheetGroup group = new SheetGroup(cache);
+        final SpriteSheet sheet = new SheetLoader(resources).load(group, key);
+        final ColorMapping red = sheet.getTemplate("red");
+        final ColorMapping swap = ColorMapping.NONE.with(0xFFFF0000, 0xFF0000FF).with(0xFF0000FF, 0xFFFF0000);
+
+        assertEquals(Arrays.asList("red", "blue", "crimson"), sheet.getTemplateNames());
+        assertEquals(red, sheet.getTemplate("crimson"));
+        assertEquals(0xFFFF0000, red.apply(0xFFFF00FF));
+        assertEquals(0x7FFF00FF, red.apply(0x7FFF00FF));
+        assertEquals(0xFF0000FF, swap.apply(0xFFFF0000));
+        assertEquals(0xFFFF0000, swap.apply(0xFF0000FF));
+        assertEquals("mapping(#80FF00FF=#80FF0000,#FFFF00FF=#FFFF0000)", red.toString());
+        final Image redVariant = cache.bake(sheet.getImage(), ColorTransform.NONE.withMapping(red));
+        final ColorTransform crimsonColors = ColorTransform.NONE.withMapping(sheet.getTemplate("crimson"));
+        final Image crimson = cache.bake(sheet.getImage(), crimsonColors);
+        final Image blue = cache.bake(sheet.getImage(), ColorTransform.NONE.withMapping(sheet.getTemplate("blue")));
+        assertEquals(0xFFFF0000, redVariant.getPixel(0, 0));
+        assertEquals(0x80FF0000, redVariant.getPixel(1, 0));
+        assertEquals(0xFF0000FF, blue.getPixel(0, 0));
+        assertEquals(0x80FF00FF, blue.getPixel(1, 0));
+        assertEquals(redVariant.getTexture(), crimson.getTexture());
+        assertEquals(0xFF363636,
+                     ColorTransform.NONE.withMapping(red).withGrading(ColorMatrix.saturation(0.0)).apply(0xFFFF00FF));
+        assertEquals(2, new Sprite(sheet, blue).getFrameCount());
+        assertEquals(3, cache.size());
+        redVariant.release();
+        crimson.release();
+        blue.release();
+        group.release();
         assertEquals(0, cache.size());
     }
 

@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 2, see `roadmap.md` (batch order: sprite sheet, sprite, animated sprite)
 - Affected modules: `graphics`, `render-api`, `resources`, `test-support`, `examples`
 - Requirements: `REQ-SPRITE-001` to `REQ-SPRITE-010`, `REQ-SPR-001`
-- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md), [`ADR-0014`](../decisions/0014-meters-to-pixels-numeric-type-and-rotation.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0056`](../decisions/0056-sprite-color-transforms-mask-grading-capability-and-bake.md)
+- Applicable ADRs: [`ADR-0003`](../decisions/0003-sprite-animation-and-sprite-sheet-contracts-in-graphics.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md), [`ADR-0014`](../decisions/0014-meters-to-pixels-numeric-type-and-rotation.md), [`ADR-0026`](../decisions/0026-graphics-pixels-cache-transforms-animation-and-commands.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0056`](../decisions/0056-sprite-color-transforms-mask-grading-capability-and-bake.md), [`ADR-0057`](../decisions/0057-template-color-mapping-exact-argb-keys-first-in-the-transform.md)
 - Open questions involved: none
 
 ## Objective
@@ -61,6 +61,13 @@ Batch 3 (2026-11-26), color transforms, with the example `ColorTransformExample`
 - Paths: `getFramePart(capability)` keeps the tint and alpha the backend applies per frame, and `getBakedPart(capability)` keeps the rest. `ImageCache.bake(image, transform)` caches the CPU result as an image derived from the source: discriminator of the source + `+` + canonical text, shared by every code baking the same transform, released by each handle, refused over the limit, checked for the thread. An identity transform gives a new handle on the source, and a reload of the source leaves its variants unchanged. `Sprite.setTint(argb)` and `setAlpha(alpha)` write the per-frame part into each command, allocating nothing. `new Sprite(sheet, image)` draws the frames of a sheet from a variant of its image of the same size. A sprite never bakes.
 - Tests: `ColorMatrixTest`; `ColorTransformTest` (mask, tint and alpha, order, path independence on 10,000 pixels and transforms spread by an integer hash, split for every capability, text); `ColorBakeTest` (variant, sharing, identity, derived images, reload, limit, invalid arguments, other thread); `SpriteTest` (`testColor`, `testCapability`, `testSheetVariant`); `RecordingBackendTest.testColorEffects`; `AwtRenderBackendTest.testColorParity` (per-frame tint and alpha within one unit of the CPU bake); `ColorTransformExampleTest` with and without the capability; device test `GraphicsTest.testColorTransform` on API 21. OpenGL and Android parity come with those backends.
 
+Batch 4 (2026-11-26), template color variants, with the example `TeamColorExample` and its API-index row. The details follow ADR-0057 (owner delegation), within this page, ADR-0026, ADR-0033 and ADR-0056:
+- Mapping: `ColorMapping` (`graphics`), immutable, built from `ColorMapping.NONE` with `with(key, target)`, colors packed `0xAARRGGBB`. A pixel equal to a key color on its four channels takes the target color, alpha included; every pixel is mapped once from the source colors, so two colors can be swapped. Entries are kept by ascending key color read as an unsigned number (`size()`, `getKey(index)`, `getTarget(index)`); a color mapped to itself is not kept, so mappings changing the same colors are equal. `apply(argb)` allocates nothing. The canonical text is `mapping(#AARRGGBB=#AARRGGBB,...)`.
+- Transform: the mapping is the first part of `ColorTransform` (`withMapping`, `getMapping`): mapping, grading, mask, tint, alpha. It is static: `getBakedPart` keeps it on every backend, `getFramePart` never. `ImageCache.bake` caches the variant under the source and the canonical text, so templates mapping the same colors share one variant.
+- Templates: the sheet loader keeps the `templates` of a definition, `#RRGGBB` read as the opaque `#FFRRGGBB`. `SpriteSheet.getTemplate(name)` (`IllegalStateException` for a name the sheet does not have), `hasTemplate(name)` and `getTemplateNames()` (order of the file); a sheet added in code has none. A key color given twice in one template, in any form (`#FF00FF` and `#FFFF00FF`), is a `DefinitionException`.
+- Drawing: `cache.bake(sheet.getImage(), ColorTransform.NONE.withMapping(sheet.getTemplate("red")))`, then `new Sprite(sheet, variant)`; the caller releases the variant.
+- Tests: `ColorMappingTest`; `ColorTransformTest.testMapping` (order and split) and `testEqualityAndText`; `SheetLoaderTest` (templates kept, a key color given twice in two forms); `SpriteSheetTest` (`testNoTemplate`, `testTemplates`); `TemplateVariantTest` (integration: a definition read through the resources, two variants drawn by two sprites, sharing by mapping, combination with grading and mask, empty template); `TeamColorExampleTest`; device test `GraphicsTest.testTemplateVariant` on API 21.
+
 ## Lifecycle and concurrency
 
 Sources are owned by the `graphics` cache (reference counted, released by their acquirer); instances own no image. Runtime thread only; rendering reads instances and never changes them.
@@ -82,10 +89,10 @@ Pixels for images, positions and pivots; degrees for rotation; `float` only insi
 
 ## Acceptance criteria
 
-- [ ] Requirements covered.
-- [ ] API reviewed in the pull request.
-- [ ] Automated tests added and passing.
-- [ ] Complete Javadoc.
-- [ ] Headless example, API-index entry, traceability updated (REQ-DOC-001, REQ-DOC-002).
-- [ ] No forbidden coupling (REQ-CORE-005).
-- [ ] Android/DEX compatibility verified.
+- [ ] Requirements covered: every batch is done; `REQ-SPRITE-004` stays partial until the OpenGL and Android backends bring their color parity tests.
+- [x] API reviewed in the pull request.
+- [x] Automated tests added and passing.
+- [x] Complete Javadoc.
+- [x] Headless example, API-index entry, traceability updated (REQ-DOC-001, REQ-DOC-002).
+- [x] No forbidden coupling (REQ-CORE-005).
+- [x] Android/DEX compatibility verified.

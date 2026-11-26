@@ -16,11 +16,15 @@
  */
 package com.b3dgs.lionengine.graphics;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import com.b3dgs.lionengine.resources.ResourceKey;
 
 /**
  * Image cut into a grid of cells, the frames of sprites and the tiles of a tileset (ADR-0003, ADR-0026, ADR-0033,
- * REQ-SHEET-001, REQ-SHEET-002).
+ * ADR-0057, REQ-SHEET-001, REQ-SHEET-002, REQ-SPRITE-005).
  *
  * <p>
  * A sheet is created by a {@link SheetGroup}, which holds it under its id and holds its image: every cell is a region
@@ -35,6 +39,13 @@ import com.b3dgs.lionengine.resources.ResourceKey;
  * </p>
  *
  * <p>
+ * A sheet read from a definition file keeps the {@code templates} of the file: named {@link ColorMapping} values, such
+ * as team colors, to bake into variants of the image with {@link ImageCache#bake(Image, ColorTransform)} and
+ * {@link ColorTransform#withMapping(ColorMapping)}, then draw with {@link Sprite#Sprite(SpriteSheet, Image)}. A sheet
+ * added in code has no template: its colors are mapped in code the same way.
+ * </p>
+ *
+ * <p>
  * The grid never changes. Once the group is released, the geometry stays readable but the image is released.
  * Runtime thread only, like its group (ADR-0018).
  * </p>
@@ -45,6 +56,12 @@ public final class SpriteSheet
 {
     /** Error message of a cell outside the sheet. */
     private static final String ERROR_CELL = "Cell outside the sheet ";
+    /** Error message of a template not in the sheet. */
+    private static final String ERROR_TEMPLATE = "Template not in the sheet ";
+    /** Separator of the messages. */
+    private static final String COLON = ": ";
+    /** Name of the template argument, for the messages. */
+    private static final String NAME_TEMPLATE = "Template name";
 
     /**
      * Counts the cells along an axis.
@@ -130,6 +147,10 @@ public final class SpriteSheet
     private final double pivotX;
     /** Vertical pivot in pixels from the top edge of a cell. */
     private final double pivotY;
+    /** The templates by name, in the order of the definition, unmodifiable. */
+    private final Map<String, ColorMapping> templates;
+    /** The names of the templates, in the order of the definition, unmodifiable. */
+    private final List<String> templateNames;
 
     /**
      * Creates a sheet over an image, for {@link SheetGroup} only.
@@ -142,6 +163,27 @@ public final class SpriteSheet
      * @throws IllegalArgumentException If no cell fits, or the requested cells do not fit in the image.
      */
     SpriteSheet(ResourceKey id, Image image, SheetGrid grid, double pivotX, double pivotY)
+    {
+        this(id, image, grid, pivotX, pivotY, Collections.emptyMap());
+    }
+
+    /**
+     * Creates a sheet over an image with templates, for {@link SheetGroup} only.
+     *
+     * @param id The id of the sheet.
+     * @param image The image, held by the group.
+     * @param grid The grid; derived numbers of columns and rows are computed from the size of the image.
+     * @param pivotX The horizontal pivot in pixels from the left edge of a cell.
+     * @param pivotY The vertical pivot in pixels from the top edge of a cell.
+     * @param templates The templates by name, in the order of the definition, unmodifiable.
+     * @throws IllegalArgumentException If no cell fits, or the requested cells do not fit in the image.
+     */
+    SpriteSheet(ResourceKey id,
+                Image image,
+                SheetGrid grid,
+                double pivotX,
+                double pivotY,
+                Map<String, ColorMapping> templates)
     {
         super();
 
@@ -156,6 +198,8 @@ public final class SpriteSheet
         cellCount = columns * rows;
         this.pivotX = pivotX;
         this.pivotY = pivotY;
+        this.templates = templates;
+        templateNames = List.copyOf(templates.keySet());
     }
 
     /**
@@ -269,6 +313,50 @@ public final class SpriteSheet
     }
 
     /**
+     * Returns the names of the templates.
+     *
+     * @return The names of the templates of the definition, in the order of the file, unmodifiable; empty for a sheet
+     *         added in code or a definition without template.
+     */
+    public List<String> getTemplateNames()
+    {
+        return templateNames;
+    }
+
+    /**
+     * Tells whether the sheet has a template.
+     *
+     * @param name The name of the template (never {@code null}).
+     * @return {@code true} if its definition has a template of this name.
+     * @throws IllegalArgumentException If the name is {@code null}.
+     */
+    public boolean hasTemplate(String name)
+    {
+        ImageCache.checkNotNull(name, NAME_TEMPLATE);
+        return templates.containsKey(name);
+    }
+
+    /**
+     * Returns a template: the color mapping of its definition, such as team colors, to bake into a variant of the
+     * image with {@link ColorTransform#withMapping(ColorMapping)} and {@link ImageCache#bake(Image, ColorTransform)}.
+     *
+     * @param name The name of the template (never {@code null}).
+     * @return The color mapping, {@link ColorMapping#isIdentity()} for an empty template.
+     * @throws IllegalArgumentException If the name is {@code null}.
+     * @throws IllegalStateException If the sheet has no template of this name (see {@link #hasTemplate(String)}).
+     */
+    public ColorMapping getTemplate(String name)
+    {
+        ImageCache.checkNotNull(name, NAME_TEMPLATE);
+        final ColorMapping mapping = templates.get(name);
+        if (mapping == null)
+        {
+            throw new IllegalStateException(ERROR_TEMPLATE + id + COLON + name);
+        }
+        return mapping;
+    }
+
+    /**
      * Returns the left edge of a cell in the image.
      *
      * @param index The cell index, from {@code 0} at the top-left, row by row.
@@ -304,7 +392,7 @@ public final class SpriteSheet
     {
         if (index < 0 || index >= cellCount)
         {
-            throw new IndexOutOfBoundsException(ERROR_CELL + id + ": " + index + " of " + cellCount);
+            throw new IndexOutOfBoundsException(ERROR_CELL + id + COLON + index + " of " + cellCount);
         }
     }
 }

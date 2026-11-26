@@ -16,7 +16,7 @@
 | Camera | Headless view onto the world: view rectangle in world units, zoom, translation, follow, smoothing and shake (ADR-0010). |
 | Capability | A feature a platform may or may not provide (gamepad, shaders, audio...), found by a typed optional lookup rather than assumed (ADR-0020). |
 | Color matrix | 4 by 5 matrix over red, green, blue and alpha plus offsets (`ColorMatrix`), as Android `ColorMatrix`: the grading part of a color transform, baked on the CPU (ADR-0056). |
-| Color transform | Backend-independent description of a sprite's colors (`ColorTransform`): grading, mask (silhouette fill), tint and alpha, in that order; tint and alpha per frame when the backend supports them, the rest baked once and cached (ADR-0003, ADR-0056). |
+| Color transform | Backend-independent description of a sprite's colors (`ColorTransform`): color mapping, grading, mask (silhouette fill), tint and alpha, in that order; tint and alpha per frame when the backend supports them, the rest baked once and cached (ADR-0003, ADR-0056, ADR-0057). |
 | Command (network) | A game-defined reliable message from a client expressing an order (for example an RTS move order), validated and applied by the server (ADR-0038). |
 | Command buffer | List of deferred structural changes (object and trait add/remove) applied at the flush of a simulation step (ADR-0011). Also, in rendering, the preallocated buffer of render commands (ADR-0026). |
 | Component | In ECS, a plain data holder attached to an entity. In this engine a component is called a trait (ADR-0011). |
@@ -87,7 +87,7 @@
 | Sprite sheet | Image grouping several sprite regions as a grid (cell size, columns, rows, optional margin/spacing), giving access to cells by index; sheets are grouped by unique id (ADR-0003). Also written "spritesheet". |
 | Sheet group | Sprite sheets held under ids unique in the group (`SheetGroup`), acquired and released together; reference-counted through its handles, the last release frees every image (ADR-0026, REQ-SHEET-002). |
 | System | In ECS, logic that processes the objects of a query during the update phase, in slot order. |
-| Template color mapping | Static transform mapping exact key colors to target colors, producing a cached color variant of one sprite (e.g. team colors) (ADR-0026). |
+| Template color mapping | Static transform mapping exact key colors to target colors (`ColorMapping`), producing a cached color variant of one sprite (e.g. team colors); the first part of a color transform, read from the `templates` of a sheet definition (ADR-0026, ADR-0057). |
 | Test JAR | The published test sources of a module (Maven classifier `tests`): the fakes and abstract contract suites of its contracts, used in test scope by the modules that depend on it (ADR-0045). |
 | Texture store | `TextureStore` of `render-api`: creates textures from primitive ARGB data shared read-only, prepares and releases them by `int` handle (ADR-0047). |
 | Tick | Number of a simulation step in a network session, counted as an `int` from 0 at session start (ADR-0038). |
