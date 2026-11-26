@@ -641,6 +641,49 @@ public final class GraphicsTest
     }
 
     /**
+     * Sprites over two handles of one cached image draw one texture; a modified copy is a source of its own; the
+     * texture leaves with the last handle (REQ-SPRITE-002, REQ-SPR-001).
+     *
+     * @throws IOException If a resource cannot be written.
+     */
+    @Test
+    public void testSpriteSharing() throws IOException
+    {
+        final ResourceKey key = new ResourceKey("sprites/coin.png");
+        final MemoryProvider memory = new MemoryProvider();
+        try (OutputStream output = memory.openWrite(key))
+        {
+            output.write(png(2, 1, 8, GRAY, 0, null, null, 0, 0));
+        }
+        final Textures textures = new Textures();
+        final ImageCache cache = new ImageCache(new Resources(memory), textures);
+        final Image level = cache.load(key);
+        final Image display = cache.load(key);
+        final PixelBuffer pixels = level.copyToBuffer();
+        pixels.setPixel(0, 0, 0xFFFF0000);
+        final Image damaged = cache.add(key, "damaged", pixels);
+        final CommandBuffer commands = new CommandBuffer(16, 16, 1);
+
+        new Sprite(level).render(commands);
+        new Sprite(display).render(commands);
+        new Sprite(damaged).render(commands);
+        level.release();
+        final Sprite icon = new Sprite(display);
+        icon.render(commands);
+
+        assertEquals(commands.getTexture(0), commands.getTexture(1));
+        assertEquals(commands.getTexture(0), commands.getTexture(3));
+        assertTrue(commands.getTexture(0) != commands.getTexture(2));
+        assertEquals(0xFF000000, display.getPixel(0, 0));
+        assertEquals(2, cache.size());
+        display.release();
+        damaged.release();
+        assertEquals(0, cache.size());
+        assertTrue(textures.alive.isEmpty());
+        assertThrows(IllegalStateException.class, () -> icon.render(commands));
+    }
+
+    /**
      * The sheet loader reads a definition into a group, and refuses a frame outside the sheet with its position
      * (REQ-SHEET-003).
      *

@@ -170,8 +170,8 @@ final class SpriteTest
     }
 
     /**
-     * A missing image is the resource exception of its key, invalid data the decoding exception; no sprite is created
-     * and nothing stays cached.
+     * Loading a sprite is loading its image: a missing image is the resource exception of its key, invalid data the
+     * decoding exception, so no sprite can be created, and nothing stays cached.
      */
     @Test
     void testLoadErrors()
@@ -180,9 +180,9 @@ final class SpriteTest
         final ResourceKey invalid = new ResourceKey("sprites/invalid.png");
         provider.put(invalid, "Not a PNG image".getBytes(StandardCharsets.UTF_8));
 
-        final ResourceException exception = assertThrows(ResourceException.class, () -> new Sprite(cache.load(missing)));
+        final ResourceException exception = assertThrows(ResourceException.class, () -> cache.load(missing));
         assertEquals(ResourceException.Reason.MISSING, exception.getReason());
-        assertThrows(ImageDecodingException.class, () -> new Sprite(cache.load(invalid)));
+        assertThrows(ImageDecodingException.class, () -> cache.load(invalid));
         assertEquals(0, cache.size());
     }
 

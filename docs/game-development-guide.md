@@ -17,7 +17,7 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
 3. **Concepts, in order of use** — start with [`how-the-engine-works.md`](how-the-engine-works.md); then runtime and game loop, scenes, resources and definition files, graphics (sprite, animation), world and objects (ECS, ADR-0021), tilemap, camera, input, audio.
 4. **Recipes** — one short, tested recipe per common task:
    - load images once and share them between scenes (example `ImageCacheExample`); cut an image into a sprite sheet and group sheets (example `SpriteSheetExample`); load a sheet from its definition file (example `SheetLoaderExample`); load in the background behind a loading screen (example `LoadingScreenExample`);
-   - display a sprite, an image or a frame of a sheet, moved, scaled and rotated about its pivot (example `SpriteExample`); animate it, and show two color variants of one sprite (ADR-0003; examples to be created);
+   - display a sprite, an image or a frame of a sheet, moved, scaled and rotated about its pivot (example `SpriteExample`); share one image between many sprites and scenes, and draw a modified copy (example `SpriteSharingExample`); animate it, and show two color variants of one sprite (ADR-0003; examples to be created);
    - load a map and scroll the camera (camera contract: [`features/camera.md`](features/camera.md), ADR-0010);
    - read player input;
    - detect a collision;
