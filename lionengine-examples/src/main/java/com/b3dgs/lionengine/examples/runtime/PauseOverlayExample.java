@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.examples.runtime;
 
 import com.b3dgs.lionengine.Log;
-import com.b3dgs.lionengine.LoopControl;
 import com.b3dgs.lionengine.runtime.GameLoop;
 import com.b3dgs.lionengine.runtime.LoopConfig;
 import com.b3dgs.lionengine.runtime.LoopState;
@@ -69,7 +68,7 @@ public final class PauseOverlayExample
         final long[] now = new long[1];
         final SceneManager scenes = new SceneManager();
         final GameLoop loop = new GameLoop(LoopConfig.DEFAULT, () -> now[0], log, scenes, scenes);
-        final Level level = new Level(scenes, loop);
+        final PausableLevel level = new PausableLevel(scenes, loop);
 
         scenes.switchTo(level);
         while (loop.getState() != LoopState.STOPPED)
@@ -78,7 +77,10 @@ public final class PauseOverlayExample
             now[0] += FRAME_NANOS;
         }
         scenes.clear();
-        return new Result(level.journal.toString(), level.updates, level.pauseUpdates, level.rendersUnderPause);
+        return new Result(level.getJournal(),
+                          level.getUpdates(),
+                          level.getPauseUpdates(),
+                          level.getRendersUnderPause());
     }
 
     /**
@@ -93,156 +95,5 @@ public final class PauseOverlayExample
     public record Result(String journal, long levelUpdates, long pauseUpdates, long levelRendersUnderPause)
     {
         // Value type of the example.
-    }
-
-    /**
-     * The level: plays, pauses once, and stops the game when its play time is over.
-     */
-    private static final class Level implements Scene
-    {
-        /** Scene manager, to push the pause menu. */
-        private final SceneManager scenes;
-        /** Loop control, to stop the game. */
-        private final LoopControl loop;
-        /** Lifecycle calls of the level and the menu. */
-        private final StringBuilder journal = new StringBuilder();
-        /** Play time of the level, in seconds. */
-        private double playTime;
-        /** {@code true} once the player has paused. */
-        private boolean paused;
-        /** Steps of the level. */
-        private long updates;
-        /** Steps of the pause menu. */
-        private long pauseUpdates;
-        /** Renders of the level while covered. */
-        private long rendersUnderPause;
-
-        /**
-         * Creates the level.
-         *
-         * @param scenes The scene manager.
-         * @param loop The loop control.
-         */
-        Level(SceneManager scenes, LoopControl loop)
-        {
-            super();
-
-            this.scenes = scenes;
-            this.loop = loop;
-        }
-
-        /**
-         * Writes a lifecycle call in the journal.
-         *
-         * @param call The scene and the lifecycle method.
-         */
-        void note(String call)
-        {
-            if (journal.length() > 0)
-            {
-                journal.append(", ");
-            }
-            journal.append(call);
-        }
-
-        @Override
-        public void enter()
-        {
-            note("level enter");
-        }
-
-        @Override
-        public void update(double stepSeconds)
-        {
-            updates++;
-            playTime += stepSeconds;
-            if (!paused && playTime >= PLAY_BEFORE_PAUSE)
-            {
-                paused = scenes.push(new Pause(this));
-            }
-            if (playTime >= PLAY_SECONDS)
-            {
-                loop.stop();
-            }
-        }
-
-        @Override
-        public void render(double alpha, double unscaledDeltaSeconds)
-        {
-            if (scenes.getActive() != this)
-            {
-                rendersUnderPause++;
-            }
-        }
-
-        @Override
-        public void exit()
-        {
-            note("level exit");
-        }
-
-        @Override
-        public void dispose()
-        {
-            note("level dispose");
-        }
-    }
-
-    /**
-     * The pause menu: closes itself after {@link #PAUSE_SECONDS}.
-     */
-    private static final class Pause implements Scene
-    {
-        /** The level below, for its journal and its manager. */
-        private final Level level;
-        /** Time the menu has been open, in seconds. */
-        private double openTime;
-
-        /**
-         * Creates the menu.
-         *
-         * @param level The level below.
-         */
-        Pause(Level level)
-        {
-            super();
-
-            this.level = level;
-        }
-
-        @Override
-        public void enter()
-        {
-            level.note("pause enter");
-        }
-
-        @Override
-        public void update(double stepSeconds)
-        {
-            level.pauseUpdates++;
-            openTime += stepSeconds;
-            if (openTime >= PAUSE_SECONDS)
-            {
-                level.scenes.pop();
-            }
-        }
-
-        @Override
-        public void render(double alpha, double unscaledDeltaSeconds)
-        {
-            // A real menu draws here, above the level: the example has no display.
-        }
-
-        @Override
-        public void exit()
-        {
-            level.note("pause exit");
-        }
-
-        @Override
-        public void dispose()
-        {
-            level.note("pause dispose");
-        }
     }
 }
