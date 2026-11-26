@@ -49,6 +49,18 @@ public final class Animation
     private static final String NAME_FRAMES = "Frames";
 
     /**
+     * Tells whether a value is a valid frame duration.
+     *
+     * @param duration The value in seconds.
+     * @return {@code true} if it is positive and finite; {@code false} for zero, a negative value, an infinity and
+     *         not a number.
+     */
+    static boolean isDuration(double duration)
+    {
+        return duration > 0.0 && duration < Double.POSITIVE_INFINITY;
+    }
+
+    /**
      * Checks a duration.
      *
      * @param duration The duration.
@@ -57,7 +69,7 @@ public final class Animation
      */
     private static double checkDuration(double duration)
     {
-        if (!(duration > 0.0) || Double.isInfinite(duration))
+        if (!isDuration(duration))
         {
             throw new IllegalArgumentException("Frame duration not positive and finite, in seconds: " + duration);
         }

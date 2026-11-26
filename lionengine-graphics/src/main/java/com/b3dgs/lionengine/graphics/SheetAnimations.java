@@ -97,9 +97,21 @@ final class SheetAnimations
      */
     private static Animation readAnimation(Configuration animation)
     {
-        final int[] frames = readFrames(animation);
+        return readAnimation(animation, readFrames(animation));
+    }
+
+    /**
+     * Reads and checks the rest of an animation, once its frames are read.
+     *
+     * @param animation The configuration of the animation.
+     * @param frames The frames of the animation, checked.
+     * @return The animation, its frames not yet checked against the cells of the sheet.
+     * @throws DefinitionException If the animation is not valid.
+     */
+    private static Animation readAnimation(Configuration animation, int[] frames)
+    {
         final double duration = animation.getDouble(FRAME_DURATION);
-        if (!(duration > 0.0) || Double.isInfinite(duration))
+        if (!Animation.isDuration(duration))
         {
             throw animation.createError(FRAME_DURATION, ERROR_DURATION + duration);
         }
@@ -176,7 +188,7 @@ final class SheetAnimations
         {
             final JsonValue duration = durations.get(i);
             result[i] = duration.asDouble();
-            if (!(result[i] > 0.0) || Double.isInfinite(result[i]))
+            if (!Animation.isDuration(result[i]))
             {
                 throw new DefinitionException(ERROR_DURATION + result[i], duration, null, FRAME_DURATIONS);
             }
