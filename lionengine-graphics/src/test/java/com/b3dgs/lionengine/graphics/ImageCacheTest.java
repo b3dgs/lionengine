@@ -35,6 +35,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.b3dgs.lionengine.AsyncHandle;
+import com.b3dgs.lionengine.AsyncState;
+import com.b3dgs.lionengine.FakeWorkerPool;
+import com.b3dgs.lionengine.InboxSpy;
 import com.b3dgs.lionengine.resources.FakeResourceProvider;
 import com.b3dgs.lionengine.resources.ResourceException;
 import com.b3dgs.lionengine.resources.ResourceKey;
@@ -508,6 +512,136 @@ final class ImageCacheTest
         assertFalse(hero.isReleased());
         assertFalse(backend.isPrepared(hero.getTexture()));
         assertEquals(1, cache.size());
+    }
+
+    /**
+     * An asynchronous load is decoded by the worker and cached at inbox delivery only; the image is the decoded one,
+     * shared with later loads (REQ-RT-004, ADR-0055).
+     */
+    @Test
+    void testLoadAsync()
+    {
+        final FakeWorkerPool workers = new FakeWorkerPool(1);
+        final InboxSpy inbox = new InboxSpy();
+
+        final AsyncHandle<Image> handle = cache.loadAsync(HERO, workers, inbox);
+        assertEquals(AsyncState.PENDING, handle.getState());
+        assertEquals(0, provider.getOpened());
+
+        workers.runAll();
+        assertEquals(1, provider.getOpened());
+        assertEquals(0, provider.getUnclosed());
+        assertEquals(0, cache.size());
+        assertEquals(AsyncState.PENDING, handle.getState());
+
+        inbox.deliverAll();
+        final Image image = handle.get();
+        assertEquals(PIXELS[5], image.getPixel(2, 1));
+        assertEquals(1, cache.size());
+        assertEquals(HERO_BYTES, cache.getUsedBytes());
+        assertEquals(image.getTexture(), cache.load(HERO).getTexture());
+        assertEquals(1, provider.getOpened());
+    }
+
+    /**
+     * An image already cached gives a handle ready at once; a key without decoder a handle failed at once; nothing is
+     * submitted for them.
+     */
+    @Test
+    void testLoadAsyncWithoutWork()
+    {
+        final FakeWorkerPool workers = new FakeWorkerPool(1);
+        final InboxSpy inbox = new InboxSpy();
+        final Image hero = cache.load(HERO);
+
+        final AsyncHandle<Image> cached = cache.loadAsync(HERO, workers, inbox);
+        final AsyncHandle<Image> unknown = cache.loadAsync(new ResourceKey("sprites/hero.jpg"), workers, inbox);
+
+        assertEquals(hero.getTexture(), cached.get().getTexture());
+        assertEquals(AsyncState.FAILED, unknown.getState());
+        assertInstanceOf(ImageDecodingException.class, unknown.getFailure());
+        assertEquals(0, workers.getPendingCount());
+        cached.get().release();
+        assertTrue(cached.get().isReleased());
+        assertFalse(hero.isReleased());
+        assertEquals(1, cache.size());
+    }
+
+    /**
+     * A missing, unreadable or invalid resource, and an image above the limit, fail the handle and cache nothing.
+     */
+    @Test
+    void testLoadAsyncFailures()
+    {
+        final FakeWorkerPool workers = new FakeWorkerPool(1);
+        final InboxSpy inbox = new InboxSpy();
+        final ResourceKey invalid = new ResourceKey("sprites/invalid.png");
+        final ResourceKey unreadable = new ResourceKey("sprites/unreadable.png");
+        provider.put(invalid, "Not a PNG image".getBytes(StandardCharsets.UTF_8));
+        provider.put(unreadable, new byte[1]);
+        provider.failOn(unreadable);
+        final ImageCache limited = new ImageCache(new Resources(provider), backend, 8L);
+
+        final AsyncHandle<Image> missing = cache.loadAsync(new ResourceKey("sprites/absent.png"), workers, inbox);
+        final AsyncHandle<Image> failing = cache.loadAsync(unreadable, workers, inbox);
+        final AsyncHandle<Image> wrong = cache.loadAsync(invalid, workers, inbox);
+        final AsyncHandle<Image> large = limited.loadAsync(HERO, workers, inbox);
+        workers.runAll();
+        inbox.deliverAll();
+
+        assertEquals(ResourceException.Reason.MISSING, ((ResourceException) missing.getFailure()).getReason());
+        assertEquals(ResourceException.Reason.INACCESSIBLE, ((ResourceException) failing.getFailure()).getReason());
+        assertInstanceOf(ImageDecodingException.class, wrong.getFailure());
+        assertInstanceOf(IllegalStateException.class, large.getFailure());
+        assertEquals(0, cache.size());
+        assertEquals(0, limited.size());
+        assertEquals(0, provider.getUnclosed());
+    }
+
+    /**
+     * A request cancelled before the delivery caches nothing; two requests of one key share one image.
+     */
+    @Test
+    void testLoadAsyncCancelAndShare()
+    {
+        final FakeWorkerPool workers = new FakeWorkerPool(1);
+        final InboxSpy inbox = new InboxSpy();
+
+        final AsyncHandle<Image> cancelled = cache.loadAsync(HERO, workers, inbox);
+        workers.runAll();
+        cancelled.cancel();
+        inbox.deliverAll();
+        assertEquals(0, cache.size());
+
+        final AsyncHandle<Image> first = cache.loadAsync(HERO, workers, inbox);
+        final AsyncHandle<Image> second = cache.loadAsync(HERO, workers, inbox);
+        workers.runAll();
+        inbox.deliverAll();
+
+        assertEquals(first.get().getTexture(), second.get().getTexture());
+        assertEquals(1, cache.size());
+        first.get().release();
+        second.get().release();
+        assertEquals(0, cache.size());
+    }
+
+    /**
+     * An asynchronous request is a cache operation: refused on another thread, and its arguments are checked.
+     *
+     * @throws InterruptedException If interrupted.
+     */
+    @Test
+    void testLoadAsyncRules() throws InterruptedException
+    {
+        final FakeWorkerPool workers = new FakeWorkerPool(1);
+        final InboxSpy inbox = new InboxSpy();
+        cache.size();
+
+        assertOtherThreadRefused(() -> cache.loadAsync(HERO, workers, inbox));
+        assertThrows(IllegalArgumentException.class, () -> cache.loadAsync(null, workers, inbox));
+        assertThrows(IllegalArgumentException.class, () -> cache.loadAsync(HERO, null, inbox));
+        assertThrows(IllegalArgumentException.class, () -> cache.loadAsync(HERO, workers, null));
+        assertEquals(0, workers.getPendingCount());
     }
 
     /**

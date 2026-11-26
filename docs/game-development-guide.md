@@ -16,7 +16,7 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
 2. **Hello engine** — the smallest headless application: start, update, stop. *Example: `GameLoopExample` (runtime), `HeadlessGameTest` (a game without a window); see [`api-index.md`](api-index.md).*
 3. **Concepts, in order of use** — start with [`how-the-engine-works.md`](how-the-engine-works.md); then runtime and game loop, scenes, resources and definition files, graphics (sprite, animation), world and objects (ECS, ADR-0021), tilemap, camera, input, audio.
 4. **Recipes** — one short, tested recipe per common task:
-   - load images once and share them between scenes (example `ImageCacheExample`); cut an image into a sprite sheet and group sheets (example `SpriteSheetExample`); load a sheet from its definition file (example `SheetLoaderExample`);
+   - load images once and share them between scenes (example `ImageCacheExample`); cut an image into a sprite sheet and group sheets (example `SpriteSheetExample`); load a sheet from its definition file (example `SheetLoaderExample`); load in the background behind a loading screen (example `LoadingScreenExample`);
    - display and animate a sprite, including two color variants of one sprite (ADR-0003; example to be created);
    - load a map and scroll the camera (camera contract: [`features/camera.md`](features/camera.md), ADR-0010);
    - read player input;

@@ -33,21 +33,29 @@ import org.junit.runner.RunWith;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.b3dgs.lionengine.AsyncHandle;
+import com.b3dgs.lionengine.AsyncLoading;
+import com.b3dgs.lionengine.AsyncState;
 import com.b3dgs.lionengine.Configuration;
 import com.b3dgs.lionengine.DefinitionException;
 import com.b3dgs.lionengine.JsonArray;
 import com.b3dgs.lionengine.JsonObject;
 import com.b3dgs.lionengine.JsonReader;
+import com.b3dgs.lionengine.Inbox;
+import com.b3dgs.lionengine.InboxEvent;
 import com.b3dgs.lionengine.JsonValue;
+import com.b3dgs.lionengine.LoadGroup;
 import com.b3dgs.lionengine.Log;
 import com.b3dgs.lionengine.LogLevel;
 import com.b3dgs.lionengine.RandomSource;
 import com.b3dgs.lionengine.Registry;
 import com.b3dgs.lionengine.ThreadConfinement;
+import com.b3dgs.lionengine.WorkerPool;
+import com.b3dgs.lionengine.WorkerTask;
 
 /**
  * Runs {@code core} on Android API 21 (ADR-0044): random generator reference outputs (REQ-DET-003), JSON reader,
- * configuration, registry, log and thread confinement (ADR-0055). Expected values are the ones of the JVM tests of {@code lionengine-core}.
+ * configuration, registry, log, thread confinement (ADR-0055) and asynchronous loading on a real worker thread. Expected values are the ones of the JVM tests of {@code lionengine-core}.
  */
 @RunWith(AndroidJUnit4.class)
 public final class CoreTest
@@ -249,5 +257,81 @@ public final class CoreTest
 
         assertTrue(failure.get().getMessage().startsWith("Cache used on the thread worker"));
         confinement.check();
+    }
+
+    /**
+     * An asynchronous request runs its work on a worker thread and becomes ready at inbox delivery; a load group gives
+     * the mean progress (REQ-RT-004, REQ-RT-010).
+     *
+     * @throws InterruptedException If interrupted.
+     */
+    @Test
+    public void testAsyncLoading() throws InterruptedException
+    {
+        final List<InboxEvent> events = new ArrayList<>();
+        final Inbox inbox = new Inbox()
+        {
+            @Override
+            public boolean post(InboxEvent event)
+            {
+                synchronized (events)
+                {
+                    events.add(event);
+                }
+                return true;
+            }
+
+            @Override
+            public void deliverAll()
+            {
+                final List<InboxEvent> delivered;
+                synchronized (events)
+                {
+                    delivered = new ArrayList<>(events);
+                    events.clear();
+                }
+                for (int i = 0; i < delivered.size(); i++)
+                {
+                    delivered.get(i).deliver();
+                }
+            }
+
+            @Override
+            public long getDroppedCount()
+            {
+                return 0L;
+            }
+        };
+        final Thread[] worker = new Thread[1];
+        final WorkerPool workers = new WorkerPool()
+        {
+            @Override
+            public void submit(WorkerTask task)
+            {
+                worker[0] = new Thread(task::execute, "worker");
+                worker[0].start();
+            }
+
+            @Override
+            public int getWorkerCount()
+            {
+                return 1;
+            }
+        };
+        final LoadGroup group = new LoadGroup();
+
+        final AsyncHandle<String> handle = AsyncLoading.submit(workers,
+                                                               inbox,
+                                                               () -> Thread.currentThread().getName(),
+                                                               name -> "decoded on " + name);
+        group.add(handle);
+        group.add(AsyncLoading.ready("cached"));
+        worker[0].join();
+
+        assertEquals(AsyncState.PENDING, group.getState());
+        assertEquals(0.5, group.getProgress(), 0.0);
+        inbox.deliverAll();
+        assertEquals("decoded on worker", handle.get());
+        assertEquals(AsyncState.READY, group.getState());
     }
 }
