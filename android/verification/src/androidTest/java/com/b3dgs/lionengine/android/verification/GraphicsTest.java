@@ -39,6 +39,7 @@ import org.junit.runner.RunWith;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.b3dgs.lionengine.DefinitionException;
+import com.b3dgs.lionengine.graphics.AnimatedSprite;
 import com.b3dgs.lionengine.graphics.Animation;
 import com.b3dgs.lionengine.graphics.AnimationLoop;
 import com.b3dgs.lionengine.graphics.Animator;
@@ -71,7 +72,7 @@ import com.b3dgs.lionengine.resources.memory.MemoryProvider;
  * written here with the API 21 methods only, as the JVM fixture {@code PngWriter} writes them; expected values are the
  * ones of the JVM tests
  * (PixelBufferTest, PngDecoderTest, PngDecoderContractTest, ImageCacheTest, SpriteTest, ColorTransformTest,
- * ColorMappingTest, TemplateVariantTest, AnimationTest, AnimatorTest).
+ * ColorMappingTest, TemplateVariantTest, AnimationTest, AnimatorTest, AnimatedSpriteTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class GraphicsTest
@@ -826,6 +827,47 @@ public final class GraphicsTest
         animator.stop();
         assertEquals(10, animator.getFrame());
         assertThrows(IllegalArgumentException.class, () -> animator.update(-0.1));
+    }
+
+    /**
+     * An animated sprite draws the cell of its animation, advanced by the update step only; rendering only reads, and
+     * a frame outside the sheet is refused (REQ-ANIM-003).
+     *
+     * @throws IOException If a resource cannot be written.
+     */
+    @Test
+    public void testAnimatedSprite() throws IOException
+    {
+        final ResourceKey key = new ResourceKey("sprites/hero.png");
+        final MemoryProvider memory = new MemoryProvider();
+        try (OutputStream output = memory.openWrite(key))
+        {
+            output.write(png(4, 2, 8, GRAY, 0, null, null, 0, 0, 0, 0, 0, 0, 0, 0));
+        }
+        final SheetGroup group = new SheetGroup(new ImageCache(new Resources(memory), new Textures()));
+        final SpriteSheet sheet = group.add(new ResourceKey("sheets/hero"), key, new SheetGrid(2, 2));
+        final AnimatedSprite hero = new AnimatedSprite(new Sprite(sheet));
+        final CommandBuffer commands = new CommandBuffer(16, 16, 1);
+
+        hero.play(new Animation(new int[]
+        {
+            0, 1
+        }, 0.25, AnimationLoop.LOOP));
+        hero.update(0.375);
+        assertEquals(1, hero.getSprite().getFrame());
+        for (int i = 0; i < 5; i++)
+        {
+            hero.render(commands, i, 0.0);
+        }
+        assertEquals(0.125, hero.getFrameTime(), 0.0);
+        assertEquals(1, hero.getSprite().getFrame());
+        hero.update(0.125);
+        assertEquals(0, hero.getSprite().getFrame());
+        assertThrows(IllegalArgumentException.class, () -> hero.play(new Animation(new int[]
+        {
+            2
+        }, 0.25, AnimationLoop.ONCE)));
+        group.release();
     }
 
     /**

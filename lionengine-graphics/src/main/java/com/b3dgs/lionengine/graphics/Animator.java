@@ -235,63 +235,65 @@ public final class Animator
     private void next()
     {
         final int last = animation.getFrameCount() - 1;
-        final AnimationLoop loop = animation.getLoop();
-        if (loop == AnimationLoop.ONCE)
+        index = switch (animation.getLoop())
         {
-            nextOnce(last);
-        }
-        else if (loop == AnimationLoop.LOOP)
-        {
-            nextLoop(last);
-        }
-        else
-        {
-            nextPingPong(last);
-        }
+            case ONCE -> nextOnce(last);
+            case LOOP -> nextLoop(last);
+            case PING_PONG -> nextPingPong(last);
+        };
     }
 
     /**
-     * Moves to the next frame, or finishes on the last one, dropping the time left over.
+     * Returns the next frame, or finishes on the last one, dropping the time left over.
      *
      * @param last The index of the last frame.
+     * @return The index of the next frame, the last one once finished.
      */
-    private void nextOnce(int last)
+    private int nextOnce(int last)
     {
+        final int next;
         if (index < last)
         {
-            index++;
+            next = index + 1;
         }
         else
         {
+            next = last;
             time = 0.0;
             state = AnimatorState.FINISHED;
         }
+        return next;
     }
 
     /**
-     * Moves to the next frame, the first after the last.
+     * Returns the next frame, the first after the last.
      *
      * @param last The index of the last frame.
+     * @return The index of the next frame.
      */
-    private void nextLoop(int last)
+    private int nextLoop(int last)
     {
+        final int next;
         if (index < last)
         {
-            index++;
+            next = index + 1;
         }
         else
         {
-            index = 0;
+            next = 0;
         }
+        return next;
     }
 
     /**
-     * Moves to the next frame forward or backward, turning at both ends; a single frame stays.
+     * Returns the next frame forward or backward, turning at both ends; a single frame stays.
      *
      * @param last The index of the last frame.
+     * @return The index of the next frame.
      */
-    private void nextPingPong(int last)
+    private int nextPingPong(int last)
     {
+        int next = index;
         if (last > 0)
         {
             if (backward && index == 0 || !backward && index == last)
@@ -300,12 +302,13 @@ public final class Animator
             }
             if (backward)
             {
-                index--;
+                next--;
             }
             else
             {
-                index++;
+                next++;
             }
         }
+        return next;
     }
 }
