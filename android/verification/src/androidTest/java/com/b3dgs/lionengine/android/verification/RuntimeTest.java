@@ -35,14 +35,17 @@ import com.b3dgs.lionengine.runtime.LoopConfig;
 import com.b3dgs.lionengine.runtime.LoopState;
 import com.b3dgs.lionengine.runtime.RenderCallback;
 import com.b3dgs.lionengine.runtime.Scene;
+import com.b3dgs.lionengine.runtime.SceneFlow;
+import com.b3dgs.lionengine.runtime.SceneFlowBuilder;
 import com.b3dgs.lionengine.runtime.SceneManager;
+import com.b3dgs.lionengine.runtime.TransitionKind;
 import com.b3dgs.lionengine.runtime.UpdateCallback;
 
 /**
  * Runs {@code runtime} on Android API 21 (ADR-0044): fixed-step game loop with a clock moved by the test, the inbox
- * fed by another thread, the system clock, and the scene manager with its overlay stack. Expected values are the ones
- * of the JVM tests of {@code lionengine-runtime} (GameLoopTest, GameLoopInboxTest, SceneManagerTest,
- * SceneOverlayTest).
+ * fed by another thread, the system clock, the scene manager with its overlay stack, and the scene flow. Expected
+ * values are the ones of the JVM tests of {@code lionengine-runtime} (GameLoopTest, GameLoopInboxTest,
+ * SceneManagerTest, SceneOverlayTest, SceneFlowTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class RuntimeTest
@@ -334,5 +337,46 @@ public final class RuntimeTest
         assertEquals("EURXD", overlay.calls.toString());
         scenes.clear();
         assertEquals("EURRURXD", base.calls.toString());
+    }
+
+    /**
+     * A scene flow enters its start scene, applies a switch at the next frame boundary with a new instance, calls its
+     * listener, and an exit from any scene leaves the stack and stops the loop (REQ-SCENE-004 to REQ-SCENE-008).
+     */
+    @Test
+    public void testSceneFlow()
+    {
+        final StringBuilder transitions = new StringBuilder();
+        final SceneFlow<StringBuilder> flow = new SceneFlowBuilder<StringBuilder>()
+            .scene("game:intro", context -> new Recorder())
+            .scene("game:menu", context -> new Recorder())
+            .start("game:intro")
+            .transition("game:intro", "finished", context -> context.length() == 0, TransitionKind.SWITCH, "game:menu")
+            .transition(SceneFlowBuilder.ANY_SCENE, "quit", TransitionKind.EXIT, null)
+            .listener((from, trigger, to) -> transitions.append(from)
+                                                        .append(' ')
+                                                        .append(trigger)
+                                                        .append(' ')
+                                                        .append(to))
+            .build();
+        final ManualClock clock = new ManualClock();
+        final GameLoop loop = new GameLoop(CONFIG, clock, new Log(), flow, flow);
+        flow.start(new StringBuilder(), loop);
+        flow.update(0.01);
+        flow.render(0.0, 0.01);
+
+        assertEquals("game:intro", flow.getSceneIds().get(0));
+        assertTrue(flow.trigger("finished"));
+        assertFalse(flow.trigger("quit"));
+        flow.update(0.01);
+        flow.render(0.0, 0.01);
+        assertEquals("game:menu", flow.getSceneIds().get(0));
+        assertTrue(flow.trigger("quit"));
+        flow.update(0.01);
+        flow.render(0.0, 0.01);
+
+        assertTrue(flow.getSceneIds().isEmpty());
+        assertEquals("game:intro finished game:menugame:menu quit null", transitions.toString());
+        assertThrows(IllegalStateException.class, () -> new SceneFlowBuilder<Object>().build());
     }
 }

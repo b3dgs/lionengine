@@ -374,6 +374,18 @@ public final class SceneManager implements UpdateCallback, RenderCallback
     }
 
     /**
+     * Applies a pending change if this call starts a frame, for {@link SceneFlow}, which observes the change before
+     * the first update or render of the frame.
+     *
+     * @throws IllegalStateException If called from a scene method called by this manager.
+     */
+    void beginFrame()
+    {
+        checkNotCalling();
+        startFrame();
+    }
+
+    /**
      * Applies a pending change at the first call of a frame.
      */
     private void startFrame()
@@ -400,27 +412,32 @@ public final class SceneManager implements UpdateCallback, RenderCallback
         calling = true;
         try
         {
-            if (kind == Change.SWITCH)
+            switch (kind)
             {
-                leaveAll();
-                enter(next);
-            }
-            else if (kind == Change.PUSH)
-            {
-                enter(next);
-            }
-            else
-            {
-                size--;
-                final Scene top = stack[size];
-                stack[size] = null;
-                leave(top);
+                case SWITCH ->
+                {
+                    leaveAll();
+                    enter(next);
+                }
+                case PUSH -> enter(next);
+                default -> leaveTop();
             }
         }
         finally
         {
             calling = false;
         }
+    }
+
+    /**
+     * Removes the top scene of the stack, then exits and disposes it.
+     */
+    private void leaveTop()
+    {
+        size--;
+        final Scene top = stack[size];
+        stack[size] = null;
+        leave(top);
     }
 
     /**

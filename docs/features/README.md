@@ -31,7 +31,7 @@ A feature page is the entry point of an implementation batch: it restates every 
 
 Where the implementation stands, batch by batch: the numbers are those of the "Batches" section of each page. Every batch updates its row in the pull request that implements it, so the merged table always tells the next agent where to start. Details of a finished batch are in the "State" section of its page.
 
-Next batch: [`scenes.md`](scenes.md) batch 3 (scene flow with `SWITCH` and `EXIT`, validation, listener), the first unfinished batch in the order of the table; [`resources.md`](resources.md) batch 4 is reserved for the local agents ([`../local-agents.md`](../local-agents.md)).
+Next batch: [`scenes.md`](scenes.md) batch 4 (`PUSH` and `POP` transitions in the flow), the first unfinished batch in the order of the table; [`resources.md`](resources.md) batch 4 is reserved for the local agents ([`../local-agents.md`](../local-agents.md)).
 
 | Phase | Page | Batches | Done | Remaining |
 |---|---|---|---|---|
@@ -39,7 +39,7 @@ Next batch: [`scenes.md`](scenes.md) batch 3 (scene flow with `SWITCH` and `EXIT
 | 0 | [`contract-skeleton.md`](contract-skeleton.md) | 3 | 1 to 3 (2026-11-24) | none |
 | 1 | [`core-foundation.md`](core-foundation.md) | 4 | 1 to 4 (2026-11-24) | none |
 | 1–2 | [`game-loop.md`](game-loop.md) | 4 | 1 to 3 (2026-11-24), 4 (2026-11-26) | none |
-| 1–2 | [`scenes.md`](scenes.md) | 4 | 1 (2026-11-24), 2 (2026-11-26) | 3 and 4 (scene flow, then its `PUSH` and `POP`; Phase 2) |
+| 1–2 | [`scenes.md`](scenes.md) | 4 | 1 (2026-11-24), 2 (2026-11-26, #935), 3 (2026-11-26) | 4 (`PUSH` and `POP` in the flow; Phase 2) |
 | 1 | [`resources.md`](resources.md) | 4 | 1 and 2 (2026-11-24), 3 (2026-11-25, with sprite sheet batch 2) | 4 (`resources-archive`; `resources-android` later) |
 | 1–2 | [`platform-and-rendering.md`](platform-and-rendering.md) | 3 | 1 and 2 (2026-11-24), 3 (2026-11-25) | none |
 | 2 | [`sprite-sheet.md`](sprite-sheet.md) | 4 | 1 to 4 (2026-11-25) | none |

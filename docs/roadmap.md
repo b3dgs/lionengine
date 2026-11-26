@@ -31,7 +31,7 @@ State (2026-11-25): done are the `core` foundation, the loop, the controllable c
 
 - `core`: logging facade, JSON reader, definition exception, registry and typed configuration, random generator ([`features/core-foundation.md`](features/core-foundation.md));
 - `test-support`: headless frontend and manually driven loop; controllable clock in the `runtime` test JAR (REQ-TEST-001, ADR-0045);
-- `runtime`: loop with its calibration, inbox ([`features/game-loop.md`](features/game-loop.md)), scene contract and scene manager with one active scene, then its overlay stack (2026-11-26, ADR-0059) ([`features/scenes.md`](features/scenes.md));
+- `runtime`: loop with its calibration, inbox ([`features/game-loop.md`](features/game-loop.md)), scene contract and scene manager with one active scene, then its overlay stack (2026-11-26, ADR-0059) and the scene flow with `SWITCH` and `EXIT` (2026-11-26) ([`features/scenes.md`](features/scenes.md));
 - `resources` with memory and filesystem providers, provider order, resource convention suite ([`features/resources.md`](features/resources.md));
 - `platform-api` lifecycle events and capability lookup; headless test frontend; minimal reference frontend `platform-awt` and `render-awt` ([`features/platform-and-rendering.md`](features/platform-and-rendering.md));
 - `examples` with a CI job that compiles and runs every example (REQ-DOC-001);
