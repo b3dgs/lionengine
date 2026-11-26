@@ -45,6 +45,8 @@ Claude Code can delegate token-heavy, well-specified work to local models and re
 
 Done by a cloud agent, merged with this section: the Maven part of the build skeleton ([`features/build-skeleton.md`](features/build-skeleton.md), section "State") and the contract skeleton ([`features/contract-skeleton.md`](features/contract-skeleton.md)). Every engine module exists; the cross-module contracts of Phases 1 and 2 are compiled and documented. `mvn -B verify` and the four check scripts pass.
 
+The current state of every batch, and the next one to take, is the batch status table of [`features/README.md`](features/README.md); each batch updates it. The list below keeps the history of this handoff.
+
 Next batches, in this order. Each one starts from its feature page and [`implementation-guide.md`](implementation-guide.md), stays one pull request, and ends with the definition of done of the guide (section 9):
 
 1. **Android/DEX job** (end of the build skeleton, item 4): done by a cloud agent (2026-11-25, pull request #909), the emulator running on the CI runner: the `android/` Gradle build (lint `NewApi` on the shared sources, D8 and R8 on the installed modules, AndroidX Test instrumentation tests and probes on an API 21 emulator) and the `android` job of `build.yml`; versions and results in [`android-compatibility.md`](android-compatibility.md), section "Android verification job", the harness in [`dependencies.md`](dependencies.md). A new shared module is covered automatically; a batch that adds shared code adds its device test in `android/verification/src/androidTest`.

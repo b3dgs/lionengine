@@ -144,4 +144,4 @@ Android's runtime has no escape analysis and a stop-the-world collector on old d
 - [ ] Complete Javadoc; `maven.javadoc.skip` removed from the module if it now has a public type.
 - [ ] Allocation test for every per-step or per-frame path the batch adds.
 - [ ] Android constraints of section 6 respected; anything unverified reported in the pull request.
-- [ ] Example and API-index entry when the batch makes a contract usable; `interfaces.md` updated when a seam changes; traceability test column filled; [`engine-features.md`](engine-features.md) updated when a capability changes.
+- [ ] Example and API-index entry when the batch makes a contract usable; `interfaces.md` updated when a seam changes; traceability test column filled; [`engine-features.md`](engine-features.md) updated when a capability changes; the batch's row of the batch status in [`features/README.md`](features/README.md) updated, with the next batch.

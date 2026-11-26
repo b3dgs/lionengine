@@ -82,7 +82,7 @@ At the end, provide:
 - the files and APIs added/modified;
 - the tests run and their results;
 - known limitations;
-- the documentation updated, including [`docs/engine-features.md`](docs/engine-features.md) whenever the change adds, removes or changes what a game can do, or moves an area to another state (*Specified*, *In progress*, *Available*);
+- the documentation updated, including the batch's row in the batch status of [`docs/features/README.md`](docs/features/README.md), and [`docs/engine-features.md`](docs/engine-features.md) whenever the change adds, removes or changes what a game can do, or moves an area to another state (*Specified*, *In progress*, *Available*);
 - the decisions or questions remaining to be settled.
 
 When documentation was changed, run `python3 -I scripts/check-docs.py` and report its result. A change coming from a decision packet ([`docs/templates/DECISION-PACKET-TEMPLATE.md`](docs/templates/DECISION-PACKET-TEMPLATE.md)) is applied only as far as the packet states decisions as taken.
