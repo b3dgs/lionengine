@@ -16,11 +16,40 @@
  */
 package com.b3dgs.lionengine.audio;
 
+import java.lang.management.ManagementFactory;
+
+import com.sun.management.ThreadMXBean;
+
 /**
  * Backend that plays nothing and allocates nothing, for the allocation tests of the audio system.
  */
 final class SilentAudioBackend implements AudioBackend
 {
+    /** Measured runs of a workload: the lowest is kept. */
+    private static final int MEASURES = 3;
+
+    /**
+     * Measures the bytes a workload allocates in steady state on the current thread: one warm-up run, then the lowest
+     * of {@value #MEASURES} measured runs. A one-time event of the JVM landing in one run (a compilation, for example)
+     * does not count; an allocation made by the workload itself is in every run.
+     *
+     * @param workload The workload, created before the call.
+     * @return The lowest number of bytes allocated by a measured run.
+     */
+    static long steadyAllocation(Runnable workload)
+    {
+        final ThreadMXBean bean = (ThreadMXBean) ManagementFactory.getThreadMXBean();
+        workload.run();
+        long lowest = Long.MAX_VALUE;
+        for (int i = 0; i < MEASURES; i++)
+        {
+            final long before = bean.getCurrentThreadAllocatedBytes();
+            workload.run();
+            lowest = Math.min(lowest, bean.getCurrentThreadAllocatedBytes() - before);
+        }
+        return lowest;
+    }
+
     /** The listener. */
     private VoiceListener listener;
     /** Next voice. */

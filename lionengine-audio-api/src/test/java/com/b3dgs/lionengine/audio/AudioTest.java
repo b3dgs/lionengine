@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.lang.management.ManagementFactory;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +31,6 @@ import com.b3dgs.lionengine.resources.FakeResourceProvider;
 import com.b3dgs.lionengine.resources.ResourceException;
 import com.b3dgs.lionengine.resources.ResourceKey;
 import com.b3dgs.lionengine.resources.Resources;
-import com.sun.management.ThreadMXBean;
 
 /**
  * Test {@link Audio}: playing and stopping short sounds, the voice limit, priorities and each overflow policy, on the
@@ -273,12 +271,9 @@ final class AudioTest
         final SilentAudioBackend silent = new SilentAudioBackend();
         final Audio audio = new Audio(silent, 4, VoicePolicy.STEAL);
         final PcmBuffer buffer = shot.getBuffer();
-        final ThreadMXBean bean = (ThreadMXBean) ManagementFactory.getThreadMXBean();
-        run(audio, silent);
+        final Runnable workload = () -> run(audio, silent);
 
-        final long before = bean.getCurrentThreadAllocatedBytes();
-        run(audio, silent);
-        final long allocated = bean.getCurrentThreadAllocatedBytes() - before;
+        final long allocated = SilentAudioBackend.steadyAllocation(workload);
 
         assertTrue(allocated < ALLOCATION_TOLERANCE, () -> "Allocated bytes: " + allocated);
         assertEquals(buffer, shot.getBuffer());

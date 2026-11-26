@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.lang.management.ManagementFactory;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +31,6 @@ import com.b3dgs.lionengine.InboxSpy;
 import com.b3dgs.lionengine.resources.FakeResourceProvider;
 import com.b3dgs.lionengine.resources.ResourceKey;
 import com.b3dgs.lionengine.resources.Resources;
-import com.sun.management.ThreadMXBean;
 
 /**
  * Tests {@link Audio} with variant sets on the fake backend: a random set plays its chosen variant, a composed set
@@ -344,12 +342,9 @@ final class AudioVariantSetTest
         });
         final VariantSet composed = VariantSet.composed(sounds);
         final int[] voices = new int[composed.getVoicesPerPlay()];
-        final ThreadMXBean bean = (ThreadMXBean) ManagementFactory.getThreadMXBean();
-        run(audio, silent, random, composed, voices);
+        final Runnable workload = () -> run(audio, silent, random, composed, voices);
 
-        final long before = bean.getCurrentThreadAllocatedBytes();
-        run(audio, silent, random, composed, voices);
-        final long allocated = bean.getCurrentThreadAllocatedBytes() - before;
+        final long allocated = SilentAudioBackend.steadyAllocation(workload);
 
         assertTrue(allocated < ALLOCATION_TOLERANCE, () -> "Allocated bytes: " + allocated);
     }
