@@ -50,7 +50,7 @@ Works now: the fixed-step loop with interpolation, catch-up, lag cap and report,
 - Mistakes in the links (unknown scene, missing start) are reported at startup.
 - Data shared between scenes (save slot, level, score) lives in one game-owned object.
 
-Works now: one active scene, switched by the game at a frame boundary, with every scene exited and disposed before the next is entered (example `SceneExample`). The pause overlay and the declared links between scenes come with the next batches.
+Works now: one active scene, switched by the game at a frame boundary, with every scene exited and disposed before the next is entered (example `SceneExample`); a pause menu or dialog shown over a scene, which stays visible but frozen and continues where it was once the menu closes (example `PauseOverlayExample`). The declared links between scenes come with the next batches.
 
 ## Resources and data files
 

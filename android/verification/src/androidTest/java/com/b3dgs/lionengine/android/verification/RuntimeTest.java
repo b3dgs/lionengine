@@ -40,8 +40,9 @@ import com.b3dgs.lionengine.runtime.UpdateCallback;
 
 /**
  * Runs {@code runtime} on Android API 21 (ADR-0044): fixed-step game loop with a clock moved by the test, the inbox
- * fed by another thread, the system clock, and the scene manager. Expected values are the ones of the JVM tests of
- * {@code lionengine-runtime} (GameLoopTest, GameLoopInboxTest, SceneManagerTest).
+ * fed by another thread, the system clock, and the scene manager with its overlay stack. Expected values are the ones
+ * of the JVM tests of {@code lionengine-runtime} (GameLoopTest, GameLoopInboxTest, SceneManagerTest,
+ * SceneOverlayTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class RuntimeTest
@@ -301,5 +302,37 @@ public final class RuntimeTest
 
         assertEquals("ERUR", scene.calls.toString());
         assertSame(scene, scenes.getActive());
+    }
+
+    /**
+     * An overlay pushed at a frame boundary is alone updated while both scenes render, bottom first; popped, it is
+     * exited and disposed and the base continues without being entered again (REQ-SCENE-003, ADR-0059).
+     */
+    @Test
+    public void testOverlayStack()
+    {
+        final Recorder base = new Recorder();
+        final Recorder overlay = new Recorder();
+        final SceneManager scenes = new SceneManager();
+        scenes.switchTo(base);
+        scenes.update(0.01);
+        scenes.render(0.0, 0.01);
+
+        assertTrue(scenes.push(overlay));
+        assertFalse(scenes.pop());
+        scenes.update(0.01);
+        scenes.render(0.0, 0.01);
+        assertEquals(2, scenes.getSceneCount());
+        assertSame(overlay, scenes.getActive());
+        assertSame(base, scenes.getScene(0));
+        assertTrue(scenes.pop());
+        scenes.update(0.01);
+        scenes.render(0.0, 0.01);
+        assertThrows(IllegalStateException.class, scenes::pop);
+
+        assertEquals("EURRUR", base.calls.toString());
+        assertEquals("EURXD", overlay.calls.toString());
+        scenes.clear();
+        assertEquals("EURRURXD", base.calls.toString());
     }
 }
