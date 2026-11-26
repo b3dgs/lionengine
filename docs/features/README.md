@@ -46,7 +46,7 @@ Next batch: [`audio-short-and-long-sounds.md`](audio-short-and-long-sounds.md) b
 | 2 | [`sprite.md`](sprite.md) | 4 | 1 to 3 (2026-11-26), 4 (2026-11-26, #931) | none; `REQ-SPRITE-004` parity waits for the OpenGL and Android backends |
 | 2 | [`animated-sprite.md`](animated-sprite.md) | 3 | 1 (2026-11-26, #932), 2 (2026-11-26, #933), 3 (2026-11-26, #934) | none |
 | 2 | [`display-modes.md`](display-modes.md) | 4 | 1 (2026-11-26, #938), 2 (2026-11-26, #939), 3 (2026-11-26, #940, delivered by earlier batches and recorded), 4 (2026-11-26, #941, review; `OQ-174` raised) | none |
-| 2 | [`output-filtering.md`](output-filtering.md) | 4 | 1 (2026-11-26, #942), 2 (2026-11-26, #943), 3 (2026-11-26) | 4 (`HQ2X` after its license record; GPU filters and CRT with `render-opengl`, Phase 4) |
+| 2 | [`output-filtering.md`](output-filtering.md) | 4 | 1 (2026-11-26, #942), 2 (2026-11-26, #943), 3 (2026-11-26, #944) | 4 (`HQ2X` after its license record; GPU filters and CRT with `render-opengl`, Phase 4) |
 | 2 | [`audio-short-and-long-sounds.md`](audio-short-and-long-sounds.md) | 8 | none | 1 to 8 (`audio-android` in Phase 4) |
 | 3 | [`ecs.md`](ecs.md) | 6 | none | 1 to 6 |
 | 3 | [`standard-traits.md`](standard-traits.md) | 7 | none | 1 to 7 |
