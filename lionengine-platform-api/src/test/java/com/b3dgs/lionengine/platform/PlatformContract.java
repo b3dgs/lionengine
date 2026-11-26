@@ -518,7 +518,12 @@ public abstract class PlatformContract
 
     /**
      * A resize that changes the effective result, such as the start of the {@code INTEGER} fallback, is announced to
-     * the display listeners (REQ-DISPLAY-007, REQ-DISPLAY-008).
+     * the display listeners, and only a change is announced (REQ-DISPLAY-007, REQ-DISPLAY-008).
+     *
+     * <p>
+     * A real window can pass through intermediate sizes before it keeps the requested one, each announced when it
+     * changes the result, so the test checks the last result and that no announcement repeats the previous one.
+     * </p>
      */
     @Test
     void testDisplayListenerOnResize()
@@ -534,9 +539,15 @@ public abstract class PlatformContract
         frame(platform);
         frame(platform);
 
-        assertEquals(1, results.size());
-        assertEquals(ScalingPolicy.FIT, results.get(0).effective().scalingPolicy());
-        assertTrue(results.get(0).degraded());
+        assertFalse(results.isEmpty());
+        final EffectiveResult last = results.get(results.size() - 1);
+        assertEquals(ScalingPolicy.FIT, last.effective().scalingPolicy());
+        assertTrue(last.degraded());
+        assertEquals(platform.getEffectiveResult(), last);
+        for (int i = 1; i < results.size(); i++)
+        {
+            assertNotEquals(results.get(i - 1), results.get(i));
+        }
     }
 
     /**
