@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.render.awt;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
@@ -42,14 +41,17 @@ import com.b3dgs.lionengine.render.TextureStore;
  * Created for a platform that has the {@link AwtSurface} capability ({@code platform-awt}), then attached to it before
  * its start. Each {@link #present(CommandBuffer)} draws the entries on an image of the logical frame, cleared to opaque
  * black, with nearest-neighbor sampling; then it scales that image to the canvas with the presentation geometry of the
- * platform, in device pixels (ADR-0043), without filter, and fills the rest of the canvas with black. A tinted entry
+ * platform, in device pixels (ADR-0043), with the scaling filter of the effective chain, and fills the rest of the
+ * canvas with black. A tinted entry
  * copies its source rectangle on the CPU; an entry whose texture is not alive draws nothing. Before the window is
  * shown, only the logical frame is drawn.
  * </p>
  *
  * <p>
- * Textures are images created from the pixel arrays at their first use or at {@code prepare}. Output filters: only
- * {@link OutputFilter#NONE} until the output-filtering batches. Thread: the runtime thread of the platform.
+ * Textures are images created from the pixel arrays at their first use or at {@code prepare}. Output filters
+ * (ADR-0063): {@link OutputFilter#NONE} and {@link OutputFilter#BILINEAR} drawn by Java2D, {@link OutputFilter#HQ2X}
+ * drawn by Scale2x at a presentation scale of 2 or more (as {@code NONE} below), no post filter. Thread: the runtime
+ * thread of the platform.
  * </p>
  *
  * @since 11.0.0
@@ -67,6 +69,8 @@ public final class AwtRenderBackend implements RenderBackend
     private final AwtTextures textures = new AwtTextures();
     /** Logical frame. */
     private final AwtFrame frame;
+    /** Presentation of the logical frame with the scaling filter. */
+    private final AwtPresenter presenter;
     /** Identity transform, to draw in device pixels. */
     private final AffineTransform identity = new AffineTransform();
 
@@ -90,6 +94,7 @@ public final class AwtRenderBackend implements RenderBackend
         this.platform = platform;
         canvas = surface.getCanvas();
         frame = new AwtFrame(platform.getLogicalWidth(), platform.getLogicalHeight());
+        presenter = new AwtPresenter(platform.getLogicalWidth(), platform.getLogicalHeight());
     }
 
     /**
@@ -110,6 +115,7 @@ public final class AwtRenderBackend implements RenderBackend
     private void show(BufferStrategy strategy)
     {
         final PresentationGeometry geometry = platform.getPresentationGeometry();
+        final OutputFilter filter = AwtPresenter.getScalingFilter(platform.getEffectiveResult().effective().filters());
         final BufferedImage image = frame.getImage();
         do
         {
@@ -119,18 +125,7 @@ public final class AwtRenderBackend implements RenderBackend
                 graphics.setTransform(identity);
                 graphics.setColor(BARS);
                 graphics.fillRect(0, 0, platform.getSurfaceWidth(), platform.getSurfaceHeight());
-                graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                                          RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-                graphics.drawImage(image,
-                                   geometry.x(),
-                                   geometry.y(),
-                                   geometry.x() + geometry.width(),
-                                   geometry.y() + geometry.height(),
-                                   0,
-                                   0,
-                                   image.getWidth(),
-                                   image.getHeight(),
-                                   null);
+                presenter.draw(graphics, image, geometry, filter);
                 graphics.dispose();
             }
             while (strategy.contentsRestored());
@@ -150,7 +145,9 @@ public final class AwtRenderBackend implements RenderBackend
      * {@inheritDoc}
      *
      * <p>
-     * Only {@link OutputFilter#NONE} until the output-filtering batches.
+     * The scaling filters {@link OutputFilter#NONE}, {@link OutputFilter#BILINEAR} and {@link OutputFilter#HQ2X}, the
+     * last one drawn by Scale2x until the license record of {@code HQ2X} (ADR-0063); no post filter, so CRT and the
+     * custom filters are skipped.
      * </p>
      */
     @Override
@@ -160,7 +157,8 @@ public final class AwtRenderBackend implements RenderBackend
         {
             throw new IllegalArgumentException("Filter must not be null");
         }
-        return OutputFilter.NONE.equals(filter);
+        return OutputFilter.NONE.equals(filter) || OutputFilter.BILINEAR.equals(filter)
+               || OutputFilter.HQ2X.equals(filter);
     }
 
     /**

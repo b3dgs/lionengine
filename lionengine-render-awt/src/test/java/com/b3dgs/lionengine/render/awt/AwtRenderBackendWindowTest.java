@@ -32,6 +32,7 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 
@@ -41,9 +42,13 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.InboxSpy;
 import com.b3dgs.lionengine.LoopDriver;
+import com.b3dgs.lionengine.platform.DisplayRequest;
+import com.b3dgs.lionengine.platform.ScreenMode;
 import com.b3dgs.lionengine.platform.awt.AwtPlatform;
 import com.b3dgs.lionengine.platform.awt.AwtSurface;
 import com.b3dgs.lionengine.render.CommandBuffer;
+import com.b3dgs.lionengine.render.OutputFilter;
+import com.b3dgs.lionengine.render.ScalingPolicy;
 
 /**
  * Test of the AWT renderer in a real window of the AWT platform (platform test, REQ-PLATFORM-001, REQ-FE-003).
@@ -136,17 +141,19 @@ final class AwtRenderBackendWindowTest
     }
 
     /**
-     * The logical frame is scaled into the window with the presentation geometry, black outside it; the stop closes
-     * the window.
+     * Presents a frame whose left half is red and right half green in a window of 3 by 2 logical frames, captures
+     * the canvas on screen, then stops the loop and checks the window closed.
      *
+     * @param request The initial display request.
+     * @return The capture of the canvas, {@code null} if the scale of the screen is not 1.
      * @throws AWTException If the screen cannot be captured.
      * @throws InterruptedException If interrupted.
      * @throws InvocationTargetException If the resize fails.
      */
-    @Test
-    void testPresent() throws AWTException, InterruptedException, InvocationTargetException
+    private static BufferedImage capture(DisplayRequest request)
+            throws AWTException, InterruptedException, InvocationTargetException
     {
-        final AwtPlatform platform = new AwtPlatform(WIDTH, HEIGHT, AwtRenderFixtures.REQUEST, AwtRenderFixtures.SINK);
+        final AwtPlatform platform = new AwtPlatform(WIDTH, HEIGHT, request, AwtRenderFixtures.SINK);
         final AwtRenderBackend backend = new AwtRenderBackend(platform);
         platform.attach(backend);
         final int[] pixels = new int[WIDTH * HEIGHT];
@@ -164,22 +171,63 @@ final class AwtRenderBackendWindowTest
 
         final Canvas canvas = platform.getCapability(AwtSurface.class).getCanvas();
         final double scale = canvas.getGraphicsConfiguration().getDefaultTransform().getScaleX();
-        assumeTrue(Double.compare(scale, 1.0) == 0, "Pixel checks written for a scale of 1");
-        resize(canvas, 3 * WIDTH, 2 * HEIGHT);
-        await(driver, awaitSurface(platform, driver, 3 * WIDTH, 2 * HEIGHT) + 5);
-
-        final BufferedImage screen = new Robot().createScreenCapture(new Rectangle(canvas.getLocationOnScreen(),
-                                                                                   canvas.getSize()));
+        BufferedImage screen = null;
+        if (Double.compare(scale, 1.0) == 0)
+        {
+            resize(canvas, 3 * WIDTH, 2 * HEIGHT);
+            await(driver, awaitSurface(platform, driver, 3 * WIDTH, 2 * HEIGHT) + 5);
+            screen = new Robot().createScreenCapture(new Rectangle(canvas.getLocationOnScreen(), canvas.getSize()));
+        }
         driver.stop();
         game.join(TimeUnit.NANOSECONDS.toMillis(TIMEOUT));
-
         assertFalse(game.isAlive());
+        return screen;
+    }
+
+    /**
+     * The logical frame is scaled into the window with the presentation geometry, black outside it; the stop closes
+     * the window.
+     *
+     * @throws AWTException If the screen cannot be captured.
+     * @throws InterruptedException If interrupted.
+     * @throws InvocationTargetException If the resize fails.
+     */
+    @Test
+    void testPresent() throws AWTException, InterruptedException, InvocationTargetException
+    {
+        final BufferedImage screen = capture(AwtRenderFixtures.REQUEST);
+        assumeTrue(screen != null, "Pixel checks written for a scale of 1");
+
         assertEquals(3 * WIDTH, screen.getWidth());
         // FIT: a scale of 2, the frame of 64 by 48 pixels centered, black bars of 16 pixels on the sides.
         assertEquals(0xFF000000, screen.getRGB(WIDTH / 4, HEIGHT));
         assertEquals(0xFFFF0000, screen.getRGB(WIDTH / 2 + 2, HEIGHT));
         assertEquals(0xFF00FF00, screen.getRGB(WIDTH / 2 + WIDTH + 30, HEIGHT));
         assertEquals(0xFF000000, screen.getRGB(3 * WIDTH - 2, HEIGHT));
+        // NONE: the edge between the halves is sharp.
+        assertEquals(0xFFFF0000, screen.getRGB(WIDTH / 2 + WIDTH - 1, HEIGHT));
+        assertEquals(0xFF00FF00, screen.getRGB(WIDTH / 2 + WIDTH, HEIGHT));
+    }
+
+    /**
+     * With bilinear filtering, the edge between the red and green halves mixes both colors on screen (ADR-0063).
+     *
+     * @throws AWTException If the screen cannot be captured.
+     * @throws InterruptedException If interrupted.
+     * @throws InvocationTargetException If the resize fails.
+     */
+    @Test
+    void testPresentBilinear() throws AWTException, InterruptedException, InvocationTargetException
+    {
+        final BufferedImage screen = capture(new DisplayRequest(ScreenMode.WINDOWED,
+                                                                null,
+                                                                ScalingPolicy.FIT,
+                                                                List.of(OutputFilter.BILINEAR)));
+        assumeTrue(screen != null, "Pixel checks written for a scale of 1");
+
+        final int edge = screen.getRGB(WIDTH / 2 + WIDTH - 1, HEIGHT);
+        assertTrue((edge >> 16 & 0xFF) > 0 && (edge >> 8 & 0xFF) > 0, Integer.toHexString(edge));
+        assertEquals(0xFFFF0000, screen.getRGB(WIDTH / 2 + 2, HEIGHT));
     }
 
     /**
