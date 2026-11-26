@@ -308,11 +308,11 @@ final class AwtRenderBackendTest
         for (int i = 0; i < colors.length; i++)
         {
             commands.add(textures.create(1, 1, fill(1, 1, colors[i])), 0, 0, 1, 1)
-                    .position(i, 0.0F)
+                    .position((float) i, 0.0F)
                     .tint(tint)
                     .alpha(alpha);
             commands.add(textures.create(1, 1, fill(1, 1, baked(colors[i], tint, alpha))), 0, 0, 1, 1)
-                    .position(i, 1.0F);
+                    .position((float) i, 1.0F);
         }
 
         backend.present(commands);

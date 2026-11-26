@@ -121,34 +121,41 @@ public final class ColorTransform
     }
 
     /**
-     * Appends a color in hexadecimal, upper case, with a fixed number of digits.
+     * Returns a color in hexadecimal, upper case, with a fixed number of digits.
      *
-     * @param text The text.
      * @param value The color.
      * @param digits The number of digits.
+     * @return The text, {@code #} then the digits.
      */
-    private static void appendHex(StringBuilder text, int value, int digits)
+    private static String hex(int value, int digits)
     {
-        text.append('#');
+        final StringBuilder text = new StringBuilder(digits + 1).append('#');
         for (int i = digits - 1; i >= 0; i--)
         {
             text.append(Character.toUpperCase(Character.forDigit((value >>> (i * DIGIT_BITS)) & DIGIT_MASK, HEX)));
         }
+        return text.toString();
     }
 
     /**
-     * Appends the separator of a part when the text is not empty.
+     * Appends a part to the canonical text.
      *
-     * @param text The text.
-     * @return The text.
+     * @param text The text so far, empty if none.
+     * @param part The part.
+     * @return The text with the part, after a comma unless the text was empty.
      */
-    private static StringBuilder separate(StringBuilder text)
+    private static String join(String text, String part)
     {
-        if (text.length() > 0)
+        final String result;
+        if (text.isEmpty())
         {
-            text.append(SEPARATOR);
+            result = part;
         }
-        return text;
+        else
+        {
+            result = text + SEPARATOR + part;
+        }
+        return result;
     }
 
     /** The grading. */
@@ -176,13 +183,13 @@ public final class ColorTransform
         super();
 
         this.grading = grading;
-        if (maskAmount == 0.0)
+        if (maskAmount > 0.0)
         {
-            this.maskColor = 0;
+            this.maskColor = maskColor & RGB;
         }
         else
         {
-            this.maskColor = maskColor & RGB;
+            this.maskColor = 0;
         }
         this.maskAmount = maskAmount;
         this.tint = tint;
@@ -502,31 +509,27 @@ public final class ColorTransform
     @Override
     public String toString()
     {
-        final StringBuilder text = new StringBuilder();
+        String text = "";
         if (!grading.isIdentity())
         {
-            text.append(grading);
+            text = grading.toString();
         }
         if (maskAmount > 0.0)
         {
-            separate(text).append("mask(");
-            appendHex(text, maskColor, RGB_DIGITS);
-            text.append(SEPARATOR).append(maskAmount).append(END);
+            text = join(text, "mask(" + hex(maskColor, RGB_DIGITS) + SEPARATOR + maskAmount + END);
         }
         if (tint != CommandBuffer.NO_TINT)
         {
-            separate(text).append("tint(");
-            appendHex(text, tint, ARGB_DIGITS);
-            text.append(END);
+            text = join(text, "tint(" + hex(tint, ARGB_DIGITS) + END);
         }
         if (alpha < 1.0)
         {
-            separate(text).append("alpha(").append(alpha).append(END);
+            text = join(text, "alpha(" + alpha + END);
         }
-        if (text.length() == 0)
+        if (text.isEmpty())
         {
-            text.append("none");
+            text = "none";
         }
-        return text.toString();
+        return text;
     }
 }

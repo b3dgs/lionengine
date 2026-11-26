@@ -23,8 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Random;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -40,7 +38,7 @@ import com.b3dgs.lionengine.testsupport.RecordingBackend;
  */
 final class ColorTransformTest
 {
-    /** Pixels and transforms drawn for the path independence check. */
+    /** Pixels and transforms of the path independence check. */
     private static final int SAMPLES = 10_000;
 
     /**
@@ -158,22 +156,48 @@ final class ColorTransformTest
     }
 
     /**
+     * Spreads an index over the {@code int} values with an integer hash (the finalizer of MurmurHash3), the same at
+     * every run.
+     *
+     * @param index The index.
+     * @return The hashed value.
+     */
+    private static int spread(int index)
+    {
+        int value = index * 0x9E3779B9;
+        value ^= value >>> 16;
+        value *= 0x85EBCA6B;
+        value ^= value >>> 13;
+        value *= 0xC2B2AE35;
+        return value ^ value >>> 16;
+    }
+
+    /**
+     * Returns a unit value spread over {@code [0, 1]}.
+     *
+     * @param index The index.
+     * @return The value, a multiple of {@code 1 / 255}.
+     */
+    private static double unit(int index)
+    {
+        return (spread(index) & 0xFF) / 255.0;
+    }
+
+    /**
      * Baking the whole transform gives exactly the pixels of its static part baked, then its per-frame part applied,
-     * for any pixel: the description does not depend on the path (ADR-0056).
+     * for pixels and transforms spread over their ranges: the description does not depend on the path (ADR-0056).
      */
     @Test
     void testPathIndependence()
     {
-        final Random random = new Random(0x4C494F4EL);
         final RecordingBackend both = capability(true, true);
         for (int i = 0; i < SAMPLES; i++)
         {
-            final ColorTransform transform = ColorTransform.NONE.withGrading(ColorMatrix.saturation(random.nextDouble()
-                                                                                                    * 2.0))
-                                                                .withMask(random.nextInt(), random.nextDouble())
-                                                                .withTint(random.nextInt())
-                                                                .withAlpha(random.nextDouble());
-            final int pixel = random.nextInt();
+            final ColorTransform transform = ColorTransform.NONE.withGrading(ColorMatrix.saturation(unit(i) * 2.0))
+                                                                .withMask(spread(i + SAMPLES), unit(i + 2 * SAMPLES))
+                                                                .withTint(spread(i + 3 * SAMPLES))
+                                                                .withAlpha(unit(i + 4 * SAMPLES));
+            final int pixel = spread(i + 5 * SAMPLES);
             final int baked = transform.getBakedPart(both).apply(pixel);
 
             assertEquals(transform.apply(pixel), transform.getFramePart(both).apply(baked));

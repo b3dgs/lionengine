@@ -155,11 +155,14 @@ final class ColorMatrixTest
     })
     void testInvalid(double value)
     {
-        assertThrows(IllegalArgumentException.class, () -> new ColorMatrix(offsets(value, 0.0, 0.0, 0.0)));
+        final double[] invalid = offsets(value, 0.0, 0.0, 0.0);
+        final double[] tooMany = new double[ColorMatrix.SIZE + 1];
+
+        assertThrows(IllegalArgumentException.class, () -> new ColorMatrix(invalid));
         assertThrows(IllegalArgumentException.class, () -> ColorMatrix.saturation(value));
         assertThrows(IllegalArgumentException.class, () -> new ColorMatrix((double[]) null));
         assertThrows(IllegalArgumentException.class, () -> new ColorMatrix(1.0, 0.0));
-        assertThrows(IllegalArgumentException.class, () -> new ColorMatrix(new double[ColorMatrix.SIZE + 1]));
+        assertThrows(IllegalArgumentException.class, () -> new ColorMatrix(tooMany));
     }
 
     /**

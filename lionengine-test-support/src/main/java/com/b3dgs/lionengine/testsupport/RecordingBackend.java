@@ -17,8 +17,8 @@
 package com.b3dgs.lionengine.testsupport;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -78,8 +78,8 @@ public final class RecordingBackend implements RenderBackend, TextureStore
 
     /** Filters implemented. */
     private final Set<OutputFilter> filters = new HashSet<>();
-    /** Color effects applied per frame. */
-    private final Set<ColorEffect> effects = EnumSet.allOf(ColorEffect.class);
+    /** Color effects applied per frame, by ordinal. */
+    private final boolean[] effects = new boolean[ColorEffect.values().length];
     /** Recorded frames, oldest first. */
     private final List<List<RecordedCommand>> frames = new ArrayList<>();
     /** Pixels of the live textures by handle. */
@@ -103,6 +103,7 @@ public final class RecordingBackend implements RenderBackend, TextureStore
         {
             throw new IllegalArgumentException("Filters must not be null");
         }
+        Arrays.fill(effects, true);
         filters.add(OutputFilter.NONE);
         for (final OutputFilter filter : supported)
         {
@@ -232,14 +233,7 @@ public final class RecordingBackend implements RenderBackend, TextureStore
     public void setSupported(ColorEffect effect, boolean supported)
     {
         checkEffect(effect);
-        if (supported)
-        {
-            effects.add(effect);
-        }
-        else
-        {
-            effects.remove(effect);
-        }
+        effects[effect.ordinal()] = supported;
     }
 
     @Override
@@ -252,7 +246,7 @@ public final class RecordingBackend implements RenderBackend, TextureStore
     public boolean isSupported(ColorEffect effect)
     {
         checkEffect(effect);
-        return effects.contains(effect);
+        return effects[effect.ordinal()];
     }
 
     @Override

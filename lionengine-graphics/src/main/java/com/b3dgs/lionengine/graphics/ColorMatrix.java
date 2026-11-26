@@ -146,8 +146,8 @@ public final class ColorMatrix
 
     /** The values, row-major. */
     private final double[] values;
-    /** {@code true} if the matrix is the identity. */
-    private final boolean identity;
+    /** {@code true} if the matrix changes nothing: the identity. */
+    private final boolean neutral;
 
     /**
      * Creates a matrix.
@@ -173,7 +173,7 @@ public final class ColorMatrix
             }
             this.values[i] = values[i] + 0.0;
         }
-        identity = computeIdentity(this.values);
+        neutral = computeIdentity(this.values);
     }
 
     /**
@@ -200,7 +200,7 @@ public final class ColorMatrix
      */
     public boolean isIdentity()
     {
-        return identity;
+        return neutral;
     }
 
     /**
