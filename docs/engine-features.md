@@ -9,12 +9,12 @@ One line per capability, no implementation detail. Each area links to its featur
 - **Available**: implemented, tested, with an example.
 - **Planned**: in the roadmap, not yet specified in detail.
 
-Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop with asynchronous loading ([`features/game-loop.md`](features/game-loop.md)), the single-scene manager ([`features/scenes.md`](features/scenes.md)), the file, memory and application-stream resource providers ([`features/resources.md`](features/resources.md)), the platform with rendering, headless and in a desktop window ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)), the image decoding, image cache and sprite sheets with their definition files ([`features/sprite-sheet.md`](features/sprite-sheet.md)), the sprites drawn with render commands ([`features/sprite.md`](features/sprite.md)), and the animated sprites ([`features/animated-sprite.md`](features/animated-sprite.md)) exist: images, sprites and animations are *Available*; resources and data files, the game loop, scenes, window and display, and platforms are *In progress*; every other area is *Specified*.
+Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop with asynchronous loading ([`features/game-loop.md`](features/game-loop.md)), the scenes with their overlay stack and declared flow ([`features/scenes.md`](features/scenes.md)), the file, memory and application-stream resource providers ([`features/resources.md`](features/resources.md)), the platform with rendering, headless and in a desktop window ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)), the image decoding, image cache and sprite sheets with their definition files ([`features/sprite-sheet.md`](features/sprite-sheet.md)), the sprites drawn with render commands ([`features/sprite.md`](features/sprite.md)), and the animated sprites ([`features/animated-sprite.md`](features/animated-sprite.md)) exist: scenes and navigation, and images, sprites and animations are *Available*; resources and data files, the game loop, window and display, and platforms are *In progress*; every other area is *Specified*.
 
 | Area | State | Phase |
 |---|---|---|
 | [Game loop and timing](#game-loop-and-timing) | In progress | 1–2 |
-| [Scenes and navigation](#scenes-and-navigation) | In progress | 1–2 |
+| [Scenes and navigation](#scenes-and-navigation) | Available | 1–2 |
 | [Resources and data files](#resources-and-data-files) | In progress | 1 |
 | [Window, display and rendering](#window-display-and-rendering) | In progress | 1–2 |
 | [Images, sprites and animations](#images-sprites-and-animations) | Available | 2 |
@@ -50,7 +50,7 @@ Works now: the fixed-step loop with interpolation, catch-up, lag cap and report,
 - Mistakes in the links (unknown scene, missing start) are reported at startup.
 - Data shared between scenes (save slot, level, score) lives in one game-owned object.
 
-Works now: one active scene, switched by the game at a frame boundary, with every scene exited and disposed before the next is entered (example `SceneExample`); a pause menu or dialog shown over a scene, which stays visible but frozen and continues where it was once the menu closes (example `PauseOverlayExample`); the links between scenes declared in one place, as scene ids and named triggers with conditions on the game's data, checked at startup, replacing a scene or ending the game from any scene (example `SceneFlowExample`). Opening and closing an overlay from the declared links comes with the next batch.
+Works now: one active scene, switched by the game at a frame boundary, with every scene exited and disposed before the next is entered (example `SceneExample`); a pause menu or dialog shown over a scene, which stays visible but frozen and continues where it was once the menu closes (example `PauseOverlayExample`); the links between scenes declared in one place, as scene ids and named triggers with conditions on the game's data, checked at startup, replacing a scene, opening and closing an overlay, or ending the game from any scene (example `SceneFlowExample`).
 
 ## Resources and data files
 

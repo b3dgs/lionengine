@@ -26,6 +26,13 @@ public enum TransitionKind
 {
     /** Replaces the whole stack by the target scene: every scene is left from the top, then the target is entered. */
     SWITCH,
+    /**
+     * Opens the target scene as an overlay above the stack: the covered scenes stop updating, keep their state and
+     * keep rendering.
+     */
+    PUSH,
+    /** Closes the top overlay: it is exited and disposed, and the scene below resumes updating; no target. */
+    POP,
     /** Leaves every scene of the stack from the top, then requests the stop of the loop; no target. */
     EXIT
 }

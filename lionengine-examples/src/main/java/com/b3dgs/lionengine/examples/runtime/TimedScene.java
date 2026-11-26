@@ -32,6 +32,10 @@ final class TimedScene implements Scene
     private final double duration;
     /** Trigger fired once the time is over. */
     private final String trigger;
+    /** Trigger fired once at half the time, {@code null} if none. */
+    private final String halfway;
+    /** {@code true} once the halfway trigger is fired. */
+    private boolean halfwayFired;
     /** Time spent in the scene, in seconds. */
     private double time;
 
@@ -45,12 +49,27 @@ final class TimedScene implements Scene
      */
     TimedScene(FlowStory story, String name, double duration, String trigger)
     {
+        this(story, name, duration, trigger, null);
+    }
+
+    /**
+     * Creates the scene with a trigger fired once at half its time, such as a pause, counted in the context.
+     *
+     * @param story The game context.
+     * @param name The name of the scene in the journal.
+     * @param duration The time before the trigger, in seconds; only the steps of the scene count, not a pause.
+     * @param trigger The trigger fired once the time is over.
+     * @param halfway The trigger fired once at half the time, {@code null} if none.
+     */
+    TimedScene(FlowStory story, String name, double duration, String trigger, String halfway)
+    {
         super();
 
         this.story = story;
         this.name = name;
         this.duration = duration;
         this.trigger = trigger;
+        this.halfway = halfway;
         story.countCreated();
     }
 
@@ -64,7 +83,11 @@ final class TimedScene implements Scene
     public void update(double stepSeconds)
     {
         time += stepSeconds;
-        if (time >= duration)
+        if (halfway != null && !halfwayFired && time >= duration / 2.0)
+        {
+            halfwayFired = story.trigger(halfway);
+        }
+        else if (time >= duration)
         {
             if ("menu".equals(name))
             {

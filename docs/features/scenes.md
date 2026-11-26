@@ -90,7 +90,7 @@ Seconds; ids and trigger names are strings. Pure Java; callbacks are the role-na
 
 ## State (2026-11-26)
 
-Batches 1 to 3 are implemented in `runtime`, with the examples `SceneExample`, `PauseOverlayExample` and `SceneFlowExample` and their API-index rows; batch 4 (`PUSH` and `POP` in the flow) is not. Batch 1 (2026-11-24): Names and details chosen by the batch, within this page, ADR-0021 and ADR-0031:
+Batches 1 to 4 are implemented in `runtime`, with the examples `SceneExample`, `PauseOverlayExample` and `SceneFlowExample` and their API-index rows; the scenes feature is complete. Batch 1 (2026-11-24): Names and details chosen by the batch, within this page, ADR-0021 and ADR-0031:
 - `SceneManager` implements `UpdateCallback` and `RenderCallback`, so a simple game gives it to `GameLoop` as both callbacks; a game with input calls its `update` and `render` from its own callbacks. The frame ends with `render`, which must therefore be called once per frame, even when nothing is drawn.
 - `switchTo(scene)` returns whether the request is accepted: the first request of a frame wins and later ones return `false` (their scenes receive no call), as ADR-0036 decides for triggers, so a request repeated at every step, or in every step of a catch-up frame, gives the same result. The switch applies at the first `update` or `render` call of the next frame: exit and dispose the current scene, enter the next, which is then updated and rendered in that frame. The active scene itself and `null` are rejected (`IllegalArgumentException`).
 - `isSwitchPending()`, `hasActive()` and `getActive()` (`null` when none) observe the manager. `clear()` exits and disposes the active scene and cancels a pending switch at once: the game calls it once the loop has stopped or failed. A scene calling `clear()`, `update` or `render` of the manager from a method the manager called gets an `IllegalStateException`.
@@ -113,9 +113,15 @@ Batch 3 (2026-11-26), the scene flow with `SWITCH` and `EXIT`. Names and details
 - Triggers, updates and renders allocate nothing (allocation test after a warm-up run).
 - Tests: `SceneFlowTest` (start, switch at the frame boundary with the listener before the next update, new instance per entry with the context, resolution order and conditions, any-scene fallback, one pending transition, exit, clear, factory failures, each validation error, independent flows, no allocation); `SceneFlowExampleTest` (introduction, menu, level, credits, exit from any scene, a condition on the context); device test `RuntimeTest.testSceneFlow` on API 21.
 
+Batch 4 (2026-11-26), `PUSH` and `POP` in the scene flow, within this page, ADR-0036 and ADR-0059:
+- `TransitionKind` gains `PUSH` (a target, opened as an overlay through `SceneManager.push`) and `POP` (no target, closing the top overlay through `SceneManager.pop`). The flow keeps the ids of the stack: `getSceneIds()` lists the overlay first, and triggers resolve against the top scene, the overlay.
+- Validation "when possible" (ADR-0036): a `POP` from a scene that no `PUSH` opens can never close an overlay and fails the build; a `POP` from any scene is checked when it applies, where a stack without overlay is an `IllegalStateException` (from the manager) that leaves the stack unchanged and calls no listener. A `PUSH` needs a declared target, a `POP` takes none.
+- A `SWITCH` or an `EXIT` from an overlay leaves the whole stack, the overlay first. The listener of a `POP` gets no target (`null`). A pushed scene whose enter throws is not added: the ids are unchanged.
+- Tests: `SceneFlowOverlayTest` (push and pop at the frame boundary, resolution against the overlay, switch and exit from an overlay, a pop without overlay, a failed push, the shapes of `PUSH` and `POP`); `SceneFlowExampleTest` (the level paused by a pushed menu and resumed by a pop, never exited meanwhile); device test `RuntimeTest.testSceneFlowOverlay` on API 21.
+
 ## Acceptance criteria
 
-- [ ] Requirements `REQ-SCENE-001` to `REQ-SCENE-008` verified.
-- [ ] Automated tests added and passing; complete Javadoc.
-- [ ] Headless example of a four-scene flow and `api-index.md` entry.
-- [ ] No forbidden coupling; Android/DEX compatibility verified.
+- [x] Requirements `REQ-SCENE-001` to `REQ-SCENE-008` verified.
+- [x] Automated tests added and passing; complete Javadoc.
+- [x] Headless example of a four-scene flow and `api-index.md` entry.
+- [x] No forbidden coupling; Android/DEX compatibility verified.

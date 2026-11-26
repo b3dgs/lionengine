@@ -29,8 +29,9 @@ import com.b3dgs.lionengine.runtime.LoopState;
 final class SceneFlowExampleTest
 {
     /**
-     * The game goes from the introduction to the menu, to the level once a save slot is selected, to the credits,
-     * then exits from any scene: each scene is left before the next is entered, and the loop stops.
+     * The game goes from the introduction to the menu, to the level once a save slot is selected, pauses the level
+     * with an overlay that does not exit it, goes to the credits, then exits from any scene: each scene is left before
+     * the next is entered, and the loop stops.
      */
     @Test
     void testFlow()
@@ -38,10 +39,11 @@ final class SceneFlowExampleTest
         final SceneFlowExample.Result result = SceneFlowExample.run(new Log());
 
         assertEquals("intro enter, intro exit, menu enter, game:intro --finished--> game:menu, menu exit, level enter, "
-                     + "game:menu --start--> game:level, level exit, credits enter, "
+                     + "game:menu --start--> game:level, pause menu enter, game:level --pause--> game:pause, pause menu exit, "
+                     + "game:pause --resume--> null, level exit, credits enter, "
                      + "game:level --finished--> game:credits, credits exit, game:credits --quit--> null",
                      result.journal());
-        assertEquals(4, result.created());
+        assertEquals(5, result.created());
         assertEquals(LoopState.STOPPED, result.state());
     }
 }

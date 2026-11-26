@@ -379,4 +379,45 @@ public final class RuntimeTest
         assertEquals("game:intro finished game:menugame:menu quit null", transitions.toString());
         assertThrows(IllegalStateException.class, () -> new SceneFlowBuilder<Object>().build());
     }
+
+    /**
+     * A push transition opens an overlay above the level, a pop closes it, a pop from any scene without overlay is
+     * refused at application, and a pop from a scene no push opens fails the build (REQ-SCENE-006, ADR-0036).
+     */
+    @Test
+    public void testSceneFlowOverlay()
+    {
+        final SceneFlow<Object> flow = new SceneFlowBuilder<>().scene("game:level", context -> new Recorder())
+                                                               .scene("game:pause", context -> new Recorder())
+                                                               .start("game:level")
+                                                               .transition("game:level",
+                                                                           "pause",
+                                                                           TransitionKind.PUSH,
+                                                                           "game:pause")
+                                                               .transition(SceneFlowBuilder.ANY_SCENE,
+                                                                           "resume",
+                                                                           TransitionKind.POP,
+                                                                           null)
+                                                               .build();
+        flow.start(null, new GameLoop(CONFIG, new ManualClock(), new Log(), flow, flow));
+        flow.update(0.01);
+        flow.render(0.0, 0.01);
+
+        assertTrue(flow.trigger("pause"));
+        flow.update(0.01);
+        flow.render(0.0, 0.01);
+        assertEquals(2, flow.getSceneIds().size());
+        assertEquals("game:pause", flow.getSceneIds().get(0));
+        assertTrue(flow.trigger("resume"));
+        flow.update(0.01);
+        flow.render(0.0, 0.01);
+        assertEquals(1, flow.getSceneIds().size());
+        assertTrue(flow.trigger("resume"));
+        assertThrows(IllegalStateException.class, () -> flow.update(0.01));
+        assertThrows(IllegalStateException.class,
+                     () -> new SceneFlowBuilder<Object>().scene("game:level", context -> new Recorder())
+                                                         .start("game:level")
+                                                         .transition("game:level", "back", TransitionKind.POP, null)
+                                                         .build());
+    }
 }
