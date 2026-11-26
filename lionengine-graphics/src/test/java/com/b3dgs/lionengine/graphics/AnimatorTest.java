@@ -405,7 +405,25 @@ final class AnimatorTest
     }
 
     /**
-     * Updating and reading allocate nothing.
+     * Runs update steps and reads the frame after each one.
+     *
+     * @param animator The animator.
+     * @return The sum of the frames read, so that the reads are used.
+     */
+    private static int steps(Animator animator)
+    {
+        int sum = 0;
+        for (int i = 0; i < ITERATIONS; i++)
+        {
+            animator.update(STEP);
+            sum += animator.getFrame();
+        }
+        return sum;
+    }
+
+    /**
+     * Updating and reading allocate nothing in the steady state, measured after a first run that loads and
+     * initializes what the first calls need.
      */
     @Test
     void testUpdateAllocatesNothing()
@@ -416,14 +434,10 @@ final class AnimatorTest
             STEP, 2 * STEP, STEP
         }, AnimationLoop.PING_PONG));
         final ThreadMXBean bean = (ThreadMXBean) ManagementFactory.getThreadMXBean();
-        int sum = 0;
+        int sum = steps(animator);
 
         final long before = bean.getCurrentThreadAllocatedBytes();
-        for (int i = 0; i < ITERATIONS; i++)
-        {
-            animator.update(STEP);
-            sum += animator.getFrame();
-        }
+        sum += steps(animator);
         final long allocated = bean.getCurrentThreadAllocatedBytes() - before;
 
         assertTrue(allocated < ALLOCATION_TOLERANCE, "Allocated " + allocated + " bytes");

@@ -51,6 +51,12 @@ Batch 2 (2026-11-26), the animator, with the example `AnimatorExample` and its A
 - Reading: `getState()`, `getAnimation()` (`null` before the first play), `getFrameIndex()`, `getFrame()` (the cell to draw; `IllegalStateException` without animation), `getFrameTime()`. Reading changes nothing; updating and reading allocate nothing.
 - Tests: `AnimatorTest` (every call in every state, each loop mode, per-frame durations, carried time, long steps, the end of `once`, 1,000 short steps against 250 long ones, reading, invalid steps, no allocation in 100,000 updates); `AnimatorExampleTest`; device test `GraphicsTest.testAnimator` on API 21.
 
+Batch 3 (2026-11-26), the animated sprite, with the example `AnimatedSpriteExample` and its API-index row. Names and details chosen by the batch, within this page, ADR-0026 and ADR-0058:
+- `AnimatedSprite` (`graphics`): joins a `Sprite` (`getSprite()`, for the transform, colors and layer, unchanged) and an `Animator` (the playback state). `new AnimatedSprite(sprite)` is stopped, without animation, and keeps the frame of the sprite until the first play. `play(animation)` first checks that every frame is a frame of the sprite (`IllegalArgumentException` otherwise, nothing changed), so an animation built in code cannot point outside its sheet; then it plays and shows the first frame. `pause()`, `resume()` and `stop()` follow the animator; `stop()` shows the first frame.
+- Time: `update(stepSeconds)` advances the animator and gives its frame to the sprite, a finishing `once` animation included. `render(commands)` and `render(commands, x, y)` only read: an interpolated or extrapolated position never changes the frame or the time (REQ-LOOP-006). Nothing allocates after construction; the sprite keeps owning no image.
+- `getState()`, `getAnimation()`, `getFrameIndex()` and `getFrameTime()` read the animator.
+- Tests: `AnimatedSpriteTest` (frames drawn after each step, rendering at interpolated positions changes nothing, states, frames outside the sheet, invalid step, released image, no allocation in 100,000 updates and renders); `AnimatedSpriteExampleTest` (the game loop with a simulated clock: 144 Hz rendering for 60 steps per second, the animation ends where an animator advanced by the same steps alone ends, the last frame draws that cell); device test `GraphicsTest.testAnimatedSprite` on API 21. The animated-sprite feature is complete.
+
 ## Lifecycle and concurrency
 
 An animated sprite holds playback state only; images stay owned by the `graphics` cache. Runtime thread only.
@@ -71,10 +77,10 @@ Seconds for durations; cell indices for frames. Pure Java, no platform type.
 
 ## Acceptance criteria
 
-- [ ] Requirements covered.
-- [ ] API reviewed in the pull request.
-- [ ] Automated tests added and passing.
-- [ ] Complete Javadoc.
-- [ ] Headless example, API-index entry, traceability updated (REQ-DOC-001, REQ-DOC-002).
-- [ ] No forbidden coupling (REQ-CORE-005).
-- [ ] Android/DEX compatibility verified.
+- [x] Requirements covered.
+- [x] API reviewed in the pull request.
+- [x] Automated tests added and passing.
+- [x] Complete Javadoc.
+- [x] Headless example, API-index entry, traceability updated (REQ-DOC-001, REQ-DOC-002).
+- [x] No forbidden coupling (REQ-CORE-005).
+- [x] Android/DEX compatibility verified.
