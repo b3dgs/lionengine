@@ -126,20 +126,26 @@ public final class SheetGroup
     }
 
     /**
-     * Adds a sheet read from a definition, after a check of the image size, for {@link SheetLoader}.
+     * Adds a sheet read from a definition, after a check of the image size, with the templates of the definition, for
+     * {@link SheetLoader}.
      *
      * @param id The id of the sheet.
      * @param image The resource key of the image.
      * @param grid The grid of the sheet.
      * @param pivotX The horizontal pivot of the cells, in pixels.
      * @param pivotY The vertical pivot of the cells, in pixels.
-     * @param check The check of the image size, which may throw before the sheet is created.
+     * @param definition The definition, whose check of the image may throw before the sheet is created.
      * @return The sheet.
      */
-    SpriteSheet add(ResourceKey id, ResourceKey image, SheetGrid grid, double pivotX, double pivotY, SheetCheck check)
+    SpriteSheet add(ResourceKey id,
+                    ResourceKey image,
+                    SheetGrid grid,
+                    double pivotX,
+                    double pivotY,
+                    SheetDefinition definition)
     {
         checkUsable();
-        return entry.add(id, image, grid, pivotX, pivotY, check);
+        return entry.add(id, image, grid, pivotX, pivotY, definition);
     }
 
     /**

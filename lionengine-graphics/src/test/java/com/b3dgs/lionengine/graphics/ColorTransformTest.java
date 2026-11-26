@@ -32,9 +32,9 @@ import com.b3dgs.lionengine.render.CommandBuffer;
 import com.b3dgs.lionengine.testsupport.RecordingBackend;
 
 /**
- * Test {@link ColorTransform}: the mask, the tint and the alpha, the order of the parts, the rounding that makes the
- * CPU path independent of the split, the split for a backend capability, and the canonical text (REQ-SPRITE-004,
- * ADR-0056).
+ * Test {@link ColorTransform}: the color mapping, the mask, the tint and the alpha, the order of the parts, the
+ * rounding that makes the CPU path independent of the split, the split for a backend capability, and the canonical
+ * text (REQ-SPRITE-004, REQ-SPRITE-005, ADR-0056, ADR-0057).
  */
 final class ColorTransformTest
 {
@@ -156,6 +156,34 @@ final class ColorTransformTest
     }
 
     /**
+     * The color mapping applies first, to the source colors: a team color is then grayed, masked, tinted and faded
+     * like any other color; the mapping is part of the static part, baked on every backend.
+     */
+    @Test
+    void testMapping()
+    {
+        final ColorMapping team = ColorMapping.NONE.with(0xFFFF00FF, 0xFFFF0000);
+        final ColorTransform red = ColorTransform.NONE.withMapping(team);
+        final ColorTransform stone = red.withGrading(ColorMatrix.saturation(0.0));
+        final ColorTransform ghost = red.withTint(0xFF808080).withAlpha(0.5);
+        final RecordingBackend both = capability(true, true);
+
+        assertSame(team, red.getMapping());
+        assertSame(ColorMapping.NONE, ColorTransform.NONE.getMapping());
+        assertFalse(red.isIdentity());
+        assertTrue(ColorTransform.NONE.withMapping(ColorMapping.NONE).isIdentity());
+        assertEquals(0xFFFF0000, red.apply(0xFFFF00FF));
+        assertEquals(0xFF00FF00, red.apply(0xFF00FF00));
+        assertEquals(0xFF363636, stone.apply(0xFFFF00FF));
+        assertEquals(0xFFFFFFFF, red.withMask(0xFFFFFF, 1.0).apply(0xFFFF00FF));
+        assertEquals(0x80800000, ghost.apply(0xFFFF00FF));
+        assertEquals(red, ghost.getBakedPart(both));
+        assertEquals(ColorTransform.NONE.withTint(0xFF808080).withAlpha(0.5), ghost.getFramePart(both));
+        assertEquals(ghost, ghost.getBakedPart(capability(false, false)));
+        assertEquals(0x80800000, ghost.getFramePart(both).apply(ghost.getBakedPart(both).apply(0xFFFF00FF)));
+    }
+
+    /**
      * Spreads an index over the {@code int} values with an integer hash (the finalizer of MurmurHash3), the same at
      * every run.
      *
@@ -241,6 +269,14 @@ final class ColorTransformTest
         assertEquals(ColorTransform.NONE.withAlpha(0.0), ColorTransform.NONE.withAlpha(-0.0));
         assertNotEquals(transform, transform.withTint(0xFF00FF00));
         assertNotEquals(transform, transform.withGrading(ColorMatrix.saturation(0.0)));
+        assertNotEquals(transform, transform.withMapping(ColorMapping.NONE.with(0xFFFF00FF, 0xFFFF0000)));
+        assertEquals(transform, transform.withMapping(ColorMapping.NONE.with(0xFFFF00FF, 0xFFFF00FF)));
+        assertEquals(transform.withMapping(ColorMapping.NONE.with(0xFFFF00FF, 0xFFFF0000)).hashCode(),
+                     transform.withMapping(ColorMapping.NONE.with(0xFFFF00FF, 0xFFFF0000)).hashCode());
+        assertEquals("mapping(#FFFF00FF=#FFFF0000),mask(#FFFFFF,1.0),alpha(0.5)",
+                     transform.withMapping(ColorMapping.NONE.with(0xFFFF00FF, 0xFFFF0000)).toString());
+        final String text = full().withMapping(ColorMapping.NONE.with(1, 2)).toString();
+        assertTrue(text.startsWith("mapping(#00000001=#00000002),grading("), text);
         assertEquals("mask(#FFFFFF,1.0),alpha(0.5)", transform.toString());
         assertEquals("tint(#80FF0000)", ColorTransform.NONE.withTint(0x80FF0000).toString());
         assertEquals("mask(#00FF00,0.25),tint(#C0FF8040),alpha(0.75)",
@@ -266,6 +302,7 @@ final class ColorTransformTest
         assertThrows(IllegalArgumentException.class, () -> transform.withMask(0xFFFFFF, value));
         assertThrows(IllegalArgumentException.class, () -> transform.withAlpha(value));
         assertThrows(IllegalArgumentException.class, () -> transform.withGrading(null));
+        assertThrows(IllegalArgumentException.class, () -> transform.withMapping(null));
         assertThrows(IllegalArgumentException.class, () -> transform.getFramePart(null));
         assertThrows(IllegalArgumentException.class, () -> transform.getBakedPart(null));
     }

@@ -81,13 +81,19 @@ final class SheetGroupEntry
      * @param grid The grid.
      * @param pivotX The horizontal pivot in pixels, finite.
      * @param pivotY The vertical pivot in pixels, finite.
-     * @param check The check of the image size before the sheet is created, {@code null} if none.
+     * @param definition The definition of the sheet, which checks the image size before the sheet is created and gives
+     *            its templates; {@code null} for a sheet added in code, without check or template.
      * @return The sheet.
      * @throws IllegalArgumentException If an argument is {@code null}, a pivot is not finite, or the grid does not fit
      *             in the image.
      * @throws IllegalStateException If the id is already in the group.
      */
-    SpriteSheet add(ResourceKey id, ResourceKey image, SheetGrid grid, double pivotX, double pivotY, SheetCheck check)
+    SpriteSheet add(ResourceKey id,
+                    ResourceKey image,
+                    SheetGrid grid,
+                    double pivotX,
+                    double pivotY,
+                    SheetDefinition definition)
     {
         ImageCache.checkNotNull(id, NAME_ID);
         ImageCache.checkNotNull(image, "Image");
@@ -104,11 +110,15 @@ final class SheetGroupEntry
         final SpriteSheet sheet;
         try
         {
-            if (check != null)
+            if (definition == null)
             {
-                check.check(handle.getWidth(), handle.getHeight());
+                sheet = new SpriteSheet(id, handle, grid, pivotX, pivotY);
             }
-            sheet = new SpriteSheet(id, handle, grid, pivotX, pivotY);
+            else
+            {
+                definition.check(handle.getWidth(), handle.getHeight());
+                sheet = new SpriteSheet(id, handle, grid, pivotX, pivotY, definition.getTemplates());
+            }
         }
         catch (final IllegalArgumentException | DefinitionException exception)
         {

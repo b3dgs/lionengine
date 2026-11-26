@@ -21,13 +21,14 @@ import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
 
 /**
- * Backend-independent description of a sprite color transform: grading, mask, tint and alpha (ADR-0003, ADR-0026,
- * ADR-0056, REQ-SPRITE-004).
+ * Backend-independent description of a sprite color transform: color mapping, grading, mask, tint and alpha (ADR-0003,
+ * ADR-0026, ADR-0056, ADR-0057, REQ-SPRITE-004, REQ-SPRITE-005).
  *
  * <p>
  * The parts apply in this order, each optional:
  * </p>
  * <ol>
+ * <li>color mapping, a {@link ColorMapping} replacing exact key colors by target colors, such as team colors;</li>
  * <li>grading, a {@link ColorMatrix} over the four channels;</li>
  * <li>mask, a silhouette fill: every pixel is blended toward one color by an amount, keeping its alpha,
  * {@code rgb' = rgb + (maskRgb - rgb) × amount};</li>
@@ -36,7 +37,7 @@ import com.b3dgs.lionengine.render.CommandBuffer;
  * </ol>
  *
  * <p>
- * Grading and mask are the static part, baked on the CPU into a cached image with
+ * Color mapping, grading and mask are the static part, baked on the CPU into a cached image with
  * {@link ImageCache#bake(Image, ColorTransform)}. Tint and alpha are the per-frame part, written into the render
  * commands by {@link Sprite#setTint(int)} and {@link Sprite#setAlpha(double)} when the backend applies them per frame,
  * and baked otherwise: {@link #getFramePart(ColorCapability)} and {@link #getBakedPart(ColorCapability)} split a
@@ -56,7 +57,8 @@ import com.b3dgs.lionengine.render.CommandBuffer;
 public final class ColorTransform
 {
     /** The transform that changes nothing. */
-    public static final ColorTransform NONE = new ColorTransform(ColorMatrix.IDENTITY,
+    public static final ColorTransform NONE = new ColorTransform(ColorMapping.NONE,
+                                                                 ColorMatrix.IDENTITY,
                                                                  0,
                                                                  0.0,
                                                                  CommandBuffer.NO_TINT,
@@ -158,6 +160,8 @@ public final class ColorTransform
         return result;
     }
 
+    /** The color mapping. */
+    private final ColorMapping mapping;
     /** The grading. */
     private final ColorMatrix grading;
     /** The mask color, {@code 0xRRGGBB}. */
@@ -172,16 +176,23 @@ public final class ColorTransform
     /**
      * Creates a transform from checked parts.
      *
+     * @param mapping The color mapping.
      * @param grading The grading.
      * @param maskColor The mask color, {@code 0xRRGGBB}.
      * @param maskAmount The mask amount in {@code [0, 1]}.
      * @param tint The tint.
      * @param alpha The alpha in {@code [0, 1]}.
      */
-    private ColorTransform(ColorMatrix grading, int maskColor, double maskAmount, int tint, double alpha)
+    private ColorTransform(ColorMapping mapping,
+                           ColorMatrix grading,
+                           int maskColor,
+                           double maskAmount,
+                           int tint,
+                           double alpha)
     {
         super();
 
+        this.mapping = mapping;
         this.grading = grading;
         if (maskAmount > 0.0)
         {
@@ -197,6 +208,19 @@ public final class ColorTransform
     }
 
     /**
+     * Returns this transform with a color mapping, applied before the grading.
+     *
+     * @param colors The color mapping, {@link ColorMapping#NONE} for none (never {@code null}).
+     * @return The new transform.
+     * @throws IllegalArgumentException If the mapping is {@code null}.
+     */
+    public ColorTransform withMapping(ColorMapping colors)
+    {
+        ImageCache.checkNotNull(colors, "Mapping");
+        return new ColorTransform(colors, grading, maskColor, maskAmount, tint, alpha);
+    }
+
+    /**
      * Returns this transform with a grading.
      *
      * @param matrix The grading, {@link ColorMatrix#IDENTITY} for none (never {@code null}).
@@ -206,7 +230,7 @@ public final class ColorTransform
     public ColorTransform withGrading(ColorMatrix matrix)
     {
         ImageCache.checkNotNull(matrix, "Grading");
-        return new ColorTransform(matrix, maskColor, maskAmount, tint, alpha);
+        return new ColorTransform(mapping, matrix, maskColor, maskAmount, tint, alpha);
     }
 
     /**
@@ -219,7 +243,7 @@ public final class ColorTransform
      */
     public ColorTransform withMask(int rgb, double amount)
     {
-        return new ColorTransform(grading, rgb, checkUnit(amount, "Mask amount"), tint, alpha);
+        return new ColorTransform(mapping, grading, rgb, checkUnit(amount, "Mask amount"), tint, alpha);
     }
 
     /**
@@ -230,7 +254,7 @@ public final class ColorTransform
      */
     public ColorTransform withTint(int argb)
     {
-        return new ColorTransform(grading, maskColor, maskAmount, argb, alpha);
+        return new ColorTransform(mapping, grading, maskColor, maskAmount, argb, alpha);
     }
 
     /**
@@ -242,7 +266,17 @@ public final class ColorTransform
      */
     public ColorTransform withAlpha(double value)
     {
-        return new ColorTransform(grading, maskColor, maskAmount, tint, checkUnit(value, "Alpha"));
+        return new ColorTransform(mapping, grading, maskColor, maskAmount, tint, checkUnit(value, "Alpha"));
+    }
+
+    /**
+     * Returns the color mapping.
+     *
+     * @return The color mapping, {@link ColorMapping#NONE} for none.
+     */
+    public ColorMapping getMapping()
+    {
+        return mapping;
     }
 
     /**
@@ -309,18 +343,23 @@ public final class ColorTransform
      * Returns the part of this transform a backend applies per frame: the tint and the alpha it supports.
      *
      * @param capability The color capability of the backend (never {@code null}).
-     * @return The per-frame part, to write into the sprite; no grading and no mask.
+     * @return The per-frame part, to write into the sprite; no color mapping, no grading and no mask.
      * @throws IllegalArgumentException If the capability is {@code null}.
      */
     public ColorTransform getFramePart(ColorCapability capability)
     {
         ImageCache.checkNotNull(capability, NAME_CAPABILITY);
-        return new ColorTransform(ColorMatrix.IDENTITY, 0, 0.0, frameTint(capability), frameAlpha(capability));
+        return new ColorTransform(ColorMapping.NONE,
+                                  ColorMatrix.IDENTITY,
+                                  0,
+                                  0.0,
+                                  frameTint(capability),
+                                  frameAlpha(capability));
     }
 
     /**
-     * Returns the part of this transform to bake on the CPU for a backend: the grading and the mask, and the tint and
-     * the alpha it does not apply per frame.
+     * Returns the part of this transform to bake on the CPU for a backend: the color mapping, the grading and the
+     * mask, and the tint and the alpha it does not apply per frame.
      *
      * @param capability The color capability of the backend (never {@code null}).
      * @return The part to give to {@link ImageCache#bake(Image, ColorTransform)}; {@link #isIdentity()} if nothing is
@@ -348,18 +387,18 @@ public final class ColorTransform
         {
             bakedAlpha = alpha;
         }
-        return new ColorTransform(grading, maskColor, maskAmount, bakedTint, bakedAlpha);
+        return new ColorTransform(mapping, grading, maskColor, maskAmount, bakedTint, bakedAlpha);
     }
 
     /**
-     * Applies the transform to a pixel, on the CPU: grading, mask, then tint and alpha.
+     * Applies the transform to a pixel, on the CPU: color mapping, grading, mask, then tint and alpha.
      *
      * @param argb The pixel, packed {@code 0xAARRGGBB}, straight alpha.
      * @return The transformed pixel.
      */
     public int apply(int argb)
     {
-        int value = argb;
+        int value = mapping.apply(argb);
         if (!grading.isIdentity())
         {
             value = grading.apply(value);
@@ -469,11 +508,12 @@ public final class ColorTransform
      * Tells whether another transform has the same static part.
      *
      * @param other The other transform.
-     * @return {@code true} if the grading and the mask are equal.
+     * @return {@code true} if the color mapping, the grading and the mask are equal.
      */
     private boolean sameStatic(ColorTransform other)
     {
-        return grading.equals(other.grading)
+        return mapping.equals(other.mapping)
+               && grading.equals(other.grading)
                && maskColor == other.maskColor
                && Double.compare(maskAmount, other.maskAmount) == 0;
     }
@@ -492,7 +532,8 @@ public final class ColorTransform
     @Override
     public int hashCode()
     {
-        int hash = grading.hashCode();
+        int hash = mapping.hashCode();
+        hash = hash * 31 + grading.hashCode();
         hash = hash * 31 + maskColor;
         hash = hash * 31 + Double.hashCode(maskAmount);
         hash = hash * 31 + tint;
@@ -501,8 +542,9 @@ public final class ColorTransform
 
     /**
      * Returns the canonical text of the transform: its parts other than their default, in the order they apply,
-     * separated by commas, for example {@code mask(#FFFFFF,1.0),alpha(0.5)}; {@code none} for the identity. It names
-     * the cached image of a bake.
+     * separated by commas, for example {@code mask(#FFFFFF,1.0),alpha(0.5)} or
+     * {@code mapping(#FFFF00FF=#FFFF0000),mask(#FFFFFF,1.0)}; {@code none} for the identity. It names the cached image
+     * of a bake.
      *
      * @return The canonical text.
      */
@@ -510,9 +552,13 @@ public final class ColorTransform
     public String toString()
     {
         String text = "";
+        if (!mapping.isIdentity())
+        {
+            text = mapping.toString();
+        }
         if (!grading.isIdentity())
         {
-            text = grading.toString();
+            text = join(text, grading.toString());
         }
         if (maskAmount > 0.0)
         {

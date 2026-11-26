@@ -17,11 +17,16 @@
 package com.b3dgs.lionengine.graphics;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.management.ManagementFactory;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,6 +80,45 @@ final class SpriteSheetTest
         final ResourceKey key = new ResourceKey("images/" + width + "x" + height + ".png");
         provider.put(key, PngWriter.rgba(width, height, new int[width * height]).write());
         return cache.load(key);
+    }
+
+    /**
+     * A sheet added in code has no template; an unknown or {@code null} template name is refused.
+     */
+    @Test
+    void testNoTemplate()
+    {
+        final SpriteSheet sheet = new SpriteSheet(ID, image(16, 16), new SheetGrid(16, 16), 0.0, 0.0);
+
+        assertTrue(sheet.getTemplateNames().isEmpty());
+        assertFalse(sheet.hasTemplate("red"));
+        final IllegalStateException error = assertThrows(IllegalStateException.class, () -> sheet.getTemplate("red"));
+        assertEquals("Template not in the sheet sheets/tiles.json: red", error.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> sheet.getTemplate(null));
+        assertThrows(IllegalArgumentException.class, () -> sheet.hasTemplate(null));
+    }
+
+    /**
+     * The templates of a definition are kept in the order of the file and cannot be changed.
+     */
+    @Test
+    void testTemplates()
+    {
+        final Map<String, ColorMapping> templates = new LinkedHashMap<>();
+        templates.put("red", ColorMapping.NONE.with(0xFFFF00FF, 0xFFFF0000));
+        templates.put("blue", ColorMapping.NONE.with(0xFFFF00FF, 0xFF0000FF));
+        final SpriteSheet sheet = new SpriteSheet(ID,
+                                                  image(16, 16),
+                                                  new SheetGrid(16, 16),
+                                                  0.0,
+                                                  0.0,
+                                                  Collections.unmodifiableMap(templates));
+
+        assertEquals(List.of("red", "blue"), sheet.getTemplateNames());
+        assertTrue(sheet.hasTemplate("blue"));
+        assertEquals(0xFF0000FF, sheet.getTemplate("blue").apply(0xFFFF00FF));
+        final List<String> names = sheet.getTemplateNames();
+        assertThrows(UnsupportedOperationException.class, names::clear);
     }
 
     /**
