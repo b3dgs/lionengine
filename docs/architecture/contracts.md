@@ -103,6 +103,7 @@ A time value is never expressed sometimes in milliseconds and sometimes in secon
 - First batch: play, stop, volume (gain in `[0, 1]`), looping, pause, resume. Second batch: mixer groups (`music`, `effects`, `ui` and game groups; gain = master × group × sound) and linear fades. Spatial audio deferred.
 - Formats: PCM WAV baseline parsed by project code; OGG Vorbis by the Android platform and by `audio-codec-ogg` on desktop; no MP3 baseline. Backends per output library or platform (`audio-javasound`, `audio-android`).
 - No platform or audio library type in `audio-api`; durations and positions in seconds, sample rate in Hz.
+- Batch 1 contracts (ADR-0065): 16-bit signed PCM interleaved by frame (`PcmFormat`, `PcmBuffer`, read by copy); `AudioDecoder` returns a new buffer, leaves the stream open, refuses data above its frame limit; the `AudioBackend` SPI plays buffers on `int` voices (`NO_VOICE` when busy), stops them, and posts the end of a voice to the inbox for one `VoiceListener` on the runtime thread; `FakeAudioBackend` and the contract suites live in the `audio-api` test JAR.
 
 Details: [`features/audio-short-and-long-sounds.md`](../features/audio-short-and-long-sounds.md).
 
