@@ -18,23 +18,37 @@ package com.b3dgs.lionengine.android.verification;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.b3dgs.lionengine.audio.Audio;
+import com.b3dgs.lionengine.audio.AudioBackend;
 import com.b3dgs.lionengine.audio.AudioDecoder;
 import com.b3dgs.lionengine.audio.AudioDecodingException;
 import com.b3dgs.lionengine.audio.PcmBuffer;
 import com.b3dgs.lionengine.audio.PcmFormat;
+import com.b3dgs.lionengine.audio.ShortSound;
+import com.b3dgs.lionengine.audio.ShortSoundCache;
+import com.b3dgs.lionengine.audio.VoiceListener;
+import com.b3dgs.lionengine.audio.VoicePolicy;
+import com.b3dgs.lionengine.audio.WavDecoder;
+import com.b3dgs.lionengine.resources.ResourceKey;
+import com.b3dgs.lionengine.resources.Resources;
+import com.b3dgs.lionengine.resources.StreamProvider;
 
 /**
- * Runs {@code audio-api} on Android API 21 (ADR-0044, ADR-0065): the PCM format and buffer, and a decoder throwing
- * the decoding exception. Expected values are the ones of the JVM tests (PcmBufferTest).
+ * Runs {@code audio-api} on Android API 21 (ADR-0044, ADR-0065, ADR-0066): the PCM format and buffer, a decoder
+ * throwing the decoding exception, the WAV decoder, the short-sound cache and the voices of the audio system. Expected
+ * values are the ones of the JVM tests (PcmBufferTest, WavDecoderTest, AudioTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class AudioTest
@@ -90,5 +104,149 @@ public final class AudioTest
                                                               () -> decoder.decode(input));
 
         assertEquals("Not a sound", exception.getMessage());
+    }
+
+    /**
+     * Writes a mono 16-bit WAV file of 8 kHz.
+     *
+     * @param samples The samples.
+     * @return The bytes of the file.
+     */
+    private static byte[] wav(short[] samples)
+    {
+        final int data = samples.length * 2;
+        final byte[] bytes = new byte[44 + data];
+        final int[] header =
+        {
+            0x46464952, 36 + data, 0x45564157, 0x20746D66, 16, 0x0001_0001, 8_000, 16_000, 0x0010_0002, 0x61746164, data
+        };
+        for (int i = 0; i < header.length; i++)
+        {
+            for (int b = 0; b < 4; b++)
+            {
+                bytes[i * 4 + b] = (byte) (header[i] >> b * 8);
+            }
+        }
+        for (int i = 0; i < samples.length; i++)
+        {
+            bytes[44 + i * 2] = (byte) samples[i];
+            bytes[45 + i * 2] = (byte) (samples[i] >> 8);
+        }
+        return bytes;
+    }
+
+    /**
+     * The WAV decoder decodes 16-bit PCM and refuses a sound above its frame limit.
+     *
+     * @throws IOException If reading fails.
+     */
+    @Test
+    public void testWav() throws IOException
+    {
+        final byte[] bytes = wav(new short[]
+        {
+            0, Short.MAX_VALUE, Short.MIN_VALUE, -2
+        });
+        final short[] samples = new short[4];
+
+        final PcmBuffer buffer = new WavDecoder().decode(new ByteArrayInputStream(bytes));
+        buffer.readFrames(0, samples, 0, 4);
+
+        assertEquals(new PcmFormat(8_000, PcmFormat.MONO), buffer.getFormat());
+        assertArrayEquals(new short[]
+        {
+            0, Short.MAX_VALUE, Short.MIN_VALUE, -2
+        }, samples);
+        final WavDecoder small = new WavDecoder(3);
+        final ByteArrayInputStream input = new ByteArrayInputStream(bytes);
+        assertThrows(AudioDecodingException.class, () -> small.decode(input));
+    }
+
+    /**
+     * A short sound is cached once and played on voices; beyond the limit the oldest voice of the lowest priority is
+     * stolen.
+     */
+    @Test
+    public void testVoices()
+    {
+        final ResourceKey key = new ResourceKey("sounds/shot.wav");
+        final byte[] bytes = wav(new short[80]);
+        final StreamProvider provider = new StreamProvider();
+        provider.register(key, () -> new ByteArrayInputStream(bytes));
+        final ShortSoundCache cache = new ShortSoundCache(new Resources(provider));
+        final CountingBackend backend = new CountingBackend();
+        final Audio audio = new Audio(backend, 2, VoicePolicy.STEAL);
+
+        final ShortSound shot = cache.load(key);
+        final ShortSound again = cache.load(key);
+        final int first = audio.play(shot, 10);
+        final int second = audio.play(again, 50);
+        final int third = audio.play(shot, 50);
+
+        assertEquals(1, cache.size());
+        assertEquals(0.01, shot.getDuration(), 1e-12);
+        assertFalse(audio.isPlaying(first));
+        assertTrue(audio.isPlaying(second));
+        assertTrue(audio.isPlaying(third));
+        assertEquals(1, backend.stopped);
+        assertEquals(AudioBackend.NO_VOICE, audio.play(shot, 0));
+        shot.release();
+        again.release();
+        assertEquals(0, cache.size());
+    }
+
+    /**
+     * Backend that plays nothing and counts the voices stopped.
+     */
+    private static final class CountingBackend implements AudioBackend
+    {
+        /** Voices stopped. */
+        private int stopped;
+        /** Next voice. */
+        private int next = 1;
+
+        /**
+         * Creates the backend.
+         */
+        CountingBackend()
+        {
+            super();
+        }
+
+        @Override
+        public int getMaxVoices()
+        {
+            return 4;
+        }
+
+        @Override
+        public void setVoiceListener(VoiceListener listener)
+        {
+            // Voices never end by themselves here.
+        }
+
+        @Override
+        public int play(PcmBuffer buffer)
+        {
+            return next++;
+        }
+
+        @Override
+        public void stop(int voice)
+        {
+            stopped++;
+        }
+
+        @Override
+        public boolean isPlaying(int voice)
+        {
+            return false;
+        }
+
+        @Override
+        public void close()
+        {
+            // Holds nothing.
+        }
     }
 }
