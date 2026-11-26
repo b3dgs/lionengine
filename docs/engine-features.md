@@ -100,7 +100,7 @@ Works now: decoding PNG images of every kind but interlaced and animated ones, w
 - Volume per sound, and per group (music, effects, interface) with fades.
 - WAV everywhere, OGG Vorbis on desktop and Android.
 
-Works now: the audio contracts under every backend: sounds as 16-bit PCM, decoders, and a backend that plays sounds on voices and reports their end; a fake backend with a manual clock tests audio code without a sound card (example `BeepExample`). Short sounds with their cache and voices, variants, music and playlists, and the desktop backend come with the next batches.
+Works now: the audio contracts under every backend: sounds as 16-bit PCM, decoders, and a backend that plays sounds on voices and reports their end; a fake backend with a manual clock tests audio code without a sound card (example `BeepExample`). Short sound effects: WAV files decoded by the engine, preloaded by a scene (or on first play) and shared, at most 10 s long, an optional memory limit; played on 16 voices with priorities, the oldest least important voice cut first, or the new sound dropped or refused (example `ShortSoundExample`). Variants, music and playlists, volume and the desktop backend come with the next batches.
 
 ## Objects and behaviors
 
