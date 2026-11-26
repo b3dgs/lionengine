@@ -61,6 +61,7 @@ What others do:
    - After the last track it stops, or starts again from the first with `setLooping(true)`.
    - A track that fails to prepare or to start, or whose stream failed, is reported to the `PlaylistListener` (`onTrackFailed(playlist, track, exception)`) on the runtime thread, then skipped. With `setAbortOnFailure(true)` the playlist stops instead. Failing to start covers a missing or unreadable resource, an invalid content, a released track and no free backend voice.
    - When every track fails in a row within one advance, the playlist stops, even when looping, so that it never spins.
+   - The listener may stop or play the playlist; the advance in progress then goes no further.
    - Stopping the voice of its track with `Audio.stop`, or releasing its track, stops the playlist.
    - A failure of a track prepared ahead is left to its turn, where the preparation is tried again and reported.
    - A track that follows itself, as in a playlist of one track that loops, is prepared at its turn only, since a long sound plays on one voice at a time.
