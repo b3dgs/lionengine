@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.testsupport;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,6 +29,7 @@ import com.b3dgs.lionengine.LogSink;
 import com.b3dgs.lionengine.LoopDriver;
 import com.b3dgs.lionengine.platform.CloseListener;
 import com.b3dgs.lionengine.platform.DisplayListener;
+import com.b3dgs.lionengine.platform.DisplayMode;
 import com.b3dgs.lionengine.platform.DisplayRequest;
 import com.b3dgs.lionengine.platform.EffectiveResult;
 import com.b3dgs.lionengine.platform.Platform;
@@ -52,8 +54,11 @@ import com.b3dgs.lionengine.render.RenderBackend;
  * Behavior: going to the background pauses the loop and coming back resumes it; a close request stops it unless a close
  * listener vetoes it (listeners are asked in the order they were added, and the first veto ends the request); a resize
  * changes the surface, never the logical frame. The surface starts at the logical frame size, and so does the display
- * mode of its imaginary monitor. Every screen mode and display mode is accepted; the output filters are those the
- * attached render backend implements, and the others are reported as skipped in the effective result. The worker pool
+ * mode of its imaginary monitor. Every screen mode is supported and the monitor offers that one display mode, until the
+ * test sets fake capabilities with {@link #setScreenModeSupported(ScreenMode, boolean)} and
+ * {@link #setDisplayModes(List)}; an unsupported screen mode falls back and a display mode that is not offered is
+ * replaced by the nearest one (ADR-0060, ADR-0061). The output filters are those the attached render backend
+ * implements, and the others are reported as skipped in the effective result. The worker pool
  * is a {@link FakeWorkerPool} of 2 workers that runs tasks only when the test asks it to. Not thread-safe: the test
  * drives it from one thread, its runtime thread.
  * </p>
@@ -171,6 +176,20 @@ public final class HeadlessPlatform implements Platform
             throw new IllegalStateException("At least one screen mode must stay supported: " + mode);
         }
         display.setSupported(modes);
+    }
+
+    /**
+     * Sets the display modes of the fake monitor (ADR-0061): by default, one mode of the logical frame size with an
+     * unknown refresh rate and bit depth. The current display mode is kept if it is listed, otherwise it becomes the
+     * first listed mode; a requested mode is selected among them at its frame boundary, the request already applied is
+     * not resolved again.
+     *
+     * @param modes The display modes (never {@code null}, not empty, no {@code null} element); duplicates are removed.
+     * @throws IllegalArgumentException If {@code modes} is {@code null}, empty or holds {@code null}.
+     */
+    public void setDisplayModes(List<DisplayMode> modes)
+    {
+        display.setDisplayModes(modes);
     }
 
     /**
@@ -399,6 +418,12 @@ public final class HeadlessPlatform implements Platform
     public void removeDisplayListener(DisplayListener listener)
     {
         display.removeListener(listener);
+    }
+
+    @Override
+    public List<DisplayMode> getDisplayModes()
+    {
+        return display.getDisplayModes();
     }
 
     @Override

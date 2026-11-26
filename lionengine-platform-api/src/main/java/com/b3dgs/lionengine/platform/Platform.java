@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.platform;
 
+import java.util.List;
+
 import com.b3dgs.lionengine.Inbox;
 import com.b3dgs.lionengine.LogSink;
 import com.b3dgs.lionengine.LoopDriver;
@@ -145,9 +147,20 @@ public interface Platform
     boolean isSupported(ScreenMode mode);
 
     /**
+     * Returns the display modes of the default monitor this platform can select (ADR-0043, ADR-0061). The list does
+     * not change while the platform lives, holds at least one mode and no duplicate. A requested display mode that is
+     * not listed is replaced by the nearest listed one (ADR-0006), reported in the effective result.
+     *
+     * @return The display modes, unmodifiable, in the order the system reports them (never {@code null}, never
+     *         empty).
+     */
+    List<DisplayMode> getDisplayModes();
+
+    /**
      * Requests display settings. Never blocks the update step and never throws for a missing capability: the change
      * is applied at the next frame boundary, best effort, and its {@link EffectiveResult} is delivered through the
-     * inbox to the display listeners; an unsupported screen mode falls back (ADR-0006, ADR-0060).
+     * inbox to the display listeners; an unsupported screen mode falls back, and a display mode that is not listed is
+     * replaced by the nearest listed one (ADR-0006, ADR-0060, ADR-0061).
      *
      * @param request The requested settings (never {@code null}).
      * @return The accepted request, as given.

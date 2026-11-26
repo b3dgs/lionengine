@@ -49,6 +49,24 @@ final class AwtDisplayTest
     private static final int HEIGHT = 240;
     /** Display mode of the monitor. */
     private static final DisplayMode MODE = new DisplayMode(1920, 1080, 60, 32);
+    /** Smaller display mode offered by the monitor. */
+    private static final DisplayMode SMALL = new DisplayMode(1280, 720, 60, 32);
+    /** Display mode offered by the monitor at another refresh rate. */
+    private static final DisplayMode FAST = new DisplayMode(1280, 720, 75, 32);
+    /** Display modes of the monitor. */
+    private static final List<DisplayMode> MODES = List.of(MODE, FAST, SMALL);
+
+    /**
+     * Creates the display state of a monitor offering {@link #MODES}, in {@link #MODE}.
+     *
+     * @param fullScreen {@code true} if the monitor supports exclusive full screen.
+     * @param request The initial request.
+     * @return The display state.
+     */
+    private static AwtDisplay display(boolean fullScreen, DisplayRequest request)
+    {
+        return new AwtDisplay(WIDTH, HEIGHT, MODES, MODE, fullScreen, request);
+    }
 
     /**
      * Creates a request.
@@ -88,7 +106,7 @@ final class AwtDisplayTest
     void testWindowed()
     {
         final DisplayRequest request = request(ScreenMode.WINDOWED, MODE, ScalingPolicy.FIT, Collections.emptyList());
-        final AwtDisplay display = new AwtDisplay(WIDTH, HEIGHT, MODE, false, request);
+        final AwtDisplay display = display(false, request);
 
         final EffectiveResult result = display.getResult();
         assertSame(request, result.requested());
@@ -102,34 +120,78 @@ final class AwtDisplayTest
     }
 
     /**
-     * Without exclusive full screen, {@code FULL_SCREEN} falls back to {@code FULL_WINDOW}; display mode changes are
-     * not implemented yet: the current mode is kept; both are reported (ADR-0060).
+     * Without exclusive full screen, {@code FULL_SCREEN} falls back to {@code FULL_WINDOW}; a display mode is changed
+     * only in {@code FULL_SCREEN}, so the desktop mode is kept; both are reported (ADR-0060, ADR-0061).
      */
     @Test
     void testFallbackAndDisplayMode()
     {
         final DisplayMode other = new DisplayMode(640, 480, 60, 32);
-        final AwtDisplay display = new AwtDisplay(WIDTH,
-                                                  HEIGHT,
-                                                  MODE,
-                                                  false,
-                                                  request(ScreenMode.FULL_SCREEN,
-                                                          other,
-                                                          ScalingPolicy.STRETCH,
-                                                          Collections.emptyList()));
+        final AwtDisplay display = display(false,
+                                           request(ScreenMode.FULL_SCREEN,
+                                                   other,
+                                                   ScalingPolicy.STRETCH,
+                                                   Collections.emptyList()));
 
         final EffectiveResult result = display.getResult();
         assertEquals(ScreenMode.FULL_WINDOW, result.effective().screenMode());
         assertEquals(ScreenMode.FULL_WINDOW, display.getScreenMode());
+        assertEquals(MODE, display.getTarget());
         assertEquals(MODE, result.effective().displayMode());
         assertEquals(ScalingPolicy.STRETCH, result.effective().scalingPolicy());
         assertTrue(result.degraded());
         assertEquals("FULL_SCREEN not supported, FULL_WINDOW used; "
-                     + "Display mode change not implemented yet, the current mode is kept",
+                     + "Display mode 640x480 60Hz 32bits not available, 1920x1080 60Hz 32bits used; "
+                     + "Display mode change needs FULL_SCREEN, the desktop mode is kept",
                      result.reason());
         assertTrue(display.isSupported(ScreenMode.WINDOWED));
         assertTrue(display.isSupported(ScreenMode.FULL_WINDOW));
         assertFalse(display.isSupported(ScreenMode.FULL_SCREEN));
+        assertEquals(MODES, display.getDisplayModes());
+    }
+
+    /**
+     * In {@code FULL_SCREEN}, the target is the offered mode nearest to the request, the current refresh rate kept
+     * when the request does not give one; the result reports the mode in effect once the window realized it, and the
+     * refusal of the system when it differs (ADR-0061).
+     */
+    @Test
+    void testFullScreenDisplayMode()
+    {
+        final DisplayRequest request = request(ScreenMode.FULL_SCREEN,
+                                               new DisplayMode(1300, 700, DisplayMode.UNKNOWN, DisplayMode.UNKNOWN),
+                                               ScalingPolicy.FIT,
+                                               Collections.emptyList());
+        final AwtDisplay display = display(true, request);
+        assertEquals(SMALL, display.getTarget());
+        assertEquals(MODE, display.getResult().effective().displayMode());
+        assertEquals("Display mode 1300x700 0Hz 0bits not available, 1920x1080 60Hz 32bits used",
+                     display.getResult().reason());
+
+        display.setCurrent(SMALL);
+
+        assertEquals(SMALL, display.getDisplayMode());
+        assertEquals(SMALL, display.getResult().effective().displayMode());
+        assertEquals("Display mode 1300x700 0Hz 0bits not available, 1280x720 60Hz 32bits used",
+                     display.getResult().reason());
+
+        display.apply(request(ScreenMode.FULL_SCREEN, FAST, ScalingPolicy.FIT, Collections.emptyList()));
+        assertEquals(FAST, display.getTarget());
+        display.setCurrent(SMALL);
+
+        assertEquals("Display mode 1280x720 75Hz 32bits not available, 1280x720 60Hz 32bits used; "
+                     + "Display mode change refused by the system, the current mode is kept",
+                     display.getResult().reason());
+
+        display.apply(request(ScreenMode.FULL_SCREEN, null, ScalingPolicy.FIT, Collections.emptyList()));
+        assertEquals(SMALL, display.getTarget());
+        assertFalse(display.getResult().degraded());
+
+        display.apply(request(ScreenMode.WINDOWED, null, ScalingPolicy.FIT, Collections.emptyList()));
+        assertEquals(MODE, display.getTarget());
+        display.setCurrent(MODE);
+        assertFalse(display.getResult().degraded());
+        assertEquals(MODE, display.getResult().effective().displayMode());
     }
 
     /**
@@ -138,11 +200,8 @@ final class AwtDisplayTest
     @Test
     void testFullScreenSupported()
     {
-        final AwtDisplay display = new AwtDisplay(WIDTH,
-                                                  HEIGHT,
-                                                  MODE,
-                                                  true,
-                                                  request(ScreenMode.FULL_SCREEN,
+        final AwtDisplay display = display(true,
+                                           request(ScreenMode.FULL_SCREEN,
                                                           null,
                                                           ScalingPolicy.FIT,
                                                           Collections.emptyList()));
@@ -158,11 +217,8 @@ final class AwtDisplayTest
     @Test
     void testResize()
     {
-        final AwtDisplay display = new AwtDisplay(WIDTH,
-                                                  HEIGHT,
-                                                  MODE,
-                                                  false,
-                                                  request(ScreenMode.WINDOWED,
+        final AwtDisplay display = display(false,
+                                           request(ScreenMode.WINDOWED,
                                                           null,
                                                           ScalingPolicy.INTEGER,
                                                           Collections.emptyList()));
@@ -193,7 +249,7 @@ final class AwtDisplayTest
                                                        OutputFilter.CRT,
                                                        OutputFilter.BILINEAR,
                                                        OutputFilter.HQ2X));
-        final AwtDisplay display = new AwtDisplay(WIDTH, HEIGHT, MODE, false, request);
+        final AwtDisplay display = display(false, request);
         assertTrue(display.getResult().effective().filters().isEmpty());
         assertTrue(display.getResult().reason().contains("no render backend"));
 

@@ -141,8 +141,8 @@ final class HeadlessPlatformTest extends PlatformContract
     }
 
     /**
-     * A requested display mode is applied; filters other than {@code NONE} are not, and it is reported with the
-     * {@code INTEGER} fallback.
+     * A requested display mode the fake monitor offers is applied; filters other than {@code NONE} are not, and it is
+     * reported with the {@code INTEGER} fallback.
      */
     @Test
     void testDisplayModeAndFilters()
@@ -151,6 +151,7 @@ final class HeadlessPlatformTest extends PlatformContract
         final InboxSpy inbox = new InboxSpy();
         platform.start(new ManualLoopDriver(), inbox);
         final DisplayMode mode = new DisplayMode(1920, 1080, 60, 32);
+        platform.setDisplayModes(List.of(mode));
 
         platform.apply(new DisplayRequest(ScreenMode.FULL_SCREEN, mode, ScalingPolicy.FIT, List.of(OutputFilter.NONE)));
         platform.iterate();
@@ -209,5 +210,45 @@ final class HeadlessPlatformTest extends PlatformContract
         assertThrows(IllegalArgumentException.class, () -> platform.setScreenModeSupported(null, true));
         platform.setScreenModeSupported(ScreenMode.FULL_SCREEN, true);
         assertTrue(platform.isSupported(ScreenMode.FULL_SCREEN));
+    }
+
+    /**
+     * Fake display modes: the default mode of the logical size, then a list set by the test; a requested mode is
+     * replaced by the nearest offered one, reported (REQ-DISPLAY-003, ADR-0061).
+     */
+    @Test
+    void testFakeDisplayModes()
+    {
+        final HeadlessPlatform platform = create();
+        final InboxSpy inbox = new InboxSpy();
+        platform.start(new ManualLoopDriver(), inbox);
+        final DisplayMode initial = new DisplayMode(WIDTH, HEIGHT, DisplayMode.UNKNOWN, DisplayMode.UNKNOWN);
+        assertEquals(List.of(initial), platform.getDisplayModes());
+
+        final DisplayMode large = new DisplayMode(1920, 1080, 60, 32);
+        final DisplayMode small = new DisplayMode(1280, 720, 60, 32);
+        platform.setDisplayModes(List.of(large, small, large));
+        assertEquals(List.of(large, small), platform.getDisplayModes());
+        assertEquals(initial, platform.getEffectiveResult().effective().displayMode());
+
+        platform.apply(new DisplayRequest(ScreenMode.FULL_SCREEN,
+                                          new DisplayMode(1280, 800, DisplayMode.UNKNOWN, DisplayMode.UNKNOWN),
+                                          ScalingPolicy.FIT,
+                                          List.of()));
+        platform.iterate();
+
+        assertEquals(small, platform.getEffectiveResult().effective().displayMode());
+        assertEquals("Display mode 1280x800 0Hz 0bits not available, 1280x720 60Hz 32bits used",
+                     platform.getEffectiveResult().reason());
+
+        platform.setDisplayModes(List.of(large));
+        platform.apply(new DisplayRequest(ScreenMode.FULL_SCREEN, null, ScalingPolicy.FIT, List.of()));
+        platform.iterate();
+
+        assertEquals(large, platform.getEffectiveResult().effective().displayMode());
+        assertFalse(platform.getEffectiveResult().degraded());
+        final List<DisplayMode> empty = List.of();
+        assertThrows(IllegalArgumentException.class, () -> platform.setDisplayModes(empty));
+        assertThrows(IllegalArgumentException.class, () -> platform.setDisplayModes(null));
     }
 }

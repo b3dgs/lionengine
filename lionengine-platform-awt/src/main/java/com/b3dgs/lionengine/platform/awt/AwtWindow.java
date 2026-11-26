@@ -25,6 +25,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.geom.AffineTransform;
 import java.lang.reflect.InvocationTargetException;
 
+import com.b3dgs.lionengine.platform.DisplayMode;
 import com.b3dgs.lionengine.platform.ScreenMode;
 
 /**
@@ -41,6 +42,12 @@ import com.b3dgs.lionengine.platform.ScreenMode;
  * of the logical frame size, centered; {@code FULL_WINDOW} an undecorated window covering the default monitor;
  * {@code FULL_SCREEN} an undecorated window made the full-screen window of the default monitor. Changing the
  * decoration hides and shows the window again, and the canvas gets a new buffer strategy.
+ * </p>
+ *
+ * <p>
+ * Display modes (ADR-0061): in {@code FULL_SCREEN}, the target display mode is set on the default monitor when the
+ * monitor supports display changes; the desktop mode, read when the window opens, is set back before the window leaves
+ * full screen and when it is disposed. Each realization gives back the display mode in effect.
  * </p>
  */
 final class AwtWindow
@@ -115,10 +122,7 @@ final class AwtWindow
      */
     static AwtWindow create(int width, int height)
     {
-        final AffineTransform transform = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                                             .getDefaultScreenDevice()
-                                                             .getDefaultConfiguration()
-                                                             .getDefaultTransform();
+        final AffineTransform transform = getDevice().getDefaultConfiguration().getDefaultTransform();
         return new AwtWindow(width, height, transform.getScaleX(), transform.getScaleY());
     }
 
@@ -128,6 +132,10 @@ final class AwtWindow
     private Frame frame;
     /** Screen mode of the window, applied once shown. */
     private ScreenMode screenMode = ScreenMode.WINDOWED;
+    /** Display mode of the default monitor when the window opened, {@code null} until opened. */
+    private java.awt.DisplayMode desktop;
+    /** Display mode in effect after the last realization, written on the AWT event thread. */
+    private DisplayMode current;
 
     /**
      * Creates the canvas, not shown.
@@ -144,47 +152,130 @@ final class AwtWindow
     }
 
     /**
+     * Returns the default monitor.
+     *
+     * @return The default screen device.
+     */
+    private static GraphicsDevice getDevice()
+    {
+        return GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    }
+
+    /**
      * Creates and shows the window on the AWT event thread, and waits for it.
      *
      * @param receiver The receiver of the window and canvas events.
      * @param mode The screen mode of the window, supported by the platform.
+     * @param target The display mode to set in {@code FULL_SCREEN}.
+     * @return The display mode in effect.
      * @throws IllegalStateException If the window cannot be opened or the wait is interrupted.
      */
-    void open(AwtWindowEvents.Receiver receiver, ScreenMode mode)
+    DisplayMode open(AwtWindowEvents.Receiver receiver, ScreenMode mode, DisplayMode target)
     {
-        onEventThread(() -> show(receiver, mode));
+        onEventThread(() -> show(receiver, mode, target));
+        return current;
     }
 
     /**
-     * Sets the screen mode of the window, realized at once on the AWT event thread if the window is shown and the mode
-     * changes; called by the runtime thread at the frame boundary.
+     * Realizes a screen mode and a display mode on the shown window, at once on the AWT event thread, and waits for
+     * it; called by the runtime thread at the frame boundary. The window is shown again only if the screen mode
+     * changes; the display mode is set only in {@code FULL_SCREEN}.
      *
      * @param mode The screen mode, supported by the platform.
+     * @param target The display mode to set in {@code FULL_SCREEN}.
+     * @return The display mode in effect.
      */
-    void setScreenMode(ScreenMode mode)
+    DisplayMode realize(ScreenMode mode, DisplayMode target)
     {
-        if (frame == null)
+        onEventThread(() ->
         {
-            screenMode = mode;
+            if (mode != screenMode)
+            {
+                change(mode);
+            }
+            update(mode, target);
+        });
+        return current;
+    }
+
+    /**
+     * Sets the target display mode in {@code FULL_SCREEN}, reads the display mode in effect, and gives the canvas a
+     * new buffer strategy if the display mode changed; on the AWT event thread.
+     *
+     * @param mode The screen mode realized.
+     * @param target The display mode to set in {@code FULL_SCREEN}.
+     */
+    private void update(ScreenMode mode, DisplayMode target)
+    {
+        final GraphicsDevice device = getDevice();
+        if (mode == ScreenMode.FULL_SCREEN && device.isDisplayChangeSupported())
+        {
+            for (final java.awt.DisplayMode candidate : device.getDisplayModes())
+            {
+                if (AwtDisplay.convert(candidate).equals(target))
+                {
+                    setDisplayMode(device, candidate);
+                    break;
+                }
+            }
         }
-        else if (mode != screenMode)
+        final DisplayMode effective = AwtDisplay.convert(device.getDisplayMode());
+        if (current != null && !effective.equals(current))
         {
-            onEventThread(() -> realize(mode));
+            canvas.createBufferStrategy(BUFFERS);
+        }
+        current = effective;
+    }
+
+    /**
+     * Sets a display mode on the monitor if it is not the current one; a refusal of the system keeps the current mode,
+     * which the caller reads and reports.
+     *
+     * @param device The monitor.
+     * @param mode The display mode.
+     */
+    private static void setDisplayMode(GraphicsDevice device, java.awt.DisplayMode mode)
+    {
+        if (!mode.equals(device.getDisplayMode()))
+        {
+            try
+            {
+                device.setDisplayMode(mode);
+            }
+            catch (IllegalArgumentException | UnsupportedOperationException _)
+            {
+                // Refused: the current mode stays in effect and is reported in the effective result
+            }
         }
     }
 
     /**
-     * Realizes a screen mode on the shown window, on the AWT event thread.
+     * Leaves full screen if the window is the full-screen window, after setting the desktop mode back; on the AWT
+     * event thread.
+     *
+     * @param device The monitor.
+     */
+    private void leaveFullScreen(GraphicsDevice device)
+    {
+        if (device.getFullScreenWindow() == frame)
+        {
+            if (device.isDisplayChangeSupported())
+            {
+                setDisplayMode(device, desktop);
+            }
+            device.setFullScreenWindow(null);
+        }
+    }
+
+    /**
+     * Changes the screen mode of the shown window, on the AWT event thread.
      *
      * @param mode The screen mode.
      */
-    private void realize(ScreenMode mode)
+    private void change(ScreenMode mode)
     {
-        final GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        if (device.getFullScreenWindow() == frame)
-        {
-            device.setFullScreenWindow(null);
-        }
+        final GraphicsDevice device = getDevice();
+        leaveFullScreen(device);
         frame.dispose();
         frame.setUndecorated(mode != ScreenMode.WINDOWED);
         if (mode == ScreenMode.FULL_WINDOW)
@@ -206,14 +297,16 @@ final class AwtWindow
     }
 
     /**
-     * Creates and shows the window on the default monitor, centered, with the canvas as its content; called on the AWT
-     * event thread.
+     * Creates and shows the window on the default monitor, centered, with the canvas as its content, then realizes
+     * the screen mode and the display mode; called on the AWT event thread.
      *
      * @param receiver The receiver of the window and canvas events.
      * @param mode The screen mode of the window.
+     * @param target The display mode to set in {@code FULL_SCREEN}.
      */
-    private void show(AwtWindowEvents.Receiver receiver, ScreenMode mode)
+    private void show(AwtWindowEvents.Receiver receiver, ScreenMode mode, DisplayMode target)
     {
+        desktop = getDevice().getDisplayMode();
         final Frame opened = new Frame();
         final AwtWindowEvents events = new AwtWindowEvents(canvas, receiver);
         opened.addWindowListener(events);
@@ -228,19 +321,25 @@ final class AwtWindow
         frame = opened;
         if (mode != ScreenMode.WINDOWED)
         {
-            realize(mode);
+            change(mode);
         }
+        update(mode, target);
     }
 
     /**
-     * Disposes the window on the AWT event thread, after the events already queued; no effect if it was not opened.
+     * Disposes the window on the AWT event thread, after the events already queued, leaving full screen and setting
+     * the desktop mode back first; no effect if it was not opened.
      */
     void dispose()
     {
         final Frame opened = frame;
         if (opened != null)
         {
-            EventQueue.invokeLater(opened::dispose);
+            EventQueue.invokeLater(() ->
+            {
+                leaveFullScreen(getDevice());
+                opened.dispose();
+            });
         }
     }
 
