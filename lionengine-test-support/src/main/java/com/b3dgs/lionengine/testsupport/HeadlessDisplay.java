@@ -16,11 +16,16 @@
  */
 package com.b3dgs.lionengine.testsupport;
 
+import java.util.Set;
+
+import com.b3dgs.lionengine.Inbox;
+import com.b3dgs.lionengine.platform.DisplayListener;
 import com.b3dgs.lionengine.platform.DisplayMode;
 import com.b3dgs.lionengine.platform.DisplayRequest;
 import com.b3dgs.lionengine.platform.DisplayState;
 import com.b3dgs.lionengine.platform.EffectiveResult;
 import com.b3dgs.lionengine.platform.PresentationGeometry;
+import com.b3dgs.lionengine.platform.ScreenMode;
 import com.b3dgs.lionengine.render.RenderBackend;
 
 /**
@@ -55,15 +60,69 @@ final class HeadlessDisplay
     }
 
     /**
-     * Sets the surface size and applies the requested display again.
+     * Applies a new surface size and resolves the request again.
      *
      * @param width The surface width in device pixels.
      * @param height The surface height in device pixels.
+     * @return {@code true} if the effective result changed, to be announced to the display listeners.
      */
-    void resize(int width, int height)
+    boolean resize(int width, int height)
     {
+        final EffectiveResult previous = state.getResult();
         state.setSurface(width, height);
-        apply(state.getResult().requested());
+        apply(previous.requested());
+        return !previous.equals(state.getResult());
+    }
+
+    /**
+     * Sets the supported screen modes.
+     *
+     * @param modes The supported modes, at least one.
+     */
+    void setSupported(Set<ScreenMode> modes)
+    {
+        state.setSupported(modes);
+    }
+
+    /**
+     * Tells whether a screen mode is supported.
+     *
+     * @param mode The screen mode.
+     * @return {@code true} if supported.
+     */
+    boolean isSupported(ScreenMode mode)
+    {
+        return state.isSupported(mode);
+    }
+
+    /**
+     * Adds a display listener.
+     *
+     * @param listener The listener.
+     */
+    void addListener(DisplayListener listener)
+    {
+        state.addListener(listener);
+    }
+
+    /**
+     * Removes a display listener.
+     *
+     * @param listener The listener.
+     */
+    void removeListener(DisplayListener listener)
+    {
+        state.removeListener(listener);
+    }
+
+    /**
+     * Posts the current result to the display listeners through the inbox.
+     *
+     * @param inbox The inbox of the loop.
+     */
+    void post(Inbox inbox)
+    {
+        state.post(inbox);
     }
 
     /**
@@ -88,7 +147,7 @@ final class HeadlessDisplay
         {
             displayMode = request.displayMode();
         }
-        state.resolve(request, request.screenMode(), displayMode, "");
+        state.resolve(request, displayMode, "");
     }
 
     /**

@@ -20,7 +20,12 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.geom.AffineTransform;
 import java.lang.reflect.InvocationTargetException;
+
+import com.b3dgs.lionengine.platform.ScreenMode;
 
 /**
  * Window of the AWT platform and its canvas (ADR-0008, ADR-0043).
@@ -29,6 +34,13 @@ import java.lang.reflect.InvocationTargetException;
  * The canvas is created with the platform, at the logical frame size in device pixels; the window is created, shown
  * and disposed on the AWT event thread. Rendering is active: repaint events are ignored, and the canvas has two
  * buffers once shown.
+ * </p>
+ *
+ * <p>
+ * Screen modes (ADR-0060), realized on the AWT event thread when they change: {@code WINDOWED} is a decorated window
+ * of the logical frame size, centered; {@code FULL_WINDOW} an undecorated window covering the default monitor;
+ * {@code FULL_SCREEN} an undecorated window made the full-screen window of the default monitor. Changing the
+ * decoration hides and shows the window again, and the canvas gets a new buffer strategy.
  * </p>
  */
 final class AwtWindow
@@ -81,10 +93,41 @@ final class AwtWindow
         }
     }
 
+    /**
+     * Checks that the environment has a display.
+     *
+     * @throws IllegalStateException If the environment is headless.
+     */
+    static void checkDisplay()
+    {
+        if (GraphicsEnvironment.isHeadless())
+        {
+            throw new IllegalStateException("The AWT platform needs a display");
+        }
+    }
+
+    /**
+     * Creates the window of the default monitor, its canvas at the logical frame size in device pixels.
+     *
+     * @param width The logical frame width in pixels.
+     * @param height The logical frame height in pixels.
+     * @return The window, not shown.
+     */
+    static AwtWindow create(int width, int height)
+    {
+        final AffineTransform transform = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                                             .getDefaultScreenDevice()
+                                                             .getDefaultConfiguration()
+                                                             .getDefaultTransform();
+        return new AwtWindow(width, height, transform.getScaleX(), transform.getScaleY());
+    }
+
     /** Canvas of the surface. */
     private final Canvas canvas = new Canvas();
     /** Window, {@code null} until opened. */
     private Frame frame;
+    /** Screen mode of the window, applied once shown. */
+    private ScreenMode screenMode = ScreenMode.WINDOWED;
 
     /**
      * Creates the canvas, not shown.
@@ -104,11 +147,62 @@ final class AwtWindow
      * Creates and shows the window on the AWT event thread, and waits for it.
      *
      * @param receiver The receiver of the window and canvas events.
+     * @param mode The screen mode of the window, supported by the platform.
      * @throws IllegalStateException If the window cannot be opened or the wait is interrupted.
      */
-    void open(AwtWindowEvents.Receiver receiver)
+    void open(AwtWindowEvents.Receiver receiver, ScreenMode mode)
     {
-        onEventThread(() -> show(receiver));
+        onEventThread(() -> show(receiver, mode));
+    }
+
+    /**
+     * Sets the screen mode of the window, realized at once on the AWT event thread if the window is shown and the mode
+     * changes; called by the runtime thread at the frame boundary.
+     *
+     * @param mode The screen mode, supported by the platform.
+     */
+    void setScreenMode(ScreenMode mode)
+    {
+        if (frame == null)
+        {
+            screenMode = mode;
+        }
+        else if (mode != screenMode)
+        {
+            onEventThread(() -> realize(mode));
+        }
+    }
+
+    /**
+     * Realizes a screen mode on the shown window, on the AWT event thread.
+     *
+     * @param mode The screen mode.
+     */
+    private void realize(ScreenMode mode)
+    {
+        final GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        if (device.getFullScreenWindow() == frame)
+        {
+            device.setFullScreenWindow(null);
+        }
+        frame.dispose();
+        frame.setUndecorated(mode != ScreenMode.WINDOWED);
+        if (mode == ScreenMode.FULL_WINDOW)
+        {
+            frame.setBounds(device.getDefaultConfiguration().getBounds());
+        }
+        else
+        {
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+        }
+        frame.setVisible(true);
+        if (mode == ScreenMode.FULL_SCREEN)
+        {
+            device.setFullScreenWindow(frame);
+        }
+        canvas.createBufferStrategy(BUFFERS);
+        screenMode = mode;
     }
 
     /**
@@ -116,8 +210,9 @@ final class AwtWindow
      * event thread.
      *
      * @param receiver The receiver of the window and canvas events.
+     * @param mode The screen mode of the window.
      */
-    private void show(AwtWindowEvents.Receiver receiver)
+    private void show(AwtWindowEvents.Receiver receiver, ScreenMode mode)
     {
         final Frame opened = new Frame();
         final AwtWindowEvents events = new AwtWindowEvents(canvas, receiver);
@@ -131,6 +226,10 @@ final class AwtWindow
         opened.setVisible(true);
         canvas.createBufferStrategy(BUFFERS);
         frame = opened;
+        if (mode != ScreenMode.WINDOWED)
+        {
+            realize(mode);
+        }
     }
 
     /**

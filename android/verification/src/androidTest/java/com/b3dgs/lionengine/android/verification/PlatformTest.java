@@ -20,14 +20,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.b3dgs.lionengine.Inbox;
+import com.b3dgs.lionengine.InboxEvent;
 import com.b3dgs.lionengine.platform.DisplayMode;
 import com.b3dgs.lionengine.platform.DisplayRequest;
 import com.b3dgs.lionengine.platform.DisplayState;
@@ -85,7 +90,7 @@ public final class PlatformTest
     {
         final DisplayState state = new DisplayState(WIDTH, HEIGHT);
         state.setSurface(WIDTH * 2, HEIGHT * 2);
-        state.resolve(request(ScalingPolicy.INTEGER), ScreenMode.WINDOWED, null, "");
+        state.resolve(request(ScalingPolicy.INTEGER), null, "");
 
         assertFalse(state.getResult().degraded());
         assertEquals("", state.getResult().reason());
@@ -100,11 +105,11 @@ public final class PlatformTest
     {
         final DisplayState state = new DisplayState(WIDTH, HEIGHT);
         state.setSurface(WIDTH / 2, HEIGHT / 2);
-        state.resolve(request(ScalingPolicy.INTEGER), ScreenMode.WINDOWED, null, "Platform reason");
+        state.resolve(request(ScalingPolicy.INTEGER), null, "Platform reason");
         assertTrue(state.getResult().degraded());
         assertEquals("Platform reason; " + REASON_INTEGER, state.getResult().reason());
 
-        state.resolve(request(ScalingPolicy.INTEGER, OutputFilter.CRT), ScreenMode.WINDOWED, null, "");
+        state.resolve(request(ScalingPolicy.INTEGER, OutputFilter.CRT), null, "");
         assertEquals(REASON_INTEGER + "; Output filters not applied: no render backend attached",
                      state.getResult().reason());
     }
@@ -143,15 +148,68 @@ public final class PlatformTest
             }
         });
         final DisplayMode mode = new DisplayMode(1920, 1080, 60, 32);
-        state.resolve(request(ScalingPolicy.FIT, OutputFilter.NONE, OutputFilter.CRT, OutputFilter.BILINEAR),
-                      ScreenMode.FULL_SCREEN,
+        state.setSupported(EnumSet.of(ScreenMode.WINDOWED, ScreenMode.FULL_WINDOW));
+        state.resolve(new DisplayRequest(ScreenMode.FULL_SCREEN,
+                                         null,
+                                         ScalingPolicy.FIT,
+                                         Arrays.asList(OutputFilter.NONE, OutputFilter.CRT, OutputFilter.BILINEAR)),
                       mode,
                       "");
 
         assertEquals(Collections.singletonList(OutputFilter.BILINEAR), state.getResult().effective().filters());
-        assertEquals("Output filter not implemented by the render backend, skipped: lionengine:crt",
+        assertEquals("FULL_SCREEN not supported, FULL_WINDOW used; "
+                     + "Output filter not implemented by the render backend, skipped: lionengine:crt",
                      state.getResult().reason());
-        assertEquals(ScreenMode.FULL_SCREEN, state.getResult().effective().screenMode());
+        assertEquals(ScreenMode.FULL_WINDOW, state.getResult().effective().screenMode());
         assertEquals(mode, state.getResult().effective().displayMode());
+    }
+
+    /**
+     * The screen-mode fallback follows the orders of ADR-0006, and a posted result reaches the display listeners at
+     * the inbox delivery (REQ-DISPLAY-002, REQ-DISPLAY-008, ADR-0060).
+     */
+    @Test
+    public void testScreenModesAndListener()
+    {
+        final DisplayState state = new DisplayState(320, 240);
+        state.setSupported(EnumSet.of(ScreenMode.FULL_SCREEN));
+        assertEquals(ScreenMode.FULL_SCREEN, state.selectScreenMode(ScreenMode.WINDOWED));
+        state.setSupported(EnumSet.of(ScreenMode.WINDOWED, ScreenMode.FULL_SCREEN));
+        assertEquals(ScreenMode.WINDOWED, state.selectScreenMode(ScreenMode.FULL_WINDOW));
+        assertFalse(state.isSupported(ScreenMode.FULL_WINDOW));
+
+        final List<String> calls = new ArrayList<>();
+        final List<InboxEvent> events = new ArrayList<>();
+        state.addListener(result -> calls.add(result.effective().screenMode().name()));
+        state.resolve(new DisplayRequest(ScreenMode.FULL_WINDOW, null, ScalingPolicy.FIT, Collections.emptyList()),
+                      null,
+                      "");
+        assertTrue(state.post(new Inbox()
+        {
+            @Override
+            public boolean post(InboxEvent event)
+            {
+                return events.add(event);
+            }
+
+            @Override
+            public void deliverAll()
+            {
+                for (final InboxEvent event : events)
+                {
+                    event.deliver();
+                }
+            }
+
+            @Override
+            public long getDroppedCount()
+            {
+                return 0L;
+            }
+        }));
+        assertTrue(calls.isEmpty());
+        events.get(0).deliver();
+        assertEquals(Collections.singletonList("WINDOWED"), calls);
+        assertEquals("FULL_WINDOW not supported, WINDOWED used", state.getResult().reason());
     }
 }

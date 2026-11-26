@@ -17,9 +17,6 @@
 package com.b3dgs.lionengine.platform.awt;
 
 import java.awt.Frame;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.geom.AffineTransform;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.LockSupport;
@@ -29,12 +26,14 @@ import com.b3dgs.lionengine.LogSink;
 import com.b3dgs.lionengine.LoopDriver;
 import com.b3dgs.lionengine.WorkerPool;
 import com.b3dgs.lionengine.platform.CloseListener;
+import com.b3dgs.lionengine.platform.DisplayListener;
 import com.b3dgs.lionengine.platform.DisplayMode;
 import com.b3dgs.lionengine.platform.DisplayRequest;
 import com.b3dgs.lionengine.platform.EffectiveResult;
 import com.b3dgs.lionengine.platform.Platform;
 import com.b3dgs.lionengine.platform.PlatformEvent;
 import com.b3dgs.lionengine.platform.PresentationGeometry;
+import com.b3dgs.lionengine.platform.ScreenMode;
 import com.b3dgs.lionengine.render.RenderBackend;
 
 /**
@@ -179,18 +178,13 @@ public final class AwtPlatform implements Platform
         {
             throw new IllegalArgumentException("Invalid AWT platform: " + logicalWidth + 'x' + logicalHeight);
         }
-        if (GraphicsEnvironment.isHeadless())
-        {
-            throw new IllegalStateException("The AWT platform needs a display");
-        }
+        AwtWindow.checkDisplay();
         this.logicalWidth = logicalWidth;
         this.logicalHeight = logicalHeight;
         this.logSink = logSink;
         this.manual = manual;
-        final GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        display = new AwtDisplay(logicalWidth, logicalHeight, AwtDisplay.convert(device.getDisplayMode()), request);
-        final AffineTransform transform = device.getDefaultConfiguration().getDefaultTransform();
-        window = new AwtWindow(logicalWidth, logicalHeight, transform.getScaleX(), transform.getScaleY());
+        display = AwtDisplay.create(logicalWidth, logicalHeight, request);
+        window = AwtWindow.create(logicalWidth, logicalHeight);
         surface = window::getCanvas;
     }
 
@@ -215,7 +209,13 @@ public final class AwtPlatform implements Platform
     {
         switch (event.getKind())
         {
-            case SURFACE_RESIZED -> display.resize(event.getSurfaceWidth(), event.getSurfaceHeight());
+            case SURFACE_RESIZED ->
+            {
+                if (display.resize(event.getSurfaceWidth(), event.getSurfaceHeight()))
+                {
+                    display.post(inbox);
+                }
+            }
             case BACKGROUND ->
             {
                 background = true;
@@ -344,6 +344,8 @@ public final class AwtPlatform implements Platform
             final DisplayRequest request = pending;
             pending = null;
             display.apply(request);
+            window.setScreenMode(display.getScreenMode());
+            display.post(inbox);
         }
     }
 
@@ -408,7 +410,7 @@ public final class AwtPlatform implements Platform
         }
         this.driver = driver;
         this.inbox = inbox;
-        window.open(this::post);
+        window.open(this::post, display.getScreenMode());
         if (!manual)
         {
             run();
@@ -462,6 +464,32 @@ public final class AwtPlatform implements Platform
     public void removeCloseListener(CloseListener listener)
     {
         listeners.remove(listener);
+    }
+
+    @Override
+    public void addDisplayListener(DisplayListener listener)
+    {
+        display.addListener(listener);
+    }
+
+    @Override
+    public void removeDisplayListener(DisplayListener listener)
+    {
+        display.removeListener(listener);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>
+     * {@code WINDOWED} and {@code FULL_WINDOW} are always supported; {@code FULL_SCREEN} when the default monitor
+     * supports exclusive full screen (ADR-0060).
+     * </p>
+     */
+    @Override
+    public boolean isSupported(ScreenMode mode)
+    {
+        return display.isSupported(mode);
     }
 
     @Override

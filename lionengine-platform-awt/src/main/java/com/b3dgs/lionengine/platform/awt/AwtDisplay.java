@@ -16,6 +16,13 @@
  */
 package com.b3dgs.lionengine.platform.awt;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.util.EnumSet;
+import java.util.Set;
+
+import com.b3dgs.lionengine.Inbox;
+import com.b3dgs.lionengine.platform.DisplayListener;
 import com.b3dgs.lionengine.platform.DisplayMode;
 import com.b3dgs.lionengine.platform.DisplayRequest;
 import com.b3dgs.lionengine.platform.DisplayState;
@@ -25,19 +32,36 @@ import com.b3dgs.lionengine.platform.ScreenMode;
 import com.b3dgs.lionengine.render.RenderBackend;
 
 /**
- * Display state of the AWT platform: surface, display mode, effective result and presentation geometry (ADR-0006,
- * ADR-0022, ADR-0043, ADR-0046, REQ-DISPLAY-007, REQ-DISPLAY-008).
+ * Display state of the AWT platform: surface, screen modes, display mode, effective result and presentation geometry
+ * (ADR-0006, ADR-0022, ADR-0043, ADR-0046, ADR-0060, REQ-DISPLAY-001, REQ-DISPLAY-002, REQ-DISPLAY-007,
+ * REQ-DISPLAY-008).
  *
  * <p>
- * Until the display-mode batches: the window is always {@link ScreenMode#WINDOWED}, and the display mode is the
- * current mode of the default monitor; another request is reported as degraded. The scaling and the output filters
- * are resolved by the shared {@link DisplayState}. Runtime thread only.
+ * {@code WINDOWED} and {@code FULL_WINDOW} are supported, and {@code FULL_SCREEN} when the default monitor supports
+ * exclusive full screen; the platform realizes the effective screen mode on its window. Until display-mode batch 2,
+ * the display mode is the current mode of the default monitor; another one is reported as degraded. The screen-mode
+ * fallback, the scaling and the output filters are resolved by the shared {@link DisplayState}. Runtime thread only.
  * </p>
  */
 final class AwtDisplay
 {
-    /** Separator of the reasons. */
-    private static final String SEPARATOR = "; ";
+    /**
+     * Creates the display state of the default monitor and applies the initial request.
+     *
+     * @param logicalWidth The logical frame width in pixels.
+     * @param logicalHeight The logical frame height in pixels.
+     * @param request The initial request.
+     * @return The display state.
+     */
+    static AwtDisplay create(int logicalWidth, int logicalHeight, DisplayRequest request)
+    {
+        final GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        return new AwtDisplay(logicalWidth,
+                              logicalHeight,
+                              convert(device.getDisplayMode()),
+                              device.isFullScreenSupported(),
+                              request);
+    }
 
     /**
      * Converts an AWT display mode: sizes in device pixels, an unknown refresh rate ({@code 0}) and a multiple bit
@@ -65,48 +89,105 @@ final class AwtDisplay
      * @param logicalWidth The logical frame width in pixels.
      * @param logicalHeight The logical frame height in pixels.
      * @param displayMode The current display mode of the default monitor.
+     * @param fullScreen {@code true} if the default monitor supports exclusive full screen.
      * @param request The initial request.
      */
-    AwtDisplay(int logicalWidth, int logicalHeight, DisplayMode displayMode, DisplayRequest request)
+    AwtDisplay(int logicalWidth,
+               int logicalHeight,
+               DisplayMode displayMode,
+               boolean fullScreen,
+               DisplayRequest request)
     {
         state = new DisplayState(logicalWidth, logicalHeight);
+        final Set<ScreenMode> modes = EnumSet.of(ScreenMode.WINDOWED, ScreenMode.FULL_WINDOW);
+        if (fullScreen)
+        {
+            modes.add(ScreenMode.FULL_SCREEN);
+        }
+        state.setSupported(modes);
         this.displayMode = displayMode;
         apply(request);
     }
 
     /**
-     * Applies a request: the window stays windowed on the current display mode, whatever is requested.
+     * Applies a request: the screen mode with its fallback, the current display mode of the monitor.
      *
      * @param request The request.
      */
     void apply(DisplayRequest request)
     {
-        final StringBuilder reasons = new StringBuilder();
-        if (request.screenMode() != ScreenMode.WINDOWED)
-        {
-            reasons.append("Screen mode not implemented yet, WINDOWED used instead of ").append(request.screenMode());
-        }
+        String reasons = "";
         if (request.displayMode() != null && !request.displayMode().equals(displayMode))
         {
-            if (!reasons.isEmpty())
-            {
-                reasons.append(SEPARATOR);
-            }
-            reasons.append("Display mode change not implemented yet, the current mode is kept");
+            reasons = "Display mode change not implemented yet, the current mode is kept";
         }
-        state.resolve(request, ScreenMode.WINDOWED, displayMode, reasons.toString());
+        state.resolve(request, displayMode, reasons);
     }
 
     /**
-     * Sets the surface size and applies the requested display again.
+     * Applies a new surface size and resolves the request again.
      *
      * @param width The surface width in device pixels.
      * @param height The surface height in device pixels.
+     * @return {@code true} if the effective result changed, to be announced to the display listeners.
      */
-    void resize(int width, int height)
+    boolean resize(int width, int height)
     {
+        final EffectiveResult previous = state.getResult();
         state.setSurface(width, height);
-        apply(state.getResult().requested());
+        apply(previous.requested());
+        return !previous.equals(state.getResult());
+    }
+
+    /**
+     * Tells whether a screen mode is supported.
+     *
+     * @param mode The screen mode.
+     * @return {@code true} if supported.
+     */
+    boolean isSupported(ScreenMode mode)
+    {
+        return state.isSupported(mode);
+    }
+
+    /**
+     * Returns the effective screen mode.
+     *
+     * @return The screen mode of the last result, to realize on the window.
+     */
+    ScreenMode getScreenMode()
+    {
+        return state.getResult().effective().screenMode();
+    }
+
+    /**
+     * Adds a display listener.
+     *
+     * @param listener The listener.
+     */
+    void addListener(DisplayListener listener)
+    {
+        state.addListener(listener);
+    }
+
+    /**
+     * Removes a display listener.
+     *
+     * @param listener The listener.
+     */
+    void removeListener(DisplayListener listener)
+    {
+        state.removeListener(listener);
+    }
+
+    /**
+     * Posts the current result to the display listeners through the inbox.
+     *
+     * @param inbox The inbox of the loop.
+     */
+    void post(Inbox inbox)
+    {
+        state.post(inbox);
     }
 
     /**
