@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.InboxSpy;
 import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
+import com.b3dgs.lionengine.render.FilterKind;
 import com.b3dgs.lionengine.render.OutputFilter;
 import com.b3dgs.lionengine.render.RenderBackend;
 import com.b3dgs.lionengine.render.ScalingPolicy;
@@ -180,14 +181,15 @@ final class DisplayStateTest
         state.resolve(request(ScalingPolicy.FIT, OutputFilter.NONE), null, "");
         assertFalse(state.getResult().degraded());
 
-        state.resolve(request(ScalingPolicy.FIT, OutputFilter.CRT, OutputFilter.HQ2X), null, "");
+        state.resolve(request(ScalingPolicy.FIT, OutputFilter.HQ2X, OutputFilter.CRT), null, "");
 
         assertTrue(state.getResult().effective().filters().isEmpty());
         assertEquals("Output filters not applied: no render backend attached", state.getResult().reason());
     }
 
     /**
-     * With a backend, the supported filters are kept in order without {@code NONE}, the others are skipped and named.
+     * With a backend, a supported filter is kept, a missing post filter is skipped and named; {@code NONE} is not
+     * listed.
      */
     @Test
     void testFilterWithBackend()
@@ -195,12 +197,58 @@ final class DisplayStateTest
         final DisplayState state = new DisplayState(WIDTH, HEIGHT);
         state.setBackend(backend(OutputFilter.BILINEAR));
 
-        state.resolve(request(ScalingPolicy.FIT, OutputFilter.NONE, OutputFilter.CRT, OutputFilter.BILINEAR), null, "");
+        state.resolve(request(ScalingPolicy.FIT, OutputFilter.BILINEAR, OutputFilter.CRT), null, "");
 
         assertEquals(List.of(OutputFilter.BILINEAR), state.getResult().effective().filters());
         assertTrue(state.getResult().degraded());
         assertEquals("Output filter not implemented by the render backend, skipped: lionengine:crt",
                      state.getResult().reason());
+
+        state.resolve(request(ScalingPolicy.FIT, OutputFilter.NONE, OutputFilter.CRT), null, "");
+
+        assertTrue(state.getResult().effective().filters().isEmpty());
+        assertEquals("Output filter not implemented by the render backend, skipped: lionengine:crt",
+                     state.getResult().reason());
+    }
+
+    /**
+     * A missing scaling filter falls back along its order to the first one the backend implements, reported in the
+     * chain order: {@code HQ2X} to bilinear, then to {@code NONE}; a custom scaling filter to {@code NONE} (ADR-0006,
+     * ADR-0062).
+     */
+    @Test
+    void testFilterFallback()
+    {
+        final DisplayState state = new DisplayState(WIDTH, HEIGHT);
+        final OutputFilter custom = new OutputFilter("game:sharp", FilterKind.SCALING);
+        final OutputFilter glow = new OutputFilter("game:glow", FilterKind.POST);
+        state.setBackend(backend(OutputFilter.BILINEAR));
+
+        state.resolve(request(ScalingPolicy.FIT, OutputFilter.HQ2X, OutputFilter.CRT), null, "");
+
+        assertEquals(List.of(OutputFilter.BILINEAR), state.getResult().effective().filters());
+        assertEquals("Output filter lionengine:hq2x not implemented by the render backend, lionengine:bilinear used; "
+                     + "Output filter not implemented by the render backend, skipped: lionengine:crt",
+                     state.getResult().reason());
+
+        state.setBackend(backend(glow));
+        state.resolve(request(ScalingPolicy.FIT, OutputFilter.HQ2X, glow), null, "");
+
+        assertEquals(List.of(glow), state.getResult().effective().filters());
+        assertEquals("Output filter lionengine:hq2x not implemented by the render backend, lionengine:none used",
+                     state.getResult().reason());
+
+        state.resolve(request(ScalingPolicy.FIT, custom), null, "");
+
+        assertTrue(state.getResult().effective().filters().isEmpty());
+        assertEquals("Output filter game:sharp not implemented by the render backend, lionengine:none used",
+                     state.getResult().reason());
+
+        state.setBackend(backend(OutputFilter.HQ2X));
+        state.resolve(request(ScalingPolicy.FIT, OutputFilter.HQ2X), null, "");
+
+        assertEquals(List.of(OutputFilter.HQ2X), state.getResult().effective().filters());
+        assertFalse(state.getResult().degraded());
     }
 
     /**

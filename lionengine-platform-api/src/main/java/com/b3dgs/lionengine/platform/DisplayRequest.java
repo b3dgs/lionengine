@@ -18,8 +18,11 @@ package com.b3dgs.lionengine.platform;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.b3dgs.lionengine.render.FilterKind;
 import com.b3dgs.lionengine.render.OutputFilter;
 import com.b3dgs.lionengine.render.ScalingPolicy;
 
@@ -45,6 +48,9 @@ public record DisplayRequest(ScreenMode screenMode,
 {
     /** Error message of an invalid request. */
     private static final String ERROR_REQUEST = "Invalid display request";
+    /** Error message of a chain of another shape. */
+    private static final String ERROR_CHAIN = "Invalid filter chain, at most one scaling filter before the post "
+                                              + "filters and no filter twice: ";
 
     /**
      * Creates a request.
@@ -53,8 +59,10 @@ public record DisplayRequest(ScreenMode screenMode,
      * @param displayMode The display mode, {@code null} to keep the current one.
      * @param scalingPolicy The scaling policy (never {@code null}).
      * @param filters The ordered output filter chain, copied (never {@code null}, no {@code null} element; empty for
-     *            {@link OutputFilter#NONE} alone).
-     * @throws IllegalArgumentException If a non-nullable argument is {@code null} or a filter is {@code null}.
+     *            {@link OutputFilter#NONE} alone): at most one scaling filter, before every post filter, and no filter
+     *            twice (ADR-0062); without a scaling filter the frame is scaled with {@link OutputFilter#NONE}.
+     * @throws IllegalArgumentException If a non-nullable argument is {@code null}, a filter is {@code null}, or the
+     *             chain has another shape.
      */
     public DisplayRequest(ScreenMode screenMode,
                           DisplayMode displayMode,
@@ -66,12 +74,21 @@ public record DisplayRequest(ScreenMode screenMode,
             throw new IllegalArgumentException(ERROR_REQUEST);
         }
         final List<OutputFilter> copy = new ArrayList<>(filters.size());
+        final Set<OutputFilter> seen = new HashSet<>();
+        boolean scaling = false;
+        boolean post = false;
         for (final OutputFilter filter : filters)
         {
             if (filter == null)
             {
                 throw new IllegalArgumentException(ERROR_REQUEST);
             }
+            if (filter.kind() == FilterKind.SCALING && (scaling || post) || !seen.add(filter))
+            {
+                throw new IllegalArgumentException(ERROR_CHAIN + filters);
+            }
+            scaling |= filter.kind() == FilterKind.SCALING;
+            post |= filter.kind() == FilterKind.POST;
             copy.add(filter);
         }
         this.screenMode = screenMode;

@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.android.verification;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 
@@ -27,13 +28,15 @@ import org.junit.runner.RunWith;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.b3dgs.lionengine.render.CommandBuffer;
+import com.b3dgs.lionengine.render.FilterKind;
 import com.b3dgs.lionengine.render.FrameScaling;
+import com.b3dgs.lionengine.render.OutputFilter;
 import com.b3dgs.lionengine.render.ScalingPolicy;
 import com.b3dgs.lionengine.render.Viewport;
 
 /**
- * Runs {@code render-api} on Android API 21 (ADR-0044): command buffer entries, defaults and presentation order, and
- * the scaling function. Expected values are the ones of the JVM tests (CommandBufferTest, FrameScalingTest).
+ * Runs {@code render-api} on Android API 21 (ADR-0044): command buffer entries, defaults and presentation order, the
+ * scaling function and the fallback order of the output filters. Expected values are the ones of the JVM tests (CommandBufferTest, FrameScalingTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class RenderTest
@@ -145,5 +148,18 @@ public final class RenderTest
         assertEquals(new FrameScaling(ScalingPolicy.STRETCH, 0, 0, 1280, 720, 4.0, THREE),
                      FrameScaling.of(ScalingPolicy.STRETCH, WIDTH, HEIGHT, 1280, 720));
         assertSame(ScalingPolicy.FIT, FrameScaling.of(ScalingPolicy.INTEGER, WIDTH, HEIGHT, 0, 0).policy());
+    }
+
+    /**
+     * The fallback order of the output filters is the one of the JVM (OutputFilterTest, ADR-0062).
+     */
+    @Test
+    public void testFilterFallback()
+    {
+        assertSame(OutputFilter.BILINEAR, OutputFilter.HQ2X.fallback());
+        assertSame(OutputFilter.NONE, OutputFilter.BILINEAR.fallback());
+        assertSame(OutputFilter.NONE, new OutputFilter("game:sharp", FilterKind.SCALING).fallback());
+        assertNull(OutputFilter.NONE.fallback());
+        assertNull(OutputFilter.CRT.fallback());
     }
 }

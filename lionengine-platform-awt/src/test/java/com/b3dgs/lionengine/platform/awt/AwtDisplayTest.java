@@ -236,8 +236,8 @@ final class AwtDisplayTest
     }
 
     /**
-     * Without backend, no filter is applied; with one, those it implements are applied in order and the others are
-     * reported; {@code NONE} is no filter.
+     * Without backend, no filter is applied; with one, a missing scaling filter falls back to one it implements, a
+     * missing post filter is skipped, both reported; {@code NONE} is no filter.
      */
     @Test
     void testFilters()
@@ -245,10 +245,7 @@ final class AwtDisplayTest
         final DisplayRequest request = request(ScreenMode.WINDOWED,
                                                null,
                                                ScalingPolicy.FIT,
-                                               List.of(OutputFilter.NONE,
-                                                       OutputFilter.CRT,
-                                                       OutputFilter.BILINEAR,
-                                                       OutputFilter.HQ2X));
+                                               List.of(OutputFilter.HQ2X, OutputFilter.CRT));
         final AwtDisplay display = display(false, request);
         assertTrue(display.getResult().effective().filters().isEmpty());
         assertTrue(display.getResult().reason().contains("no render backend"));
