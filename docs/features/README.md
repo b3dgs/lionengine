@@ -31,7 +31,7 @@ A feature page is the entry point of an implementation batch: it restates every 
 
 Where the implementation stands, batch by batch: the numbers are those of the "Batches" section of each page. Every batch updates its row in the pull request that implements it, so the merged table always tells the next agent where to start. Details of a finished batch are in the "State" section of its page.
 
-Next batch: [`output-filtering.md`](output-filtering.md) batch 2 (CPU filters in `render-awt`: `NONE`, bilinear, `Scale2x`), the first unfinished batch in the order of the table; [`resources.md`](resources.md) batch 4 is reserved for the local agents ([`../local-agents.md`](../local-agents.md)).
+Next batch: [`output-filtering.md`](output-filtering.md) batch 3 (custom filter extension point), the first unfinished batch in the order of the table; [`resources.md`](resources.md) batch 4 is reserved for the local agents ([`../local-agents.md`](../local-agents.md)).
 
 | Phase | Page | Batches | Done | Remaining |
 |---|---|---|---|---|
@@ -46,7 +46,7 @@ Next batch: [`output-filtering.md`](output-filtering.md) batch 2 (CPU filters in
 | 2 | [`sprite.md`](sprite.md) | 4 | 1 to 3 (2026-11-26), 4 (2026-11-26, #931) | none; `REQ-SPRITE-004` parity waits for the OpenGL and Android backends |
 | 2 | [`animated-sprite.md`](animated-sprite.md) | 3 | 1 (2026-11-26, #932), 2 (2026-11-26, #933), 3 (2026-11-26, #934) | none |
 | 2 | [`display-modes.md`](display-modes.md) | 4 | 1 (2026-11-26, #938), 2 (2026-11-26, #939), 3 (2026-11-26, #940, delivered by earlier batches and recorded), 4 (2026-11-26, #941, review; `OQ-174` raised) | none |
-| 2 | [`output-filtering.md`](output-filtering.md) | 4 | 1 (2026-11-26) | 2 to 4 (batch 4 partly Phase 4) |
+| 2 | [`output-filtering.md`](output-filtering.md) | 4 | 1 (2026-11-26, #942), 2 (2026-11-26) | 3 and 4 (batch 4 partly Phase 4) |
 | 2 | [`audio-short-and-long-sounds.md`](audio-short-and-long-sounds.md) | 8 | none | 1 to 8 (`audio-android` in Phase 4) |
 | 3 | [`ecs.md`](ecs.md) | 6 | none | 1 to 6 |
 | 3 | [`standard-traits.md`](standard-traits.md) | 7 | none | 1 to 7 |

@@ -24,12 +24,20 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.InboxSpy;
+import com.b3dgs.lionengine.ManualLoopDriver;
+import com.b3dgs.lionengine.platform.DisplayRequest;
+import com.b3dgs.lionengine.platform.EffectiveResult;
+import com.b3dgs.lionengine.platform.ScreenMode;
 import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
+import com.b3dgs.lionengine.render.FilterKind;
 import com.b3dgs.lionengine.render.OutputFilter;
+import com.b3dgs.lionengine.render.ScalingPolicy;
 import com.b3dgs.lionengine.render.TextureStore;
 import com.b3dgs.lionengine.render.Viewport;
 import com.b3dgs.lionengine.testsupport.HeadlessPlatform;
@@ -121,7 +129,8 @@ final class AwtRenderBackendTest
     }
 
     /**
-     * The platform must have an AWT surface; only {@code NONE} is supported; the buffer must not be {@code null}.
+     * The platform must have an AWT surface; the scaling filters {@code NONE}, bilinear and {@code HQ2X} are supported,
+     * no post or custom filter (ADR-0063); the buffer must not be {@code null}.
      */
     @Test
     void testArguments()
@@ -134,11 +143,37 @@ final class AwtRenderBackendTest
         assertThrows(IllegalArgumentException.class, () -> new AwtRenderBackend(null));
         assertThrows(IllegalArgumentException.class, () -> new AwtRenderBackend(platform));
         assertTrue(backend.isSupported(OutputFilter.NONE));
-        assertFalse(backend.isSupported(OutputFilter.BILINEAR));
+        assertTrue(backend.isSupported(OutputFilter.BILINEAR));
+        assertTrue(backend.isSupported(OutputFilter.HQ2X));
+        assertFalse(backend.isSupported(OutputFilter.CRT));
+        assertFalse(backend.isSupported(new OutputFilter("game:sharp", FilterKind.SCALING)));
         assertThrows(IllegalArgumentException.class, () -> backend.isSupported((OutputFilter) null));
         assertThrows(IllegalArgumentException.class, () -> backend.present(null));
         assertEquals(WIDTH, backend.getLogicalFrame().getWidth());
         assertEquals(HEIGHT, backend.getLogicalFrame().getHeight());
+    }
+
+    /**
+     * Attached to a platform, the backend keeps {@code HQ2X} (drawn by Scale2x) and the CRT request is skipped with
+     * its reason (ADR-0062, ADR-0063).
+     */
+    @Test
+    void testFiltersOnPlatform()
+    {
+        final HeadlessPlatform platform = AwtRenderFixtures.platform(WIDTH, HEIGHT);
+        platform.attach(new AwtRenderBackend(platform));
+        final InboxSpy inbox = new InboxSpy();
+        platform.start(new ManualLoopDriver(), inbox);
+
+        platform.apply(new DisplayRequest(ScreenMode.WINDOWED,
+                                          null,
+                                          ScalingPolicy.INTEGER,
+                                          List.of(OutputFilter.HQ2X, OutputFilter.CRT)));
+        platform.iterate();
+
+        final EffectiveResult result = platform.getEffectiveResult();
+        assertEquals(List.of(OutputFilter.HQ2X), result.effective().filters());
+        assertEquals("Output filter not implemented by the render backend, skipped: lionengine:crt", result.reason());
     }
 
     /**
