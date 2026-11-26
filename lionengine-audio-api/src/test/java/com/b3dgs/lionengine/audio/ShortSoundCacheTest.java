@@ -152,7 +152,8 @@ final class ShortSoundCacheTest
         jump.release();
         limited.load(COIN);
         assertEquals(20L, limited.getUsedBytes());
-        assertThrows(IllegalArgumentException.class, () -> new ShortSoundCache(new Resources(provider), 0L));
+        final Resources resources = new Resources(provider);
+        assertThrows(IllegalArgumentException.class, () -> new ShortSoundCache(resources, 0L));
         assertThrows(IllegalArgumentException.class, () -> new ShortSoundCache(null));
     }
 
@@ -200,7 +201,8 @@ final class ShortSoundCacheTest
         assertTrue(cache.has(JUMP));
         shared.release();
         assertEquals(0, cache.size());
-        assertThrows(AudioDecodingException.class, () -> cache.loadLazily(new ResourceKey("sounds/jump.mp3")));
+        final ResourceKey mp3 = new ResourceKey("sounds/jump.mp3");
+        assertThrows(AudioDecodingException.class, () -> cache.loadLazily(mp3));
     }
 
     /**

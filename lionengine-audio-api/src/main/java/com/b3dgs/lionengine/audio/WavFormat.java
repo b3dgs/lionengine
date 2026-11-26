@@ -71,22 +71,36 @@ record WavFormat(PcmFormat format, int bytesPerSample)
             throw new AudioDecodingException("WAV format chunk too small: " + size + BYTES);
         }
         final int tag = input.readUnsignedShort();
-        final int channels = input.readUnsignedShort();
-        final long rate = input.readUnsignedInt();
-        input.readUnsignedInt();
-        final int blockAlign = input.readUnsignedShort();
-        final int bits = input.readUnsignedShort();
+        if (tag != TAG_PCM && tag != TAG_EXTENSIBLE)
+        {
+            throw new AudioDecodingException(ERROR_ENCODING + tag);
+        }
+        final WavFormat format = readBasic(input);
         long read = BASIC_BYTES;
         if (tag == TAG_EXTENSIBLE)
         {
             readSubFormat(input, size);
             read = EXTENSIBLE_BYTES;
         }
-        else if (tag != TAG_PCM)
-        {
-            throw new AudioDecodingException(ERROR_ENCODING + tag);
-        }
         input.skip(size - read + (size & 1L));
+        return format;
+    }
+
+    /**
+     * Reads the basic fields after the format tag, and creates the format.
+     *
+     * @param input The reader, positioned after the format tag.
+     * @return The format.
+     * @throws AudioDecodingException If a field is unsupported or the frame size is inconsistent.
+     * @throws IOException If reading fails.
+     */
+    private static WavFormat readBasic(WavInput input) throws IOException
+    {
+        final int channels = input.readUnsignedShort();
+        final long rate = input.readUnsignedInt();
+        input.readUnsignedInt();
+        final int blockAlign = input.readUnsignedShort();
+        final int bits = input.readUnsignedShort();
         return create(channels, rate, blockAlign, bits);
     }
 
