@@ -203,6 +203,20 @@ public final class AwtPlatform implements Platform
     }
 
     /**
+     * Applies a new surface size, and announces the result to the display listeners if it changed.
+     *
+     * @param width The surface width in device pixels.
+     * @param height The surface height in device pixels.
+     */
+    private void resize(int width, int height)
+    {
+        if (display.resize(width, height))
+        {
+            display.post(inbox);
+        }
+    }
+
+    /**
      * Applies a delivered event, on the runtime thread.
      *
      * @param event The event.
@@ -211,13 +225,7 @@ public final class AwtPlatform implements Platform
     {
         switch (event.getKind())
         {
-            case SURFACE_RESIZED ->
-            {
-                if (display.resize(event.getSurfaceWidth(), event.getSurfaceHeight()))
-                {
-                    display.post(inbox);
-                }
-            }
+            case SURFACE_RESIZED -> resize(event.getSurfaceWidth(), event.getSurfaceHeight());
             case BACKGROUND ->
             {
                 background = true;

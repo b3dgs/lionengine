@@ -458,7 +458,8 @@ public abstract class PlatformContract
         assertFalse(modes.isEmpty());
         assertEquals(modes.size(), new HashSet<>(modes).size());
         assertFalse(modes.contains(null));
-        assertThrows(UnsupportedOperationException.class, () -> modes.add(modes.get(0)));
+        final DisplayMode first = modes.get(0);
+        assertThrows(UnsupportedOperationException.class, () -> modes.add(first));
         assertEquals(modes, platform.getDisplayModes());
     }
 

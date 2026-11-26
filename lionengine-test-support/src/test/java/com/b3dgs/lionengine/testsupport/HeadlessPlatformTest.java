@@ -247,7 +247,8 @@ final class HeadlessPlatformTest extends PlatformContract
 
         assertEquals(large, platform.getEffectiveResult().effective().displayMode());
         assertFalse(platform.getEffectiveResult().degraded());
-        assertThrows(IllegalArgumentException.class, () -> platform.setDisplayModes(List.of()));
+        final List<DisplayMode> empty = List.of();
+        assertThrows(IllegalArgumentException.class, () -> platform.setDisplayModes(empty));
         assertThrows(IllegalArgumentException.class, () -> platform.setDisplayModes(null));
     }
 }

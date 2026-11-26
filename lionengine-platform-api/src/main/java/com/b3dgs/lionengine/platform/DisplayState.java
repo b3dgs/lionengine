@@ -17,8 +17,10 @@
 package com.b3dgs.lionengine.platform;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -97,8 +99,11 @@ public final class DisplayState
     private int surfaceWidth;
     /** Surface height in device pixels. */
     private int surfaceHeight;
-    /** Display listeners, in the order they were added. */
-    private final List<DisplayListener> listeners = new ArrayList<>();
+    /** No display listener. */
+    private static final DisplayListener[] NO_LISTENER = new DisplayListener[0];
+
+    /** Display listeners, in the order they were added; replaced, never modified, so a delivery keeps its own. */
+    private DisplayListener[] listeners = NO_LISTENER;
     /** Screen modes the platform supports, never empty. */
     private Set<ScreenMode> supported = EnumSet.allOf(ScreenMode.class);
     /** Display modes the platform offers, without duplicates, empty until set. */
@@ -169,7 +174,9 @@ public final class DisplayState
         {
             throw new IllegalArgumentException("Display listener must not be null");
         }
-        listeners.add(listener);
+        final DisplayListener[] added = Arrays.copyOf(listeners, listeners.length + 1);
+        added[listeners.length] = listener;
+        listeners = added;
     }
 
     /**
@@ -180,7 +187,17 @@ public final class DisplayState
      */
     public void removeListener(DisplayListener listener)
     {
-        listeners.remove(listener);
+        for (int i = 0; i < listeners.length; i++)
+        {
+            if (listeners[i] == listener)
+            {
+                final DisplayListener[] removed = new DisplayListener[listeners.length - 1];
+                System.arraycopy(listeners, 0, removed, 0, i);
+                System.arraycopy(listeners, i + 1, removed, i, listeners.length - i - 1);
+                listeners = removed;
+                return;
+            }
+        }
     }
 
     /**
@@ -197,7 +214,7 @@ public final class DisplayState
         final EffectiveResult posted = result;
         return inbox.post(() ->
         {
-            final List<DisplayListener> snapshot = new ArrayList<>(listeners);
+            final DisplayListener[] snapshot = listeners;
             for (final DisplayListener listener : snapshot)
             {
                 listener.onDisplayChanged(posted);
@@ -257,7 +274,7 @@ public final class DisplayState
                 case WINDOWED -> AFTER_WINDOWED;
                 case FULL_WINDOW -> AFTER_FULL_WINDOW;
             };
-            selected = supported.contains(order[0]) ? order[0] : order[1];
+            selected = order[supported.contains(order[0]) ? 0 : 1];
         }
         return selected;
     }
@@ -347,19 +364,14 @@ public final class DisplayState
         {
             throw new IllegalArgumentException("At least one display mode must be offered");
         }
-        final List<DisplayMode> copy = new ArrayList<>(modes.size());
         for (final DisplayMode mode : modes)
         {
             if (mode == null)
             {
                 throw new IllegalArgumentException("Display mode must not be null");
             }
-            if (!copy.contains(mode))
-            {
-                copy.add(mode);
-            }
         }
-        displayModes = Collections.unmodifiableList(copy);
+        displayModes = Collections.unmodifiableList(new ArrayList<>(new LinkedHashSet<>(modes)));
     }
 
     /**

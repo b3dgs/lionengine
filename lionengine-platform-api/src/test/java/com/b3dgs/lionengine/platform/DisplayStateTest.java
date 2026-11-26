@@ -247,7 +247,8 @@ final class DisplayStateTest
         assertEquals(ScreenMode.WINDOWED, state.selectScreenMode(ScreenMode.FULL_SCREEN));
         assertTrue(state.isSupported(ScreenMode.WINDOWED));
         assertFalse(state.isSupported(ScreenMode.FULL_WINDOW));
-        assertThrows(IllegalArgumentException.class, () -> state.setSupported(EnumSet.noneOf(ScreenMode.class)));
+        final EnumSet<ScreenMode> none = EnumSet.noneOf(ScreenMode.class);
+        assertThrows(IllegalArgumentException.class, () -> state.setSupported(none));
         assertThrows(IllegalArgumentException.class, () -> state.setSupported(null));
         assertThrows(IllegalArgumentException.class, () -> state.isSupported(null));
     }
@@ -323,13 +324,16 @@ final class DisplayStateTest
         modes.clear();
 
         assertEquals(List.of(small, large), state.getDisplayModes());
-        assertThrows(UnsupportedOperationException.class, () -> state.getDisplayModes().add(small));
+        final List<DisplayMode> listed = state.getDisplayModes();
+        assertThrows(UnsupportedOperationException.class, () -> listed.add(small));
         assertEquals(large, state.selectDisplayMode(null, large));
         assertEquals(small, state.selectDisplayMode(requested, large));
         assertThrows(IllegalArgumentException.class, () -> state.selectDisplayMode(requested, null));
         assertThrows(IllegalArgumentException.class, () -> state.setDisplayModes(null));
-        assertThrows(IllegalArgumentException.class, () -> state.setDisplayModes(List.of()));
-        assertThrows(IllegalArgumentException.class, () -> state.setDisplayModes(Collections.singletonList(null)));
+        final List<DisplayMode> empty = List.of();
+        final List<DisplayMode> withNull = Collections.singletonList(null);
+        assertThrows(IllegalArgumentException.class, () -> state.setDisplayModes(empty));
+        assertThrows(IllegalArgumentException.class, () -> state.setDisplayModes(withNull));
     }
 
     /**
