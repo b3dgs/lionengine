@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.platform.PresentationGeometry;
 import com.b3dgs.lionengine.platform.ScreenMode;
 import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
+import com.b3dgs.lionengine.render.CustomFilter;
 import com.b3dgs.lionengine.render.OutputFilter;
 import com.b3dgs.lionengine.render.RenderBackend;
 import com.b3dgs.lionengine.render.ScalingPolicy;
@@ -290,6 +291,12 @@ final class AwtDisplayTest
         public boolean isSupported(OutputFilter filter)
         {
             return OutputFilter.NONE.equals(filter) || OutputFilter.BILINEAR.equals(filter);
+        }
+
+        @Override
+        public void register(CustomFilter filter)
+        {
+            // No custom filter in this test.
         }
 
         @Override

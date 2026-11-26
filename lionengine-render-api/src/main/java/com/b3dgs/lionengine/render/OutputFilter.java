@@ -161,4 +161,16 @@ public record OutputFilter(String id, FilterKind kind)
         }
         return fallback;
     }
+
+    /**
+     * Tells whether this has the identifier of a standard filter of the engine, whatever its kind; such an identifier
+     * cannot be registered as a custom filter (ADR-0064).
+     *
+     * @return {@code true} for the ids of {@link #NONE}, {@link #BILINEAR}, {@link #HQ2X} and {@link #CRT},
+     *         {@code false} for a custom filter.
+     */
+    public boolean isStandard()
+    {
+        return NONE.id().equals(id) || BILINEAR.id().equals(id) || HQ2X.id().equals(id) || CRT.id().equals(id);
+    }
 }

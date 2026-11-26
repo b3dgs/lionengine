@@ -23,12 +23,14 @@ import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import com.b3dgs.lionengine.platform.Platform;
 import com.b3dgs.lionengine.platform.PresentationGeometry;
 import com.b3dgs.lionengine.platform.awt.AwtSurface;
 import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
+import com.b3dgs.lionengine.render.CustomFilter;
 import com.b3dgs.lionengine.render.OutputFilter;
 import com.b3dgs.lionengine.render.RenderBackend;
 import com.b3dgs.lionengine.render.TextureStore;
@@ -50,7 +52,8 @@ import com.b3dgs.lionengine.render.TextureStore;
  * <p>
  * Textures are images created from the pixel arrays at their first use or at {@code prepare}. Output filters
  * (ADR-0063): {@link OutputFilter#NONE} and {@link OutputFilter#BILINEAR} drawn by Java2D, {@link OutputFilter#HQ2X}
- * drawn by Scale2x at a presentation scale of 2 or more (as {@code NONE} below), no post filter. Thread: the runtime
+ * drawn by Scale2x at a presentation scale of 2 or more (as {@code NONE} below), and the registered custom filters
+ * with a CPU implementation, run on the CPU at the size of the presentation geometry (ADR-0064). Thread: the runtime
  * thread of the platform.
  * </p>
  *
@@ -69,8 +72,8 @@ public final class AwtRenderBackend implements RenderBackend
     private final AwtTextures textures = new AwtTextures();
     /** Logical frame. */
     private final AwtFrame frame;
-    /** Presentation of the logical frame with the scaling filter. */
-    private final AwtPresenter presenter;
+    /** Output filters and the presentation of the logical frame with the effective chain. */
+    private final AwtFilters filters;
     /** Identity transform, to draw in device pixels. */
     private final AffineTransform identity = new AffineTransform();
 
@@ -94,7 +97,7 @@ public final class AwtRenderBackend implements RenderBackend
         this.platform = platform;
         canvas = surface.getCanvas();
         frame = new AwtFrame(platform.getLogicalWidth(), platform.getLogicalHeight());
-        presenter = new AwtPresenter(platform.getLogicalWidth(), platform.getLogicalHeight());
+        filters = new AwtFilters(platform.getLogicalWidth(), platform.getLogicalHeight());
     }
 
     /**
@@ -115,7 +118,7 @@ public final class AwtRenderBackend implements RenderBackend
     private void show(BufferStrategy strategy)
     {
         final PresentationGeometry geometry = platform.getPresentationGeometry();
-        final OutputFilter filter = AwtPresenter.getScalingFilter(platform.getEffectiveResult().effective().filters());
+        final List<OutputFilter> chain = platform.getEffectiveResult().effective().filters();
         final BufferedImage image = frame.getImage();
         do
         {
@@ -125,7 +128,7 @@ public final class AwtRenderBackend implements RenderBackend
                 graphics.setTransform(identity);
                 graphics.setColor(BARS);
                 graphics.fillRect(0, 0, platform.getSurfaceWidth(), platform.getSurfaceHeight());
-                presenter.draw(graphics, image, geometry, filter);
+                filters.draw(graphics, image, geometry, chain);
                 graphics.dispose();
             }
             while (strategy.contentsRestored());
@@ -146,8 +149,8 @@ public final class AwtRenderBackend implements RenderBackend
      *
      * <p>
      * The scaling filters {@link OutputFilter#NONE}, {@link OutputFilter#BILINEAR} and {@link OutputFilter#HQ2X}, the
-     * last one drawn by Scale2x until the license record of {@code HQ2X} (ADR-0063); no post filter, so CRT and the
-     * custom filters are skipped.
+     * last one drawn by Scale2x until the license record of {@code HQ2X} (ADR-0063), and the registered custom filters
+     * that have a CPU implementation (ADR-0064); CRT is skipped.
      * </p>
      */
     @Override
@@ -157,8 +160,21 @@ public final class AwtRenderBackend implements RenderBackend
         {
             throw new IllegalArgumentException("Filter must not be null");
         }
-        return OutputFilter.NONE.equals(filter) || OutputFilter.BILINEAR.equals(filter)
-               || OutputFilter.HQ2X.equals(filter);
+        return filters.isSupported(filter);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>
+     * A CPU backend (ADR-0064): a registered filter is supported when it has a
+     * {@link com.b3dgs.lionengine.render.CpuFilter}.
+     * </p>
+     */
+    @Override
+    public void register(CustomFilter filter)
+    {
+        filters.register(filter);
     }
 
     /**

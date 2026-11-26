@@ -30,4 +30,10 @@ final class AwtRenderBackendContractTest extends RenderBackendContract
     {
         return new AwtRenderBackend(AwtRenderFixtures.platform(WIDTH, HEIGHT));
     }
+
+    @Override
+    protected boolean isGpu()
+    {
+        return false;
+    }
 }

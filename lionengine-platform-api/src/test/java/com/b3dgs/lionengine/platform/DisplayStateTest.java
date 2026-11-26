@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.InboxSpy;
 import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
+import com.b3dgs.lionengine.render.CustomFilter;
 import com.b3dgs.lionengine.render.FilterKind;
 import com.b3dgs.lionengine.render.OutputFilter;
 import com.b3dgs.lionengine.render.RenderBackend;
@@ -87,6 +88,12 @@ final class DisplayStateTest
             public boolean isSupported(OutputFilter filter)
             {
                 return OutputFilter.NONE.equals(filter) || supported.equals(filter);
+            }
+
+            @Override
+            public void register(CustomFilter filter)
+            {
+                // No custom filter in this test.
             }
 
             @Override

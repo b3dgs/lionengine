@@ -57,6 +57,21 @@ public interface RenderBackend extends ColorCapability
     boolean isSupported(OutputFilter filter);
 
     /**
+     * Registers a custom output filter, on the runtime thread (ADR-0033, ADR-0064, REQ-FILTER-003). The platform reads
+     * the capabilities each time it resolves the chain, so the filter is applied from the next request or resize;
+     * registering at startup, before the platform starts, makes it part of the first resolution. A registered filter
+     * stays registered while the backend lives. {@link #isSupported(OutputFilter)} then answers {@code true} only if
+     * the filter has the implementation this backend runs (its {@link CpuFilter} on a CPU backend, its fragment shader
+     * on a GPU backend); otherwise it is skipped, or falls back to {@link OutputFilter#NONE} if it scales, and this is
+     * reported.
+     *
+     * @param filter The custom filter (never {@code null}, with a custom identifier).
+     * @throws IllegalArgumentException If {@code filter} or its identifier is {@code null}, the identifier is a
+     *             standard one, or a filter with the same identifier is already registered.
+     */
+    void register(CustomFilter filter);
+
+    /**
      * Presents a frame: draws the entries of the buffer on a cleared logical frame by ascending layer, then submission
      * order, each clipped to its viewport and offset by it, then scales the logical frame to the output surface with
      * the presentation geometry and the filters of the platform. The buffer is read, never modified.
