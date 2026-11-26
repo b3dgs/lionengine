@@ -9,7 +9,7 @@ One line per capability, no implementation detail. Each area links to its featur
 - **Available**: implemented, tested, with an example.
 - **Planned**: in the roadmap, not yet specified in detail.
 
-Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop without asynchronous loading ([`features/game-loop.md`](features/game-loop.md)), the single-scene manager ([`features/scenes.md`](features/scenes.md)), the file, memory and application-stream resource providers ([`features/resources.md`](features/resources.md)), the platform with rendering, headless and in a desktop window ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)), and the image decoding, image cache and sprite sheets with their definition files ([`features/sprite-sheet.md`](features/sprite-sheet.md)) exist: resources and data files, the game loop, scenes, window and display, images, and platforms are *In progress*, every other area is *Specified*.
+Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop with asynchronous loading ([`features/game-loop.md`](features/game-loop.md)), the single-scene manager ([`features/scenes.md`](features/scenes.md)), the file, memory and application-stream resource providers ([`features/resources.md`](features/resources.md)), the platform with rendering, headless and in a desktop window ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)), and the image decoding, image cache and sprite sheets with their definition files ([`features/sprite-sheet.md`](features/sprite-sheet.md)) exist: resources and data files, the game loop, scenes, window and display, images, and platforms are *In progress*, every other area is *Specified*.
 
 | Area | State | Phase |
 |---|---|---|
@@ -38,7 +38,7 @@ Today the build skeleton, the cross-module contracts ([`features/contract-skelet
 - Long loads can run in the background, with a progress value for a loading screen.
 - Every behavior can be tested without a window, with a clock that the test controls.
 
-Works now: the fixed-step loop with interpolation, catch-up, lag cap and report, pause, time scale, snapping, fail-fast stop, and the inbox for events from other threads (example `GameLoopExample`). Background loading with progress comes with the asynchronous handles batch.
+Works now: the fixed-step loop with interpolation, catch-up, lag cap and report, pause, time scale, snapping, fail-fast stop, and the inbox for events from other threads (example `GameLoopExample`); background loading on worker threads with progress and load groups for a loading screen, images first (example `LoadingScreenExample`).
 
 ## Scenes and navigation
 

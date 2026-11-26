@@ -21,7 +21,11 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.AsyncHandle;
+import com.b3dgs.lionengine.AsyncLoading;
+import com.b3dgs.lionengine.Inbox;
 import com.b3dgs.lionengine.ThreadConfinement;
+import com.b3dgs.lionengine.WorkerPool;
 import com.b3dgs.lionengine.render.TextureStore;
 import com.b3dgs.lionengine.resources.ResourceException;
 import com.b3dgs.lionengine.resources.ResourceKey;
@@ -64,8 +68,9 @@ import com.b3dgs.lionengine.resources.Resources;
  * <p>
  * Threads: runtime thread only (ADR-0018). The cache is not thread-safe and loading workers never touch it; the thread
  * of its first operation becomes its owner, and every operation of the cache, and the release and preparation of its
- * handles, on another thread throws an {@link IllegalStateException} (ADR-0055). Loading is synchronous; asynchronous
- * loading comes with the asynchronous handles of the game loop (ADR-0019).
+ * handles, on another thread throws an {@link IllegalStateException} (ADR-0055). Loading is synchronous with
+ * {@link #load(ResourceKey)}, or asynchronous with {@link #loadAsync(ResourceKey, WorkerPool, Inbox)}: decoded on a
+ * loading worker, cached on the runtime thread at inbox delivery (ADR-0019).
  * </p>
  *
  * @since 11.0.0
@@ -259,18 +264,63 @@ public final class ImageCache
     {
         thread.check();
         checkNotNull(key, NAME_KEY);
-        final ImageKey imageKey = new ImageKey(key, DECODED);
-        ImageEntry entry = entries.get(imageKey);
+        final ImageEntry entry = entries.get(new ImageKey(key, DECODED));
+        final Image image;
         if (entry == null)
         {
-            final PixelBuffer pixels = decode(key);
-            final long bytes = bytes(pixels.getWidth(), pixels.getHeight());
-            reserve(key, bytes, 0L);
-            entry = new ImageEntry(this, imageKey, pixels.getWidth(), pixels.getHeight(), pixels.array());
-            entries.put(imageKey, entry);
-            usedBytes += bytes;
+            image = insert(key, read(key, decoder(key)));
         }
-        return entry.acquire();
+        else
+        {
+            image = entry.acquire();
+        }
+        return image;
+    }
+
+    /**
+     * Requests the image decoded from a resource without waiting: read and decoded on a loading worker, cached on the
+     * runtime thread when the inbox delivers it (ADR-0018, ADR-0019, ADR-0055, REQ-RT-004).
+     *
+     * <p>
+     * The worker only reads the resource and decodes it, and never touches the cache; at the delivery, on the runtime
+     * thread, the pixels enter the cache under the thread check and the limit, as with {@link #load(ResourceKey)}, or
+     * an image cached meanwhile under the same key is shared and the pixels are discarded. An image already cached
+     * gives a handle ready at once, a key without decoder a handle failed at once. A request cancelled before the
+     * delivery caches nothing. The image of a ready handle is a new acquisition, released by the code that made the
+     * request, cancelled or not.
+     * </p>
+     *
+     * @param key The resource key (never {@code null}).
+     * @param workers The loading worker pool of the platform (never {@code null}).
+     * @param inbox The inbox of the game loop, delivered on the runtime thread (never {@code null}).
+     * @return The handle of the image: failed with the {@link ResourceException} of a missing or unreadable resource,
+     *         the {@link ImageDecodingException} of invalid content or of a key without decoder, or the
+     *         {@link IllegalStateException} of the limit.
+     * @throws IllegalArgumentException If an argument is {@code null}.
+     * @throws IllegalStateException If called on another thread than the owner of the cache, or if the pool is closed.
+     */
+    public AsyncHandle<Image> loadAsync(ResourceKey key, WorkerPool workers, Inbox inbox)
+    {
+        thread.check();
+        checkNotNull(key, NAME_KEY);
+        checkNotNull(workers, "Workers");
+        checkNotNull(inbox, "Inbox");
+        final ImageEntry entry = entries.get(new ImageKey(key, DECODED));
+        final ImageDecoder decoder = decoders.get(extension(key));
+        final AsyncHandle<Image> handle;
+        if (entry != null)
+        {
+            handle = AsyncLoading.ready(entry.acquire());
+        }
+        else if (decoder == null)
+        {
+            handle = AsyncLoading.failed(new ImageDecodingException(ERROR_NO_DECODER + key));
+        }
+        else
+        {
+            handle = AsyncLoading.submit(workers, inbox, () -> read(key, decoder), pixels -> insert(key, pixels));
+        }
+        return handle;
     }
 
     /**
@@ -394,7 +444,7 @@ public final class ImageCache
         {
             throw new IllegalStateException(ERROR_NOT_CACHED + key + SEPARATOR + DECODED);
         }
-        final PixelBuffer pixels = decode(key);
+        final PixelBuffer pixels = read(key, decoder(key));
         final long bytes = bytes(pixels.getWidth(), pixels.getHeight());
         final long previous = entry.getBytes();
         reserve(key, bytes, previous);
@@ -481,20 +531,59 @@ public final class ImageCache
     }
 
     /**
-     * Reads and decodes an image, and closes its stream.
+     * Caches decoded pixels as the decoded image of a key, or shares the image cached meanwhile under that key.
      *
      * @param key The resource key.
-     * @return The pixels, owned by the cache.
-     * @throws ResourceException If the resource is missing or cannot be read.
-     * @throws ImageDecodingException If no decoder is registered, or the content is invalid.
+     * @param pixels The decoded pixels, taken over without copy.
+     * @return A new handle on the image.
+     * @throws IllegalStateException If the image would exceed the limit, or if called on another thread than the
+     *             owner of the cache.
      */
-    private PixelBuffer decode(ResourceKey key)
+    private Image insert(ResourceKey key, PixelBuffer pixels)
+    {
+        thread.check();
+        final ImageKey imageKey = new ImageKey(key, DECODED);
+        ImageEntry entry = entries.get(imageKey);
+        if (entry == null)
+        {
+            final long bytes = bytes(pixels.getWidth(), pixels.getHeight());
+            reserve(key, bytes, 0L);
+            entry = new ImageEntry(this, imageKey, pixels.getWidth(), pixels.getHeight(), pixels.array());
+            entries.put(imageKey, entry);
+            usedBytes += bytes;
+        }
+        return entry.acquire();
+    }
+
+    /**
+     * Returns the decoder of a key.
+     *
+     * @param key The resource key.
+     * @return The decoder registered for its extension.
+     * @throws ImageDecodingException If no decoder is registered.
+     */
+    private ImageDecoder decoder(ResourceKey key)
     {
         final ImageDecoder decoder = decoders.get(extension(key));
         if (decoder == null)
         {
             throw new ImageDecodingException(ERROR_NO_DECODER + key);
         }
+        return decoder;
+    }
+
+    /**
+     * Reads and decodes an image, and closes its stream. Touches no state of the cache, so that a loading worker may
+     * run it: the resources and the decoders are thread-safe for reading and decoding.
+     *
+     * @param key The resource key.
+     * @param decoder The decoder of the key.
+     * @return The pixels, owned by the caller.
+     * @throws ResourceException If the resource is missing or cannot be read.
+     * @throws ImageDecodingException If the content is invalid.
+     */
+    private PixelBuffer read(ResourceKey key, ImageDecoder decoder)
+    {
         try (InputStream input = resources.open(key))
         {
             return decoder.decode(input);
