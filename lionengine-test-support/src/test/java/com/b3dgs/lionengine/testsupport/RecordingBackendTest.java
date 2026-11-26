@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
 import com.b3dgs.lionengine.render.OutputFilter;
 import com.b3dgs.lionengine.render.RenderBackend;
@@ -137,5 +138,31 @@ final class RecordingBackendTest extends RenderBackendContract
         assertFalse(backend.isSupported(OutputFilter.CRT));
         assertThrows(IllegalArgumentException.class, () -> new RecordingBackend((OutputFilter[]) null));
         assertThrows(IllegalArgumentException.class, () -> new RecordingBackend(OutputFilter.CRT, null));
+    }
+
+    /**
+     * Every color effect is applied per frame until the test switches it off, and it can be switched on again; the
+     * commands are recorded as written either way (ADR-0056).
+     */
+    @Test
+    void testColorEffects()
+    {
+        final RecordingBackend backend = new RecordingBackend();
+        final CommandBuffer commands = new CommandBuffer(WIDTH, HEIGHT, 1);
+
+        assertTrue(backend.isSupported(ColorEffect.TINT));
+        assertTrue(backend.isSupported(ColorEffect.ALPHA));
+
+        backend.setSupported(ColorEffect.TINT, false);
+        commands.add(1, 0, 0, 1, 1).tint(0xFF00FF00).alpha(0.5F);
+        backend.present(commands);
+
+        assertFalse(backend.isSupported(ColorEffect.TINT));
+        assertTrue(backend.isSupported(ColorEffect.ALPHA));
+        assertEquals(0xFF00FF00, backend.getLastFrame().get(0).getTint());
+        assertEquals(0.5F, backend.getLastFrame().get(0).getAlpha());
+        backend.setSupported(ColorEffect.TINT, true);
+        assertTrue(backend.isSupported(ColorEffect.TINT));
+        assertThrows(IllegalArgumentException.class, () -> backend.setSupported(null, false));
     }
 }

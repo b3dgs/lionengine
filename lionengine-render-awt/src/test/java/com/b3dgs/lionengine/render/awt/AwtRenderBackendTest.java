@@ -27,6 +27,7 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
 import com.b3dgs.lionengine.render.OutputFilter;
 import com.b3dgs.lionengine.render.TextureStore;
@@ -134,7 +135,7 @@ final class AwtRenderBackendTest
         assertThrows(IllegalArgumentException.class, () -> new AwtRenderBackend(platform));
         assertTrue(backend.isSupported(OutputFilter.NONE));
         assertFalse(backend.isSupported(OutputFilter.BILINEAR));
-        assertThrows(IllegalArgumentException.class, () -> backend.isSupported(null));
+        assertThrows(IllegalArgumentException.class, () -> backend.isSupported((OutputFilter) null));
         assertThrows(IllegalArgumentException.class, () -> backend.present(null));
         assertEquals(WIDTH, backend.getLogicalFrame().getWidth());
         assertEquals(HEIGHT, backend.getLogicalFrame().getHeight());
@@ -287,6 +288,62 @@ final class AwtRenderBackendTest
         assertNear(0xFF808080, 2, 0);
         assertNear(0xFF400000, 3, 0);
         assertEquals(0xFF0000FF, pixel(4, 0));
+    }
+
+    /**
+     * Parity of the two paths of a color transform (ADR-0056): an entry tinted and faded per frame draws, over black,
+     * the same pixels within one unit as the same texture baked on the CPU with the formula of {@code graphics}
+     * ({@code c × t / 255} on each channel, the opacity multiplied by the alpha, rounded half up) and drawn without
+     * tint.
+     */
+    @Test
+    void testColorParity()
+    {
+        final int[] colors =
+        {
+            0xFFC08040, 0xFF20E0A0, 0x80FFFFFF, 0xC0102030
+        };
+        final int tint = 0xC0FF8040;
+        final float alpha = 0.75F;
+        for (int i = 0; i < colors.length; i++)
+        {
+            commands.add(textures.create(1, 1, fill(1, 1, colors[i])), 0, 0, 1, 1)
+                    .position(i, 0.0F)
+                    .tint(tint)
+                    .alpha(alpha);
+            commands.add(textures.create(1, 1, fill(1, 1, baked(colors[i], tint, alpha))), 0, 0, 1, 1)
+                    .position(i, 1.0F);
+        }
+
+        backend.present(commands);
+
+        assertTrue(backend.isSupported(ColorEffect.TINT));
+        assertTrue(backend.isSupported(ColorEffect.ALPHA));
+        assertThrows(IllegalArgumentException.class, () -> backend.isSupported((ColorEffect) null));
+        for (int i = 0; i < colors.length; i++)
+        {
+            assertNear(pixel(i, 1), i, 0);
+        }
+    }
+
+    /**
+     * Bakes a tint and an alpha into a pixel, with the CPU formula of {@code graphics} (ADR-0056).
+     *
+     * @param argb The pixel.
+     * @param tint The tint.
+     * @param alpha The alpha.
+     * @return The baked pixel.
+     */
+    private static int baked(int argb, int tint, float alpha)
+    {
+        int result = 0;
+        for (int shift = 0; shift < 24; shift += 8)
+        {
+            final int value = (int) (((argb >>> shift) & 0xFF) * ((tint >>> shift) & 0xFF) / 255.0 + 0.5);
+            result |= value << shift;
+        }
+        final int opacity = (int) ((argb >>> 24) * ((tint >>> 24) / 255.0) * alpha + 0.5);
+        return result | opacity << 24;
     }
 
     /**

@@ -30,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
 import com.b3dgs.lionengine.resources.FakeResourceProvider;
 import com.b3dgs.lionengine.resources.ResourceException;
@@ -40,8 +41,9 @@ import com.b3dgs.lionengine.testsupport.RecordingBackend;
 import com.sun.management.ThreadMXBean;
 
 /**
- * Test {@link Sprite}: loading, frames, transform and pivot, command emission, layers, released sources and the
- * absence of allocation (REQ-SPRITE-001, REQ-SPRITE-003, REQ-SPRITE-006, REQ-SPRITE-007, REQ-SPRITE-010).
+ * Test {@link Sprite}: loading, frames, transform and pivot, tint and alpha, command emission with and without the
+ * color capability, sheet variants, layers, released sources and the absence of allocation (REQ-SPRITE-001,
+ * REQ-SPRITE-003, REQ-SPRITE-004, REQ-SPRITE-006, REQ-SPRITE-007, REQ-SPRITE-010).
  */
 final class SpriteTest
 {
@@ -402,6 +404,101 @@ final class SpriteTest
     }
 
     /**
+     * The tint and the alpha are written into every command, no tint and full opacity by default; an alpha outside
+     * {@code [0, 1]} is refused (ADR-0056).
+     */
+    @Test
+    void testColor()
+    {
+        final Sprite sprite = new Sprite(cache.load(SIGN));
+        assertEquals(CommandBuffer.NO_TINT, sprite.getTint());
+        assertEquals(1.0, sprite.getAlpha());
+        sprite.render(commands);
+
+        sprite.setTint(0x80FF0000);
+        sprite.setAlpha(0.25);
+        sprite.render(commands);
+        final List<RecordedCommand> frame = present();
+
+        assertEquals(CommandBuffer.NO_TINT, frame.get(0).getTint());
+        assertEquals(1.0F, frame.get(0).getAlpha());
+        assertEquals(0x80FF0000, frame.get(1).getTint());
+        assertEquals(0.25F, frame.get(1).getAlpha());
+        assertEquals(0x80FF0000, sprite.getTint());
+        assertEquals(0.25, sprite.getAlpha());
+        assertThrows(IllegalArgumentException.class, () -> sprite.setAlpha(-0.1));
+        assertThrows(IllegalArgumentException.class, () -> sprite.setAlpha(1.1));
+        assertThrows(IllegalArgumentException.class, () -> sprite.setAlpha(Double.NaN));
+        assertEquals(0.25, sprite.getAlpha());
+    }
+
+    /**
+     * On a backend applying tint and alpha per frame, the per-frame part of a transform goes into the commands and
+     * only its static part is baked; on a backend applying neither, everything is baked and the commands carry no
+     * color (ADR-0056, contract of the sprite render with and without the capability).
+     */
+    @Test
+    void testCapability()
+    {
+        final Image sign = cache.load(SIGN);
+        final ColorTransform hit = ColorTransform.NONE.withMask(0xFFFFFF, 1.0).withTint(0xFFFF0000).withAlpha(0.5);
+        final RecordingBackend plain = new RecordingBackend();
+        plain.setSupported(ColorEffect.TINT, false);
+        plain.setSupported(ColorEffect.ALPHA, false);
+
+        final Image perFrame = cache.bake(sign, hit.getBakedPart(backend));
+        final Image cpu = cache.bake(sign, hit.getBakedPart(plain));
+        final Sprite fast = new Sprite(perFrame);
+        final Sprite slow = new Sprite(cpu);
+        fast.setTint(hit.getFramePart(backend).getTint());
+        fast.setAlpha(hit.getFramePart(backend).getAlpha());
+        slow.setTint(hit.getFramePart(plain).getTint());
+        slow.setAlpha(hit.getFramePart(plain).getAlpha());
+        fast.render(commands);
+        slow.render(commands);
+        final List<RecordedCommand> frame = present();
+
+        assertEquals(0xFFFF0000, frame.get(0).getTint());
+        assertEquals(0.5F, frame.get(0).getAlpha());
+        assertEquals(0x00FFFFFF, perFrame.getPixel(0, 0));
+        assertEquals(CommandBuffer.NO_TINT, frame.get(1).getTint());
+        assertEquals(1.0F, frame.get(1).getAlpha());
+        assertEquals(0x00FF0000, cpu.getPixel(0, 0));
+        assertEquals(3, cache.size());
+    }
+
+    /**
+     * The frames of a sheet can be drawn from a variant of its image, such as a baked hit flash: same cells and pivot,
+     * the texture of the variant; an image of another size or a released image is refused.
+     */
+    @Test
+    void testSheetVariant()
+    {
+        final SheetGroup group = new SheetGroup(cache);
+        final SpriteSheet sheet = group.add(HERO_SHEET, HERO, new SheetGrid(16, 16), 4.0, 12.0);
+        final Image flash = cache.bake(sheet.getImage(), ColorTransform.NONE.withMask(0xFFFFFF, 1.0));
+        final Image sign = cache.load(SIGN);
+        final Sprite sprite = new Sprite(sheet, flash);
+        sprite.setFrame(5);
+
+        sprite.render(commands);
+        final RecordedCommand command = present().get(0);
+
+        assertEquals(flash.getTexture(), command.getTexture());
+        assertEquals(16, command.getSourceX());
+        assertEquals(16, command.getSourceY());
+        assertEquals(4.0F, command.getPivotX());
+        assertEquals(8, sprite.getFrameCount());
+        assertThrows(IllegalArgumentException.class, () -> new Sprite(sheet, sign));
+        assertThrows(IllegalArgumentException.class, () -> new Sprite(sheet, null));
+        assertThrows(IllegalArgumentException.class, () -> new Sprite(null, flash));
+        flash.release();
+        assertThrows(IllegalStateException.class, () -> new Sprite(sheet, flash));
+        assertThrows(IllegalStateException.class, () -> sprite.render(commands));
+        group.release();
+    }
+
+    /**
      * A released image cannot make a sprite; a sprite whose image is released, alone or with its sheet group, adds
      * nothing and throws.
      */
@@ -517,6 +614,8 @@ final class SpriteTest
                 sprite.setRotation(frame);
                 sprite.setPivot(i, 0.0);
                 sprite.setLayer(i % 3);
+                sprite.setTint(frame | 0xFF000000);
+                sprite.setAlpha((i & 1) * 0.5);
                 sprite.render(commands);
             }
             for (int rank = 0; rank < commands.size(); rank++)

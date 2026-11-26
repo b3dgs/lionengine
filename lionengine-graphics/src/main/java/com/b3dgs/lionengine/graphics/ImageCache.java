@@ -33,11 +33,13 @@ import com.b3dgs.lionengine.resources.Resources;
 
 /**
  * Cache of decoded images, owned by the game and shared by its scenes (ADR-0005, ADR-0007, ADR-0018, ADR-0019,
- * ADR-0026, ADR-0047, ADR-0055, REQ-SPRITE-002, REQ-RES-004, REQ-RES-005, REQ-RT-003, REQ-RT-005, REQ-SPR-001).
+ * ADR-0026, ADR-0047, ADR-0055, ADR-0056, REQ-SPRITE-002, REQ-SPRITE-004, REQ-RES-004, REQ-RES-005, REQ-RT-003,
+ * REQ-RT-005, REQ-SPR-001).
  *
  * <p>
  * An image is cached under its resource key and a discriminator: {@link #DECODED} for the image decoded from the
- * resource, any other string for an image derived from it, such as a modified copy or, later, a color variant.
+ * resource, any other string for an image derived from it, such as a modified copy or a color variant baked with
+ * {@link #bake(Image, ColorTransform)}.
  * {@link #load(ResourceKey)} decodes the image at its first acquisition, through {@link Resources} and the decoder
  * registered for the extension of the key, then shares it: every acquisition returns a new {@link Image} handle on the
  * same immutable pixels and texture. Each handle is released by the code that acquired it; an image leaves the cache,
@@ -113,6 +115,12 @@ public final class ImageCache
     private static final String SEPARATOR = " / ";
     /** Separator of a key and a detail in messages. */
     private static final String COLON = ": ";
+    /** Separator of the discriminator of a source and the transform of its baked variant. */
+    private static final String BAKED = "+";
+    /** Error message of an image of another cache. */
+    private static final String ERROR_OTHER_CACHE = "Image of another cache: ";
+    /** Error message of a released image. */
+    private static final String ERROR_RELEASED = "Image released: ";
     /** Error message of a limit that is not positive. */
     private static final String ERROR_MAX_BYTES = "Limit not positive: ";
     /** Error message of an exceeded limit: key. */
@@ -364,6 +372,63 @@ public final class ImageCache
     }
 
     /**
+     * Bakes a color transform into a variant of an image, on the CPU, and caches it (ADR-0026, ADR-0056,
+     * REQ-SPRITE-004).
+     *
+     * <p>
+     * The variant is an image derived from the key of the source, cached under the discriminator of the source
+     * followed by {@code +} and the canonical text of the transform ({@link ColorTransform#toString()}), for example
+     * {@code +mask(#FFFFFF,1.0)}: every code baking the same transform of the same image shares one variant, decoded
+     * images and derived images alike, and releases its own handle. The variant is computed once from the pixels of
+     * the source, with {@link ColorTransform#apply(int)}, and gets its own texture; the source never changes, and a
+     * development reload of the source leaves the variant unchanged. An identity transform gives a new handle on the
+     * source image itself. To bake only what a backend cannot apply per frame, give
+     * {@link ColorTransform#getBakedPart(com.b3dgs.lionengine.render.ColorCapability)}.
+     * </p>
+     *
+     * @param source The image to transform, from this cache (never {@code null}).
+     * @param transform The color transform (never {@code null}).
+     * @return A new handle on the variant, to release once it is no longer needed.
+     * @throws IllegalArgumentException If an argument is {@code null}, or the image belongs to another cache.
+     * @throws IllegalStateException If the image is released, if the variant would exceed the limit of the cache, or
+     *             if called on another thread than the owner of the cache.
+     */
+    public Image bake(Image source, ColorTransform transform)
+    {
+        thread.check();
+        checkNotNull(source, "Source");
+        checkNotNull(transform, "Transform");
+        if (!source.belongsTo(this))
+        {
+            throw new IllegalArgumentException(ERROR_OTHER_CACHE + source.getKey());
+        }
+        final ResourceKey key = source.getKey();
+        if (source.isReleased())
+        {
+            throw new IllegalStateException(ERROR_RELEASED + key);
+        }
+        final Image variant;
+        if (transform.isIdentity())
+        {
+            variant = acquire(key, source.getDiscriminator());
+        }
+        else
+        {
+            final ImageKey imageKey = new ImageKey(key, source.getDiscriminator() + BAKED + transform);
+            final ImageEntry entry = entries.get(imageKey);
+            if (entry == null)
+            {
+                variant = insertBaked(imageKey, source.copyToBuffer(), transform);
+            }
+            else
+            {
+                variant = entry.acquire();
+            }
+        }
+        return variant;
+    }
+
+    /**
      * Acquires an image already cached, decoded or derived, without reading anything.
      *
      * @param key The resource key (never {@code null}).
@@ -552,6 +617,30 @@ public final class ImageCache
             entries.put(imageKey, entry);
             usedBytes += bytes;
         }
+        return entry.acquire();
+    }
+
+    /**
+     * Caches the variant of pixels baked with a color transform.
+     *
+     * @param imageKey The key and discriminator of the variant.
+     * @param pixels A copy of the pixels of the source, transformed in place and taken over without another copy.
+     * @param transform The color transform.
+     * @return A new handle on the variant.
+     * @throws IllegalStateException If the variant would exceed the limit.
+     */
+    private Image insertBaked(ImageKey imageKey, PixelBuffer pixels, ColorTransform transform)
+    {
+        final long bytes = bytes(pixels.getWidth(), pixels.getHeight());
+        reserve(imageKey.key(), bytes, 0L);
+        final int[] argb = pixels.array();
+        for (int i = 0; i < argb.length; i++)
+        {
+            argb[i] = transform.apply(argb[i]);
+        }
+        final ImageEntry entry = new ImageEntry(this, imageKey, pixels.getWidth(), pixels.getHeight(), argb);
+        entries.put(imageKey, entry);
+        usedBytes += bytes;
         return entry.acquire();
     }
 

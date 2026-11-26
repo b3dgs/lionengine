@@ -70,6 +70,17 @@ final class ImageEntry
     }
 
     /**
+     * Tells whether the entry belongs to a cache.
+     *
+     * @param owner The cache.
+     * @return {@code true} if the entry is held by this cache.
+     */
+    boolean belongsTo(ImageCache owner)
+    {
+        return cache == owner;
+    }
+
+    /**
      * Acquires a new handle on the entry.
      *
      * @return The handle, one more reference.

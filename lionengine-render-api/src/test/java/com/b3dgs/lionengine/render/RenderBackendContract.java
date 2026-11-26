@@ -113,7 +113,23 @@ public abstract class RenderBackendContract
         final RenderBackend backend = createBackend();
 
         assertTrue(backend.isSupported(OutputFilter.NONE));
-        assertThrows(IllegalArgumentException.class, () -> backend.isSupported(null));
+        assertThrows(IllegalArgumentException.class, () -> backend.isSupported((OutputFilter) null));
+    }
+
+    /**
+     * The color capability answers for every effect, the same answer each time; a {@code null} effect is rejected
+     * (ADR-0056).
+     */
+    @Test
+    void testColorEffects()
+    {
+        final RenderBackend backend = createBackend();
+
+        for (final ColorEffect effect : ColorEffect.values())
+        {
+            assertEquals(backend.isSupported(effect), backend.isSupported(effect));
+        }
+        assertThrows(IllegalArgumentException.class, () -> backend.isSupported((ColorEffect) null));
     }
 
     /**

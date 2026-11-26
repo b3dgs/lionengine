@@ -33,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.InboxSpy;
 import com.b3dgs.lionengine.LoopDriver;
 import com.b3dgs.lionengine.ManualLoopDriver;
+import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
 import com.b3dgs.lionengine.render.FrameScaling;
 import com.b3dgs.lionengine.render.OutputFilter;
@@ -479,6 +480,12 @@ public abstract class PlatformContract
         public TextureStore getTextureStore()
         {
             return this;
+        }
+
+        @Override
+        public boolean isSupported(ColorEffect effect)
+        {
+            return true;
         }
 
         @Override
