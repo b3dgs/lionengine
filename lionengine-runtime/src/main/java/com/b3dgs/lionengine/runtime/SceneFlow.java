@@ -39,8 +39,11 @@ import com.b3dgs.lionengine.LoopControl;
  *
  * <p>
  * At the boundary, a {@link TransitionKind#SWITCH} creates a new instance of the target with its factory, then the
- * scene manager leaves every scene of the stack from the top and enters it; an {@link TransitionKind#EXIT} leaves every
- * scene and requests the stop of the loop. The listener is then called, before the first update or render of the
+ * scene manager leaves every scene of the stack from the top and enters it; a {@link TransitionKind#PUSH} creates the
+ * target and enters it above the stack, whose covered scenes stop updating and keep rendering; a
+ * {@link TransitionKind#POP} exits and disposes the top overlay, and the scene below resumes updating (an
+ * {@link IllegalStateException} if there is no overlay); an {@link TransitionKind#EXIT} leaves every scene and requests
+ * the stop of the loop. The listener is then called, before the first update or render of the
  * frame. Every entry creates a new instance; scenes share data only through the context, which the flow never reads.
  * An exception of a factory, a condition or a scene propagates, so the loop fails (ADR-0017).
  * </p>
@@ -56,6 +59,9 @@ import com.b3dgs.lionengine.LoopControl;
  */
 public final class SceneFlow<C> implements UpdateCallback, RenderCallback
 {
+    /** Initial capacity of the id stack. */
+    private static final int INITIAL_DEPTH = 4;
+
     /** The scene factories by id. */
     private final Map<String, SceneFactory<C>> scenes;
     /** The start id. */
@@ -76,8 +82,10 @@ public final class SceneFlow<C> implements UpdateCallback, RenderCallback
     private FlowTransition<C> pending;
     /** The id of the top scene when the pending transition was selected. */
     private String pendingFrom;
-    /** The id of the top scene, {@code null} if none. */
-    private String topId;
+    /** The ids of the scenes of the stack, from the bottom; {@code null} above {@link #idCount}. */
+    private String[] ids = new String[INITIAL_DEPTH];
+    /** The number of scenes in the stack. */
+    private int idCount;
     /** {@code true} between the first call of a frame and its render. */
     private boolean frameStarted;
 
@@ -142,6 +150,7 @@ public final class SceneFlow<C> implements UpdateCallback, RenderCallback
         }
         checkStarted();
         boolean selected = false;
+        final String topId = getTopId();
         if (!startPending && pending == null && topId != null)
         {
             FlowTransition<C> found = find(topId, trigger);
@@ -176,16 +185,12 @@ public final class SceneFlow<C> implements UpdateCallback, RenderCallback
      */
     public List<String> getSceneIds()
     {
-        final List<String> ids;
-        if (topId == null)
+        final List<String> list = new ArrayList<>(idCount);
+        for (int i = idCount - 1; i >= 0; i--)
         {
-            ids = Collections.emptyList();
+            list.add(ids[i]);
         }
-        else
-        {
-            ids = Collections.singletonList(topId);
-        }
-        return ids;
+        return Collections.unmodifiableList(list);
     }
 
     /**
@@ -204,7 +209,7 @@ public final class SceneFlow<C> implements UpdateCallback, RenderCallback
         {
             startPending = false;
             pending = null;
-            topId = null;
+            syncIds();
         }
     }
 
@@ -247,6 +252,55 @@ public final class SceneFlow<C> implements UpdateCallback, RenderCallback
         if (loop == null)
         {
             throw new IllegalStateException("Scene flow not started");
+        }
+    }
+
+    /**
+     * Returns the id of the top scene.
+     *
+     * @return The id, {@code null} if the stack is empty.
+     */
+    private String getTopId()
+    {
+        final String top;
+        if (idCount > 0)
+        {
+            top = ids[idCount - 1];
+        }
+        else
+        {
+            top = null;
+        }
+        return top;
+    }
+
+    /**
+     * Puts an id on top of the id stack.
+     *
+     * @param id The id.
+     */
+    private void pushId(String id)
+    {
+        if (idCount == ids.length)
+        {
+            final String[] grown = new String[idCount * 2];
+            System.arraycopy(ids, 0, grown, 0, idCount);
+            ids = grown;
+        }
+        ids[idCount] = id;
+        idCount++;
+    }
+
+    /**
+     * Removes the ids of the scenes the scene manager no longer holds, after a change or a failure.
+     */
+    private void syncIds()
+    {
+        final int count = manager.getSceneCount();
+        while (idCount > count)
+        {
+            idCount--;
+            ids[idCount] = null;
         }
     }
 
@@ -308,21 +362,50 @@ public final class SceneFlow<C> implements UpdateCallback, RenderCallback
         final String from = pendingFrom;
         pending = null;
         pendingFrom = null;
-        if (transition.kind() == TransitionKind.EXIT)
+        try
         {
-            topId = null;
-            manager.clear();
-            loop.stop();
-            manager.beginFrame();
+            switch (transition.kind())
+            {
+                case SWITCH -> enter(transition.to());
+                case PUSH -> push(transition.to());
+                case POP ->
+                {
+                    manager.pop();
+                    manager.beginFrame();
+                }
+                default ->
+                {
+                    manager.clear();
+                    loop.stop();
+                    manager.beginFrame();
+                }
+            }
         }
-        else
+        finally
         {
-            enter(transition.to());
+            syncIds();
         }
         if (listener != null)
         {
             listener.onTransition(from, transition.trigger(), transition.to());
         }
+    }
+
+    /**
+     * Creates a new scene of an id with its factory.
+     *
+     * @param id The id of the scene.
+     * @return The scene.
+     * @throws IllegalStateException If the factory returns {@code null}.
+     */
+    private Scene create(String id)
+    {
+        final Scene scene = scenes.get(id).create(context);
+        if (scene == null)
+        {
+            throw new IllegalStateException("Scene factory returned null: " + id);
+        }
+        return scene;
     }
 
     /**
@@ -333,14 +416,28 @@ public final class SceneFlow<C> implements UpdateCallback, RenderCallback
      */
     private void enter(String id)
     {
-        final Scene scene = scenes.get(id).create(context);
-        if (scene == null)
-        {
-            throw new IllegalStateException("Scene factory returned null: " + id);
-        }
-        topId = null;
+        final Scene scene = create(id);
         manager.switchTo(scene);
         manager.beginFrame();
-        topId = id;
+        while (idCount > 0)
+        {
+            idCount--;
+            ids[idCount] = null;
+        }
+        pushId(id);
+    }
+
+    /**
+     * Creates a scene of an id and makes the scene manager enter it above the stack, at once.
+     *
+     * @param id The id of the scene.
+     * @throws IllegalStateException If the factory returns {@code null}.
+     */
+    private void push(String id)
+    {
+        final Scene scene = create(id);
+        manager.push(scene);
+        manager.beginFrame();
+        pushId(id);
     }
 }

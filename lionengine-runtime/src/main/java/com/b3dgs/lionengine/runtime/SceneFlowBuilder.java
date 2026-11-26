@@ -28,9 +28,11 @@ import java.util.Map;
  * <p>
  * Scene ids have the registry form {@code namespace:name}, trigger names the form {@code [a-z][a-z0-9_-]*}
  * (ADR-0032). A transition goes from a scene id, or from {@link #ANY_SCENE}, on a trigger, under an optional
- * condition; its kind says what it does: {@link TransitionKind#SWITCH} to a target id, or {@link TransitionKind#EXIT}
- * without target. Transitions are tried in the order they are declared. A {@code null} argument is refused at once;
- * every other mistake is reported by {@link #build()}, naming the first problem found.
+ * condition; its kind says what it does: {@link TransitionKind#SWITCH} or {@link TransitionKind#PUSH} to a target id,
+ * {@link TransitionKind#POP} or {@link TransitionKind#EXIT} without target. A {@link TransitionKind#POP} from a scene
+ * that no {@link TransitionKind#PUSH} opens can never close an overlay, and is refused; a pop from
+ * {@link #ANY_SCENE} is checked when it applies. Transitions are tried in the order they are declared. A {@code null}
+ * argument is refused at once; every other mistake is reported by {@link #build()}, naming the first problem found.
  * </p>
  *
  * <p>
@@ -140,8 +142,8 @@ public final class SceneFlowBuilder<C>
      * @param from The id of the source scene, or {@link #ANY_SCENE}.
      * @param trigger The trigger name, {@code [a-z][a-z0-9_-]*}.
      * @param kind The kind (never {@code null}).
-     * @param to The id of the target scene for {@link TransitionKind#SWITCH}, {@code null} for
-     *            {@link TransitionKind#EXIT}.
+     * @param to The id of the target scene for {@link TransitionKind#SWITCH} and {@link TransitionKind#PUSH},
+     *            {@code null} for {@link TransitionKind#POP} and {@link TransitionKind#EXIT}.
      * @return This builder.
      * @throws IllegalArgumentException If {@code from}, {@code trigger} or {@code kind} is {@code null}.
      */
@@ -157,8 +159,8 @@ public final class SceneFlowBuilder<C>
      * @param trigger The trigger name, {@code [a-z][a-z0-9_-]*}.
      * @param condition The condition on the game context, without side effect (never {@code null}).
      * @param kind The kind (never {@code null}).
-     * @param to The id of the target scene for {@link TransitionKind#SWITCH}, {@code null} for
-     *            {@link TransitionKind#EXIT}.
+     * @param to The id of the target scene for {@link TransitionKind#SWITCH} and {@link TransitionKind#PUSH},
+     *            {@code null} for {@link TransitionKind#POP} and {@link TransitionKind#EXIT}.
      * @return This builder.
      * @throws IllegalArgumentException If an argument but {@code to} is {@code null}.
      */
@@ -193,9 +195,10 @@ public final class SceneFlowBuilder<C>
      *
      * @return The flow, immutable but for its run state.
      * @throws IllegalStateException Naming the first problem: an invalid or duplicated scene id, a start scene missing,
-     *             given twice or not declared, a source or target id not declared, an invalid trigger name, or a
-     *             transition of the wrong shape for its kind (a target on {@link TransitionKind#EXIT}, none on
-     *             {@link TransitionKind#SWITCH}).
+     *             given twice or not declared, a source or target id not declared, an invalid trigger name, a
+     *             transition of the wrong shape for its kind (a target on {@link TransitionKind#POP} or
+     *             {@link TransitionKind#EXIT}, none on {@link TransitionKind#SWITCH} or {@link TransitionKind#PUSH}),
+     *             or a {@link TransitionKind#POP} from a scene that no {@link TransitionKind#PUSH} opens.
      */
     public SceneFlow<C> build()
     {
@@ -250,21 +253,54 @@ public final class SceneFlowBuilder<C>
         {
             throw new IllegalStateException("Invalid trigger name, expected [a-z][a-z0-9_-]*" + where);
         }
+        checkShape(transition, where);
+        if (transition.kind() == TransitionKind.POP && !ANY_SCENE.equals(from) && !isPushed(from))
+        {
+            throw new IllegalStateException("POP from a scene that no PUSH opens" + where);
+        }
+    }
+
+    /**
+     * Checks the target of a transition against its kind.
+     *
+     * @param transition The transition.
+     * @param where The transition, for the messages.
+     * @throws IllegalStateException If the target does not suit the kind, or is not declared.
+     */
+    private void checkShape(FlowTransition<C> transition, String where)
+    {
         final String to = transition.to();
-        if (transition.kind() == TransitionKind.EXIT)
+        final TransitionKind kind = transition.kind();
+        final boolean targeted = kind == TransitionKind.SWITCH || kind == TransitionKind.PUSH;
+        if (!targeted && to != null)
         {
-            if (to != null)
-            {
-                throw new IllegalStateException("Target given to an EXIT" + where + ' ' + to);
-            }
+            throw new IllegalStateException("Target given to " + kind + where + ' ' + to);
         }
-        else if (to == null)
+        if (targeted && to == null)
         {
-            throw new IllegalStateException("No target for a " + transition.kind() + where);
+            throw new IllegalStateException("No target for " + kind + where);
         }
-        else if (!scenes.containsKey(to))
+        if (targeted && !scenes.containsKey(to))
         {
             throw new IllegalStateException("Target scene not declared" + where + ' ' + to);
         }
+    }
+
+    /**
+     * Tells whether a scene is the target of a push.
+     *
+     * @param id The scene id.
+     * @return {@code true} if a {@link TransitionKind#PUSH} opens it.
+     */
+    private boolean isPushed(String id)
+    {
+        boolean pushed = false;
+        final int count = transitions.size();
+        for (int i = 0; !pushed && i < count; i++)
+        {
+            final FlowTransition<C> transition = transitions.get(i);
+            pushed = transition.kind() == TransitionKind.PUSH && id.equals(transition.to());
+        }
+        return pushed;
     }
 }

@@ -69,10 +69,11 @@ final class FlowStory
      * Fires a trigger of the flow.
      *
      * @param trigger The trigger name.
+     * @return {@code true} if a transition is selected.
      */
-    void trigger(String trigger)
+    boolean trigger(String trigger)
     {
-        flow.trigger(trigger);
+        return flow.trigger(trigger);
     }
 
     /**

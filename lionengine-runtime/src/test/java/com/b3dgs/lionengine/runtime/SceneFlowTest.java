@@ -446,7 +446,7 @@ final class SceneFlowTest
                                                                                        FINISHED,
                                                                                        TransitionKind.SWITCH,
                                                                                        null),
-                               "No target for a SWITCH"));
+                               "No target for SWITCH"));
         cases.add(Arguments.of((Consumer<SceneFlowBuilder<Object>>) b -> b.transition(INTRO,
                                                                                        FINISHED,
                                                                                        TransitionKind.SWITCH,
@@ -456,7 +456,7 @@ final class SceneFlowTest
                                                                                        QUIT,
                                                                                        TransitionKind.EXIT,
                                                                                        MENU),
-                               "Target given to an EXIT"));
+                               "Target given to EXIT"));
         return cases.stream();
     }
 
