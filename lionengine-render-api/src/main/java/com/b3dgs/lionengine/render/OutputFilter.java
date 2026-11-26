@@ -24,7 +24,8 @@ package com.b3dgs.lionengine.render;
  * The standard filters are {@link #NONE}, {@link #BILINEAR}, {@link #HQ2X} and {@link #CRT}. A custom filter uses its
  * own id in the {@code namespace:name} form (each part starts with a lower-case letter, followed by lower-case
  * letters, digits, {@code _} or {@code -}) and is registered on the render backend through a {@link CustomFilter}.
- * Fallbacks: CRT is skipped; {@code HQ2X} falls back to bilinear, bilinear to {@code NONE}; each is reported.
+ * Fallbacks, given by {@link #fallback()} (ADR-0006, ADR-0062): CRT and every post filter are skipped; {@code HQ2X}
+ * falls back to bilinear, bilinear and every custom scaling filter to {@code NONE}; each is reported.
  * </p>
  *
  * <p>
@@ -134,5 +135,30 @@ public record OutputFilter(String id, FilterKind kind)
         {
             throw new IllegalArgumentException(ERROR_ID + id);
         }
+    }
+
+    /**
+     * Returns the filter used in place of this one when a render backend does not implement it (ADR-0006, ADR-0062).
+     *
+     * @return {@link #BILINEAR} for {@link #HQ2X}; {@link #NONE} for {@link #BILINEAR} and every other scaling filter,
+     *         custom ones included; {@code null} for {@link #NONE}, which every backend implements, and for every post
+     *         filter, which is skipped.
+     */
+    public OutputFilter fallback()
+    {
+        final OutputFilter fallback;
+        if (kind == FilterKind.POST || NONE.equals(this))
+        {
+            fallback = null;
+        }
+        else if (HQ2X.equals(this))
+        {
+            fallback = BILINEAR;
+        }
+        else
+        {
+            fallback = NONE;
+        }
+        return fallback;
     }
 }

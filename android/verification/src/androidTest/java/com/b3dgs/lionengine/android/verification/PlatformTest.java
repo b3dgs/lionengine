@@ -152,12 +152,13 @@ public final class PlatformTest
         state.resolve(new DisplayRequest(ScreenMode.FULL_SCREEN,
                                          null,
                                          ScalingPolicy.FIT,
-                                         Arrays.asList(OutputFilter.NONE, OutputFilter.CRT, OutputFilter.BILINEAR)),
+                                         Arrays.asList(OutputFilter.HQ2X, OutputFilter.CRT)),
                       mode,
                       "");
 
         assertEquals(Collections.singletonList(OutputFilter.BILINEAR), state.getResult().effective().filters());
         assertEquals("FULL_SCREEN not supported, FULL_WINDOW used; "
+                     + "Output filter lionengine:hq2x not implemented by the render backend, lionengine:bilinear used; "
                      + "Output filter not implemented by the render backend, skipped: lionengine:crt",
                      state.getResult().reason());
         assertEquals(ScreenMode.FULL_WINDOW, state.getResult().effective().screenMode());

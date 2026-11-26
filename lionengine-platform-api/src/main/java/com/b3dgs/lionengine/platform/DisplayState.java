@@ -90,6 +90,10 @@ public final class DisplayState
     };
     /** Reason of a filter the backend does not implement, followed by its identifier. */
     private static final String REASON_SKIPPED = "Output filter not implemented by the render backend, skipped: ";
+    /** Start of the reason of a replaced filter, followed by its identifier. */
+    private static final String REASON_FILTER = "Output filter ";
+    /** Middle of the reason of a replaced filter, followed by the identifier of the filter used. */
+    private static final String REASON_REPLACED = " not implemented by the render backend, ";
 
     /** Logical frame width in pixels. */
     private final int logicalWidth;
@@ -483,10 +487,56 @@ public final class DisplayState
     }
 
     /**
-     * Keeps the filters the backend implements.
+     * Adds the effective filter of a requested one to the chain, and its reason when it differs.
+     *
+     * @param selected The effective chain, completed.
+     * @param filter The requested filter.
+     * @param effective The effective filter, {@code null} if skipped.
+     * @param reason The reasons, completed.
+     */
+    private void addFilter(List<OutputFilter> selected,
+                           OutputFilter filter,
+                           OutputFilter effective,
+                           StringBuilder reason)
+    {
+        if (effective == null)
+        {
+            addReason(reason, REASON_SKIPPED + filter.id());
+        }
+        else
+        {
+            if (!effective.equals(filter))
+            {
+                addReason(reason, REASON_FILTER + filter.id() + REASON_REPLACED + effective.id() + REASON_USED);
+            }
+            if (!OutputFilter.NONE.equals(effective))
+            {
+                selected.add(effective);
+            }
+        }
+    }
+
+    /**
+     * Follows the fallbacks of a filter to the first one the attached backend implements.
+     *
+     * @param filter The requested filter, not {@code NONE}.
+     * @return The effective filter, {@code NONE} at worst for a scaling filter, {@code null} for a skipped post filter.
+     */
+    private OutputFilter selectFilter(OutputFilter filter)
+    {
+        OutputFilter effective = filter;
+        while (effective != null && !OutputFilter.NONE.equals(effective) && !backend.isSupported(effective))
+        {
+            effective = effective.fallback();
+        }
+        return effective;
+    }
+
+    /**
+     * Keeps, for each requested filter, the first one of its fallbacks the backend implements (ADR-0006, ADR-0062).
      *
      * @param requested The requested filters.
-     * @param reason The reasons, completed with each skipped filter.
+     * @param reason The reasons, completed with each replaced or skipped filter.
      * @return The effective filters, without {@code NONE}.
      */
     private List<OutputFilter> selectFilters(List<OutputFilter> requested, StringBuilder reason)
@@ -495,20 +545,14 @@ public final class DisplayState
         boolean missing = false;
         for (final OutputFilter filter : requested)
         {
-            if (!OutputFilter.NONE.equals(filter))
+            final boolean listed = !OutputFilter.NONE.equals(filter);
+            if (listed && backend == null)
             {
-                if (backend == null)
-                {
-                    missing = true;
-                }
-                else if (backend.isSupported(filter))
-                {
-                    selected.add(filter);
-                }
-                else
-                {
-                    addReason(reason, REASON_SKIPPED + filter.id());
-                }
+                missing = true;
+            }
+            else if (listed)
+            {
+                addFilter(selected, filter, selectFilter(filter), reason);
             }
         }
         if (missing)

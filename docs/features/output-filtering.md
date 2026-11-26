@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 2, after screen and display modes
 - Affected modules: `render-api`, `render-awt`, `render-opengl`, `resources`, `test-support`, `examples`
 - Requirements: `REQ-FILTER-001` to `REQ-FILTER-004`, `REQ-DISPLAY-004`, `REQ-DISPLAY-005`, `REQ-DISPLAY-008`
-- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md), [`ADR-0006`](../decisions/0006-display-scaling-effective-result-and-fallback-orders.md), [`ADR-0025`](../decisions/0025-filter-implementation-shaders-and-display-settings.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0046`](../decisions/0046-display-state-owned-by-the-platform-and-presentation-geometry.md), [`ADR-0047`](../decisions/0047-render-api-texture-pixel-data-and-shader-resource-keys.md), [`ADR-0049`](../decisions/0049-interface-catalog-and-contract-skeleton.md)
+- Applicable ADRs: [`ADR-0002`](../decisions/0002-display-modes-resolution-and-output-filtering.md), [`ADR-0006`](../decisions/0006-display-scaling-effective-result-and-fallback-orders.md), [`ADR-0025`](../decisions/0025-filter-implementation-shaders-and-display-settings.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0046`](../decisions/0046-display-state-owned-by-the-platform-and-presentation-geometry.md), [`ADR-0047`](../decisions/0047-render-api-texture-pixel-data-and-shader-resource-keys.md), [`ADR-0049`](../decisions/0049-interface-catalog-and-contract-skeleton.md), [`ADR-0062`](../decisions/0062-filter-chain-shape-and-per-filter-fallback.md)
 - Open questions involved: none
 
 ## Objective
@@ -37,6 +37,14 @@ Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.m
 2. CPU filters in `render-awt`: `NONE`, bilinear, `Scale2x` (`REQ-FILTER-004`).
 3. Custom filter extension point (`REQ-FILTER-003`).
 4. `HQ2X` after its license record; GPU filters and CRT with `render-opengl` (Phase 4).
+
+## State (2026-11-26)
+
+Batch 1 (2026-11-26), identifiers, chain, capability query and fallback, with the example `OutputFilterExample` and its API-index row. The identifiers (`OutputFilter`, `FilterKind`), the capability query (`RenderBackend.isSupported(OutputFilter)`, `NONE` always implemented) and the resolution against the attached backend in the shared `DisplayState` came with the contract skeleton and platform and rendering batch 1. This batch adds what the page leaves open, decided by ADR-0062 (owner delegation) within ADR-0006 and ADR-0033:
+- Chain shape: at most one scaling filter, before every post filter, no filter twice. `DisplayRequest` refuses another shape with an `IllegalArgumentException`, a programming error and not a missing capability. Without a scaling filter, the frame is scaled with `NONE`.
+- Fallback order on the identifier: `OutputFilter.fallback()` gives bilinear for `HQ2X`, `NONE` for bilinear and every other scaling filter (custom ones included), and `null` for `NONE` and every post filter.
+- Resolution: `DisplayState` walks each requested filter along its fallbacks to the first one the backend implements. A replaced scaling filter is reported as `"Output filter lionengine:hq2x not implemented by the render backend, lionengine:bilinear used"`, and a missing post filter is skipped as before (`"Output filter not implemented by the render backend, skipped: lionengine:crt"`). The reasons follow the chain order, and `NONE` stays out of the effective chain. A missing capability never throws.
+- Tests: `OutputFilterTest.testFallback`; `DisplayRequestTest.testChainShape`; `DisplayStateTest` (`testFilterWithBackend`, `testFilterFallback`: `HQ2X` to bilinear, to `NONE`, a custom scaling filter to `NONE`); `PlatformContract` (`testFiltersOfBackend`, `testFilterFallback`: applied at the frame boundary and announced to the display listeners) on the headless platform and, under a display, on `AwtPlatform`; `AwtDisplayTest.testFilters`; `OutputFilterExampleTest` with the fake `RecordingBackend`; device tests `RenderTest.testFilterFallback` and `PlatformTest` on API 21.
 
 ## Lifecycle and concurrency
 

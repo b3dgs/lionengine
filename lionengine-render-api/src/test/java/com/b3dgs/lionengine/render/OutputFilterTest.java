@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.render;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,21 @@ final class OutputFilterTest
         assertEquals(FilterKind.SCALING, OutputFilter.BILINEAR.kind());
         assertEquals(FilterKind.SCALING, OutputFilter.HQ2X.kind());
         assertEquals(FilterKind.POST, OutputFilter.CRT.kind());
+    }
+
+    /**
+     * The fallback order of ADR-0006 and ADR-0062: {@code HQ2X} to bilinear, bilinear and custom scaling filters to
+     * {@code NONE}; none after {@code NONE} or a post filter.
+     */
+    @Test
+    void testFallback()
+    {
+        assertEquals(OutputFilter.BILINEAR, OutputFilter.HQ2X.fallback());
+        assertEquals(OutputFilter.NONE, OutputFilter.BILINEAR.fallback());
+        assertEquals(OutputFilter.NONE, new OutputFilter("game:sharp", FilterKind.SCALING).fallback());
+        assertNull(OutputFilter.NONE.fallback());
+        assertNull(OutputFilter.CRT.fallback());
+        assertNull(new OutputFilter("game:glow", FilterKind.POST).fallback());
     }
 
     /**

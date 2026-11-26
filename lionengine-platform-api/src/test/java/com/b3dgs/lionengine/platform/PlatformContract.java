@@ -565,9 +565,7 @@ public abstract class PlatformContract
         final DisplayRequest request = new DisplayRequest(ScreenMode.WINDOWED,
                                                           null,
                                                           ScalingPolicy.FIT,
-                                                          List.of(OutputFilter.NONE,
-                                                                  OutputFilter.BILINEAR,
-                                                                  OutputFilter.CRT));
+                                                          List.of(OutputFilter.BILINEAR, OutputFilter.CRT));
         final Platform platform = createPlatform(WIDTH, HEIGHT, request);
         final EffectiveResult without = platform.getEffectiveResult();
         assertTrue(without.effective().filters().isEmpty());
@@ -580,6 +578,33 @@ public abstract class PlatformContract
         assertEquals(List.of(OutputFilter.BILINEAR), with.effective().filters());
         assertTrue(with.degraded());
         assertTrue(with.reason().contains(OutputFilter.CRT.id()));
+    }
+
+    /**
+     * A requested filter the backend lacks falls back along its order, at the frame boundary, without exception:
+     * {@code HQ2X} to bilinear, reported to the display listeners (REQ-FILTER-002, ADR-0006, ADR-0062).
+     */
+    @Test
+    void testFilterFallback()
+    {
+        final DeliveringDriver driver = new DeliveringDriver();
+        final Platform platform = createPlatform(WIDTH, HEIGHT, FIT);
+        platform.attach(new FilterBackend());
+        final List<EffectiveResult> results = new ArrayList<>();
+        platform.addDisplayListener(results::add);
+        platform.start(driver, driver.inbox);
+
+        platform.apply(new DisplayRequest(ScreenMode.WINDOWED, null, ScalingPolicy.FIT, List.of(OutputFilter.HQ2X)));
+        frame(platform);
+
+        final EffectiveResult result = platform.getEffectiveResult();
+        assertEquals(List.of(OutputFilter.BILINEAR), result.effective().filters());
+        assertTrue(result.degraded());
+        assertEquals("Output filter lionengine:hq2x not implemented by the render backend, lionengine:bilinear used",
+                     result.reason());
+        assertEquals(List.of(result), results);
+        platform.apply(FIT);
+        frame(platform);
     }
 
     /**

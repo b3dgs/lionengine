@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.render.FilterKind;
 import com.b3dgs.lionengine.render.OutputFilter;
 import com.b3dgs.lionengine.render.ScalingPolicy;
 
@@ -80,6 +81,34 @@ final class DisplayRequestTest
                      () -> new DisplayRequest(ScreenMode.WINDOWED, null, ScalingPolicy.FIT, null));
         assertThrows(IllegalArgumentException.class,
                      () -> new DisplayRequest(ScreenMode.WINDOWED, null, ScalingPolicy.FIT, withNull));
+    }
+
+    /**
+     * A chain holds at most one scaling filter, before the post filters, and no filter twice (ADR-0062); a chain of
+     * post filters alone is valid.
+     */
+    @Test
+    void testChainShape()
+    {
+        final OutputFilter glow = new OutputFilter("game:glow", FilterKind.POST);
+        final List<OutputFilter> twoScaling = List.of(OutputFilter.HQ2X, OutputFilter.BILINEAR);
+        final List<OutputFilter> postFirst = List.of(OutputFilter.CRT, OutputFilter.BILINEAR);
+        final List<OutputFilter> twice = List.of(OutputFilter.CRT, OutputFilter.CRT);
+        final List<OutputFilter> noneTwice = List.of(OutputFilter.NONE, OutputFilter.NONE);
+
+        final List<OutputFilter> posts = List.of(OutputFilter.CRT, glow);
+        final List<OutputFilter> scaled = List.of(OutputFilter.NONE, OutputFilter.CRT);
+
+        assertEquals(posts, new DisplayRequest(ScreenMode.WINDOWED, null, ScalingPolicy.FIT, posts).filters());
+        assertEquals(scaled, new DisplayRequest(ScreenMode.WINDOWED, null, ScalingPolicy.FIT, scaled).filters());
+        assertThrows(IllegalArgumentException.class,
+                     () -> new DisplayRequest(ScreenMode.WINDOWED, null, ScalingPolicy.FIT, twoScaling));
+        assertThrows(IllegalArgumentException.class,
+                     () -> new DisplayRequest(ScreenMode.WINDOWED, null, ScalingPolicy.FIT, postFirst));
+        assertThrows(IllegalArgumentException.class,
+                     () -> new DisplayRequest(ScreenMode.WINDOWED, null, ScalingPolicy.FIT, twice));
+        assertThrows(IllegalArgumentException.class,
+                     () -> new DisplayRequest(ScreenMode.WINDOWED, null, ScalingPolicy.FIT, noneTwice));
     }
 
     /**
