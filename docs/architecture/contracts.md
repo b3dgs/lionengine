@@ -75,7 +75,7 @@ A time value is never expressed sometimes in milliseconds and sometimes in secon
 ## Scenes (ADR-0021, ADR-0031, ADR-0036)
 
 - A scene is a lifecycle contract in `runtime`: `enter`, `update`, `render`, `exit`, `dispose`. It knows nothing of world, camera, graphics or audio; the game (or the optional `composition` module) composes its content.
-- The scene manager receives scene instances, keeps one active scene and switches at a frame boundary: the previous scene is exited and disposed before the next is entered. A second batch adds an overlay stack: only the top scene updates, every stacked scene renders bottom to top.
+- The scene manager receives scene instances, keeps one active scene and switches at a frame boundary: the previous scene is exited and disposed before the next is entered. A second batch adds an overlay stack: only the top scene updates, every stacked scene renders bottom to top (ADR-0059): push and pop at a frame boundary, one change per frame of any kind, a switch replaces the whole stack, a pop keeps a base scene.
 - A loading screen is an ordinary scene driving asynchronous handles. Visual transitions are drawn by the game.
 - **Scene flow:** a code-built, validated, immutable state machine over scene ids (`namespace:name`, each with a factory creating a new instance per entry) and a game context object. Transitions `(from id or any scene, trigger, condition, kind, target)` with kinds `SWITCH`, `PUSH`, `POP`, `EXIT`; `trigger(name)` resolves at once against the top scene (its transitions, then any-scene ones, in declaration order), returns whether one was selected, and the selected one applies at the next frame boundary; one pending transition at a time. Details: [`features/scenes.md`](../features/scenes.md).
 

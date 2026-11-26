@@ -6,7 +6,7 @@
 - Roadmap phase: Phase 1 (scene contract and manager), Phase 2 (overlay stack and scene flow), see `roadmap.md`
 - Affected modules: `runtime`, `examples` (`runtime` tests use the controllable clock of its own test JAR, ADR-0045)
 - Requirements: `REQ-SCENE-001` to `REQ-SCENE-008`
-- Applicable ADRs: [`ADR-0017`](../decisions/0017-fixed-step-game-loop.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0021`](../decisions/0021-scene-world-viewport-and-object-model.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0036`](../decisions/0036-scene-flow-ids-triggers-conditions-transitions.md)
+- Applicable ADRs: [`ADR-0017`](../decisions/0017-fixed-step-game-loop.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0021`](../decisions/0021-scene-world-viewport-and-object-model.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0032`](../decisions/0032-definition-files-registry-ids-resource-providers-dependency-policy.md), [`ADR-0036`](../decisions/0036-scene-flow-ids-triggers-conditions-transitions.md), [`ADR-0059`](../decisions/0059-overlay-stack-one-change-per-frame-switch-replaces-stack.md)
 - Open questions involved: none
 
 ## Objective
@@ -88,14 +88,22 @@ Seconds; ids and trigger names are strings. Pure Java; callbacks are the role-na
 - Unit tests: lifecycle order, switch at a frame boundary, overlay update and render calls, transition resolution order, conditions, any-scene fallback, single pending transition, each validation error, listener calls, new instance per entry.
 - Integration tests: a headless flow Intro → Menu → Level → Pause → Level → Credits → exit driven by a manually driven loop and a controllable clock.
 
-## State (2026-11-24)
+## State (2026-11-26)
 
-Batch 1 is implemented in `runtime`, with the example `SceneExample` and its API-index row; batches 2 to 4 (overlay stack and scene flow, Phase 2) are not. Names and details chosen by the batch, within this page, ADR-0021 and ADR-0031:
+Batches 1 and 2 are implemented in `runtime`, with the examples `SceneExample` and `PauseOverlayExample` and their API-index rows; batches 3 and 4 (scene flow, Phase 2) are not. Batch 1 (2026-11-24): Names and details chosen by the batch, within this page, ADR-0021 and ADR-0031:
 - `SceneManager` implements `UpdateCallback` and `RenderCallback`, so a simple game gives it to `GameLoop` as both callbacks; a game with input calls its `update` and `render` from its own callbacks. The frame ends with `render`, which must therefore be called once per frame, even when nothing is drawn.
 - `switchTo(scene)` returns whether the request is accepted: the first request of a frame wins and later ones return `false` (their scenes receive no call), as ADR-0036 decides for triggers, so a request repeated at every step, or in every step of a catch-up frame, gives the same result. The switch applies at the first `update` or `render` call of the next frame: exit and dispose the current scene, enter the next, which is then updated and rendered in that frame. The active scene itself and `null` are rejected (`IllegalArgumentException`).
 - `isSwitchPending()`, `hasActive()` and `getActive()` (`null` when none) observe the manager. `clear()` exits and disposes the active scene and cancels a pending switch at once: the game calls it once the loop has stopped or failed. A scene calling `clear()`, `update` or `render` of the manager from a method the manager called gets an `IllegalStateException`.
 - Exceptions of scenes propagate unchanged, so the loop fails (ADR-0017). A scene whose `exit` threw is still disposed, and one whose `enter` threw is disposed but not exited (ADR-0052); a failing disposal is added to the first exception as a suppressed one, and when the exit of the current scene throws, the next scene is not entered; a scene whose `update` or `render` threw stays active, so `clear()` still exits and disposes it.
 - The manager allocates nothing in steady state, switches included (allocation test). Test fixture (ADR-0045): `RecordingScene` in the `runtime` test JAR, which records the lifecycle calls of several scenes in one list.
+
+Batch 2 (2026-11-26), the overlay stack. The details this page and ADR-0031 leave open follow ADR-0059 (owner delegation):
+- `push(scene)` enters a scene on top of the stack at the next frame boundary; only the top scene is updated, every scene is rendered from the bottom; the covered scenes receive no other call and keep their state. On an empty stack, a push enters the scene alone. `pop()` exits and disposes the top scene at the boundary; the scene below is the top again without any call. A pop needs at least two scenes in the stack (`IllegalStateException` otherwise), so an overlay never leaves the game without a scene.
+- `switchTo(scene)` now replaces the whole stack: every scene is left from the top to the bottom, then the new one is entered alone. A scene in the stack cannot be switched to or pushed again (`IllegalArgumentException`).
+- One change per frame, whatever its kind: the first switch, push or pop of a frame wins, the others return `false` and their scenes receive no call (the rule of batch 1 and of ADR-0036). `isChangePending()` tells whether any change waits, `isSwitchPending()` whether a switch does; `getActive()` is the top scene, `getSceneCount()` and `getScene(index)` (from the bottom) give the stack.
+- Failures (ADR-0052 extended): when several scenes leave together (a switch, `clear()`), every one is left, each failed exit still disposed; the first exception propagates once all are left, the later ones suppressed; a failed switch enters no scene and leaves the stack empty. A pushed scene whose enter throws is disposed and not added; a popped scene whose exit throws is still disposed and removed.
+- No allocation in steady state: the stack (an array of initial capacity 4) grows only when it gets deeper than ever before.
+- Tests: `SceneOverlayTest` (push and pop requested during an update and applied at the next boundary, update and render calls per scene, a stack of seven scenes, one change per frame, switch over overlays, push on an empty stack, invalid requests, clear, each failure, no allocation in 1,000 push and pop cycles); the tests of batch 1 unchanged; `PauseOverlayExampleTest` (a level paused for 0.25 second by a menu: the level's play time counts only its own steps, and it is rendered under the menu); device test `RuntimeTest.testOverlayStack` on API 21.
 
 ## Acceptance criteria
 
