@@ -39,6 +39,8 @@ import org.junit.runner.RunWith;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.b3dgs.lionengine.DefinitionException;
+import com.b3dgs.lionengine.graphics.Animation;
+import com.b3dgs.lionengine.graphics.AnimationLoop;
 import com.b3dgs.lionengine.graphics.ColorMapping;
 import com.b3dgs.lionengine.graphics.ColorMatrix;
 import com.b3dgs.lionengine.graphics.ColorTransform;
@@ -62,11 +64,12 @@ import com.b3dgs.lionengine.resources.memory.MemoryProvider;
 /**
  * Runs {@code graphics} on Android API 21 (ADR-0044): the pixel buffer, the PNG decoder with its size limits
  * (ADR-0054), whose {@code java.util.zip.Inflater} and {@code CRC32} are verified by the probes, the image cache over
- * the memory provider, the sheets, the sprites, the color transforms and the template color variants. The images are
+ * the memory provider, the sheets, the animations, the sprites, the color transforms and the template color variants.
+ * The images are
  * written here with the API 21 methods only, as the JVM fixture {@code PngWriter} writes them; expected values are the
  * ones of the JVM tests
  * (PixelBufferTest, PngDecoderTest, PngDecoderContractTest, ImageCacheTest, SpriteTest, ColorTransformTest,
- * ColorMappingTest, TemplateVariantTest).
+ * ColorMappingTest, TemplateVariantTest, AnimationTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class GraphicsTest
@@ -721,6 +724,54 @@ public final class GraphicsTest
         variant.release();
         hero.release();
         assertEquals(0, cache.size());
+    }
+
+    /**
+     * The animations of a sheet definition become animation values, frame durations overriding the frame duration;
+     * an animation built in code checks its values (REQ-ANIM-001).
+     *
+     * @throws IOException If a resource cannot be written.
+     */
+    @Test
+    public void testAnimation() throws IOException
+    {
+        final ResourceKey image = new ResourceKey("sprites/hero.png");
+        final ResourceKey key = new ResourceKey("sheets/hero.json");
+        final MemoryProvider memory = new MemoryProvider();
+        try (OutputStream output = memory.openWrite(image))
+        {
+            output.write(png(4, 2, 8, GRAY, 0, null, null, 0, 0, 0, 0, 0, 0, 0, 0));
+        }
+        final String definition = "{\"format\": \"lionengine.sheet\", \"version\": 1, "
+                                  + "\"image\": \"sprites/hero.png\", \"cellWidth\": 2, \"cellHeight\": 2, "
+                                  + "\"animations\": {\"walk\": {\"frames\": [0, 1], \"frameDuration\": 0.1, "
+                                  + "\"loop\": \"loop\"}, \"hit\": {\"frames\": [1, 0], \"frameDuration\": 0.1, "
+                                  + "\"frameDurations\": [0.05, 0.3], \"loop\": \"once\"}}}";
+        try (OutputStream output = memory.openWrite(key))
+        {
+            output.write(definition.getBytes(StandardCharsets.UTF_8));
+        }
+        final Resources resources = new Resources(memory);
+        final SheetGroup group = new SheetGroup(new ImageCache(resources, new Textures()));
+        final SpriteSheet sheet = new SheetLoader(resources).load(group, key);
+
+        assertEquals(Arrays.asList("walk", "hit"), sheet.getAnimationNames());
+        assertEquals(new Animation(new int[]
+        {
+            0, 1
+        }, 0.1, AnimationLoop.LOOP), sheet.getAnimation("walk"));
+        final Animation hit = sheet.getAnimation("hit");
+        assertEquals(1, hit.getFrame(0));
+        assertEquals(0.05, hit.getFrameDuration(0), 0.0);
+        assertEquals(0.3, hit.getFrameDuration(1), 0.0);
+        assertEquals(AnimationLoop.ONCE, hit.getLoop());
+        assertEquals("Animation[frames=[1, 0], durations=[0.05, 0.3], loop=once]", hit.toString());
+        assertThrows(IllegalArgumentException.class, () -> new Animation(new int[0], 0.1, AnimationLoop.LOOP));
+        assertThrows(IllegalArgumentException.class, () -> new Animation(new int[]
+        {
+            0
+        }, Double.NaN, AnimationLoop.LOOP));
+        group.release();
     }
 
     /**

@@ -7,7 +7,7 @@
 | Action | A game-level input (for example "jump") bound to one or more physical inputs; game logic reads actions, not devices (ADR-0035). |
 | ADR | Architecture Decision Record: a documented architecture decision. |
 | Alpha (presentation factor) | `accumulator / step`, in `[0, 1)`: how far the presentation is between the last two simulation steps (ADR-0017). |
-| Animation | Ordered frames with durations in seconds and a loop mode (`once`, `loop`, `ping-pong`); advanced from the simulation update step only (ADR-0003, ADR-0026). |
+| Animation | Ordered frames with durations in seconds and a loop mode (`once`, `loop`, `ping-pong`; `Animation` and `AnimationLoop`), built in code or read from a sheet definition; advanced from the simulation update step only (ADR-0003, ADR-0026). |
 | Authority (network) | The server's exclusive right to create and remove replicated objects and decide outcomes; clients send only intentions (ADR-0038). |
 | Auto-tiling | Rule-based update of a cell's tile from its neighborhood, applied to neighbors when a tile is destroyed; rules are ordered 8-neighbor bitmasks with a care mask (ADR-0028). |
 | Backend | Concrete implementation of an abstract service (rendering, audio, resource...). |

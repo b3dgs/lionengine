@@ -35,6 +35,15 @@ Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.m
 2. Animator state machine and loop modes (`REQ-ANIM-002`).
 3. Animated sprite driven by the update step (`REQ-ANIM-003`).
 
+## State (2026-11-26)
+
+Batch 1 (2026-11-26), the animation value and its loader, with the example `AnimationDefinitionExample` and its API-index row. Names and details chosen by the batch, within this page, ADR-0026 and ADR-0033:
+- `Animation` (`graphics`, canonical name of ADR-0037): an immutable value of frames (cell indices, at least one, each zero or positive, a cell may repeat), a duration per frame in seconds (positive and finite) and a loop mode. `new Animation(frames, frameDuration, loop)` gives every frame the same duration, `new Animation(frames, frameDurations, loop)` one per frame; the arrays are copied. Invalid values are an `IllegalArgumentException`. `getFrameCount()`, `getFrame(index)`, `getFrameDuration(index)` (`IndexOutOfBoundsException` outside the frames), `getLoop()`. Equality is by frames, resolved durations and loop mode, so one duration for every frame equals the same duration given per frame.
+- `AnimationLoop` (`graphics`): `ONCE`, `LOOP`, `PING_PONG`, with `getName()` giving the word of the definition (`once`, `loop`, `ping-pong`).
+- Loading: the sheet loader keeps the `animations` of a definition as `Animation` values, `frameDurations` overriding `frameDuration`, frames checked against the cells of the sheet; `SpriteSheet.getAnimation(name)` (`IllegalStateException` for a name the sheet does not have), `hasAnimation(name)` and `getAnimationNames()` (order of the file). A sheet added in code has none. The errors of the file stay those of [`sprite-sheet.md`](sprite-sheet.md) batch 4 (`DefinitionException` with file, line, column and path); a duration that is not finite is refused too.
+- An animation built in code is not bound to a sheet: batch 3 checks its frames against the cells of the sheet of the sprite that plays it. An animation only describes; time advances in the animator of batch 2.
+- Tests: `AnimationTest` (both constructors, copies, equality, text, loop names, invalid values, indexes outside); `SheetLoaderTest.testFullDefinition` and `testDefaults` (animations kept, durations resolved); `SpriteSheetTest` (`testNoAnimation`, `testAnimations`); `AnimationDefinitionExampleTest`; device test `GraphicsTest.testAnimation` on API 21.
+
 ## Lifecycle and concurrency
 
 An animated sprite holds playback state only; images stay owned by the `graphics` cache. Runtime thread only.

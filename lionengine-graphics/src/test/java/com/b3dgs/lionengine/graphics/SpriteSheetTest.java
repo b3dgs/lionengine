@@ -83,6 +83,52 @@ final class SpriteSheetTest
     }
 
     /**
+     * A sheet added in code has no animation; an unknown or {@code null} animation name is refused.
+     */
+    @Test
+    void testNoAnimation()
+    {
+        final SpriteSheet sheet = new SpriteSheet(ID, image(16, 16), new SheetGrid(16, 16), 0.0, 0.0);
+
+        assertTrue(sheet.getAnimationNames().isEmpty());
+        assertFalse(sheet.hasAnimation("walk"));
+        final IllegalStateException error = assertThrows(IllegalStateException.class, () -> sheet.getAnimation("walk"));
+        assertEquals("Animation not in the sheet sheets/tiles.json: walk", error.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> sheet.getAnimation(null));
+        assertThrows(IllegalArgumentException.class, () -> sheet.hasAnimation(null));
+    }
+
+    /**
+     * The animations of a definition are kept in the order of the file and cannot be changed.
+     */
+    @Test
+    void testAnimations()
+    {
+        final Map<String, Animation> animations = new LinkedHashMap<>();
+        animations.put("walk", new Animation(new int[]
+        {
+            0, 1
+        }, 0.1, AnimationLoop.LOOP));
+        animations.put("die", new Animation(new int[]
+        {
+            2, 3
+        }, 0.2, AnimationLoop.ONCE));
+        final SpriteSheet sheet = new SpriteSheet(ID,
+                                                  image(64, 16),
+                                                  new SheetGrid(16, 16),
+                                                  0.0,
+                                                  0.0,
+                                                  Collections.unmodifiableMap(animations),
+                                                  Collections.emptyMap());
+
+        assertEquals(List.of("walk", "die"), sheet.getAnimationNames());
+        assertTrue(sheet.hasAnimation("die"));
+        assertEquals(AnimationLoop.ONCE, sheet.getAnimation("die").getLoop());
+        final List<String> names = sheet.getAnimationNames();
+        assertThrows(UnsupportedOperationException.class, names::clear);
+    }
+
+    /**
      * A sheet added in code has no template; an unknown or {@code null} template name is refused.
      */
     @Test
@@ -112,6 +158,7 @@ final class SpriteSheetTest
                                                   new SheetGrid(16, 16),
                                                   0.0,
                                                   0.0,
+                                                  Collections.emptyMap(),
                                                   Collections.unmodifiableMap(templates));
 
         assertEquals(List.of("red", "blue"), sheet.getTemplateNames());

@@ -287,6 +287,21 @@ final class SheetLoaderTest
         assertEquals(13.5, sheet.getPivotY());
         assertEquals(37, sheet.getCellX(5));
         assertEquals(17, sheet.getCellY(5));
+        assertEquals(List.of("idle", "jump", "swing"), sheet.getAnimationNames());
+        assertEquals(new Animation(new int[]
+        {
+            0, 1
+        }, 0.1, AnimationLoop.LOOP), sheet.getAnimation("idle"));
+        assertEquals(new Animation(new int[]
+        {
+            3, 4, 5, 4
+        }, new double[]
+        {
+            0.1, 0.2, 0.3, 0.2
+        }, AnimationLoop.ONCE), sheet.getAnimation("jump"));
+        assertEquals(AnimationLoop.PING_PONG, sheet.getAnimation("swing").getLoop());
+        assertEquals(1.0, sheet.getAnimation("swing").getFrameDuration(0));
+        assertFalse(sheet.hasAnimation("comment"));
         assertEquals(List.of("red", "blue"), sheet.getTemplateNames());
         assertEquals(ColorMapping.NONE.with(0xFFFF00FF, 0xFFFF0000).with(0x80FFFFFF, 0x80FF0000),
                      sheet.getTemplate("red"));
@@ -313,6 +328,7 @@ final class SheetLoaderTest
         assertEquals(8.0, sheet.getPivotX());
         assertEquals(7.5, sheet.getPivotY());
         assertTrue(sheet.getTemplateNames().isEmpty());
+        assertTrue(sheet.getAnimationNames().isEmpty());
     }
 
     /**

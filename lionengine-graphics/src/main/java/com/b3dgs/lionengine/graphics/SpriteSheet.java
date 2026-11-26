@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.resources.ResourceKey;
 
 /**
  * Image cut into a grid of cells, the frames of sprites and the tiles of a tileset (ADR-0003, ADR-0026, ADR-0033,
- * ADR-0057, REQ-SHEET-001, REQ-SHEET-002, REQ-SPRITE-005).
+ * ADR-0057, REQ-SHEET-001, REQ-SHEET-002, REQ-SPRITE-005, REQ-ANIM-001).
  *
  * <p>
  * A sheet is created by a {@link SheetGroup}, which holds it under its id and holds its image: every cell is a region
@@ -39,8 +39,14 @@ import com.b3dgs.lionengine.resources.ResourceKey;
  * </p>
  *
  * <p>
- * A sheet read from a definition file keeps the {@code templates} of the file: named {@link ColorMapping} values, such
- * as team colors, to bake into variants of the image with {@link ImageCache#bake(Image, ColorTransform)} and
+ * A sheet read from a definition file keeps the {@code animations} of the file: named {@link Animation} values whose
+ * frames are cells of the sheet ({@link #getAnimation(String)}). A sheet added in code has no animation: its
+ * animations are built in code.
+ * </p>
+ *
+ * <p>
+ * A sheet read from a definition file also keeps the {@code templates} of the file: named {@link ColorMapping} values,
+ * such as team colors, to bake into variants of the image with {@link ImageCache#bake(Image, ColorTransform)} and
  * {@link ColorTransform#withMapping(ColorMapping)}, then draw with {@link Sprite#Sprite(SpriteSheet, Image)}. A sheet
  * added in code has no template: its colors are mapped in code the same way.
  * </p>
@@ -56,6 +62,10 @@ public final class SpriteSheet
 {
     /** Error message of a cell outside the sheet. */
     private static final String ERROR_CELL = "Cell outside the sheet ";
+    /** Error message of an animation not in the sheet. */
+    private static final String ERROR_ANIMATION = "Animation not in the sheet ";
+    /** Name of the animation argument, for the messages. */
+    private static final String NAME_ANIMATION = "Animation name";
     /** Error message of a template not in the sheet. */
     private static final String ERROR_TEMPLATE = "Template not in the sheet ";
     /** Separator of the messages. */
@@ -147,6 +157,10 @@ public final class SpriteSheet
     private final double pivotX;
     /** Vertical pivot in pixels from the top edge of a cell. */
     private final double pivotY;
+    /** The animations by name, in the order of the definition, unmodifiable. */
+    private final Map<String, Animation> animations;
+    /** The names of the animations, in the order of the definition, unmodifiable. */
+    private final List<String> animationNames;
     /** The templates by name, in the order of the definition, unmodifiable. */
     private final Map<String, ColorMapping> templates;
     /** The names of the templates, in the order of the definition, unmodifiable. */
@@ -164,17 +178,20 @@ public final class SpriteSheet
      */
     SpriteSheet(ResourceKey id, Image image, SheetGrid grid, double pivotX, double pivotY)
     {
-        this(id, image, grid, pivotX, pivotY, Collections.emptyMap());
+        this(id, image, grid, pivotX, pivotY, Collections.emptyMap(), Collections.emptyMap());
     }
 
     /**
-     * Creates a sheet over an image with templates, for {@link SheetGroup} only.
+     * Creates a sheet over an image with the animations and templates of its definition, for {@link SheetGroup}
+     * only.
      *
      * @param id The id of the sheet.
      * @param image The image, held by the group.
      * @param grid The grid; derived numbers of columns and rows are computed from the size of the image.
      * @param pivotX The horizontal pivot in pixels from the left edge of a cell.
      * @param pivotY The vertical pivot in pixels from the top edge of a cell.
+     * @param animations The animations by name, in the order of the definition, unmodifiable, their frames inside the
+     *            sheet.
      * @param templates The templates by name, in the order of the definition, unmodifiable.
      * @throws IllegalArgumentException If no cell fits, or the requested cells do not fit in the image.
      */
@@ -183,6 +200,7 @@ public final class SpriteSheet
                 SheetGrid grid,
                 double pivotX,
                 double pivotY,
+                Map<String, Animation> animations,
                 Map<String, ColorMapping> templates)
     {
         super();
@@ -198,6 +216,8 @@ public final class SpriteSheet
         cellCount = columns * rows;
         this.pivotX = pivotX;
         this.pivotY = pivotY;
+        this.animations = animations;
+        animationNames = List.copyOf(animations.keySet());
         this.templates = templates;
         templateNames = List.copyOf(templates.keySet());
     }
@@ -310,6 +330,49 @@ public final class SpriteSheet
     public double getPivotY()
     {
         return pivotY;
+    }
+
+    /**
+     * Returns the names of the animations.
+     *
+     * @return The names of the animations of the definition, in the order of the file, unmodifiable; empty for a sheet
+     *         added in code or a definition without animation.
+     */
+    public List<String> getAnimationNames()
+    {
+        return animationNames;
+    }
+
+    /**
+     * Tells whether the sheet has an animation.
+     *
+     * @param name The name of the animation (never {@code null}).
+     * @return {@code true} if its definition has an animation of this name.
+     * @throws IllegalArgumentException If the name is {@code null}.
+     */
+    public boolean hasAnimation(String name)
+    {
+        ImageCache.checkNotNull(name, NAME_ANIMATION);
+        return animations.containsKey(name);
+    }
+
+    /**
+     * Returns an animation of the definition, whose frames are cells of this sheet.
+     *
+     * @param name The name of the animation (never {@code null}).
+     * @return The animation.
+     * @throws IllegalArgumentException If the name is {@code null}.
+     * @throws IllegalStateException If the sheet has no animation of this name (see {@link #hasAnimation(String)}).
+     */
+    public Animation getAnimation(String name)
+    {
+        ImageCache.checkNotNull(name, NAME_ANIMATION);
+        final Animation animation = animations.get(name);
+        if (animation == null)
+        {
+            throw new IllegalStateException(ERROR_ANIMATION + id + COLON + name);
+        }
+        return animation;
     }
 
     /**

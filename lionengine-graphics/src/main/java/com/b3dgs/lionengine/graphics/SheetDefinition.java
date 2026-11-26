@@ -80,6 +80,8 @@ final class SheetDefinition
     private final double pivotY;
     /** The frames of every animation, checked against the cells of the sheet. */
     private final List<JsonArray> frames = new ArrayList<>();
+    /** The animations by name, in the order of the file. */
+    private final Map<String, Animation> animations;
     /** The templates by name, in the order of the file. */
     private final Map<String, ColorMapping> templates;
 
@@ -108,7 +110,7 @@ final class SheetDefinition
                              readNotNegative(configuration, SPACING));
         pivotX = configuration.getDouble(PIVOT_X, cellWidth / HALF);
         pivotY = configuration.getDouble(PIVOT_Y, cellHeight / HALF);
-        SheetAnimations.read(configuration, root, frames);
+        animations = SheetAnimations.read(configuration, root, frames);
         templates = SheetTemplates.read(configuration, root);
         configuration.checkAllRead();
     }
@@ -228,6 +230,16 @@ final class SheetDefinition
     double getPivotY()
     {
         return pivotY;
+    }
+
+    /**
+     * Returns the animations.
+     *
+     * @return The animations by name, in the order of the file, unmodifiable; empty if none.
+     */
+    Map<String, Animation> getAnimations()
+    {
+        return animations;
     }
 
     /**
