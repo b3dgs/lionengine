@@ -31,8 +31,8 @@ import java.util.Arrays;
  * {@code (0, 0)}, scale {@code 1}, rotation {@code 0}, pivot {@code (0, 0)}, no tint ({@link #NO_TINT}), alpha
  * {@code 1}, layer {@code 0}. Positions are logical-frame pixels relative to the viewport, and give where the pivot is
  * drawn; the pivot is in pixels from the top-left of the source rectangle; rotations are degrees, counter-clockwise on
- * screen. The render backend then presents the entries by ascending layer, then submission order, without modifying
- * the buffer.
+ * screen. An entry is scaled, then rotated, then translated to its position, all about its pivot (ADR-0026). The
+ * render backend then presents the entries by ascending layer, then submission order, without modifying the buffer.
  * </p>
  *
  * <p>
