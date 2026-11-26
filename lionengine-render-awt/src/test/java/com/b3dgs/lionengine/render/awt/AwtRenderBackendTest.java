@@ -244,6 +244,30 @@ final class AwtRenderBackendTest
     }
 
     /**
+     * An entry is scaled, then rotated, then translated, about its pivot: a 4 by 2 entry stretched to 8 by 2 then
+     * turned by 90 degrees stands 2 pixels wide and 8 pixels high above its pivot; scaled after the rotation, it would
+     * be 4 pixels wide and 4 pixels high.
+     */
+    @Test
+    void testCompositionOrder()
+    {
+        commands.add(textures.create(4, 2, halves(4, 2)), 0, 0, 4, 2)
+                .position(20.0F, 20.0F)
+                .scale(2.0F, 1.0F)
+                .rotation(90.0F);
+
+        backend.present(commands);
+
+        assertEquals(RED, pixel(20, 19));
+        assertEquals(RED, pixel(21, 16));
+        assertEquals(GREEN, pixel(21, 15));
+        assertEquals(GREEN, pixel(20, 12));
+        assertEquals(BLACK, pixel(20, 11));
+        assertEquals(BLACK, pixel(22, 18));
+        assertEquals(BLACK, pixel(23, 17));
+    }
+
+    /**
      * The tint multiplies the colors and the opacity; the alpha multiplies the opacity.
      */
     @Test

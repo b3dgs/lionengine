@@ -47,7 +47,9 @@ import com.b3dgs.lionengine.graphics.PngDecoder;
 import com.b3dgs.lionengine.graphics.SheetGrid;
 import com.b3dgs.lionengine.graphics.SheetGroup;
 import com.b3dgs.lionengine.graphics.SheetLoader;
+import com.b3dgs.lionengine.graphics.Sprite;
 import com.b3dgs.lionengine.graphics.SpriteSheet;
+import com.b3dgs.lionengine.render.CommandBuffer;
 import com.b3dgs.lionengine.render.TextureStore;
 import com.b3dgs.lionengine.resources.ResourceKey;
 import com.b3dgs.lionengine.resources.Resources;
@@ -55,10 +57,10 @@ import com.b3dgs.lionengine.resources.memory.MemoryProvider;
 
 /**
  * Runs {@code graphics} on Android API 21 (ADR-0044): the pixel buffer, the PNG decoder with its size limits
- * (ADR-0054), whose {@code java.util.zip.Inflater} and {@code CRC32} are verified by the probes, and the image cache
- * over the memory provider. The images are written here with the API 21 methods only, as the JVM fixture
- * {@code PngWriter} writes them; expected values are the ones of the JVM tests (PixelBufferTest, PngDecoderTest,
- * PngDecoderContractTest, ImageCacheTest).
+ * (ADR-0054), whose {@code java.util.zip.Inflater} and {@code CRC32} are verified by the probes, the image cache over
+ * the memory provider, the sheets and the sprites. The images are written here with the API 21 methods only, as the
+ * JVM fixture {@code PngWriter} writes them; expected values are the ones of the JVM tests (PixelBufferTest,
+ * PngDecoderTest, PngDecoderContractTest, ImageCacheTest, SpriteTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class GraphicsTest
@@ -595,6 +597,47 @@ public final class GraphicsTest
         map.release();
         assertEquals(0, cache.size());
         assertTrue(textures.alive.isEmpty());
+    }
+
+    /**
+     * A sprite over a sheet cell emits one command with its frame, transform, pivot and layer, and cannot be drawn
+     * once its group is released (REQ-SPRITE-003, REQ-SPRITE-006, REQ-SPRITE-007).
+     *
+     * @throws IOException If a resource cannot be written.
+     */
+    @Test
+    public void testSprite() throws IOException
+    {
+        final ResourceKey key = new ResourceKey("tiles/forest.png");
+        final MemoryProvider memory = new MemoryProvider();
+        try (OutputStream output = memory.openWrite(key))
+        {
+            output.write(png(5, 2, 8, GRAY, 0, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+        }
+        final ImageCache cache = new ImageCache(new Resources(memory), new Textures());
+        final SheetGroup group = new SheetGroup(cache);
+        final SheetGrid grid = new SheetGrid(2, 2, SheetGrid.DERIVED, SheetGrid.DERIVED, 0, 1);
+        final Sprite sprite = new Sprite(group.add(new ResourceKey("tiles/forest.tsj"), key, grid));
+        final CommandBuffer commands = new CommandBuffer(16, 16, 1);
+
+        sprite.setFrame(1);
+        sprite.setScale(-2.0, 1.0);
+        sprite.setRotation(-450.0);
+        sprite.setLayer(2);
+        sprite.render(commands, 4.5, 6.0);
+
+        assertEquals(1, commands.size());
+        assertEquals(3, commands.getSourceX(0));
+        assertEquals(2, commands.getSourceWidth(0));
+        assertEquals(4.5F, commands.getX(0), 0.0F);
+        assertEquals(-2.0F, commands.getScaleX(0), 0.0F);
+        assertEquals(-450.0F, commands.getRotation(0), 0.0F);
+        assertEquals(1.0F, commands.getPivotX(0), 0.0F);
+        assertEquals(2, commands.getLayer(0));
+        assertThrows(IndexOutOfBoundsException.class, () -> sprite.setFrame(2));
+        group.release();
+        assertThrows(IllegalStateException.class, () -> sprite.render(commands));
+        assertEquals(1, commands.size());
     }
 
     /**
