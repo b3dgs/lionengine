@@ -82,7 +82,8 @@ final class SheetGroupEntry
      * @param pivotX The horizontal pivot in pixels, finite.
      * @param pivotY The vertical pivot in pixels, finite.
      * @param definition The definition of the sheet, which checks the image size before the sheet is created and gives
-     *            its templates; {@code null} for a sheet added in code, without check or template.
+     *            its animations and templates; {@code null} for a sheet added in code, without check, animation or
+     *            template.
      * @return The sheet.
      * @throws IllegalArgumentException If an argument is {@code null}, a pivot is not finite, or the grid does not fit
      *             in the image.
@@ -117,7 +118,13 @@ final class SheetGroupEntry
             else
             {
                 definition.check(handle.getWidth(), handle.getHeight());
-                sheet = new SpriteSheet(id, handle, grid, pivotX, pivotY, definition.getTemplates());
+                sheet = new SpriteSheet(id,
+                                        handle,
+                                        grid,
+                                        pivotX,
+                                        pivotY,
+                                        definition.getAnimations(),
+                                        definition.getTemplates());
             }
         }
         catch (final IllegalArgumentException | DefinitionException exception)

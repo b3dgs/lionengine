@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.resources.Resources;
 
 /**
  * Loads sprite sheets from their definition files into a {@link SheetGroup} (ADR-0028, ADR-0032, ADR-0033,
- * ADR-0057, REQ-SHEET-003, REQ-DEF-001, REQ-DEF-002, REQ-SPRITE-005).
+ * ADR-0057, REQ-SHEET-003, REQ-DEF-001, REQ-DEF-002, REQ-SPRITE-005, REQ-ANIM-001).
  *
  * <p>
  * A definition is a strict JSON file of format {@value #FORMAT}, version {@value #VERSION}:
@@ -45,7 +45,8 @@ import com.b3dgs.lionengine.resources.Resources;
  * the cell center by default);</li>
  * <li>{@code animations}: an object of named animations, each with {@code frames} (cell indices, at least one, inside
  * the sheet), {@code frameDuration} (seconds, positive), optional {@code frameDurations} (seconds, positive, one per
- * frame) and {@code loop} ({@code once}, {@code loop} or {@code ping-pong}) (optional);</li>
+ * frame, overriding {@code frameDuration}) and {@code loop} ({@code once}, {@code loop} or {@code ping-pong})
+ * (optional); kept by the sheet as {@link Animation} values ({@link SpriteSheet#getAnimation(String)});</li>
  * <li>{@code templates}: an object of named color mappings, each mapping key colors to target colors, written
  * {@code #RRGGBB} (opaque) or {@code #AARRGGBB}, a key color at most once (optional); kept by the sheet as
  * {@link ColorMapping} values ({@link SpriteSheet#getTemplate(String)});</li>
@@ -57,7 +58,8 @@ import com.b3dgs.lionengine.resources.Resources;
  * Any other field is an error. Every error of the file is a {@link DefinitionException} giving the key of the file,
  * the line, the column and the JSON path of the faulty value; the whole file is checked, the frame indices and the
  * grid against the image too, before the sheet enters the group, so a failed load adds nothing and caches nothing.
- * Animations are checked here; the animation batch turns them into its own type.
+ * The sheet keeps the animations as {@link Animation} values ({@link SpriteSheet#getAnimation(String)}) and the
+ * templates as {@link ColorMapping} values ({@link SpriteSheet#getTemplate(String)}).
  * </p>
  *
  * <p>
