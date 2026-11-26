@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -173,5 +174,40 @@ final class HeadlessPlatformTest extends PlatformContract
         assertTrue(degraded.degraded());
         assertTrue(degraded.reason().contains("INTEGER"));
         assertTrue(degraded.reason().contains("filters"));
+    }
+
+    /**
+     * Fake screen-mode capabilities: an unsupported mode falls back in the order of ADR-0006, announced to the display
+     * listeners; the last supported mode cannot be removed (REQ-DISPLAY-001, REQ-DISPLAY-002, ADR-0060).
+     */
+    @Test
+    void testFakeScreenModes()
+    {
+        final HeadlessPlatform platform = create();
+        final InboxSpy inbox = new InboxSpy();
+        platform.start(new ManualLoopDriver(), inbox);
+        final List<EffectiveResult> results = new ArrayList<>();
+        platform.addDisplayListener(results::add);
+        platform.setScreenModeSupported(ScreenMode.FULL_SCREEN, false);
+
+        platform.apply(new DisplayRequest(ScreenMode.FULL_SCREEN, null, ScalingPolicy.FIT, List.of()));
+        platform.iterate();
+        inbox.deliverAll();
+
+        assertFalse(platform.isSupported(ScreenMode.FULL_SCREEN));
+        assertEquals(ScreenMode.FULL_WINDOW, platform.getEffectiveResult().effective().screenMode());
+        assertEquals("FULL_SCREEN not supported, FULL_WINDOW used", platform.getEffectiveResult().reason());
+        assertEquals(1, results.size());
+        assertSame(platform.getEffectiveResult(), results.get(0));
+
+        platform.setScreenModeSupported(ScreenMode.FULL_WINDOW, false);
+        platform.apply(new DisplayRequest(ScreenMode.FULL_SCREEN, null, ScalingPolicy.FIT, List.of()));
+        platform.iterate();
+        assertEquals(ScreenMode.WINDOWED, platform.getEffectiveResult().effective().screenMode());
+        assertThrows(IllegalStateException.class,
+                     () -> platform.setScreenModeSupported(ScreenMode.WINDOWED, false));
+        assertThrows(IllegalArgumentException.class, () -> platform.setScreenModeSupported(null, true));
+        platform.setScreenModeSupported(ScreenMode.FULL_SCREEN, true);
+        assertTrue(platform.isSupported(ScreenMode.FULL_SCREEN));
     }
 }

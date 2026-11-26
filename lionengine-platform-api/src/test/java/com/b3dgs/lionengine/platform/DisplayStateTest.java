@@ -22,10 +22,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.InboxSpy;
 import com.b3dgs.lionengine.render.ColorEffect;
 import com.b3dgs.lionengine.render.CommandBuffer;
 import com.b3dgs.lionengine.render.OutputFilter;
@@ -115,7 +118,7 @@ final class DisplayStateTest
         final DisplayState state = new DisplayState(WIDTH, HEIGHT);
         state.setSurface(WIDTH * 2, HEIGHT * 2);
 
-        state.resolve(request(ScalingPolicy.INTEGER), ScreenMode.WINDOWED, null, "");
+        state.resolve(request(ScalingPolicy.INTEGER), null, "");
 
         assertFalse(state.getResult().degraded());
         assertEquals("", state.getResult().reason());
@@ -133,7 +136,7 @@ final class DisplayStateTest
         final DisplayState state = new DisplayState(WIDTH, HEIGHT);
         state.setSurface(WIDTH / 2, HEIGHT / 2);
 
-        state.resolve(request(ScalingPolicy.INTEGER), ScreenMode.WINDOWED, null, "Platform reason");
+        state.resolve(request(ScalingPolicy.INTEGER), null, "Platform reason");
 
         assertTrue(state.getResult().degraded());
         assertEquals(ScalingPolicy.FIT, state.getResult().effective().scalingPolicy());
@@ -151,16 +154,16 @@ final class DisplayStateTest
         final DisplayState state = new DisplayState(WIDTH, HEIGHT);
         state.setSurface(WIDTH / 2, HEIGHT / 2);
 
-        state.resolve(request(ScalingPolicy.INTEGER, OutputFilter.CRT), ScreenMode.WINDOWED, null, "");
+        state.resolve(request(ScalingPolicy.INTEGER, OutputFilter.CRT), null, "");
         assertEquals("INTEGER scaling falls back to FIT: the surface is smaller than the logical frame; "
                      + "Output filters not applied: no render backend attached",
                      state.getResult().reason());
 
-        state.resolve(request(ScalingPolicy.FIT, OutputFilter.CRT), ScreenMode.WINDOWED, null, "Platform reason");
+        state.resolve(request(ScalingPolicy.FIT, OutputFilter.CRT), null, "Platform reason");
         assertEquals("Platform reason; Output filters not applied: no render backend attached",
                      state.getResult().reason());
 
-        state.resolve(request(ScalingPolicy.FIT), ScreenMode.WINDOWED, null, "");
+        state.resolve(request(ScalingPolicy.FIT), null, "");
         assertFalse(state.getResult().degraded());
         assertEquals("", state.getResult().reason());
     }
@@ -173,10 +176,10 @@ final class DisplayStateTest
     {
         final DisplayState state = new DisplayState(WIDTH, HEIGHT);
 
-        state.resolve(request(ScalingPolicy.FIT, OutputFilter.NONE), ScreenMode.WINDOWED, null, "");
+        state.resolve(request(ScalingPolicy.FIT, OutputFilter.NONE), null, "");
         assertFalse(state.getResult().degraded());
 
-        state.resolve(request(ScalingPolicy.FIT, OutputFilter.CRT, OutputFilter.HQ2X), ScreenMode.WINDOWED, null, "");
+        state.resolve(request(ScalingPolicy.FIT, OutputFilter.CRT, OutputFilter.HQ2X), null, "");
 
         assertTrue(state.getResult().effective().filters().isEmpty());
         assertEquals("Output filters not applied: no render backend attached", state.getResult().reason());
@@ -191,10 +194,7 @@ final class DisplayStateTest
         final DisplayState state = new DisplayState(WIDTH, HEIGHT);
         state.setBackend(backend(OutputFilter.BILINEAR));
 
-        state.resolve(request(ScalingPolicy.FIT, OutputFilter.NONE, OutputFilter.CRT, OutputFilter.BILINEAR),
-                      ScreenMode.WINDOWED,
-                      null,
-                      "");
+        state.resolve(request(ScalingPolicy.FIT, OutputFilter.NONE, OutputFilter.CRT, OutputFilter.BILINEAR), null, "");
 
         assertEquals(List.of(OutputFilter.BILINEAR), state.getResult().effective().filters());
         assertTrue(state.getResult().degraded());
@@ -203,22 +203,84 @@ final class DisplayStateTest
     }
 
     /**
-     * The effective screen mode and display mode are the ones given by the platform.
+     * An unsupported screen mode falls back to the first supported mode of its order, reported first among the
+     * reasons; the display mode is the one given by the platform (ADR-0006, ADR-0060).
      */
     @Test
     void testPlatformModes()
     {
         final DisplayState state = new DisplayState(WIDTH, HEIGHT);
         final DisplayMode mode = new DisplayMode(1920, 1080, 60, 32);
+        state.setSupported(EnumSet.of(ScreenMode.WINDOWED));
 
         state.resolve(new DisplayRequest(ScreenMode.FULL_SCREEN, null, ScalingPolicy.FIT, List.of()),
-                      ScreenMode.WINDOWED,
                       mode,
-                      "");
+                      "Platform reason");
 
         assertEquals(ScreenMode.FULL_SCREEN, state.getResult().requested().screenMode());
         assertEquals(ScreenMode.WINDOWED, state.getResult().effective().screenMode());
         assertEquals(mode, state.getResult().effective().displayMode());
+        assertTrue(state.getResult().degraded());
+        assertEquals("FULL_SCREEN not supported, WINDOWED used; Platform reason", state.getResult().reason());
+    }
+
+    /**
+     * Each requested mode falls back in the order of ADR-0006, to the first supported one; a supported mode is kept.
+     */
+    @Test
+    void testFallbackOrders()
+    {
+        final DisplayState state = new DisplayState(WIDTH, HEIGHT);
+
+        assertEquals(ScreenMode.FULL_SCREEN, state.selectScreenMode(ScreenMode.FULL_SCREEN));
+        state.setSupported(EnumSet.of(ScreenMode.WINDOWED, ScreenMode.FULL_WINDOW));
+        assertEquals(ScreenMode.FULL_WINDOW, state.selectScreenMode(ScreenMode.FULL_SCREEN));
+        state.setSupported(EnumSet.of(ScreenMode.FULL_WINDOW, ScreenMode.FULL_SCREEN));
+        assertEquals(ScreenMode.FULL_WINDOW, state.selectScreenMode(ScreenMode.WINDOWED));
+        state.setSupported(EnumSet.of(ScreenMode.FULL_SCREEN));
+        assertEquals(ScreenMode.FULL_SCREEN, state.selectScreenMode(ScreenMode.WINDOWED));
+        assertEquals(ScreenMode.FULL_SCREEN, state.selectScreenMode(ScreenMode.FULL_WINDOW));
+        state.setSupported(EnumSet.of(ScreenMode.WINDOWED, ScreenMode.FULL_SCREEN));
+        assertEquals(ScreenMode.WINDOWED, state.selectScreenMode(ScreenMode.FULL_WINDOW));
+        state.setSupported(EnumSet.of(ScreenMode.WINDOWED));
+        assertEquals(ScreenMode.WINDOWED, state.selectScreenMode(ScreenMode.FULL_SCREEN));
+        assertTrue(state.isSupported(ScreenMode.WINDOWED));
+        assertFalse(state.isSupported(ScreenMode.FULL_WINDOW));
+        assertThrows(IllegalArgumentException.class, () -> state.setSupported(EnumSet.noneOf(ScreenMode.class)));
+        assertThrows(IllegalArgumentException.class, () -> state.setSupported(null));
+        assertThrows(IllegalArgumentException.class, () -> state.isSupported(null));
+    }
+
+    /**
+     * The posted result reaches the listeners added by its delivery, in order; a listener added during the delivery
+     * is called from the next one; a removed listener is not called.
+     */
+    @Test
+    void testListeners()
+    {
+        final DisplayState state = new DisplayState(WIDTH, HEIGHT);
+        final List<String> calls = new ArrayList<>();
+        final InboxSpy inbox = new InboxSpy();
+        final DisplayListener second = result -> calls.add("second " + result.effective().scalingPolicy());
+        state.addListener(result ->
+        {
+            calls.add("first " + result.effective().scalingPolicy());
+            state.addListener(second);
+        });
+        final DisplayListener removed = result -> calls.add("removed");
+        state.addListener(removed);
+        state.removeListener(removed);
+        state.resolve(request(ScalingPolicy.FIT), null, "");
+
+        assertTrue(state.post(inbox));
+        state.resolve(request(ScalingPolicy.STRETCH), null, "");
+        inbox.deliverAll();
+        assertEquals(List.of("first FIT"), calls);
+        state.post(inbox);
+        inbox.deliverAll();
+
+        assertEquals(List.of("first FIT", "first STRETCH", "second STRETCH"), calls);
+        assertThrows(IllegalArgumentException.class, () -> state.addListener(null));
     }
 
     /**

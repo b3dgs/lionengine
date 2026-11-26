@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -392,6 +393,105 @@ public abstract class PlatformContract
         assertEquals(ScalingPolicy.INTEGER, integer.effective().scalingPolicy());
         assertFalse(integer.degraded());
         assertEquals(new PresentationGeometry(20, 40, 960, 720, 3.0, 3.0), platform.getPresentationGeometry());
+    }
+
+    /**
+     * The platform supports at least one screen mode, and the query refuses {@code null} (REQ-DISPLAY-001).
+     */
+    @Test
+    void testScreenModeCapability()
+    {
+        final Platform platform = createPlatform(WIDTH, HEIGHT, FIT);
+        boolean any = false;
+        for (final ScreenMode mode : ScreenMode.values())
+        {
+            any |= platform.isSupported(mode);
+        }
+
+        assertTrue(any);
+        assertThrows(IllegalArgumentException.class, () -> platform.isSupported(null));
+    }
+
+    /**
+     * Every screen mode can be requested without exception: a supported mode is applied as requested, another falls
+     * back to a supported mode, reported as degraded with its reason (REQ-DISPLAY-002, ADR-0006, ADR-0060).
+     */
+    @Test
+    void testScreenModeFallback()
+    {
+        final DeliveringDriver driver = new DeliveringDriver();
+        final Platform platform = start(driver);
+        for (final ScreenMode mode : ScreenMode.values())
+        {
+            platform.apply(new DisplayRequest(mode, null, ScalingPolicy.FIT, List.of()));
+            frame(platform);
+
+            final EffectiveResult result = platform.getEffectiveResult();
+            final ScreenMode effective = result.effective().screenMode();
+            assertTrue(platform.isSupported(effective), mode + " gave " + effective);
+            if (platform.isSupported(mode))
+            {
+                assertEquals(mode, effective);
+            }
+            else
+            {
+                assertTrue(result.degraded());
+                assertTrue(result.reason().startsWith(mode + " not supported, " + effective + " used"),
+                           result.reason());
+            }
+        }
+        platform.apply(FIT);
+        frame(platform);
+    }
+
+    /**
+     * The result of an applied request is delivered to the display listeners through the inbox, in the frame where it
+     * is applied, in the order they were added; a removed listener is not called (REQ-DISPLAY-005, REQ-DISPLAY-008).
+     */
+    @Test
+    void testDisplayListener()
+    {
+        final DeliveringDriver driver = new DeliveringDriver();
+        final Platform platform = start(driver);
+        final List<String> calls = new ArrayList<>();
+        final DisplayListener removed = result -> calls.add("removed");
+        platform.addDisplayListener(result -> calls.add("first " + result.effective().scalingPolicy()));
+        platform.addDisplayListener(result -> calls.add("second " + result.requested().scalingPolicy()));
+        platform.addDisplayListener(removed);
+        platform.removeDisplayListener(removed);
+        frame(platform);
+
+        platform.apply(request(ScalingPolicy.STRETCH));
+        assertTrue(calls.isEmpty());
+        frame(platform);
+
+        assertEquals(List.of("first STRETCH", "second STRETCH"), calls);
+        frame(platform);
+        assertEquals(2, calls.size());
+        assertThrows(IllegalArgumentException.class, () -> platform.addDisplayListener(null));
+    }
+
+    /**
+     * A resize that changes the effective result, such as the start of the {@code INTEGER} fallback, is announced to
+     * the display listeners (REQ-DISPLAY-007, REQ-DISPLAY-008).
+     */
+    @Test
+    void testDisplayListenerOnResize()
+    {
+        final DeliveringDriver driver = new DeliveringDriver();
+        final Platform platform = start(driver);
+        final List<EffectiveResult> results = new ArrayList<>();
+        platform.apply(request(ScalingPolicy.INTEGER));
+        frame(platform);
+        platform.addDisplayListener(results::add);
+
+        resize(platform, 300, 200);
+        frame(platform);
+        frame(platform);
+
+        assertEquals(1, results.size());
+        assertEquals(ScalingPolicy.FIT, results.get(0).effective().scalingPolicy());
+        assertTrue(results.get(0).degraded());
     }
 
     /**

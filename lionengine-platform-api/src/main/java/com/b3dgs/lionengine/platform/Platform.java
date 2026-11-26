@@ -116,9 +116,38 @@ public interface Platform
     void removeCloseListener(CloseListener listener);
 
     /**
+     * Adds a display listener, called on the runtime thread at the inbox delivery that follows each applied display
+     * request, and each surface resize that changes the effective result (ADR-0060). Listeners are called in the order
+     * they were added; a listener added or removed during a delivery takes effect after it. Nothing is delivered before
+     * the start.
+     *
+     * @param listener The listener (never {@code null}).
+     * @throws IllegalArgumentException If {@code listener} is {@code null}.
+     */
+    void addDisplayListener(DisplayListener listener);
+
+    /**
+     * Removes a display listener; no effect if it was not added.
+     *
+     * @param listener The listener.
+     */
+    void removeDisplayListener(DisplayListener listener);
+
+    /**
+     * Tells whether the platform can apply a screen mode (ADR-0060). The answer does not change while the platform
+     * lives, and at least one mode is supported. A request for another mode falls back following the order of
+     * ADR-0006, reported in the effective result.
+     *
+     * @param mode The screen mode (never {@code null}).
+     * @return {@code true} if the platform applies this mode.
+     * @throws IllegalArgumentException If {@code mode} is {@code null}.
+     */
+    boolean isSupported(ScreenMode mode);
+
+    /**
      * Requests display settings. Never blocks the update step and never throws for a missing capability: the change
      * is applied at the next frame boundary, best effort, and its {@link EffectiveResult} is delivered through the
-     * inbox at that boundary.
+     * inbox to the display listeners; an unsupported screen mode falls back (ADR-0006, ADR-0060).
      *
      * @param request The requested settings (never {@code null}).
      * @return The accepted request, as given.

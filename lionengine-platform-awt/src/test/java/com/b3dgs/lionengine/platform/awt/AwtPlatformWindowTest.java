@@ -27,7 +27,10 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import java.awt.Canvas;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -41,6 +44,7 @@ import com.b3dgs.lionengine.LoopDriver;
 import com.b3dgs.lionengine.WorkerPool;
 import com.b3dgs.lionengine.platform.DisplayMode;
 import com.b3dgs.lionengine.platform.DisplayRequest;
+import com.b3dgs.lionengine.platform.EffectiveResult;
 import com.b3dgs.lionengine.platform.ScreenMode;
 import com.b3dgs.lionengine.render.ScalingPolicy;
 
@@ -116,6 +120,70 @@ final class AwtPlatformWindowTest
                      platform.getSurfaceHeight());
         assertEquals(WIDTH, platform.getLogicalWidth());
         assertEquals(HEIGHT, platform.getLogicalHeight());
+    }
+
+    /**
+     * {@code FULL_WINDOW} makes the window undecorated over the bounds of the default monitor, the new canvas size
+     * reaches the platform as a resize, and the display listeners get the result; {@code WINDOWED} restores a decorated
+     * window; {@code FULL_SCREEN} is applied when supported and falls back to {@code FULL_WINDOW} otherwise (ADR-0060).
+     */
+    @Test
+    void testScreenModes()
+    {
+        platform = new AwtPlatform(WIDTH, HEIGHT, REQUEST, AwtFixtures.SINK, true);
+        final Canvas canvas = platform.getCapability(AwtSurface.class).getCanvas();
+        final InboxSpy inbox = new InboxSpy();
+        final List<EffectiveResult> results = new ArrayList<>();
+        platform.addDisplayListener(results::add);
+        platform.start(new StoppingDriver(inbox, Integer.MAX_VALUE, null), inbox);
+        AwtFixtures.flush();
+        platform.iterate();
+        final Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                                    .getDefaultScreenDevice()
+                                                    .getDefaultConfiguration()
+                                                    .getBounds();
+
+        platform.apply(new DisplayRequest(ScreenMode.FULL_WINDOW, null, ScalingPolicy.FIT, Collections.emptyList()));
+        platform.iterate();
+        AwtFixtures.flush();
+        platform.iterate();
+
+        final Frame window = platform.getWindow();
+        assertTrue(window.isUndecorated());
+        assertTrue(window.isShowing());
+        assertEquals(bounds, window.getBounds());
+        assertNotNull(canvas.getBufferStrategy());
+        assertEquals(AwtWindowEvents.toDevice(canvas.getWidth(), AwtWindowEvents.getScaleX(canvas)),
+                     platform.getSurfaceWidth());
+        assertEquals(ScreenMode.FULL_WINDOW, results.get(0).effective().screenMode());
+        assertFalse(results.get(0).degraded());
+
+        platform.apply(REQUEST);
+        platform.iterate();
+        AwtFixtures.flush();
+        platform.iterate();
+
+        assertFalse(window.isUndecorated());
+        assertTrue(window.isShowing());
+        assertEquals(ScreenMode.WINDOWED, platform.getEffectiveResult().effective().screenMode());
+
+        platform.apply(new DisplayRequest(ScreenMode.FULL_SCREEN, null, ScalingPolicy.FIT, Collections.emptyList()));
+        platform.iterate();
+        AwtFixtures.flush();
+
+        final ScreenMode expected;
+        if (platform.isSupported(ScreenMode.FULL_SCREEN))
+        {
+            expected = ScreenMode.FULL_SCREEN;
+        }
+        else
+        {
+            expected = ScreenMode.FULL_WINDOW;
+        }
+        assertEquals(expected, platform.getEffectiveResult().effective().screenMode());
+        assertTrue(window.isUndecorated());
+        assertTrue(platform.isSupported(ScreenMode.WINDOWED));
+        assertTrue(platform.isSupported(ScreenMode.FULL_WINDOW));
     }
 
     /**

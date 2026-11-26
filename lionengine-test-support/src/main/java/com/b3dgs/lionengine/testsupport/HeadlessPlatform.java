@@ -17,19 +17,23 @@
 package com.b3dgs.lionengine.testsupport;
 
 import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.b3dgs.lionengine.FakeWorkerPool;
 import com.b3dgs.lionengine.Inbox;
 import com.b3dgs.lionengine.LogSink;
 import com.b3dgs.lionengine.LoopDriver;
 import com.b3dgs.lionengine.platform.CloseListener;
+import com.b3dgs.lionengine.platform.DisplayListener;
 import com.b3dgs.lionengine.platform.DisplayRequest;
 import com.b3dgs.lionengine.platform.EffectiveResult;
 import com.b3dgs.lionengine.platform.Platform;
 import com.b3dgs.lionengine.platform.PlatformEvent;
 import com.b3dgs.lionengine.platform.PresentationGeometry;
+import com.b3dgs.lionengine.platform.ScreenMode;
 import com.b3dgs.lionengine.render.RenderBackend;
 
 /**
@@ -139,6 +143,37 @@ public final class HeadlessPlatform implements Platform
     }
 
     /**
+     * Sets whether a screen mode is supported, as a fake capability (ADR-0060): every mode is supported by default. A
+     * request for an unsupported mode falls back at its frame boundary; the request already applied is not resolved
+     * again.
+     *
+     * @param mode The screen mode (never {@code null}).
+     * @param supported {@code true} if the platform supports it.
+     * @throws IllegalArgumentException If {@code mode} is {@code null}.
+     * @throws IllegalStateException If it would leave no supported mode.
+     */
+    public void setScreenModeSupported(ScreenMode mode, boolean supported)
+    {
+        if (mode == null)
+        {
+            throw new IllegalArgumentException("Screen mode must not be null");
+        }
+        final Set<ScreenMode> modes = EnumSet.noneOf(ScreenMode.class);
+        for (final ScreenMode other : ScreenMode.values())
+        {
+            if (other == mode ? supported : display.isSupported(other))
+            {
+                modes.add(other);
+            }
+        }
+        if (modes.isEmpty())
+        {
+            throw new IllegalStateException("At least one screen mode must stay supported: " + mode);
+        }
+        display.setSupported(modes);
+    }
+
+    /**
      * Posts an event to the inbox, as a thread of a real platform would; it is applied when the loop delivers it.
      *
      * @param kind The kind of event, not {@link PlatformEvent.Kind#SURFACE_RESIZED} (use {@link #resize(int, int)}).
@@ -191,6 +226,7 @@ public final class HeadlessPlatform implements Platform
             final DisplayRequest request = pending;
             pending = null;
             display.apply(request);
+            display.post(inbox);
         }
         driver.iterate();
     }
@@ -216,7 +252,10 @@ public final class HeadlessPlatform implements Platform
         switch (event.getKind())
         {
             case SURFACE_RESIZED:
-                display.resize(event.getSurfaceWidth(), event.getSurfaceHeight());
+                if (display.resize(event.getSurfaceWidth(), event.getSurfaceHeight()))
+                {
+                    display.post(inbox);
+                }
                 break;
             case BACKGROUND:
                 driver.pause();
@@ -348,6 +387,24 @@ public final class HeadlessPlatform implements Platform
                 return;
             }
         }
+    }
+
+    @Override
+    public void addDisplayListener(DisplayListener listener)
+    {
+        display.addListener(listener);
+    }
+
+    @Override
+    public void removeDisplayListener(DisplayListener listener)
+    {
+        display.removeListener(listener);
+    }
+
+    @Override
+    public boolean isSupported(ScreenMode mode)
+    {
+        return display.isSupported(mode);
     }
 
     @Override
