@@ -34,6 +34,7 @@ JDK 25 and Maven 3.9 (the build refuses an older JDK). From the repository root:
 | Everything the CI checks | `mvn -B verify`, then `python3 -I scripts/check-modules.py`, `python3 -I scripts/check-api-index.py`, `python3 -I scripts/check-provenance.py`, `python3 -I scripts/check-docs.py` |
 | One module and what it needs | `mvn -B -pl lionengine-<module> -am verify` |
 | With the platform tests (tag `platform`: real windows, need a display), as the Linux CI jobs run them | `mvn -B verify -Pplatform-tests`; on Linux without a display, `xvfb-run -a mvn -B verify -Pplatform-tests` |
+| With the tests that need a sound device too (tag `audio-device`, ADR-0070): a desktop with a display and a sound device, never CI | `mvn -B verify -Paudio-device-tests` |
 | Tests of one module | `mvn -B -pl lionengine-<module> -am test` |
 | Checkstyle only (fast) | `mvn -B validate` |
 | Android/DEX: lint `NewApi` on the shared sources, D8 and R8 builds of the installed modules (Android SDK needed, `ANDROID_HOME` set) | `mvn -B install`, then in `android/`: `./gradlew :api-lint:lintDebug :verification:verifyDebugDex :verification:verifyReleaseDex` |
