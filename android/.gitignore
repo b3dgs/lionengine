@@ -1,0 +1,7 @@
+# Gradle state and build output of the Android verification build
+.gradle/
+.kotlin/
+build/
+/*/build/
+# Path of the local Android SDK, written by Android Studio
+local.properties

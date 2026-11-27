@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.b3dgs.lionengine</groupId>
+        <artifactId>lionengine</artifactId>
+        <version>11.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>lionengine-platform-awt</artifactId>
+    <packaging>jar</packaging>
+    <name>LionEngine Platform AWT</name>
+    <description>Desktop implementation of the platform contracts with the JDK AWT</description>
+    <properties>
+        <!-- Desktop-only module: Java 25 class files are allowed (ADR-0044); excluded from Android builds. -->
+        <jdk.version>25</jdk.version>
+        <radial.base-package>com.b3dgs.lionengine.platform.awt</radial.base-package>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-platform-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- ADR-0045: the Platform contract suite, bound by the AWT platform in the platform tests. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-platform-api</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <!-- ADR-0045: the manual loop driver and the inbox spy of the core test JAR, used by the Platform suite. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-core</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

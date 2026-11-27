@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.b3dgs.lionengine</groupId>
+        <artifactId>lionengine</artifactId>
+        <version>11.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>lionengine-test-support</artifactId>
+    <packaging>jar</packaging>
+    <name>LionEngine Test Support</name>
+    <description>Headless application kit for tests</description>
+    <properties>
+        <radial.base-package>com.b3dgs.lionengine.testsupport</radial.base-package>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-runtime</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-platform-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-render-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- ADR-0045: the fakes of these modules are re-exported to the users of the kit. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-core</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+        </dependency>
+        <!-- ADR-0045: the fakes of these modules are re-exported to the users of the kit. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-runtime</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+        </dependency>
+        <!-- ADR-0045: the RenderBackend contract suite, bound by the recording backend. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-render-api</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <!-- ADR-0045: the Platform contract suite, bound by the headless platform. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-platform-api</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

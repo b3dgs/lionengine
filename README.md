@@ -4,168 +4,96 @@
 
 **A Java 2D game engine, born from the [Lionheart Remake](https://lionheart.b3dgs.com) project.**
 
-[![Build](https://github.com/b3dgs/lionengine/actions/workflows/ci-cd.yml/badge.svg?branch=master)](https://github.com/b3dgs/lionengine/actions/workflows/ci-cd.yml)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=b3dgs_lionengine&metric=coverage)](https://sonarcloud.io/summary/new_code?id=b3dgs_lionengine)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=b3dgs_lionengine&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=b3dgs_lionengine)
-[![Maven Central](https://maven-badges.sml.io/maven-central/com.b3dgs.lionengine/lionengine-core/badge.svg)](https://maven-badges.sml.io/maven-central/com.b3dgs.lionengine/lionengine-core)
-[![Dev](https://img.shields.io/badge/dev-v11.0.0%20SNAPSHOT-yellow.svg)](https://github.com/b3dgs/lionengine/milestone/34)
+[![Dev](https://img.shields.io/badge/dev-v11.0.0%20SNAPSHOT-yellow.svg)](https://github.com/b3dgs/lionengine/milestone/35)
 [![License](https://img.shields.io/github/license/b3dgs/lionengine)](/LICENSE)
-
-[🌐 Website](https://www.b3dgs.com/v7/page.php?lang=en&section=lionengine) · [📦 Download](https://lionengine.b3dgs.com/v9-0/page.php?lang=en&section=downloads) · [📚 Tutorials](https://lionengine.b3dgs.com) · [🔍 Maven Central](https://search.maven.org/search?q=com.b3dgs.lionengine)
 
 </div>
 
 ---
 
-## What is it?
+## Architecture
 
-The **LionEngine** is a lightweight, modular **2D game engine for Java**, distributed as a simple JAR library. Plug it into any project to get a full-featured foundation for your game — or use only the parts you need.
+> Status: **VALIDATED specification** — every requirement and document is validated and backed by the decisions in `docs/decisions/` (ADR-0001 to ADR-0052). The build skeleton, the contract skeleton and the first Phase 1 and 2 batches (core foundation, game loop, scenes, resources, platform and rendering with a desktop window) are implemented; the Android/DEX job proves on every pull request that the shared modules dex and run on Android API 21; the next steps are the remaining batches ([`docs/engine-features.md`](docs/engine-features.md), [`docs/agent-workflow.md`](docs/agent-workflow.md), Handoff). Open points: [`docs/open-questions.md`](docs/open-questions.md).
 
-It was built for game development, powering [Lionheart Remake](https://lionheart.b3dgs.com), and designed to stay out of your way while giving you everything to ship a game.
+**New here? Start with [`docs/how-the-engine-works.md`](docs/how-the-engine-works.md)**: a short, diagram-based explanation readable by anybody.
 
-**Targets:** Desktop (*Java >=17 + AWT*) and **Android 5.0** (*API 21*). The game logic is fully portable between both; only input handling differs.
+### Objective
 
----
+Describe the architecture of a 2D Java game engine that is independent of its runtime interfaces, in order to allow:
+- incremental addition of features;
+- implementation in independent batches;
+- contracts that can be verified by tests;
+- documentation consistent with the code;
+- AI agents to work without implicit architectural decisions.
 
-## Features
+This branch contains the build skeleton (24 Maven modules, structural checks, CI), the contract skeleton (the cross-module contracts of Phases 1 and 2, compiled and documented) and the complete architecture documentation. The first engine behaviors exist: the core foundation, the fixed-step game loop, the scene manager, the resource providers, and rendering headless and in an AWT window, each with its example (state per area in [`docs/engine-features.md`](docs/engine-features.md)). The Android/DEX job (`android/`, [`docs/android-compatibility.md`](docs/android-compatibility.md)) dexes the shared modules and runs them on an API 21 emulator in CI. The other batches come next (`docs/roadmap.md`).
 
-### 🎮 Core (`lionengine-core`)
-- Machine-speed-independent game loop with frame skipping and hybrid modes
-- Windowed & fullscreen support with complete frame rate control
-- Image filtering: Bilinear, Blur, HQ2X, HQ3X, Scanline, CRT
-- Sequence-based flow (intro → menu → game → credits…)
-- Resource management relative to directories, JARs, or temp
-- Sprites, animations, tiles, fonts, parallax layers
-- Binary & XML file I/O
-- UDP Server/Client networking
-- Utility classes: Random, Maths, Conversions, File…
+### Getting started
 
-### 🕹️ Game (`lionengine-game`)
-- **Camera** with configurable view and movement
-- **Cursor** — synced or independent from the system pointer
-- **Tile-based map** with minimap, save/load, A* pathfinding, ray cast collisions, and raster bar effect
-- **Tile tools**: extract tilesheet from a level rip, generate level data files
-- **Object system** driven by XML configuration, factory caching, and a handler for update/render/retrieve
-- **Composable Feature system** — add characteristics to objects without inheritance complexity:
+Requirements: JDK 25 or later and Maven 3.9 (the build refuses an older JDK), Python 3 for the checks.
 
-| Feature | Description |
-|---|---|
-| `Transformable` | Size and translation |
-| `Body` | Gravity handling |
-| `Collidable` | Collision detection |
-| `Launchable` | Launcher & projectile system |
-| `Rasterable` | Raster bar visual effect |
-| `Producible` | Object spawning capability |
-| `Networkable` | Synchronized over network |
+- Build, checkstyle, package rule, tests and Javadoc: `mvn -B verify`.
+- One module and what it needs: `mvn -B -pl lionengine-<module> -am verify`.
+- With the platform tests, which open windows and need a display: `mvn -B verify -Pplatform-tests` (on Linux without a display: `xvfb-run -a mvn -B verify -Pplatform-tests`).
+- Structural checks: `python3 -I scripts/check-modules.py`, `python3 -I scripts/check-api-index.py` (after the build), `python3 -I scripts/check-provenance.py`, `python3 -I scripts/check-docs.py`.
+- Android/DEX verification (also needs the Android SDK, `ANDROID_HOME` set): `mvn -B install`, then in `android/`: `./gradlew :api-lint:lintDebug :verification:verifyDebugDex :verification:verifyReleaseDex` (lint `NewApi`, D8, R8), and `./gradlew :verification:connectedDebugAndroidTest` with an API 21 emulator running ([`docs/android-compatibility.md`](docs/android-compatibility.md)).
 
-### 🔊 Audio (`lionengine-audio-*`)
-| Module | Format |
-|---|---|
-| `lionengine-audio-wav` | WAV |
-| `lionengine-audio-sc68` | Sc68 Atari music |
-| `lionengine-audio-adplug` | LDS / AdPlug |
-| `lionengine-audio-adlmidi` | MIDI via AdlMidi |
+Before writing engine code, read [`docs/implementation-guide.md`](docs/implementation-guide.md): the code-quality gates (b3dgs checkstyle, compiler and Javadoc settings, Sonar) and the Android and performance constraints.
 
-### 🛠️ LionEngine Editor
-A standalone Eclipse RCP4 editor to speed up level design and object authoring:
+### Reading order
 
-- **Map editor** — import/export tile maps
-- **Object editor** — place, remove, and configure objects on the map
-- **Animation editor** — frame-by-frame editing with mouse
-- **Collision editor** — assign collision shapes visually
-- **Pathfinding editor** — configure pathfinding properties per tile
+1. [`AGENTS.md`](AGENTS.md) — mandatory rules for agents.
+2. [`docs/how-the-engine-works.md`](docs/how-the-engine-works.md) — the engine in a few diagrams.
+3. [`docs/engine-features.md`](docs/engine-features.md) — what a game can do with the engine, area by area, and the state of each area.
+4. [`docs/vision.md`](docs/vision.md) — scope and goals.
+5. [`docs/requirements.md`](docs/requirements.md) — functional and non-functional requirements.
+6. [`docs/architecture/overview.md`](docs/architecture/overview.md) — principles and boundaries.
+7. [`docs/architecture/modules.md`](docs/architecture/modules.md) — modules and their dependencies.
+8. [`docs/architecture/interfaces.md`](docs/architecture/interfaces.md) — public types per module and the contracts that cross modules.
+9. [`docs/architecture/contracts.md`](docs/architecture/contracts.md) — cross-cutting contracts.
+10. [`docs/conventions.md`](docs/conventions.md) — code conventions.
+11. [`docs/implementation-guide.md`](docs/implementation-guide.md) — how to write code that passes the quality gates.
+12. [`docs/testing.md`](docs/testing.md) — test strategy.
+13. [`docs/android-compatibility.md`](docs/android-compatibility.md) — Android/DEX verification checklist.
+14. [`docs/documentation.md`](docs/documentation.md) — documentation rules.
+15. [`docs/roadmap.md`](docs/roadmap.md) — delivery order.
+16. [`docs/decisions/`](docs/decisions/README.md) — architecture decisions (ADRs).
+17. [`docs/open-questions.md`](docs/open-questions.md) — every `TO BE DEFINED` item, in one place.
+18. [`docs/change-process.md`](docs/change-process.md) — how to modify a feature or add a module consistently.
 
----
+Building a game with the engine (humans and agents):
+- [`docs/features/`](docs/features/README.md) — one page per implementation batch, in order: the entry point for implementers.
+- [`docs/game-development-guide.md`](docs/game-development-guide.md) — path from nothing to a small game.
+- [`docs/api-index.md`](docs/api-index.md) — find the right types by task.
+- [`docs/agent-workflow.md`](docs/agent-workflow.md) — division of work between local and cloud agents.
+- [`docs/local-agents.md`](docs/local-agents.md) — delegating work to local models: profiles, machine setup, task files, escalation, merge gate, benchmark (VALIDATED; ADR-0053).
+- [`docs/local-agent-entry.md`](docs/local-agent-entry.md) — compact entry file of a local worker.
+- [`local-agents/`](local-agents/README.md) — owner's guide, not for agents: how to set up the machines and run the benchmark of the local models.
+- [`docs/templates/LOCAL-TASK-TEMPLATE.md`](docs/templates/LOCAL-TASK-TEMPLATE.md) — task file given to a local worker.
+- [`docs/templates/GAME-AGENTS-TEMPLATE.md`](docs/templates/GAME-AGENTS-TEMPLATE.md) — `AGENTS.md` template for a game repository.
 
-## Installation
+Reference material:
+- [`docs/glossary.md`](docs/glossary.md) — terminology.
+- [`docs/traceability.md`](docs/traceability.md) — requirement → decision → test matrix.
+- [`docs/dependencies.md`](docs/dependencies.md) — every dependency with its purpose, license and Android status.
+- [`docs/templates/DECISION-PACKET-TEMPLATE.md`](docs/templates/DECISION-PACKET-TEMPLATE.md) — note to fill in during a discussion, then hand to an agent to propagate the change consistently.
+- [`docs/templates/FEATURE-TEMPLATE.md`](docs/templates/FEATURE-TEMPLATE.md) — template for a feature batch.
+- [`scripts/check-docs.py`](scripts/check-docs.py) — documentation consistency check (`python3 -I scripts/check-docs.py`).
+- [`docs/decisions/ADR-TEMPLATE.md`](docs/decisions/ADR-TEMPLATE.md) — template for an architecture decision.
 
-**Prerequisites:** [Java JDK 17+](https://adoptium.net/)
+### Statuses used
 
-Add LionEngine to your Maven project:
+- **VALIDATED**: approved decision, binding.
+- **PROPOSED**: suggested direction, open for discussion.
+- **TO BE DEFINED**: missing information; do not guess it. Tracked in [`docs/open-questions.md`](docs/open-questions.md).
+- **OUT OF SCOPE**: not planned for the version concerned.
 
-```xml
-<dependency>
-    <groupId>com.b3dgs.lionengine</groupId>
-    <artifactId>lionengine-core</artifactId>
-    <version>11.0.0-SNAPSHOT</version>
-</dependency>
-```
+ADRs use their own lifecycle (`PROPOSED`, `ACCEPTED`, `REJECTED`, `SUPERSEDED`). `ACCEPTED` means the same thing as `VALIDATED`.
 
-Or [download the JARs manually](https://search.maven.org/search?q=com.b3dgs.lionengine) and add them to your classpath.
+### Essential rule
 
-**Dependency tree** — include only what you need:
+In case of contradiction, a `VALIDATED` decision prevails over a proposal. If two validated documents contradict each other, stop the work concerned and ask for clarification. Never silently turn a proposal into a decision.
 
-```
-lionengine-core                  ← required
-├── lionengine-core-awt          ← desktop (AWT renderer)
-├── lionengine-game              ← game logic
-├── lionengine-audio-wav         ← WAV audio
-├── lionengine-audio-sc68        ← Sc68 Atari music
-├── lionengine-audio-adplug      ← LDS music
-└── lionengine-audio-adlmidi     ← MIDI music
-```
+### Initial state
 
----
-
-## Quick Start
-
-### Desktop (AWT)
-
-```java
-public class AppSamplePc
-{
-    public static void main(String[] args)
-    {
-        EngineAwt.start("Sample Project", new Version(0, 1, 0), AppSamplePc.class);
-        Loader.start(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
-    }
-}
-```
-
-### Android
-
-```java
-public class ActivitySample extends ActivityGame
-{
-    @Override
-    protected void start(Bundle bundle)
-    {
-        EngineAndroid.start("Sample Project", new Version(0, 1, 0), this);
-        Loader.start(Config.fullscreen(Scene.NATIVE), Scene.class);
-    }
-}
-```
-
-### Minimal Scene
-
-```java
-public class Scene extends Sequence
-{
-    static final Resolution NATIVE = new Resolution(320, 240, 60);
-
-    public Scene(Context context)
-    {
-        super(context, NATIVE);
-    }
-
-    @Override
-    public void load()
-    {
-        // Load your resources here
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        // Update game logic
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        // Draw your frame
-    }
-}
-```
-
----
+All decisions ADR-0001 to ADR-0053 are `ACCEPTED`: technical baseline and units (ADR-0001, ADR-0012 to ADR-0016), game loop, threads, loading and no reflection (ADR-0017 to ADR-0020), object model and modules (ADR-0021, ADR-0022), game workflow and budgets (ADR-0023, ADR-0024), and every feature contract (ADR-0002 to ADR-0011, ADR-0025 to ADR-0030). ADR-0031 to ADR-0035 fixed the remaining defaults (runtime, data files and dependencies, media, camera and ECS, input), ADR-0036 the scene flow, ADR-0037 the package tree, callback types and canonical names, and ADR-0038 and ADR-0039 the network model and protocol, under the owner's delegation of 2026-11-23; ADR-0040 moved the thread hand-off contracts (inbox, asynchronous handles, worker pool, loop control) to `core` after the architecture review, and ADR-0041 to ADR-0044 closed the last questions (Android bytecode level, Maven Central, version 11 display scope, Java 21 shared level with the tested API 21 constraints). ADR-0045 to ADR-0049 come from the skeleton-readiness review requested by the owner the same day: test fixtures with their contracts, display state owned by the platform, `render-api` boundary types, `composition` dependencies, and the interface catalog with the contract-skeleton batch. ADR-0050 and ADR-0051 (2026-11-24, owner answers) move the tests to the latest stable JUnit release and the build to `b3dgs-parent` 3.0.0-SNAPSHOT. Every requirement and document is **VALIDATED**; templates keep `PROPOSED` as the initial status of the items created from them.
