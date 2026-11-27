@@ -45,8 +45,8 @@ import com.b3dgs.lionengine.resources.ResourceException;
  *
  * <p>
  * Threads: filled on the runtime thread before the play, then read by one backend thread until the voice ends or is
- * stopped (the hand-off is ordered by the backend and the inbox); the failure is an atomic reference, the looping and
- * the resource stream are volatile. Reading allocates nothing, except the opening of a new pass of a loop.
+ * stopped (the hand-off is ordered by the backend and the inbox); the failure and the resource stream are atomic
+ * references, the looping is volatile. Reading allocates nothing, except the opening of a new pass of a loop.
  * </p>
  */
 final class StreamBuffer implements PcmStream
@@ -56,7 +56,7 @@ final class StreamBuffer implements PcmStream
     /** The source decoded. */
     private PcmSource source;
     /** The resource stream the source reads, {@code null} if not owned; closed by {@link #close()}. */
-    private volatile InputStream input;
+    private final AtomicReference<InputStream> input;
     /** {@code true} to decode a new pass once the source ends. */
     private volatile boolean looping;
     /** {@code true} once the current source returned fewer frames than asked. */
@@ -111,7 +111,7 @@ final class StreamBuffer implements PcmStream
     {
         super();
 
-        this.input = input;
+        this.input = new AtomicReference<>(input);
         this.source = source;
         this.opener = opener;
         this.chunks = chunks;
@@ -161,8 +161,7 @@ final class StreamBuffer implements PcmStream
      */
     IOException close()
     {
-        final InputStream current = input;
-        input = null;
+        final InputStream current = input.getAndSet(null);
         IOException closeFailure = null;
         if (current != null)
         {
@@ -301,8 +300,7 @@ final class StreamBuffer implements PcmStream
                 throw new AudioDecodingException("Format changed at the loop: " + format + " then " + passFormat);
             }
             // The previous stream is no longer read: a failure to close it is dropped, as after a stop.
-            final InputStream previous = input;
-            input = opened.input();
+            final InputStream previous = input.getAndSet(opened.input());
             source = opened.source();
             exhausted = false;
             passFrames = 0L;

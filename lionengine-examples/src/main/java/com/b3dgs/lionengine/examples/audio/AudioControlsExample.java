@@ -86,7 +86,7 @@ public final class AudioControlsExample
      * @param forest The sounds of the scene.
      * @return The voice of the footstep.
      */
-    public static int step(Audio audio, Forest forest)
+    public static int playStep(Audio audio, Forest forest)
     {
         return audio.play(forest.step());
     }

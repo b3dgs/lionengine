@@ -93,7 +93,7 @@ final class AudioControlsExampleTest
         assertTrue(audio.isPlaying(wind));
         assertTrue(inbox.getPosted().isEmpty());
 
-        final int step = AudioControlsExample.step(audio, forest);
+        final int step = AudioControlsExample.playStep(audio, forest);
         assertEquals(0.8 * 0.5, backend.getGain(step), EPSILON);
         backend.advance(STEP_FRAMES / 2);
         AudioControlsExample.background(audio);

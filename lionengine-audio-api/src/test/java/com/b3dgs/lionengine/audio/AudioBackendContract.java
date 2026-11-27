@@ -357,10 +357,11 @@ public abstract class AudioBackendContract
         {
             -0.5, 1.5, Double.NaN, Double.POSITIVE_INFINITY
         };
+        final CountingStream refusedStream = new CountingStream(FRAMES);
         for (final double gain : refused)
         {
             assertThrows(IllegalArgumentException.class, () -> backend.play(buffer, gain, false));
-            assertThrows(IllegalArgumentException.class, () -> backend.play(new CountingStream(FRAMES), gain));
+            assertThrows(IllegalArgumentException.class, () -> backend.play(refusedStream, gain));
             assertThrows(IllegalArgumentException.class, () -> backend.setGain(voice, gain));
         }
         advance(backend, 3 * FRAMES);
@@ -369,6 +370,7 @@ public abstract class AudioBackendContract
         assertFalse(backend.isPlaying(voice));
         assertFalse(backend.isPlaying(stream));
         backend.setGain(voice, 0.5);
+        assertEquals(0, refusedStream.getCalls());
         backend.close();
     }
 
