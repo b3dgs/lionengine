@@ -47,7 +47,7 @@ Next batch: [`ecs.md`](ecs.md) batch 1, the first unfinished batch in the order 
 | 2 | [`animated-sprite.md`](animated-sprite.md) | 3 | 1 (2026-11-26, #932), 2 (2026-11-26, #933), 3 (2026-11-26, #934) | none |
 | 2 | [`display-modes.md`](display-modes.md) | 4 | 1 (2026-11-26, #938), 2 (2026-11-26, #939), 3 (2026-11-26, #940, delivered by earlier batches and recorded), 4 (2026-11-26, #941, review; `OQ-174` raised) | none |
 | 2 | [`output-filtering.md`](output-filtering.md) | 4 | 1 (2026-11-26, #942), 2 (2026-11-26, #943), 3 (2026-11-26, #944) | 4 (`HQ2X` after its license record; GPU filters and CRT with `render-opengl`, Phase 4) |
-| 2 | [`audio-short-and-long-sounds.md`](audio-short-and-long-sounds.md) | 8 | 1 (2026-11-26, #945), 2 (2026-11-26, #948), 3 (2026-11-26, #949), 4 (2026-11-26, #950), 5 (2026-11-27, #951), 6 (2026-11-27, #952), 7 (2026-11-27, #953) | 8 (`audio-codec-ogg` after its register entry and `audio-android`, Phase 4) |
+| 2 | [`audio-short-and-long-sounds.md`](audio-short-and-long-sounds.md) | 8 | 1 (2026-11-26, #945), 2 (2026-11-26, #948), 3 (2026-11-26, #949), 4 (2026-11-26, #950), 5 (2026-11-27, #951), 6 (2026-11-27, #952), 7 (2026-11-27, #956) | 8 (`audio-codec-ogg` after its register entry and `audio-android`, Phase 4) |
 | 3 | [`ecs.md`](ecs.md) | 6 | none | 1 to 6 |
 | 3 | [`standard-traits.md`](standard-traits.md) | 7 | none | 1 to 7 |
 | 3 | [`tile-map.md`](tile-map.md) | 5 | none | 1 to 5 |
