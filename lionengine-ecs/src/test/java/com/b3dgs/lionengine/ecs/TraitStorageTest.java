@@ -23,6 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -129,12 +132,13 @@ final class TraitStorageTest
         final World world = new World(new WorldConfig(2, 1));
         final int types = 3 * TraitMasks.TYPES_PER_WORD + 1;
         final long id = alive(world);
-        TraitStorage<Health> last = null;
+        final List<TraitStorage<Health>> storages = new ArrayList<>();
         for (int t = 0; t < types; t++)
         {
-            last = world.register(new HealthType());
-            last.add(id);
+            storages.add(world.register(new HealthType()));
+            storages.get(t).add(id);
         }
+        final TraitStorage<Health> last = storages.get(types - 1);
         world.flush();
 
         assertEquals(types, world.getTraitTypeCount());
@@ -147,7 +151,7 @@ final class TraitStorageTest
         world.flush();
         for (int t = 0; t < types; t++)
         {
-            assertEquals(0, world.getStorage(t).getCount());
+            assertEquals(0, storages.get(t).getCount());
         }
     }
 

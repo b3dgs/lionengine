@@ -378,7 +378,7 @@ public final class World
      * @param typeId The trait type ID.
      * @param slot The staged slot of an addition, otherwise {@code 0}.
      */
-    void record(byte kind, long objectId, int typeId, int slot)
+    void recordTrait(byte kind, long objectId, int typeId, int slot)
     {
         commands.add(kind, objectId, typeId, slot);
     }
@@ -391,17 +391,6 @@ public final class World
     TraitMasks getMasks()
     {
         return masks;
-    }
-
-    /**
-     * Returns a trait storage, the seam of the queries.
-     *
-     * @param typeId The type ID, in [0, {@link #getTraitTypeCount()}).
-     * @return The storage of the type.
-     */
-    TraitStorage<?> getStorage(int typeId)
-    {
-        return storages[typeId];
     }
 
     /**

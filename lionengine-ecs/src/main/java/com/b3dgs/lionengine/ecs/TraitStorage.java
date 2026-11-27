@@ -137,7 +137,7 @@ public final class TraitStorage<T>
             fillPool(owned + 1);
         }
         final T trait = pool.remove(pool.size() - 1);
-        world.record(StructuralCommands.ADD_TRAIT, objectId, typeId, staged.size());
+        world.recordTrait(StructuralCommands.ADD_TRAIT, objectId, typeId, staged.size());
         staged.add(trait);
         return trait;
     }
@@ -158,7 +158,7 @@ public final class TraitStorage<T>
     public void remove(long objectId)
     {
         world.checkRecordable(objectId);
-        world.record(StructuralCommands.REMOVE_TRAIT, objectId, typeId, 0);
+        world.recordTrait(StructuralCommands.REMOVE_TRAIT, objectId, typeId, 0);
     }
 
     /**
