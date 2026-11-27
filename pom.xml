@@ -67,8 +67,10 @@
         <!-- Platform tests (docs/testing.md): tests tagged "platform" need a real display and are left out of the
              default build; the platform-tests profile runs them, under Xvfb on the Linux CI jobs. Tests tagged
              "audio-device" need a sound device: every build leaves them out, CI included, and only the
-             audio-device-tests profile runs them (ADR-0070). -->
-        <excludedGroups>platform,audio-device</excludedGroups>
+             audio-device-tests profile runs them (ADR-0070). Tests tagged "benchmark" measure wall-clock time: the
+             default build leaves them out and the benchmark profile runs them, in the non-blocking trend job of the
+             CI (ADR-0030, ADR-0079). -->
+        <excludedGroups>platform,audio-device,benchmark</excludedGroups>
         <sonar.issue.ignore.multicriteria>e1,e2,e3</sonar.issue.ignore.multicriteria>
         <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S1711</sonar.issue.ignore.multicriteria.e1.ruleKey>
         <sonar.issue.ignore.multicriteria.e1.resourceKey>**/*.java</sonar.issue.ignore.multicriteria.e1.resourceKey>
@@ -183,7 +185,7 @@
         <profile>
             <id>platform-tests</id>
             <properties>
-                <excludedGroups>audio-device</excludedGroups>
+                <excludedGroups>audio-device,benchmark</excludedGroups>
             </properties>
         </profile>
         <!-- Runs every test, those needing a sound device too (docs/testing.md, ADR-0070): a desktop with a sound
@@ -193,6 +195,29 @@
             <properties>
                 <excludedGroups />
             </properties>
+        </profile>
+        <!-- Runs only the benchmarks (tag "benchmark", docs/testing.md, ADR-0079) and asserts their time budgets: the
+             non-blocking trend job of the CI, or a desktop (mvn -B -pl lionengine-ecs -am verify -Pbenchmark). -->
+        <profile>
+            <id>benchmark</id>
+            <properties>
+                <groups>benchmark</groups>
+                <excludedGroups>platform,audio-device</excludedGroups>
+            </properties>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <artifactId>maven-surefire-plugin</artifactId>
+                            <configuration>
+                                <systemPropertyVariables>
+                                    <lionengine.benchmark.budget>true</lionengine.benchmark.budget>
+                                </systemPropertyVariables>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
         </profile>
     </profiles>
 </project>

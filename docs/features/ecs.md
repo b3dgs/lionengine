@@ -8,7 +8,7 @@
 - Affected modules: `ecs`, `core`, `test-support`, `examples`
 - Requirements: `REQ-ECS-001` to `REQ-ECS-013`, `REQ-WORLD-001`, `REQ-OBJ-001`, `REQ-OBJ-002`, `REQ-DET-001`, `REQ-DET-003`
 - Applicable ADRs: [`ADR-0011`](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0021`](../decisions/0021-scene-world-viewport-and-object-model.md), [`ADR-0030`](../decisions/0030-ecs-details-ids-flush-scheduling-collision-and-traits.md), [`ADR-0031`](../decisions/0031-runtime-defaults-loop-calibration-inbox-scenes-platform-lifecycle.md), [`ADR-0034`](../decisions/0034-camera-and-ecs-defaults-noise-clamp-slots-capacities-events-shapes.md)
-- Open questions involved: none (Android benchmark once the Android job exists, ADR-0044)
+- Open questions involved: `OQ-177` (the Android reference device and how its benchmark is run, ADR-0079)
 
 ## Objective
 
@@ -87,7 +87,15 @@ Batch 5 (2026-11-27), the random source, with the example `RandomSpawnExample` (
 - No allocation when drawing or reseeding: `RandomAllocationTest` measures 0 bytes over 1,000 updates of 4,000 draws each and 100 reseeds (ADR-0078, decision 7).
 - Tests: `WorldRandomTest` (default and custom seed, reference vectors of `RandomSourceTest`, independent worlds, reseeding rules, listener draws, a system drawing during the update reproducible across two runs), `WorldConfigTest`, `RandomAllocationTest`, `RandomSourceTest.testReseed`, `RandomSpawnExampleTest`; the device tests `EcsTest.testRandomSource` and `CoreTest.testRandomReseed`.
 
-Next: batch 6, the benchmark and allocation check at 1,000 objects × 4 traits.
+Batch 6 (2026-11-27), the benchmark and allocation check at 1,000 objects × 4 traits. No public API change. The details this page leaves to the batch follow [ADR-0079](../decisions/0079-ecs-benchmark-harness-stand-in-scene-and-trend-job.md) (owner answer and delegation):
+- The standard traits and systems do not exist yet: by the owner's answer, the benchmark runs on game-defined stand-ins in the `ecs` test sources (`BenchmarkWorld`), shaped like `Transformable`, `Movable`, `Gravity` and `Lifetime` (the same fields and units, `double`), three queries iterated by systems at the standard slots 2000, 3000 and 5000, and a spawner at 6000 replacing each removed object, about 1 % per step; `Jump` and `Collision` are left out (they need `physics` and tiles). The `traits` batches measure again with the standard traits and systems.
+- Harness: `StepHarness` in the `ecs` test sources (no library, ADR-0030), a warm-up then the duration of each `World.update` on the monotonic clock, summarized by the median, the 90th and 99th percentiles, the maximum and the mean; `StepBenchmarkTest` measures 1,000 and 10,000 objects × 4 traits, 5,000 warm-up and 10,000 measured steps each, and the memory (bytes per stand-in instance, bytes allocated to build and populate the world). Report: the build output and `lionengine-ecs/target/benchmark-reports/ecs-step.md`.
+- JUnit tag `benchmark`, left out of the default build and of `platform-tests`; the profile `benchmark` runs only that tag and asserts the 1 ms median (`mvn -B -pl lionengine-ecs -am verify -Pbenchmark`); the non-blocking trend job `benchmark` of `build.yml` runs it on the standard Linux runner, the desktop reference, and puts the report in its job summary and in the artifact `benchmark-reports` of each run.
+- CI-asserted in every build: `BenchmarkAllocationTest` (the full step at 1,000 objects × 4 traits allocates less than 1 KiB over 1,000 steps, no pool creation, no growth) and `BenchmarkScalingTest` (from 1,000 to 10,000 objects every operation count of the step, query visits, creations, flush events, pool resets, is exactly ten times larger).
+- Measured on the reference runner (`testing.md`, "Measured budgets"): a median step of 14.6 µs at 1,000 objects × 4 traits (99th percentile 24.4 µs) and 177.3 µs at 10,000, far under 1 ms, so the traits stay pooled instances in dense arrays and `Transformable` and `Movable` do not move to primitive arrays (ADR-0030, decision 4).
+- Android: the measurement is deferred (`OQ-177`): the DEX job runs on an emulator, not the mid-range API 21-era reference device, which no document names yet. `ecs` main code is unchanged; the test code uses plain arrays.
+
+The six batches are done. Remaining from this page: the object definition files (`lionengine.object`, ADR-0032) of "Expected behavior", which no batch of the list covers, and the contract tests of trait and system conventions (`ecs` test JAR), which come with `traits`.
 
 ## Lifecycle and concurrency
 
@@ -110,7 +118,7 @@ No unit of its own (systems receive the step in seconds). Plain Java arrays only
 
 ## Acceptance criteria
 
-- [ ] Requirements `REQ-ECS-001` to `REQ-ECS-013` verified.
-- [ ] Automated tests added and passing; complete Javadoc.
-- [ ] Headless example (game-defined trait and system) and `api-index.md` entry.
-- [ ] No forbidden coupling; Android/DEX compatibility verified.
+- [ ] Requirements `REQ-ECS-001` to `REQ-ECS-013` verified (all covered by tests; `REQ-ECS-009` on stand-in traits and systems until `traits` exists, ADR-0079).
+- [x] Automated tests added and passing; complete Javadoc.
+- [x] Headless example (game-defined trait and system) and `api-index.md` entry.
+- [ ] No forbidden coupling; Android/DEX compatibility verified (verified for batches 1 to 5 by the DEX job and `EcsTest`; the Android benchmark waits for `OQ-177`).

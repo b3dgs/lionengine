@@ -2,7 +2,8 @@
 # The Linux jobs also run the platform tests (tag "platform", profile platform-tests, docs/testing.md) on the virtual
 # display of xvfb-run; the desktop jobs run the default build without them.
 # The documentation check runs in docs-check.yml. The android job runs the Android/DEX verification of the
-# android/ Gradle build (ADR-0012, ADR-0044, docs/android-compatibility.md).
+# android/ Gradle build (ADR-0012, ADR-0044, docs/android-compatibility.md). The benchmark job is the non-blocking trend
+# job of the benchmarks (tag "benchmark", profile benchmark, ADR-0030, ADR-0034, ADR-0079).
 # Actions are pinned to the commits used by the master workflow ci-cd.yml.
 name: build
 
@@ -210,6 +211,64 @@ jobs:
             android/api-lint/build/reports/
             android/verification/build/reports/
             android/verification/build/outputs/androidTest-results/
+          if-no-files-found: ignore
+
+  benchmark:
+    # Non-blocking trend job (ADR-0030, decision 3; ADR-0034; ADR-0079): runs the benchmarks only (tag "benchmark") on
+    # the desktop reference, this standard Linux runner, and checks their time budgets (REQ-ECS-009: median step at
+    # or under 1 ms for 1,000 objects x 4 traits). A missed budget marks this job only; the report goes to the job
+    # summary and to an artifact kept per run, the trend.
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 1
+
+      - name: Cache
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7
+        with:
+          path: ~/.m2/repository
+          key: maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: maven-
+
+      - name: Java
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - name: Maven
+        id: maven
+        continue-on-error: true
+        uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
+        with:
+          maven-version: 3.9.14
+
+      - name: Wait before retrying the Maven download (rate limit of Maven Central)
+        if: steps.maven.outcome == 'failure'
+        run: sleep 60
+
+      - name: Maven (retry)
+        if: steps.maven.outcome == 'failure'
+        uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
+        with:
+          maven-version: 3.9.14
+
+      - name: Benchmarks with their time budgets
+        run: mvn -B -ntp -pl lionengine-ecs -am verify -Pbenchmark
+
+      - name: Report in the job summary
+        if: always()
+        run: cat lionengine-ecs/target/benchmark-reports/*.md >> "$GITHUB_STEP_SUMMARY" || true
+
+      - name: Upload the benchmark reports
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
+        with:
+          name: benchmark-reports
+          path: lionengine-ecs/target/benchmark-reports/
           if-no-files-found: ignore
 
   sonar:

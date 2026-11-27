@@ -66,7 +66,7 @@ Meters, m/s, m/s², seconds, constant step (REQ-TECH-003 to REQ-TECH-005); `doub
 - Unit tests: each system at several step durations (movement and clamp, terminal velocity, jump windows and cut, expiry); overlap, layer/mask pairs, enter and exit events, push-out and grounded on a tile floor.
 - Contract tests: trait and system conventions shared with `ecs`; shape-query contract suite run by `tilemap`.
 - Integration tests: headless pipeline with a controllable clock (falling, landing, jumping and colliding object).
-- Performance tests: broad phase against a brute-force reference; part of the 1,000 objects × 4 traits budget (`REQ-ECS-009`).
+- Performance tests: broad phase against a brute-force reference; part of the 1,000 objects × 4 traits budget (`REQ-ECS-009`). The `ecs` benchmark runs on stand-ins of `Transformable`, `Movable`, `Gravity` and `Lifetime` until these exist ([ADR-0079](../decisions/0079-ecs-benchmark-harness-stand-in-scene-and-trend-job.md)): the batch that delivers the last of the four replaces the stand-ins with them, measures again with the `ecs` harness (`StepHarness`, tag `benchmark`) and records the values in `testing.md`; each standard trait records its bytes per instance in its Javadoc, measured the same way (ADR-0034).
 
 ## Acceptance criteria
 
