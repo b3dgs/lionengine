@@ -109,7 +109,7 @@ final class WorldTest
     @Test
     void testStaleAfterReuse()
     {
-        final World world = new World(new WorldConfig(1));
+        final World world = new World(new WorldConfig(1, WorldConfig.DEFAULT_TRAIT_CAPACITY));
         final long old = world.create();
         world.flush();
         world.remove(old);
@@ -132,7 +132,7 @@ final class WorldTest
     @Test
     void testManyCycles()
     {
-        final World world = new World(new WorldConfig(1));
+        final World world = new World(new WorldConfig(1, WorldConfig.DEFAULT_TRAIT_CAPACITY));
         long previous = World.NO_OBJECT;
         for (int i = 0; i < CYCLES; i++)
         {
@@ -154,7 +154,7 @@ final class WorldTest
     @Test
     void testRetiredIndex()
     {
-        final World world = new World(new WorldConfig(1), 1);
+        final World world = new World(new WorldConfig(1, WorldConfig.DEFAULT_TRAIT_CAPACITY), 1);
         final long first = world.create();
         world.flush();
         world.remove(first);
@@ -191,7 +191,7 @@ final class WorldTest
     @Test
     void testCapacityDoublesAtFlush()
     {
-        final World world = new World(new WorldConfig(2));
+        final World world = new World(new WorldConfig(2, WorldConfig.DEFAULT_TRAIT_CAPACITY));
         final long[] ids = new long[5];
         for (int i = 0; i < ids.length; i++)
         {
@@ -227,7 +227,7 @@ final class WorldTest
     @Test
     void testCommandLogGrows()
     {
-        final World world = new World(new WorldConfig(2));
+        final World world = new World(new WorldConfig(2, WorldConfig.DEFAULT_TRAIT_CAPACITY));
         world.create();
         world.create();
         world.create();
@@ -247,7 +247,7 @@ final class WorldTest
     @Test
     void testReserve()
     {
-        final World world = new World(new WorldConfig(1));
+        final World world = new World(new WorldConfig(1, WorldConfig.DEFAULT_TRAIT_CAPACITY));
         world.create();
         final long beyond = world.create();
 
@@ -284,7 +284,7 @@ final class WorldTest
     @Test
     void testTwoWorlds()
     {
-        final World first = new World(new WorldConfig(1));
+        final World first = new World(new WorldConfig(1, WorldConfig.DEFAULT_TRAIT_CAPACITY));
         final World second = new World();
         final long id = first.create();
         first.flush();

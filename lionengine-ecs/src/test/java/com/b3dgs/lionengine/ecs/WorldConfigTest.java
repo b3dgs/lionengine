@@ -24,18 +24,20 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 /**
- * Tests of {@link WorldConfig} (REQ-ECS-013, ADR-0034).
+ * Tests of {@link WorldConfig} (REQ-ECS-013, ADR-0034, ADR-0075).
  */
 final class WorldConfigTest
 {
     /**
-     * The default configuration holds 1,024 objects.
+     * The default configuration holds 1,024 objects and 256 traits per trait type.
      */
     @Test
     void testDefault()
     {
         assertEquals(1024, WorldConfig.DEFAULT.objectCapacity());
-        assertEquals(1 << 30, new WorldConfig(WorldConfig.MAX_OBJECT_CAPACITY).objectCapacity());
+        assertEquals(256, WorldConfig.DEFAULT.traitCapacity());
+        assertEquals(1 << 30, new WorldConfig(WorldConfig.MAX_OBJECT_CAPACITY, 1).objectCapacity());
+        assertEquals(1 << 30, new WorldConfig(1, WorldConfig.MAX_TRAIT_CAPACITY).traitCapacity());
     }
 
     /**
@@ -47,7 +49,8 @@ final class WorldConfigTest
     @ValueSource(ints = {1, 16, WorldConfig.MAX_OBJECT_CAPACITY})
     void testValidCapacity(int capacity)
     {
-        assertEquals(capacity, new WorldConfig(capacity).objectCapacity());
+        assertEquals(capacity, new WorldConfig(capacity, WorldConfig.DEFAULT_TRAIT_CAPACITY).objectCapacity());
+        assertEquals(capacity, new WorldConfig(WorldConfig.DEFAULT_OBJECT_CAPACITY, capacity).traitCapacity());
     }
 
     /**
@@ -59,6 +62,20 @@ final class WorldConfigTest
     @ValueSource(ints = {Integer.MIN_VALUE, -1, 0, WorldConfig.MAX_OBJECT_CAPACITY + 1, Integer.MAX_VALUE})
     void testInvalidCapacity(int capacity)
     {
-        assertThrows(IllegalArgumentException.class, () -> new WorldConfig(capacity));
+        assertThrows(IllegalArgumentException.class,
+                     () -> new WorldConfig(capacity, WorldConfig.DEFAULT_TRAIT_CAPACITY));
+    }
+
+    /**
+     * A trait capacity outside its range is refused.
+     *
+     * @param capacity The capacity.
+     */
+    @ParameterizedTest
+    @ValueSource(ints = {Integer.MIN_VALUE, -1, 0, WorldConfig.MAX_TRAIT_CAPACITY + 1, Integer.MAX_VALUE})
+    void testInvalidTraitCapacity(int capacity)
+    {
+        assertThrows(IllegalArgumentException.class,
+                     () -> new WorldConfig(WorldConfig.DEFAULT_OBJECT_CAPACITY, capacity));
     }
 }

@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.android.verification;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
@@ -26,17 +27,36 @@ import org.junit.runner.RunWith;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.b3dgs.lionengine.ecs.TraitStorage;
+import com.b3dgs.lionengine.ecs.TraitType;
 import com.b3dgs.lionengine.ecs.World;
 import com.b3dgs.lionengine.ecs.WorldConfig;
 
 /**
  * Runs {@code ecs} on Android API 21 (ADR-0044): object creation and removal by ID, pending and stale IDs, the flush
- * and the capacity growth. Expected values are the ones of the JVM tests of {@code lionengine-ecs} (WorldTest,
- * WorldFlushOrderTest).
+ * and the capacity growth; trait registration, deferred trait addition, replacement and removal, pooling and the trait
+ * capacity growth. Expected values are the ones of the JVM tests of {@code lionengine-ecs} (WorldTest,
+ * WorldFlushOrderTest, TraitStorageTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class EcsTest
 {
+    /** A trait type of the test, a one-element {@code int} array as data. */
+    private static final TraitType<int[]> COUNTER = new TraitType<>()
+    {
+        @Override
+        public int[] create()
+        {
+            return new int[1];
+        }
+
+        @Override
+        public void reset(int[] trait)
+        {
+            trait[0] = 0;
+        }
+    };
+
     /**
      * Creates the test.
      */
@@ -52,7 +72,7 @@ public final class EcsTest
     @Test
     public void testLifecycle()
     {
-        final World world = new World(new WorldConfig(1));
+        final World world = new World(new WorldConfig(1, WorldConfig.DEFAULT_TRAIT_CAPACITY));
         final long id = world.create();
 
         assertFalse(world.isAlive(id));
@@ -79,7 +99,7 @@ public final class EcsTest
     @Test
     public void testGrowth()
     {
-        final World world = new World(new WorldConfig(2));
+        final World world = new World(new WorldConfig(2, WorldConfig.DEFAULT_TRAIT_CAPACITY));
         for (int i = 0; i < 5; i++)
         {
             world.create();
@@ -88,5 +108,61 @@ public final class EcsTest
         world.flush();
         assertEquals(8, world.getObjectCapacity());
         assertEquals(5, world.getObjectCount());
+    }
+
+    /**
+     * A trait is registered once, added at the flush, replaced by a second addition, removed at the flush and reset into
+     * the pool; accessors refuse a pending object; removing the object removes its traits.
+     */
+    @Test
+    public void testTraits()
+    {
+        final World world = new World(new WorldConfig(2, 1));
+        final TraitStorage<int[]> counters = world.register(COUNTER);
+        assertEquals(0, counters.getTypeId());
+        assertThrows(IllegalArgumentException.class, () -> world.register(COUNTER));
+
+        final long id = world.create();
+        final int[] first = counters.add(id);
+        first[0] = 5;
+        assertThrows(IllegalStateException.class, () -> counters.has(id));
+        world.flush();
+        assertSame(first, counters.get(id));
+        assertEquals(5, counters.get(id)[0]);
+
+        final int[] second = counters.add(id);
+        second[0] = 7;
+        world.flush();
+        assertSame(second, counters.get(id));
+        assertEquals(0, first[0]);
+
+        counters.remove(id);
+        world.flush();
+        assertFalse(counters.has(id));
+        assertSame(second, counters.add(id));
+        world.flush();
+
+        world.remove(id);
+        world.flush();
+        assertEquals(0, counters.getCount());
+        assertThrows(IllegalArgumentException.class, () -> counters.has(id));
+    }
+
+    /**
+     * Adding more traits than the trait capacity doubles it at the flush.
+     */
+    @Test
+    public void testTraitGrowth()
+    {
+        final World world = new World(new WorldConfig(8, 1));
+        final TraitStorage<int[]> counters = world.register(COUNTER);
+        for (int i = 0; i < 3; i++)
+        {
+            counters.add(world.create())[0] = i;
+        }
+        assertEquals(1, counters.getCapacity());
+        world.flush();
+        assertEquals(4, counters.getCapacity());
+        assertEquals(3, counters.getCount());
     }
 }

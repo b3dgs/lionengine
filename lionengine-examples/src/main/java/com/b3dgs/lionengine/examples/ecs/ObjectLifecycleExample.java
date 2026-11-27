@@ -63,7 +63,7 @@ public final class ObjectLifecycleExample
      */
     public static World createWorld()
     {
-        return new World(new WorldConfig(CAPACITY));
+        return new World(new WorldConfig(CAPACITY, WorldConfig.DEFAULT_TRAIT_CAPACITY));
     }
 
     /**

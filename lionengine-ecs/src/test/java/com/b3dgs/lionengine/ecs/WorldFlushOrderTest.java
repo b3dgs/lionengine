@@ -42,7 +42,7 @@ final class WorldFlushOrderTest
     @Test
     void testCreateThenRemove()
     {
-        final World world = new World(new WorldConfig(1));
+        final World world = new World(new WorldConfig(1, WorldConfig.DEFAULT_TRAIT_CAPACITY));
         final long id = world.create();
         world.remove(id);
         world.flush();
@@ -159,7 +159,7 @@ final class WorldFlushOrderTest
      */
     private static long[] run()
     {
-        final World world = new World(new WorldConfig(2));
+        final World world = new World(new WorldConfig(2, WorldConfig.DEFAULT_TRAIT_CAPACITY));
         final long[] ids = new long[STEPS * CREATED_PER_STEP];
         int count = 0;
         for (int step = 0; step < STEPS; step++)

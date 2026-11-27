@@ -17,8 +17,8 @@
 package com.b3dgs.lionengine.ecs;
 
 /**
- * The container of the objects of a game or of a scene (REQ-WORLD-001, REQ-ECS-001, REQ-ECS-002, REQ-ECS-010,
- * REQ-ECS-011, ADR-0011, ADR-0021, ADR-0030, ADR-0034, ADR-0074).
+ * The container of the objects of a game or of a scene and of their traits (REQ-WORLD-001, REQ-ECS-001 to REQ-ECS-004,
+ * REQ-ECS-006, REQ-ECS-010 to REQ-ECS-013, ADR-0011, ADR-0021, ADR-0030, ADR-0034, ADR-0074, ADR-0075).
  *
  * <p>
  * <b>Object IDs.</b> An object is an opaque primitive {@code long}: a generation in the high 32 bits, an index in the
@@ -30,12 +30,21 @@ package com.b3dgs.lionengine.ecs;
  * </p>
  *
  * <p>
+ * <b>Traits.</b> A trait is data attached to an object, at most one per trait type. Each trait type is registered
+ * explicitly, once per world, with {@link #register(TraitType)}, which gives it an {@code int} type ID (0, then
+ * consecutive, in registration order) and returns its {@link TraitStorage}; registering the same type twice fails.
+ * Adding and removing traits goes through the storage and is deferred like the object changes below; removing an
+ * object removes all its traits. Trait instances are pooled and reset on removal.
+ * </p>
+ *
+ * <p>
  * <b>Deferred changes.</b> {@link #create()} returns the ID of a new object at once, so further commands can be
  * recorded with it, but the object is <em>pending</em>: {@link #isAlive(long)} returns {@code false} until the next
  * {@link #flush()}, and accessors fail fast. {@link #remove(long)} records the removal of a pending or alive object,
  * with all its traits: the object stays alive until the flush. The flush applies the recorded commands in recorded
- * order: a creation and a removal recorded in the same step both apply. A removal of an object already removed by an
- * earlier command of the same flush changes nothing. In the game loop there is one flush per step, at the end, after
+ * order, object and trait commands together: a creation and a removal recorded in the same step both apply, as do a
+ * trait addition and its removal. A removal of an object already removed by an earlier command of the same flush
+ * changes nothing. In the game loop there is one flush per step, at the end, after
  * every system and before rendering, so changes are visible from the next step; an explicit flush is allowed outside
  * the loop (setup, tests) and between two world updates (snapshot application, ADR-0038).
  * </p>
@@ -44,15 +53,16 @@ package com.b3dgs.lionengine.ecs;
  * <b>Capacity.</b> The world holds {@link WorldConfig#objectCapacity()} objects without growing. Creating more is
  * allowed: the table doubles at the next flush until every created object fits, a documented warm-up cost, and never
  * shrinks; {@link #reserve(int)} grows it ahead. The log of the recorded commands starts with the same capacity and
- * doubles when a step records more commands. Once the capacities fit the busiest step, {@link #create()},
- * {@link #remove(long)} and {@link #flush()} allocate nothing. The world never holds more than
- * {@link WorldConfig#MAX_OBJECT_CAPACITY} indices at once.
+ * doubles when a step records more commands. Each trait storage holds {@link WorldConfig#traitCapacity()} traits
+ * the same way (see {@link TraitStorage}). Once the capacities fit the busiest step, {@link #create()},
+ * {@link #remove(long)}, the trait additions and removals and {@link #flush()} allocate nothing. The world never
+ * holds more than {@link WorldConfig#MAX_OBJECT_CAPACITY} indices at once.
  * </p>
  *
  * <p>
  * No singleton: several worlds coexist, each independent of the others; an ID is meaningful in the world that created
- * it only. A world has no dependency on rendering, resources, audio, camera or tile maps. Traits, queries, events,
- * systems and the random source are added to the world by the next batches of the feature page.
+ * it only. A world has no dependency on rendering, resources, audio, camera or tile maps. Queries, events, systems and
+ * the random source are added to the world by the next batches of the feature page.
  * </p>
  *
  * <p>
@@ -69,11 +79,28 @@ public final class World
 
     /** The message of a stale or never-valid ID. */
     private static final String ERROR_INVALID = "Stale or invalid object ID: ";
+    /** Initial length of the array of trait storages. */
+    private static final int INITIAL_TRAIT_TYPES = 16;
+    /** The hook of a world without listeners. */
+    private static final ChangeHook NO_HOOK = new ChangeHook()
+    {
+        // Every change is ignored.
+    };
 
     /** The objects. */
     private final ObjectTable objects;
     /** The commands recorded since the last flush. */
     private final StructuralCommands commands;
+    /** The trait masks of the objects. */
+    private final TraitMasks masks;
+    /** The trait capacity of a new storage. */
+    private final int traitCapacity;
+    /** The trait storages, by type ID. */
+    private TraitStorage<?>[] storages;
+    /** The number of registered trait types. */
+    private int typeCount;
+    /** The effective changes of the flush. */
+    private ChangeHook hook = NO_HOOK;
 
     /**
      * Creates a world with the default configuration, {@link WorldConfig#DEFAULT}.
@@ -109,6 +136,67 @@ public final class World
         }
         objects = new ObjectTable(config.objectCapacity(), maxGeneration);
         commands = new StructuralCommands(config.objectCapacity());
+        masks = new TraitMasks(config.objectCapacity());
+        traitCapacity = config.traitCapacity();
+        storages = new TraitStorage<?>[INITIAL_TRAIT_TYPES];
+    }
+
+    /**
+     * Registers a trait type and gives it the next type ID.
+     *
+     * <p>
+     * Registration is explicit and happens once per type and world, usually at initialization: it allocates the
+     * storage of the type and fills its pool with {@link WorldConfig#traitCapacity()} instances created by
+     * {@link TraitType#create()}. It is allowed at any time outside a flush, also after objects exist; existing
+     * objects have no trait of the new type. The same {@link TraitType} may be registered in several worlds, each
+     * with its own storage and type ID.
+     * </p>
+     *
+     * @param <T> The trait class.
+     * @param type The trait type, not registered in this world yet.
+     * @return The storage of the type, whose {@link TraitStorage#getTypeId()} is the number of types registered before
+     *         it.
+     * @throws IllegalArgumentException If the type is {@code null} or already registered in this world.
+     * @throws IllegalStateException If the type creates a {@code null} instance.
+     */
+    public <T> TraitStorage<T> register(TraitType<T> type)
+    {
+        if (type == null)
+        {
+            throw new IllegalArgumentException("Trait type is null");
+        }
+        for (int i = 0; i < typeCount; i++)
+        {
+            if (storages[i].getType() == type)
+            {
+                throw new IllegalArgumentException("Trait type already registered with the type ID " + i);
+            }
+        }
+        final TraitStorage<T> storage = new TraitStorage<>(this,
+                                                           type,
+                                                           typeCount,
+                                                           traitCapacity,
+                                                           objects.getCapacity());
+        if (typeCount == storages.length)
+        {
+            final TraitStorage<?>[] grown = new TraitStorage<?>[typeCount * 2];
+            System.arraycopy(storages, 0, grown, 0, typeCount);
+            storages = grown;
+        }
+        masks.addType(typeCount);
+        storages[typeCount] = storage;
+        typeCount++;
+        return storage;
+    }
+
+    /**
+     * Returns the number of registered trait types.
+     *
+     * @return The trait types registered in this world; the next one gets this number as type ID.
+     */
+    public int getTraitTypeCount()
+    {
+        return typeCount;
     }
 
     /**
@@ -147,10 +235,7 @@ public final class World
      */
     public void remove(long objectId)
     {
-        if (!objects.isAlive(objectId) && !objects.isPending(objectId))
-        {
-            throw new IllegalArgumentException(ERROR_INVALID + objectId);
-        }
+        checkRecordable(objectId);
         commands.add(StructuralCommands.REMOVE, objectId);
     }
 
@@ -175,28 +260,32 @@ public final class World
      * Applies the recorded structural changes, in recorded order, then forgets them.
      *
      * <p>
-     * First the object table grows, doubling, if more objects were created than it holds. Then each creation makes its
-     * object alive and each removal removes its object, if still alive; its index takes the next generation and becomes
-     * reusable by the next {@link #create()} calls. In the game loop the world calls it once per step, at the end;
-     * outside the loop it may be called at any time (setup, tests). A flush without command changes nothing. No
-     * allocation unless the table grows.
+     * First the object table, the trait masks and the trait storages grow, doubling, if more objects were created or
+     * more traits added than they hold. Then each command applies in recorded order: a creation makes its object
+     * alive; a removal removes the traits of its object, if still alive, then the object, whose index takes the next
+     * generation and becomes reusable by the next {@link #create()} calls; a trait addition attaches its instance to
+     * its object, if alive, replacing the trait of the same type it may have, otherwise the instance goes back to the
+     * pool; a trait removal detaches the trait of its object, if it has one. Removed and replaced instances are reset
+     * and pooled. In the game loop the world calls it once per step, at the end; outside the loop it may be called at
+     * any time (setup, tests). A flush without command changes nothing. No allocation unless a capacity grows.
      * </p>
      */
     public void flush()
     {
         objects.growToIssued();
+        growTraitIndex(objects.getCapacity());
+        for (int t = 0; t < typeCount; t++)
+        {
+            storages[t].prepareFlush();
+        }
         final int count = commands.size();
         for (int i = 0; i < count; i++)
         {
-            final long id = commands.getId(i);
-            if (commands.getKind(i) == StructuralCommands.CREATE)
-            {
-                objects.activate(id);
-            }
-            else
-            {
-                objects.release(id);
-            }
+            apply(i);
+        }
+        for (int t = 0; t < typeCount; t++)
+        {
+            storages[t].endFlush();
         }
         commands.clear();
     }
@@ -205,7 +294,9 @@ public final class World
      * Grows the object table ahead, so that the next flushes do not have to.
      *
      * <p>
-     * Allocates now, outside the steps; never shrinks: a value below the current capacity changes nothing.
+     * Allocates now, outside the steps, for the object table, the trait masks and the index of every trait storage;
+     * never shrinks: a value below the current capacity changes nothing. The trait capacities grow with
+     * {@link TraitStorage#reserve(int)}.
      * </p>
      *
      * @param objectCapacity The number of objects to hold without growing, in [1,
@@ -219,6 +310,7 @@ public final class World
             throw new IllegalArgumentException("Object capacity outside [1, 2^30]: " + objectCapacity);
         }
         objects.grow(objectCapacity);
+        growTraitIndex(objects.getCapacity());
     }
 
     /**
@@ -242,7 +334,7 @@ public final class World
     }
 
     /**
-     * Checks that an ID names an alive object, for the accessors of the world (the trait accessors of the next batch).
+     * Checks that an ID names an alive object, for the accessors of the world and of its trait storages.
      *
      * @param objectId The ID.
      * @return The index of the object.
@@ -263,6 +355,66 @@ public final class World
     }
 
     /**
+     * Checks that a command may be recorded for an ID: the object is alive or pending, and the log has room.
+     *
+     * @param objectId The ID.
+     * @throws IllegalArgumentException If the ID is stale or never named an object of this world.
+     * @throws IllegalStateException If {@link WorldConfig#MAX_OBJECT_CAPACITY} commands are already recorded.
+     */
+    void checkRecordable(long objectId)
+    {
+        if (!objects.isAlive(objectId) && !objects.isPending(objectId))
+        {
+            throw new IllegalArgumentException(ERROR_INVALID + objectId);
+        }
+        commands.ensureRoom();
+    }
+
+    /**
+     * Records a trait command, after {@link #checkRecordable(long)}.
+     *
+     * @param kind The kind, {@link StructuralCommands#ADD_TRAIT} or {@link StructuralCommands#REMOVE_TRAIT}.
+     * @param objectId The object ID.
+     * @param typeId The trait type ID.
+     * @param slot The staged slot of an addition, otherwise {@code 0}.
+     */
+    void record(byte kind, long objectId, int typeId, int slot)
+    {
+        commands.add(kind, objectId, typeId, slot);
+    }
+
+    /**
+     * Returns the trait masks, the seam of the queries.
+     *
+     * @return The masks of the objects.
+     */
+    TraitMasks getMasks()
+    {
+        return masks;
+    }
+
+    /**
+     * Returns a trait storage, the seam of the queries.
+     *
+     * @param typeId The type ID, in [0, {@link #getTraitTypeCount()}).
+     * @return The storage of the type.
+     */
+    TraitStorage<?> getStorage(int typeId)
+    {
+        return storages[typeId];
+    }
+
+    /**
+     * Sets the hook of the effective changes, the seam of the listeners.
+     *
+     * @param hook The hook, not {@code null}.
+     */
+    void setHook(ChangeHook hook)
+    {
+        this.hook = hook;
+    }
+
+    /**
      * Returns the capacity of the command log, for the tests of its growth.
      *
      * @return The number of commands held without growing.
@@ -270,5 +422,136 @@ public final class World
     int getCommandCapacity()
     {
         return commands.getCapacity();
+    }
+
+    /**
+     * Applies one command, at the flush.
+     *
+     * @param command The command, in recorded order.
+     */
+    private void apply(int command)
+    {
+        final long id = commands.getId(command);
+        switch (commands.getKind(command))
+        {
+            case StructuralCommands.CREATE -> applyCreate(id);
+            case StructuralCommands.REMOVE -> applyRemove(id);
+            case StructuralCommands.ADD_TRAIT -> applyAddTrait(id, commands.getType(command), commands.getArg(command));
+            default -> applyRemoveTrait(id, commands.getType(command));
+        }
+    }
+
+    /**
+     * Makes a pending object alive.
+     *
+     * @param id The object ID.
+     */
+    private void applyCreate(long id)
+    {
+        objects.activate(id);
+        hook.onCreated(id);
+    }
+
+    /**
+     * Removes an object and its traits, if it is alive.
+     *
+     * @param id The object ID.
+     */
+    private void applyRemove(long id)
+    {
+        if (objects.isAlive(id))
+        {
+            final int index = ObjectTable.index(id);
+            final int words = masks.getWordCount();
+            for (int w = 0; w < words; w++)
+            {
+                long bits = masks.getWord(index, w);
+                while (bits != 0L)
+                {
+                    final int typeId = w * TraitMasks.TYPES_PER_WORD + Long.numberOfTrailingZeros(bits);
+                    bits &= bits - 1L;
+                    detachTrait(id, index, typeId);
+                }
+            }
+            objects.release(id);
+            hook.onDestroyed(id);
+        }
+    }
+
+    /**
+     * Attaches a staged trait to its object if it is alive, replacing the trait of the same type; otherwise pools it.
+     *
+     * @param id The object ID.
+     * @param typeId The trait type ID.
+     * @param slot The staged slot.
+     */
+    private void applyAddTrait(long id, int typeId, int slot)
+    {
+        final TraitStorage<?> storage = storages[typeId];
+        if (objects.isAlive(id))
+        {
+            final int index = ObjectTable.index(id);
+            if (storage.contains(index))
+            {
+                hook.onTraitRemoved(id, typeId);
+                storage.replace(index, slot);
+            }
+            else
+            {
+                storage.attach(id, index, slot);
+                masks.set(index, typeId);
+            }
+            hook.onTraitAdded(id, typeId);
+        }
+        else
+        {
+            storage.discard(slot);
+        }
+    }
+
+    /**
+     * Detaches a trait from its object, if the object is alive and has it.
+     *
+     * @param id The object ID.
+     * @param typeId The trait type ID.
+     */
+    private void applyRemoveTrait(long id, int typeId)
+    {
+        if (objects.isAlive(id))
+        {
+            final int index = ObjectTable.index(id);
+            if (storages[typeId].contains(index))
+            {
+                detachTrait(id, index, typeId);
+            }
+        }
+    }
+
+    /**
+     * Detaches a trait the object has: reports it, clears its mask bit, then resets and pools the instance.
+     *
+     * @param id The object ID.
+     * @param index The object index.
+     * @param typeId The trait type ID.
+     */
+    private void detachTrait(long id, int index, int typeId)
+    {
+        hook.onTraitRemoved(id, typeId);
+        masks.clear(index, typeId);
+        storages[typeId].detach(index);
+    }
+
+    /**
+     * Grows the trait masks and the index of every trait storage to the object capacity.
+     *
+     * @param objectCapacity The object capacity.
+     */
+    private void growTraitIndex(int objectCapacity)
+    {
+        masks.grow(objectCapacity);
+        for (int t = 0; t < typeCount; t++)
+        {
+            storages[t].growObjects(objectCapacity);
+        }
     }
 }
