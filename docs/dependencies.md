@@ -33,7 +33,7 @@ Planned candidates, not added yet (a row moves to the table above only in the pu
 
 | Name | Planned module | Purpose | Decision |
 |---|---|---|---|
-| JOrbis | `audio-codec-ogg` (desktop only) | OGG Vorbis decoding on desktop | ADR-0033; license and status recorded when added |
+| JOrbis | `audio-codec-ogg` (desktop only) | OGG Vorbis decoding on desktop | ADR-0033; approved by the owner on 2026-11-27 (audio review) for audio batch 8, which records its version, license (LGPL) and status when it adds it |
 | A desktop gamepad library | a later `input-*` adapter | Gamepads on desktop (the JDK has none) | ADR-0035; chosen with a game need |
 
 Note on `desugar_jdk_libs`: it is distributed under GPL-2.0 with the Classpath Exception, like the OpenJDK class library it derives from, and is linked into Android applications by the Android Gradle Plugin, not into engine artifacts. The exception allows that linking; the row is recorded for games, which must enable desugaring (ADR-0012).
