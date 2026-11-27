@@ -16,17 +16,21 @@
  */
 package com.b3dgs.lionengine.android.verification;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.b3dgs.lionengine.ecs.Query;
 import com.b3dgs.lionengine.ecs.TraitStorage;
 import com.b3dgs.lionengine.ecs.TraitType;
 import com.b3dgs.lionengine.ecs.World;
@@ -35,8 +39,9 @@ import com.b3dgs.lionengine.ecs.WorldConfig;
 /**
  * Runs {@code ecs} on Android API 21 (ADR-0044): object creation and removal by ID, pending and stale IDs, the flush
  * and the capacity growth; trait registration, deferred trait addition, replacement and removal, pooling and the trait
- * capacity growth. Expected values are the ones of the JVM tests of {@code lionengine-ecs} (WorldTest,
- * WorldFlushOrderTest, TraitStorageTest).
+ * capacity growth; queries with include and exclude sets, their update at the flush, changes requested inside an
+ * iteration and the sorted ID copy. Expected values are the ones of the JVM tests of {@code lionengine-ecs} (WorldTest,
+ * WorldFlushOrderTest, TraitStorageTest, QueryTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class EcsTest
@@ -164,5 +169,55 @@ public final class EcsTest
         world.flush();
         assertEquals(4, counters.getCapacity());
         assertEquals(3, counters.getCount());
+    }
+
+    /**
+     * A query lists the objects with the included trait and without the excluded one, follows the flush, stays valid
+     * while removals are requested inside its iteration, and copies its IDs in ascending order.
+     */
+    @Test
+    public void testQueries()
+    {
+        final World world = new World(new WorldConfig(4, 4));
+        final TraitStorage<int[]> counters = world.register(COUNTER);
+        final TraitStorage<int[]> frozen = world.register(new TraitType<int[]>()
+        {
+            @Override
+            public int[] create()
+            {
+                return new int[1];
+            }
+
+            @Override
+            public void reset(int[] trait)
+            {
+                trait[0] = 0;
+            }
+        });
+        final long[] ids = new long[5];
+        for (int i = 0; i < ids.length; i++)
+        {
+            ids[i] = world.create();
+            counters.add(ids[i]);
+        }
+        frozen.add(ids[1]);
+        world.flush();
+        final Query active = world.createQuery(new TraitStorage<?>[] {counters}, new TraitStorage<?>[] {frozen});
+        final Query all = world.createQuery(counters);
+        final long[] sorted = new long[ids.length];
+
+        assertEquals(4, active.copySortedIds(sorted));
+        assertArrayEquals(new long[] {ids[0], ids[2], ids[3], ids[4]}, Arrays.copyOf(sorted, 4));
+
+        for (int i = 0; i < all.getCount(); i++)
+        {
+            world.remove(all.getId(i));
+        }
+        frozen.remove(ids[1]);
+        assertEquals(5, all.getCount());
+        world.flush();
+        assertEquals(0, all.getCount());
+        assertEquals(0, active.getCount());
+        assertThrows(IllegalArgumentException.class, () -> all.copySortedIds(null));
     }
 }

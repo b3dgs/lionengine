@@ -61,7 +61,16 @@ Batch 2 (2026-11-27), the trait registry, pooled storage and deferred trait chan
 - No allocation on the steady add, remove, replace and flush paths: `TraitAllocationTest` measures 0 bytes over 1,000 steps of 1,000 objects removed and created with two traits and a third added and removed (about 7 million commands; ADR-0075, decision 10).
 - Tests: `TraitStorageTest`, `TraitFlushOrderTest` (regression set of the mixed flush order, reproducibility), `TraitAllocationTest`, `WorldConfigTest`, `TraitExampleTest`; the device test `EcsTest` (`testTraits`, `testTraitGrowth`).
 
-Next: batch 3, the cached queries with include and exclude sets and the ID copy.
+Batch 3 (2026-11-27), the cached queries with include and exclude sets and the sorted ID copy, with the example `QueryExample` (game-defined trait `Frozen`, excluded) and its API-index row. The signatures and details this page leaves to the batch follow [ADR-0076](../decisions/0076-ecs-cached-queries-include-exclude-and-sorted-id-copy.md) (owner delegation):
+- `Query`, created by `World.createQuery(include...)` or `World.createQuery(include[], exclude[])` from the `TraitStorage` handles of `register`; a `null` set or element, a storage of another world, an empty include set and a type both included and excluded are an `IllegalArgumentException`; each call creates a new query; queries live as long as their world (no release); `World.getQueryCount()`.
+- Iteration: `getCount()` and `getId(position)` in an index loop, no allocation; the list changes at the flush only, so creations, removals and trait changes requested inside the loop are deferred and the iteration stays valid; `flush()` inside an iteration is a misuse.
+- Incremental update: at the flush, each trait attached or detached updates the queries that include or exclude its type, right after the mask change (append on match, swap-remove on mismatch); a replacement changes nothing; order deterministic for the same operation sequence, not creation order. A query created after objects exist is filled from the last flush, in the dense order of its smallest include storage.
+- `copySortedIds(buffer)`: ascending IDs at the start of the buffer, in-place heapsort, the rest unchanged, returns the count; a `null` or undersized buffer is an `IllegalArgumentException`, the buffer unchanged.
+- Capacity: per query a dense `long[]` and an `int[]` per object index, sized to the object capacity, growing with it, never shrinking (12 bytes per object index). Queries are maintained by the world, not through the package-private change hook, and agree with the masks during hook calls (the seam of the batch 4 listeners).
+- No allocation on iteration, update and flush: `QueryAllocationTest` measures 0 bytes over 1,000 steps of 1,000 objects, three queries and about 2.5 million commands recorded from inside the iterations (ADR-0076, decision 11).
+- Tests: `QueryTest` (matching across more than 64 types, update on add, remove, replace and object removal, pending objects, creation after objects exist, removals and additions inside an iteration, determinism across two runs, sorted copy with exact, larger and undersized buffers, in-place sort, growth, validation, agreement with the hook), `QueryAllocationTest`, `QueryExampleTest`; the device test `EcsTest.testQueries`.
+
+Next: batch 4, the events and the system ordering.
 
 ## Lifecycle and concurrency
 

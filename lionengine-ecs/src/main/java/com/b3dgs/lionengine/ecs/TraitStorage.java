@@ -259,6 +259,17 @@ public final class TraitStorage<T>
     }
 
     /**
+     * Tells whether this storage is one of a world, for the queries.
+     *
+     * @param owner The world.
+     * @return {@code true} if the storage was registered in that world.
+     */
+    boolean belongsTo(World owner)
+    {
+        return world == owner;
+    }
+
+    /**
      * Returns the number of free instances, for the tests of pooling.
      *
      * @return The reset instances waiting in the pool.

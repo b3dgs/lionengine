@@ -18,7 +18,7 @@ package com.b3dgs.lionengine.ecs;
 
 /**
  * The container of the objects of a game or of a scene and of their traits (REQ-WORLD-001, REQ-ECS-001 to REQ-ECS-004,
- * REQ-ECS-006, REQ-ECS-010 to REQ-ECS-013, ADR-0011, ADR-0021, ADR-0030, ADR-0034, ADR-0074, ADR-0075).
+ * REQ-ECS-005, REQ-ECS-006, REQ-ECS-010 to REQ-ECS-013, ADR-0011, ADR-0021, ADR-0030, ADR-0034, ADR-0074 to ADR-0076).
  *
  * <p>
  * <b>Object IDs.</b> An object is an opaque primitive {@code long}: a generation in the high 32 bits, an index in the
@@ -35,6 +35,12 @@ package com.b3dgs.lionengine.ecs;
  * consecutive, in registration order) and returns its {@link TraitStorage}; registering the same type twice fails.
  * Adding and removing traits goes through the storage and is deferred like the object changes below; removing an
  * object removes all its traits. Trait instances are pooled and reset on removal.
+ * </p>
+ *
+ * <p>
+ * <b>Queries.</b> {@link #createQuery(TraitStorage[], TraitStorage[])} gives a {@link Query}: the cached list of the
+ * objects having all of an include set of trait types and none of an exclude set, updated by each flush without
+ * allocating, iterated without allocating.
  * </p>
  *
  * <p>
@@ -61,8 +67,8 @@ package com.b3dgs.lionengine.ecs;
  *
  * <p>
  * No singleton: several worlds coexist, each independent of the others; an ID is meaningful in the world that created
- * it only. A world has no dependency on rendering, resources, audio, camera or tile maps. Queries, events, systems and
- * the random source are added to the world by the next batches of the feature page.
+ * it only. A world has no dependency on rendering, resources, audio, camera or tile maps. Events, systems and the
+ * random source are added to the world by the next batches of the feature page.
  * </p>
  *
  * <p>
@@ -81,6 +87,10 @@ public final class World
     private static final String ERROR_INVALID = "Stale or invalid object ID: ";
     /** Initial length of the array of trait storages. */
     private static final int INITIAL_TRAIT_TYPES = 16;
+    /** Initial length of the array of queries. */
+    private static final int INITIAL_QUERIES = 8;
+    /** The empty exclude set. */
+    private static final TraitStorage<?>[] NO_TYPES = new TraitStorage<?>[0];
     /** The hook of a world without listeners. */
     private static final ChangeHook NO_HOOK = new ChangeHook()
     {
@@ -99,6 +109,10 @@ public final class World
     private TraitStorage<?>[] storages;
     /** The number of registered trait types. */
     private int typeCount;
+    /** The queries, in creation order. */
+    private Query[] queries;
+    /** The number of queries. */
+    private int queryCount;
     /** The effective changes of the flush. */
     private ChangeHook hook = NO_HOOK;
 
@@ -139,6 +153,7 @@ public final class World
         masks = new TraitMasks(config.objectCapacity());
         traitCapacity = config.traitCapacity();
         storages = new TraitStorage<?>[INITIAL_TRAIT_TYPES];
+        queries = new Query[INITIAL_QUERIES];
     }
 
     /**
@@ -187,6 +202,79 @@ public final class World
         storages[typeCount] = storage;
         typeCount++;
         return storage;
+    }
+
+    /**
+     * Creates a query of the objects having all the given trait types, without exclude set.
+     *
+     * <p>
+     * Same as {@link #createQuery(TraitStorage[], TraitStorage[])} with an empty exclude set.
+     * </p>
+     *
+     * @param include The storages of the included trait types, registered in this world, at least one.
+     * @return The query, filled from the state of the last flush.
+     * @throws IllegalArgumentException If the include set is {@code null}, empty, contains {@code null} or a storage
+     *             of another world.
+     */
+    public Query createQuery(TraitStorage<?>... include)
+    {
+        return createQuery(include, NO_TYPES);
+    }
+
+    /**
+     * Creates a query of the objects having all the trait types of an include set and none of an exclude set.
+     *
+     * <p>
+     * The trait types are named by the storages {@link #register(TraitType)} returned; a type given twice in a set
+     * counts once. The query is filled at once with the matching alive objects, as of the last flush, in the dense
+     * order of the include storage with the fewest traits (pending changes are applied by the next flush, which also
+     * updates the query); then every flush keeps it up to date, without allocating. Allowed at any time outside a
+     * flush and an iteration of the same query, usually at initialization: it allocates the query, sized to the
+     * object capacity. Each call creates a new query, even for the same sets; a query lives as long as the world, and
+     * each one adds a constant cost to every trait change of its types at the flush, so create them once, not per step.
+     * </p>
+     *
+     * @param include The storages of the included trait types, registered in this world, at least one.
+     * @param exclude The storages of the excluded trait types, registered in this world, possibly none.
+     * @return The query, filled from the state of the last flush.
+     * @throws IllegalArgumentException If a set is {@code null} or contains {@code null} or a storage of another world,
+     *             if the include set is empty, or if a type is both included and excluded.
+     */
+    public Query createQuery(TraitStorage<?>[] include, TraitStorage<?>[] exclude)
+    {
+        if (include == null || include.length == 0)
+        {
+            throw new IllegalArgumentException("Query include set is null or empty");
+        }
+        if (exclude == null)
+        {
+            throw new IllegalArgumentException("Query exclude set is null");
+        }
+        final int words = Math.max(maxTypeId(include), maxTypeId(exclude)) / TraitMasks.TYPES_PER_WORD + 1;
+        final long[] includeMask = toMask(include, words);
+        final long[] excludeMask = toMask(exclude, words);
+        checkDisjoint(includeMask, excludeMask);
+        final Query query = new Query(includeMask, excludeMask, objects.getCapacity());
+        fill(query, include);
+        if (queryCount == queries.length)
+        {
+            final Query[] grown = new Query[queryCount * 2];
+            System.arraycopy(queries, 0, grown, 0, queryCount);
+            queries = grown;
+        }
+        queries[queryCount] = query;
+        queryCount++;
+        return query;
+    }
+
+    /**
+     * Returns the number of queries.
+     *
+     * @return The queries created in this world.
+     */
+    public int getQueryCount()
+    {
+        return queryCount;
     }
 
     /**
@@ -266,8 +354,10 @@ public final class World
      * generation and becomes reusable by the next {@link #create()} calls; a trait addition attaches its instance to
      * its object, if alive, replacing the trait of the same type it may have, otherwise the instance goes back to the
      * pool; a trait removal detaches the trait of its object, if it has one. Removed and replaced instances are reset
-     * and pooled. In the game loop the world calls it once per step, at the end; outside the loop it may be called at
-     * any time (setup, tests). A flush without command changes nothing. No allocation unless a capacity grows.
+     * and pooled. Each trait attached or detached updates at once the queries that include or exclude its type; a
+     * replacement changes no query. In the game loop the world calls it once per step, at the end; outside the loop it
+     * may be called at any time (setup, tests), but not inside the iteration of a query. A flush without command
+     * changes nothing. No allocation unless a capacity grows.
      * </p>
      */
     public void flush()
@@ -294,8 +384,8 @@ public final class World
      * Grows the object table ahead, so that the next flushes do not have to.
      *
      * <p>
-     * Allocates now, outside the steps, for the object table, the trait masks and the index of every trait storage;
-     * never shrinks: a value below the current capacity changes nothing. The trait capacities grow with
+     * Allocates now, outside the steps, for the object table, the trait masks, the index of every trait storage and
+     * the queries; never shrinks: a value below the current capacity changes nothing. The trait capacities grow with
      * {@link TraitStorage#reserve(int)}.
      * </p>
      *
@@ -489,6 +579,7 @@ public final class World
             {
                 storage.attach(id, index, slot);
                 masks.set(index, typeId);
+                updateQueries(id, index, typeId);
             }
             hook.onTraitAdded(id, typeId);
         }
@@ -527,11 +618,114 @@ public final class World
     {
         hook.onTraitRemoved(id, typeId);
         masks.clear(index, typeId);
+        updateQueries(id, index, typeId);
         storages[typeId].detach(index);
     }
 
     /**
-     * Grows the trait masks and the index of every trait storage to the object capacity.
+     * Updates the queries that include or exclude a trait type, after a change of its mask bit.
+     *
+     * @param id The object ID.
+     * @param index The object index.
+     * @param typeId The trait type ID.
+     */
+    private void updateQueries(long id, int index, int typeId)
+    {
+        for (int q = 0; q < queryCount; q++)
+        {
+            final Query query = queries[q];
+            if (query.involves(typeId))
+            {
+                query.update(masks, id, index);
+            }
+        }
+    }
+
+    /**
+     * Returns the highest type ID of a set of storages, checking them.
+     *
+     * @param set The storages.
+     * @return The highest type ID, {@code 0} for an empty set.
+     * @throws IllegalArgumentException If the set contains {@code null} or a storage of another world.
+     */
+    private int maxTypeId(TraitStorage<?>[] set)
+    {
+        int max = 0;
+        for (final TraitStorage<?> storage : set)
+        {
+            if (storage == null || !storage.belongsTo(this))
+            {
+                throw new IllegalArgumentException("Query trait storage is null or of another world");
+            }
+            max = Math.max(max, storage.getTypeId());
+        }
+        return max;
+    }
+
+    /**
+     * Checks that no type is both included and excluded.
+     *
+     * @param include The include mask words.
+     * @param exclude The exclude mask words, as many.
+     * @throws IllegalArgumentException If a type is in both.
+     */
+    private static void checkDisjoint(long[] include, long[] exclude)
+    {
+        for (int w = 0; w < include.length; w++)
+        {
+            final long both = include[w] & exclude[w];
+            if (both != 0L)
+            {
+                final int typeId = w * TraitMasks.TYPES_PER_WORD + Long.numberOfTrailingZeros(both);
+                throw new IllegalArgumentException("Query type both included and excluded: " + typeId);
+            }
+        }
+    }
+
+    /**
+     * Fills a new query with the matching alive objects, in the dense order of its smallest include storage.
+     *
+     * @param query The query, empty.
+     * @param include The include storages, at least one.
+     */
+    private void fill(Query query, TraitStorage<?>[] include)
+    {
+        TraitStorage<?> smallest = include[0];
+        for (final TraitStorage<?> storage : include)
+        {
+            if (storage.getCount() < smallest.getCount())
+            {
+                smallest = storage;
+            }
+        }
+        final int count = smallest.getCount();
+        for (int p = 0; p < count; p++)
+        {
+            final long id = smallest.getId(p);
+            query.update(masks, id, ObjectTable.index(id));
+        }
+    }
+
+    /**
+     * Builds the mask words of a set of storages.
+     *
+     * @param set The storages, checked.
+     * @param words The number of words.
+     * @return The mask words.
+     */
+    private static long[] toMask(TraitStorage<?>[] set, int words)
+    {
+        final long[] mask = new long[words];
+        for (final TraitStorage<?> storage : set)
+        {
+            final int typeId = storage.getTypeId();
+            mask[typeId / TraitMasks.TYPES_PER_WORD] |= 1L << typeId;
+        }
+        return mask;
+    }
+
+    /**
+     * Grows the trait masks, the index of every trait storage and the queries to the object capacity.
      *
      * @param objectCapacity The object capacity.
      */
@@ -541,6 +735,10 @@ public final class World
         for (int t = 0; t < typeCount; t++)
         {
             storages[t].growObjects(objectCapacity);
+        }
+        for (int q = 0; q < queryCount; q++)
+        {
+            queries[q].growObjects(objectCapacity);
         }
     }
 }
