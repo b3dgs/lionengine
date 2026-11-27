@@ -67,7 +67,7 @@ Runs at `validate` on `src/main/java` and fails on the first error. Tests are no
   - no raw types or unchecked casts;
   - constructors never call an overridable method and never leak `this` (`this-escape`): prefer `final` classes;
   - no deprecated API.
-- **Release level:** shared modules compile with `--release 21`, desktop-only modules (`platform-awt`, `render-awt`, `input-awt`, `audio-javasound`, `graphics-imageio`) with `--release 25` (ADR-0044).
+- **Release level:** shared modules compile with `--release 21`, desktop-only modules (`platform-awt`, `render-awt`, `input-awt`, `audio-javasound`, `audio-codec-ogg`, `graphics-imageio`) with `--release 25` (ADR-0044).
 - **Javadoc:** doclint `all`, failing on any warning, on public and protected members. Every public type, method, constructor, field, enum constant and record component (`@param` in the record comment) is documented; explicit record constructors too. `@since 11.0.0` goes on each public type.
 - **Package rule** (`radial-encapsulation-maven-plugin`, ADR-0015, ADR-0037): inside a module a package may use itself and its ancestors only. A type used by several sub-packages lives in their common ancestor, usually the module's root package. Package names must not be string prefixes of each other (`load` next to `loader`). No module creates a sub-package named like another module's root.
 - **Module rows:** `scripts/check-modules.py` enforces [`architecture/modules.md`](architecture/modules.md): main dependencies within the row; test scope only on the test JARs of modules already depended on, and on `test-support` when it does not depend on you (ADR-0045). The fakes and abstract contract suites of your module's contracts go in its `src/test/java`, published as its test JAR.
@@ -105,7 +105,7 @@ Rules that most often fire on engine code:
 
 ## 6. Android/DEX constraints (shared modules)
 
-Shared code is everything except the five desktop-only modules. It must dex and run on API 21 (ADR-0012, ADR-0044, [`android-compatibility.md`](android-compatibility.md)):
+Shared code is everything except the six desktop-only modules. It must dex and run on API 21 (ADR-0012, ADR-0044, [`android-compatibility.md`](android-compatibility.md)):
 - **Forbidden** (failure observed on API 21; alternatives in [`android-compatibility.md`](android-compatibility.md)):
   - qualified enum constants in a pattern `switch` over a sealed interface, virtual threads, `VarHandle` (the build fails);
   - `String.lines()`, `HexFormat`, sequenced-collection methods (`getFirst`, `addFirst`, `reversed`, ... on a `List` or a `LinkedHashSet`), `CharSequence.isEmpty()` (also on a `StringBuilder`), `String.formatted`, `InputStream.readAllBytes`, `Collectors.teeing`;

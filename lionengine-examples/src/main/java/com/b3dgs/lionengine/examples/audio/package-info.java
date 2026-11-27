@@ -15,6 +15,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 /**
- * Examples of the {@code audio-api} module: PCM sounds, the audio backend, short and long sounds and their controls.
+ * Examples of the {@code audio-api} module and its desktop modules: PCM sounds, the audio backend, short and long
+ * sounds and their controls, the Java Sound backend and the OGG Vorbis decoder.
  */
 package com.b3dgs.lionengine.examples.audio;

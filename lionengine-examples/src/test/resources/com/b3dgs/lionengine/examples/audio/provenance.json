@@ -1,0 +1,11 @@
+{
+  "format": "lionengine.provenance",
+  "version": 1,
+  "source": "generated",
+  "author": "LionEngine project",
+  "license": "GPL-3.0-or-later",
+  "tool": "ffmpeg 6.1.1 with libvorbis 1.3.7: copies of long-mono-22050.ogg (level.ogg) and mono-11025.ogg (coin.ogg) of lionengine-audio-codec-ogg, made by its src/test/generate-ogg.sh",
+  "model": "none: deterministic signal synthesis, no AI model",
+  "date": "2026-11-27",
+  "comment": "Sounds of OggVorbisExampleTest (ADR-0073): a 5 s sine at 523 Hz as the level music, a 0.5 s sine at 330 Hz as the coin effect."
+}

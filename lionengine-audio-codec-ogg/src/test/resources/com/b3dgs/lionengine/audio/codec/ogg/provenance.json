@@ -1,0 +1,11 @@
+{
+  "format": "lionengine.provenance",
+  "version": 1,
+  "source": "generated",
+  "author": "LionEngine project",
+  "license": "GPL-3.0-or-later",
+  "tool": "ffmpeg 6.1.1 with libvorbis 1.3.7: lavfi sine tones encoded at quality 0, and their libvorbisfile 1.3.7 decodings (*.reference.wav), by src/test/generate-ogg.sh",
+  "model": "none: deterministic signal synthesis, no AI model",
+  "date": "2026-11-27",
+  "comment": "Test files of OggVorbisDecoder (ADR-0073): mono at 11,025, 22,050 and 48,000 Hz, stereo at 44,100 Hz, 5 s of mono on five audio pages, three channels (refused)."
+}
