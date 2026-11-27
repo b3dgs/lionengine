@@ -443,7 +443,7 @@ public final class World
      */
     public void update(double stepSeconds)
     {
-        if (!(stepSeconds > 0.0) || Double.isInfinite(stepSeconds))
+        if (Double.isNaN(stepSeconds) || Double.isInfinite(stepSeconds) || stepSeconds <= 0.0)
         {
             throw new IllegalArgumentException("Step not positive and finite: " + stepSeconds);
         }
