@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Decoder of PCM WAV files, written by the project for every backend (ADR-0027, ADR-0065, ADR-0066, REQ-AUDIO-002,
- * REQ-AUDIO-003).
+ * Decoder of PCM WAV files, written by the project for every backend, entirely or by streaming (ADR-0027, ADR-0065,
+ * ADR-0066, ADR-0068, REQ-AUDIO-002, REQ-AUDIO-003, REQ-AUDIO-006).
  *
  * <p>
  * Accepted: a RIFF {@code WAVE} file with one {@code fmt } chunk before its {@code data} chunk; integer PCM (format
@@ -31,7 +31,9 @@ import java.io.InputStream;
  * the pad byte of an odd-sized chunk, and nothing after the {@code data} chunk is read. Refused with an
  * {@link AudioDecodingException}: another encoding (floating point, ADPCM, mu-law...), more than two channels, an
  * inconsistent frame size, a {@code data} chunk whose size is not a whole number of frames, missing or truncated
- * chunks, and a sound above the frame limit, checked from the header before the samples are allocated.
+ * chunks, and, by {@link #decode(java.io.InputStream)} only, a sound above the frame limit, checked from the header
+ * before the samples are allocated. {@link #open(java.io.InputStream)} streams the same files without length limit,
+ * for the long sounds.
  * </p>
  *
  * <p>
@@ -41,12 +43,13 @@ import java.io.InputStream;
  *
  * <p>
  * Threads: thread-safe; the decoder holds only its limit, so loading workers may decode several sounds at once
- * (ADR-0019). The stream is read and never closed.
+ * (ADR-0019). The stream is read and never closed. Each source it opens is independent and read by one thread at a
+ * time.
  * </p>
  *
  * @since 11.0.0
  */
-public final class WavDecoder implements AudioDecoder
+public final class WavDecoder implements AudioStreamDecoder
 {
     /**
      * Default frame limit: 1,920,000 frames, 10 s at 192 kHz, the longest short sound (ADR-0033) at the highest common
@@ -62,37 +65,8 @@ public final class WavDecoder implements AudioDecoder
     private static final String FMT = "fmt ";
     /** Identifier of the data chunk. */
     private static final String DATA = "data";
-    /** Bytes read from the stream at once. */
-    private static final int READ_BYTES = 4_096;
-    /** Offset that centers an unsigned 8-bit sample. */
-    private static final int UNSIGNED_OFFSET = 128;
-    /** Mask of an unsigned byte. */
-    private static final int BYTE = 0xFF;
     /** Error message of truncated data. */
     private static final String ERROR_TRUNCATED = "Truncated WAV data";
-
-    /**
-     * Converts one sample of the file to 16 bits.
-     *
-     * @param bytes The bytes of the file.
-     * @param index The index of the first byte of the sample.
-     * @param bytesPerSample The bytes of the sample: 1, 2, 3 or 4.
-     * @return The 16-bit sample.
-     */
-    private static short toShort(byte[] bytes, int index, int bytesPerSample)
-    {
-        final short sample;
-        if (bytesPerSample == 1)
-        {
-            sample = (short) (((bytes[index] & BYTE) - UNSIGNED_OFFSET) << Byte.SIZE);
-        }
-        else
-        {
-            final int high = index + bytesPerSample - 1;
-            sample = (short) (bytes[high] << Byte.SIZE | bytes[high - 1] & BYTE);
-        }
-        return sample;
-    }
 
     /** Frame limit. */
     private final int maxFrames;
@@ -135,6 +109,44 @@ public final class WavDecoder implements AudioDecoder
     @Override
     public PcmBuffer decode(InputStream input) throws IOException
     {
+        final WavSource source = openSource(input);
+        final long frames = source.getFrames();
+        if (frames > maxFrames)
+        {
+            throw new AudioDecodingException("WAV sound of " + frames + " frames refused, limit " + maxFrames);
+        }
+        final PcmFormat format = source.getFormat();
+        final short[] samples = new short[(int) frames * format.channels()];
+        source.read(samples, 0, (int) frames);
+        return new PcmBuffer(format, samples);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>
+     * The frame limit does not apply: a streamed sound has no length limit. The source reads the {@code data} chunk
+     * only, to its declared size, and refuses a truncated one with an {@link AudioDecodingException} when it reaches
+     * the missing bytes.
+     * </p>
+     */
+    @Override
+    public PcmSource open(InputStream input) throws IOException
+    {
+        return openSource(input);
+    }
+
+    /**
+     * Reads and checks the header, and opens the samples of the data chunk.
+     *
+     * @param input The stream, positioned at its first byte.
+     * @return The source of the samples, positioned at the first one.
+     * @throws AudioDecodingException If the header is invalid, unsupported or truncated.
+     * @throws IllegalArgumentException If {@code input} is {@code null}.
+     * @throws IOException If reading fails.
+     */
+    private static WavSource openSource(InputStream input) throws IOException
+    {
         if (input == null)
         {
             throw new IllegalArgumentException("Input must not be null");
@@ -160,15 +172,15 @@ public final class WavDecoder implements AudioDecoder
     }
 
     /**
-     * Reads the chunks until the data chunk, and decodes its samples.
+     * Reads the chunks until the data chunk, and opens its samples.
      *
      * @param wav The reader, positioned after the RIFF header.
-     * @return The samples.
-     * @throws AudioDecodingException If the format is missing, unsupported or inconsistent, or the sound is too long.
+     * @return The source of the samples, positioned at the first one.
+     * @throws AudioDecodingException If the format is missing, unsupported or inconsistent.
      * @throws EOFException If the stream ends before the samples.
      * @throws IOException If reading fails.
      */
-    private PcmBuffer readChunks(WavInput wav) throws IOException
+    private static WavSource readChunks(WavInput wav) throws IOException
     {
         WavFormat format = null;
         while (true)
@@ -181,7 +193,13 @@ public final class WavDecoder implements AudioDecoder
                 {
                     throw new AudioDecodingException("WAV data chunk before its format chunk");
                 }
-                return readSamples(wav, format, size);
+                final int frameBytes = format.frameBytes();
+                if (size % frameBytes != 0L)
+                {
+                    throw new AudioDecodingException("WAV data size " + size + " not a multiple of the frame size "
+                                                     + frameBytes);
+                }
+                return new WavSource(wav, format, size / frameBytes);
             }
             if (FMT.equals(id))
             {
@@ -192,47 +210,5 @@ public final class WavDecoder implements AudioDecoder
                 wav.skip(size + (size & 1L));
             }
         }
-    }
-
-    /**
-     * Reads and converts the samples of the data chunk.
-     *
-     * @param wav The reader, positioned at the first byte of the samples.
-     * @param format The format of the samples.
-     * @param size The size of the data chunk in bytes.
-     * @return The samples.
-     * @throws AudioDecodingException If the size is not a whole number of frames, or the sound is above the limit.
-     * @throws EOFException If the stream ends before the last sample.
-     * @throws IOException If reading fails.
-     */
-    private PcmBuffer readSamples(WavInput wav, WavFormat format, long size) throws IOException
-    {
-        final int frameBytes = format.frameBytes();
-        if (size % frameBytes != 0L)
-        {
-            throw new AudioDecodingException("WAV data size " + size + " not a multiple of the frame size "
-                                             + frameBytes);
-        }
-        final long frames = size / frameBytes;
-        if (frames > maxFrames)
-        {
-            throw new AudioDecodingException("WAV sound of " + frames + " frames refused, limit " + maxFrames);
-        }
-        final int bytesPerSample = format.bytesPerSample();
-        final short[] samples = new short[(int) frames * format.format().channels()];
-        final int samplesPerRead = READ_BYTES / bytesPerSample;
-        final byte[] bytes = new byte[samplesPerRead * bytesPerSample];
-        int sample = 0;
-        while (sample < samples.length)
-        {
-            final int count = Math.min(samplesPerRead, samples.length - sample);
-            wav.readFully(bytes, 0, count * bytesPerSample);
-            for (int i = 0; i < count; i++)
-            {
-                samples[sample + i] = toShort(bytes, i * bytesPerSample, bytesPerSample);
-            }
-            sample += count;
-        }
-        return new PcmBuffer(format.format(), samples);
     }
 }

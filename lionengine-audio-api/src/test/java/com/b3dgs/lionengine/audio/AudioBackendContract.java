@@ -30,12 +30,14 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.InboxSpy;
 
 /**
- * Contract suite of {@link AudioBackend} (ADR-0045, ADR-0065, REQ-AUDIO-009).
+ * Contract suite of {@link AudioBackend} (ADR-0045, ADR-0065, ADR-0068, REQ-AUDIO-007, REQ-AUDIO-009).
  *
  * <p>
  * Published in the {@code audio-api} test JAR: every backend binds it by creating a backend on an inbox and letting
  * frames of {@link #FORMAT} play. {@link FakeAudioBackend} binds it with its clock; a real backend waits for the time
- * of the frames. What a backend sounds like is checked by its own platform tests.
+ * of the frames. Buffer voices and streamed voices are both checked; the streams of the suite are
+ * {@link CountingStream}s, which a real backend reads on its own thread. What a backend sounds like is checked by its
+ * own platform tests.
  * </p>
  */
 public abstract class AudioBackendContract
@@ -208,7 +210,7 @@ public abstract class AudioBackendContract
         final InboxSpy inbox = new InboxSpy();
         final AudioBackend backend = createBackend(inbox);
         final PcmBuffer buffer = sound(FRAMES);
-        assertThrows(IllegalArgumentException.class, () -> backend.play(null));
+        assertThrows(IllegalArgumentException.class, () -> backend.play((PcmBuffer) null));
         final int voice = backend.play(buffer);
 
         backend.close();
@@ -216,5 +218,187 @@ public abstract class AudioBackendContract
 
         assertFalse(backend.isPlaying(voice));
         assertThrows(IllegalStateException.class, () -> backend.play(buffer));
+    }
+
+    /**
+     * A stream plays on a positive voice until it returns fewer frames than asked; it is read to its end, never after,
+     * and its end reaches the listener at the inbox delivery, once.
+     */
+    @Test
+    void testStreamToEnd()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final List<Integer> ended = new ArrayList<>();
+        backend.setVoiceListener(ended::add);
+        final CountingStream stream = new CountingStream(3 * FRAMES);
+
+        final int voice = backend.play(stream);
+
+        assertTrue(voice > 0);
+        assertTrue(backend.isPlaying(voice));
+        advance(backend, 5 * FRAMES);
+        assertTrue(ended.isEmpty());
+        inbox.deliverAll();
+        assertEquals(List.of(Integer.valueOf(voice)), ended);
+        assertFalse(backend.isPlaying(voice));
+        assertEquals(3 * FRAMES, stream.getRead());
+        final int calls = stream.getCalls();
+        advance(backend, 2 * FRAMES);
+        inbox.deliverAll();
+        assertEquals(calls, stream.getCalls());
+        assertEquals(1, ended.size());
+        backend.close();
+    }
+
+    /**
+     * A stopped stream is no longer read once the stop returned and posts no end; buffer and streamed voices share the
+     * numbering.
+     */
+    @Test
+    void testStreamStop()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final List<Integer> ended = new ArrayList<>();
+        backend.setVoiceListener(ended::add);
+        final CountingStream stream = new CountingStream(100 * FRAMES);
+        final int buffered = backend.play(sound(FRAMES));
+        final int voice = backend.play(stream);
+        advance(backend, FRAMES / 2);
+
+        backend.stop(voice);
+        final int calls = stream.getCalls();
+        advance(backend, 2 * FRAMES);
+        inbox.deliverAll();
+
+        assertNotEquals(buffered, voice);
+        assertTrue(stream.getRead() > 0);
+        assertEquals(calls, stream.getCalls());
+        assertFalse(backend.isPlaying(voice));
+        assertEquals(List.of(Integer.valueOf(buffered)), ended);
+        backend.close();
+    }
+
+    /**
+     * Streamed and buffer voices share the voice limit; a stream refused for lack of voice is never read.
+     */
+    @Test
+    void testStreamVoiceLimit()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final int max = backend.getMaxVoices();
+        int first = AudioBackend.NO_VOICE;
+        for (int i = 0; i < max; i++)
+        {
+            final int voice = backend.play(new CountingStream(100 * FRAMES));
+            assertTrue(voice > 0);
+            if (i == 0)
+            {
+                first = voice;
+            }
+        }
+        final CountingStream refused = new CountingStream(FRAMES);
+
+        assertEquals(AudioBackend.NO_VOICE, backend.play(refused));
+        assertEquals(AudioBackend.NO_VOICE, backend.play(sound(FRAMES)));
+        advance(backend, FRAMES);
+        assertEquals(0, refused.getCalls());
+        backend.stop(first);
+        assertTrue(backend.play(sound(FRAMES)) > 0);
+        backend.close();
+    }
+
+    /**
+     * Closing stops the streams, which are no longer read; a closed backend refuses to play a stream; a {@code null}
+     * stream is refused.
+     */
+    @Test
+    void testStreamClose()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final CountingStream stream = new CountingStream(100 * FRAMES);
+        assertThrows(IllegalArgumentException.class, () -> backend.play((PcmStream) null));
+        final int voice = backend.play(stream);
+        advance(backend, FRAMES / 2);
+
+        backend.close();
+        final int calls = stream.getCalls();
+        advance(backend, FRAMES);
+
+        assertFalse(backend.isPlaying(voice));
+        assertEquals(calls, stream.getCalls());
+        final CountingStream late = new CountingStream(FRAMES);
+        assertThrows(IllegalStateException.class, () -> backend.play(late));
+    }
+
+    /**
+     * Stream of the suite in {@link #FORMAT}: a quiet square wave of a given number of frames, counting the frames read
+     * and the calls. Thread-safe, since a real backend reads it on its own thread.
+     */
+    protected static final class CountingStream implements PcmStream
+    {
+        /** The frames of the sound. */
+        private final int frames;
+        /** The frames read. */
+        private int read;
+        /** The calls of {@link #read(short[], int, int)}. */
+        private int calls;
+
+        /**
+         * Creates the stream.
+         *
+         * @param frames The frames of the sound.
+         */
+        public CountingStream(int frames)
+        {
+            this.frames = frames;
+        }
+
+        /**
+         * Returns the frames read.
+         *
+         * @return The frames given to the backend.
+         */
+        public synchronized int getRead()
+        {
+            return read;
+        }
+
+        /**
+         * Returns the number of reads.
+         *
+         * @return The calls of {@link #read(short[], int, int)}.
+         */
+        public synchronized int getCalls()
+        {
+            return calls;
+        }
+
+        @Override
+        public PcmFormat getFormat()
+        {
+            return FORMAT;
+        }
+
+        @Override
+        public synchronized int read(short[] target, int offset, int count)
+        {
+            final int channels = FORMAT.channels();
+            if (target == null || offset < 0 || count < 0 || offset > target.length - count * channels)
+            {
+                throw new IllegalArgumentException("Invalid frame range");
+            }
+            calls++;
+            final int copied = Math.min(count, frames - read);
+            for (int i = 0; i < copied * channels; i++)
+            {
+                target[offset + i] = (short) (((read * channels + i) / 100 & 1) == 0 ? 1_000 : -1_000);
+            }
+            read += copied;
+            return copied;
+        }
     }
 }
