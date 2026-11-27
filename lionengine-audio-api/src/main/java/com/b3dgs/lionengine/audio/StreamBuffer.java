@@ -263,11 +263,7 @@ final class StreamBuffer implements PcmStream
                 else
                 {
                     final int asked = chunkFrames - frames;
-                    final int read = source.read(ring, base + frames * channels, asked);
-                    if (read < 0 || read > asked)
-                    {
-                        throw new AudioDecodingException("Source read " + read + " frames of " + asked + " asked");
-                    }
+                    final int read = readSource(base + frames * channels, asked);
                     frames += read;
                     passFrames += read;
                     exhausted = read < asked;
@@ -286,6 +282,25 @@ final class StreamBuffer implements PcmStream
         {
             ready++;
         }
+    }
+
+    /**
+     * Reads frames of the source into the ring, checking the count it returns.
+     *
+     * @param offset The index of the first sample written in the ring.
+     * @param asked The frames asked (positive).
+     * @return The frames read, from {@code 0} to {@code asked}.
+     * @throws IOException If the source cannot be read.
+     * @throws AudioDecodingException If the source returned a negative count or more frames than asked (ADR-0072).
+     */
+    private int readSource(int offset, int asked) throws IOException
+    {
+        final int read = source.read(ring, offset, asked);
+        if (read < 0 || read > asked)
+        {
+            throw new AudioDecodingException("Source read " + read + " frames of " + asked + " asked");
+        }
+        return read;
     }
 
     /**

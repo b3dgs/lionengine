@@ -152,8 +152,8 @@ final class DecoderFailureTest
         final AudioDecodingException atOpen = assertThrows(AudioDecodingException.class, opening::prepare);
         assertTrue(atOpen.getMessage().startsWith(THROWING.toString()), atOpen::getMessage);
         assertInstanceOf(IllegalArgumentException.class, atOpen.getCause());
-        final AudioDecodingException atDecode = assertThrows(AudioDecodingException.class,
-                                                             () -> loader.decode(THROWING).prepare());
+        final LongSound decoding = loader.decode(THROWING);
+        final AudioDecodingException atDecode = assertThrows(AudioDecodingException.class, decoding::prepare);
         assertInstanceOf(IllegalArgumentException.class, atDecode.getCause());
 
         decoder.failOpen = false;

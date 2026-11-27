@@ -564,7 +564,7 @@ final class SoftwareMixer implements AudioBackend
             ended = voice.mix(accumulator, bufferFrames);
         }
         // CHECKSTYLE IGNORE LINE: IllegalCatch
-        catch (final RuntimeException exception)
+        catch (RuntimeException _)
         {
             // A failing stream must not end the mixing thread: its voice ends as if its stream had ended (ADR-0072).
             ended = true;
