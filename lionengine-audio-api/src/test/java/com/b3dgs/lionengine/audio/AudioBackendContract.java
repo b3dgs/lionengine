@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.InboxSpy;
 
 /**
- * Contract suite of {@link AudioBackend} (ADR-0045, ADR-0065, ADR-0068, ADR-0069, ADR-0071, REQ-AUDIO-007,
+ * Contract suite of {@link AudioBackend} (ADR-0045, ADR-0065, ADR-0068, ADR-0069, ADR-0071, ADR-0072, REQ-AUDIO-007,
  * REQ-AUDIO-009, REQ-AUDIO-011, REQ-AUDIO-012).
  *
  * <p>
@@ -766,6 +766,35 @@ public abstract class AudioBackendContract
     }
 
     /**
+     * A stream that throws an unchecked exception ends its voice: the end is posted once, the stream is not read
+     * again, and the other voices play on to their end (ADR-0072).
+     */
+    @Test
+    void testStreamThrowing()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final List<Integer> ended = new ArrayList<>();
+        backend.setVoiceListener(ended::add);
+        final CountingStream failing = new CountingStream(100 * FRAMES, FRAMES);
+        final int other = backend.play(sound(4 * FRAMES), 1.0, false);
+        final int voice = backend.play(failing, 1.0);
+
+        advance(backend, 2 * FRAMES);
+        inbox.deliverAll();
+        assertEquals(List.of(Integer.valueOf(voice)), ended);
+        assertFalse(backend.isPlaying(voice));
+        final int calls = failing.getCalls();
+        advance(backend, 4 * FRAMES);
+        inbox.deliverAll();
+
+        assertEquals(calls, failing.getCalls());
+        assertEquals(List.of(Integer.valueOf(voice), Integer.valueOf(other)), ended);
+        assertTrue(backend.play(sound(FRAMES), 1.0, false) > 0);
+        backend.close();
+    }
+
+    /**
      * Stream of the suite in {@link #FORMAT}: a quiet square wave of a given number of frames, counting the frames read
      * and the calls. Thread-safe, since a real backend reads it on its own thread.
      */
@@ -775,6 +804,8 @@ public abstract class AudioBackendContract
         private final int frames;
         /** The frames read. */
         private int read;
+        /** The frames after which a read throws, {@code -1} for never. */
+        private final int failAfter;
         /** The calls of {@link #read(short[], int, int)}. */
         private int calls;
 
@@ -785,7 +816,20 @@ public abstract class AudioBackendContract
          */
         public CountingStream(int frames)
         {
+            this(frames, -1);
+        }
+
+        /**
+         * Creates a stream that fails: its first read once {@code failAfter} frames were read throws an
+         * {@link IllegalStateException}, as a decoder bug would.
+         *
+         * @param frames The frames of the sound.
+         * @param failAfter The frames read before the failure, {@code -1} for never.
+         */
+        public CountingStream(int frames, int failAfter)
+        {
             this.frames = frames;
+            this.failAfter = failAfter;
         }
 
         /**
@@ -823,6 +867,10 @@ public abstract class AudioBackendContract
                 throw new IllegalArgumentException("Invalid frame range");
             }
             calls++;
+            if (failAfter >= 0 && read >= failAfter)
+            {
+                throw new IllegalStateException("Failing stream of the suite");
+            }
             final int copied = Math.min(count, frames - read);
             for (int i = 0; i < copied * channels; i++)
             {
