@@ -30,8 +30,8 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.InboxSpy;
 
 /**
- * Contract suite of {@link AudioBackend} (ADR-0045, ADR-0065, ADR-0068, ADR-0069, REQ-AUDIO-007, REQ-AUDIO-009,
- * REQ-AUDIO-011).
+ * Contract suite of {@link AudioBackend} (ADR-0045, ADR-0065, ADR-0068, ADR-0069, ADR-0071, REQ-AUDIO-007,
+ * REQ-AUDIO-009, REQ-AUDIO-011, REQ-AUDIO-012).
  *
  * <p>
  * Published in the {@code audio-api} test JAR: every backend binds it by creating a backend on an inbox and letting
@@ -42,6 +42,14 @@ import com.b3dgs.lionengine.InboxSpy;
  * every voice; gains are checked for their refusals, since what a backend sounds like, its gain included, is checked by
  * its own platform tests.
  * </p>
+ *
+ * <p>
+ * Fades are checked by their completion in time: not before the duration, once after it, and its interactions with a
+ * new fade, a gain change, the pause of the voice and of the output, the stop, the end of the voice and the close. The
+ * frames of a check keep a margin of {@link #MARGIN} frames, four audio buffers of 512 frames, so that a backend
+ * rounding the duration and each advance up to its buffers, and mixing one buffer ahead, passes; how the gain ramps is
+ * checked by each backend.
+ * </p>
  */
 public abstract class AudioBackendContract
 {
@@ -49,6 +57,12 @@ public abstract class AudioBackendContract
     protected static final PcmFormat FORMAT = new PcmFormat(44_100, PcmFormat.STEREO);
     /** Frames of the sound of the suite: 0.05 s. */
     protected static final int FRAMES = 2_205;
+    /** Duration of the fades of the suite, in seconds: {@link #FADE_FRAMES} frames of {@link #FORMAT}. */
+    protected static final double FADE_SECONDS = 0.2;
+    /** Frames of a fade of the suite. */
+    protected static final int FADE_FRAMES = 8_820;
+    /** Margin of the fade checks, in frames: four audio buffers of 512 frames. */
+    protected static final int MARGIN = 2_048;
 
     /**
      * Creates a sound of the suite: a quiet square wave.
@@ -530,6 +544,225 @@ public abstract class AudioBackendContract
         backend.close();
         backend.pauseOutput();
         backend.resumeOutput();
+    }
+
+    /**
+     * A fade completes once, through the inbox, after its duration and not before; the voice plays on at the target
+     * gain, also at {@code 0}; without listener a completion is delivered without effect, and the listener can be
+     * replaced.
+     */
+    @Test
+    void testFadeEnd()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final List<Integer> faded = new ArrayList<>();
+        backend.setFadeListener(voice -> faded.add(Integer.valueOf(-voice)));
+        backend.setFadeListener(faded::add);
+        final int voice = backend.play(sound(40 * FRAMES), 1.0, false);
+        final int silent = backend.play(sound(40 * FRAMES), 1.0, false);
+
+        backend.fade(voice, 0.0, FADE_SECONDS);
+        backend.fade(silent, 0.5, FADE_SECONDS);
+        advance(backend, FADE_FRAMES - MARGIN);
+        inbox.deliverAll();
+        assertTrue(faded.isEmpty());
+        advance(backend, 2 * MARGIN);
+        inbox.deliverAll();
+
+        assertEquals(List.of(Integer.valueOf(voice), Integer.valueOf(silent)), faded);
+        assertTrue(backend.isPlaying(voice));
+        advance(backend, FADE_FRAMES);
+        inbox.deliverAll();
+        assertEquals(2, faded.size());
+        backend.setFadeListener(null);
+        backend.fade(voice, 1.0, 0.0);
+        advance(backend, MARGIN);
+        inbox.deliverAll();
+        assertEquals(2, faded.size());
+        backend.close();
+    }
+
+    /**
+     * A fade of no duration completes after the next audio buffer; a streamed voice fades as a buffer voice.
+     */
+    @Test
+    void testFadeZeroAndStream()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final List<Integer> faded = new ArrayList<>();
+        backend.setFadeListener(faded::add);
+        final int voice = backend.play(sound(40 * FRAMES), 1.0, false);
+        final int stream = backend.play(new CountingStream(40 * FRAMES), 1.0);
+
+        backend.fade(voice, 0.5, 0.0);
+        advance(backend, MARGIN);
+        inbox.deliverAll();
+        assertEquals(List.of(Integer.valueOf(voice)), faded);
+        backend.fade(stream, 0.0, FADE_SECONDS);
+        advance(backend, FADE_FRAMES + MARGIN);
+        inbox.deliverAll();
+
+        assertEquals(List.of(Integer.valueOf(voice), Integer.valueOf(stream)), faded);
+        assertTrue(backend.isPlaying(stream));
+        backend.close();
+    }
+
+    /**
+     * Gains and durations are checked whatever the voice: NaN, infinite and out of range gains, NaN, infinite and
+     * negative durations are refused; a fade of an ended or unknown voice has no effect.
+     */
+    @Test
+    void testFadeRefused()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final List<Integer> faded = new ArrayList<>();
+        backend.setFadeListener(faded::add);
+        final int voice = backend.play(sound(FRAMES), 1.0, false);
+        final double[] gains =
+        {
+            -0.5, 1.5, Double.NaN, Double.POSITIVE_INFINITY
+        };
+        final double[] durations =
+        {
+            -0.1, Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY
+        };
+        for (final double gain : gains)
+        {
+            assertThrows(IllegalArgumentException.class, () -> backend.fade(voice, gain, FADE_SECONDS));
+            assertThrows(IllegalArgumentException.class, () -> backend.fade(Integer.MAX_VALUE, gain, FADE_SECONDS));
+        }
+        for (final double seconds : durations)
+        {
+            assertThrows(IllegalArgumentException.class, () -> backend.fade(voice, 0.5, seconds));
+            assertThrows(IllegalArgumentException.class, () -> backend.fade(Integer.MAX_VALUE, 0.5, seconds));
+        }
+
+        backend.fade(Integer.MAX_VALUE, 0.5, 0.0);
+        advance(backend, 2 * FRAMES);
+        inbox.deliverAll();
+        backend.fade(voice, 0.5, 0.0);
+        advance(backend, MARGIN);
+        inbox.deliverAll();
+
+        assertFalse(backend.isPlaying(voice));
+        assertTrue(faded.isEmpty());
+        backend.close();
+    }
+
+    /**
+     * A new fade replaces the ramp of its voice: only the new one completes, after its own duration from its call.
+     */
+    @Test
+    void testFadeReplaced()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final List<Integer> faded = new ArrayList<>();
+        backend.setFadeListener(faded::add);
+        final int voice = backend.play(sound(40 * FRAMES), 1.0, false);
+        backend.fade(voice, 0.0, FADE_SECONDS);
+        advance(backend, 2 * MARGIN);
+
+        backend.fade(voice, 1.0, FADE_SECONDS);
+        advance(backend, FADE_FRAMES - MARGIN);
+        inbox.deliverAll();
+        assertTrue(faded.isEmpty());
+        advance(backend, 2 * MARGIN);
+        inbox.deliverAll();
+
+        assertEquals(List.of(Integer.valueOf(voice)), faded);
+        backend.close();
+    }
+
+    /**
+     * A gain change during a fade does not end it: the fade completes at its own time.
+     */
+    @Test
+    void testFadeSetGain()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final List<Integer> faded = new ArrayList<>();
+        backend.setFadeListener(faded::add);
+        final int voice = backend.play(sound(40 * FRAMES), 1.0, false);
+        backend.fade(voice, 0.0, FADE_SECONDS);
+        advance(backend, FADE_FRAMES / 2);
+
+        backend.setGain(voice, 0.5);
+        advance(backend, FADE_FRAMES / 2 - MARGIN);
+        inbox.deliverAll();
+        assertTrue(faded.isEmpty());
+        advance(backend, 2 * MARGIN);
+        inbox.deliverAll();
+
+        assertEquals(List.of(Integer.valueOf(voice)), faded);
+        backend.close();
+    }
+
+    /**
+     * A fade holds while its voice is paused and while the output is paused, and completes once both are resumed.
+     */
+    @Test
+    void testFadePaused()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final List<Integer> faded = new ArrayList<>();
+        backend.setFadeListener(faded::add);
+        final int voice = backend.play(sound(40 * FRAMES), 1.0, false);
+        final int output = backend.play(sound(40 * FRAMES), 1.0, false);
+        backend.fade(voice, 0.0, FADE_SECONDS);
+        backend.fade(output, 0.0, FADE_SECONDS);
+        advance(backend, MARGIN);
+
+        backend.pause(voice);
+        backend.pauseOutput();
+        advance(backend, 2 * FADE_FRAMES);
+        inbox.deliverAll();
+        assertTrue(faded.isEmpty());
+        backend.resumeOutput();
+        advance(backend, FADE_FRAMES);
+        inbox.deliverAll();
+        assertEquals(List.of(Integer.valueOf(output)), faded);
+        backend.resume(voice);
+        advance(backend, FADE_FRAMES);
+        inbox.deliverAll();
+
+        assertEquals(List.of(Integer.valueOf(output), Integer.valueOf(voice)), faded);
+        backend.close();
+    }
+
+    /**
+     * A fade is dropped without completion when its voice is stopped, ends by itself first, or the backend closes.
+     */
+    @Test
+    void testFadeDropped()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final List<Integer> faded = new ArrayList<>();
+        final List<Integer> ended = new ArrayList<>();
+        backend.setFadeListener(faded::add);
+        backend.setVoiceListener(ended::add);
+        final int stopped = backend.play(sound(40 * FRAMES), 1.0, false);
+        final int shorter = backend.play(sound(FRAMES), 1.0, false);
+        final int closed = backend.play(sound(40 * FRAMES), 1.0, false);
+        backend.fade(stopped, 0.0, FADE_SECONDS);
+        backend.fade(shorter, 0.0, FADE_SECONDS);
+        backend.fade(closed, 0.0, FADE_SECONDS);
+        advance(backend, FADE_FRAMES / 4);
+
+        backend.stop(stopped);
+        advance(backend, FADE_FRAMES / 2);
+        backend.close();
+        advance(backend, 2 * FADE_FRAMES);
+        inbox.deliverAll();
+
+        assertTrue(faded.isEmpty());
+        assertEquals(List.of(Integer.valueOf(shorter)), ended);
     }
 
     /**

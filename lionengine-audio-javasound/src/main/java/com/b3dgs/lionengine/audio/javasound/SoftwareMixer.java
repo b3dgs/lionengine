@@ -20,6 +20,7 @@ import java.util.Arrays;
 
 import com.b3dgs.lionengine.Inbox;
 import com.b3dgs.lionengine.audio.AudioBackend;
+import com.b3dgs.lionengine.audio.FadeListener;
 import com.b3dgs.lionengine.audio.PcmBuffer;
 import com.b3dgs.lionengine.audio.PcmFormat;
 import com.b3dgs.lionengine.audio.PcmStream;
@@ -27,20 +28,27 @@ import com.b3dgs.lionengine.audio.VoiceListener;
 
 /**
  * Software mixer of the Java Sound backend: the voices, their controls, and the mixing of one audio buffer at a time
- * into 16-bit signed little-endian stereo (ADR-0018, ADR-0069, ADR-0070).
+ * into 16-bit signed little-endian stereo (ADR-0018, ADR-0069, ADR-0070, ADR-0071).
  *
  * <p>
  * It implements the backend SPI without thread or line, so that its mixing is tested headless: {@link #mix(byte[])}
  * is called by the mixing thread of {@link JavaSoundBackend}, or by a test as its clock. Every voice is mixed into a
  * double accumulator, times its gain read once per buffer, then the sum is clipped to 16 bits. A voice that ends during
  * a buffer is freed at once and its end is posted to the inbox from the mixing thread, with an event taken from a
- * pool, so that mixing allocates nothing. The pool grows, if ever, on the runtime thread at a play.
+ * pool, so that mixing allocates nothing. The pool grows, if ever, on the runtime thread at a play or a fade.
+ * </p>
+ *
+ * <p>
+ * A fade lasts its duration rounded up to whole buffers, at least one: each buffer of the ramp, before it is mixed,
+ * moves the gain of its voice linearly toward the target, and once its last buffer is mixed at the target, the
+ * completion is posted from the mixing thread with an event of the same pool. The pool keeps a free event for every
+ * voice playing and every fade running, so that both posts always find one.
  * </p>
  *
  * <p>
  * Threads: the controls are called on the runtime thread, {@link #mix(byte[])} on the mixing thread; both hold one
- * lock, so that once a control returns, the mixing sees it, and a stream is read only under the lock. The listener is
- * set and called on the runtime thread only.
+ * lock, so that once a control returns, the mixing sees it, and a stream is read only under the lock. The listeners
+ * are set and called on the runtime thread only.
  * </p>
  */
 final class SoftwareMixer implements AudioBackend
@@ -76,12 +84,18 @@ final class SoftwareMixer implements AudioBackend
     private final double[] accumulator;
     /** The frames of one buffer. */
     private final int bufferFrames;
+    /** The sample rate of the output, in Hz. */
+    private final int outputRate;
     /** The pool of end events: the free ones are in {@code [0, freeEnds)}. */
     private VoiceEnd[] ends;
     /** The free end events. */
     private int freeEnds;
     /** The listener, runtime thread only. */
     private VoiceListener listener;
+    /** The fade listener, runtime thread only. */
+    private FadeListener fadeListener;
+    /** The voices fading. */
+    private int fading;
     /** The next voice number. */
     private int nextVoice = 1;
     /** The voices playing. */
@@ -110,6 +124,7 @@ final class SoftwareMixer implements AudioBackend
         }
         this.inbox = inbox;
         this.bufferFrames = bufferFrames;
+        this.outputRate = outputRate;
         voices = new MixVoice[maxVoices];
         for (int i = 0; i < maxVoices; i++)
         {
@@ -173,23 +188,49 @@ final class SoftwareMixer implements AudioBackend
     }
 
     /**
-     * Gives back an end event and calls the listener, on the runtime thread.
+     * Gives back an end event and calls the listener of its kind, on the runtime thread.
      *
      * @param end The event delivered.
      */
     void deliver(VoiceEnd end)
     {
         final int voice;
+        final boolean fade;
         synchronized (lock)
         {
             voice = end.getVoice();
+            fade = end.isFade();
             ends[freeEnds] = end;
             freeEnds++;
         }
-        final VoiceListener current = listener;
-        if (current != null)
+        if (fade)
         {
-            current.onVoiceEnded(voice);
+            final FadeListener current = fadeListener;
+            if (current != null)
+            {
+                current.onFadeEnded(voice);
+            }
+        }
+        else
+        {
+            final VoiceListener current = listener;
+            if (current != null)
+            {
+                current.onVoiceEnded(voice);
+            }
+        }
+    }
+
+    /**
+     * Returns the size of the pool of end events, for the tests.
+     *
+     * @return The events of the pool, free or posted.
+     */
+    int getEventPoolSize()
+    {
+        synchronized (lock)
+        {
+            return ends.length;
         }
     }
 
@@ -218,6 +259,12 @@ final class SoftwareMixer implements AudioBackend
     public void setVoiceListener(VoiceListener listener)
     {
         this.listener = listener;
+    }
+
+    @Override
+    public void setFadeListener(FadeListener listener)
+    {
+        fadeListener = listener;
     }
 
     @Override
@@ -274,6 +321,30 @@ final class SoftwareMixer implements AudioBackend
             if (found != null)
             {
                 found.setGain(gain);
+            }
+        }
+    }
+
+    @Override
+    public void fade(int voice, double gain, double seconds)
+    {
+        checkGain(gain);
+        if (!(seconds >= 0.0 && seconds < Double.POSITIVE_INFINITY))
+        {
+            throw new IllegalArgumentException("Fade duration not finite and not negative: " + seconds);
+        }
+        final long buffers = Math.max(1L, (long) Math.ceil(seconds * outputRate / bufferFrames));
+        synchronized (lock)
+        {
+            final MixVoice found = find(voice);
+            if (found != null)
+            {
+                if (!found.isFading())
+                {
+                    fading++;
+                    growEnds();
+                }
+                found.fade(gain, buffers);
             }
         }
     }
@@ -394,12 +465,12 @@ final class SoftwareMixer implements AudioBackend
     }
 
     /**
-     * Grows the pool of end events when it has fewer free events than playing voices, which happens only when ends
-     * are not delivered while voices keep being played.
+     * Grows the pool of end events when it has fewer free events than playing voices and running fades, which happens
+     * only when ends are not delivered while voices keep being played or faded.
      */
     private void growEnds()
     {
-        if (freeEnds < playing)
+        if (freeEnds < playing + fading)
         {
             final VoiceEnd[] grown = Arrays.copyOf(ends, ends.length * 2);
             final int added = grown.length - ends.length;
@@ -439,37 +510,55 @@ final class SoftwareMixer implements AudioBackend
      */
     private void free(MixVoice voice)
     {
+        if (voice.isFading())
+        {
+            fading--;
+        }
         voice.release();
         playing--;
     }
 
     /**
-     * Mixes every playing voice that is not paused, and posts the ends, under the lock.
+     * Mixes every playing voice that is not paused, moving its fade first, and posts the ends of the voices and of
+     * their fades, under the lock. A voice that ends during the last buffer of its fade posts its end only.
      */
     private void mixVoices()
     {
         for (final MixVoice voice : voices)
         {
             final int number = voice.getVoice();
-            if (number != NO_VOICE && !voice.isPaused() && voice.mix(accumulator, bufferFrames))
+            if (number != NO_VOICE && !voice.isPaused())
             {
-                free(voice);
-                postEnd(number);
+                final boolean reached = voice.step();
+                if (reached)
+                {
+                    fading--;
+                }
+                if (voice.mix(accumulator, bufferFrames))
+                {
+                    free(voice);
+                    post(number, false);
+                }
+                else if (reached)
+                {
+                    post(number, true);
+                }
             }
         }
     }
 
     /**
-     * Posts the end of a voice with an event of the pool, under the lock; a rejected event goes back to the pool and
-     * the end is lost, as the inbox counts it.
+     * Posts the end of a voice or of its fade with an event of the pool, under the lock; a rejected event goes back to
+     * the pool and the end is lost, as the inbox counts it.
      *
-     * @param voice The voice that ended.
+     * @param voice The voice.
+     * @param fade {@code true} for the end of its fade, {@code false} for its own end.
      */
-    private void postEnd(int voice)
+    private void post(int voice, boolean fade)
     {
         freeEnds--;
         final VoiceEnd end = ends[freeEnds];
-        end.setVoice(voice);
+        end.set(voice, fade);
         if (!inbox.post(end))
         {
             freeEnds++;

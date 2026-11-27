@@ -73,6 +73,7 @@ Tests must not depend on a real display, a physical audio device or a native win
 - One batch (see `docs/templates/FEATURE-TEMPLATE.md`) corresponds to one reviewable change set.
 - Reference the relevant `REQ-*` and `ADR-NNNN` identifiers in commit messages and pull requests.
 - Do not mix a functional change with a mass reformatting or reorganization.
+- Branches and pull requests: the version 11 rewrite lives on `rewrite/v11`, the default branch. Start every branch from `origin/rewrite/v11` and open every pull request against `rewrite/v11`. Never target `master`, which holds the previous engine line: a squash merge of a v11 branch into it replaces its whole tree. Check the base of a pull request before merging it.
 
 ## 7. End of task
 

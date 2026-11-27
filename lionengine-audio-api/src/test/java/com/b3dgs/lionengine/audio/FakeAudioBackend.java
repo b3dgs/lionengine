@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.Inbox;
 
 /**
  * Audio backend that plays nothing, for headless tests of the audio logic (ADR-0045, ADR-0065, ADR-0068, ADR-0069,
- * REQ-AUDIO-009, REQ-AUDIO-011).
+ * ADR-0071, REQ-AUDIO-009, REQ-AUDIO-011, REQ-AUDIO-012).
  *
  * <p>
  * Each buffer voice counts down the frames of its sound; each streamed voice pulls the frames of its stream, in pieces
@@ -36,7 +36,11 @@ import com.b3dgs.lionengine.Inbox;
  * started. The voice limit is set at creation. What was played is recorded, and the gain, the looping and the pause of
  * each voice playing: a looping buffer voice wraps to its first frame and never ends, a paused voice does not move and
  * its stream is not pulled, and nothing moves while the output is paused. The fake does not mix, so it applies no gain
- * to samples. Not thread-safe: the test drives it from its runtime thread, which also pulls the streams.
+ * to samples. A fade ramps the gain of its voice linearly over the frames the voice moves, its audio buffer being the
+ * frame: a fade of {@code s} seconds lasts {@code ceil(s × rate)} frames of the voice (at least one), the rate being
+ * the sample rate of its sound; the voice is at the target gain once they are played, and the completion is then
+ * posted to the inbox (ADR-0071). Not thread-safe: the test drives it from its runtime thread, which also pulls the
+ * streams.
  * </p>
  */
 public final class FakeAudioBackend implements AudioBackend
@@ -60,6 +64,8 @@ public final class FakeAudioBackend implements AudioBackend
     private final short[] scratch = new short[PULL_FRAMES * PcmFormat.STEREO];
     /** Listener of the ended voices, {@code null} if none. */
     private VoiceListener listener;
+    /** Listener of the ended fades, {@code null} if none. */
+    private FadeListener fadeListener;
     /** Next voice. */
     private int nextVoice = 1;
     /** {@code true} once closed. */
@@ -119,11 +125,19 @@ public final class FakeAudioBackend implements AudioBackend
         {
             final Map.Entry<Integer, Voice> entry = iterator.next();
             final Voice voice = entry.getValue();
-            if (!voice.paused && (voice.stream == null ? countDown(voice, frames) : pull(voice, frames)))
+            if (!voice.paused)
             {
-                iterator.remove();
-                final int ended = entry.getKey().intValue();
-                inbox.post(() -> deliver(ended));
+                final long before = voice.played;
+                final int number = entry.getKey().intValue();
+                if (voice.stream == null ? countDown(voice, frames) : pull(voice, frames))
+                {
+                    iterator.remove();
+                    inbox.post(() -> deliver(number));
+                }
+                else if (voice.ramp(voice.played - before))
+                {
+                    inbox.post(() -> deliverFade(number));
+                }
             }
         }
     }
@@ -170,6 +184,30 @@ public final class FakeAudioBackend implements AudioBackend
     {
         final Voice playingVoice = playing.get(Integer.valueOf(voice));
         return playingVoice == null ? Double.NaN : playingVoice.gain;
+    }
+
+    /**
+     * Tells whether a voice is fading.
+     *
+     * @param voice The voice.
+     * @return {@code true} if it is a playing voice whose fade did not reach its target yet.
+     */
+    public boolean isFading(int voice)
+    {
+        final Voice playingVoice = playing.get(Integer.valueOf(voice));
+        return playingVoice != null && playingVoice.fadeLeft > 0L;
+    }
+
+    /**
+     * Returns the target gain of the fade of a voice.
+     *
+     * @param voice The voice.
+     * @return The gain its fade reaches, NaN if it is not a playing voice that is fading.
+     */
+    public double getFadeTarget(int voice)
+    {
+        final Voice playingVoice = playing.get(Integer.valueOf(voice));
+        return playingVoice == null || playingVoice.fadeLeft == 0L ? Double.NaN : playingVoice.fadeTarget;
     }
 
     /**
@@ -251,6 +289,12 @@ public final class FakeAudioBackend implements AudioBackend
     }
 
     @Override
+    public void setFadeListener(FadeListener listener)
+    {
+        fadeListener = listener;
+    }
+
+    @Override
     public int play(PcmBuffer buffer, double gain, boolean looping)
     {
         if (buffer == null)
@@ -258,7 +302,7 @@ public final class FakeAudioBackend implements AudioBackend
             throw new IllegalArgumentException("Buffer must not be null");
         }
         checkGain(gain);
-        final int voice = start(new Voice(buffer.getFrames(), null, gain, looping));
+        final int voice = start(new Voice(buffer.getFrames(), null, buffer.getFormat().sampleRate(), gain, looping));
         if (voice != NO_VOICE)
         {
             played.add(buffer);
@@ -274,7 +318,7 @@ public final class FakeAudioBackend implements AudioBackend
             throw new IllegalArgumentException("Stream must not be null");
         }
         checkGain(gain);
-        final int voice = start(new Voice(0, stream, gain, false));
+        final int voice = start(new Voice(0, stream, stream.getFormat().sampleRate(), gain, false));
         if (voice != NO_VOICE)
         {
             streams.add(stream);
@@ -289,7 +333,30 @@ public final class FakeAudioBackend implements AudioBackend
         final Voice playingVoice = playing.get(Integer.valueOf(voice));
         if (playingVoice != null)
         {
-            playingVoice.gain = gain;
+            if (playingVoice.fadeLeft > 0L)
+            {
+                playingVoice.fadeTarget = gain;
+            }
+            else
+            {
+                playingVoice.gain = gain;
+            }
+        }
+    }
+
+    @Override
+    public void fade(int voice, double gain, double seconds)
+    {
+        checkGain(gain);
+        if (!(seconds >= 0.0 && seconds < Double.POSITIVE_INFINITY))
+        {
+            throw new IllegalArgumentException("Fade duration not finite and not negative: " + seconds);
+        }
+        final Voice playingVoice = playing.get(Integer.valueOf(voice));
+        if (playingVoice != null)
+        {
+            playingVoice.fadeTarget = gain;
+            playingVoice.fadeLeft = Math.max(1L, (long) Math.ceil(seconds * playingVoice.rate));
         }
     }
 
@@ -454,6 +521,20 @@ public final class FakeAudioBackend implements AudioBackend
     }
 
     /**
+     * Delivers the end of the fade of a voice to the listener, on the runtime thread.
+     *
+     * @param voice The voice.
+     */
+    private void deliverFade(int voice)
+    {
+        final FadeListener current = fadeListener;
+        if (current != null)
+        {
+            current.onFadeEnded(voice);
+        }
+    }
+
+    /**
      * State of a playing voice.
      */
     private static final class Voice
@@ -464,6 +545,8 @@ public final class FakeAudioBackend implements AudioBackend
         private final int frames;
         /** {@code true} for a looping buffer voice. */
         private final boolean looping;
+        /** The sample rate of its sound, in Hz. */
+        private final int rate;
         /** The frames left of a buffer voice, before its end or its next wrap. */
         private int left;
         /** The frames pulled from the stream. */
@@ -474,22 +557,54 @@ public final class FakeAudioBackend implements AudioBackend
         private double gain;
         /** {@code true} while paused on its own. */
         private boolean paused;
+        /** The target gain of the fade. */
+        private double fadeTarget;
+        /** The frames left of the fade, {@code 0} when not fading. */
+        private long fadeLeft;
 
         /**
          * Creates the state.
          *
          * @param frames The frames of a buffer voice.
          * @param stream The stream of a streamed voice, {@code null} for a buffer voice.
+         * @param rate The sample rate of its sound.
          * @param gain The gain.
          * @param looping {@code true} for a looping buffer voice.
          */
-        Voice(int frames, PcmStream stream, double gain, boolean looping)
+        Voice(int frames, PcmStream stream, int rate, double gain, boolean looping)
         {
             this.frames = frames;
             left = frames;
             this.stream = stream;
+            this.rate = rate;
             this.gain = gain;
             this.looping = looping;
+        }
+
+        /**
+         * Moves the fade forward by the frames the voice played.
+         *
+         * @param moved The frames played.
+         * @return {@code true} if the fade reached its target now.
+         */
+        boolean ramp(long moved)
+        {
+            boolean reached = false;
+            if (fadeLeft > 0L && moved > 0L)
+            {
+                if (moved >= fadeLeft)
+                {
+                    gain = fadeTarget;
+                    fadeLeft = 0L;
+                    reached = true;
+                }
+                else
+                {
+                    gain += (fadeTarget - gain) * moved / fadeLeft;
+                    fadeLeft -= moved;
+                }
+            }
+            return reached;
         }
     }
 }

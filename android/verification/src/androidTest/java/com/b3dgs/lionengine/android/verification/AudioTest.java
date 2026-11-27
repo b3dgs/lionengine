@@ -34,8 +34,10 @@ import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioBackend;
 import com.b3dgs.lionengine.audio.AudioDecoder;
 import com.b3dgs.lionengine.audio.AudioDecodingException;
+import com.b3dgs.lionengine.audio.FadeListener;
 import com.b3dgs.lionengine.audio.LongSound;
 import com.b3dgs.lionengine.audio.LongSoundLoader;
+import com.b3dgs.lionengine.audio.MixerGroup;
 import com.b3dgs.lionengine.audio.PcmBuffer;
 import com.b3dgs.lionengine.audio.PcmFormat;
 import com.b3dgs.lionengine.audio.PcmSource;
@@ -360,8 +362,48 @@ public final class AudioTest
     }
 
     /**
-     * Backend that plays nothing, counts the voices stopped and paused, and keeps its listener, its last stream, its
-     * last gain and looping, and the pause of its output.
+     * The groups exist by default and a game adds its own; the gain of a voice is master × group × sound; a fade of a
+     * group gives the backend the new effective gain and its duration, and a completion reaches the listener of the
+     * audio system for a voice that plays.
+     *
+     * @throws IOException If reading fails.
+     */
+    @Test
+    public void testGroupsAndFades() throws IOException
+    {
+        final byte[] bytes = wav(new short[1_000]);
+        final StreamProvider provider = new StreamProvider();
+        final ResourceKey key = new ResourceKey("sounds/click.wav");
+        provider.register(key, () -> new ByteArrayInputStream(bytes));
+        final CountingBackend backend = new CountingBackend();
+        final Audio audio = new Audio(backend, 2, VoicePolicy.STEAL);
+        final ShortSound click = new ShortSoundCache(new Resources(provider)).load(key);
+        final int[] faded = new int[1];
+        audio.setFadeListener(voice -> faded[0] = voice);
+
+        assertTrue(audio.hasGroup(MixerGroup.MUSIC));
+        assertTrue(audio.hasGroup(MixerGroup.EFFECTS));
+        final MixerGroup ui = audio.getGroup(MixerGroup.UI);
+        assertEquals("menu", audio.addGroup("menu").getId());
+        click.setGroup(MixerGroup.UI);
+        audio.setMasterGain(0.5);
+        ui.setGain(0.5);
+        click.setGain(0.5);
+        final int voice = audio.play(click);
+        assertEquals(0.125, backend.gain, 1e-12);
+
+        ui.fade(0.0, 0.25);
+        assertEquals(0.0, backend.gain, 1e-12);
+        assertEquals(0.25, backend.seconds, 1e-12);
+        assertThrows(IllegalArgumentException.class, () -> ui.fade(0.0, Double.NaN));
+        backend.fadeListener.onFadeEnded(voice);
+        assertEquals(voice, faded[0]);
+        click.release();
+    }
+
+    /**
+     * Backend that plays nothing, counts the voices stopped and paused, and keeps its listeners, its last stream, its
+     * last gain, fade duration and looping, and the pause of its output.
      */
     private static final class CountingBackend implements AudioBackend
     {
@@ -371,6 +413,10 @@ public final class AudioTest
         private int next = 1;
         /** The listener. */
         private VoiceListener listener;
+        /** The fade listener. */
+        private FadeListener fadeListener;
+        /** The duration of the last fade. */
+        private double seconds;
         /** The last stream played. */
         private PcmStream stream;
         /** The last gain given. */
@@ -403,6 +449,12 @@ public final class AudioTest
         }
 
         @Override
+        public void setFadeListener(FadeListener listener)
+        {
+            fadeListener = listener;
+        }
+
+        @Override
         public int play(PcmBuffer buffer, double gain, boolean looping)
         {
             this.gain = gain;
@@ -422,6 +474,13 @@ public final class AudioTest
         public void setGain(int voice, double gain)
         {
             this.gain = gain;
+        }
+
+        @Override
+        public void fade(int voice, double gain, double seconds)
+        {
+            this.gain = gain;
+            this.seconds = seconds;
         }
 
         @Override

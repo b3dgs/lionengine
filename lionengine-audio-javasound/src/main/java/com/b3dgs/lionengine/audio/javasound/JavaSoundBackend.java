@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.audio.javasound;
 
 import com.b3dgs.lionengine.Inbox;
 import com.b3dgs.lionengine.audio.AudioBackend;
+import com.b3dgs.lionengine.audio.FadeListener;
 import com.b3dgs.lionengine.audio.PcmBuffer;
 import com.b3dgs.lionengine.audio.PcmFormat;
 import com.b3dgs.lionengine.audio.PcmStream;
@@ -25,7 +26,7 @@ import com.b3dgs.lionengine.audio.VoiceListener;
 
 /**
  * Desktop audio backend on Java Sound: mixes its voices in software into one {@code SourceDataLine}, on its own thread
- * (ADR-0018, ADR-0027, ADR-0069, ADR-0070, REQ-AUDIO-002).
+ * (ADR-0018, ADR-0027, ADR-0069, ADR-0070, ADR-0071, REQ-AUDIO-002, REQ-AUDIO-012).
  *
  * <p>
  * Output: {@link #FORMAT}, 44,100 Hz stereo, 16-bit signed little-endian. The mixing thread mixes
@@ -41,8 +42,9 @@ import com.b3dgs.lionengine.audio.VoiceListener;
  * is mixed: mono is played on both channels, another sample rate is resampled by linear interpolation. The gain of a
  * voice is read once per buffer; a buffer loops in the mixer without gap; a stream is pulled from the mixing thread,
  * only while its voice plays and neither it nor the output is paused. While the output is paused the line keeps
- * playing silence. A voice that ends posts its end to the inbox from the mixing thread; the mixing allocates nothing
- * and never touches simulation state.
+ * playing silence. A fade ramps the gain of its voice once per buffer, over its duration rounded up to whole buffers
+ * (at least one), and posts its completion once the buffer at its target is mixed (ADR-0071). A voice that ends posts
+ * its end to the inbox from the mixing thread; the mixing allocates nothing and never touches simulation state.
  * </p>
  *
  * <p>
@@ -185,6 +187,12 @@ public final class JavaSoundBackend implements AudioBackend
     }
 
     @Override
+    public void setFadeListener(FadeListener listener)
+    {
+        mixer.setFadeListener(listener);
+    }
+
+    @Override
     public int play(PcmBuffer buffer, double gain, boolean looping)
     {
         return mixer.play(buffer, gain, looping);
@@ -200,6 +208,12 @@ public final class JavaSoundBackend implements AudioBackend
     public void setGain(int voice, double gain)
     {
         mixer.setGain(voice, gain);
+    }
+
+    @Override
+    public void fade(int voice, double gain, double seconds)
+    {
+        mixer.fade(voice, gain, seconds);
     }
 
     @Override

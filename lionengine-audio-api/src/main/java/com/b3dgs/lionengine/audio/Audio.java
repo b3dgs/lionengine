@@ -20,9 +20,10 @@ import java.util.Arrays;
 
 /**
  * Audio system of the game: plays short sounds and variant sets on a bounded number of voices of an
- * {@link AudioBackend}, with priorities and an overflow policy, and long sounds, with their gain, looping and pause
- * (ADR-0004, ADR-0018, ADR-0027, ADR-0031, ADR-0033, ADR-0065, ADR-0066, ADR-0067, ADR-0068, ADR-0069, REQ-AUDIO-001,
- * REQ-AUDIO-003, REQ-AUDIO-004, REQ-AUDIO-005, REQ-AUDIO-007, REQ-AUDIO-010, REQ-AUDIO-011).
+ * {@link AudioBackend}, with priorities and an overflow policy, and long sounds, with their gain, looping, pause,
+ * mixer groups and fades (ADR-0004, ADR-0018, ADR-0027, ADR-0031, ADR-0033, ADR-0065, ADR-0066, ADR-0067, ADR-0068,
+ * ADR-0069, ADR-0071, REQ-AUDIO-001, REQ-AUDIO-003, REQ-AUDIO-004, REQ-AUDIO-005, REQ-AUDIO-007, REQ-AUDIO-010,
+ * REQ-AUDIO-011, REQ-AUDIO-012).
  *
  * <p>
  * The game creates one {@code Audio} over its backend and keeps it for its whole life: it is the only user of the
@@ -53,9 +54,20 @@ import java.util.Arrays;
  * </p>
  * <ul>
  * <li>Gain: a {@code double} in {@code [0, 1]}. The master gain ({@link #setMasterGain(double)}) and the gain of each
- * sound ({@link ShortSound#setGain(double)}, {@link LongSound#setGain(double)}) multiply into the effective gain of a
- * voice, master × sound; the gain of the mixer groups joins the product with them later (REQ-AUDIO-012). A change
- * reaches every voice it concerns at once: the backend applies it from its next audio buffer.</li>
+ * sound ({@link ShortSound#setGain(double)}, {@link LongSound#setGain(double)}) and the gain of its {@link MixerGroup}
+ * multiply into the effective gain of a voice, master × group × sound. A change reaches every voice it concerns at
+ * once: the backend applies it from its next audio buffer.</li>
+ * <li>Mixer groups (ADR-0071): {@link MixerGroup#MUSIC}, {@link MixerGroup#EFFECTS} and {@link MixerGroup#UI} exist
+ * from the creation, and {@link #addGroup(String)} adds a group of the game. A sound names its group on its handle,
+ * {@link MixerGroup#EFFECTS} for a short sound and {@link MixerGroup#MUSIC} for a long sound by default, read at the
+ * play: a voice keeps the group it started with.</li>
+ * <li>Fades (ADR-0071): {@link ShortSound#fade(double, double)}, {@link LongSound#fade(double, double)} and
+ * {@link MixerGroup#fade(double, double)} set the gain of the sound or of the group to a target at once and ramp each
+ * voice concerned to its new effective gain, linearly over a duration in seconds, in the backend, per audio buffer.
+ * The end of the ramp of each voice is posted to the inbox and reaches {@link #setFadeListener(FadeListener) the fade
+ * listener} on the runtime thread, if the voice still plays. A new fade of a voice replaces its ramp; a gain change
+ * during a ramp changes its target and keeps its remaining time; a pause holds it; a stop, a steal or the end of the
+ * voice drops it without completion. A fade to {@code 0} stops nothing.</li>
  * <li>Looping: a sound whose handle loops ({@link ShortSound#setLooping(boolean)},
  * {@link LongSound#setLooping(boolean)}) is played looping; its voice never ends by itself and posts no end, so it
  * plays until it is stopped, stolen or its long sound is released.</li>
@@ -97,8 +109,12 @@ public final class Audio
     private static final String ERROR_PLAYING = " voices playing";
     /** Name of the variant set argument. */
     private static final String NAME_SET = "Set";
+    /** Start of the message of an unknown mixer group. */
+    private static final String ERROR_GROUP = "Mixer group not defined: ";
     /** Initial capacity of the long voices, grown when more play at once. */
     private static final int INITIAL_LONG_VOICES = 2;
+    /** Initial capacity of the mixer groups, the default ones and one of the game. */
+    private static final int INITIAL_GROUPS = 4;
 
     /** The backend. */
     private final AudioBackend backend;
@@ -116,6 +132,8 @@ public final class Audio
     private final boolean[] loops;
     /** {@code true} for each voice playing that is paused on its own. */
     private final boolean[] paused;
+    /** Mixer group of each voice playing, {@code null} in the free slots. */
+    private final MixerGroup[] groups;
     /** Number of voices playing. */
     private int count;
     /** Voices playing long sounds, in start order. */
@@ -124,6 +142,14 @@ public final class Audio
     private LongSound[] longSounds = new LongSound[INITIAL_LONG_VOICES];
     /** {@code true} for each long voice that is paused on its own. */
     private boolean[] longPaused = new boolean[INITIAL_LONG_VOICES];
+    /** The mixer group of each long voice. */
+    private MixerGroup[] longGroups = new MixerGroup[INITIAL_LONG_VOICES];
+    /** The mixer groups, the default ones first. */
+    private MixerGroup[] mixerGroups = new MixerGroup[INITIAL_GROUPS];
+    /** Number of mixer groups. */
+    private int groupCount;
+    /** Listener of the fades, {@code null} for none. */
+    private FadeListener fadeListener;
     /** Number of long voices playing. */
     private int longCount;
     /** The master gain. */
@@ -169,7 +195,12 @@ public final class Audio
         sounds = new ShortSound[maxVoices];
         loops = new boolean[maxVoices];
         paused = new boolean[maxVoices];
+        groups = new MixerGroup[maxVoices];
+        addGroup(MixerGroup.MUSIC);
+        addGroup(MixerGroup.EFFECTS);
+        addGroup(MixerGroup.UI);
         backend.setVoiceListener(this::ended);
+        backend.setFadeListener(this::faded);
     }
 
     /**
@@ -385,6 +416,7 @@ public final class Audio
             backend.stop(voices[count - 1]);
             count--;
             sounds[count] = null;
+            groups[count] = null;
         }
     }
 
@@ -493,11 +525,11 @@ public final class Audio
         masterGain = gain;
         for (int i = 0; i < count; i++)
         {
-            backend.setGain(voices[i], effective(sounds[i].getGain()));
+            backend.setGain(voices[i], effective(groups[i], sounds[i].getGain()));
         }
         for (int i = 0; i < longCount; i++)
         {
-            backend.setGain(longVoices[i], effective(longSounds[i].getGain()));
+            backend.setGain(longVoices[i], effective(longGroups[i], longSounds[i].getGain()));
         }
     }
 
@@ -509,6 +541,72 @@ public final class Audio
     public double getMasterGain()
     {
         return masterGain;
+    }
+
+    /**
+     * Adds a mixer group of the game, of full gain.
+     *
+     * @param id The id of the group, not used by another group of this system (never {@code null} nor empty).
+     * @return The new group.
+     * @throws IllegalArgumentException If the id is {@code null}, empty, or already a group of this system.
+     */
+    public MixerGroup addGroup(String id)
+    {
+        MixerGroup.checkId(id);
+        if (findGroup(id) != null)
+        {
+            throw new IllegalArgumentException("Mixer group already defined: " + id);
+        }
+        if (groupCount == mixerGroups.length)
+        {
+            mixerGroups = Arrays.copyOf(mixerGroups, groupCount * 2);
+        }
+        final MixerGroup group = new MixerGroup(this, id);
+        mixerGroups[groupCount] = group;
+        groupCount++;
+        return group;
+    }
+
+    /**
+     * Returns a mixer group.
+     *
+     * @param id The id of the group: {@link MixerGroup#MUSIC}, {@link MixerGroup#EFFECTS}, {@link MixerGroup#UI} or a
+     *            group added by {@link #addGroup(String)}.
+     * @return The group.
+     * @throws IllegalArgumentException If the id is {@code null}, empty, or not a group of this system.
+     */
+    public MixerGroup getGroup(String id)
+    {
+        MixerGroup.checkId(id);
+        final MixerGroup group = findGroup(id);
+        if (group == null)
+        {
+            throw new IllegalArgumentException(ERROR_GROUP + id);
+        }
+        return group;
+    }
+
+    /**
+     * Tells whether a mixer group exists.
+     *
+     * @param id The id of the group.
+     * @return {@code true} if it is a group of this system, the default ones included; {@code false} for
+     *         {@code null}.
+     */
+    public boolean hasGroup(String id)
+    {
+        return id != null && findGroup(id) != null;
+    }
+
+    /**
+     * Sets the listener of the fades: it is called on the runtime thread, at the inbox delivery of the end of the ramp
+     * of each voice, if the voice still plays; it replaces the previous one.
+     *
+     * @param listener The listener, {@code null} for none.
+     */
+    public void setFadeListener(FadeListener listener)
+    {
+        fadeListener = listener;
     }
 
     /**
@@ -569,7 +667,8 @@ public final class Audio
         {
             throw new IllegalStateException("Long sound already playing: " + sound.getKey());
         }
-        final int voice = sound.start(backend, effective(sound.getGain()), loop || sound.isLooping());
+        final MixerGroup group = groupOf(sound.getGroup());
+        final int voice = sound.start(backend, effective(group, sound.getGain()), loop || sound.isLooping());
         if (voice != AudioBackend.NO_VOICE)
         {
             if (longCount == longVoices.length)
@@ -577,10 +676,12 @@ public final class Audio
                 longVoices = Arrays.copyOf(longVoices, longCount * 2);
                 longSounds = Arrays.copyOf(longSounds, longCount * 2);
                 longPaused = Arrays.copyOf(longPaused, longCount * 2);
+                longGroups = Arrays.copyOf(longGroups, longCount * 2);
             }
             longVoices[longCount] = voice;
             longSounds[longCount] = sound;
             longPaused[longCount] = false;
+            longGroups[longCount] = group;
             longCount++;
             sound.started(this, voice, listener);
         }
@@ -594,12 +695,11 @@ public final class Audio
      */
     void updateGain(ShortSound sound)
     {
-        final double gain = effective(sound.getGain());
         for (int i = 0; i < count; i++)
         {
             if (sounds[i] == sound)
             {
-                backend.setGain(voices[i], gain);
+                backend.setGain(voices[i], effective(groups[i], sound.getGain()));
             }
         }
     }
@@ -612,7 +712,91 @@ public final class Audio
      */
     void updateGain(LongSound sound, int voice)
     {
-        backend.setGain(voice, effective(sound.getGain()));
+        final int slot = longSlot(voice);
+        if (slot != NONE)
+        {
+            backend.setGain(voice, effective(longGroups[slot], sound.getGain()));
+        }
+    }
+
+    /**
+     * Gives the voices of a mixer group their new gain, at a change of its gain.
+     *
+     * @param group The group.
+     */
+    void updateGain(MixerGroup group)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            if (groups[i] == group)
+            {
+                backend.setGain(voices[i], effective(group, sounds[i].getGain()));
+            }
+        }
+        for (int i = 0; i < longCount; i++)
+        {
+            if (longGroups[i] == group)
+            {
+                backend.setGain(longVoices[i], effective(group, longSounds[i].getGain()));
+            }
+        }
+    }
+
+    /**
+     * Ramps the voices playing a short sound to their new gain, at a fade of the sound.
+     *
+     * @param sound The sound, its gain set to the target.
+     * @param seconds The duration, checked.
+     */
+    void fade(ShortSound sound, double seconds)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            if (sounds[i] == sound)
+            {
+                backend.fade(voices[i], effective(groups[i], sound.getGain()), seconds);
+            }
+        }
+    }
+
+    /**
+     * Ramps the voice of a long sound to its new gain, at a fade of the sound.
+     *
+     * @param sound The sound, its gain set to the target, playing.
+     * @param voice The voice playing it.
+     * @param seconds The duration, checked.
+     */
+    void fade(LongSound sound, int voice, double seconds)
+    {
+        final int slot = longSlot(voice);
+        if (slot != NONE)
+        {
+            backend.fade(voice, effective(longGroups[slot], sound.getGain()), seconds);
+        }
+    }
+
+    /**
+     * Ramps the voices of a mixer group to their new gain, at a fade of the group.
+     *
+     * @param group The group, its gain set to the target.
+     * @param seconds The duration, checked.
+     */
+    void fade(MixerGroup group, double seconds)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            if (groups[i] == group)
+            {
+                backend.fade(voices[i], effective(group, sounds[i].getGain()), seconds);
+            }
+        }
+        for (int i = 0; i < longCount; i++)
+        {
+            if (longGroups[i] == group)
+            {
+                backend.fade(longVoices[i], effective(group, longSounds[i].getGain()), seconds);
+            }
+        }
     }
 
     /**
@@ -652,6 +836,20 @@ public final class Audio
     }
 
     /**
+     * Checks a fade duration.
+     *
+     * @param seconds The duration.
+     * @throws IllegalArgumentException If it is NaN, infinite or negative.
+     */
+    static void checkSeconds(double seconds)
+    {
+        if (!(seconds >= 0.0 && seconds < Double.POSITIVE_INFINITY))
+        {
+            throw new IllegalArgumentException("Fade duration not finite and not negative: " + seconds);
+        }
+    }
+
+    /**
      * Checks a priority.
      *
      * @param priority The priority.
@@ -680,7 +878,9 @@ public final class Audio
         final int layers = set.size();
         for (int i = 0; i < layers; i++)
         {
-            set.getSound(i).getBuffer();
+            final ShortSound layer = set.getSound(i);
+            layer.getBuffer();
+            groupOf(layer.getGroup());
         }
         if (policy == VoicePolicy.REFUSE && maxVoices - count < layers)
         {
@@ -706,14 +906,51 @@ public final class Audio
     }
 
     /**
-     * Returns the effective gain of a sound. The gain of its mixer group joins this product with REQ-AUDIO-012.
+     * Returns the effective gain of a voice: master × group × sound (ADR-0033, REQ-AUDIO-012).
      *
+     * @param group The mixer group of the voice.
      * @param soundGain The gain of the sound.
-     * @return The master gain times the gain of the sound.
+     * @return The master gain times the gain of the group times the gain of the sound.
      */
-    private double effective(double soundGain)
+    private double effective(MixerGroup group, double soundGain)
     {
-        return masterGain * soundGain;
+        return masterGain * group.getGain() * soundGain;
+    }
+
+    /**
+     * Finds a mixer group.
+     *
+     * @param id The id, not {@code null}.
+     * @return The group, {@code null} if none has this id.
+     */
+    private MixerGroup findGroup(String id)
+    {
+        MixerGroup found = null;
+        for (int i = 0; i < groupCount && found == null; i++)
+        {
+            if (mixerGroups[i].getId().equals(id))
+            {
+                found = mixerGroups[i];
+            }
+        }
+        return found;
+    }
+
+    /**
+     * Returns the mixer group of a sound to play.
+     *
+     * @param id The id of the group of the sound.
+     * @return The group.
+     * @throws IllegalStateException If no group of this system has this id; nothing is played then.
+     */
+    private MixerGroup groupOf(String id)
+    {
+        final MixerGroup group = findGroup(id);
+        if (group == null)
+        {
+            throw new IllegalStateException(ERROR_GROUP + id);
+        }
+        return group;
     }
 
     /**
@@ -775,11 +1012,12 @@ public final class Audio
     private int start(ShortSound sound, int priority, int candidates)
     {
         final PcmBuffer buffer = sound.getBuffer();
+        final MixerGroup group = groupOf(sound.getGroup());
         int voice = AudioBackend.NO_VOICE;
         if (count < maxVoices || freeVoice(priority, candidates))
         {
             final boolean looping = sound.isLooping();
-            voice = backend.play(buffer, effective(sound.getGain()), looping);
+            voice = backend.play(buffer, effective(group, sound.getGain()), looping);
             if (voice != AudioBackend.NO_VOICE)
             {
                 voices[count] = voice;
@@ -787,6 +1025,7 @@ public final class Audio
                 sounds[count] = sound;
                 loops[count] = looping;
                 paused[count] = false;
+                groups[count] = group;
                 count++;
                 sound.played(this);
             }
@@ -836,6 +1075,20 @@ public final class Audio
             remove(victim);
         }
         return stolen;
+    }
+
+    /**
+     * Calls the fade listener at the inbox delivery of the end of a ramp, if the voice still plays.
+     *
+     * @param voice The voice.
+     */
+    private void faded(int voice)
+    {
+        final FadeListener current = fadeListener;
+        if (current != null && isPlaying(voice))
+        {
+            current.onFadeEnded(voice);
+        }
     }
 
     /**
@@ -892,8 +1145,10 @@ public final class Audio
         System.arraycopy(longVoices, slot + 1, longVoices, slot, moved);
         System.arraycopy(longSounds, slot + 1, longSounds, slot, moved);
         System.arraycopy(longPaused, slot + 1, longPaused, slot, moved);
+        System.arraycopy(longGroups, slot + 1, longGroups, slot, moved);
         longCount--;
         longSounds[longCount] = null;
+        longGroups[longCount] = null;
         return sound;
     }
 
@@ -929,7 +1184,9 @@ public final class Audio
         System.arraycopy(sounds, slot + 1, sounds, slot, moved);
         System.arraycopy(loops, slot + 1, loops, slot, moved);
         System.arraycopy(paused, slot + 1, paused, slot, moved);
+        System.arraycopy(groups, slot + 1, groups, slot, moved);
         count--;
         sounds[count] = null;
+        groups[count] = null;
     }
 }
