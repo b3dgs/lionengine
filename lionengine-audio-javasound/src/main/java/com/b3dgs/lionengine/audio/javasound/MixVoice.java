@@ -44,7 +44,7 @@ final class MixVoice
     /** Mask of the fractional part of a position. */
     private static final long FRACTION_MASK = (1L << FRACTION_BITS) - 1L;
     /** Factor turning a fractional part into a weight in {@code [0, 1)}. */
-    private static final float FRACTION_SCALE = 1.0F / (1L << FRACTION_BITS);
+    private static final double FRACTION_SCALE = 1.0 / (1L << FRACTION_BITS);
     /** Frames of a stream before its end is read. */
     private static final long UNKNOWN_FRAMES = Long.MAX_VALUE;
 
@@ -77,7 +77,7 @@ final class MixVoice
     /** {@code true} once the stream returned fewer frames than asked: it is never read again. */
     private boolean exhausted;
     /** The gain, read once per mixed buffer. */
-    private float gain;
+    private double gain;
     /** The first left sample of a looping buffer, the neighbor of its last frame. */
     private short firstLeft;
     /** The first right sample of a looping buffer. */
@@ -157,7 +157,7 @@ final class MixVoice
      */
     void setGain(double voiceGain)
     {
-        gain = (float) voiceGain;
+        gain = voiceGain;
     }
 
     /**
@@ -165,7 +165,7 @@ final class MixVoice
      *
      * @return The gain.
      */
-    float getGain()
+    double getGain()
     {
         return gain;
     }
@@ -197,9 +197,9 @@ final class MixVoice
      * @param count The frames to mix.
      * @return {@code true} if the sound ended during these frames.
      */
-    boolean mix(float[] mix, int count)
+    boolean mix(double[] mix, int count)
     {
-        final float voiceGain = gain;
+        final double voiceGain = gain;
         boolean ended = false;
         int out = 0;
         while (out < count && !ended)
@@ -232,7 +232,7 @@ final class MixVoice
     {
         voice = number;
         channels = format.channels();
-        gain = (float) voiceGain;
+        gain = voiceGain;
         step = Math.max(1L, Math.round((double) format.sampleRate() * (1L << FRACTION_BITS) / outputRate));
         position = 0L;
         windowFirst = 0L;
@@ -271,7 +271,7 @@ final class MixVoice
     private void fillFromBuffer(long index)
     {
         windowFirst = index;
-        windowFrames = (int) Math.max(0L, Math.min(WINDOW_FRAMES, frames - index));
+        windowFrames = Math.clamp(frames - index, 0, WINDOW_FRAMES);
         if (windowFrames > 0)
         {
             buffer.readFrames((int) index, window, 0, windowFrames);
@@ -312,15 +312,15 @@ final class MixVoice
      * @param index The frame at the position.
      * @param voiceGain The gain of this buffer.
      */
-    private void mixFrame(float[] mix, int target, long index, float voiceGain)
+    private void mixFrame(double[] mix, int target, long index, double voiceGain)
     {
         final int sample = (int) (index - windowFirst) * channels;
-        float left = window[sample];
-        float right = window[sample + channels - 1];
+        double left = window[sample];
+        double right = window[sample + channels - 1];
         final long fraction = position & FRACTION_MASK;
         if (fraction != 0L)
         {
-            final float weight = fraction * FRACTION_SCALE;
+            final double weight = fraction * FRACTION_SCALE;
             final boolean inWindow = index + 1L < windowFirst + windowFrames;
             final int next = sample + channels;
             left += (neighbor(inWindow, next, firstLeft, left) - left) * weight;
@@ -340,9 +340,9 @@ final class MixVoice
      * @param current The current sample.
      * @return The neighbor sample.
      */
-    private float neighbor(boolean inWindow, int next, short first, float current)
+    private double neighbor(boolean inWindow, int next, short first, double current)
     {
-        final float value;
+        final double value;
         if (inWindow)
         {
             value = window[next];

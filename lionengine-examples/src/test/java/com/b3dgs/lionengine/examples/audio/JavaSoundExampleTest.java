@@ -46,7 +46,7 @@ final class JavaSoundExampleTest
         final InboxSpy inbox = new InboxSpy();
         final FakeAudioBackend backend = new FakeAudioBackend(inbox);
 
-        final JavaSoundExample.Jingle jingle = JavaSoundExample.start(backend);
+        final Jingle jingle = JavaSoundExample.start(backend);
 
         double gain = Double.MAX_VALUE;
         for (int i = 0; i < JavaSoundExample.NOTES; i++)

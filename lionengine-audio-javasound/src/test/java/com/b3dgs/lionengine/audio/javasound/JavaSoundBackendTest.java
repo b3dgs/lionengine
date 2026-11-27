@@ -129,7 +129,8 @@ final class JavaSoundBackendTest
 
         assertFalse(backend.isMixing());
         assertTrue(output.isClosed());
-        assertThrows(IllegalStateException.class, () -> backend.play(new RampStream(JavaSoundBackend.FORMAT, 1L), 1.0));
+        final RampStream stream = new RampStream(JavaSoundBackend.FORMAT, 1L);
+        assertThrows(IllegalStateException.class, () -> backend.play(stream, 1.0));
     }
 
     /**

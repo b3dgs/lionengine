@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.LockSupport;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -48,8 +49,8 @@ final class JavaSoundLatencyTest
     private static final long TARGET_NANOS = TimeUnit.MILLISECONDS.toNanos(50L);
     /** Longest wait of one play, in nanoseconds. */
     private static final long TIMEOUT_NANOS = TimeUnit.SECONDS.toNanos(2L);
-    /** Pause between two measures, in milliseconds. */
-    private static final long PAUSE_MILLIS = 37L;
+    /** Pause between two measures, in nanoseconds. */
+    private static final long PAUSE_NANOS = TimeUnit.MILLISECONDS.toNanos(37L);
 
     /**
      * Skips the test without a sound device.
@@ -81,21 +82,19 @@ final class JavaSoundLatencyTest
 
     /**
      * The median latency from the play to its first sample played by the line is within 50 ms.
-     *
-     * @throws InterruptedException If interrupted.
      */
     @Test
-    void testLatency() throws InterruptedException
+    void testLatency()
     {
         final JavaSoundBackend backend = new JavaSoundBackend(new InboxSpy());
         final short[] samples = new short[JavaSoundBackend.BUFFER_FRAMES * 2];
         final PcmBuffer sound = new PcmBuffer(JavaSoundBackend.FORMAT, samples);
         final long[] latencies = new long[PLAYS];
-        Thread.sleep(PAUSE_MILLIS * 2);
+        LockSupport.parkNanos(PAUSE_NANOS * 2);
         for (int i = 0; i < PLAYS; i++)
         {
             latencies[i] = measure(backend, sound);
-            Thread.sleep(PAUSE_MILLIS);
+            LockSupport.parkNanos(PAUSE_NANOS);
         }
         backend.close();
         Arrays.sort(latencies);

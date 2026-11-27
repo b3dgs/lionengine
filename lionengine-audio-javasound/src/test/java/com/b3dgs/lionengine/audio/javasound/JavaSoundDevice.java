@@ -46,7 +46,7 @@ final class JavaSoundDevice
             new JavaSoundBackend(new InboxSpy()).close();
             opened = true;
         }
-        catch (final IllegalStateException exception)
+        catch (IllegalStateException _)
         {
             opened = false;
         }

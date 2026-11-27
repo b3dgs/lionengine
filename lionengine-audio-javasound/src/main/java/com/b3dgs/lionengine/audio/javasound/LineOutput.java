@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.audio.javasound;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
@@ -40,28 +41,18 @@ final class LineOutput implements MixOutput
      */
     static AudioFormat toAudioFormat(PcmFormat format)
     {
-        return new AudioFormat(format.sampleRate(), Short.SIZE, format.channels(), true, false);
+        return new AudioFormat((float) format.sampleRate(), Short.SIZE, format.channels(), true, false);
     }
 
     /**
-     * Tells whether the default mixer offers a line for a format.
+     * Tells whether a mixer supports a line for a format.
      *
      * @param format The PCM format.
      * @return {@code true} if a line can be asked for it; it may still be busy when opened.
      */
     static boolean isAvailable(PcmFormat format)
     {
-        boolean available;
-        try
-        {
-            AudioSystem.getSourceDataLine(toAudioFormat(format));
-            available = true;
-        }
-        catch (final LineUnavailableException | IllegalArgumentException | SecurityException exception)
-        {
-            available = false;
-        }
-        return available;
+        return AudioSystem.isLineSupported(new DataLine.Info(SourceDataLine.class, toAudioFormat(format)));
     }
 
     /**

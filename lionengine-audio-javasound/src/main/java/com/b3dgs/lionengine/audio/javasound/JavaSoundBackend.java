@@ -250,7 +250,7 @@ public final class JavaSoundBackend implements AudioBackend
             {
                 thread.join(CLOSE_TIMEOUT_MILLIS);
             }
-            catch (final InterruptedException exception)
+            catch (InterruptedException _)
             {
                 Thread.currentThread().interrupt();
             }

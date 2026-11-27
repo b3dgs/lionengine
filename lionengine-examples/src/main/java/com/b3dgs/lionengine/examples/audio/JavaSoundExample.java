@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.Log;
 import com.b3dgs.lionengine.LogLevel;
 import com.b3dgs.lionengine.audio.AudioBackend;
 import com.b3dgs.lionengine.audio.PcmBuffer;
-import com.b3dgs.lionengine.audio.VoiceListener;
 import com.b3dgs.lionengine.audio.javasound.JavaSoundBackend;
 import com.b3dgs.lionengine.runtime.GameLoop;
 import com.b3dgs.lionengine.runtime.LoopConfig;
@@ -87,7 +86,8 @@ public final class JavaSoundExample
             notes[i] = BeepExample.beep(frequency, NOTE_SECONDS, NOTE_RATE);
             frequency *= THIRD;
         }
-        final Jingle jingle = new Jingle(backend, notes);
+        final Jingle jingle = new Jingle(backend, notes, FIRST_GAIN, GAIN_STEP);
+        backend.setVoiceListener(jingle);
         jingle.next();
         return jingle;
     }
@@ -117,91 +117,6 @@ public final class JavaSoundExample
         finally
         {
             backend.close();
-        }
-    }
-
-    /**
-     * The jingle: plays its notes one after the other, each at the end of the previous one, on the runtime thread.
-     *
-     * @since 11.0.0
-     */
-    public static final class Jingle implements VoiceListener
-    {
-        /** The backend. */
-        private final AudioBackend backend;
-        /** The notes. */
-        private final PcmBuffer[] notes;
-        /** The notes started. */
-        private int played;
-        /** The voice of the note playing, {@link AudioBackend#NO_VOICE} when none. */
-        private int voice;
-
-        /**
-         * Creates the jingle and listens to the ends of the backend.
-         *
-         * @param backend The backend.
-         * @param notes The notes, owned by the jingle.
-         */
-        Jingle(AudioBackend backend, PcmBuffer[] notes)
-        {
-            this.backend = backend;
-            this.notes = notes;
-            backend.setVoiceListener(this);
-        }
-
-        /**
-         * Returns the notes started.
-         *
-         * @return The number of notes played so far.
-         */
-        public int getPlayed()
-        {
-            return played;
-        }
-
-        /**
-         * Returns the voice of the note playing.
-         *
-         * @return The voice, {@link AudioBackend#NO_VOICE} once the jingle is done.
-         */
-        public int getVoice()
-        {
-            return voice;
-        }
-
-        /**
-         * Tells whether the jingle is done.
-         *
-         * @return {@code true} once the last note ended.
-         */
-        public boolean isDone()
-        {
-            return played == notes.length && voice == AudioBackend.NO_VOICE;
-        }
-
-        @Override
-        public void onVoiceEnded(int ended)
-        {
-            if (ended == voice)
-            {
-                next();
-            }
-        }
-
-        /**
-         * Plays the next note, or ends the jingle after the last one.
-         */
-        void next()
-        {
-            if (played < notes.length)
-            {
-                voice = backend.play(notes[played], FIRST_GAIN - GAIN_STEP * played, false);
-                played++;
-            }
-            else
-            {
-                voice = AudioBackend.NO_VOICE;
-            }
         }
     }
 

@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.audio.VoiceListener;
  * <p>
  * It implements the backend SPI without thread or line, so that its mixing is tested headless: {@link #mix(byte[])}
  * is called by the mixing thread of {@link JavaSoundBackend}, or by a test as its clock. Every voice is mixed into a
- * float accumulator, times its gain read once per buffer, then the sum is clipped to 16 bits. A voice that ends during
+ * double accumulator, times its gain read once per buffer, then the sum is clipped to 16 bits. A voice that ends during
  * a buffer is freed at once and its end is posted to the inbox from the mixing thread, with an event taken from a
  * pool, so that mixing allocates nothing. The pool grows, if ever, on the runtime thread at a play.
  * </p>
@@ -50,7 +50,7 @@ final class SoftwareMixer implements AudioBackend
     /** Bytes of a stereo frame. */
     private static final int FRAME_BYTES = PcmFormat.STEREO * Short.BYTES;
     /** Message of a closed mixer. */
-    private static final String CLOSED = "Java Sound backend closed";
+    private static final String MESSAGE_CLOSED = "Java Sound backend closed";
 
     /**
      * Checks a gain.
@@ -73,7 +73,7 @@ final class SoftwareMixer implements AudioBackend
     /** The voices, free or playing. */
     private final MixVoice[] voices;
     /** The accumulator of one buffer, interleaved stereo. */
-    private final float[] accumulator;
+    private final double[] accumulator;
     /** The frames of one buffer. */
     private final int bufferFrames;
     /** The pool of end events: the free ones are in {@code [0, freeEnds)}. */
@@ -115,7 +115,7 @@ final class SoftwareMixer implements AudioBackend
         {
             voices[i] = new MixVoice(outputRate);
         }
-        accumulator = new float[bufferFrames * PcmFormat.STEREO];
+        accumulator = new double[bufferFrames * PcmFormat.STEREO];
         ends = new VoiceEnd[maxVoices];
         for (int i = 0; i < maxVoices; i++)
         {
@@ -160,7 +160,7 @@ final class SoftwareMixer implements AudioBackend
         {
             if (!closed)
             {
-                Arrays.fill(accumulator, 0.0F);
+                Arrays.fill(accumulator, 0.0);
                 if (!outputPaused)
                 {
                     mixVoices();
@@ -234,7 +234,8 @@ final class SoftwareMixer implements AudioBackend
             int number = NO_VOICE;
             if (voice != null)
             {
-                number = nextVoice++;
+                number = nextVoice;
+                nextVoice++;
                 voice.start(number, buffer, gain, looping);
             }
             return number;
@@ -255,7 +256,8 @@ final class SoftwareMixer implements AudioBackend
             int number = NO_VOICE;
             if (voice != null)
             {
-                number = nextVoice++;
+                number = nextVoice;
+                nextVoice++;
                 voice.start(number, stream, gain);
             }
             return number;
@@ -373,7 +375,7 @@ final class SoftwareMixer implements AudioBackend
     {
         if (closed)
         {
-            throw new IllegalStateException(CLOSED);
+            throw new IllegalStateException(MESSAGE_CLOSED);
         }
         MixVoice free = null;
         for (int i = 0; i < voices.length && free == null; i++)
@@ -483,7 +485,7 @@ final class SoftwareMixer implements AudioBackend
     {
         for (int i = 0; i < accumulator.length; i++)
         {
-            final int sample = (int) Math.max(Short.MIN_VALUE, Math.min(Short.MAX_VALUE, accumulator[i]));
+            final int sample = (int) Math.clamp(accumulator[i], Short.MIN_VALUE, Short.MAX_VALUE);
             target[i * 2] = (byte) sample;
             target[i * 2 + 1] = (byte) (sample >> BYTE_BITS);
         }

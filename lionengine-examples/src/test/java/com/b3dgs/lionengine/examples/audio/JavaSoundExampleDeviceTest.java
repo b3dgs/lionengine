@@ -50,7 +50,7 @@ final class JavaSoundExampleDeviceTest
             new JavaSoundBackend(new InboxSpy()).close();
             opened = true;
         }
-        catch (final IllegalStateException exception)
+        catch (IllegalStateException _)
         {
             opened = false;
         }
@@ -63,6 +63,6 @@ final class JavaSoundExampleDeviceTest
     @Test
     void testMain()
     {
-        assertTimeoutPreemptively(TIMEOUT, () -> JavaSoundExample.main());
+        assertTimeoutPreemptively(TIMEOUT, JavaSoundExample::main);
     }
 }
