@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.ecs.WorldConfig;
  * flush. The game loop of a scene calls the flush once per step, after its systems; here {@link #step(World, long[],
  * int)} plays one step by hand. A removed bullet's ID becomes stale: {@code isAlive} stays {@code false} even when the
  * world reuses its index for a new bullet, so a turret that keeps an old ID never touches the wrong bullet. The world
- * is sized for the busiest step, so steps allocate nothing. Headless; {@link #main(String[])} logs the steps.
+ * is sized for the busiest step, so steps allocate nothing. Headless; {@link #run(Log)} logs the steps.
  * </p>
  *
  * @since 11.0.0
@@ -45,7 +45,7 @@ public final class ObjectLifecycleExample
     /** Object capacity of the world: every bullet alive at once, plus a volley pending. */
     public static final int CAPACITY = VOLLEY * (LIFETIME_STEPS + 1);
 
-    /** Steps played by {@link #main(String[])}. */
+    /** Steps played by {@link #run(Log)}. */
     private static final int STEPS = 8;
 
     /**
@@ -92,16 +92,14 @@ public final class ObjectLifecycleExample
     }
 
     /**
-     * Runs the example: logs the bullets alive after each step, and the liveness of a stale ID.
+     * Runs the example: logs the liveness of an object before and after its flush, the bullets alive after each of
+     * eight steps, and the liveness of a stale ID.
      *
-     * @param args Unused.
+     * @param log The log, at level {@link LogLevel#INFO} or finer to see the steps.
+     * @return The number of bullets alive after the last step.
      */
-    // CHECKSTYLE IGNORE LINE: UncommentedMain
-    public static void main(String[] args)
+    public static int run(Log log)
     {
-        final Log log = new Log();
-        log.setLevel(LogLevel.INFO);
-
         final World world = createWorld();
         final long[] bullets = new long[VOLLEY * LIFETIME_STEPS];
         final long pending = world.create();
@@ -111,10 +109,13 @@ public final class ObjectLifecycleExample
         world.remove(pending);
         world.flush();
 
+        int alive = 0;
         for (int step = 0; step < STEPS; step++)
         {
-            log.log(LogLevel.INFO, "Bullets alive:", step(world, bullets, step));
+            alive = step(world, bullets, step);
+            log.log(LogLevel.INFO, "Bullets alive:", alive);
         }
         log.log(LogLevel.INFO, "Stale ID alive (0 = no):", world.isAlive(pending) ? 1 : 0);
+        return alive;
     }
 }

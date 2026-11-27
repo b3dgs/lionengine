@@ -16,7 +16,6 @@
  */
 package com.b3dgs.lionengine.examples.ecs;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,6 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Log;
+import com.b3dgs.lionengine.LogLevel;
 import com.b3dgs.lionengine.ecs.World;
 
 /**
@@ -68,11 +69,15 @@ final class ObjectLifecycleExampleTest
     }
 
     /**
-     * The example runs.
+     * The example runs: three volleys are alive after its last step.
      */
     @Test
-    void testMain()
+    void testRun()
     {
-        assertDoesNotThrow(() -> ObjectLifecycleExample.main(new String[0]));
+        final Log log = new Log();
+        log.setLevel(LogLevel.INFO);
+
+        assertEquals(ObjectLifecycleExample.VOLLEY * ObjectLifecycleExample.LIFETIME_STEPS,
+                     ObjectLifecycleExample.run(log));
     }
 }

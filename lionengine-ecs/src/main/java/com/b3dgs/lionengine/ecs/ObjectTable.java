@@ -98,15 +98,15 @@ final class ObjectTable
     /** State per index. */
     private byte[] states;
     /** Free indices, a ring buffer in release order. */
-    private int[] free;
-    /** Position of the oldest free index in {@link #free}. */
+    private int[] freeQueue;
+    /** Position of the oldest free index in {@link #freeQueue}. */
     private int freeHead;
     /** Number of free indices. */
     private int freeCount;
     /** Number of indices issued so far, from {@code 0}. */
     private int issued;
     /** Number of alive objects. */
-    private int alive;
+    private int aliveCount;
 
     /**
      * Creates a table.
@@ -119,7 +119,7 @@ final class ObjectTable
         this.maxGeneration = maxGeneration;
         generations = new int[capacity];
         states = new byte[capacity];
-        free = new int[capacity];
+        freeQueue = new int[capacity];
         fillFirstGeneration(0);
     }
 
@@ -134,8 +134,8 @@ final class ObjectTable
         final int index;
         if (freeCount > 0)
         {
-            index = free[freeHead];
-            freeHead = (freeHead + 1) % free.length;
+            index = freeQueue[freeHead];
+            freeHead = (freeHead + 1) % freeQueue.length;
             freeCount--;
             states[index] = PENDING;
         }
@@ -163,7 +163,7 @@ final class ObjectTable
     void activate(long id)
     {
         states[index(id)] = ALIVE;
-        alive++;
+        aliveCount++;
     }
 
     /**
@@ -180,12 +180,12 @@ final class ObjectTable
         {
             final int index = index(id);
             states[index] = FREE;
-            alive--;
+            aliveCount--;
             final int generation = generations[index];
             if (generation < maxGeneration)
             {
                 generations[index] = generation + 1;
-                free[(freeHead + freeCount) % free.length] = index;
+                freeQueue[(freeHead + freeCount) % freeQueue.length] = index;
                 freeCount++;
             }
         }
@@ -249,11 +249,11 @@ final class ObjectTable
             System.arraycopy(states, 0, newStates, 0, old);
             for (int i = 0; i < freeCount; i++)
             {
-                newFree[i] = free[(freeHead + i) % old];
+                newFree[i] = freeQueue[(freeHead + i) % old];
             }
             generations = newGenerations;
             states = newStates;
-            free = newFree;
+            freeQueue = newFree;
             freeHead = 0;
             fillFirstGeneration(old);
             final int pendingEnd = Math.min(issued, capacity);
@@ -294,7 +294,7 @@ final class ObjectTable
      */
     int getAlive()
     {
-        return alive;
+        return aliveCount;
     }
 
     /**

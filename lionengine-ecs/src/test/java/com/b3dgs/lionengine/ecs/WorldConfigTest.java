@@ -34,9 +34,8 @@ final class WorldConfigTest
     @Test
     void testDefault()
     {
-        assertEquals(1024, WorldConfig.DEFAULT_OBJECT_CAPACITY);
-        assertEquals(WorldConfig.DEFAULT_OBJECT_CAPACITY, WorldConfig.DEFAULT.objectCapacity());
-        assertEquals(1 << 30, WorldConfig.MAX_OBJECT_CAPACITY);
+        assertEquals(1024, WorldConfig.DEFAULT.objectCapacity());
+        assertEquals(1 << 30, new WorldConfig(WorldConfig.MAX_OBJECT_CAPACITY).objectCapacity());
     }
 
     /**
