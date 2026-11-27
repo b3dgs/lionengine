@@ -17,9 +17,9 @@
 package com.b3dgs.lionengine.audio;
 
 /**
- * Audio backend SPI: plays fully decoded sounds and streamed sounds on voices, with their gain, looping and pause
- * (ADR-0004, ADR-0018, ADR-0027, ADR-0031, ADR-0033, ADR-0065, ADR-0068, ADR-0069, REQ-AUDIO-001, REQ-AUDIO-007,
- * REQ-AUDIO-009, REQ-AUDIO-011).
+ * Audio backend SPI: plays fully decoded sounds and streamed sounds on voices, with their gain, looping, pause and
+ * fades (ADR-0004, ADR-0018, ADR-0027, ADR-0031, ADR-0033, ADR-0065, ADR-0068, ADR-0069, ADR-0071, REQ-AUDIO-001,
+ * REQ-AUDIO-007, REQ-AUDIO-009, REQ-AUDIO-011, REQ-AUDIO-012).
  *
  * <p>
  * Implementations: {@code audio-javasound} on desktop, {@code audio-android}, and {@code FakeAudioBackend} of the
@@ -48,6 +48,15 @@ package com.b3dgs.lionengine.audio;
  * (ADR-0031), and {@link #resumeOutput()} continues them; the pause of the output and the pause of a voice are
  * independent, so a voice paused on its own stays paused when the output resumes, and a voice played while the output
  * is paused starts when it resumes.</li>
+ * <li>Fade (ADR-0071): {@link #fade(int, double, double)} ramps the gain of a voice linearly, from its gain at the call
+ * to a target gain, over a duration in seconds, rounded up to whole audio buffers of the backend (at least one). The
+ * gain is constant within a buffer and steps by the same amount from one buffer to the next, the last buffer of the
+ * ramp being at the target; once that buffer is played, the backend posts the completion to the inbox, which calls the
+ * {@link FadeListener} on the runtime thread. A voice has at most one ramp: a new fade replaces it, from the gain
+ * reached, and the replaced one posts nothing. {@link #setGain(int, double)} during a ramp changes its target and
+ * keeps its remaining time, so that a change of the master or of a group gain does not cut a fade short. A ramp holds
+ * while its voice or the output is paused, and is dropped without completion when its voice ends, is stopped or the
+ * backend closes. A fade to {@code 0} does not stop the voice: it plays on, silent, until it is stopped.</li>
  * </ul>
  *
  * <p>
@@ -91,6 +100,13 @@ public interface AudioBackend
     void setVoiceListener(VoiceListener listener);
 
     /**
+     * Sets the listener of the fades that reach their end; it replaces the previous one.
+     *
+     * @param listener The listener, {@code null} for none.
+     */
+    void setFadeListener(FadeListener listener);
+
+    /**
      * Starts playing a sound at once, from its first frame; while the output is paused, it starts when the output
      * resumes.
      *
@@ -122,13 +138,32 @@ public interface AudioBackend
 
     /**
      * Changes the gain of a voice, from its next audio buffer; no effect on a voice that ended, was stopped or does
-     * not exist. A paused voice keeps the gain for its resume.
+     * not exist. A paused voice keeps the gain for its resume. During a fade, the gain becomes the new target of the
+     * ramp, which keeps its remaining time (ADR-0071).
      *
      * @param voice The voice.
      * @param gain The gain, in {@code [0, 1]}.
      * @throws IllegalArgumentException If the gain is NaN or outside {@code [0, 1]}, whatever the voice.
      */
     void setGain(int voice, double gain);
+
+    /**
+     * Ramps the gain of a voice linearly from its current gain to a target gain, over a duration rounded up to whole
+     * audio buffers (at least one); no effect on a voice that ended, was stopped or does not exist. It replaces the
+     * ramp of the voice, if any, without completion for the replaced one. Once the last buffer of the ramp is played,
+     * at the target gain, the completion is posted to the inbox and the {@link FadeListener} is called at its delivery,
+     * on the runtime thread; the voice plays on at the target gain, also at {@code 0}. The ramp holds while the voice
+     * or the output is paused, and is dropped without completion if the voice ends, is stopped or the backend closes
+     * first.
+     *
+     * @param voice The voice.
+     * @param gain The target gain, in {@code [0, 1]}.
+     * @param seconds The duration of the ramp, in seconds, finite and not negative; {@code 0} reaches the target at
+     *            the next audio buffer.
+     * @throws IllegalArgumentException If the gain is NaN or outside {@code [0, 1]}, or the duration is NaN, infinite
+     *             or negative, whatever the voice.
+     */
+    void fade(int voice, double gain, double seconds);
 
     /**
      * Pauses a voice where it is; no effect on a paused voice, or on a voice that ended, was stopped or does not

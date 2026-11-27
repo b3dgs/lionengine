@@ -19,11 +19,12 @@ package com.b3dgs.lionengine.audio.javasound;
 import com.b3dgs.lionengine.InboxEvent;
 
 /**
- * End of a voice posted to the inbox by the mixing thread (ADR-0018, ADR-0070).
+ * End of a voice, or end of the fade of a voice, posted to the inbox by the mixing thread (ADR-0018, ADR-0070,
+ * ADR-0071).
  *
  * <p>
  * Events are pooled by their {@link SoftwareMixer}, so that posting an end allocates nothing: the mixing thread takes
- * one from the pool, and its delivery on the runtime thread gives it back before calling the listener.
+ * one from the pool, and its delivery on the runtime thread gives it back before calling the listener of its kind.
  * </p>
  */
 final class VoiceEnd implements InboxEvent
@@ -32,6 +33,8 @@ final class VoiceEnd implements InboxEvent
     private final SoftwareMixer mixer;
     /** The voice that ended, written under the lock of the mixer. */
     private int voice;
+    /** {@code true} for the end of a fade, {@code false} for the end of the voice. */
+    private boolean fade;
 
     /**
      * Creates an event of the pool.
@@ -44,13 +47,25 @@ final class VoiceEnd implements InboxEvent
     }
 
     /**
-     * Sets the voice that ended.
+     * Sets the voice that ended, or whose fade ended.
      *
      * @param voice The voice.
+     * @param fade {@code true} for the end of a fade, {@code false} for the end of the voice.
      */
-    void setVoice(int voice)
+    void set(int voice, boolean fade)
     {
         this.voice = voice;
+        this.fade = fade;
+    }
+
+    /**
+     * Tells the kind of the event.
+     *
+     * @return {@code true} for the end of a fade, {@code false} for the end of the voice.
+     */
+    boolean isFade()
+    {
+        return fade;
     }
 
     /**

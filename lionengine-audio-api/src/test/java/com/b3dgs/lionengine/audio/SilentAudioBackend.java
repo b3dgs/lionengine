@@ -52,6 +52,8 @@ final class SilentAudioBackend implements AudioBackend
 
     /** The listener. */
     private VoiceListener listener;
+    /** The fade listener. */
+    private FadeListener fadeListener;
     /** Next voice. */
     private int next = 1;
 
@@ -73,6 +75,16 @@ final class SilentAudioBackend implements AudioBackend
         listener.onVoiceEnded(voice);
     }
 
+    /**
+     * Ends the fade of a voice, as a delivered completion does.
+     *
+     * @param voice The voice.
+     */
+    void faded(int voice)
+    {
+        fadeListener.onFadeEnded(voice);
+    }
+
     @Override
     public int getMaxVoices()
     {
@@ -83,6 +95,12 @@ final class SilentAudioBackend implements AudioBackend
     public void setVoiceListener(VoiceListener listener)
     {
         this.listener = listener;
+    }
+
+    @Override
+    public void setFadeListener(FadeListener listener)
+    {
+        fadeListener = listener;
     }
 
     @Override
@@ -101,6 +119,12 @@ final class SilentAudioBackend implements AudioBackend
     public void setGain(int voice, double gain)
     {
         // Plays nothing, so no gain to apply.
+    }
+
+    @Override
+    public void fade(int voice, double gain, double seconds)
+    {
+        // Plays nothing, so no gain to ramp.
     }
 
     @Override
