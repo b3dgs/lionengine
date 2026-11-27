@@ -23,14 +23,19 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.b3dgs.lionengine.ecs.GameSystem;
+import com.b3dgs.lionengine.ecs.ObjectListener;
 import com.b3dgs.lionengine.ecs.Query;
+import com.b3dgs.lionengine.ecs.TraitListener;
 import com.b3dgs.lionengine.ecs.TraitStorage;
 import com.b3dgs.lionengine.ecs.TraitType;
 import com.b3dgs.lionengine.ecs.World;
@@ -40,8 +45,9 @@ import com.b3dgs.lionengine.ecs.WorldConfig;
  * Runs {@code ecs} on Android API 21 (ADR-0044): object creation and removal by ID, pending and stale IDs, the flush
  * and the capacity growth; trait registration, deferred trait addition, replacement and removal, pooling and the trait
  * capacity growth; queries with include and exclude sets, their update at the flush, changes requested inside an
- * iteration and the sorted ID copy. Expected values are the ones of the JVM tests of {@code lionengine-ecs} (WorldTest,
- * WorldFlushOrderTest, TraitStorageTest, QueryTest).
+ * iteration and the sorted ID copy; listeners of the flush events and systems in slot order with the enabled flag and
+ * one flush per update. Expected values are the ones of the JVM tests of {@code lionengine-ecs} (WorldTest,
+ * WorldFlushOrderTest, TraitStorageTest, QueryTest, WorldEventTest, WorldSystemTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class EcsTest
@@ -219,5 +225,106 @@ public final class EcsTest
         assertEquals(0, all.getCount());
         assertEquals(0, active.getCount());
         assertThrows(IllegalArgumentException.class, () -> all.copySortedIds(null));
+    }
+
+    /**
+     * The flush fires its events in order: creation, additions, a replacement as removed then added, an object removal
+     * as trait removals by ascending type ID then destruction; a listener must not change the world.
+     */
+    @Test
+    public void testEvents()
+    {
+        final World world = new World();
+        final TraitStorage<int[]> first = world.register(COUNTER);
+        final TraitStorage<int[]> second = world.register(new TraitType<int[]>()
+        {
+            @Override
+            public int[] create()
+            {
+                return new int[1];
+            }
+
+            @Override
+            public void reset(int[] trait)
+            {
+                trait[0] = 0;
+            }
+        });
+        final List<String> events = new ArrayList<>();
+        world.addObjectListener(new ObjectListener()
+        {
+            @Override
+            public void onCreated(long objectId)
+            {
+                events.add("created");
+            }
+
+            @Override
+            public void onDestroyed(long objectId)
+            {
+                events.add("destroyed");
+            }
+        });
+        world.addTraitListener(new TraitListener()
+        {
+            @Override
+            public void onTraitAdded(long objectId, int traitTypeId)
+            {
+                events.add("added " + traitTypeId);
+            }
+
+            @Override
+            public void onTraitRemoved(long objectId, int traitTypeId)
+            {
+                events.add("removed " + traitTypeId);
+                assertThrows(IllegalStateException.class, world::create);
+            }
+        });
+        final long id = world.create();
+        second.add(id);
+        first.add(id);
+        world.flush();
+        first.add(id);
+        world.flush();
+        world.remove(id);
+        world.flush();
+
+        assertEquals(Arrays.asList("created",
+                                   "added 1",
+                                   "added 0",
+                                   "removed 0",
+                                   "added 0",
+                                   "removed 0",
+                                   "removed 1",
+                                   "destroyed"),
+                     events);
+    }
+
+    /**
+     * Systems run by slot, ties by registration order; the enabled flag applies at the next step; one flush ends each
+     * update; an invalid step is refused.
+     */
+    @Test
+    public void testSystems()
+    {
+        final World world = new World();
+        final List<String> runs = new ArrayList<>();
+        final GameSystem late = step -> runs.add("late " + world.getObjectCount());
+        world.addSystem(late, 4500);
+        world.addSystem(step -> runs.add("tie"), 1000);
+        world.addSystem(step ->
+        {
+            runs.add("early");
+            world.create();
+            world.setSystemEnabled(late, false);
+        }, 1000);
+        world.update(1.0 / 60.0);
+        world.update(1.0 / 60.0);
+
+        assertEquals(Arrays.asList("tie", "early", "late 0", "tie", "early"), runs);
+        assertEquals(2, world.getObjectCount());
+        assertFalse(world.isSystemEnabled(late));
+        assertThrows(IllegalArgumentException.class, () -> world.update(Double.NaN));
+        assertEquals(3, world.getSystemCount());
     }
 }

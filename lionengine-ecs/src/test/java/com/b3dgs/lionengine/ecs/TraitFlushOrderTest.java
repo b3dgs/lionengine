@@ -44,8 +44,8 @@ final class TraitFlushOrderTest
     void testMixedOrder()
     {
         final World world = new World();
-        final RecordingHook hook = new RecordingHook();
-        world.setHook(hook);
+        final RecordingListener recorder = new RecordingListener();
+        recorder.listen(world);
         final TraitStorage<Health> health = world.register(new HealthType());
         final TraitStorage<Health> armor = world.register(new HealthType());
         final long a = world.create();
@@ -61,7 +61,7 @@ final class TraitFlushOrderTest
                              "added " + a + " 1",
                              "created " + b,
                              "added " + b + " 1"),
-                     hook.take());
+                     recorder.take());
 
         health.add(b);
         armor.remove(a);
@@ -80,7 +80,7 @@ final class TraitFlushOrderTest
                              "added " + b + " 0",
                              "removed " + b + " 1",
                              "added " + b + " 1"),
-                     hook.take());
+                     recorder.take());
         assertFalse(world.isAlive(a));
         assertTrue(health.has(b));
         assertTrue(armor.has(b));
@@ -94,8 +94,8 @@ final class TraitFlushOrderTest
     void testRemovalReportsTraitsByTypeId()
     {
         final World world = new World();
-        final RecordingHook hook = new RecordingHook();
-        world.setHook(hook);
+        final RecordingListener recorder = new RecordingListener();
+        recorder.listen(world);
         final int types = TraitMasks.TYPES_PER_WORD + 2;
         final List<TraitStorage<Health>> storages = new ArrayList<>();
         for (int t = 0; t < types; t++)
@@ -108,7 +108,7 @@ final class TraitFlushOrderTest
             storages.get(t).add(id);
         }
         world.flush();
-        hook.take();
+        recorder.take();
 
         world.remove(id);
         world.flush();
@@ -119,7 +119,7 @@ final class TraitFlushOrderTest
             expected.add("removed " + id + " " + t);
         }
         expected.add("destroyed " + id);
-        assertEquals(expected, hook.take());
+        assertEquals(expected, recorder.take());
     }
 
     /**
@@ -130,12 +130,12 @@ final class TraitFlushOrderTest
     void testNoEffectNoReport()
     {
         final World world = new World();
-        final RecordingHook hook = new RecordingHook();
-        world.setHook(hook);
+        final RecordingListener recorder = new RecordingListener();
+        recorder.listen(world);
         final TraitStorage<Health> health = world.register(new HealthType());
         final long id = world.create();
         world.flush();
-        hook.take();
+        recorder.take();
 
         health.remove(id);
         world.remove(id);
@@ -144,7 +144,7 @@ final class TraitFlushOrderTest
         world.remove(id);
         world.flush();
 
-        assertEquals(List.of("destroyed " + id), hook.take());
+        assertEquals(List.of("destroyed " + id), recorder.take());
     }
 
     /**
@@ -154,15 +154,15 @@ final class TraitFlushOrderTest
     void testAddThenRemoveReported()
     {
         final World world = new World();
-        final RecordingHook hook = new RecordingHook();
-        world.setHook(hook);
+        final RecordingListener recorder = new RecordingListener();
+        recorder.listen(world);
         final TraitStorage<Health> health = world.register(new HealthType());
         final long id = world.create();
         health.add(id);
         health.remove(id);
         world.flush();
 
-        assertEquals(List.of("created " + id, "added " + id + " 0", "removed " + id + " 0"), hook.take());
+        assertEquals(List.of("created " + id, "added " + id + " 0", "removed " + id + " 0"), recorder.take());
         assertFalse(health.has(id));
     }
 
@@ -184,8 +184,8 @@ final class TraitFlushOrderTest
     private static List<String> run()
     {
         final World world = new World(new WorldConfig(4, 2));
-        final RecordingHook hook = new RecordingHook();
-        world.setHook(hook);
+        final RecordingListener recorder = new RecordingListener();
+        recorder.listen(world);
         final TraitStorage<Health> health = world.register(new HealthType());
         final TraitStorage<Health> armor = world.register(new HealthType());
         final long[] ids = new long[OBJECTS];
@@ -212,7 +212,7 @@ final class TraitFlushOrderTest
                 armor.add(ids[slot]).points = step;
             }
             world.flush();
-            changes.addAll(hook.take());
+            changes.addAll(recorder.take());
         }
         for (int i = 0; i < health.getCount(); i++)
         {

@@ -20,17 +20,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A hook recording the effective changes of the flushes as text.
+ * Object and trait listeners recording the effective changes of the flushes as text.
  */
-final class RecordingHook implements ChangeHook
+final class RecordingListener implements ObjectListener, TraitListener
 {
     /** The changes, in order. */
     private final List<String> changes = new ArrayList<>();
 
     /**
-     * Creates the hook.
+     * Creates the listeners.
      */
-    RecordingHook()
+    RecordingListener()
     {
         super();
     }
@@ -57,6 +57,17 @@ final class RecordingHook implements ChangeHook
     public void onTraitRemoved(long objectId, int traitTypeId)
     {
         changes.add("removed " + objectId + " " + traitTypeId);
+    }
+
+    /**
+     * Registers this recorder as object and trait listener of a world.
+     *
+     * @param world The world.
+     */
+    void listen(World world)
+    {
+        world.addObjectListener(this);
+        world.addTraitListener(this);
     }
 
     /**

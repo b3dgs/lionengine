@@ -127,7 +127,8 @@ public final class TraitStorage<T>
      * @return The instance attached at the flush; not to be kept after its removal.
      * @throws IllegalArgumentException If the ID is stale or never named an object of the world.
      * @throws IllegalStateException If {@link WorldConfig#MAX_OBJECT_CAPACITY} commands are already recorded since the
-     *             last flush, or if the pool is empty and the type creates a {@code null} instance.
+     *             last flush, or if the pool is empty and the type creates a {@code null} instance; if called during a
+     *             flush, by a listener; or if the world failed.
      */
     public T add(long objectId)
     {
@@ -153,7 +154,7 @@ public final class TraitStorage<T>
      * @param objectId The ID of an alive or pending object of the world.
      * @throws IllegalArgumentException If the ID is stale or never named an object of the world.
      * @throws IllegalStateException If {@link WorldConfig#MAX_OBJECT_CAPACITY} commands are already recorded since the
-     *             last flush.
+     *             last flush; if called during a flush, by a listener; or if the world failed.
      */
     public void remove(long objectId)
     {
@@ -208,10 +209,12 @@ public final class TraitStorage<T>
      * @param traitCapacity The number of traits to hold without growing, in [1,
      *            {@link WorldConfig#MAX_TRAIT_CAPACITY}].
      * @throws IllegalArgumentException If the capacity is outside its range.
-     * @throws IllegalStateException If the type creates a {@code null} instance.
+     * @throws IllegalStateException If the type creates a {@code null} instance, if called during a flush, or if the
+     *             world failed.
      */
     public void reserve(int traitCapacity)
     {
+        world.checkChangeable();
         WorldConfig.checkTraitCapacity(traitCapacity);
         growDense(traitCapacity);
         fillPool(traitCapacity);
