@@ -51,7 +51,7 @@ The base skeleton of the engine is built in two Phase 0 batches. The build skele
 | `FollowLookup` | interface | `camera` | `composition` (adapter over a `World`), examples; fake in the `camera` test JAR | `camera` | [`camera.md`](../features/camera.md) batch 2 |
 | `Box`, `ShapeQuery` | value, interface | `physics` | `tilemap` (`ShapeQuery`) | `traits`, `composition` | [`standard-traits.md`](../features/standard-traits.md) batch 3 (hot path: no allocation per query) |
 | *map loader contract* | interface | `tilemap` | Tiled loader in `tilemap`, game formats | `tilemap` | [`tile-map.md`](../features/tile-map.md) batch 3 |
-| `World`, `Query` | class, — | `ecs` | — | `traits`, `multiplayer`, `composition` | [`ecs.md`](../features/ecs.md) batches 1 to 3 |
+| `World` with `WorldConfig` (batch 1, ADR-0074: create, remove, liveness, flush, capacity), `Query` | class with value, — | `ecs` | — | `traits`, `multiplayer`, `composition` | [`ecs.md`](../features/ecs.md) batches 1 to 3 |
 | `GameSystem`, `TraitType<T>` | interface, — | `ecs` | `traits`, `multiplayer`, games | `ecs` | [`ecs.md`](../features/ecs.md) batches 2 and 4 |
 | Standard traits (`Transformable`, ...) | class | `traits` | — | `multiplayer` (codecs), `composition` (follow adapter) | [`standard-traits.md`](../features/standard-traits.md) |
 | Sessions and wire encoding (`NetworkServer`, `NetworkClient`, `MessageType<T>`, `MessageCodec<T>`, `NetWriter`, `NetReader`, ...) | — | `network` | `network` | `multiplayer` | [`network.md`](../features/network.md) |
@@ -78,7 +78,7 @@ Names already fixed by ADR-0037, ADR-0038, ADR-0040 and the feature pages. *Bold
 | `tilemap` | `.tilemap` | `TileMap`, `Tileset`, `AutoTileRules`, `MapLoadingException`, *map loader contract*, *tile-changed listener* | [`tile-map.md`](../features/tile-map.md) |
 | `camera` | `.camera` | `Camera`, `ViewTransform`, `FollowLookup`, *zoom curve enum* | [`camera.md`](../features/camera.md) |
 | `input-api` | `.input` | `Action`, `Bindings`, `InputState`, `Player`, *input adapter contract* | [`input.md`](../features/input.md) |
-| `ecs` | `.ecs` | `World`, `GameSystem`, `Query`, `TraitType<T>`, *ECS listeners* | [`ecs.md`](../features/ecs.md) |
+| `ecs` | `.ecs` | `World`, `WorldConfig`, `GameSystem`, `Query`, `TraitType<T>`, *ECS listeners* | [`ecs.md`](../features/ecs.md) |
 | `physics` | `.physics` | `Box`, `BroadPhase`, `ShapeQuery` | [`standard-traits.md`](../features/standard-traits.md) |
 | `traits` | `.traits` | traits `Transformable`, `Movable`, `Gravity`, `Jumpable`, `Collidable`, `Lifetime`; systems `Jump`, `Gravity`, `Movement`, `Collision`, `Lifetime` (two systems share a trait's name: the batch gives the system classes distinct names) | [`standard-traits.md`](../features/standard-traits.md) |
 | `composition` | `.composition` | `View`, *camera follow adapter* | not yet paged (Phase 3) |

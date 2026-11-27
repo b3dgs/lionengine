@@ -9,7 +9,7 @@ One line per capability, no implementation detail. Each area links to its featur
 - **Available**: implemented, tested, with an example.
 - **Planned**: in the roadmap, not yet specified in detail.
 
-Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop with asynchronous loading ([`features/game-loop.md`](features/game-loop.md)), the scenes with their overlay stack and declared flow ([`features/scenes.md`](features/scenes.md)), the file, memory and application-stream resource providers ([`features/resources.md`](features/resources.md)), the platform with rendering, headless and in a desktop window ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)), the image decoding, image cache and sprite sheets with their definition files ([`features/sprite-sheet.md`](features/sprite-sheet.md)), the sprites drawn with render commands ([`features/sprite.md`](features/sprite.md)), the animated sprites ([`features/animated-sprite.md`](features/animated-sprite.md)), the screen and display modes ([`features/display-modes.md`](features/display-modes.md)), the output filters of the desktop renderer ([`features/output-filtering.md`](features/output-filtering.md)) and the audio contracts ([`features/audio-short-and-long-sounds.md`](features/audio-short-and-long-sounds.md)) exist: the game loop, scenes and navigation, and images, sprites and animations are *Available*; resources and data files, window and display, audio, and platforms are *In progress*; every other area is *Specified*.
+Today the build skeleton, the cross-module contracts ([`features/contract-skeleton.md`](features/contract-skeleton.md)), the core foundation ([`features/core-foundation.md`](features/core-foundation.md)), the game loop with asynchronous loading ([`features/game-loop.md`](features/game-loop.md)), the scenes with their overlay stack and declared flow ([`features/scenes.md`](features/scenes.md)), the file, memory and application-stream resource providers ([`features/resources.md`](features/resources.md)), the platform with rendering, headless and in a desktop window ([`features/platform-and-rendering.md`](features/platform-and-rendering.md)), the image decoding, image cache and sprite sheets with their definition files ([`features/sprite-sheet.md`](features/sprite-sheet.md)), the sprites drawn with render commands ([`features/sprite.md`](features/sprite.md)), the animated sprites ([`features/animated-sprite.md`](features/animated-sprite.md)), the screen and display modes ([`features/display-modes.md`](features/display-modes.md)), the output filters of the desktop renderer ([`features/output-filtering.md`](features/output-filtering.md)), the audio contracts ([`features/audio-short-and-long-sounds.md`](features/audio-short-and-long-sounds.md)) and the first batch of the object model ([`features/ecs.md`](features/ecs.md)) exist: the game loop, scenes and navigation, and images, sprites and animations are *Available*; resources and data files, window and display, audio, objects and behaviors, and platforms are *In progress*; every other area is *Specified*.
 
 | Area | State | Phase |
 |---|---|---|
@@ -19,7 +19,7 @@ Today the build skeleton, the cross-module contracts ([`features/contract-skelet
 | [Window, display and rendering](#window-display-and-rendering) | In progress | 1–2 |
 | [Images, sprites and animations](#images-sprites-and-animations) | Available | 2 |
 | [Audio](#audio) | In progress | 2 |
-| [Objects and behaviors](#objects-and-behaviors) | Specified | 3 |
+| [Objects and behaviors](#objects-and-behaviors) | In progress | 3 |
 | [Tile maps](#tile-maps) | Specified | 3 |
 | [Camera](#camera) | Specified | 3 |
 | [Input](#input) | Specified | 3–4 |
@@ -112,6 +112,8 @@ Works now: the audio contracts under every backend: sounds as 16-bit PCM, decode
 - Games add their own behaviors and logic in the same way as the ready-made ones, in a fixed, documented order.
 - Designed for at least 1,000 moving objects per frame, including on mid-range Android phones.
 - Objects can be described in JSON and created from the description.
+
+Works now: a world of objects created and removed by ID at any time, the changes applied together at the end of the step so that the game never sees an object half created; an ID kept after its object is gone is recognized as stale and never points to a newer object, so a camera or an enemy holding it can check it safely; several worlds side by side; sized once for the busiest moment, creating and removing objects costs no memory churn (example `ObjectLifecycleExample`). Behaviors (traits), queries, systems and the ready-made behaviors come with the next batches.
 
 ## Tile maps
 

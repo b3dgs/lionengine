@@ -53,7 +53,7 @@ State (2026-11-25): done are the `core` foundation, the loop, the controllable c
 
 ## Phase 3 — game world
 
-- `ecs` ([`features/ecs.md`](features/ecs.md)), `physics` and `traits` ([`features/standard-traits.md`](features/standard-traits.md));
+- `ecs` ([`features/ecs.md`](features/ecs.md); batch 1, IDs, world, creation and removal and the flush, done on 2026-11-27, ADR-0074), `physics` and `traits` ([`features/standard-traits.md`](features/standard-traits.md));
 - `tilemap` with the Tiled loader and tile collision ([`features/tile-map.md`](features/tile-map.md));
 - `camera` ([`features/camera.md`](features/camera.md));
 - `input-api` and `input-awt` (keyboard and mouse) ([`features/input.md`](features/input.md)), needed by the demonstrator;

@@ -43,6 +43,18 @@ Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.m
 5. Random source (`REQ-DET-003`).
 6. Benchmark and allocation check at 1,000 objects × 4 traits; primitive arrays for `Transformable` and `Movable` only if the budget is missed (`REQ-ECS-009`).
 
+## State (2026-11-27)
+
+Batch 1 (2026-11-27), IDs, world, creation and removal, liveness and the explicit flush, with the example `ObjectLifecycleExample` and its API-index row. The signatures and details this page leaves to the batch follow [ADR-0074](../decisions/0074-ecs-object-ids-world-creation-removal-and-flush.md) (owner delegation):
+- `World` (`new World()` with `WorldConfig.DEFAULT`, or `new World(config)`) and `WorldConfig(objectCapacity)`, 1,024 by default, at most 2<sup>30</sup>; `World.NO_OBJECT` is `0`.
+- `create()` returns a positive packed `long` at once; the object is pending until `flush()`: `isAlive` is `false`, the accessors of the next batches fail fast with `IllegalStateException`. `remove(id)` records the removal of a pending or alive object, applied at the flush; a stale or never-valid ID is refused with `IllegalArgumentException`; a removal recorded twice is applied once. `isAlive` never throws.
+- Generations from 1 to 2<sup>31</sup> − 1; a removed index takes the next generation and joins the back of a free queue, the oldest free index reused first, never before the flush that frees it; an index at the last generation is retired, so no ID repeats.
+- Capacity: creating beyond it issues pending indices without allocating; the flush doubles the table until they fit; `reserve(n)` grows it ahead; never shrinks. The command log starts at the object capacity and doubles when a step records more commands. `getObjectCount()` and `getObjectCapacity()`.
+- No allocation on the steady create, remove and flush paths: `WorldAllocationTest` measures less than 1 KiB over 1,000 steps of 1,000 removals and 1,000 creations (ADR-0074, decision 9; the benchmark is batch 6).
+- Tests: `ObjectTableTest`, `WorldTest`, `WorldFlushOrderTest` (regression set of the flush order, reproducibility), `WorldConfigTest`, `WorldAllocationTest`; the device test `EcsTest`.
+
+Next: batch 2, the trait registry, pooled storage and deferred trait add/remove at the flush.
+
 ## Lifecycle and concurrency
 
 A world is created and owned by the game or its scene; no singleton. All calls come from the runtime thread. Structural changes happen only at the flush (`REQ-LOOP-003`); rendering only reads state (`REQ-LOOP-006`).
