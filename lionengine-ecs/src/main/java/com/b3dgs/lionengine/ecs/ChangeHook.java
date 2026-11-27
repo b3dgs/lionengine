@@ -18,13 +18,19 @@ package com.b3dgs.lionengine.ecs;
 
 /**
  * The effective changes of a flush, one call per change, in the order the flush applies them (REQ-ECS-012, ADR-0034,
- * ADR-0075).
+ * ADR-0075, ADR-0076).
  *
  * <p>
  * The seam of the world listeners of a later batch: the flush calls it only for changes that happen, never for a
  * command that changes nothing (a removal of an object or a trait already gone, an addition to an object removed by an
  * earlier command). A replaced trait is reported as removed, then added. The removal of an object reports the removal
  * of each of its traits, by ascending type ID, then the destruction of the object.
+ * </p>
+ *
+ * <p>
+ * The queries are not maintained through this hook: the world updates them itself, right after each change of a trait
+ * mask, so that during a call the queries agree with the masks. When a trait is added, the queries already list the
+ * object; when a trait is removed, the call comes before the mask changes, so the queries still list it (ADR-0076).
  * </p>
  *
  * <p>
