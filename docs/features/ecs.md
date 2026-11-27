@@ -53,7 +53,15 @@ Batch 1 (2026-11-27), IDs, world, creation and removal, liveness and the explici
 - No allocation on the steady create, remove and flush paths: `WorldAllocationTest` measures less than 1 KiB over 1,000 steps of 1,000 removals and 1,000 creations (ADR-0074, decision 9; the benchmark is batch 6).
 - Tests: `ObjectTableTest`, `WorldTest`, `WorldFlushOrderTest` (regression set of the flush order, reproducibility), `WorldConfigTest`, `WorldAllocationTest`; the device test `EcsTest`.
 
-Next: batch 2, the trait registry, pooled storage and deferred trait add/remove at the flush.
+Batch 2 (2026-11-27), the trait registry, pooled storage and deferred trait changes, with the example `TraitExample` (game-defined trait `Fuse`) and its API-index row. The signatures and details this page leaves to the batch follow [ADR-0075](../decisions/0075-ecs-trait-registry-pooled-storage-deferred-trait-changes.md) (owner delegation):
+- `TraitType<T>`, implemented by the game: `create()` a new instance in its reset state, `reset(trait)` back to it. `World.register(type)` gives the next type ID (0, then consecutive) and returns the typed `TraitStorage<T>` used for every access, without lookup; a type registered twice in a world, or `null`, is an `IllegalArgumentException`; the same type may be registered in several worlds; any number of types (mask words of 64 types).
+- `TraitStorage.add(id)` hands out a pooled instance at once, to be filled, and attaches it at the flush, on an alive or pending object; an addition over an existing trait replaces it (the last wins: "replace" of this page); `remove(id)` detaches at the flush; an addition then a removal in one step both apply; commands on a trait or an object already gone at that point of the flush change nothing; removing an object removes its traits by ascending type ID, then the object. Object and trait commands share the batch 1 log, so they keep one recorded order.
+- `has(id)` and `get(id)` read the state of the last flush through `checkAlive`: `IllegalStateException` for a pending object, `IllegalArgumentException` for a stale or never-valid ID; `get` without the trait is an `IllegalStateException`. Removed and replaced instances are reset and pooled.
+- Capacity: `WorldConfig(objectCapacity, traitCapacity)`, 256 traits per type by default, at most 2<sup>30</sup>; each storage creates that many instances at registration; the flush doubles the dense array for the attached and staged traits; `reserve(n)` grows it ahead; never shrinks. Seams of the next batches: the per-object trait masks (queries) and the per-change hook, called for effective changes only, a replacement as a removal then an addition (events).
+- No allocation on the steady add, remove, replace and flush paths: `TraitAllocationTest` measures 0 bytes over 1,000 steps of 1,000 objects removed and created with two traits and a third added and removed (about 7 million commands; ADR-0075, decision 10).
+- Tests: `TraitStorageTest`, `TraitFlushOrderTest` (regression set of the mixed flush order, reproducibility), `TraitAllocationTest`, `WorldConfigTest`, `TraitExampleTest`; the device test `EcsTest` (`testTraits`, `testTraitGrowth`).
+
+Next: batch 3, the cached queries with include and exclude sets and the ID copy.
 
 ## Lifecycle and concurrency
 
