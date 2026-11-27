@@ -47,7 +47,7 @@ final class OggVorbisSource implements PcmSource
     /** No granule position known for the end of the current link. */
     private static final long NO_END = -1L;
     /** Scale of a decoded value to 16 bits, as {@code libvorbisfile}. */
-    private static final float SCALE = 32_768.0F;
+    private static final double SCALE = 32_768.0;
 
     /**
      * Opens a stream: reads and checks the headers of its first logical stream.
@@ -101,8 +101,7 @@ final class OggVorbisSource implements PcmSource
      */
     private static short toShort(float value)
     {
-        final int sample = Math.round(value * SCALE);
-        return (short) Math.max(Short.MIN_VALUE, Math.min(Short.MAX_VALUE, sample));
+        return (short) Math.clamp(Math.round(value * SCALE), Short.MIN_VALUE, Short.MAX_VALUE);
     }
 
     /** The packets of the stream. */
@@ -189,16 +188,7 @@ final class OggVorbisSource implements PcmSource
             if (available > 0)
             {
                 final int count = Math.min(available, frames - written);
-                final float[][] values = pcm[0];
-                int sample = offset + written * channels;
-                for (int i = 0; i < count; i++)
-                {
-                    for (int channel = 0; channel < channels; channel++)
-                    {
-                        target[sample] = toShort(values[channel][index[channel] + i]);
-                        sample++;
-                    }
-                }
+                convert(target, offset + written * channels, count, channels);
                 dsp.synthesis_read(count);
                 linkFrames += count;
                 written += count;
@@ -209,6 +199,28 @@ final class OggVorbisSource implements PcmSource
             }
         }
         return written;
+    }
+
+    /**
+     * Converts frames ready in the synthesis to 16 bits, interleaved by frame.
+     *
+     * @param target The array receiving the samples.
+     * @param first The index of the first sample written.
+     * @param count The number of frames.
+     * @param channels The channel count.
+     */
+    private void convert(short[] target, int first, int count, int channels)
+    {
+        final float[][] values = pcm[0];
+        int sample = first;
+        for (int i = 0; i < count; i++)
+        {
+            for (int channel = 0; channel < channels; channel++)
+            {
+                target[sample] = toShort(values[channel][index[channel] + i]);
+                sample++;
+            }
+        }
     }
 
     /**
@@ -311,17 +323,15 @@ final class OggVorbisSource implements PcmSource
      */
     private void checkHeader(int header, Packet packet, Info info)
     {
-        if (header == 0)
+        switch (header)
         {
-            longBlock = VorbisHeaders.checkIdentification(packet.packet_base, packet.packet, packet.bytes);
-        }
-        else if (header == 1)
-        {
-            VorbisHeaders.checkComment(packet.packet_base, packet.packet, packet.bytes);
-        }
-        else
-        {
-            VorbisHeaders.checkSetup(packet.packet_base, packet.packet, packet.bytes, longBlock, info.channels);
+            case 0 -> longBlock = VorbisHeaders.checkIdentification(packet.packet_base, packet.packet, packet.bytes);
+            case 1 -> VorbisHeaders.checkComment(packet.packet_base, packet.packet, packet.bytes);
+            default -> VorbisHeaders.checkSetup(packet.packet_base,
+                                                packet.packet,
+                                                packet.bytes,
+                                                longBlock,
+                                                info.channels);
         }
     }
 

@@ -140,7 +140,7 @@ final class VorbisHeaders
         {
             return 0;
         }
-        bits.skip(BITS_32 + BITS_8 + BITS_32 + BITRATES);
+        bits.skip((long) BITS_32 + BITS_8 + BITS_32 + BITRATES);
         final int shortBlock = 1 << bits.read(BITS_4);
         final int longBlock = 1 << bits.read(BITS_4);
         if (shortBlock < MIN_BLOCK || longBlock > MAX_BLOCK || shortBlock > longBlock)
@@ -413,13 +413,13 @@ final class VorbisHeaders
                 checkBook(bits.read(BITS_8) - 1L, books);
             }
         }
-        bits.skip(MULTIPLIER);
-        final int rangeBits = (int) bits.read(BITS_4);
         int points = 0;
         for (final int partitionClass : classes)
         {
             points += classDimensions[partitionClass];
         }
+        bits.skip(MULTIPLIER);
+        final int rangeBits = (int) bits.read(BITS_4);
         if (points > MAX_FLOOR_POINTS)
         {
             throw new AudioDecodingException(OggPackets.ERROR_CORRUPT + "floor 1 of " + points + " points");

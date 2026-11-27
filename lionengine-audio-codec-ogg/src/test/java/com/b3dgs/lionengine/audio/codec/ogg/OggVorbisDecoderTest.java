@@ -18,10 +18,8 @@ package com.b3dgs.lionengine.audio.codec.ogg;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -71,8 +69,9 @@ final class OggVorbisDecoderTest
     private static void assertRefused(byte[] sound, String text)
     {
         final OggVorbisDecoder decoder = new OggVorbisDecoder();
+        final ByteArrayInputStream input = new ByteArrayInputStream(sound);
         final AudioDecodingException decoding = assertThrows(AudioDecodingException.class,
-                                                             () -> decoder.decode(new ByteArrayInputStream(sound)));
+                                                             () -> decoder.decode(input));
         assertTrue(decoding.getMessage().contains(text), decoding::getMessage);
         final AudioDecodingException streaming = assertThrows(AudioDecodingException.class,
                                                               () -> OggVorbisDecoderContractTest.stream(sound));
@@ -154,8 +153,9 @@ final class OggVorbisDecoderTest
         })
         {
             final OggVorbisDecoder decoder = new OggVorbisDecoder(limit);
+            final ByteArrayInputStream input = new ByteArrayInputStream(sound);
             final AudioDecodingException exception = assertThrows(AudioDecodingException.class,
-                                                                  () -> decoder.decode(new ByteArrayInputStream(sound)));
+                                                                  () -> decoder.decode(input));
             assertTrue(exception.getMessage().contains("limit " + limit), exception::getMessage);
         }
     }
@@ -303,10 +303,13 @@ final class OggVorbisDecoderTest
 
     /**
      * Random bytes of every page changed, with a valid checksum, decode or are refused with a decoding error: a failure
-     * of JOrbis on corrupted data never escapes as another exception.
+     * of JOrbis on corrupted data never escapes as another exception. The generator is seeded, so the runs are the same
+     * at every build.
+     *
+     * @throws IOException If reading fails.
      */
     @Test
-    void testCorruptedPackets()
+    void testCorruptedPackets() throws IOException
     {
         final Random random = new Random(42L);
         final byte[] sound = OggFiles.ogg(OggFiles.MONO_22050);
@@ -331,30 +334,7 @@ final class OggVorbisDecoderTest
                            || exception.getMessage().startsWith("Truncated"),
                            exception::getMessage);
             }
-            // CHECKSTYLE IGNORE LINE: IllegalCatch
-            catch (final IOException | RuntimeException exception)
-            {
-                fail("Run " + run + ": " + exception, exception);
-            }
         }
-        assertInstanceOf(PcmBuffer.class, assertDecodes(sound));
-    }
-
-    /**
-     * Decodes a valid sound.
-     *
-     * @param sound The sound.
-     * @return The samples.
-     */
-    private static PcmBuffer assertDecodes(byte[] sound)
-    {
-        try
-        {
-            return decode(sound);
-        }
-        catch (final IOException exception)
-        {
-            return fail(exception);
-        }
+        assertEquals(11_025, decode(sound).getFrames());
     }
 }

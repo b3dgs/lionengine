@@ -101,12 +101,12 @@ public final class OggVorbisDecoder implements AudioStreamDecoder
      */
     public OggVorbisDecoder(int maxFrames)
     {
-        super();
-
         if (maxFrames <= 0)
         {
             throw new IllegalArgumentException("Frame limit not positive: " + maxFrames);
         }
+        super();
+
         this.maxFrames = maxFrames;
     }
 

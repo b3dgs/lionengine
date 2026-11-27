@@ -251,8 +251,7 @@ final class OggVorbisSourceTest
         final byte[] stereo = OggFiles.ogg(OggFiles.STEREO_44100);
         final short[] expectedMono = readAll(open(mono), PIECE);
         final short[] expectedStereo = readAll(open(stereo), PIECE);
-        final ExecutorService executor = Executors.newFixedThreadPool(THREADS);
-        try
+        try (ExecutorService executor = Executors.newFixedThreadPool(THREADS))
         {
             final List<Future<short[]>> futures = new ArrayList<>();
             for (int i = 0; i < THREADS; i++)
@@ -266,10 +265,6 @@ final class OggVorbisSourceTest
                 assertArrayEquals(i % 2 == 0 ? expectedMono : expectedStereo,
                                   futures.get(i).get(TIMEOUT_SECONDS, TimeUnit.SECONDS));
             }
-        }
-        finally
-        {
-            executor.shutdownNow();
         }
     }
 
