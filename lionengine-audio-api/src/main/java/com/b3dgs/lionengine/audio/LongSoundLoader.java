@@ -190,8 +190,7 @@ public final class LongSoundLoader
      * @param decoder The decoder of the key.
      * @return The stream, to close once the source is no longer read, and its source.
      * @throws ResourceException If the resource is missing or cannot be read.
-     * @throws AudioDecodingException If the header is invalid, or the decoder failed with another unchecked exception
-     *             (its cause, ADR-0072); the message starts with the key.
+     * @throws AudioDecodingException If the header is invalid; the message starts with the key.
      */
     Opened open(ResourceKey key, AudioStreamDecoder decoder)
     {
@@ -208,11 +207,6 @@ public final class LongSoundLoader
         {
             throw closing(input, wrap(key, exception));
         }
-        // CHECKSTYLE IGNORE LINE: IllegalCatch
-        catch (final RuntimeException exception)
-        {
-            throw closing(input, report(key, exception));
-        }
     }
 
     /**
@@ -226,7 +220,6 @@ public final class LongSoundLoader
      * @throws IOException If the resource cannot be read.
      * @throws AudioDecodingException If the header is invalid.
      * @throws ResourceException If the resource is missing.
-     * @throws RuntimeException For another unchecked failure of the decoder, the stream closed first.
      */
     Opened reopen(ResourceKey key, AudioStreamDecoder decoder) throws IOException
     {
@@ -235,8 +228,7 @@ public final class LongSoundLoader
         {
             return new Opened(input, decoder.open(input));
         }
-        // CHECKSTYLE IGNORE LINE: IllegalCatch
-        catch (final IOException | RuntimeException exception)
+        catch (final IOException | AudioDecodingException exception)
         {
             final IOException closeFailure = close(input);
             if (closeFailure != null)
@@ -254,8 +246,8 @@ public final class LongSoundLoader
      * @param decoder The decoder of the key.
      * @return The samples, owned by the caller.
      * @throws ResourceException If the resource is missing or cannot be read.
-     * @throws AudioDecodingException If the content is invalid or above the frame limit of the decoder, or the decoder
-     *             failed with another unchecked exception (its cause, ADR-0072); the message starts with the key.
+     * @throws AudioDecodingException If the content is invalid or above the frame limit of the decoder; the message
+     *             starts with the key.
      */
     PcmBuffer read(ResourceKey key, AudioStreamDecoder decoder)
     {
@@ -271,15 +263,6 @@ public final class LongSoundLoader
         {
             throw wrap(key, exception);
         }
-        catch (final ResourceException exception)
-        {
-            throw exception;
-        }
-        // CHECKSTYLE IGNORE LINE: IllegalCatch
-        catch (final RuntimeException exception)
-        {
-            throw report(key, exception);
-        }
     }
 
     /**
@@ -287,9 +270,8 @@ public final class LongSoundLoader
      *
      * @param key The resource key.
      * @param failure The failure: an {@link IOException} or a runtime exception.
-     * @return A {@link ResourceException} for a read failure or as raised, an {@link AudioDecodingException} starting
-     *         with the key for a decoding failure and for any other unchecked failure of the decoder, kept as its cause
-     *         (ADR-0072).
+     * @return A {@link ResourceException} for a read failure, an {@link AudioDecodingException} starting with the key
+     *         for a decoding failure, the failure itself otherwise.
      */
     static RuntimeException report(ResourceKey key, Exception failure)
     {
@@ -305,10 +287,6 @@ public final class LongSoundLoader
         if (exception instanceof final AudioDecodingException decoding)
         {
             exception = wrap(key, decoding);
-        }
-        else if (!(exception instanceof ResourceException))
-        {
-            exception = new AudioDecodingException(key + COLON + "decoder failure: " + exception, exception);
         }
         return exception;
     }

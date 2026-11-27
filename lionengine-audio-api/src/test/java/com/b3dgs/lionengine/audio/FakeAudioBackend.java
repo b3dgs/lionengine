@@ -488,7 +488,7 @@ public final class FakeAudioBackend implements AudioBackend
      *
      * @param voice The voice.
      * @param frames The frames played.
-     * @return {@code true} if the stream returned fewer frames than asked, or threw an unchecked exception.
+     * @return {@code true} if the stream returned fewer frames than asked.
      */
     private boolean pull(Voice voice, int frames)
     {
@@ -497,23 +497,10 @@ public final class FakeAudioBackend implements AudioBackend
         while (left > 0 && !ended)
         {
             final int asked = Math.min(left, PULL_FRAMES);
-            int read;
-            try
-            {
-                read = voice.stream.read(scratch, 0, asked);
-            }
-            // CHECKSTYLE IGNORE LINE: IllegalCatch
-            catch (final RuntimeException exception)
-            {
-                // A failing stream ends its voice, as on a real backend (ADR-0072).
-                read = -1;
-            }
-            if (read >= 0)
-            {
-                voice.pulled += read;
-                voice.played += read;
-                left -= read;
-            }
+            final int read = voice.stream.read(scratch, 0, asked);
+            voice.pulled += read;
+            voice.played += read;
+            left -= read;
             ended = read < asked;
         }
         return ended;

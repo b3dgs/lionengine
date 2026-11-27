@@ -31,9 +31,8 @@ import com.b3dgs.lionengine.resources.ResourceException;
  * backend's thread reads the frames in order; each chunk read to its end is decoded again at once from the source, so
  * the ring stays full of frames ahead of the voice until the source ends. The ring is the only sample memory of the
  * stream: {@code chunks × chunkFrames} frames, whatever the length of the sound. A failure of the source (an
- * {@link IOException}, an {@link AudioDecodingException}, a {@link ResourceException}, or any other unchecked exception
- * of the decoder or of the resource, and a source returning a frame count outside what was asked) ends the stream after
- * the frames already decoded, and is kept for the runtime thread: the backend's thread never receives it (ADR-0072).
+ * {@link IOException} or an {@link AudioDecodingException}) ends the stream after the frames already decoded, and is
+ * kept for the runtime thread.
  * </p>
  *
  * <p>
@@ -264,20 +263,14 @@ final class StreamBuffer implements PcmStream
                 {
                     final int asked = chunkFrames - frames;
                     final int read = source.read(ring, base + frames * channels, asked);
-                    if (read < 0 || read > asked)
-                    {
-                        throw new AudioDecodingException("Source read " + read + " frames of " + asked + " asked");
-                    }
                     frames += read;
                     passFrames += read;
                     exhausted = read < asked;
                 }
             }
         }
-        // CHECKSTYLE IGNORE LINE: IllegalCatch
-        catch (final IOException | RuntimeException exception)
+        catch (final IOException | AudioDecodingException | ResourceException exception)
         {
-            // Every failure of the source stops here, on the backend's thread, which keeps mixing (ADR-0072).
             failure.set(exception);
             sourceEnded = true;
         }
