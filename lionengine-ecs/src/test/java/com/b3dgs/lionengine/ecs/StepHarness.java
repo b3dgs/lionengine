@@ -74,12 +74,12 @@ final class StepHarness
         }
         else
         {
-            median = durations[count / 2];
+            median = (double) durations[count / 2];
         }
         double sum = 0.0;
         for (final long duration : durations)
         {
-            sum += duration;
+            sum += (double) duration;
         }
         return new StepStatistics(count,
                                   median,

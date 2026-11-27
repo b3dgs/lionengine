@@ -75,9 +75,9 @@ Framework: JUnit 6 (Jupiter), the latest stable release, 6.1.3, pinned in the ag
 
 ## Measured budgets
 
-Filled by the benchmark batches (REQ-PERF-001); a value appears here only once measured.
+Filled by the benchmark batches (REQ-PERF-001); a value appears here only once measured. Each run of the trend job reports its values in its job summary and its artifact `benchmark-reports` (ADR-0079); this table keeps the run a batch measured.
 
 | Tier | Reference | Step budget | Memory | Measured on |
 |---|---|---|---|---|
-| Desktop | CI trend-job runner (standard Linux) | ≤ 1 ms per step for 1,000 objects × 4 traits (REQ-ECS-009) | not measured yet | — |
-| Android | mid-range API 21-era device (ADR-0044) | frame ≤ 16.6 ms (REQ-PERF-002) | not measured yet | — |
+| Desktop | CI trend-job runner (standard Linux) | ≤ 1 ms per step for 1,000 objects × 4 traits (REQ-ECS-009); measured median 14.6 µs (p90 14.7 µs, p99 24.4 µs, max 55.0 µs); 10,000 objects × 4 traits: median 177.3 µs (p99 198.3 µs) | stand-in traits per instance: `Transformable` 64 bytes, `Movable` 40, `Gravity` 32, `Lifetime` 24; a world of 1,000 objects × 4 traits allocates 664,624 bytes to build and populate (tables, storages, pools, queries, growth from the default capacities) | job `benchmark` of `build.yml`, run 46076908555 (2026-11-27), `ubuntu-latest`, 4 processors, Temurin 25.0.5, 5,000 warm-up and 10,000 measured steps; stand-in traits and systems of ADR-0079, to measure again with the standard traits |
+| Android | mid-range API 21-era device (ADR-0044) | frame ≤ 16.6 ms (REQ-PERF-002) | not measured yet (`OQ-177`) | — |

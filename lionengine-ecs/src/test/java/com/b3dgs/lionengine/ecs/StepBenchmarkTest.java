@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.ecs;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -188,7 +190,7 @@ final class StepBenchmarkTest
         final BenchmarkWorld scene = new BenchmarkWorld(OBJECTS);
         scene.populate();
         final long allocated = bean.getCurrentThreadAllocatedBytes() - before;
-        assertTrue(scene.getWorld().getObjectCount() == OBJECTS);
+        assertEquals(OBJECTS, scene.getWorld().getObjectCount());
         return allocated;
     }
 
@@ -209,7 +211,7 @@ final class StepBenchmarkTest
             instances[i] = type.newInstance();
         }
         final long allocated = bean.getCurrentThreadAllocatedBytes() - before;
-        assertTrue(instances[INSTANCES - 1] != null);
+        assertNotNull(instances[INSTANCES - 1]);
         return allocated / (double) INSTANCES;
     }
 }
