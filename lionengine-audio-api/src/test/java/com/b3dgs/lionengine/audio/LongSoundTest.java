@@ -105,12 +105,10 @@ final class LongSoundTest
     }
 
     /**
-     * A streamed sound reads nothing until prepared; preparing opens it and fills its buffer once; it plays to its
-     * end through the inbox, which closes its stream; it is prepared again by its next play; releasing twice is
-     * idempotent and a released sound is refused.
+     * A streamed sound reads nothing until prepared; preparing opens it and fills its buffer once.
      */
     @Test
-    void testStreamedLifecycle()
+    void testStreamedPreparation()
     {
         final LongSound music = loader.stream(MUSIC);
 
@@ -132,6 +130,19 @@ final class LongSoundTest
         assertEquals(FORMAT, music.getFormat());
         assertEquals(LongSoundLoader.DEFAULT_CHUNKS * LongSoundLoader.DEFAULT_CHUNK_FRAMES,
                      stream.getBufferedFrames());
+        music.release();
+    }
+
+    /**
+     * A streamed sound plays to its end through the inbox, which closes its stream; it is prepared again by its next
+     * play; releasing twice is idempotent and a released sound is refused.
+     */
+    @Test
+    void testStreamedPlayAndRelease()
+    {
+        final LongSound music = loader.stream(MUSIC);
+        music.prepare();
+        final StreamBuffer stream = music.getStream();
 
         final int voice = audio.play(music);
         assertTrue(voice > 0);
@@ -283,26 +294,28 @@ final class LongSoundTest
     @Test
     void testErrors()
     {
-        final ResourceException missing = assertThrows(ResourceException.class,
-                                                       () -> loader.stream(MISSING).prepare());
+        final LongSound absent = loader.stream(MISSING);
+        final ResourceException missing = assertThrows(ResourceException.class, absent::prepare);
         assertEquals(ResourceException.Reason.MISSING, missing.getReason());
 
-        final AudioDecodingException invalid = assertThrows(AudioDecodingException.class,
-                                                            () -> audio.play(loader.stream(INVALID)));
+        final LongSound broken = loader.stream(INVALID);
+        final AudioDecodingException invalid = assertThrows(AudioDecodingException.class, () -> audio.play(broken));
         assertTrue(invalid.getMessage().startsWith(INVALID.toString()), invalid::getMessage);
-        assertThrows(AudioDecodingException.class, () -> loader.decode(INVALID).prepare());
+        final LongSound brokenDecoded = loader.decode(INVALID);
+        assertThrows(AudioDecodingException.class, brokenDecoded::prepare);
 
         final ResourceKey failing = new ResourceKey("music/failing.wav");
         provider.put(failing, wav(10));
         provider.failOn(failing);
-        final ResourceException unreadable = assertThrows(ResourceException.class,
-                                                          () -> loader.stream(failing).prepare());
+        final LongSound failingSound = loader.stream(failing);
+        final ResourceException unreadable = assertThrows(ResourceException.class, failingSound::prepare);
         assertEquals(ResourceException.Reason.INACCESSIBLE, unreadable.getReason());
 
-        assertThrows(AudioDecodingException.class, () -> loader.stream(new ResourceKey("music/theme.ogg")));
+        final ResourceKey ogg = new ResourceKey("music/theme.ogg");
+        assertThrows(AudioDecodingException.class, () -> loader.stream(ogg));
         loader.setDecoder("wav", new WavDecoder(MUSIC_FRAMES - 1));
-        final AudioDecodingException limit = assertThrows(AudioDecodingException.class,
-                                                          () -> loader.decode(MUSIC).prepare());
+        final LongSound tooLong = loader.decode(MUSIC);
+        final AudioDecodingException limit = assertThrows(AudioDecodingException.class, tooLong::prepare);
         assertTrue(limit.getMessage().contains("limit"), limit::getMessage);
         final LongSound streamed = loader.stream(MUSIC);
         streamed.prepare();
@@ -320,8 +333,8 @@ final class LongSoundTest
         final byte[] bytes = wav(1_000);
         provider.put(truncated, Arrays.copyOf(bytes, bytes.length - 100));
 
-        final AudioDecodingException exception = assertThrows(AudioDecodingException.class,
-                                                              () -> loader.stream(truncated).prepare());
+        final LongSound sound = loader.stream(truncated);
+        final AudioDecodingException exception = assertThrows(AudioDecodingException.class, sound::prepare);
 
         assertTrue(exception.getMessage().startsWith(truncated.toString()), exception::getMessage);
         assertEquals(0, provider.getUnclosed());
@@ -346,9 +359,10 @@ final class LongSoundTest
         assertThrows(IllegalArgumentException.class, () -> loader.stream(MUSIC, 0, 512));
         assertThrows(IllegalArgumentException.class, () -> loader.stream(MUSIC, 2, 0));
         assertThrows(IllegalArgumentException.class, () -> loader.stream(MUSIC, Integer.MAX_VALUE, 512));
-        assertThrows(IllegalArgumentException.class, () -> loader.setDecoder(null, new WavDecoder()));
-        assertThrows(IllegalArgumentException.class, () -> loader.setDecoder("", new WavDecoder()));
-        assertThrows(IllegalArgumentException.class, () -> loader.setDecoder("a.b", new WavDecoder()));
+        final WavDecoder wav = new WavDecoder();
+        assertThrows(IllegalArgumentException.class, () -> loader.setDecoder(null, wav));
+        assertThrows(IllegalArgumentException.class, () -> loader.setDecoder("", wav));
+        assertThrows(IllegalArgumentException.class, () -> loader.setDecoder("a.b", wav));
         assertThrows(IllegalArgumentException.class, () -> loader.setDecoder("wav", null));
         assertThrows(IllegalArgumentException.class, () -> audio.play((LongSound) null));
     }

@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.audio;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Bounded buffer of a streamed long sound: a ring of chunks decoded ahead from a {@link PcmSource}, pulled by the
@@ -33,7 +34,8 @@ import java.io.IOException;
  *
  * <p>
  * Threads: filled on the runtime thread before the play, then read by one backend thread until the voice ends or is
- * stopped (the hand-off is ordered by the backend and the inbox); the failure is volatile. Reading allocates nothing.
+ * stopped (the hand-off is ordered by the backend and the inbox); the failure is an atomic reference. Reading
+ * allocates nothing.
  * </p>
  */
 final class StreamBuffer implements PcmStream
@@ -60,8 +62,8 @@ final class StreamBuffer implements PcmStream
     private int ready;
     /** {@code true} once the source ended or failed: nothing more is decoded. */
     private boolean sourceEnded;
-    /** The failure of the source, {@code null} if none. */
-    private volatile Exception failure;
+    /** The failure of the source, {@code null} if none; set by the backend's thread, read on the runtime thread. */
+    private final AtomicReference<Exception> failure = new AtomicReference<>();
 
     /**
      * Creates an empty buffer.
@@ -101,7 +103,7 @@ final class StreamBuffer implements PcmStream
      */
     Exception getFailure()
     {
-        return failure;
+        return failure.get();
     }
 
     /**
@@ -179,7 +181,7 @@ final class StreamBuffer implements PcmStream
         }
         catch (final IOException | AudioDecodingException exception)
         {
-            failure = exception;
+            failure.set(exception);
             frames = 0;
         }
         if (frames < chunkFrames)

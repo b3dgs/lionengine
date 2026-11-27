@@ -330,7 +330,8 @@ public abstract class AudioBackendContract
 
         assertFalse(backend.isPlaying(voice));
         assertEquals(calls, stream.getCalls());
-        assertThrows(IllegalStateException.class, () -> backend.play(new CountingStream(FRAMES)));
+        final CountingStream late = new CountingStream(FRAMES);
+        assertThrows(IllegalStateException.class, () -> backend.play(late));
     }
 
     /**

@@ -41,7 +41,8 @@ import com.b3dgs.lionengine.resources.ResourceException;
  * <p>
  * Tracks: the playlist refers to the {@link LongSound} handles it is given (the array is copied) and releases none:
  * their owner releases them, normally the scene on exit, after stopping the playlist. A track playing elsewhere is
- * reported as failing when its turn comes. A track that follows itself, as in a playlist of one track that loops, is
+ * reported as failing when its turn comes, and a track that fails to be prepared ahead is reported at its turn,
+ * without being tried again. A track that follows itself, as in a playlist of one track that loops, is
  * prepared at its turn only, since a long sound plays on one voice at a time.
  * </p>
  *
@@ -76,6 +77,10 @@ public final class Playlist
     private LongSound preparedAhead;
     /** Count of the stops, so that an advance ends when the listener stops or plays the playlist. */
     private int stops;
+    /** The track whose preparation ahead failed, {@code null} if none. */
+    private LongSound aheadFailed;
+    /** The failure of {@link #aheadFailed}, reported at its turn. */
+    private RuntimeException aheadFailure;
 
     /**
      * Creates a stopped playlist that stops after its last track and skips the tracks that fail.
@@ -243,41 +248,60 @@ public final class Playlist
         final int run = stops;
         int next = from;
         int failures = 0;
-        while (track == NO_TRACK && failures < tracks.length && run == stops)
+        boolean going = true;
+        while (going && track == NO_TRACK && failures < tracks.length && run == stops)
         {
             if (next == tracks.length)
             {
-                if (!looping)
-                {
-                    break;
-                }
                 next = 0;
+                going = looping;
             }
-            if (start(next))
+            if (going && start(next))
             {
                 prepareAhead();
             }
-            else if (abortOnFailure)
-            {
-                break;
-            }
-            else
+            else if (going)
             {
                 failures++;
                 next++;
+                going = !abortOnFailure;
             }
         }
     }
 
     /**
-     * Starts a track, reporting its failure; a track the playlist prepared and could not start closes its stream.
+     * Starts a track, or reports the failure of its preparation ahead.
      *
      * @param index The index of the track.
      * @return {@code true} if it plays, {@code false} if it failed and was reported.
      */
     private boolean start(int index)
     {
+        boolean started = false;
         final LongSound sound = tracks[index];
+        if (sound == aheadFailed)
+        {
+            final RuntimeException failure = aheadFailure;
+            forgetAheadFailure();
+            report(index, failure);
+        }
+        else
+        {
+            started = play(index, sound);
+        }
+        return started;
+    }
+
+    /**
+     * Plays a track that did not fail ahead, reporting its failure; a track the playlist prepared and could not start
+     * closes its stream.
+     *
+     * @param index The index of the track.
+     * @param sound The sound of the track.
+     * @return {@code true} if it plays, {@code false} if it failed and was reported.
+     */
+    private boolean play(int index, LongSound sound)
+    {
         final boolean opened = sound == preparedAhead || !sound.isPrepared();
         if (sound == preparedAhead)
         {
@@ -307,8 +331,7 @@ public final class Playlist
     }
 
     /**
-     * Prepares the track after the one playing, if it is another sound; a failure is left to its turn, where it is
-     * reported.
+     * Prepares the track after the one playing, if it is another sound; a failure is kept and reported at its turn.
      */
     private void prepareAhead()
     {
@@ -324,8 +347,8 @@ public final class Playlist
             }
             catch (final ResourceException | AudioDecodingException | IllegalStateException exception)
             {
-                // Reported at the turn of the track, when its preparation is tried again.
-                preparedAhead = null;
+                aheadFailed = sound;
+                aheadFailure = exception;
             }
         }
     }
@@ -335,12 +358,22 @@ public final class Playlist
      */
     private void unprepareAhead()
     {
+        forgetAheadFailure();
         final LongSound sound = preparedAhead;
         preparedAhead = null;
         if (sound != null && !sound.isPlaying())
         {
             sound.close();
         }
+    }
+
+    /**
+     * Forgets the failure of a track prepared ahead.
+     */
+    private void forgetAheadFailure()
+    {
+        aheadFailed = null;
+        aheadFailure = null;
     }
 
     /**

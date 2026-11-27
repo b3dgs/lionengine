@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.audio;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import com.b3dgs.lionengine.resources.ResourceKey;
@@ -44,7 +45,8 @@ import com.b3dgs.lionengine.resources.ResourceKey;
  * Threads: runtime thread only (ADR-0018); {@link #prepare()} and {@link #release()} throw an
  * {@link IllegalStateException} on another thread than the owner of the loader (ADR-0055). While it plays, the
  * backend's thread pulls its buffer, which reads and decodes the resource and touches nothing else; a failure of the
- * stream ends the voice and is reported on the runtime thread, to the {@link Playlist} that plays it.
+ * stream, or to close it at the end, ends the voice and is reported on the runtime thread, to the {@link Playlist}
+ * that plays it.
  * </p>
  *
  * @since 11.0.0
@@ -224,8 +226,7 @@ public final class LongSound
             final Exception failure = prepared.getFailure();
             if (failure != null)
             {
-                LongSoundLoader.close(opened.input());
-                throw LongSoundLoader.report(key, failure);
+                throw LongSoundLoader.closing(opened.input(), LongSoundLoader.report(key, failure));
             }
             input = opened.input();
             stream = prepared;
@@ -298,7 +299,9 @@ public final class LongSound
      */
     void stopped()
     {
-        final TrackListener current = finish();
+        // A failure to close is dropped: the voice was stopped, so nothing reads the stream any more.
+        finish();
+        final TrackListener current = takeListener();
         if (current != null)
         {
             current.onTrackStopped(this);
@@ -311,16 +314,17 @@ public final class LongSound
      */
     void ended()
     {
-        final Exception failure;
+        Exception failure = null;
         if (stream != null)
         {
             failure = stream.getFailure();
         }
-        else
+        final IOException closeFailure = finish();
+        if (failure == null)
         {
-            failure = null;
+            failure = closeFailure;
         }
-        final TrackListener current = finish();
+        final TrackListener current = takeListener();
         if (current != null)
         {
             final RuntimeException reported;
@@ -338,15 +342,20 @@ public final class LongSound
 
     /**
      * Closes the stream of a streamed sound, which is no longer prepared; a fully decoded sound keeps its samples.
+     *
+     * @return The failure to close the stream, {@code null} if it closed or there was none. The callers that stop a
+     *         sound or release it drop it: nothing reads the stream any more.
      */
-    void close()
+    IOException close()
     {
+        IOException failure = null;
         if (input != null)
         {
-            LongSoundLoader.close(input);
+            failure = LongSoundLoader.close(input);
             input = null;
             stream = null;
         }
+        return failure;
     }
 
     /**
@@ -362,15 +371,24 @@ public final class LongSound
     /**
      * Forgets the voice once it no longer plays, and closes the stream.
      *
-     * @return The listener of the playlist that played it, {@code null} if none.
+     * @return The failure to close the stream, {@code null} if none.
      */
-    private TrackListener finish()
+    private IOException finish()
     {
-        final TrackListener current = listener;
         audio = null;
         voice = AudioBackend.NO_VOICE;
+        return close();
+    }
+
+    /**
+     * Takes the listener of the playlist that played the sound.
+     *
+     * @return The listener, {@code null} if none.
+     */
+    private TrackListener takeListener()
+    {
+        final TrackListener current = listener;
         listener = null;
-        close();
         return current;
     }
 }

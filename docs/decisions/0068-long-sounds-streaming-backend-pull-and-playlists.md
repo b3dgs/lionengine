@@ -53,6 +53,7 @@ What others do:
    - Long sounds are not cached or shared: each `LongSound` has its own stream. A new handle reads nothing. `prepare()` opens the resource, reads the header and fills the buffer (or decodes everything), and raises the resource and decoding errors on the runtime thread.
    - `Audio.play(LongSound)` prepares it if needed and plays it on a backend voice outside the short-sound limit and its policy. It returns the voice, or `NO_VOICE` when the backend has no free voice (the sound stays prepared). `Audio.stop(voice)` and `isPlaying(voice)` work for both families. A long sound plays on one voice at a time: playing it again while it plays is an `IllegalStateException`.
    - A streamed sound closes its resource when its voice ends or is stopped, and is prepared again by its next play; a fully decoded sound keeps its samples until its release.
+   - A failure to close the resource is added as suppressed to a failure of the preparation, and reported to the playlist with the end of a track; after a stop or a release it is dropped, since nothing reads the stream any more.
    - `release()` stops a playing sound, closes its stream and frees its samples. It is idempotent; preparing or playing a released sound is an `IllegalStateException`.
    - The thread of the loader's first operation owns the loader and its sounds (ADR-0055). Long sounds belong to the `music` group by default when mixer groups come (batch 7).
 5. **Playlists.** `Playlist(audio, tracks...)` refers to the `LongSound` handles it is given, as a variant set does, and releases none.
@@ -63,7 +64,7 @@ What others do:
    - When every track fails in a row within one advance, the playlist stops, even when looping, so that it never spins.
    - The listener may stop or play the playlist; the advance in progress then goes no further.
    - Stopping the voice of its track with `Audio.stop`, or releasing its track, stops the playlist.
-   - A failure of a track prepared ahead is left to its turn, where the preparation is tried again and reported.
+   - A failure of a track prepared ahead is kept and reported at its turn, without trying the track again.
    - A track that follows itself, as in a playlist of one track that loops, is prepared at its turn only, since a long sound plays on one voice at a time.
    - Getters: `isPlaying`, `getTrack` (`NO_TRACK` = `-1` when stopped), `getVoice`, `size`, `getSound`, `isLooping`, `isAbortOnFailure`.
 6. **Fake and suite** (`audio-api` test JAR, ADR-0045): `FakeAudioBackend.advance(frames)` pulls each streamed voice in pieces of at most `PULL_FRAMES` (`1,024`) frames and ends it at the first short read; `getStreams()` and `getPulledFrames(voice)` record what it pulled. `AudioBackendContract` checks that a stream is read to its end and never after, that a stopped or closed stream is no longer read and posts no end, that both kinds share the voice limit, and that a refused stream is never read.

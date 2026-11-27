@@ -201,13 +201,11 @@ public final class LongSoundLoader
         }
         catch (final IOException exception)
         {
-            close(input);
-            throw new ResourceException(key, ResourceException.Reason.INACCESSIBLE, exception);
+            throw closing(input, new ResourceException(key, ResourceException.Reason.INACCESSIBLE, exception));
         }
         catch (final AudioDecodingException exception)
         {
-            close(input);
-            throw wrap(key, exception);
+            throw closing(input, wrap(key, exception));
         }
     }
 
@@ -247,12 +245,8 @@ public final class LongSoundLoader
      */
     static RuntimeException report(ResourceKey key, Exception failure)
     {
-        final RuntimeException exception;
-        if (failure instanceof final AudioDecodingException decoding)
-        {
-            exception = wrap(key, decoding);
-        }
-        else if (failure instanceof final RuntimeException runtime)
+        RuntimeException exception;
+        if (failure instanceof final RuntimeException runtime)
         {
             exception = runtime;
         }
@@ -260,24 +254,48 @@ public final class LongSoundLoader
         {
             exception = new ResourceException(key, ResourceException.Reason.INACCESSIBLE, failure);
         }
+        if (exception instanceof final AudioDecodingException decoding)
+        {
+            exception = wrap(key, decoding);
+        }
         return exception;
     }
 
     /**
-     * Closes a stream no longer read; a failure to close loses nothing, so it is ignored.
+     * Closes a stream no longer read.
      *
      * @param input The stream.
+     * @return The failure to close it, {@code null} if it closed.
      */
-    static void close(InputStream input)
+    static IOException close(InputStream input)
     {
+        IOException failure = null;
         try
         {
             input.close();
         }
         catch (final IOException exception)
         {
-            // Nothing is lost: the stream is no longer read.
+            failure = exception;
         }
+        return failure;
+    }
+
+    /**
+     * Closes a stream after a failure, adding a failure to close it to the first one.
+     *
+     * @param input The stream.
+     * @param exception The failure that ends the use of the stream.
+     * @return The failure, with the failure to close suppressed in it, if any.
+     */
+    static RuntimeException closing(InputStream input, RuntimeException exception)
+    {
+        final IOException failure = close(input);
+        if (failure != null)
+        {
+            exception.addSuppressed(failure);
+        }
+        return exception;
     }
 
     /**

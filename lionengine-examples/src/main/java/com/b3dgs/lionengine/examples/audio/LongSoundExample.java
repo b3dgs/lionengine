@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.examples.audio;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.b3dgs.lionengine.audio.Audio;
@@ -78,10 +79,10 @@ public final class LongSoundExample
      *
      * @param loader The long-sound loader over the game data holding {@link #LEVELS}.
      * @param audio The audio system.
-     * @param failures The list receiving one line per failing track: its index and its error.
+     * @param failures The collection receiving one line per failing track: its index and its error.
      * @return The playlist, playing its first track.
      */
-    public static Playlist playLevels(LongSoundLoader loader, Audio audio, List<String> failures)
+    public static Playlist playLevels(LongSoundLoader loader, Audio audio, Collection<String> failures)
     {
         final LongSound[] tracks = new LongSound[LEVELS.size()];
         for (int i = 0; i < tracks.length; i++)

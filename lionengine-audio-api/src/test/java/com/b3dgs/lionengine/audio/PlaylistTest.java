@@ -23,6 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +37,7 @@ import com.b3dgs.lionengine.resources.FakeResourceProvider;
 import com.b3dgs.lionengine.resources.ResourceException;
 import com.b3dgs.lionengine.resources.ResourceKey;
 import com.b3dgs.lionengine.resources.Resources;
+import com.b3dgs.lionengine.resources.StreamProvider;
 
 /**
  * Tests of {@link Playlist} on {@link FakeAudioBackend} and its clock: advance at the end of a track, the next track
@@ -225,6 +228,7 @@ final class PlaylistTest
     {
         final Playlist playlist = playlist(first, loader.stream(MISSING), second);
         playlist.play();
+        assertTrue(failures.isEmpty());
 
         play(FIRST_FRAMES);
 
@@ -237,6 +241,36 @@ final class PlaylistTest
         assertSame(Thread.currentThread(), failure.thread());
         assertEquals(2, playlist.getTrack());
         assertTrue(second.isPlaying());
+    }
+
+    /**
+     * A failure to close the stream of a track at its end is reported, and the playlist goes on.
+     */
+    @Test
+    void testCloseFailure()
+    {
+        final ResourceKey key = new ResourceKey("music/unclosable.wav");
+        final byte[] bytes = LongSoundTest.wav(1_000);
+        final StreamProvider streams = new StreamProvider();
+        streams.register(key, () -> new ByteArrayInputStream(bytes)
+        {
+            @Override
+            public void close() throws IOException
+            {
+                throw new IOException("Cannot close");
+            }
+        });
+        streams.register(FIRST, () -> new ByteArrayInputStream(LongSoundTest.wav(FIRST_FRAMES)));
+        final LongSoundLoader unclosable = new LongSoundLoader(new Resources(streams));
+        final Playlist playlist = playlist(unclosable.stream(key), unclosable.stream(FIRST));
+        playlist.play();
+
+        play(1_000);
+
+        assertEquals(1, failures.size());
+        final ResourceException exception = assertInstanceOf(ResourceException.class, failures.get(0).exception());
+        assertEquals(ResourceException.Reason.INACCESSIBLE, exception.getReason());
+        assertEquals(1, playlist.getTrack());
     }
 
     /**
