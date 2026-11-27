@@ -15,7 +15,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 /**
- * Examples of the {@code ecs} module: objects created and removed by ID, liveness, game-defined traits, the flush and
- * queries.
+ * Examples of the {@code ecs} module: objects created and removed by ID, liveness, game-defined traits, the flush,
+ * queries, game-defined systems in slot order and listeners of the flush events.
  */
 package com.b3dgs.lionengine.examples.ecs;

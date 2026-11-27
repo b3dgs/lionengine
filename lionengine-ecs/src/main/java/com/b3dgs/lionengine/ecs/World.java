@@ -17,8 +17,9 @@
 package com.b3dgs.lionengine.ecs;
 
 /**
- * The container of the objects of a game or of a scene and of their traits (REQ-WORLD-001, REQ-ECS-001 to REQ-ECS-004,
- * REQ-ECS-005, REQ-ECS-006, REQ-ECS-010 to REQ-ECS-013, ADR-0011, ADR-0021, ADR-0030, ADR-0034, ADR-0074 to ADR-0076).
+ * The container of the objects of a game or of a scene, of their traits and of the systems that run them
+ * (REQ-WORLD-001, REQ-ECS-001 to REQ-ECS-008, REQ-ECS-010 to REQ-ECS-013, ADR-0011, ADR-0018, ADR-0021, ADR-0030,
+ * ADR-0034, ADR-0074 to ADR-0077).
  *
  * <p>
  * <b>Object IDs.</b> An object is an opaque primitive {@code long}: a generation in the high 32 bits, an index in the
@@ -56,6 +57,29 @@ package com.b3dgs.lionengine.ecs;
  * </p>
  *
  * <p>
+ * <b>Systems and steps.</b> {@link #addSystem(GameSystem, int)} registers a {@link GameSystem} with an {@code int}
+ * slot. {@link #update(double)} is one step: it runs the enabled systems from the lowest slot to the highest,
+ * systems of equal slots in registration order, with the constant step, then flushes once, so the changes the systems
+ * record are visible from the next step. Rendering only reads the world between two updates; commands recorded
+ * outside an update, from the inbox for example, join the log and apply at the flush that ends the next update.
+ * </p>
+ *
+ * <p>
+ * <b>Events.</b> {@link ObjectListener}s and {@link TraitListener}s receive, synchronously during the flush and in its
+ * order, every effective change: object created and destroyed, trait added and removed. A command that changes nothing
+ * fires nothing. A listener must not change the structure of the world: during the flush, creating or removing an
+ * object, adding or removing a trait, flushing, updating, registering a type, creating a query, reserving capacity and
+ * adding or removing a system throw {@link IllegalStateException}.
+ * </p>
+ *
+ * <p>
+ * <b>Failure.</b> An exception thrown by a system or a listener propagates out of {@link #update(double)} or
+ * {@link #flush()}; the world is undefined afterwards (ADR-0030): the rest of the step is not run, and every later
+ * structural change, flush and update throws {@link IllegalStateException}. The loop fails (REQ-LOOP-010); the game
+ * discards the world.
+ * </p>
+ *
+ * <p>
  * <b>Capacity.</b> The world holds {@link WorldConfig#objectCapacity()} objects without growing. Creating more is
  * allowed: the table doubles at the next flush until every created object fits, a documented warm-up cost, and never
  * shrinks; {@link #reserve(int)} grows it ahead. The log of the recorded commands starts with the same capacity and
@@ -67,8 +91,8 @@ package com.b3dgs.lionengine.ecs;
  *
  * <p>
  * No singleton: several worlds coexist, each independent of the others; an ID is meaningful in the world that created
- * it only. A world has no dependency on rendering, resources, audio, camera or tile maps. Events, systems and the
- * random source are added to the world by the next batches of the feature page.
+ * it only. A world has no dependency on rendering, resources, audio, camera or tile maps. The random source and the
+ * object definitions are added to the world by later batches of the feature page.
  * </p>
  *
  * <p>
@@ -91,11 +115,14 @@ public final class World
     private static final int INITIAL_QUERIES = 8;
     /** The empty exclude set. */
     private static final TraitStorage<?>[] NO_TYPES = new TraitStorage<?>[0];
-    /** The hook of a world without listeners. */
-    private static final ChangeHook NO_HOOK = new ChangeHook()
-    {
-        // Every change is ignored.
-    };
+    /** The phase outside an update and a flush. */
+    private static final int IDLE = 0;
+    /** The phase of the systems of an update. */
+    private static final int UPDATING = 1;
+    /** The phase of a flush, the listener calls included. */
+    private static final int FLUSHING = 2;
+    /** The phase after an exception of a system or a listener. */
+    private static final int FAILED = 3;
 
     /** The objects. */
     private final ObjectTable objects;
@@ -113,8 +140,12 @@ public final class World
     private Query[] queries;
     /** The number of queries. */
     private int queryCount;
-    /** The effective changes of the flush. */
-    private ChangeHook hook = NO_HOOK;
+    /** The listeners of the effective changes of the flush. */
+    private final WorldListeners listeners = new WorldListeners();
+    /** The systems. */
+    private final SystemSchedule systems = new SystemSchedule();
+    /** The current phase: {@link #IDLE}, {@link #UPDATING}, {@link #FLUSHING} or {@link #FAILED}. */
+    private int phase = IDLE;
 
     /**
      * Creates a world with the default configuration, {@link WorldConfig#DEFAULT}.
@@ -172,10 +203,12 @@ public final class World
      * @return The storage of the type, whose {@link TraitStorage#getTypeId()} is the number of types registered before
      *         it.
      * @throws IllegalArgumentException If the type is {@code null} or already registered in this world.
-     * @throws IllegalStateException If the type creates a {@code null} instance.
+     * @throws IllegalStateException If the type creates a {@code null} instance, if called during a flush, or if the
+     *             world failed.
      */
     public <T> TraitStorage<T> register(TraitType<T> type)
     {
+        checkChangeable();
         if (type == null)
         {
             throw new IllegalArgumentException("Trait type is null");
@@ -215,6 +248,7 @@ public final class World
      * @return The query, filled from the state of the last flush.
      * @throws IllegalArgumentException If the include set is {@code null}, empty, contains {@code null} or a storage
      *             of another world.
+     * @throws IllegalStateException If called during a flush, or if the world failed.
      */
     public Query createQuery(TraitStorage<?>... include)
     {
@@ -239,9 +273,11 @@ public final class World
      * @return The query, filled from the state of the last flush.
      * @throws IllegalArgumentException If a set is {@code null} or contains {@code null} or a storage of another world,
      *             if the include set is empty, or if a type is both included and excluded.
+     * @throws IllegalStateException If called during a flush, or if the world failed.
      */
     public Query createQuery(TraitStorage<?>[] include, TraitStorage<?>[] exclude)
     {
+        checkChangeable();
         if (include == null || include.length == 0)
         {
             throw new IllegalArgumentException("Query include set is null or empty");
@@ -297,10 +333,12 @@ public final class World
      *
      * @return The ID of the new object, positive.
      * @throws IllegalStateException If {@link WorldConfig#MAX_OBJECT_CAPACITY} objects are already created and not
-     *             removed, or as many commands are recorded since the last flush.
+     *             removed, or as many commands are recorded since the last flush; if called during a flush, by a
+     *             listener; or if the world failed.
      */
     public long create()
     {
+        checkChangeable();
         final long id = objects.allocate();
         commands.add(StructuralCommands.CREATE, id);
         return id;
@@ -319,7 +357,7 @@ public final class World
      * @throws IllegalArgumentException If the ID is stale (its object was removed by a flush) or never named an object
      *             of this world, {@link #NO_OBJECT} included.
      * @throws IllegalStateException If {@link WorldConfig#MAX_OBJECT_CAPACITY} commands are already recorded since the
-     *             last flush.
+     *             last flush; if called during a flush, by a listener; or if the world failed.
      */
     public void remove(long objectId)
     {
@@ -355,12 +393,215 @@ public final class World
      * its object, if alive, replacing the trait of the same type it may have, otherwise the instance goes back to the
      * pool; a trait removal detaches the trait of its object, if it has one. Removed and replaced instances are reset
      * and pooled. Each trait attached or detached updates at once the queries that include or exclude its type; a
-     * replacement changes no query. In the game loop the world calls it once per step, at the end; outside the loop it
-     * may be called at any time (setup, tests), but not inside the iteration of a query. A flush without command
-     * changes nothing. No allocation unless a capacity grows.
+     * replacement changes no query. Each effective change is delivered at once to the listeners (see
+     * {@link ObjectListener} and {@link TraitListener}). {@link #update(double)} calls it once per step, at the end;
+     * outside the updates it may be called at any time (setup, tests, between two updates), but not inside the
+     * iteration of a query. A flush without command changes nothing. No allocation unless a capacity grows.
      * </p>
+     *
+     * @throws IllegalStateException If called during an update (by a system) or a flush (by a listener), or if the
+     *             world failed.
      */
     public void flush()
+    {
+        checkIdle();
+        phase = FLUSHING;
+        boolean done = false;
+        try
+        {
+            applyCommands();
+            done = true;
+        }
+        finally
+        {
+            phase = done ? IDLE : FAILED;
+        }
+    }
+
+    /**
+     * Runs one step: the enabled systems in slot order with the constant step, then one {@link #flush()}.
+     *
+     * <p>
+     * First the enabled flags requested since the last step apply; then each enabled system runs, from the lowest slot
+     * to the highest, systems of equal slots in registration order; then the commands recorded by the systems, and
+     * before them by the game since the last flush (inbox events), apply in recorded order, firing the events. The
+     * changes are thus visible from the next step. The scene calls it from the runtime update with the constant step of
+     * the loop (ADR-0017); a variable step is not supported. A world without systems only flushes. No allocation once
+     * the capacities fit the busiest step.
+     * </p>
+     *
+     * <p>
+     * An exception thrown by a system or a listener propagates; the remaining systems and the flush, or the rest of the
+     * flush, do not run; the world is undefined afterwards and every later structural change, flush and update throws
+     * {@link IllegalStateException}.
+     * </p>
+     *
+     * @param stepSeconds The constant step, in seconds, positive and finite.
+     * @throws IllegalArgumentException If the step is zero, negative, infinite or NaN; nothing runs.
+     * @throws IllegalStateException If called during an update (by a system) or a flush (by a listener), or if the
+     *             world failed.
+     */
+    public void update(double stepSeconds)
+    {
+        if (!(stepSeconds > 0.0) || Double.isInfinite(stepSeconds))
+        {
+            throw new IllegalArgumentException("Step not positive and finite: " + stepSeconds);
+        }
+        checkIdle();
+        phase = UPDATING;
+        boolean done = false;
+        try
+        {
+            systems.run(stepSeconds);
+            phase = FLUSHING;
+            applyCommands();
+            done = true;
+        }
+        finally
+        {
+            phase = done ? IDLE : FAILED;
+        }
+    }
+
+    /**
+     * Registers a system, enabled, run by each {@link #update(double)} in slot order.
+     *
+     * <p>
+     * The system runs after the systems of lower slots and of equal slots registered before it, and before the
+     * others; any {@code int} is a slot. Standard slots and recommended game ranges: see {@link GameSystem}. Allowed
+     * outside an update and a flush, usually at initialization; the first update after it runs the system. The same
+     * system may be registered in several worlds.
+     * </p>
+     *
+     * @param system The system, not registered in this world yet.
+     * @param slot The ordering slot, lower first.
+     * @throws IllegalArgumentException If the system is {@code null} or already registered in this world.
+     * @throws IllegalStateException If called during an update or a flush, or if the world failed.
+     */
+    public void addSystem(GameSystem system, int slot)
+    {
+        checkIdle();
+        systems.add(system, slot);
+    }
+
+    /**
+     * Unregisters a system; the others keep their order.
+     *
+     * @param system A system registered in this world.
+     * @throws IllegalArgumentException If the system is not registered in this world, {@code null} included.
+     * @throws IllegalStateException If called during an update or a flush, or if the world failed.
+     */
+    public void removeSystem(GameSystem system)
+    {
+        checkIdle();
+        systems.remove(system);
+    }
+
+    /**
+     * Enables or disables a system from the next step.
+     *
+     * <p>
+     * The flag applies at the start of the next {@link #update(double)}: during an update the current step keeps the
+     * flags it started with, so a system disabled by an earlier system still runs in this step. Allowed at any time,
+     * also by a system or a listener.
+     * </p>
+     *
+     * @param system A system registered in this world.
+     * @param enabled {@code true} to run it, {@code false} to skip it.
+     * @throws IllegalArgumentException If the system is not registered in this world, {@code null} included.
+     */
+    public void setSystemEnabled(GameSystem system, boolean enabled)
+    {
+        systems.setEnabled(system, enabled);
+    }
+
+    /**
+     * Tells whether a system is enabled.
+     *
+     * @param system A system registered in this world.
+     * @return The flag the next {@link #update(double)} applies: the last value given to
+     *         {@link #setSystemEnabled(GameSystem, boolean)}, {@code true} after registration.
+     * @throws IllegalArgumentException If the system is not registered in this world, {@code null} included.
+     */
+    public boolean isSystemEnabled(GameSystem system)
+    {
+        return systems.isEnabled(system);
+    }
+
+    /**
+     * Returns the number of systems.
+     *
+     * @return The systems registered in this world.
+     */
+    public int getSystemCount()
+    {
+        return systems.size();
+    }
+
+    /**
+     * Registers an object listener, called after the listeners registered before it.
+     *
+     * <p>
+     * Allowed at any time, also from a listener during the flush: it then receives the events from the next one.
+     * </p>
+     *
+     * @param listener The listener, not registered in this world yet.
+     * @throws IllegalArgumentException If the listener is {@code null} or already registered in this world.
+     */
+    public void addObjectListener(ObjectListener listener)
+    {
+        listeners.addObjectListener(listener);
+    }
+
+    /**
+     * Unregisters an object listener.
+     *
+     * <p>
+     * Allowed at any time, also from a listener during the flush: it then receives no event after the current one.
+     * </p>
+     *
+     * @param listener A listener registered in this world.
+     * @throws IllegalArgumentException If the listener is not registered in this world, {@code null} included.
+     */
+    public void removeObjectListener(ObjectListener listener)
+    {
+        listeners.removeObjectListener(listener);
+    }
+
+    /**
+     * Registers a trait listener, called after the listeners registered before it.
+     *
+     * <p>
+     * Allowed at any time, also from a listener during the flush: it then receives the events from the next one.
+     * </p>
+     *
+     * @param listener The listener, not registered in this world yet.
+     * @throws IllegalArgumentException If the listener is {@code null} or already registered in this world.
+     */
+    public void addTraitListener(TraitListener listener)
+    {
+        listeners.addTraitListener(listener);
+    }
+
+    /**
+     * Unregisters a trait listener.
+     *
+     * <p>
+     * Allowed at any time, also from a listener during the flush: it then receives no event after the current one.
+     * </p>
+     *
+     * @param listener A listener registered in this world.
+     * @throws IllegalArgumentException If the listener is not registered in this world, {@code null} included.
+     */
+    public void removeTraitListener(TraitListener listener)
+    {
+        listeners.removeTraitListener(listener);
+    }
+
+    /**
+     * Applies the recorded commands, then forgets them: the body of {@link #flush()}.
+     */
+    private void applyCommands()
     {
         objects.growToIssued();
         growTraitIndex(objects.getCapacity());
@@ -392,9 +633,11 @@ public final class World
      * @param objectCapacity The number of objects to hold without growing, in [1,
      *            {@link WorldConfig#MAX_OBJECT_CAPACITY}].
      * @throws IllegalArgumentException If the capacity is outside its range.
+     * @throws IllegalStateException If called during a flush, or if the world failed.
      */
     public void reserve(int objectCapacity)
     {
+        checkChangeable();
         if (objectCapacity < 1 || objectCapacity > WorldConfig.MAX_OBJECT_CAPACITY)
         {
             throw new IllegalArgumentException("Object capacity outside [1, 2^30]: " + objectCapacity);
@@ -449,10 +692,12 @@ public final class World
      *
      * @param objectId The ID.
      * @throws IllegalArgumentException If the ID is stale or never named an object of this world.
-     * @throws IllegalStateException If {@link WorldConfig#MAX_OBJECT_CAPACITY} commands are already recorded.
+     * @throws IllegalStateException If {@link WorldConfig#MAX_OBJECT_CAPACITY} commands are already recorded, if called
+     *             during a flush, or if the world failed.
      */
     void checkRecordable(long objectId)
     {
+        checkChangeable();
         if (!objects.isAlive(objectId) && !objects.isPending(objectId))
         {
             throw new IllegalArgumentException(ERROR_INVALID + objectId);
@@ -484,13 +729,34 @@ public final class World
     }
 
     /**
-     * Sets the hook of the effective changes, the seam of the listeners.
+     * Checks that the structure of the world may change: no flush is running and the world did not fail.
      *
-     * @param hook The hook, not {@code null}.
+     * @throws IllegalStateException If a flush is running (a listener is called), or if the world failed.
      */
-    void setHook(ChangeHook hook)
+    void checkChangeable()
     {
-        this.hook = hook;
+        if (phase == FLUSHING)
+        {
+            throw new IllegalStateException("World flushing: a listener must not change the world");
+        }
+        if (phase == FAILED)
+        {
+            throw new IllegalStateException("World failed: an exception of a system or a listener left it undefined");
+        }
+    }
+
+    /**
+     * Checks that no update and no flush is running and that the world did not fail.
+     *
+     * @throws IllegalStateException If an update or a flush is running, or if the world failed.
+     */
+    private void checkIdle()
+    {
+        checkChangeable();
+        if (phase == UPDATING)
+        {
+            throw new IllegalStateException("World updating: a system must not flush, update, add or remove a system");
+        }
     }
 
     /**
@@ -528,7 +794,7 @@ public final class World
     private void applyCreate(long id)
     {
         objects.activate(id);
-        hook.onCreated(id);
+        listeners.created(id);
     }
 
     /**
@@ -553,7 +819,7 @@ public final class World
                 }
             }
             objects.release(id);
-            hook.onDestroyed(id);
+            listeners.destroyed(id);
         }
     }
 
@@ -572,7 +838,7 @@ public final class World
             final int index = ObjectTable.index(id);
             if (storage.contains(index))
             {
-                hook.onTraitRemoved(id, typeId);
+                listeners.traitRemoved(id, typeId);
                 storage.replace(index, slot);
             }
             else
@@ -581,7 +847,7 @@ public final class World
                 masks.set(index, typeId);
                 updateQueries(id, index, typeId);
             }
-            hook.onTraitAdded(id, typeId);
+            listeners.traitAdded(id, typeId);
         }
         else
         {
@@ -616,7 +882,7 @@ public final class World
      */
     private void detachTrait(long id, int index, int typeId)
     {
-        hook.onTraitRemoved(id, typeId);
+        listeners.traitRemoved(id, typeId);
         masks.clear(index, typeId);
         updateQueries(id, index, typeId);
         storages[typeId].detach(index);

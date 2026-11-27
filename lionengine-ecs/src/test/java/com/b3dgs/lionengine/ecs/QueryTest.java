@@ -632,17 +632,17 @@ final class QueryTest
     }
 
     /**
-     * During a call of the change hook, the queries agree with the trait masks: an added trait is already listed, a
+     * During a listener call, the queries agree with the trait masks: an added trait is already listed, a
      * removed trait still is.
      */
     @Test
-    void testQueriesAgreeWithHook()
+    void testQueriesAgreeWithListeners()
     {
         final World world = new World();
         final TraitStorage<Health> a = world.register(new HealthType());
         final Query query = world.createQuery(a);
         final List<String> seen = new ArrayList<>();
-        world.setHook(new ChangeHook()
+        world.addTraitListener(new TraitListener()
         {
             @Override
             public void onTraitAdded(long objectId, int traitTypeId)
@@ -655,7 +655,9 @@ final class QueryTest
             {
                 seen.add("removed " + lists(query, objectId));
             }
-
+        });
+        world.addObjectListener(new ObjectListener()
+        {
             @Override
             public void onDestroyed(long objectId)
             {
