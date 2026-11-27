@@ -109,7 +109,7 @@ Nothing here is verified yet, so every item is **not compatible yet** until it i
 | Network transport (ADR-0039) | `java.nio.channels.DatagramChannel` through `open()`, `socket().bind(...)`, `configureBlocking(false)`, `receive`, `send` (API 1; `DatagramChannel.bind` and `open(ProtocolFamily)` are API 24 and are not used); `socket().setBroadcast(true)` for discovery; `java.util.zip.CRC32`, `java.security.SecureRandom`, `StandardCharsets` (API 19); the game declares `android.permission.INTERNET`; calls never run on the Android main thread (the runtime thread is the render thread); a hosting device holds the Wi-Fi multicast lock for LAN discovery (`platform-android` capability) | not compatible yet |
 | Multiplayer (ADR-0038) | Pure Java over `network`, `ecs`, `traits`, `input-api`; no new JDK API | not compatible yet |
 | Allocation tests (ADR-0030) | `com.sun.management.ThreadMXBean` is JVM-only: test code only, never in shared main code | platform module only |
-| Desktop OGG decoder (ADR-0033) | JOrbis in `audio-codec-ogg`, desktop only; Android uses the platform decoder | platform module only |
+| Desktop OGG decoder (ADR-0033, ADR-0073) | JOrbis 0.0.17 in `audio-codec-ogg`, desktop only (`--release 25`), never in Android builds; Android decodes OGG Vorbis with the platform (`audio-android`, batch 9); the shared modules are unchanged | platform module only: `audio-codec-ogg` done (audio batch 8, 2026-11-27), not shipped on Android |
 
 ## Android verification job (ADR-0012, ADR-0044)
 

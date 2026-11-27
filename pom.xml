@@ -39,6 +39,7 @@
         <module>lionengine-render-awt</module>
         <module>lionengine-input-awt</module>
         <module>lionengine-audio-javasound</module>
+        <module>lionengine-audio-codec-ogg</module>
         <module>lionengine-graphics-imageio</module>
         <module>lionengine-examples</module>
     </modules>
