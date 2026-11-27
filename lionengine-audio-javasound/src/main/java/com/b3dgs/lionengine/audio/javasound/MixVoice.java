@@ -21,7 +21,8 @@ import com.b3dgs.lionengine.audio.PcmFormat;
 import com.b3dgs.lionengine.audio.PcmStream;
 
 /**
- * One voice of the {@link SoftwareMixer}: its sound, gain, looping, pause, and its position in the sound (ADR-0070).
+ * One voice of the {@link SoftwareMixer}: its sound, gain, fade, looping, pause, and its position in the sound
+ * (ADR-0070, ADR-0071).
  *
  * <p>
  * The voice reads its sound through a window of {@link #WINDOW_FRAMES} frames, copied from the buffer or pulled from
@@ -29,6 +30,12 @@ import com.b3dgs.lionengine.audio.PcmStream;
  * mono sound is played on both channels, and a sound of another sample rate is resampled by linear interpolation
  * between two frames, its position advancing by a fixed-point step of {@link #FRACTION_BITS} fractional bits per
  * output frame. A sound of the output rate is copied as it is.
+ * </p>
+ *
+ * <p>
+ * A fade ramps the gain once per mixed buffer, by {@link #step()}: each buffer moves the gain by the same part of the
+ * way left to the target, so that the gain is linear over the buffers of the ramp and the last one is at the target.
+ * A gain set during a ramp becomes its target, the buffers left being kept.
  * </p>
  *
  * <p>
@@ -78,6 +85,10 @@ final class MixVoice
     private boolean exhausted;
     /** The gain, read once per mixed buffer. */
     private double gain;
+    /** The target gain of the fade. */
+    private double fadeTarget;
+    /** The buffers left of the fade, {@code 0} when not fading. */
+    private long fadeLeft;
     /** The first left sample of a looping buffer, the neighbor of its last frame. */
     private short firstLeft;
     /** The first right sample of a looping buffer. */
@@ -136,6 +147,7 @@ final class MixVoice
     void release()
     {
         voice = 0;
+        fadeLeft = 0L;
         buffer = null;
         stream = null;
     }
@@ -157,7 +169,60 @@ final class MixVoice
      */
     void setGain(double voiceGain)
     {
-        gain = voiceGain;
+        if (fadeLeft > 0L)
+        {
+            fadeTarget = voiceGain;
+        }
+        else
+        {
+            gain = voiceGain;
+        }
+    }
+
+    /**
+     * Starts a fade from the current gain, replacing the current one.
+     *
+     * @param target The target gain, in {@code [0, 1]}.
+     * @param buffers The buffers of the ramp (positive).
+     */
+    void fade(double target, long buffers)
+    {
+        fadeTarget = target;
+        fadeLeft = buffers;
+    }
+
+    /**
+     * Tells whether the voice is fading.
+     *
+     * @return {@code true} until its fade reaches its target.
+     */
+    boolean isFading()
+    {
+        return fadeLeft > 0L;
+    }
+
+    /**
+     * Moves the fade by one buffer, before the buffer is mixed.
+     *
+     * @return {@code true} if this buffer is the last one of the fade, at its target gain.
+     */
+    boolean step()
+    {
+        boolean reached = false;
+        if (fadeLeft > 0L)
+        {
+            if (fadeLeft == 1L)
+            {
+                gain = fadeTarget;
+                reached = true;
+            }
+            else
+            {
+                gain += (fadeTarget - gain) / fadeLeft;
+            }
+            fadeLeft--;
+        }
+        return reached;
     }
 
     /**
@@ -233,6 +298,7 @@ final class MixVoice
         voice = number;
         channels = format.channels();
         gain = voiceGain;
+        fadeLeft = 0L;
         step = Math.max(1L, Math.round((double) format.sampleRate() * (1L << FRACTION_BITS) / outputRate));
         position = 0L;
         windowFirst = 0L;

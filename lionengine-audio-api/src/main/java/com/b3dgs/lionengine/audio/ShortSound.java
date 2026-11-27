@@ -20,8 +20,8 @@ import com.b3dgs.lionengine.resources.ResourceKey;
 
 /**
  * One load of a short sound held by a {@link ShortSoundCache}: the sound to give to {@link Audio#play(ShortSound)},
- * its gain and looping, and the release of that load (ADR-0004, ADR-0005, ADR-0007, ADR-0027, ADR-0066, ADR-0069,
- * REQ-AUDIO-003, REQ-AUDIO-004, REQ-AUDIO-011, REQ-RES-004).
+ * its gain, fades, mixer group and looping, and the release of that load (ADR-0004, ADR-0005, ADR-0007, ADR-0027,
+ * ADR-0066, ADR-0069, ADR-0071, REQ-AUDIO-003, REQ-AUDIO-004, REQ-AUDIO-011, REQ-AUDIO-012, REQ-RES-004).
  *
  * <p>
  * Every load returns a new handle, and every handle of one key shares the same decoded samples: the sound is decoded
@@ -34,7 +34,9 @@ import com.b3dgs.lionengine.resources.ResourceKey;
  *
  * <p>
  * Controls (ADR-0069): the gain of the handle ({@link #setGain(double)}, {@link Audio#MAX_GAIN} by default) multiplies
- * the master gain for every voice playing it, and a change reaches them at once. A handle that loops
+ * the gain of its mixer group and the master gain for every voice playing it, and a change reaches them at once;
+ * {@link #fade(double, double)} ramps them to a target gain over a duration instead (ADR-0071). The group is
+ * {@link MixerGroup#EFFECTS} by default ({@link #setGroup(String)}), read at the play. A handle that loops
  * ({@link #setLooping(boolean)}, off by default) is played looping from its next play: its voices never end by
  * themselves and play until they are stopped or stolen. The gain and the looping belong to this handle, not to the
  * other handles of the same key.
@@ -64,6 +66,8 @@ public final class ShortSound
     private double gain = Audio.MAX_GAIN;
     /** {@code true} to play the sound looping. */
     private boolean looping;
+    /** The id of the mixer group of the sound. */
+    private String group = MixerGroup.EFFECTS;
     /** The audio system that last played the sound, {@code null} if never played. */
     private Audio audio;
 
@@ -136,14 +140,15 @@ public final class ShortSound
     }
 
     /**
-     * Sets the gain of the sound; the voices playing it get their new effective gain at once.
+     * Sets the gain of the sound; the voices playing it get their new effective gain at once; a voice that is fading
+     * keeps fading, toward its new effective gain, in its remaining time.
      *
      * @param gain The gain, from {@link Audio#MIN_GAIN} to {@link Audio#MAX_GAIN}.
      * @throws IllegalArgumentException If the gain is NaN or outside its range; nothing changes then.
      */
     public void setGain(double gain)
     {
-        Audio.checkGain(gain);
+        AudioChecks.checkGain(gain);
         this.gain = gain;
         if (audio != null)
         {
@@ -159,6 +164,51 @@ public final class ShortSound
     public double getGain()
     {
         return gain;
+    }
+
+    /**
+     * Fades the sound: its gain becomes the target at once, so that {@link #getGain()} returns it, and every voice
+     * playing it ramps linearly from the gain it has to its new effective gain over the duration, in the backend. Each
+     * voice reports the end of its ramp to the {@link FadeListener} of the {@link Audio} through the inbox; a voice
+     * played during the fade starts at the target gain, and a sound playing on no voice reports nothing. A fade to
+     * {@code 0} stops nothing.
+     *
+     * @param gain The target gain, from {@link Audio#MIN_GAIN} to {@link Audio#MAX_GAIN}.
+     * @param seconds The duration, in seconds, finite and not negative; {@code 0} reaches the target at the next audio
+     *            buffer.
+     * @throws IllegalArgumentException If the gain or the duration is invalid; nothing changes then.
+     */
+    public void fade(double gain, double seconds)
+    {
+        AudioChecks.checkGain(gain);
+        AudioChecks.checkSeconds(seconds);
+        this.gain = gain;
+        if (audio != null)
+        {
+            audio.fade(this, seconds);
+        }
+    }
+
+    /**
+     * Sets the mixer group of the sound, from its next play; a voice already playing keeps the group it started with.
+     *
+     * @param group The id of the group, a group of the {@link Audio} that plays the sound (never {@code null} nor
+     *            empty); an id unknown to that audio system is refused at the play.
+     * @throws IllegalArgumentException If the id is {@code null} or empty.
+     */
+    public void setGroup(String group)
+    {
+        this.group = MixerGroup.checkId(group);
+    }
+
+    /**
+     * Returns the mixer group of the sound.
+     *
+     * @return The id of the group, {@link MixerGroup#EFFECTS} by default.
+     */
+    public String getGroup()
+    {
+        return group;
     }
 
     /**

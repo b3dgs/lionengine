@@ -22,8 +22,9 @@ import com.b3dgs.lionengine.resources.ResourceKey;
 
 /**
  * Handle of a long sound, music or ambient, created by a {@link LongSoundLoader}: streamed by default, or fully
- * decoded on request, with its gain and looping (ADR-0004, ADR-0005, ADR-0007, ADR-0018, ADR-0027, ADR-0033, ADR-0055,
- * ADR-0068, ADR-0069, REQ-AUDIO-006, REQ-AUDIO-007, REQ-AUDIO-011, REQ-RES-004).
+ * decoded on request, with its gain, fades, mixer group and looping (ADR-0004, ADR-0005, ADR-0007, ADR-0018, ADR-0027,
+ * ADR-0033, ADR-0055, ADR-0068, ADR-0069, ADR-0071, REQ-AUDIO-006, REQ-AUDIO-007, REQ-AUDIO-011, REQ-AUDIO-012,
+ * REQ-RES-004).
  *
  * <p>
  * Lifecycle: a new handle reads nothing. {@link #prepare()} makes it ready for direct use: a streamed sound opens its
@@ -42,7 +43,9 @@ import com.b3dgs.lionengine.resources.ResourceKey;
  *
  * <p>
  * Controls (ADR-0069): the gain of the handle ({@link #setGain(double)}, {@link Audio#MAX_GAIN} by default) multiplies
- * the master gain, and a change reaches its voice at once. A sound that loops ({@link #setLooping(boolean)}, off by
+ * the gain of its mixer group and the master gain, and a change reaches its voice at once; {@link #fade(double,
+ * double)} ramps it to a target gain over a duration instead (ADR-0071). The group is {@link MixerGroup#MUSIC} by
+ * default ({@link #setGroup(String)}), read at the play. A sound that loops ({@link #setLooping(boolean)}, off by
  * default) is played looping from its next play and never ends by itself: a fully decoded sound loops on its voice, a
  * streamed sound opens its resource again when its source ends and goes on decoding in the same chunk, so the loop has
  * no gap and its memory stays the same buffer. A streamed loop opens a new resource stream for each pass, on the
@@ -88,6 +91,8 @@ public final class LongSound
     private boolean released;
     /** The gain of the sound. */
     private double gain = Audio.MAX_GAIN;
+    /** The id of the mixer group of the sound. */
+    private String group = MixerGroup.MUSIC;
     /** {@code true} to play the sound looping. */
     private boolean looping;
 
@@ -183,14 +188,15 @@ public final class LongSound
     }
 
     /**
-     * Sets the gain of the sound; its voice, if it plays, gets its new effective gain at once.
+     * Sets the gain of the sound; its voice, if it plays, gets its new effective gain at once; if it is fading, it
+     * keeps fading, toward its new effective gain, in its remaining time.
      *
      * @param gain The gain, from {@link Audio#MIN_GAIN} to {@link Audio#MAX_GAIN}.
      * @throws IllegalArgumentException If the gain is NaN or outside its range; nothing changes then.
      */
     public void setGain(double gain)
     {
-        Audio.checkGain(gain);
+        AudioChecks.checkGain(gain);
         this.gain = gain;
         if (audio != null)
         {
@@ -206,6 +212,50 @@ public final class LongSound
     public double getGain()
     {
         return gain;
+    }
+
+    /**
+     * Fades the sound: its gain becomes the target at once, so that {@link #getGain()} returns it, and its voice, if it
+     * plays, ramps linearly from the gain it has to its new effective gain over the duration, in the backend. Its voice
+     * reports the end of the ramp to the {@link FadeListener} of the {@link Audio} through the inbox; a sound that does
+     * not play only takes the gain and reports nothing. A fade to {@code 0} stops nothing.
+     *
+     * @param gain The target gain, from {@link Audio#MIN_GAIN} to {@link Audio#MAX_GAIN}.
+     * @param seconds The duration, in seconds, finite and not negative; {@code 0} reaches the target at the next audio
+     *            buffer.
+     * @throws IllegalArgumentException If the gain or the duration is invalid; nothing changes then.
+     */
+    public void fade(double gain, double seconds)
+    {
+        AudioChecks.checkGain(gain);
+        AudioChecks.checkSeconds(seconds);
+        this.gain = gain;
+        if (audio != null)
+        {
+            audio.fade(this, voice, seconds);
+        }
+    }
+
+    /**
+     * Sets the mixer group of the sound, from its next play; a playing voice keeps the group it started with.
+     *
+     * @param group The id of the group, a group of the {@link Audio} that plays the sound (never {@code null} nor
+     *            empty); an id unknown to that audio system is refused at the play.
+     * @throws IllegalArgumentException If the id is {@code null} or empty.
+     */
+    public void setGroup(String group)
+    {
+        this.group = MixerGroup.checkId(group);
+    }
+
+    /**
+     * Returns the mixer group of the sound.
+     *
+     * @return The id of the group, {@link MixerGroup#MUSIC} by default.
+     */
+    public String getGroup()
+    {
+        return group;
     }
 
     /**
