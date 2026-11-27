@@ -16,6 +16,6 @@
  */
 /**
  * Examples of the {@code ecs} module: objects created and removed by ID, liveness, game-defined traits, the flush,
- * queries, game-defined systems in slot order and listeners of the flush events.
+ * queries, game-defined systems in slot order, listeners of the flush events and the world's random source.
  */
 package com.b3dgs.lionengine.examples.ecs;

@@ -53,7 +53,7 @@ State (2026-11-25): done are the `core` foundation, the loop, the controllable c
 
 ## Phase 3 — game world
 
-- `ecs` ([`features/ecs.md`](features/ecs.md); batch 1, IDs, world, creation and removal and the flush, done on 2026-11-27, ADR-0074; batch 2, trait registry, pooled storage and deferred trait changes, done on 2026-11-27, ADR-0075; batch 3, cached queries with include and exclude sets and the sorted ID copy, done on 2026-11-27, ADR-0076; batch 4, object and trait listeners, game systems in slots and the world update, done on 2026-11-27, ADR-0077), `physics` and `traits` ([`features/standard-traits.md`](features/standard-traits.md));
+- `ecs` ([`features/ecs.md`](features/ecs.md); batch 1, IDs, world, creation and removal and the flush, done on 2026-11-27, ADR-0074; batch 2, trait registry, pooled storage and deferred trait changes, done on 2026-11-27, ADR-0075; batch 3, cached queries with include and exclude sets and the sorted ID copy, done on 2026-11-27, ADR-0076; batch 4, object and trait listeners, game systems in slots and the world update, done on 2026-11-27, ADR-0077; batch 5, the world's random source, its seed and its reseeding, done on 2026-11-27, ADR-0078), `physics` and `traits` ([`features/standard-traits.md`](features/standard-traits.md));
 - `tilemap` with the Tiled loader and tile collision ([`features/tile-map.md`](features/tile-map.md));
 - `camera` ([`features/camera.md`](features/camera.md));
 - `input-api` and `input-awt` (keyboard and mouse) ([`features/input.md`](features/input.md)), needed by the demonstrator;

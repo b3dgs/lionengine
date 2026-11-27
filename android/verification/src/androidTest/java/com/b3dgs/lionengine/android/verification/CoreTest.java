@@ -95,6 +95,24 @@ public final class CoreTest
     }
 
     /**
+     * Reseeding restarts the sequence in place at the reference outputs, after any number of draws (ADR-0078).
+     */
+    @Test
+    public void testRandomReseed()
+    {
+        final RandomSource random = new RandomSource(1L);
+        for (int i = 0; i < 37; i++)
+        {
+            random.nextLong();
+        }
+        random.reseed(SPLIT_MIX_SEED + 24 * GOLDEN_GAMMA);
+        for (final long expected : XOSHIRO_OUTPUTS)
+        {
+            assertEquals(expected, random.nextLong());
+        }
+    }
+
+    /**
      * Derived values are exact functions of the sequence, and a seed gives one sequence.
      */
     @Test

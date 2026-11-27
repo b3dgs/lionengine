@@ -31,7 +31,7 @@ A feature page is the entry point of an implementation batch: it restates every 
 
 Where the implementation stands, batch by batch: the numbers are those of the "Batches" section of each page. Every batch updates its row in the pull request that implements it, so the merged table always tells the next agent where to start. Details of a finished batch are in the "State" section of its page.
 
-Next batch: [`ecs.md`](ecs.md) batch 5, the first unfinished batch in the order of the table that is not deferred ([`audio-short-and-long-sounds.md`](audio-short-and-long-sounds.md) batch 9, `audio-android`, waits for Phase 4; [`output-filtering.md`](output-filtering.md) batch 4 waits for the license record of `HQ2X` and for `render-opengl` in Phase 4); [`resources.md`](resources.md) batch 4 is reserved for the local agents ([`../local-agents.md`](../local-agents.md)).
+Next batch: [`ecs.md`](ecs.md) batch 6, the first unfinished batch in the order of the table that is not deferred ([`audio-short-and-long-sounds.md`](audio-short-and-long-sounds.md) batch 9, `audio-android`, waits for Phase 4; [`output-filtering.md`](output-filtering.md) batch 4 waits for the license record of `HQ2X` and for `render-opengl` in Phase 4); [`resources.md`](resources.md) batch 4 is reserved for the local agents ([`../local-agents.md`](../local-agents.md)).
 
 | Phase | Page | Batches | Done | Remaining |
 |---|---|---|---|---|
@@ -48,7 +48,7 @@ Next batch: [`ecs.md`](ecs.md) batch 5, the first unfinished batch in the order 
 | 2 | [`display-modes.md`](display-modes.md) | 4 | 1 (2026-11-26, #938), 2 (2026-11-26, #939), 3 (2026-11-26, #940, delivered by earlier batches and recorded), 4 (2026-11-26, #941, review; `OQ-174` raised) | none |
 | 2 | [`output-filtering.md`](output-filtering.md) | 4 | 1 (2026-11-26, #942), 2 (2026-11-26, #943), 3 (2026-11-26, #944) | 4 (`HQ2X` after its license record; GPU filters and CRT with `render-opengl`, Phase 4) |
 | 2 | [`audio-short-and-long-sounds.md`](audio-short-and-long-sounds.md) | 9 | 1 (2026-11-26, #945), 2 (2026-11-26, #948), 3 (2026-11-26, #949), 4 (2026-11-26, #950), 5 (2026-11-27, #951), 6 (2026-11-27, #952), 7 (2026-11-27, #956), review (2026-11-27, #957, ADR-0072), 8 (2026-11-27, `audio-codec-ogg`, ADR-0073) | 9 (`audio-android`, Phase 4) |
-| 3 | [`ecs.md`](ecs.md) | 6 | 1 (2026-11-27, ADR-0074), 2 (2026-11-27, ADR-0075), 3 (2026-11-27, ADR-0076), 4 (2026-11-27, ADR-0077) | 5 and 6 |
+| 3 | [`ecs.md`](ecs.md) | 6 | 1 (2026-11-27, ADR-0074), 2 (2026-11-27, ADR-0075), 3 (2026-11-27, ADR-0076), 4 (2026-11-27, ADR-0077), 5 (2026-11-27, ADR-0078) | 6 |
 | 3 | [`standard-traits.md`](standard-traits.md) | 7 | none | 1 to 7 |
 | 3 | [`tile-map.md`](tile-map.md) | 5 | none | 1 to 5 |
 | 3 | [`camera.md`](camera.md) | 5 | none | 1 to 5 |
