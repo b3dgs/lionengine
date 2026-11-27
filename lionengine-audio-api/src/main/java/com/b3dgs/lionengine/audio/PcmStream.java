@@ -21,11 +21,12 @@ package com.b3dgs.lionengine.audio;
  * REQ-AUDIO-007, REQ-AUDIO-009).
  *
  * <p>
- * The engine gives a stream to {@link AudioBackend#play(PcmStream)}; the backend calls {@link #read(short[], int, int)}
- * from its own thread whenever it needs frames, until the stream returns fewer frames than asked, which is the end of
- * the sound. The stream decodes ahead into a bounded buffer of chunks, so its memory stays bounded. It never throws for
- * a failure of its data: a failure ends the stream, and the engine reports it on the runtime thread at the end of the
- * voice.
+ * The engine gives a stream to {@link AudioBackend#play(PcmStream, double)}; the backend calls
+ * {@link #read(short[], int, int)} from its own thread whenever it needs frames, until the stream returns fewer frames
+ * than asked, which is the end of the sound. A looping stream starts its sound again inside the engine, so it never
+ * returns fewer frames than asked (ADR-0069). The stream decodes ahead into a bounded buffer of chunks, so its memory
+ * stays bounded. It never throws for a failure of its data: a failure ends the stream, and the engine reports it on
+ * the runtime thread at the end of the voice.
  * </p>
  *
  * <p>

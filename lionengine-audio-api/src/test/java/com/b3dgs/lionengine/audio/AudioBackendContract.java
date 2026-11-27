@@ -30,14 +30,17 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.InboxSpy;
 
 /**
- * Contract suite of {@link AudioBackend} (ADR-0045, ADR-0065, ADR-0068, REQ-AUDIO-007, REQ-AUDIO-009).
+ * Contract suite of {@link AudioBackend} (ADR-0045, ADR-0065, ADR-0068, ADR-0069, REQ-AUDIO-007, REQ-AUDIO-009,
+ * REQ-AUDIO-011).
  *
  * <p>
  * Published in the {@code audio-api} test JAR: every backend binds it by creating a backend on an inbox and letting
  * frames of {@link #FORMAT} play. {@link FakeAudioBackend} binds it with its clock; a real backend waits for the time
  * of the frames. Buffer voices and streamed voices are both checked; the streams of the suite are
- * {@link CountingStream}s, which a real backend reads on its own thread. What a backend sounds like is checked by its
- * own platform tests.
+ * {@link CountingStream}s, which a real backend reads on its own thread. The controls are checked by what they change
+ * in time: a looping voice never ends, a paused voice does not end and its stream is not read, a paused output holds
+ * every voice; gains are checked for their refusals, since what a backend sounds like, its gain included, is checked by
+ * its own platform tests.
  * </p>
  */
 public abstract class AudioBackendContract
@@ -90,7 +93,7 @@ public abstract class AudioBackendContract
         final List<Integer> ended = new ArrayList<>();
         backend.setVoiceListener(ended::add);
 
-        final int voice = backend.play(sound(FRAMES));
+        final int voice = backend.play(sound(FRAMES), 1.0, false);
 
         assertTrue(voice > 0);
         assertTrue(backend.isPlaying(voice));
@@ -112,12 +115,12 @@ public abstract class AudioBackendContract
     {
         final InboxSpy inbox = new InboxSpy();
         final AudioBackend backend = createBackend(inbox);
-        final int first = backend.play(sound(FRAMES));
-        final int second = backend.play(sound(FRAMES));
+        final int first = backend.play(sound(FRAMES), 1.0, false);
+        final int second = backend.play(sound(FRAMES), 1.0, false);
         advance(backend, 2 * FRAMES);
         inbox.deliverAll();
 
-        final int third = backend.play(sound(FRAMES));
+        final int third = backend.play(sound(FRAMES), 1.0, false);
 
         assertNotEquals(first, second);
         assertNotEquals(first, third);
@@ -135,7 +138,7 @@ public abstract class AudioBackendContract
         final AudioBackend backend = createBackend(inbox);
         final List<Integer> ended = new ArrayList<>();
         backend.setVoiceListener(ended::add);
-        final int voice = backend.play(sound(FRAMES));
+        final int voice = backend.play(sound(FRAMES), 1.0, false);
 
         backend.stop(voice);
         backend.stop(voice);
@@ -164,7 +167,7 @@ public abstract class AudioBackendContract
         int first = AudioBackend.NO_VOICE;
         for (int i = 0; i < max; i++)
         {
-            final int voice = backend.play(longer);
+            final int voice = backend.play(longer, 1.0, false);
             assertTrue(voice > 0);
             if (i == 0)
             {
@@ -172,9 +175,9 @@ public abstract class AudioBackendContract
             }
         }
 
-        assertEquals(AudioBackend.NO_VOICE, backend.play(longer));
+        assertEquals(AudioBackend.NO_VOICE, backend.play(longer, 1.0, false));
         backend.stop(first);
-        assertTrue(backend.play(longer) > 0);
+        assertTrue(backend.play(longer, 1.0, false) > 0);
         backend.close();
     }
 
@@ -189,11 +192,11 @@ public abstract class AudioBackendContract
         final List<Integer> ended = new ArrayList<>();
         backend.setVoiceListener(voice -> ended.add(Integer.valueOf(-voice)));
         backend.setVoiceListener(null);
-        backend.play(sound(FRAMES));
+        backend.play(sound(FRAMES), 1.0, false);
         advance(backend, 2 * FRAMES);
         inbox.deliverAll();
         backend.setVoiceListener(ended::add);
-        final int voice = backend.play(sound(FRAMES));
+        final int voice = backend.play(sound(FRAMES), 1.0, false);
         advance(backend, 2 * FRAMES);
         inbox.deliverAll();
 
@@ -210,14 +213,14 @@ public abstract class AudioBackendContract
         final InboxSpy inbox = new InboxSpy();
         final AudioBackend backend = createBackend(inbox);
         final PcmBuffer buffer = sound(FRAMES);
-        assertThrows(IllegalArgumentException.class, () -> backend.play((PcmBuffer) null));
-        final int voice = backend.play(buffer);
+        assertThrows(IllegalArgumentException.class, () -> backend.play((PcmBuffer) null, 1.0, false));
+        final int voice = backend.play(buffer, 1.0, false);
 
         backend.close();
         backend.close();
 
         assertFalse(backend.isPlaying(voice));
-        assertThrows(IllegalStateException.class, () -> backend.play(buffer));
+        assertThrows(IllegalStateException.class, () -> backend.play(buffer, 1.0, false));
     }
 
     /**
@@ -233,7 +236,7 @@ public abstract class AudioBackendContract
         backend.setVoiceListener(ended::add);
         final CountingStream stream = new CountingStream(3 * FRAMES);
 
-        final int voice = backend.play(stream);
+        final int voice = backend.play(stream, 1.0);
 
         assertTrue(voice > 0);
         assertTrue(backend.isPlaying(voice));
@@ -263,8 +266,8 @@ public abstract class AudioBackendContract
         final List<Integer> ended = new ArrayList<>();
         backend.setVoiceListener(ended::add);
         final CountingStream stream = new CountingStream(100 * FRAMES);
-        final int buffered = backend.play(sound(FRAMES));
-        final int voice = backend.play(stream);
+        final int buffered = backend.play(sound(FRAMES), 1.0, false);
+        final int voice = backend.play(stream, 1.0);
         advance(backend, FRAMES / 2);
 
         backend.stop(voice);
@@ -292,7 +295,7 @@ public abstract class AudioBackendContract
         int first = AudioBackend.NO_VOICE;
         for (int i = 0; i < max; i++)
         {
-            final int voice = backend.play(new CountingStream(100 * FRAMES));
+            final int voice = backend.play(new CountingStream(100 * FRAMES), 1.0);
             assertTrue(voice > 0);
             if (i == 0)
             {
@@ -301,12 +304,12 @@ public abstract class AudioBackendContract
         }
         final CountingStream refused = new CountingStream(FRAMES);
 
-        assertEquals(AudioBackend.NO_VOICE, backend.play(refused));
-        assertEquals(AudioBackend.NO_VOICE, backend.play(sound(FRAMES)));
+        assertEquals(AudioBackend.NO_VOICE, backend.play(refused, 1.0));
+        assertEquals(AudioBackend.NO_VOICE, backend.play(sound(FRAMES), 1.0, false));
         advance(backend, FRAMES);
         assertEquals(0, refused.getCalls());
         backend.stop(first);
-        assertTrue(backend.play(sound(FRAMES)) > 0);
+        assertTrue(backend.play(sound(FRAMES), 1.0, false) > 0);
         backend.close();
     }
 
@@ -320,8 +323,8 @@ public abstract class AudioBackendContract
         final InboxSpy inbox = new InboxSpy();
         final AudioBackend backend = createBackend(inbox);
         final CountingStream stream = new CountingStream(100 * FRAMES);
-        assertThrows(IllegalArgumentException.class, () -> backend.play((PcmStream) null));
-        final int voice = backend.play(stream);
+        assertThrows(IllegalArgumentException.class, () -> backend.play((PcmStream) null, 1.0));
+        final int voice = backend.play(stream, 1.0);
         advance(backend, FRAMES / 2);
 
         backend.close();
@@ -331,7 +334,202 @@ public abstract class AudioBackendContract
         assertFalse(backend.isPlaying(voice));
         assertEquals(calls, stream.getCalls());
         final CountingStream late = new CountingStream(FRAMES);
-        assertThrows(IllegalStateException.class, () -> backend.play(late));
+        assertThrows(IllegalStateException.class, () -> backend.play(late, 1.0));
+    }
+
+    /**
+     * Gains in {@code [0, 1]} are accepted at the play and later, also for an ended or unknown voice, without effect;
+     * NaN, infinite and out of range gains are refused at the play and later.
+     */
+    @Test
+    void testGain()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final PcmBuffer buffer = sound(FRAMES);
+        final int voice = backend.play(buffer, 0.0, false);
+        final int stream = backend.play(new CountingStream(FRAMES), 0.5);
+
+        backend.setGain(voice, 1.0);
+        backend.setGain(stream, 0.25);
+        backend.setGain(Integer.MAX_VALUE, 0.5);
+        final double[] refused =
+        {
+            -0.5, 1.5, Double.NaN, Double.POSITIVE_INFINITY
+        };
+        final CountingStream refusedStream = new CountingStream(FRAMES);
+        for (final double gain : refused)
+        {
+            assertThrows(IllegalArgumentException.class, () -> backend.play(buffer, gain, false));
+            assertThrows(IllegalArgumentException.class, () -> backend.play(refusedStream, gain));
+            assertThrows(IllegalArgumentException.class, () -> backend.setGain(voice, gain));
+        }
+        advance(backend, 3 * FRAMES);
+        inbox.deliverAll();
+
+        assertFalse(backend.isPlaying(voice));
+        assertFalse(backend.isPlaying(stream));
+        backend.setGain(voice, 0.5);
+        assertEquals(0, refusedStream.getCalls());
+        backend.close();
+    }
+
+    /**
+     * A looping buffer voice never ends by itself and posts no end, until it is stopped; a looping buffer of no frame
+     * ends at once.
+     */
+    @Test
+    void testLooping()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final List<Integer> ended = new ArrayList<>();
+        backend.setVoiceListener(ended::add);
+
+        final int voice = backend.play(sound(FRAMES), 1.0, true);
+        final int empty = backend.play(sound(0), 1.0, true);
+        advance(backend, 5 * FRAMES + FRAMES / 3);
+        inbox.deliverAll();
+
+        assertTrue(backend.isPlaying(voice));
+        assertFalse(backend.isPlaying(empty));
+        assertEquals(List.of(Integer.valueOf(empty)), ended);
+        backend.stop(voice);
+        advance(backend, FRAMES);
+        inbox.deliverAll();
+        assertFalse(backend.isPlaying(voice));
+        assertEquals(1, ended.size());
+        backend.close();
+    }
+
+    /**
+     * A paused buffer voice keeps its voice, is still playing and does not end; resumed, it ends after its remaining
+     * frames; pausing or resuming twice, an ended or an unknown voice has no effect; stopping a paused voice posts no
+     * end.
+     */
+    @Test
+    void testPause()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final List<Integer> ended = new ArrayList<>();
+        backend.setVoiceListener(ended::add);
+        final int voice = backend.play(sound(20 * FRAMES), 1.0, false);
+        final int stopped = backend.play(sound(20 * FRAMES), 1.0, false);
+
+        backend.pause(voice);
+        backend.pause(voice);
+        backend.pause(stopped);
+        advance(backend, 40 * FRAMES);
+        inbox.deliverAll();
+
+        assertTrue(backend.isPlaying(voice));
+        assertTrue(ended.isEmpty());
+        backend.stop(stopped);
+        backend.resume(voice);
+        backend.resume(voice);
+        backend.pause(Integer.MAX_VALUE);
+        backend.resume(Integer.MAX_VALUE);
+        advance(backend, 40 * FRAMES);
+        inbox.deliverAll();
+        assertEquals(List.of(Integer.valueOf(voice)), ended);
+        backend.pause(voice);
+        backend.resume(voice);
+        assertFalse(backend.isPlaying(voice));
+        assertFalse(backend.isPlaying(stopped));
+        backend.close();
+    }
+
+    /**
+     * A paused voice counts in the voice limit.
+     */
+    @Test
+    void testPausedVoiceLimit()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final PcmBuffer longer = sound(20 * FRAMES);
+        final int max = backend.getMaxVoices();
+        for (int i = 0; i < max; i++)
+        {
+            backend.pause(backend.play(longer, 1.0, false));
+        }
+
+        assertEquals(AudioBackend.NO_VOICE, backend.play(longer, 1.0, false));
+        backend.close();
+    }
+
+    /**
+     * A paused stream is not read once the pause returned, and is read again once resumed, to its end.
+     */
+    @Test
+    void testStreamPause()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final List<Integer> ended = new ArrayList<>();
+        backend.setVoiceListener(ended::add);
+        final CountingStream stream = new CountingStream(3 * FRAMES);
+        final int voice = backend.play(stream, 1.0);
+        advance(backend, FRAMES / 2);
+
+        backend.pause(voice);
+        final int calls = stream.getCalls();
+        advance(backend, 5 * FRAMES);
+        inbox.deliverAll();
+
+        assertEquals(calls, stream.getCalls());
+        assertTrue(backend.isPlaying(voice));
+        assertTrue(ended.isEmpty());
+        backend.resume(voice);
+        advance(backend, 5 * FRAMES);
+        inbox.deliverAll();
+        assertEquals(3 * FRAMES, stream.getRead());
+        assertEquals(List.of(Integer.valueOf(voice)), ended);
+        backend.close();
+    }
+
+    /**
+     * A paused output holds every voice: none ends, no stream is read, a voice played meanwhile waits; once resumed
+     * they play on, except a voice paused on its own; pausing or resuming the output twice has no effect.
+     */
+    @Test
+    void testOutputPause()
+    {
+        final InboxSpy inbox = new InboxSpy();
+        final AudioBackend backend = createBackend(inbox);
+        final List<Integer> ended = new ArrayList<>();
+        backend.setVoiceListener(ended::add);
+        final int alone = backend.play(sound(FRAMES), 1.0, false);
+        backend.pause(alone);
+        final CountingStream stream = new CountingStream(FRAMES);
+        final int streamed = backend.play(stream, 1.0);
+
+        backend.pauseOutput();
+        backend.pauseOutput();
+        final int calls = stream.getCalls();
+        final int during = backend.play(sound(FRAMES), 1.0, false);
+        advance(backend, 5 * FRAMES);
+        inbox.deliverAll();
+
+        assertEquals(calls, stream.getCalls());
+        assertTrue(ended.isEmpty());
+        assertTrue(backend.isPlaying(during));
+        backend.resumeOutput();
+        backend.resumeOutput();
+        advance(backend, 5 * FRAMES);
+        inbox.deliverAll();
+        assertEquals(2, ended.size());
+        assertTrue(ended.contains(Integer.valueOf(streamed)));
+        assertTrue(ended.contains(Integer.valueOf(during)));
+        assertTrue(backend.isPlaying(alone));
+        backend.resume(alone);
+        advance(backend, 5 * FRAMES);
+        inbox.deliverAll();
+        assertEquals(3, ended.size());
+        backend.close();
+        backend.pauseOutput();
+        backend.resumeOutput();
     }
 
     /**

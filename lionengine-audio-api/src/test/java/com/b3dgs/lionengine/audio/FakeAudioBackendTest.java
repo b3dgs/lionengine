@@ -60,8 +60,8 @@ final class FakeAudioBackendTest extends AudioBackendContract
         final PcmBuffer longer = sound(2 * FRAMES);
         final PcmBuffer empty = sound(0);
 
-        final int first = backend.play(longer);
-        final int second = backend.play(empty);
+        final int first = backend.play(longer, 1.0, false);
+        final int second = backend.play(empty, 1.0, false);
         backend.advance(0);
         inbox.deliverAll();
         backend.advance(FRAMES);

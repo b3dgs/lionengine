@@ -20,8 +20,8 @@ import com.b3dgs.lionengine.resources.ResourceKey;
 
 /**
  * One load of a short sound held by a {@link ShortSoundCache}: the sound to give to {@link Audio#play(ShortSound)},
- * and the release of that load (ADR-0004, ADR-0005, ADR-0007, ADR-0027, ADR-0066, REQ-AUDIO-003, REQ-AUDIO-004,
- * REQ-RES-004).
+ * its gain and looping, and the release of that load (ADR-0004, ADR-0005, ADR-0007, ADR-0027, ADR-0066, ADR-0069,
+ * REQ-AUDIO-003, REQ-AUDIO-004, REQ-AUDIO-011, REQ-RES-004).
  *
  * <p>
  * Every load returns a new handle, and every handle of one key shares the same decoded samples: the sound is decoded
@@ -29,11 +29,20 @@ import com.b3dgs.lionengine.resources.ResourceKey;
  * {@link ShortSoundCache#loadLazily(ResourceKey)} is decoded at its first play, which then costs the decoding. The
  * code that loaded a handle releases it, normally the scene on exit; the sound leaves the cache with its last handle.
  * Releasing is idempotent. Voices already playing the sound play to their end: stop them first to stop the sound.
+ * Its looping voices, which would never end, are stopped by the release.
+ * </p>
+ *
+ * <p>
+ * Controls (ADR-0069): the gain of the handle ({@link #setGain(double)}, {@link Audio#MAX_GAIN} by default) multiplies
+ * the master gain for every voice playing it, and a change reaches them at once. A handle that loops
+ * ({@link #setLooping(boolean)}, off by default) is played looping from its next play: its voices never end by
+ * themselves and play until they are stopped or stolen. The gain and the looping belong to this handle, not to the
+ * other handles of the same key.
  * </p>
  *
  * <p>
  * Threads: runtime thread only (ADR-0018); {@link #release()} throws an {@link IllegalStateException} on another
- * thread than the owner of the cache (ADR-0055).
+ * thread than the owner of the cache (ADR-0055). Changing the gain or the looping allocates nothing.
  * </p>
  *
  * @since 11.0.0
@@ -51,6 +60,12 @@ public final class ShortSound
     private ShortSoundEntry entry;
     /** {@code true} once released. */
     private boolean released;
+    /** The gain of the sound. */
+    private double gain = Audio.MAX_GAIN;
+    /** {@code true} to play the sound looping. */
+    private boolean looping;
+    /** The audio system that last played the sound, {@code null} if never played. */
+    private Audio audio;
 
     /**
      * Creates a handle; a handle on an entry adds a reference to it.
@@ -121,7 +136,55 @@ public final class ShortSound
     }
 
     /**
-     * Releases this load; no effect if already released. The sound leaves the cache with its last handle.
+     * Sets the gain of the sound; the voices playing it get their new effective gain at once.
+     *
+     * @param gain The gain, from {@link Audio#MIN_GAIN} to {@link Audio#MAX_GAIN}.
+     * @throws IllegalArgumentException If the gain is NaN or outside its range; nothing changes then.
+     */
+    public void setGain(double gain)
+    {
+        Audio.checkGain(gain);
+        this.gain = gain;
+        if (audio != null)
+        {
+            audio.updateGain(this);
+        }
+    }
+
+    /**
+     * Returns the gain of the sound.
+     *
+     * @return The gain, {@link Audio#MAX_GAIN} by default.
+     */
+    public double getGain()
+    {
+        return gain;
+    }
+
+    /**
+     * Sets whether the sound is played looping, from its next play; the voices already playing keep their looping.
+     *
+     * @param looping {@code true} to loop: its voices never end by themselves; {@code false} to play it once (the
+     *            default).
+     */
+    public void setLooping(boolean looping)
+    {
+        this.looping = looping;
+    }
+
+    /**
+     * Tells whether the sound is played looping.
+     *
+     * @return {@code true} if its next plays loop.
+     */
+    public boolean isLooping()
+    {
+        return looping;
+    }
+
+    /**
+     * Releases this load; no effect if already released. The sound leaves the cache with its last handle. Its looping
+     * voices are stopped; its other voices play to their end.
      *
      * @throws IllegalStateException If called on another thread than the owner of the cache; nothing changes then.
      */
@@ -131,6 +194,10 @@ public final class ShortSound
         if (!released)
         {
             released = true;
+            if (audio != null)
+            {
+                audio.stopLooping(this);
+            }
             final ShortSoundEntry current = entry;
             entry = null;
             if (current != null)
@@ -161,6 +228,16 @@ public final class ShortSound
             attach(cache.resolve(key));
         }
         return entry.getBuffer();
+    }
+
+    /**
+     * Records the audio system that played the sound, which gets its gain changes.
+     *
+     * @param player The audio system.
+     */
+    void played(Audio player)
+    {
+        audio = player;
     }
 
     /**

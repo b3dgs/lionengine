@@ -17,14 +17,13 @@
 package com.b3dgs.lionengine.audio;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import com.b3dgs.lionengine.resources.ResourceKey;
 
 /**
  * Handle of a long sound, music or ambient, created by a {@link LongSoundLoader}: streamed by default, or fully
- * decoded on request (ADR-0004, ADR-0005, ADR-0007, ADR-0018, ADR-0027, ADR-0033, ADR-0055, ADR-0068, REQ-AUDIO-006,
- * REQ-AUDIO-007, REQ-RES-004).
+ * decoded on request, with its gain and looping (ADR-0004, ADR-0005, ADR-0007, ADR-0018, ADR-0027, ADR-0033, ADR-0055,
+ * ADR-0068, ADR-0069, REQ-AUDIO-006, REQ-AUDIO-007, REQ-AUDIO-011, REQ-RES-004).
  *
  * <p>
  * Lifecycle: a new handle reads nothing. {@link #prepare()} makes it ready for direct use: a streamed sound opens its
@@ -39,6 +38,15 @@ import com.b3dgs.lionengine.resources.ResourceKey;
  * <p>
  * Memory: a streamed sound holds at most {@link #getChunks()} × {@link #getChunkFrames()} decoded frames, whatever its
  * length, so it is not limited to the 10 s of the short sounds. A fully decoded sound holds all its frames.
+ * </p>
+ *
+ * <p>
+ * Controls (ADR-0069): the gain of the handle ({@link #setGain(double)}, {@link Audio#MAX_GAIN} by default) multiplies
+ * the master gain, and a change reaches its voice at once. A sound that loops ({@link #setLooping(boolean)}, off by
+ * default) is played looping from its next play and never ends by itself: a fully decoded sound loops on its voice, a
+ * streamed sound opens its resource again when its source ends and goes on decoding in the same chunk, so the loop has
+ * no gap and its memory stays the same buffer. A streamed loop opens a new resource stream for each pass, on the
+ * backend's thread.
  * </p>
  *
  * <p>
@@ -68,8 +76,6 @@ public final class LongSound
     private final int chunkFrames;
     /** The samples of a fully decoded sound once prepared, {@code null} otherwise. */
     private PcmBuffer buffer;
-    /** The stream of a streamed sound once prepared, {@code null} otherwise. */
-    private InputStream input;
     /** The buffer of a streamed sound once prepared, {@code null} otherwise. */
     private StreamBuffer stream;
     /** The audio system playing it, {@code null} when not playing. */
@@ -80,6 +86,10 @@ public final class LongSound
     private TrackListener listener;
     /** {@code true} once released. */
     private boolean released;
+    /** The gain of the sound. */
+    private double gain = Audio.MAX_GAIN;
+    /** {@code true} to play the sound looping. */
+    private boolean looping;
 
     /**
      * Creates a handle, not prepared.
@@ -173,6 +183,53 @@ public final class LongSound
     }
 
     /**
+     * Sets the gain of the sound; its voice, if it plays, gets its new effective gain at once.
+     *
+     * @param gain The gain, from {@link Audio#MIN_GAIN} to {@link Audio#MAX_GAIN}.
+     * @throws IllegalArgumentException If the gain is NaN or outside its range; nothing changes then.
+     */
+    public void setGain(double gain)
+    {
+        Audio.checkGain(gain);
+        this.gain = gain;
+        if (audio != null)
+        {
+            audio.updateGain(this, voice);
+        }
+    }
+
+    /**
+     * Returns the gain of the sound.
+     *
+     * @return The gain, {@link Audio#MAX_GAIN} by default.
+     */
+    public double getGain()
+    {
+        return gain;
+    }
+
+    /**
+     * Sets whether the sound is played looping, from its next play; a playing voice keeps its looping.
+     *
+     * @param looping {@code true} to loop: its voice never ends by itself; {@code false} to play it once (the
+     *            default).
+     */
+    public void setLooping(boolean looping)
+    {
+        this.looping = looping;
+    }
+
+    /**
+     * Tells whether the sound is played looping.
+     *
+     * @return {@code true} if its next plays loop.
+     */
+    public boolean isLooping()
+    {
+        return looping;
+    }
+
+    /**
      * Returns the format of the samples.
      *
      * @return The format.
@@ -221,14 +278,17 @@ public final class LongSound
         if (isStreamed())
         {
             final LongSoundLoader.Opened opened = loader.open(key, decoder);
-            final StreamBuffer prepared = new StreamBuffer(opened.source(), chunks, chunkFrames);
+            final StreamBuffer prepared = new StreamBuffer(opened.input(),
+                                                           opened.source(),
+                                                           chunks,
+                                                           chunkFrames,
+                                                           () -> loader.reopen(key, decoder));
             prepared.fill();
             final Exception failure = prepared.getFailure();
             if (failure != null)
             {
                 throw LongSoundLoader.closing(opened.input(), LongSoundLoader.report(key, failure));
             }
-            input = opened.input();
             stream = prepared;
         }
         else
@@ -262,20 +322,23 @@ public final class LongSound
      * Prepares the sound and starts it on a voice of a backend.
      *
      * @param backend The backend.
+     * @param effectiveGain The gain of the voice.
+     * @param loop {@code true} to loop the voice.
      * @return The voice, or {@link AudioBackend#NO_VOICE}; the sound stays prepared then.
      * @throws IllegalStateException If the sound is released, or for the errors of {@link #prepare()}.
      */
-    int start(AudioBackend backend)
+    int start(AudioBackend backend, double effectiveGain, boolean loop)
     {
         prepare();
         final int started;
         if (stream != null)
         {
-            started = backend.play(stream);
+            stream.setLooping(loop);
+            started = backend.play(stream, effectiveGain);
         }
         else
         {
-            started = backend.play(buffer);
+            started = backend.play(buffer, effectiveGain, loop);
         }
         return started;
     }
@@ -349,10 +412,9 @@ public final class LongSound
     IOException close()
     {
         IOException failure = null;
-        if (input != null)
+        if (stream != null)
         {
-            failure = LongSoundLoader.close(input);
-            input = null;
+            failure = stream.close();
             stream = null;
         }
         return failure;

@@ -17,11 +17,14 @@
 package com.b3dgs.lionengine.audio;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.atomic.AtomicReference;
+
+import com.b3dgs.lionengine.resources.ResourceException;
 
 /**
  * Bounded buffer of a streamed long sound: a ring of chunks decoded ahead from a {@link PcmSource}, pulled by the
- * backend (ADR-0027, ADR-0033, ADR-0068, REQ-AUDIO-006).
+ * backend, looping on request (ADR-0027, ADR-0033, ADR-0068, ADR-0069, REQ-AUDIO-006, REQ-AUDIO-011).
  *
  * <p>
  * {@link #fill()} decodes chunks until the ring is full, on the runtime thread when the sound is prepared. Then the
@@ -33,15 +36,33 @@ import java.util.concurrent.atomic.AtomicReference;
  * </p>
  *
  * <p>
+ * Looping: when the source of a looping buffer ends, the resource is opened again and decoding goes on from its first
+ * frame in the same chunk, so the loop has no gap and the stream never ends. The previous resource stream is closed
+ * then, and a failure to close it is dropped, since nothing reads it any more. A pass of no frame ends the stream, so
+ * an empty sound never spins. Each pass opens a new resource stream and source: one allocation per pass, never per
+ * chunk. A failure to open again, or a new pass of another format, ends the stream as a failure of the source.
+ * </p>
+ *
+ * <p>
  * Threads: filled on the runtime thread before the play, then read by one backend thread until the voice ends or is
- * stopped (the hand-off is ordered by the backend and the inbox); the failure is an atomic reference. Reading
- * allocates nothing.
+ * stopped (the hand-off is ordered by the backend and the inbox); the failure and the resource stream are atomic
+ * references, the looping is volatile. Reading allocates nothing, except the opening of a new pass of a loop.
  * </p>
  */
 final class StreamBuffer implements PcmStream
 {
+    /** Opens the resource again for a new pass of a loop, {@code null} if it cannot loop. */
+    private final Opener opener;
     /** The source decoded. */
-    private final PcmSource source;
+    private PcmSource source;
+    /** The resource stream the source reads, {@code null} if not owned; closed by {@link #close()}. */
+    private final AtomicReference<InputStream> input;
+    /** {@code true} to decode a new pass once the source ends. */
+    private volatile boolean looping;
+    /** {@code true} once the current source returned fewer frames than asked. */
+    private boolean exhausted;
+    /** The frames decoded from the current source. */
+    private long passFrames;
     /** The format of the frames. */
     private final PcmFormat format;
     /** The channel count. */
@@ -66,7 +87,7 @@ final class StreamBuffer implements PcmStream
     private final AtomicReference<Exception> failure = new AtomicReference<>();
 
     /**
-     * Creates an empty buffer.
+     * Creates an empty buffer that cannot loop and owns no resource stream.
      *
      * @param source The source, opened.
      * @param chunks The number of chunks (positive).
@@ -74,9 +95,25 @@ final class StreamBuffer implements PcmStream
      */
     StreamBuffer(PcmSource source, int chunks, int chunkFrames)
     {
+        this(null, source, chunks, chunkFrames, null);
+    }
+
+    /**
+     * Creates an empty buffer.
+     *
+     * @param input The resource stream the source reads, closed by {@link #close()}, {@code null} if not owned.
+     * @param source The source, opened.
+     * @param chunks The number of chunks (positive).
+     * @param chunkFrames The frames of a chunk (positive).
+     * @param opener Opens the resource again for a new pass of a loop, {@code null} if it cannot loop.
+     */
+    StreamBuffer(InputStream input, PcmSource source, int chunks, int chunkFrames, Opener opener)
+    {
         super();
 
+        this.input = new AtomicReference<>(input);
         this.source = source;
+        this.opener = opener;
         this.chunks = chunks;
         this.chunkFrames = chunkFrames;
         format = source.getFormat();
@@ -94,6 +131,43 @@ final class StreamBuffer implements PcmStream
         {
             decode((head + ready) % chunks);
         }
+    }
+
+    /**
+     * Sets whether the stream loops, before it is played. A buffer whose source already ended without failure decodes
+     * a new pass at once when it starts looping.
+     *
+     * @param loop {@code true} to loop.
+     * @throws IllegalStateException If looping a buffer that cannot loop.
+     */
+    void setLooping(boolean loop)
+    {
+        if (loop && opener == null)
+        {
+            throw new IllegalStateException("Stream buffer without opener");
+        }
+        looping = loop;
+        if (loop && sourceEnded && failure.get() == null && passFrames > 0)
+        {
+            sourceEnded = false;
+            fill();
+        }
+    }
+
+    /**
+     * Closes the resource stream, once the buffer is no longer read.
+     *
+     * @return The failure to close it, {@code null} if it closed or there was none.
+     */
+    IOException close()
+    {
+        final InputStream current = input.getAndSet(null);
+        IOException closeFailure = null;
+        if (current != null)
+        {
+            closeFailure = LongSoundLoader.close(current);
+        }
+        return closeFailure;
     }
 
     /**
@@ -168,24 +242,36 @@ final class StreamBuffer implements PcmStream
     }
 
     /**
-     * Decodes one chunk from the source; a short chunk ends the source, a failure is kept and ends it.
+     * Decodes one chunk from the source; the end of the source ends the stream, or starts a new pass when looping; a
+     * failure is kept and ends the stream after the frames decoded.
      *
      * @param chunk The index of the chunk.
      */
     private void decode(int chunk)
     {
-        int frames;
+        final int base = chunk * chunkFrames * channels;
+        int frames = 0;
         try
         {
-            frames = source.read(ring, chunk * chunkFrames * channels, chunkFrames);
+            while (frames < chunkFrames && !sourceEnded)
+            {
+                if (exhausted)
+                {
+                    wrap();
+                }
+                else
+                {
+                    final int asked = chunkFrames - frames;
+                    final int read = source.read(ring, base + frames * channels, asked);
+                    frames += read;
+                    passFrames += read;
+                    exhausted = read < asked;
+                }
+            }
         }
-        catch (final IOException | AudioDecodingException exception)
+        catch (final IOException | AudioDecodingException | ResourceException exception)
         {
             failure.set(exception);
-            frames = 0;
-        }
-        if (frames < chunkFrames)
-        {
             sourceEnded = true;
         }
         filled[chunk] = frames;
@@ -193,5 +279,56 @@ final class StreamBuffer implements PcmStream
         {
             ready++;
         }
+    }
+
+    /**
+     * Handles the end of the source: opens a new pass when looping and the pass had frames, ends the stream otherwise.
+     *
+     * @throws IOException If the resource cannot be read.
+     * @throws AudioDecodingException If the new pass is invalid, or of another format.
+     * @throws ResourceException If the resource is missing.
+     */
+    private void wrap() throws IOException
+    {
+        if (looping && passFrames > 0)
+        {
+            final LongSoundLoader.Opened opened = opener.open();
+            final PcmFormat passFormat = opened.source().getFormat();
+            if (!format.equals(passFormat))
+            {
+                LongSoundLoader.close(opened.input());
+                throw new AudioDecodingException("Format changed at the loop: " + format + " then " + passFormat);
+            }
+            // The previous stream is no longer read: a failure to close it is dropped, as after a stop.
+            final InputStream previous = input.getAndSet(opened.input());
+            source = opened.source();
+            exhausted = false;
+            passFrames = 0L;
+            if (previous != null)
+            {
+                LongSoundLoader.close(previous);
+            }
+        }
+        else
+        {
+            sourceEnded = true;
+        }
+    }
+
+    /**
+     * Opens the resource of a looping buffer again, on the thread that reads it.
+     */
+    @FunctionalInterface
+    interface Opener
+    {
+        /**
+         * Opens the resource and its source from the first frame.
+         *
+         * @return The resource stream, to close once no longer read, and its source.
+         * @throws IOException If the resource cannot be read; the stream is closed then.
+         * @throws AudioDecodingException If the header is invalid; the stream is closed then.
+         * @throws ResourceException If the resource is missing.
+         */
+        LongSoundLoader.Opened open() throws IOException;
     }
 }

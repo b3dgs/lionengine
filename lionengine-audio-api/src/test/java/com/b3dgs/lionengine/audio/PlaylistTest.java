@@ -199,7 +199,8 @@ final class PlaylistTest
     }
 
     /**
-     * A playlist of one track that loops plays it again at its end, prepared at its turn.
+     * A playlist of one track that loops plays it on a looping voice: the voice never ends, the playlist never
+     * advances, and the stream opens the track again at each pass, without gap (ADR-0069).
      */
     @Test
     void testSingleTrackLoop()
@@ -210,13 +211,17 @@ final class PlaylistTest
         final int voice = playlist.getVoice();
 
         play(FIRST_FRAMES);
+        play(FIRST_FRAMES);
 
         assertEquals(0, playlist.getTrack());
-        assertTrue(playlist.getVoice() > voice);
+        assertEquals(voice, playlist.getVoice());
         assertTrue(first.isPlaying());
-        play(FIRST_FRAMES);
-        assertTrue(first.isPlaying());
-        assertEquals(2, provider.getOpened() - 1);
+        assertEquals(2L * FIRST_FRAMES + 2L, backend.getPulledFrames(voice));
+        assertEquals(3, provider.getOpened());
+        assertEquals(1, provider.getUnclosed());
+        assertTrue(failures.isEmpty());
+        playlist.stop();
+        assertEquals(0, provider.getUnclosed());
     }
 
     /**

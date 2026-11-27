@@ -86,15 +86,45 @@ final class SilentAudioBackend implements AudioBackend
     }
 
     @Override
-    public int play(PcmBuffer buffer)
+    public int play(PcmBuffer buffer, double gain, boolean looping)
     {
         return next++;
     }
 
     @Override
-    public int play(PcmStream stream)
+    public int play(PcmStream stream, double gain)
     {
         return next++;
+    }
+
+    @Override
+    public void setGain(int voice, double gain)
+    {
+        // Plays nothing, so no gain to apply.
+    }
+
+    @Override
+    public void pause(int voice)
+    {
+        // Plays nothing, so nothing to pause.
+    }
+
+    @Override
+    public void resume(int voice)
+    {
+        // Plays nothing, so nothing to resume.
+    }
+
+    @Override
+    public void pauseOutput()
+    {
+        // Has no output to pause.
+    }
+
+    @Override
+    public void resumeOutput()
+    {
+        // Has no output to resume.
     }
 
     @Override

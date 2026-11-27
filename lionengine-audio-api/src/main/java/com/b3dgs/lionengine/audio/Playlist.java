@@ -20,7 +20,7 @@ import com.b3dgs.lionengine.resources.ResourceException;
 
 /**
  * Predefined sequence of long sounds played one after the other (ADR-0004, ADR-0018, ADR-0027, ADR-0033, ADR-0068,
- * REQ-AUDIO-008).
+ * ADR-0069, REQ-AUDIO-008, REQ-AUDIO-011).
  *
  * <p>
  * {@link #play()} starts the first track and prepares the next one ahead, so that it starts without reading its header
@@ -29,6 +29,16 @@ import com.b3dgs.lionengine.resources.ResourceException;
  * prepared. After the last track the playlist stops, by default, or starts again from the first one with
  * {@link #setLooping(boolean)}. {@link #stop()} stops it at once; stopping the voice of its track with
  * {@link Audio#stop(int)}, or releasing its track, stops it as well.
+ * </p>
+ *
+ * <p>
+ * Controls (ADR-0069): {@link #pause()} pauses the voice of the track playing and {@link #resume()} resumes it; pausing
+ * that voice with {@link Audio#pause(int)} pauses the playlist the same way, since a paused track never ends. A track
+ * whose sound loops ({@link LongSound#setLooping(boolean)}) never ends, so the playlist stays on it until it is
+ * stopped, for example an intro followed by a looping theme; the track after it is not prepared ahead. A playlist of
+ * one track that loops plays its track on a looping voice, without gap, from the play; a change of
+ * {@link #setLooping(boolean)} reaches that voice at the next {@link #play()} only. The gain of a track is the gain of
+ * its sound.
  * </p>
  *
  * <p>
@@ -186,9 +196,37 @@ public final class Playlist
     }
 
     /**
+     * Pauses the track playing where it is; no effect if the playlist is stopped or paused. The playlist does not
+     * advance while paused.
+     */
+    public void pause()
+    {
+        audio.pause(voice);
+    }
+
+    /**
+     * Resumes the track playing from where it was paused; no effect if the playlist is stopped or not paused.
+     */
+    public void resume()
+    {
+        audio.resume(voice);
+    }
+
+    /**
+     * Tells whether the track playing is paused, by {@link #pause()} or by {@link Audio#pause(int)} of its voice.
+     *
+     * @return {@code true} while paused, {@code false} when stopped or not paused.
+     */
+    public boolean isPaused()
+    {
+        return audio.isPaused(voice);
+    }
+
+    /**
      * Tells whether the playlist is playing.
      *
-     * @return {@code true} from {@link #play()} until it stops after its last track, is stopped, or aborts.
+     * @return {@code true} from {@link #play()} until it stops after its last track, is stopped, or aborts, also while
+     *         paused.
      */
     public boolean isPlaying()
     {
@@ -310,7 +348,7 @@ public final class Playlist
         boolean started = false;
         try
         {
-            final int played = audio.play(sound, trackListener);
+            final int played = audio.play(sound, trackListener, looping && tracks.length == 1);
             if (played == AudioBackend.NO_VOICE)
             {
                 throw new IllegalStateException("No voice free for the track: " + sound.getKey());
@@ -331,14 +369,16 @@ public final class Playlist
     }
 
     /**
-     * Prepares the track after the one playing, if it is another sound; a failure is kept and reported at its turn.
+     * Prepares the track after the one playing, if it is another sound and the one playing does not loop; a failure is
+     * kept and reported at its turn.
      */
     private void prepareAhead()
     {
         final boolean last = track + 1 == tracks.length;
         final LongSound sound = tracks[last ? 0 : track + 1];
         final boolean idle = !sound.isPrepared() && !sound.isReleased() && !sound.isPlaying();
-        if ((looping || !last) && sound != tracks[track] && idle)
+        final boolean advances = (looping || !last) && !tracks[track].isLooping();
+        if (advances && sound != tracks[track] && idle)
         {
             try
             {
