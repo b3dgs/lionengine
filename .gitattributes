@@ -1,2 +1,0 @@
-# Shell scripts run in Git Bash on Windows: they must keep Unix line endings whatever core.autocrlf says.
-*.sh text eol=lf

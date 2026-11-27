@@ -1,0 +1,137 @@
+/*
+ * Copyright (C) 2013-2026 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+package com.b3dgs.lionengine.game.feature.collidable.selector;
+
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import com.b3dgs.lionengine.ContextMock;
+import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.EngineMock;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.ViewerMock;
+import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.feature.Actionable;
+import com.b3dgs.lionengine.game.feature.Factory;
+import com.b3dgs.lionengine.game.feature.Handler;
+import com.b3dgs.lionengine.game.feature.Refreshable;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
+import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
+import com.b3dgs.lionengine.graphic.Graphics;
+
+/**
+ * Test {@link Hud}.
+ */
+final class HudTest
+{
+    /** Object configuration file name. */
+    private static final String OBJECT_XML = "Object.xml";
+
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    static void beforeTests()
+    {
+        Engine.start(new EngineMock(HudTest.class.getSimpleName(), new Version(1, 0, 0)));
+
+        Medias.setLoadFromJar(HudTest.class);
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    static void afterTests()
+    {
+        Medias.setLoadFromJar(null);
+        Graphics.setFactoryGraphic(null);
+
+        Engine.terminate();
+    }
+
+    private final Services services = new Services();
+
+    /**
+     * Prepare test.
+     */
+    @BeforeEach
+    void before()
+    {
+        services.add(new ContextMock());
+        services.add(new Handler(services));
+        services.add(new Factory(services));
+        services.add(new ViewerMock());
+        services.add(new Cursor(services));
+        services.add(new ComponentCollision(new ViewerMock()));
+    }
+
+    /**
+     * Test cancel with listener.
+     */
+    @Test
+    void testListenerCancel()
+    {
+        final AtomicBoolean canceled = new AtomicBoolean();
+        final HudListener listener = new HudListener()
+        {
+            @Override
+            public void notifyCreated(List<Selectable> selection, Actionable actionable)
+            {
+                // Nothing to do
+            }
+
+            @Override
+            public void notifyCanceled()
+            {
+                canceled.set(true);
+            }
+        };
+        final Media config = Medias.create(OBJECT_XML);
+        final Hud hud = new Hud(services, new Setup(config));
+        hud.addListener(listener);
+
+        final AtomicBoolean cancel = new AtomicBoolean();
+        hud.setCancelShortcut(cancel::get);
+
+        hud.getFeature(Refreshable.class).update(1.0);
+
+        assertFalse(canceled.get());
+
+        cancel.set(true);
+        hud.getFeature(Refreshable.class).update(1.0);
+
+        assertTrue(canceled.get());
+        assertEquals(0, hud.getActive().size());
+
+        hud.removeListener(listener);
+    }
+}

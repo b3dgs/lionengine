@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- DEX verification application: no activity; it hosts the shared modules for the instrumentation tests. -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <application android:label="LionEngine verification" />
-
-</manifest>

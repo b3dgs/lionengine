@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:formulas xmlns:lionengine="http://lionengine.b3dgs.com/xsd/10" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/10 http://lionengine.b3dgs.com/xsd/10/game/feature/tile/map/collision/tileFormulas.xsd">
+    <lionengine:formula name="top">
+        <lionengine:range output="Y" minX="0" maxX="17" minY="0" maxY="0"/>
+        <lionengine:function type="LINEAR" a="0" b="17"/>
+        <lionengine:constraint group="block" orientation="NORTH"/>
+    </lionengine:formula>
+    <lionengine:formula name="bottom">
+        <lionengine:range output="Y" minX="0" maxX="17" minY="0" maxY="0"/>
+        <lionengine:function type="LINEAR" a="0" b="0"/>
+        <lionengine:constraint group="block" orientation="SOUTH"/>
+    </lionengine:formula>
+    <lionengine:formula name="left">
+        <lionengine:range output="X" minX="0" maxX="1" minY="0" maxY="17"/>
+        <lionengine:function type="LINEAR" a="0" b="0"/>
+        <lionengine:constraint group="block" orientation="WEST"/>
+    </lionengine:formula>
+    <lionengine:formula name="right">
+        <lionengine:range output="X" minX="0" maxX="1" minY="0" maxY="17"/>
+        <lionengine:function type="LINEAR" a="0" b="17"/>
+        <lionengine:constraint group="block" orientation="EAST"/>
+    </lionengine:formula>
+</lionengine:formulas>

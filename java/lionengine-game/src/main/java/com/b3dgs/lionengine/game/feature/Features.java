@@ -1,0 +1,211 @@
+/*
+ * Copyright (C) 2013-2026 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+package com.b3dgs.lionengine.game.feature;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.FeatureProvider;
+
+/**
+ * Features handler representation. Store features by type (must be annotated by {@link FeatureInterface}), allowing
+ * quick access from an interface.
+ */
+public class Features
+{
+    /** Feature not annotated. */
+    static final String ERROR_FEATURE_NOT_ANNOTATED = "Feature not annotated: ";
+    /** Feature not found error. */
+    static final String ERROR_FEATURE_NOT_FOUND = "Feature not found: ";
+    /** Feature exists error. */
+    static final String ERROR_FEATURE_EXISTS = "Feature already exists: ";
+    /** Feature exists as error. */
+    static final String AS = " as: ";
+    /** Feature exists with error. */
+    static final String WITH = " with: ";
+
+    /**
+     * Check if feature is annotated in its direct parents.
+     * 
+     * @param feature The feature to check.
+     * @return <code>true</code> if annotated, <code>false</code> else.
+     */
+    private static boolean isAnnotated(FeatureProvider feature)
+    {
+        for (final Class<?> current : feature.getClass().getInterfaces())
+        {
+            if (current.isAnnotationPresent(FeatureInterface.class))
+            {
+                return true;
+            }
+        }
+        return feature.getClass().isAnnotationPresent(FeatureInterface.class);
+    }
+
+    /** Features handled. */
+    private final Map<Class<? extends FeatureProvider>, FeatureProvider> typeToFeature = new HashMap<>();
+    /** Unique features. */
+    private final Collection<FeatureProvider> features = new ArrayList<>();
+
+    /**
+     * Create features handler.
+     */
+    public Features()
+    {
+        super();
+    }
+
+    /**
+     * Add a feature. Stores its interface, and all sub interfaces which describe also a {@link Feature} annotated by
+     * {@link FeatureInterface}.
+     * 
+     * @param feature The feature to add.
+     * @throws LionEngineException If feature is not annotated by {@link FeatureInterface} or already referenced.
+     */
+    public void add(FeatureProvider feature)
+    {
+        add(feature, false);
+    }
+
+    /**
+     * Add a feature. Stores its interface, and all sub interfaces which describe also a {@link Feature} annotated by
+     * {@link FeatureInterface}.
+     * 
+     * @param feature The feature to add.
+     * @param overwrite <code>true</code> to overwrite existing feature, <code>false</code> else.
+     * @throws LionEngineException If feature is not annotated by {@link FeatureInterface} or already referenced.
+     */
+    public void add(FeatureProvider feature, boolean overwrite)
+    {
+        if (!isAnnotated(feature))
+        {
+            throw new LionEngineException(ERROR_FEATURE_NOT_ANNOTATED + feature.getClass());
+        }
+        final FeatureProvider old;
+        // CHECKSTYLE IGNORE LINE: InnerAssignment
+        if ((old = typeToFeature.put(feature.getClass(), feature)) != null)
+        {
+            throw new LionEngineException(ERROR_FEATURE_EXISTS + feature.getClass() + WITH + old.getClass());
+        }
+        checkTypeDepth(feature, feature.getClass(), overwrite);
+        features.add(feature);
+    }
+
+    /**
+     * Get a feature from its class or interface.
+     * 
+     * @param <C> The custom feature type.
+     * @param feature The feature class or interface.
+     * @return The feature instance.
+     * @throws LionEngineException If the feature was not found.
+     */
+    public <C extends FeatureProvider> C get(Class<C> feature)
+    {
+        final FeatureProvider found = typeToFeature.get(feature);
+        if (found != null)
+        {
+            return feature.cast(found);
+        }
+        throw new LionEngineException(ERROR_FEATURE_NOT_FOUND + feature.getName());
+    }
+
+    /**
+     * Check if contains the following feature type.
+     * 
+     * @param <C> The custom feature type.
+     * @param feature The feature to check.
+     * @return <code>true</code> if contains, <code>false</code> else.
+     */
+    public <C extends FeatureProvider> boolean contains(Class<C> feature)
+    {
+        return typeToFeature.containsKey(feature);
+    }
+
+    /**
+     * Get all features.
+     * 
+     * @return The features list.
+     */
+    public Iterable<FeatureProvider> getFeatures()
+    {
+        return features;
+    }
+
+    /**
+     * Get all features types.
+     * 
+     * @return The features types.
+     */
+    public Iterable<Class<? extends FeatureProvider>> getFeaturesType()
+    {
+        return typeToFeature.keySet();
+    }
+
+    /**
+     * Check annotated features parent recursively.
+     * 
+     * @param feature The main feature.
+     * @param current The current parent.
+     * @param overwrite <code>true</code> to overwrite existing feature, <code>false</code> else.
+     */
+    private void checkTypeDepth(FeatureProvider feature, Class<?> current, boolean overwrite)
+    {
+        for (final Class<?> type : current.getInterfaces())
+        {
+            if (type.isAnnotationPresent(FeatureInterface.class))
+            {
+                checkAnnotation(feature, type, overwrite);
+                checkTypeDepth(feature, type, overwrite);
+            }
+        }
+        final Class<?> parent = current.getSuperclass();
+        if (parent != null)
+        {
+            if (parent.isAnnotationPresent(FeatureInterface.class))
+            {
+                checkAnnotation(feature, parent, overwrite);
+            }
+            checkTypeDepth(feature, parent, overwrite);
+        }
+    }
+
+    /**
+     * Check annotation and update mapping.
+     * 
+     * @param feature The feature to check.
+     * @param type The type to check.
+     * @param overwrite <code>true</code> to overwrite existing feature, <code>false</code> else.
+     */
+    private void checkAnnotation(FeatureProvider feature, Class<?> type, boolean overwrite)
+    {
+        final FeatureProvider old;
+        // CHECKSTYLE IGNORE LINE: InnerAssignment
+        if ((old = typeToFeature.put(type.asSubclass(FeatureProvider.class), feature)) != null && !overwrite)
+        {
+            throw new LionEngineException(ERROR_FEATURE_EXISTS
+                                          + feature.getClass()
+                                          + AS
+                                          + type
+                                          + WITH
+                                          + old.getClass());
+        }
+    }
+}
