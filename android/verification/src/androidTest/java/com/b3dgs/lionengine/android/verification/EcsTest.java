@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.android.verification;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -32,6 +33,7 @@ import org.junit.runner.RunWith;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.b3dgs.lionengine.RandomSource;
 import com.b3dgs.lionengine.ecs.GameSystem;
 import com.b3dgs.lionengine.ecs.ObjectListener;
 import com.b3dgs.lionengine.ecs.Query;
@@ -46,8 +48,9 @@ import com.b3dgs.lionengine.ecs.WorldConfig;
  * and the capacity growth; trait registration, deferred trait addition, replacement and removal, pooling and the trait
  * capacity growth; queries with include and exclude sets, their update at the flush, changes requested inside an
  * iteration and the sorted ID copy; listeners of the flush events and systems in slot order with the enabled flag and
- * one flush per update. Expected values are the ones of the JVM tests of {@code lionengine-ecs} (WorldTest,
- * WorldFlushOrderTest, TraitStorageTest, QueryTest, WorldEventTest, WorldSystemTest).
+ * one flush per update; the world's random source with its seed, its reference outputs and its reseeding. Expected
+ * values are the ones of the JVM tests of {@code lionengine-ecs} (WorldTest, WorldFlushOrderTest, TraitStorageTest,
+ * QueryTest, WorldEventTest, WorldSystemTest, WorldRandomTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class EcsTest
@@ -66,6 +69,14 @@ public final class EcsTest
         {
             trait[0] = 0;
         }
+    };
+    /** Increment of the SplitMix64 state, the constant of the algorithm (package-private in RandomSource). */
+    private static final long GOLDEN_GAMMA = 0x9E37_79B9_7F4A_7C15L;
+    /** The seed whose expansion is the xoshiro256** reference state of RandomSourceTest. */
+    private static final long REFERENCE_SEED = 0x1a2b3c4d5e6f7531L + 24 * GOLDEN_GAMMA;
+    /** First xoshiro256** reference outputs of RandomSourceTest. */
+    private static final long[] REFERENCE_OUTPUTS = {
+            0x462c422df780c48eL, 0xa82f1f6031c183e6L, 0x8a113820e8d2ca8dL, 0x1ac7023a26534958L,
     };
 
     /**
@@ -326,5 +337,34 @@ public final class EcsTest
         assertFalse(world.isSystemEnabled(late));
         assertThrows(IllegalArgumentException.class, () -> world.update(Double.NaN));
         assertEquals(3, world.getSystemCount());
+    }
+
+    /**
+     * The world's random source starts at the configured seed, gives the reference outputs, is owned by one world,
+     * reseeds between two updates and refuses to reseed during one; the default seed is {@code 0x4C494F4E}.
+     */
+    @Test
+    public void testRandomSource()
+    {
+        final World world = new World(new WorldConfig(4, 4, REFERENCE_SEED));
+        final RandomSource random = world.getRandomSource();
+        for (final long expected : REFERENCE_OUTPUTS)
+        {
+            assertEquals(expected, random.nextLong());
+        }
+        assertEquals(0x4C49_4F4EL, WorldConfig.DEFAULT.randomSeed());
+        assertEquals(new RandomSource(0x4C49_4F4EL).nextLong(), new World().getRandomSource().nextLong());
+        assertNotSame(random, new World(new WorldConfig(4, 4, REFERENCE_SEED)).getRandomSource());
+
+        final long[] drawn = new long[1];
+        world.addSystem(step -> drawn[0] = random.nextLong(), 0);
+        world.reseed(REFERENCE_SEED);
+        world.update(1.0 / 60.0);
+        assertEquals(REFERENCE_OUTPUTS[0], drawn[0]);
+        assertSame(random, world.getRandomSource());
+
+        final World refusing = new World();
+        refusing.addSystem(step -> refusing.reseed(1L), 0);
+        assertThrows(IllegalStateException.class, () -> refusing.update(1.0 / 60.0));
     }
 }

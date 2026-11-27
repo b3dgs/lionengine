@@ -46,7 +46,7 @@ The thread hand-off contracts of `core` (`Inbox`, `InboxEvent`, `AsyncHandle<T>`
 
 ### Random source (`RandomSource`)
 
-- SplitMix64 expands a `long` seed into the state of xoshiro256\*\*; methods: next `long`, next `int` in `[0, bound)` without modulo bias, next `double` in `[0, 1)`, next `boolean`. Integer operations only; results identical on every platform.
+- SplitMix64 expands a `long` seed into the state of xoshiro256\*\*; methods: next `long`, next `int` in `[0, bound)` without modulo bias, next `double` in `[0, 1)`, next `boolean`; `reseed(long)` restarts the sequence in place (added by ECS batch 5, ADR-0078). Integer operations only; results identical on every platform.
 - Tests compare with the published reference outputs of both algorithms.
 
 ## Envisaged APIs / contracts

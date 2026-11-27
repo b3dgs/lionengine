@@ -79,7 +79,15 @@ Batch 4 (2026-11-27), the events and the system ordering, with the example `Syst
 - No allocation on the update, the system dispatch, the flush and the events: `UpdateAllocationTest` measures 0 bytes over 1,000 updates of 1,000 objects, four systems and four listeners (about 1.3 million commands and 3 million listener calls; ADR-0077, decision 10).
 - Tests: `WorldEventTest`, `WorldSystemTest`, `UpdateAllocationTest`, `QueryTest.testQueriesAgreeWithListeners`, `TraitFlushOrderTest` (now through the listeners), `SystemExampleTest`; the device test `EcsTest` (`testEvents`, `testSystems`).
 
-Next: batch 5, the random source.
+Batch 5 (2026-11-27), the random source, with the example `RandomSpawnExample` (game-defined system `SpawnSystem`, trait `Spot`) and its API-index row. The signatures and details this page leaves to the batch follow [ADR-0078](../decisions/0078-ecs-world-random-source-seed-and-reseeding.md) (owner answers and delegation):
+- `WorldConfig(objectCapacity, traitCapacity, randomSeed)`; the two-capacity constructor is kept and uses `WorldConfig.DEFAULT_RANDOM_SEED`, `0x4C494F4E` (the ASCII of "LION", the camera shake default of ADR-0034 borrowed on purpose by the owner); every `long` is a valid seed. The grid cell size stays with collision (`standard-traits.md`).
+- Each world creates its own `RandomSource` (the `core` generator, SplitMix64 and xoshiro256\*\*) from the seed and never shares it; `World.getRandomSource()` returns the same instance for the life of the world. Two worlds with the same seed and the same operations draw the same numbers; drawing from one leaves the others unchanged.
+- `RandomSource.reseed(seed)` (new in `core`) restarts the sequence in place, as a new generator of that seed. `World.reseed(seed)` is the checked route: at setup and between two updates, effective at once; an `IllegalStateException` during an update, a flush and after a failure. Calling `RandomSource.reseed` directly on the world's generator is a documented misuse.
+- Systems, listeners (in flush order), setup code and inbox events may draw; rendering and presentation effects use their own generators.
+- No allocation when drawing or reseeding: `RandomAllocationTest` measures 0 bytes over 1,000 updates of 4,000 draws each and 100 reseeds (ADR-0078, decision 7).
+- Tests: `WorldRandomTest` (default and custom seed, reference vectors of `RandomSourceTest`, independent worlds, reseeding rules, listener draws, a system drawing during the update reproducible across two runs), `WorldConfigTest`, `RandomAllocationTest`, `RandomSourceTest.testReseed`, `RandomSpawnExampleTest`; the device tests `EcsTest.testRandomSource` and `CoreTest.testRandomReseed`.
+
+Next: batch 6, the benchmark and allocation check at 1,000 objects × 4 traits.
 
 ## Lifecycle and concurrency
 

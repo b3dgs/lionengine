@@ -17,7 +17,8 @@
 package com.b3dgs.lionengine;
 
 /**
- * Seeded random generator of the simulation: xoshiro256** seeded by SplitMix64 (ADR-0024, ADR-0031, REQ-DET-003).
+ * Seeded random generator of the simulation: xoshiro256** seeded by SplitMix64 (ADR-0024, ADR-0031, ADR-0078,
+ * REQ-DET-003).
  *
  * <p>
  * The seed is expanded by SplitMix64 into the 256-bit state of xoshiro256** 1.0 (Blackman and Vigna), which produces
@@ -100,14 +101,7 @@ public final class RandomSource
      */
     public RandomSource(long seed)
     {
-        long state = seed + GOLDEN_GAMMA;
-        s0 = mix64(state);
-        state += GOLDEN_GAMMA;
-        s1 = mix64(state);
-        state += GOLDEN_GAMMA;
-        s2 = mix64(state);
-        state += GOLDEN_GAMMA;
-        s3 = mix64(state);
+        reseed(seed);
     }
 
     /**
@@ -129,6 +123,32 @@ public final class RandomSource
         this.s1 = s1;
         this.s2 = s2;
         this.s3 = s3;
+    }
+
+    /**
+     * Restarts the sequence from a seed, in place: the state becomes the one {@link #RandomSource(long)} gives for this
+     * seed, so the next values are those of a new generator created with it. Allocates nothing; the references to this
+     * generator stay valid (ADR-0078).
+     *
+     * <p>
+     * The owner of the generator decides when the sequence restarts: a world reseeds its generator through
+     * {@code World.reseed(long)}, which checks the phase of the world; code that borrows a generator does not reseed
+     * it.
+     * </p>
+     *
+     * @param seed The seed; any value, {@code 0} included.
+     * @since 11.0.0
+     */
+    public void reseed(long seed)
+    {
+        long state = seed + GOLDEN_GAMMA;
+        s0 = mix64(state);
+        state += GOLDEN_GAMMA;
+        s1 = mix64(state);
+        state += GOLDEN_GAMMA;
+        s2 = mix64(state);
+        state += GOLDEN_GAMMA;
+        s3 = mix64(state);
     }
 
     /**

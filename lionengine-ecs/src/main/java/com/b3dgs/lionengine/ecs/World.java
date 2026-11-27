@@ -16,10 +16,12 @@
  */
 package com.b3dgs.lionengine.ecs;
 
+import com.b3dgs.lionengine.RandomSource;
+
 /**
  * The container of the objects of a game or of a scene, of their traits and of the systems that run them
- * (REQ-WORLD-001, REQ-ECS-001 to REQ-ECS-008, REQ-ECS-010 to REQ-ECS-013, ADR-0011, ADR-0018, ADR-0021, ADR-0030,
- * ADR-0034, ADR-0074 to ADR-0077).
+ * (REQ-WORLD-001, REQ-ECS-001 to REQ-ECS-008, REQ-ECS-010 to REQ-ECS-013, REQ-DET-001, REQ-DET-003, ADR-0011,
+ * ADR-0018, ADR-0021, ADR-0024, ADR-0030, ADR-0031, ADR-0034, ADR-0074 to ADR-0078).
  *
  * <p>
  * <b>Object IDs.</b> An object is an opaque primitive {@code long}: a generation in the high 32 bits, an index in the
@@ -73,6 +75,17 @@ package com.b3dgs.lionengine.ecs;
  * </p>
  *
  * <p>
+ * <b>Random source.</b> Each world owns one {@link RandomSource}, created at construction from
+ * {@link WorldConfig#randomSeed()} and never shared with another world: {@link #getRandomSource()} gives it to the
+ * systems, which draw the numbers of the simulation from it, never from a global source (ADR-0024, ADR-0031). Two
+ * worlds with the same seed and the same sequence of operations and draws give the same numbers on every platform.
+ * Listeners may draw too: they run in flush order, so their draws are part of the same deterministic sequence.
+ * Rendering and presentation effects do not draw from it, since their frame count is not the step count; they own
+ * their generators (camera shake, audio variants). {@link #reseed(long)} restarts the sequence between two updates.
+ * Drawing allocates nothing.
+ * </p>
+ *
+ * <p>
  * <b>Failure.</b> An exception thrown by a system or a listener propagates out of {@link #update(double)} or
  * {@link #flush()}; the world is undefined afterwards (ADR-0030): the rest of the step is not run, and every later
  * structural change, flush and update throws {@link IllegalStateException}. The loop fails (REQ-LOOP-010); the game
@@ -91,8 +104,8 @@ package com.b3dgs.lionengine.ecs;
  *
  * <p>
  * No singleton: several worlds coexist, each independent of the others; an ID is meaningful in the world that created
- * it only. A world has no dependency on rendering, resources, audio, camera or tile maps. The random source and the
- * object definitions are added to the world by later batches of the feature page.
+ * it only. A world has no dependency on rendering, resources, audio, camera or tile maps. The object definitions are
+ * added to the world by a later batch of the feature page.
  * </p>
  *
  * <p>
@@ -146,6 +159,8 @@ public final class World
     private final SystemSchedule systems = new SystemSchedule();
     /** The current phase: {@link #IDLE}, {@link #UPDATING}, {@link #FLUSHING} or {@link #FAILED}. */
     private int phase = IDLE;
+    /** The random source of the simulation, owned by this world only. */
+    private final RandomSource random;
 
     /**
      * Creates a world with the default configuration, {@link WorldConfig#DEFAULT}.
@@ -183,6 +198,7 @@ public final class World
         commands = new StructuralCommands(config.objectCapacity());
         masks = new TraitMasks(config.objectCapacity());
         traitCapacity = config.traitCapacity();
+        random = config.createRandomSource();
         storages = new TraitStorage<?>[INITIAL_TRAIT_TYPES];
         queries = new Query[INITIAL_QUERIES];
     }
@@ -622,6 +638,44 @@ public final class World
     }
 
     /**
+     * Returns the random source of this world, the generator of the simulation (REQ-DET-001, REQ-DET-003).
+     *
+     * <p>
+     * The same instance for the life of the world, so a system may keep it from its construction. It is created from
+     * {@link WorldConfig#randomSeed()}, owned by this world and never given to another one. Draw from systems,
+     * listeners, setup code and inbox events, all on the runtime thread; not from rendering. Reseed it through
+     * {@link #reseed(long)} only, which checks the phase of the world; {@link RandomSource#reseed(long)} called
+     * directly bypasses that check and is a misuse. Allowed in every phase, after a failure too.
+     * </p>
+     *
+     * @return The random source, not {@code null}.
+     */
+    public RandomSource getRandomSource()
+    {
+        return random;
+    }
+
+    /**
+     * Restarts the random source from a seed: the next draws are those of a new world configured with this seed.
+     *
+     * <p>
+     * Allowed at setup and between two updates, for example to start a new round or to apply a seed received from a
+     * server; it takes effect at once, so the next update draws the new sequence. Refused while an update or a flush
+     * runs, so that a step draws from one sequence, and after a failure. Allocates nothing; the instance returned by
+     * {@link #getRandomSource()} stays the same.
+     * </p>
+     *
+     * @param seed The seed, any value.
+     * @throws IllegalStateException If called during an update (by a system) or a flush (by a listener), or if the
+     *             world failed.
+     */
+    public void reseed(long seed)
+    {
+        checkIdle();
+        random.reseed(seed);
+    }
+
+    /**
      * Grows the object table ahead, so that the next flushes do not have to.
      *
      * <p>
@@ -755,7 +809,7 @@ public final class World
         checkChangeable();
         if (phase == UPDATING)
         {
-            throw new IllegalStateException("World updating: a system must not flush, update, add or remove a system");
+            throw new IllegalStateException("World updating: no flush, update, reseed or system change from a system");
         }
     }
 

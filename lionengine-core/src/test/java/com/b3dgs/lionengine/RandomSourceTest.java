@@ -138,6 +138,32 @@ final class RandomSourceTest
     }
 
     /**
+     * Reseeding restarts the sequence in place: the values are those of a new generator created with the seed, after
+     * any number of draws, and the reference outputs follow the seed expansion (ADR-0078).
+     */
+    @Test
+    void testReseed()
+    {
+        final RandomSource random = new RandomSource(1L);
+        for (int i = 0; i < 37; i++)
+        {
+            random.nextLong();
+        }
+        random.reseed(SPLIT_MIX_SEED + 24 * RandomSource.GOLDEN_GAMMA);
+        for (final long expected : XOSHIRO_OUTPUTS)
+        {
+            assertEquals(expected, random.nextLong());
+        }
+
+        random.reseed(42L);
+        final RandomSource fresh = new RandomSource(42L);
+        for (int i = 0; i < 100; i++)
+        {
+            assertEquals(fresh.nextLong(), random.nextLong());
+        }
+    }
+
+    /**
      * Derived values are exact functions of the next value of the sequence.
      */
     @Test
