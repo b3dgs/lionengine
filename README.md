@@ -35,6 +35,7 @@ Requirements: JDK 25 or later and Maven 3.9 (the build refuses an older JDK), Py
 - Build, checkstyle, package rule, tests and Javadoc: `mvn -B verify`.
 - One module and what it needs: `mvn -B -pl lionengine-<module> -am verify`.
 - With the platform tests, which open windows and need a display: `mvn -B verify -Pplatform-tests` (on Linux without a display: `xvfb-run -a mvn -B verify -Pplatform-tests`).
+- The benchmarks with their time budgets (tag `benchmark`, ADR-0079): `mvn -B -pl lionengine-ecs -am verify -Pbenchmark`.
 - Structural checks: `python3 -I scripts/check-modules.py`, `python3 -I scripts/check-api-index.py` (after the build), `python3 -I scripts/check-provenance.py`, `python3 -I scripts/check-docs.py`.
 - Android/DEX verification (also needs the Android SDK, `ANDROID_HOME` set): `mvn -B install`, then in `android/`: `./gradlew :api-lint:lintDebug :verification:verifyDebugDex :verification:verifyReleaseDex` (lint `NewApi`, D8, R8), and `./gradlew :verification:connectedDebugAndroidTest` with an API 21 emulator running ([`docs/android-compatibility.md`](docs/android-compatibility.md)).
 
