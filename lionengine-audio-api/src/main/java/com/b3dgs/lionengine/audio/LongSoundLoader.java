@@ -210,6 +210,36 @@ public final class LongSoundLoader
     }
 
     /**
+     * Opens the stream of a sound and its source again, for a new pass of a loop, on the thread that reads it; on
+     * failure the stream is closed. The failures are raw, turned into the reported exception by
+     * {@link #report(ResourceKey, Exception)} at the end of the voice.
+     *
+     * @param key The resource key.
+     * @param decoder The decoder of the key.
+     * @return The stream, to close once the source is no longer read, and its source.
+     * @throws IOException If the resource cannot be read.
+     * @throws AudioDecodingException If the header is invalid.
+     * @throws ResourceException If the resource is missing.
+     */
+    Opened reopen(ResourceKey key, AudioStreamDecoder decoder) throws IOException
+    {
+        final InputStream input = resources.open(key);
+        try
+        {
+            return new Opened(input, decoder.open(input));
+        }
+        catch (final IOException | AudioDecodingException exception)
+        {
+            final IOException closeFailure = close(input);
+            if (closeFailure != null)
+            {
+                exception.addSuppressed(closeFailure);
+            }
+            throw exception;
+        }
+    }
+
+    /**
      * Reads and decodes a sound entirely, and closes its stream.
      *
      * @param key The resource key.

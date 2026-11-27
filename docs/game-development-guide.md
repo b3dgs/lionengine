@@ -21,7 +21,7 @@ Audience: a developer or an AI agent writing a game on top of the engine, who ha
    - load a map and scroll the camera (camera contract: [`features/camera.md`](features/camera.md), ADR-0010);
    - read player input;
    - detect a collision;
-   - play a sound: short sound (example `ShortSoundExample`), variant set (example `VariantSetExample`), long sound and playlist (example `LongSoundExample`) (ADR-0004);
+   - play a sound: short sound (example `ShortSoundExample`), variant set (example `VariantSetExample`), long sound and playlist (example `LongSoundExample`), volume, looping and pause (example `AudioControlsExample`) (ADR-0004, ADR-0069);
    - run the game headless in a test.
 5. **Pitfalls**
    - World units are meters and seconds; pixels exist only at presentation (ADR-0001).

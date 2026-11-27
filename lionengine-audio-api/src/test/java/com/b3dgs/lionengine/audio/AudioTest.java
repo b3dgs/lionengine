@@ -229,7 +229,7 @@ final class AudioTest
     {
         final FakeAudioBackend small = new FakeAudioBackend(inbox, 2);
         final Audio audio = new Audio(small);
-        final int other = small.play(alarm.getBuffer());
+        final int other = small.play(alarm.getBuffer(), 1.0, false);
 
         audio.play(alarm);
         assertEquals(AudioBackend.NO_VOICE, audio.play(alarm));

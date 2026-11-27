@@ -20,9 +20,9 @@ import java.util.Arrays;
 
 /**
  * Audio system of the game: plays short sounds and variant sets on a bounded number of voices of an
- * {@link AudioBackend}, with priorities and an overflow policy, and long sounds (ADR-0004, ADR-0018, ADR-0027,
- * ADR-0033, ADR-0065, ADR-0066, ADR-0067, ADR-0068, REQ-AUDIO-001, REQ-AUDIO-003, REQ-AUDIO-004, REQ-AUDIO-005,
- * REQ-AUDIO-007, REQ-AUDIO-010).
+ * {@link AudioBackend}, with priorities and an overflow policy, and long sounds, with their gain, looping and pause
+ * (ADR-0004, ADR-0018, ADR-0027, ADR-0031, ADR-0033, ADR-0065, ADR-0066, ADR-0067, ADR-0068, ADR-0069, REQ-AUDIO-001,
+ * REQ-AUDIO-003, REQ-AUDIO-004, REQ-AUDIO-005, REQ-AUDIO-007, REQ-AUDIO-010, REQ-AUDIO-011).
  *
  * <p>
  * The game creates one {@code Audio} over its backend and keeps it for its whole life: it is the only user of the
@@ -49,9 +49,29 @@ import java.util.Arrays;
  * </p>
  *
  * <p>
+ * Controls (ADR-0069):
+ * </p>
+ * <ul>
+ * <li>Gain: a {@code double} in {@code [0, 1]}. The master gain ({@link #setMasterGain(double)}) and the gain of each
+ * sound ({@link ShortSound#setGain(double)}, {@link LongSound#setGain(double)}) multiply into the effective gain of a
+ * voice, master × sound; the gain of the mixer groups joins the product with them later (REQ-AUDIO-012). A change
+ * reaches every voice it concerns at once: the backend applies it from its next audio buffer.</li>
+ * <li>Looping: a sound whose handle loops ({@link ShortSound#setLooping(boolean)},
+ * {@link LongSound#setLooping(boolean)}) is played looping; its voice never ends by itself and posts no end, so it
+ * plays until it is stopped, stolen or its long sound is released.</li>
+ * <li>Pause: {@link #pause(int)} and {@link #resume(int)} act on one voice, of a short sound or of a long sound;
+ * pausing or resuming a voice that ended, was stopped or does not exist has no effect. A paused voice keeps its voice:
+ * it counts in the limit, is still playing for {@link #isPlaying(int)}, may be stolen as any voice, and is stopped by
+ * {@link #stop(int)} without posting an end. The master pause ({@link #setMasterPaused(boolean)}) pauses the output of
+ * the backend, for example when the application goes to the background (ADR-0031); it is independent of the pause of
+ * each voice, and sounds played meanwhile start when it ends.</li>
+ * </ul>
+ *
+ * <p>
  * Threads: runtime thread only (ADR-0018), not thread-safe; the backend calls the listener at the inbox delivery, on
- * the runtime thread. Playing a sound or a variant set, stopping and the end of a voice allocate nothing, except the
- * first play of a lazy short sound, which decodes it (ADR-0019), and the play of a long sound that is not prepared.
+ * the runtime thread. Playing a sound or a variant set, stopping, the controls and the end of a voice allocate nothing,
+ * except the first play of a lazy short sound, which decodes it (ADR-0019), and the play of a long sound that is not
+ * prepared.
  * </p>
  *
  * @since 11.0.0
@@ -66,6 +86,10 @@ public final class Audio
     public static final int MAX_PRIORITY = 100;
     /** Default priority. */
     public static final int DEFAULT_PRIORITY = 50;
+    /** Lowest gain: silence. */
+    public static final double MIN_GAIN = 0.0;
+    /** Highest gain, and the default gain of the master and of each sound. */
+    public static final double MAX_GAIN = 1.0;
 
     /** No slot found. */
     private static final int NONE = -1;
@@ -86,14 +110,26 @@ public final class Audio
     private final int[] voices;
     /** Priority of each voice playing. */
     private final int[] priorities;
+    /** Sound of each voice playing, {@code null} in the free slots. */
+    private final ShortSound[] sounds;
+    /** {@code true} for each voice playing that loops. */
+    private final boolean[] loops;
+    /** {@code true} for each voice playing that is paused on its own. */
+    private final boolean[] paused;
     /** Number of voices playing. */
     private int count;
     /** Voices playing long sounds, in start order. */
     private int[] longVoices = new int[INITIAL_LONG_VOICES];
     /** The long sound of each long voice. */
     private LongSound[] longSounds = new LongSound[INITIAL_LONG_VOICES];
+    /** {@code true} for each long voice that is paused on its own. */
+    private boolean[] longPaused = new boolean[INITIAL_LONG_VOICES];
     /** Number of long voices playing. */
     private int longCount;
+    /** The master gain. */
+    private double masterGain = MAX_GAIN;
+    /** {@code true} while the output is paused. */
+    private boolean masterPaused;
 
     /**
      * Creates the audio system with {@link #DEFAULT_MAX_VOICES} voices, or fewer if the backend has fewer, and the
@@ -130,6 +166,9 @@ public final class Audio
         this.policy = policy;
         voices = new int[maxVoices];
         priorities = new int[maxVoices];
+        sounds = new ShortSound[maxVoices];
+        loops = new boolean[maxVoices];
+        paused = new boolean[maxVoices];
         backend.setVoiceListener(this::ended);
     }
 
@@ -163,7 +202,8 @@ public final class Audio
     }
 
     /**
-     * Plays a short sound at once, from its start, on a new voice; a lazy sound is decoded first (ADR-0027).
+     * Plays a short sound at once, from its start, on a new voice, at its effective gain and looping if its handle
+     * loops; a lazy sound is decoded first (ADR-0027).
      *
      * @param sound The sound, not released (never {@code null}).
      * @param priority The priority of the voice, from {@link #MIN_PRIORITY} to {@link #MAX_PRIORITY}.
@@ -181,7 +221,7 @@ public final class Audio
     {
         ShortSoundCache.checkNotNull(sound, "Sound");
         checkPriority(priority);
-        return start(sound.getBuffer(), priority, count);
+        return start(sound, priority, count);
     }
 
     /**
@@ -224,7 +264,7 @@ public final class Audio
             throw new IllegalArgumentException("Composed variant set: play it with a voices array");
         }
         checkPriority(priority);
-        return start(set.getSound(set.select()).getBuffer(), priority, count);
+        return start(set.getSound(set.select()), priority, count);
     }
 
     /**
@@ -288,7 +328,8 @@ public final class Audio
      *
      * <p>
      * The voice ends by itself at the end of the sound, delivered through the inbox, or is stopped with
-     * {@link #stop(int)}. A streamed sound is no longer prepared once its voice ends or is stopped.
+     * {@link #stop(int)}; a looping sound never ends by itself. A streamed sound is no longer prepared once its voice
+     * ends or is stopped.
      * </p>
      *
      * @param sound The sound, not released and not playing (never {@code null}).
@@ -305,7 +346,7 @@ public final class Audio
     public int play(LongSound sound)
     {
         ShortSoundCache.checkNotNull(sound, "Long sound");
-        return play(sound, null);
+        return play(sound, null, false);
     }
 
     /**
@@ -334,8 +375,8 @@ public final class Audio
     }
 
     /**
-     * Stops every short voice, for example when a scene exits; long sounds and playlists are stopped by their own
-     * voice or {@link Playlist#stop()}.
+     * Stops every short voice, paused or not, for example when a scene exits; long sounds and playlists are stopped by
+     * their own voice or {@link Playlist#stop()}.
      */
     public void stopAll()
     {
@@ -343,6 +384,7 @@ public final class Audio
         {
             backend.stop(voices[count - 1]);
             count--;
+            sounds[count] = null;
         }
     }
 
@@ -350,11 +392,123 @@ public final class Audio
      * Tells whether a voice is playing, of a short sound or of a long sound.
      *
      * @param voice The voice.
-     * @return {@code true} from its play until it is stopped or its end is delivered.
+     * @return {@code true} from its play until it is stopped or its end is delivered, also while it is paused.
      */
     public boolean isPlaying(int voice)
     {
         return slot(voice) != NONE || longSlot(voice) != NONE;
+    }
+
+    /**
+     * Pauses a voice, of a short sound or of a long sound, where it is; no effect on a paused voice, or on a voice that
+     * ended, was stopped or does not exist. The voice keeps its voice and posts no end until it is resumed; the stream
+     * of a long sound is not read meanwhile, and a {@link Playlist} playing it is paused with it.
+     *
+     * @param voice The voice returned by a play.
+     */
+    public void pause(int voice)
+    {
+        setPaused(voice, true);
+    }
+
+    /**
+     * Resumes a paused voice from where it was paused; no effect on a voice that is not paused, ended, was stopped or
+     * does not exist. During the master pause, the voice continues when the master pause ends.
+     *
+     * @param voice The voice returned by a play.
+     */
+    public void resume(int voice)
+    {
+        setPaused(voice, false);
+    }
+
+    /**
+     * Tells whether a voice is paused on its own, by {@link #pause(int)}; the master pause is told by
+     * {@link #isMasterPaused()}.
+     *
+     * @param voice The voice.
+     * @return {@code true} from its pause until it is resumed, stopped or stolen; {@code false} for a voice that is not
+     *         playing.
+     */
+    public boolean isPaused(int voice)
+    {
+        final int slot = slot(voice);
+        final boolean result;
+        if (slot != NONE)
+        {
+            result = paused[slot];
+        }
+        else
+        {
+            final int longSlot = longSlot(voice);
+            result = longSlot != NONE && longPaused[longSlot];
+        }
+        return result;
+    }
+
+    /**
+     * Sets the master pause, which pauses the output of the backend: every voice, short or long, holds where it is,
+     * for example while the application is in the background (ADR-0031). It is independent of the pause of each voice:
+     * a voice paused on its own stays paused when the master pause ends, and a sound played during the master pause
+     * starts when it ends. No effect if the master pause is already in that state.
+     *
+     * @param pausedOutput {@code true} to pause the output, {@code false} to resume it.
+     */
+    public void setMasterPaused(boolean pausedOutput)
+    {
+        if (pausedOutput != masterPaused)
+        {
+            masterPaused = pausedOutput;
+            if (pausedOutput)
+            {
+                backend.pauseOutput();
+            }
+            else
+            {
+                backend.resumeOutput();
+            }
+        }
+    }
+
+    /**
+     * Tells whether the master pause is on.
+     *
+     * @return {@code true} while the output is paused.
+     */
+    public boolean isMasterPaused()
+    {
+        return masterPaused;
+    }
+
+    /**
+     * Sets the master gain, which multiplies the gain of every sound; every voice playing gets its new effective gain
+     * at once.
+     *
+     * @param gain The master gain, from {@link #MIN_GAIN} to {@link #MAX_GAIN} ({@link #MAX_GAIN} by default).
+     * @throws IllegalArgumentException If the gain is NaN or outside its range; nothing changes then.
+     */
+    public void setMasterGain(double gain)
+    {
+        checkGain(gain);
+        masterGain = gain;
+        for (int i = 0; i < count; i++)
+        {
+            backend.setGain(voices[i], effective(sounds[i].getGain()));
+        }
+        for (int i = 0; i < longCount; i++)
+        {
+            backend.setGain(longVoices[i], effective(longSounds[i].getGain()));
+        }
+    }
+
+    /**
+     * Returns the master gain.
+     *
+     * @return The gain multiplying the gain of every sound.
+     */
+    public double getMasterGain()
+    {
+        return masterGain;
     }
 
     /**
@@ -402,31 +556,99 @@ public final class Audio
      *
      * @param sound The sound, not {@code null}.
      * @param listener The listener of its end, {@code null} for none.
+     * @param loop {@code true} to loop the voice even if the sound does not loop, for a playlist of one track that
+     *            loops.
      * @return The voice, or {@link AudioBackend#NO_VOICE}.
      * @throws IllegalStateException As {@link #play(LongSound)}.
      * @throws com.b3dgs.lionengine.resources.ResourceException As {@link #play(LongSound)}.
      * @throws AudioDecodingException As {@link #play(LongSound)}.
      */
-    int play(LongSound sound, TrackListener listener)
+    int play(LongSound sound, TrackListener listener, boolean loop)
     {
         if (sound.isPlaying())
         {
             throw new IllegalStateException("Long sound already playing: " + sound.getKey());
         }
-        final int voice = sound.start(backend);
+        final int voice = sound.start(backend, effective(sound.getGain()), loop || sound.isLooping());
         if (voice != AudioBackend.NO_VOICE)
         {
             if (longCount == longVoices.length)
             {
                 longVoices = Arrays.copyOf(longVoices, longCount * 2);
                 longSounds = Arrays.copyOf(longSounds, longCount * 2);
+                longPaused = Arrays.copyOf(longPaused, longCount * 2);
             }
             longVoices[longCount] = voice;
             longSounds[longCount] = sound;
+            longPaused[longCount] = false;
             longCount++;
             sound.started(this, voice, listener);
         }
         return voice;
+    }
+
+    /**
+     * Gives the voices playing a short sound its new gain, at a change of its gain.
+     *
+     * @param sound The sound.
+     */
+    void updateGain(ShortSound sound)
+    {
+        final double gain = effective(sound.getGain());
+        for (int i = 0; i < count; i++)
+        {
+            if (sounds[i] == sound)
+            {
+                backend.setGain(voices[i], gain);
+            }
+        }
+    }
+
+    /**
+     * Gives the voice of a long sound its new gain, at a change of its gain.
+     *
+     * @param sound The sound, playing.
+     * @param voice The voice playing it.
+     */
+    void updateGain(LongSound sound, int voice)
+    {
+        backend.setGain(voice, effective(sound.getGain()));
+    }
+
+    /**
+     * Stops the looping voices of a short sound, at its release: they would never end.
+     *
+     * @param sound The sound.
+     */
+    void stopLooping(ShortSound sound)
+    {
+        int i = 0;
+        while (i < count)
+        {
+            if (sounds[i] == sound && loops[i])
+            {
+                backend.stop(voices[i]);
+                remove(i);
+            }
+            else
+            {
+                i++;
+            }
+        }
+    }
+
+    /**
+     * Checks a gain.
+     *
+     * @param gain The gain.
+     * @throws IllegalArgumentException If it is NaN or outside {@link #MIN_GAIN} to {@link #MAX_GAIN}.
+     */
+    static void checkGain(double gain)
+    {
+        if (!(gain >= MIN_GAIN && gain <= MAX_GAIN))
+        {
+            throw new IllegalArgumentException("Gain outside 0 to 1: " + gain);
+        }
     }
 
     /**
@@ -474,7 +696,7 @@ public final class Audio
         for (int i = 0; i < layers; i++)
         {
             // The voices of this play are the last slots: only the slots before them may be stolen.
-            voices[i] = start(set.getSound(i).getBuffer(), priority, count - started);
+            voices[i] = start(set.getSound(i), priority, count - started);
             if (voices[i] != AudioBackend.NO_VOICE)
             {
                 started++;
@@ -484,25 +706,89 @@ public final class Audio
     }
 
     /**
-     * Starts samples on a new voice, freeing one first if every voice is busy.
+     * Returns the effective gain of a sound. The gain of its mixer group joins this product with REQ-AUDIO-012.
      *
-     * @param buffer The samples.
+     * @param soundGain The gain of the sound.
+     * @return The master gain times the gain of the sound.
+     */
+    private double effective(double soundGain)
+    {
+        return masterGain * soundGain;
+    }
+
+    /**
+     * Pauses or resumes a voice.
+     *
+     * @param voice The voice.
+     * @param pause {@code true} to pause it, {@code false} to resume it.
+     */
+    private void setPaused(int voice, boolean pause)
+    {
+        final int slot = slot(voice);
+        if (slot != NONE)
+        {
+            if (paused[slot] != pause)
+            {
+                paused[slot] = pause;
+                pauseBackend(voice, pause);
+            }
+        }
+        else
+        {
+            final int longSlot = longSlot(voice);
+            if (longSlot != NONE && longPaused[longSlot] != pause)
+            {
+                longPaused[longSlot] = pause;
+                pauseBackend(voice, pause);
+            }
+        }
+    }
+
+    /**
+     * Pauses or resumes a voice of the backend.
+     *
+     * @param voice The voice.
+     * @param pause {@code true} to pause it, {@code false} to resume it.
+     */
+    private void pauseBackend(int voice, boolean pause)
+    {
+        if (pause)
+        {
+            backend.pause(voice);
+        }
+        else
+        {
+            backend.resume(voice);
+        }
+    }
+
+    /**
+     * Starts a short sound on a new voice, freeing one first if every voice is busy.
+     *
+     * @param sound The sound.
      * @param priority The priority of the voice, checked.
      * @param candidates The number of the oldest slots that may be stolen.
      * @return The voice, or {@link AudioBackend#NO_VOICE}.
-     * @throws IllegalStateException If every voice is busy under {@link VoicePolicy#REFUSE}.
+     * @throws IllegalStateException If every voice is busy under {@link VoicePolicy#REFUSE}, or for the errors of the
+     *             sound.
      */
-    private int start(PcmBuffer buffer, int priority, int candidates)
+    private int start(ShortSound sound, int priority, int candidates)
     {
+        final PcmBuffer buffer = sound.getBuffer();
         int voice = AudioBackend.NO_VOICE;
         if (count < maxVoices || freeVoice(priority, candidates))
         {
-            voice = backend.play(buffer);
+            final boolean looping = sound.isLooping();
+            voice = backend.play(buffer, effective(sound.getGain()), looping);
             if (voice != AudioBackend.NO_VOICE)
             {
                 voices[count] = voice;
                 priorities[count] = priority;
+                sounds[count] = sound;
+                loops[count] = looping;
+                paused[count] = false;
                 count++;
+                sound.played(this);
             }
         }
         return voice;
@@ -605,6 +891,7 @@ public final class Audio
         final int moved = longCount - slot - 1;
         System.arraycopy(longVoices, slot + 1, longVoices, slot, moved);
         System.arraycopy(longSounds, slot + 1, longSounds, slot, moved);
+        System.arraycopy(longPaused, slot + 1, longPaused, slot, moved);
         longCount--;
         longSounds[longCount] = null;
         return sound;
@@ -639,6 +926,10 @@ public final class Audio
         final int moved = count - slot - 1;
         System.arraycopy(voices, slot + 1, voices, slot, moved);
         System.arraycopy(priorities, slot + 1, priorities, slot, moved);
+        System.arraycopy(sounds, slot + 1, sounds, slot, moved);
+        System.arraycopy(loops, slot + 1, loops, slot, moved);
+        System.arraycopy(paused, slot + 1, paused, slot, moved);
         count--;
+        sounds[count] = null;
     }
 }

@@ -52,10 +52,11 @@ import com.b3dgs.lionengine.resources.Resources;
 import com.b3dgs.lionengine.resources.StreamProvider;
 
 /**
- * Runs {@code audio-api} on Android API 21 (ADR-0044, ADR-0065, ADR-0066, ADR-0067, ADR-0068): the PCM format and
- * buffer, a decoder throwing the decoding exception, the WAV decoder, the short-sound cache, the voices of the audio
- * system, the variant sets, and the streamed long sounds with a playlist. Expected values are the ones of the JVM tests
- * (PcmBufferTest, WavDecoderTest, AudioTest, VariantSetTest, StreamBufferTest, LongSoundTest, PlaylistTest).
+ * Runs {@code audio-api} on Android API 21 (ADR-0044, ADR-0065, ADR-0066, ADR-0067, ADR-0068, ADR-0069): the PCM
+ * format and buffer, a decoder throwing the decoding exception, the WAV decoder, the short-sound cache, the voices of
+ * the audio system, the variant sets, the streamed long sounds with a playlist, and the controls (gain, looping,
+ * pause). Expected values are the ones of the JVM tests (PcmBufferTest, WavDecoderTest, AudioTest, VariantSetTest,
+ * StreamBufferTest, LongSoundTest, PlaylistTest, AudioControlsTest, StreamBufferLoopTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class AudioTest
@@ -300,7 +301,67 @@ public final class AudioTest
     }
 
     /**
-     * Backend that plays nothing, counts the voices stopped, and keeps its listener and its last stream.
+     * The gain of a voice is master × sound and follows their changes; a looping short sound is played looping; pause,
+     * resume and the master pause reach the backend; a streamed long sound that loops starts its file again without
+     * gap and never ends.
+     *
+     * @throws IOException If reading fails.
+     */
+    @Test
+    public void testControls() throws IOException
+    {
+        final short[] ramp = new short[3_000];
+        for (int i = 0; i < ramp.length; i++)
+        {
+            ramp[i] = (short) i;
+        }
+        final byte[] bytes = wav(ramp);
+        final StreamProvider provider = new StreamProvider();
+        final ResourceKey key = new ResourceKey("sounds/wind.wav");
+        provider.register(key, () -> new ByteArrayInputStream(bytes));
+        final CountingBackend backend = new CountingBackend();
+        final Audio audio = new Audio(backend, 2, VoicePolicy.STEAL);
+        final ShortSound shot = new ShortSoundCache(new Resources(provider)).load(key);
+
+        audio.setMasterGain(0.5);
+        shot.setGain(0.5);
+        shot.setLooping(true);
+        final int voice = audio.play(shot);
+        assertEquals(0.25, backend.gain, 1e-12);
+        assertTrue(backend.looping);
+        shot.setGain(1.0);
+        assertEquals(0.5, backend.gain, 1e-12);
+        assertThrows(IllegalArgumentException.class, () -> shot.setGain(Double.NaN));
+        audio.pause(voice);
+        assertTrue(audio.isPaused(voice));
+        assertEquals(1, backend.paused);
+        audio.resume(voice);
+        assertFalse(audio.isPaused(voice));
+        audio.setMasterPaused(true);
+        assertTrue(backend.outputPaused);
+        audio.setMasterPaused(false);
+        assertFalse(backend.outputPaused);
+        shot.release();
+        assertFalse(audio.isPlaying(voice));
+
+        final LongSound wind = new LongSoundLoader(new Resources(provider)).stream(key, 2, 1_024);
+        wind.setLooping(true);
+        audio.play(wind);
+        final short[] target = new short[1_000];
+        for (int frames = 0; frames < 10_000; frames += target.length)
+        {
+            assertEquals(target.length, backend.stream.read(target, 0, target.length));
+            for (int i = 0; i < target.length; i++)
+            {
+                assertEquals((short) ((frames + i) % ramp.length), target[i]);
+            }
+        }
+        wind.release();
+    }
+
+    /**
+     * Backend that plays nothing, counts the voices stopped and paused, and keeps its listener, its last stream, its
+     * last gain and looping, and the pause of its output.
      */
     private static final class CountingBackend implements AudioBackend
     {
@@ -312,6 +373,14 @@ public final class AudioTest
         private VoiceListener listener;
         /** The last stream played. */
         private PcmStream stream;
+        /** The last gain given. */
+        private double gain;
+        /** The looping of the last buffer played. */
+        private boolean looping;
+        /** Voices paused. */
+        private int paused;
+        /** {@code true} while the output is paused. */
+        private boolean outputPaused;
 
         /**
          * Creates the backend.
@@ -334,16 +403,49 @@ public final class AudioTest
         }
 
         @Override
-        public int play(PcmBuffer buffer)
+        public int play(PcmBuffer buffer, double gain, boolean looping)
         {
+            this.gain = gain;
+            this.looping = looping;
             return next++;
         }
 
         @Override
-        public int play(PcmStream stream)
+        public int play(PcmStream stream, double gain)
         {
             this.stream = stream;
+            this.gain = gain;
             return next++;
+        }
+
+        @Override
+        public void setGain(int voice, double gain)
+        {
+            this.gain = gain;
+        }
+
+        @Override
+        public void pause(int voice)
+        {
+            paused++;
+        }
+
+        @Override
+        public void resume(int voice)
+        {
+            // Plays nothing, so nothing to resume.
+        }
+
+        @Override
+        public void pauseOutput()
+        {
+            outputPaused = true;
+        }
+
+        @Override
+        public void resumeOutput()
+        {
+            outputPaused = false;
         }
 
         @Override

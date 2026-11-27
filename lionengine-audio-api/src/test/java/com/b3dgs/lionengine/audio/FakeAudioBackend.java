@@ -26,15 +26,17 @@ import java.util.Map;
 import com.b3dgs.lionengine.Inbox;
 
 /**
- * Audio backend that plays nothing, for headless tests of the audio logic (ADR-0045, ADR-0065, ADR-0068,
- * REQ-AUDIO-009).
+ * Audio backend that plays nothing, for headless tests of the audio logic (ADR-0045, ADR-0065, ADR-0068, ADR-0069,
+ * REQ-AUDIO-009, REQ-AUDIO-011).
  *
  * <p>
  * Each buffer voice counts down the frames of its sound; each streamed voice pulls the frames of its stream, in pieces
  * of at most {@link #PULL_FRAMES} frames, as a real backend fills its output. {@link #advance(int)} is the clock of the
  * test: it moves every voice forward and posts the end of each one that runs out to the inbox, in the order the voices
- * started. The voice limit is set at creation. What was played is recorded. Not thread-safe: the test drives it from
- * its runtime thread, which also pulls the streams.
+ * started. The voice limit is set at creation. What was played is recorded, and the gain, the looping and the pause of
+ * each voice playing: a looping buffer voice wraps to its first frame and never ends, a paused voice does not move and
+ * its stream is not pulled, and nothing moves while the output is paused. The fake does not mix, so it applies no gain
+ * to samples. Not thread-safe: the test drives it from its runtime thread, which also pulls the streams.
  * </p>
  */
 public final class FakeAudioBackend implements AudioBackend
@@ -62,6 +64,8 @@ public final class FakeAudioBackend implements AudioBackend
     private int nextVoice = 1;
     /** {@code true} once closed. */
     private boolean closed;
+    /** {@code true} while the output is paused. */
+    private boolean outputPaused;
 
     /**
      * Creates a backend of {@link #DEFAULT_MAX_VOICES} voices.
@@ -94,7 +98,8 @@ public final class FakeAudioBackend implements AudioBackend
     /**
      * Moves every playing voice forward; each one that runs out ends and its end is posted to the inbox. A streamed
      * voice pulls up to {@code frames} frames from its stream, and runs out when the stream returns fewer frames than
-     * asked: a stream that gave exactly its last frame runs out at the next advance, as on a real backend.
+     * asked: a stream that gave exactly its last frame runs out at the next advance, as on a real backend. A looping
+     * buffer voice wraps and never runs out; a paused voice does not move; nothing moves while the output is paused.
      *
      * @param frames The number of frames played (not negative).
      * @throws IllegalArgumentException If {@code frames} is negative.
@@ -105,12 +110,16 @@ public final class FakeAudioBackend implements AudioBackend
         {
             throw new IllegalArgumentException("Frames must not be negative: " + frames);
         }
+        if (outputPaused)
+        {
+            return;
+        }
         final Iterator<Map.Entry<Integer, Voice>> iterator = playing.entrySet().iterator();
         while (iterator.hasNext())
         {
             final Map.Entry<Integer, Voice> entry = iterator.next();
             final Voice voice = entry.getValue();
-            if (voice.stream == null ? countDown(voice, frames) : pull(voice, frames))
+            if (!voice.paused && (voice.stream == null ? countDown(voice, frames) : pull(voice, frames)))
             {
                 iterator.remove();
                 final int ended = entry.getKey().intValue();
@@ -122,7 +131,7 @@ public final class FakeAudioBackend implements AudioBackend
     /**
      * Returns the buffers played.
      *
-     * @return Every buffer given to {@link #play(PcmBuffer)} that got a voice, in order, unmodifiable.
+     * @return Every buffer given to {@link #play(PcmBuffer, double, boolean)} that got a voice, in order, unmodifiable.
      */
     public List<PcmBuffer> getPlayed()
     {
@@ -132,7 +141,7 @@ public final class FakeAudioBackend implements AudioBackend
     /**
      * Returns the streams played.
      *
-     * @return Every stream given to {@link #play(PcmStream)} that got a voice, in order, unmodifiable.
+     * @return Every stream given to {@link #play(PcmStream, double)} that got a voice, in order, unmodifiable.
      */
     public List<PcmStream> getStreams()
     {
@@ -149,6 +158,64 @@ public final class FakeAudioBackend implements AudioBackend
     {
         final Voice playingVoice = playing.get(Integer.valueOf(voice));
         return playingVoice == null ? 0L : playingVoice.pulled;
+    }
+
+    /**
+     * Returns the gain of a voice.
+     *
+     * @param voice The voice.
+     * @return The gain last given to the voice, NaN if it is not playing.
+     */
+    public double getGain(int voice)
+    {
+        final Voice playingVoice = playing.get(Integer.valueOf(voice));
+        return playingVoice == null ? Double.NaN : playingVoice.gain;
+    }
+
+    /**
+     * Tells whether a voice loops.
+     *
+     * @param voice The voice.
+     * @return {@code true} if it is a playing buffer voice played looping.
+     */
+    public boolean isLooping(int voice)
+    {
+        final Voice playingVoice = playing.get(Integer.valueOf(voice));
+        return playingVoice != null && playingVoice.looping;
+    }
+
+    /**
+     * Tells whether a voice is paused on its own.
+     *
+     * @param voice The voice.
+     * @return {@code true} if it is a playing voice paused by {@link #pause(int)}.
+     */
+    public boolean isPaused(int voice)
+    {
+        final Voice playingVoice = playing.get(Integer.valueOf(voice));
+        return playingVoice != null && playingVoice.paused;
+    }
+
+    /**
+     * Returns the frames a voice played.
+     *
+     * @param voice The voice.
+     * @return The frames it moved forward, across its loops, {@code 0} if it is not playing.
+     */
+    public long getPlayedFrames(int voice)
+    {
+        final Voice playingVoice = playing.get(Integer.valueOf(voice));
+        return playingVoice == null ? 0L : playingVoice.played;
+    }
+
+    /**
+     * Tells whether the output is paused.
+     *
+     * @return {@code true} from {@link #pauseOutput()} until {@link #resumeOutput()} or {@link #close()}.
+     */
+    public boolean isOutputPaused()
+    {
+        return outputPaused;
     }
 
     /**
@@ -184,13 +251,14 @@ public final class FakeAudioBackend implements AudioBackend
     }
 
     @Override
-    public int play(PcmBuffer buffer)
+    public int play(PcmBuffer buffer, double gain, boolean looping)
     {
         if (buffer == null)
         {
             throw new IllegalArgumentException("Buffer must not be null");
         }
-        final int voice = start(new Voice(buffer.getFrames(), null));
+        checkGain(gain);
+        final int voice = start(new Voice(buffer.getFrames(), null, gain, looping));
         if (voice != NO_VOICE)
         {
             played.add(buffer);
@@ -199,18 +267,54 @@ public final class FakeAudioBackend implements AudioBackend
     }
 
     @Override
-    public int play(PcmStream stream)
+    public int play(PcmStream stream, double gain)
     {
         if (stream == null)
         {
             throw new IllegalArgumentException("Stream must not be null");
         }
-        final int voice = start(new Voice(0, stream));
+        checkGain(gain);
+        final int voice = start(new Voice(0, stream, gain, false));
         if (voice != NO_VOICE)
         {
             streams.add(stream);
         }
         return voice;
+    }
+
+    @Override
+    public void setGain(int voice, double gain)
+    {
+        checkGain(gain);
+        final Voice playingVoice = playing.get(Integer.valueOf(voice));
+        if (playingVoice != null)
+        {
+            playingVoice.gain = gain;
+        }
+    }
+
+    @Override
+    public void pause(int voice)
+    {
+        setPaused(voice, true);
+    }
+
+    @Override
+    public void resume(int voice)
+    {
+        setPaused(voice, false);
+    }
+
+    @Override
+    public void pauseOutput()
+    {
+        outputPaused = !closed;
+    }
+
+    @Override
+    public void resumeOutput()
+    {
+        outputPaused = false;
     }
 
     @Override
@@ -229,7 +333,37 @@ public final class FakeAudioBackend implements AudioBackend
     public void close()
     {
         closed = true;
+        outputPaused = false;
         playing.clear();
+    }
+
+    /**
+     * Checks a gain.
+     *
+     * @param gain The gain.
+     * @throws IllegalArgumentException If it is NaN or outside {@code [0, 1]}.
+     */
+    private static void checkGain(double gain)
+    {
+        if (!(gain >= 0.0 && gain <= 1.0))
+        {
+            throw new IllegalArgumentException("Gain outside 0 to 1: " + gain);
+        }
+    }
+
+    /**
+     * Pauses or resumes a voice if it plays.
+     *
+     * @param voice The voice.
+     * @param paused {@code true} to pause it.
+     */
+    private void setPaused(int voice, boolean paused)
+    {
+        final Voice playingVoice = playing.get(Integer.valueOf(voice));
+        if (playingVoice != null)
+        {
+            playingVoice.paused = paused;
+        }
     }
 
     /**
@@ -263,8 +397,23 @@ public final class FakeAudioBackend implements AudioBackend
      */
     private static boolean countDown(Voice voice, int frames)
     {
-        voice.left -= Math.min(voice.left, frames);
-        return voice.left == 0;
+        final boolean ended;
+        if (voice.looping && voice.frames > 0)
+        {
+            // Wraps to the first frame: the frames left stay in 1 to the frames of the sound.
+            final long left = voice.left - (long) frames % voice.frames;
+            voice.left = (int) (left > 0 ? left : left + voice.frames);
+            voice.played += frames;
+            ended = false;
+        }
+        else
+        {
+            final int moved = Math.min(voice.left, frames);
+            voice.left -= moved;
+            voice.played += moved;
+            ended = voice.left == 0;
+        }
+        return ended;
     }
 
     /**
@@ -283,6 +432,7 @@ public final class FakeAudioBackend implements AudioBackend
             final int asked = Math.min(left, PULL_FRAMES);
             final int read = voice.stream.read(scratch, 0, asked);
             voice.pulled += read;
+            voice.played += read;
             left -= read;
             ended = read < asked;
         }
@@ -310,21 +460,36 @@ public final class FakeAudioBackend implements AudioBackend
     {
         /** The stream of a streamed voice, {@code null} for a buffer voice. */
         private final PcmStream stream;
-        /** The frames left of a buffer voice. */
+        /** The frames of the sound of a buffer voice. */
+        private final int frames;
+        /** {@code true} for a looping buffer voice. */
+        private final boolean looping;
+        /** The frames left of a buffer voice, before its end or its next wrap. */
         private int left;
         /** The frames pulled from the stream. */
         private long pulled;
+        /** The frames played, across the loops. */
+        private long played;
+        /** The gain. */
+        private double gain;
+        /** {@code true} while paused on its own. */
+        private boolean paused;
 
         /**
          * Creates the state.
          *
-         * @param left The frames of a buffer voice.
+         * @param frames The frames of a buffer voice.
          * @param stream The stream of a streamed voice, {@code null} for a buffer voice.
+         * @param gain The gain.
+         * @param looping {@code true} for a looping buffer voice.
          */
-        Voice(int left, PcmStream stream)
+        Voice(int frames, PcmStream stream, double gain, boolean looping)
         {
-            this.left = left;
+            this.frames = frames;
+            left = frames;
             this.stream = stream;
+            this.gain = gain;
+            this.looping = looping;
         }
     }
 }

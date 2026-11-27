@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.examples.audio;
 
+import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioBackend;
 import com.b3dgs.lionengine.audio.PcmBuffer;
 import com.b3dgs.lionengine.audio.PcmFormat;
@@ -67,7 +68,7 @@ public final class BeepExample
     }
 
     /**
-     * Plays a sound and observes its end.
+     * Plays a sound once, at full gain, and observes its end.
      *
      * @param backend The audio backend.
      * @param sound The sound.
@@ -77,6 +78,6 @@ public final class BeepExample
     public static int play(AudioBackend backend, PcmBuffer sound, VoiceListener listener)
     {
         backend.setVoiceListener(listener);
-        return backend.play(sound);
+        return backend.play(sound, Audio.MAX_GAIN, false);
     }
 }
