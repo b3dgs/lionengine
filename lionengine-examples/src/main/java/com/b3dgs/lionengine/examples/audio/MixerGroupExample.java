@@ -94,7 +94,7 @@ public final class MixerGroupExample
      * @param town The sounds of the scene.
      * @return The voice of the click.
      */
-    public static int click(Audio audio, Town town)
+    public static int playClick(Audio audio, Town town)
     {
         return audio.play(town.click());
     }

@@ -92,7 +92,7 @@ final class MixerGroupExampleTest
         final int theme = town.themeVoice();
         assertEquals(MixerGroup.MUSIC, town.theme().getGroup());
         assertEquals(MixerGroup.UI, town.click().getGroup());
-        final int click = MixerGroupExample.click(audio, town);
+        final int click = MixerGroupExample.playClick(audio, town);
         MixerGroupExample.setInterfaceVolume(audio, 0.4);
         assertEquals(0.4, backend.getGain(click), EPSILON);
         assertEquals(1.0, backend.getGain(theme));

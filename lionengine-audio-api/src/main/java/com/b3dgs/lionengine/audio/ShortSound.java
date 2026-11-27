@@ -148,7 +148,7 @@ public final class ShortSound
      */
     public void setGain(double gain)
     {
-        Audio.checkGain(gain);
+        AudioChecks.checkGain(gain);
         this.gain = gain;
         if (audio != null)
         {
@@ -180,8 +180,8 @@ public final class ShortSound
      */
     public void fade(double gain, double seconds)
     {
-        Audio.checkGain(gain);
-        Audio.checkSeconds(seconds);
+        AudioChecks.checkGain(gain);
+        AudioChecks.checkSeconds(seconds);
         this.gain = gain;
         if (audio != null)
         {

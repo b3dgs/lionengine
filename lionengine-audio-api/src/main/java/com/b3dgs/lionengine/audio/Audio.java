@@ -251,7 +251,7 @@ public final class Audio
     public int play(ShortSound sound, int priority)
     {
         ShortSoundCache.checkNotNull(sound, "Sound");
-        checkPriority(priority);
+        AudioChecks.checkPriority(priority);
         return start(sound, priority, count);
     }
 
@@ -294,7 +294,7 @@ public final class Audio
         {
             throw new IllegalArgumentException("Composed variant set: play it with a voices array");
         }
-        checkPriority(priority);
+        AudioChecks.checkPriority(priority);
         return start(set.getSound(set.select()), priority, count);
     }
 
@@ -334,7 +334,7 @@ public final class Audio
     {
         ShortSoundCache.checkNotNull(set, NAME_SET);
         ShortSoundCache.checkNotNull(voices, "Voices");
-        checkPriority(priority);
+        AudioChecks.checkPriority(priority);
         final int needed = set.getVoicesPerPlay();
         if (voices.length < needed)
         {
@@ -521,7 +521,7 @@ public final class Audio
      */
     public void setMasterGain(double gain)
     {
-        checkGain(gain);
+        AudioChecks.checkGain(gain);
         masterGain = gain;
         for (int i = 0; i < count; i++)
         {
@@ -818,48 +818,6 @@ public final class Audio
             {
                 i++;
             }
-        }
-    }
-
-    /**
-     * Checks a gain.
-     *
-     * @param gain The gain.
-     * @throws IllegalArgumentException If it is NaN or outside {@link #MIN_GAIN} to {@link #MAX_GAIN}.
-     */
-    static void checkGain(double gain)
-    {
-        if (!(gain >= MIN_GAIN && gain <= MAX_GAIN))
-        {
-            throw new IllegalArgumentException("Gain outside 0 to 1: " + gain);
-        }
-    }
-
-    /**
-     * Checks a fade duration.
-     *
-     * @param seconds The duration.
-     * @throws IllegalArgumentException If it is NaN, infinite or negative.
-     */
-    static void checkSeconds(double seconds)
-    {
-        if (!(seconds >= 0.0 && seconds < Double.POSITIVE_INFINITY))
-        {
-            throw new IllegalArgumentException("Fade duration not finite and not negative: " + seconds);
-        }
-    }
-
-    /**
-     * Checks a priority.
-     *
-     * @param priority The priority.
-     * @throws IllegalArgumentException If it is outside {@link #MIN_PRIORITY} to {@link #MAX_PRIORITY}.
-     */
-    private static void checkPriority(int priority)
-    {
-        if (priority < MIN_PRIORITY || priority > MAX_PRIORITY)
-        {
-            throw new IllegalArgumentException("Priority outside 0 to 100: " + priority);
         }
     }
 
