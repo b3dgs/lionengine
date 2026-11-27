@@ -16,9 +16,6 @@
         <!-- Desktop-only module: Java 25 class files are allowed (ADR-0044); excluded from Android builds. -->
         <jdk.version>25</jdk.version>
         <radial.base-package>com.b3dgs.lionengine.audio.javasound</radial.base-package>
-        <!-- No public type yet: javadoc refuses an empty module. The batch that adds the first public type
-             removes this property (REQ-CORE-003). -->
-        <maven.javadoc.skip>true</maven.javadoc.skip>
     </properties>
     <dependencies>
         <dependency>
@@ -26,10 +23,21 @@
             <artifactId>lionengine-audio-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- ADR-0045: the AudioBackendContract suite and FakeAudioBackend, bound on the mixer and the backend. -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>lionengine-resources</artifactId>
+            <artifactId>lionengine-audio-api</artifactId>
             <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <!-- ADR-0045: the inbox spy of the core test JAR, used by the suite. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-core</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

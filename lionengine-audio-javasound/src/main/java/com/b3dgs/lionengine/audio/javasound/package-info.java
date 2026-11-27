@@ -16,6 +16,12 @@
  */
 
 /**
- * Desktop audio backend on Java Sound.
+ * Desktop audio backend on Java Sound: {@link com.b3dgs.lionengine.audio.javasound.JavaSoundBackend} mixes the voices
+ * in software into one line on its own thread (ADR-0070, REQ-AUDIO-002).
+ *
+ * <p>
+ * The only module allowed to use {@code javax.sound.sampled}; desktop only, never in Android builds (ADR-0044). Nothing
+ * of it appears in {@code audio-api}.
+ * </p>
  */
 package com.b3dgs.lionengine.audio.javasound;

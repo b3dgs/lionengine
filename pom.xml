@@ -64,8 +64,10 @@
              e3, S1312: asks for a private static final logger; the engine Log is an instance passed explicitly or
              held by the platform object, never static (ADR-0031, REQ-CORE-006). -->
         <!-- Platform tests (docs/testing.md): tests tagged "platform" need a real display and are left out of the
-             default build; the platform-tests profile runs them, under Xvfb on the Linux CI jobs. -->
-        <excludedGroups>platform</excludedGroups>
+             default build; the platform-tests profile runs them, under Xvfb on the Linux CI jobs. Tests tagged
+             "audio-device" need a sound device: every build leaves them out, CI included, and only the
+             audio-device-tests profile runs them (ADR-0070). -->
+        <excludedGroups>platform,audio-device</excludedGroups>
         <sonar.issue.ignore.multicriteria>e1,e2,e3</sonar.issue.ignore.multicriteria>
         <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S1711</sonar.issue.ignore.multicriteria.e1.ruleKey>
         <sonar.issue.ignore.multicriteria.e1.resourceKey>**/*.java</sonar.issue.ignore.multicriteria.e1.resourceKey>
@@ -179,6 +181,14 @@
         <!-- Runs the platform tests too (docs/testing.md): needs a display, for example xvfb-run on Linux. -->
         <profile>
             <id>platform-tests</id>
+            <properties>
+                <excludedGroups>audio-device</excludedGroups>
+            </properties>
+        </profile>
+        <!-- Runs every test, those needing a sound device too (docs/testing.md, ADR-0070): a desktop with a sound
+             device and a display, never CI. -->
+        <profile>
+            <id>audio-device-tests</id>
             <properties>
                 <excludedGroups />
             </properties>
