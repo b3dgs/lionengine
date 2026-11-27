@@ -64,7 +64,10 @@ package com.b3dgs.lionengine.audio;
  * its own thread as it plays them, until the stream returns fewer frames than asked: that is the end of the voice.
  * Both kinds share the voice numbering, the voice limit, {@link #stop(int)}, {@link #isPlaying(int)} and the end
  * event. The backend reads a stream only from the call to {@link #play(PcmStream, double)} until its voice ends, or
- * until {@link #stop(int)} or {@link #close()} returns, so that the engine may then close what the stream reads.
+ * until {@link #stop(int)} or {@link #close()} returns, so that the engine may then close what the stream reads. A
+ * stream whose read throws an unchecked exception ends its voice there, as if it had returned fewer frames than asked:
+ * the end is posted, the stream is not read again, and the backend keeps playing its other voices (ADR-0072). The
+ * streams of the engine never throw so: they keep their failure for the runtime thread.
  * </p>
  *
  * <p>

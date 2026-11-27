@@ -31,11 +31,12 @@ import com.b3dgs.lionengine.audio.VoiceListener;
  * into 16-bit signed little-endian stereo (ADR-0018, ADR-0069, ADR-0070, ADR-0071).
  *
  * <p>
- * It implements the backend SPI without thread or line, so that its mixing is tested headless: {@link #mix(byte[])}
- * is called by the mixing thread of {@link JavaSoundBackend}, or by a test as its clock. Every voice is mixed into a
+ * It implements the backend SPI without thread or line, so that its mixing is tested headless: {@link #mix(byte[])} is
+ * called by the mixing thread of {@link JavaSoundBackend}, or by a test as its clock. Every voice is mixed into a
  * double accumulator, times its gain read once per buffer, then the sum is clipped to 16 bits. A voice that ends during
- * a buffer is freed at once and its end is posted to the inbox from the mixing thread, with an event taken from a
- * pool, so that mixing allocates nothing. The pool grows, if ever, on the runtime thread at a play or a fade.
+ * a buffer, or whose stream throws an unchecked exception (ADR-0072), is freed at once and its end is posted to the
+ * inbox from the mixing thread, with an event taken from a pool, so that mixing allocates nothing. The pool grows, if
+ * ever, on the runtime thread at a play or a fade.
  * </p>
  *
  * <p>
@@ -534,7 +535,7 @@ final class SoftwareMixer implements AudioBackend
                 {
                     fading--;
                 }
-                if (voice.mix(accumulator, bufferFrames))
+                if (mixVoice(voice))
                 {
                     free(voice);
                     post(number, false);
@@ -545,6 +546,30 @@ final class SoftwareMixer implements AudioBackend
                 }
             }
         }
+    }
+
+    /**
+     * Mixes one voice into the accumulator; a voice whose stream throws an unchecked exception ends there, so that the
+     * mixing thread keeps mixing the other voices (ADR-0072). The frames it added before the failure stay in the
+     * buffer.
+     *
+     * @param voice The voice, playing and not paused.
+     * @return {@code true} if the voice ended during this buffer.
+     */
+    private boolean mixVoice(MixVoice voice)
+    {
+        boolean ended;
+        try
+        {
+            ended = voice.mix(accumulator, bufferFrames);
+        }
+        // CHECKSTYLE IGNORE LINE: IllegalCatch
+        catch (final RuntimeException exception)
+        {
+            // A failing stream must not end the mixing thread: its voice ends as if its stream had ended (ADR-0072).
+            ended = true;
+        }
+        return ended;
     }
 
     /**
