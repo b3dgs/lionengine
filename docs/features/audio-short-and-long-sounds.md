@@ -3,11 +3,11 @@
 **Status: VALIDATED**
 
 - Owner: project owner
-- Roadmap phase: Phase 2, see `roadmap.md` (batches: contracts + fake backend + contract tests; short sounds with cache, voices and variants; long sounds with streaming and playlists; first desktop backend `audio-javasound`; mixer groups and fades; Android backend `audio-android`)
+- Roadmap phase: Phase 2, see `roadmap.md` (batches: contracts + fake backend + contract tests; short sounds with cache, voices and variants; long sounds with streaming and playlists; first desktop backend `audio-javasound`; mixer groups and fades; desktop OGG decoder `audio-codec-ogg`; Android backend `audio-android` in Phase 4)
 - Affected modules: `audio-api`, `audio-javasound`, `audio-android`, `audio-codec-ogg`, `resources`, `test-support`, `examples`
 - Requirements: `REQ-AUDIO-001` to `REQ-AUDIO-013`, `REQ-RES-004`, `REQ-RES-005`
-- Applicable ADRs: [`ADR-0004`](../decisions/0004-audio-contracts-short-and-long-sounds.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0022`](../decisions/0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md), [`ADR-0027`](../decisions/0027-audio-policies-formats-latency-and-first-scope.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0065`](../decisions/0065-audio-pcm-data-decoder-and-backend-contracts.md), [`ADR-0066`](../decisions/0066-short-sounds-wav-decoder-cache-and-voices.md), [`ADR-0067`](../decisions/0067-variant-sets-selection-references-and-composed-play.md), [`ADR-0068`](../decisions/0068-long-sounds-streaming-backend-pull-and-playlists.md), [`ADR-0069`](../decisions/0069-audio-controls-gain-looping-pause.md), [`ADR-0070`](../decisions/0070-audio-javasound-desktop-backend.md), [`ADR-0071`](../decisions/0071-mixer-groups-and-fades.md)
-- Open questions involved: none open (`OQ-175`, backend voices kept for the long sounds, raised by batch 4, is resolved by ADR-0070: the backend has more voices than the short-voice limit); Android latency measurement waits for the DEX job (ADR-0044)
+- Applicable ADRs: [`ADR-0004`](../decisions/0004-audio-contracts-short-and-long-sounds.md), [`ADR-0005`](../decisions/0005-common-convention-for-modules-handling-resources.md), [`ADR-0007`](../decisions/0007-resource-convention-keys-release-and-errors.md), [`ADR-0018`](../decisions/0018-runtime-thread-events-and-cache-thread-safety.md), [`ADR-0022`](../decisions/0022-optional-multiplayer-audio-backends-reference-frontend-and-surface-hand-off.md), [`ADR-0027`](../decisions/0027-audio-policies-formats-latency-and-first-scope.md), [`ADR-0033`](../decisions/0033-media-defaults-module-names-filters-graphics-data-audio.md), [`ADR-0065`](../decisions/0065-audio-pcm-data-decoder-and-backend-contracts.md), [`ADR-0066`](../decisions/0066-short-sounds-wav-decoder-cache-and-voices.md), [`ADR-0067`](../decisions/0067-variant-sets-selection-references-and-composed-play.md), [`ADR-0068`](../decisions/0068-long-sounds-streaming-backend-pull-and-playlists.md), [`ADR-0069`](../decisions/0069-audio-controls-gain-looping-pause.md), [`ADR-0070`](../decisions/0070-audio-javasound-desktop-backend.md), [`ADR-0071`](../decisions/0071-mixer-groups-and-fades.md), [`ADR-0072`](../decisions/0072-unchecked-decoder-and-stream-failures.md)
+- Open questions involved: `OQ-176` (who calls the master pause on background: the `composition` wiring, Phase 3, owner answer of 2026-11-27); none other open (`OQ-175`, backend voices kept for the long sounds, raised by batch 4, is resolved by ADR-0070: the backend has more voices than the short-voice limit); Android latency measurement waits for the DEX job (ADR-0044)
 
 ## Objective
 
@@ -42,7 +42,8 @@ Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.m
 5. First-batch controls: volume, looping, pause, resume (`REQ-AUDIO-011`).
 6. `audio-javasound` (`REQ-AUDIO-002`).
 7. Mixer groups and fades (`REQ-AUDIO-012`).
-8. `audio-codec-ogg` after its register entry; `audio-android` in Phase 4.
+8. `audio-codec-ogg` (desktop OGG Vorbis with JOrbis, approved by the owner on 2026-11-27; its register entry is completed by the batch, ADR-0032).
+9. `audio-android` in Phase 4.
 
 ## State (2026-11-27)
 
@@ -118,11 +119,18 @@ Batch 7 (2026-11-27), mixer groups and fades, with the example `MixerGroupExampl
 - Completion: posted to the inbox per voice once the last buffer of its ramp is played; `Audio` is the backend's `FadeListener` and calls the game's (`Audio.setFadeListener`) on the runtime thread for a voice that still plays.
 - Backends: `FakeAudioBackend` ramps per frame of its clock (`ceil(seconds × rate)` frames, `isFading`, `getFadeTarget`); `JavaSoundBackend` per 512-frame buffer in `MixVoice`, the completion taken from the event pool of the mixer, which keeps an event for each voice and each running fade; mixing with fades running allocates nothing. `SilentAudioBackend` accepts fades for the allocation tests.
 - Tests: `AudioMixerGroupTest`, `AudioFadeTest` (with the allocation test of the group and fade paths), the extended `AudioBackendContract` bound on `FakeAudioBackend`, `SoftwareMixerContractTest` and `JavaSoundBackendThreadContractTest` (and `JavaSoundBackendDeviceContractTest` with a sound device), `SoftwareMixerFadeTest` (with the allocation test of the mixing path with fades), `MixerGroupExampleTest`; device test `AudioTest.testGroupsAndFades` on API 21.
-- Reported, not added: a voice played during the fade of its sound or group starts at the target; no crossfade inside a playlist (two long sounds and two fades do it); the ramp is linear in gain. `audio-android` implements `fade` and `setFadeListener` with the same semantics (per mixed buffer, or by stepping a platform player's volume once per buffer period, the completion through the inbox); `audio-codec-ogg` and spatial audio need no hook. Only batch 8 remains, in Phase 4, so the audio area stays *In progress* in [`../engine-features.md`](../engine-features.md), as its rule asks every batch to be merged before *Available*.
+- Reported, not added: a voice played during the fade of its sound or group starts at the target; no crossfade inside a playlist (two long sounds and two fades do it); the ramp is linear in gain. `audio-android` implements `fade` and `setFadeListener` with the same semantics (per mixed buffer, or by stepping a platform player's volume once per buffer period, the completion through the inbox); `audio-codec-ogg` and spatial audio need no hook. The audio area stays *In progress* in [`../engine-features.md`](../engine-features.md) until batches 8 and 9 are merged, as its rule asks every batch to be merged before *Available*.
+
+Review of batches 1 to 7 (2026-11-27), with the owner's choices:
+- Robustness (ADR-0072): an unchecked failure of a decoder or of a resource, and a source returning a frame count outside what was asked, end the stream and are reported on the runtime thread as an `AudioDecodingException` starting with the key, the original exception as its cause; at the preparation and the full decoding the resource stream is closed first. A stream that throws ends its voice in every backend, which keeps playing (`AudioBackendContract.testStreamThrowing`); before, such a failure ended the mixing thread of `JavaSoundBackend` silently. Tests: `DecoderFailureTest`.
+- Documentation: the traceability of `REQ-AUDIO-001`, `REQ-AUDIO-003`, `REQ-AUDIO-007` and `REQ-AUDIO-008`, the audio row of [`../android-compatibility.md`](../android-compatibility.md) (batch 7), the acceptance criteria below.
+- `OQ-176` recorded: no platform calls `Audio.setMasterPaused` on background yet; the `composition` wiring of Phase 3 will.
+- The desktop OGG decoder waits for nothing else than its register entry: the owner approved JOrbis on 2026-11-27, so `audio-codec-ogg` becomes batch 8, before Phase 4; `audio-android` becomes batch 9, in Phase 4.
+- Kept as reported: a failure of the Java Sound line ends the mixing thread without an error hook (ADR-0070).
 
 ## Lifecycle and concurrency
 
-Distinct handles and lifecycles per family. Decoded caches live in the audio modules, on the runtime thread only. Backend threads and streaming decoders never touch simulation state; they post completions to the inbox (ADR-0018). Backgrounding pauses output (ADR-0031).
+Distinct handles and lifecycles per family. Backgrounding calls `Audio.setMasterPaused`; no platform calls it yet, the game does from its lifecycle listener until the `composition` wiring of Phase 3 (`OQ-176`). Decoded caches live in the audio modules, on the runtime thread only. Backend threads and streaming decoders never touch simulation state; they post completions to the inbox (ADR-0018). Backgrounding pauses output (ADR-0031).
 
 ## Units and Android/DEX compatibility
 
@@ -141,10 +149,10 @@ Seconds for durations and positions, Hz for sample rate, gain in `[0, 1]`. No `j
 
 ## Acceptance criteria
 
-- [ ] Requirements covered.
-- [ ] API reviewed in the pull request.
-- [ ] Automated tests added and passing.
-- [ ] Complete Javadoc.
-- [ ] Headless example, API-index entry, traceability updated (REQ-DOC-001, REQ-DOC-002).
-- [ ] No forbidden coupling (REQ-CORE-005).
-- [ ] Android/DEX compatibility verified.
+- [ ] Requirements covered: batches 1 to 7; OGG Vorbis (batch 8) and `audio-android` (batch 9) remain for `REQ-AUDIO-002` and the Android parts of `REQ-AUDIO-001` and `REQ-AUDIO-003`.
+- [x] API reviewed in the pull request. (batches 1 to 7)
+- [x] Automated tests added and passing. (batches 1 to 7)
+- [x] Complete Javadoc. (batches 1 to 7)
+- [x] Headless example, API-index entry, traceability updated (REQ-DOC-001, REQ-DOC-002). (batches 1 to 7)
+- [x] No forbidden coupling (REQ-CORE-005). (batches 1 to 7)
+- [x] Android/DEX compatibility verified for `audio-api` (device test `AudioTest` on API 21); `audio-javasound` is desktop only; `audio-android` with batch 9.

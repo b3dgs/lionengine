@@ -31,8 +31,9 @@ import com.b3dgs.lionengine.resources.ResourceException;
  * backend's thread reads the frames in order; each chunk read to its end is decoded again at once from the source, so
  * the ring stays full of frames ahead of the voice until the source ends. The ring is the only sample memory of the
  * stream: {@code chunks × chunkFrames} frames, whatever the length of the sound. A failure of the source (an
- * {@link IOException} or an {@link AudioDecodingException}) ends the stream after the frames already decoded, and is
- * kept for the runtime thread.
+ * {@link IOException}, an {@link AudioDecodingException}, a {@link ResourceException}, or any other unchecked exception
+ * of the decoder or of the resource, and a source returning a frame count outside what was asked) ends the stream after
+ * the frames already decoded, and is kept for the runtime thread: the backend's thread never receives it (ADR-0072).
  * </p>
  *
  * <p>
@@ -262,15 +263,17 @@ final class StreamBuffer implements PcmStream
                 else
                 {
                     final int asked = chunkFrames - frames;
-                    final int read = source.read(ring, base + frames * channels, asked);
+                    final int read = readSource(base + frames * channels, asked);
                     frames += read;
                     passFrames += read;
                     exhausted = read < asked;
                 }
             }
         }
-        catch (final IOException | AudioDecodingException | ResourceException exception)
+        // CHECKSTYLE IGNORE LINE: IllegalCatch
+        catch (final IOException | RuntimeException exception)
         {
+            // Every failure of the source stops here, on the backend's thread, which keeps mixing (ADR-0072).
             failure.set(exception);
             sourceEnded = true;
         }
@@ -279,6 +282,25 @@ final class StreamBuffer implements PcmStream
         {
             ready++;
         }
+    }
+
+    /**
+     * Reads frames of the source into the ring, checking the count it returns.
+     *
+     * @param offset The index of the first sample written in the ring.
+     * @param asked The frames asked (positive).
+     * @return The frames read, from {@code 0} to {@code asked}.
+     * @throws IOException If the source cannot be read.
+     * @throws AudioDecodingException If the source returned a negative count or more frames than asked (ADR-0072).
+     */
+    private int readSource(int offset, int asked) throws IOException
+    {
+        final int read = source.read(ring, offset, asked);
+        if (read < 0 || read > asked)
+        {
+            throw new AudioDecodingException("Source read " + read + " frames of " + asked + " asked");
+        }
+        return read;
     }
 
     /**
