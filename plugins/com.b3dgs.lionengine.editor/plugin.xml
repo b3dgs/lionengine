@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+   <extension-point id="propertiesObject" name="Properties Object" schema="schema/propertiesObject.exsd"/>
+   <extension-point id="propertiesTile" name="Properties Tile" schema="schema/propertiesTile.exsd"/>
+   <extension-point id="resourceChecker" name="Resource Checker" schema="schema/resourceChecker.exsd"/>
+   <extension-point id="worldMouseClickListener" name="World Mouse Click Listener" schema="schema/worldMouseClickListener.exsd"/>
+   <extension-point id="worldMouseMoveListener" name="World Mouse Move Listener" schema="schema/worldMouseMoveListener.exsd"/>
+   <extension-point id="worldMouseScrollListener" name="World Mouse Scroll Listener" schema="schema/worldMouseScrollListener.exsd"/>
+   <extension-point id="worldKeyListener" name="World Key Listener" schema="schema/worldKeyListener.exsd"/>
+   <extension-point id="worldRenderListener" name="World Render Listener" schema="schema/worldRenderListener.exsd"/>
+
+   <extension
+         id="product"
+         name="LionEngine Editor"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.e4.ui.workbench.swt.E4Application"
+            name="LionEngine Editor">
+         <property
+               name="appName"
+               value="LionEngine Editor">
+         </property>
+         <property
+               name="lifeCycleURI"
+               value="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.Manager">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="com.b3dgs.lionengine.editor.project.active">
+         <test
+               forcePluginActivation="true"
+               property="com.b3dgs.lionengine.editor.projectTester.active">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.resource.music">
+         <test
+               forcePluginActivation="true"
+               property="com.b3dgs.lionengine.editor.resourceExtensionTester.music">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.resource.sound">
+         <test
+               forcePluginActivation="true"
+               property="com.b3dgs.lionengine.editor.resourceExtensionTester.sound">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.resource.image">
+         <test
+               forcePluginActivation="true"
+               property="com.b3dgs.lionengine.editor.resourceExtensionTester.image">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.resource.data">
+         <test
+               forcePluginActivation="true"
+               property="com.b3dgs.lionengine.editor.resourceExtensionTester.data">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.resource.level">
+         <test
+               forcePluginActivation="true"
+               property="com.b3dgs.lionengine.editor.resourceExtensionTester.level">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.folder-type.category">
+         <test
+               forcePluginActivation="true"
+               property="com.b3dgs.lionengine.editor.folderTypeTester.category">
+         </test>
+      </definition>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.project.ProjectTester"
+            id="com.b3dgs.lionengine.editor.projectTester"
+            namespace="com.b3dgs.lionengine.editor.projectTester"
+            properties="active"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.project.ResourceExtensionTester"
+            id="com.b3dgs.lionengine.editor.resourceExtensionTester"
+            namespace="com.b3dgs.lionengine.editor.resourceExtensionTester"
+            properties="music,sound,data,image,level"
+            type="java.lang.Object">
+      </propertyTester>
+   </extension>
+   <extension
+         point="com.b3dgs.lionengine.editor.worldRenderListener">
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.renderer.WorldGridRenderer">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.renderer.WorldCursorRenderer">
+      </implementation>
+   </extension>
+   <extension
+         point="com.b3dgs.lionengine.editor.worldMouseClickListener">
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.updater.WorldZoomUpdater">
+      </implementation>
+   </extension>
+   <extension
+         point="com.b3dgs.lionengine.editor.worldMouseScrollListener">
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.updater.WorldZoomUpdater">
+      </implementation>
+   </extension>
+   <extension
+         point="com.b3dgs.lionengine.editor.worldMouseMoveListener">
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.updater.WorldNavigation">
+      </implementation>
+   </extension>
+   <extension
+         point="com.b3dgs.lionengine.editor.worldKeyListener">
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.updater.WorldNavigation">
+      </implementation>
+   </extension>
+
+</plugin>
