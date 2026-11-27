@@ -97,6 +97,8 @@ final class JavaSoundBackendTest
         backend.setVoiceListener(voice -> threads.add(Thread.currentThread()));
         final short[] samples = new short[2 * JavaSoundBackend.BUFFER_FRAMES];
         java.util.Arrays.fill(samples, (short) 1_000);
+        // Waits for the first buffer, mixed silent at the start of the thread, so that the voice is in the second.
+        output.advance(0);
         final int voice = backend.play(new PcmBuffer(JavaSoundBackend.FORMAT, samples), 0.5, false);
 
         output.advance(1);
