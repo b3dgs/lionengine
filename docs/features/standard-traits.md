@@ -7,8 +7,8 @@
 - Flow: B of [`change-process.md`](../change-process.md) (new modules `traits` and `physics`); ADRs written and accepted
 - Affected modules: `traits`, `physics`, `ecs`, `core`, `test-support`, `examples`
 - Requirements: `REQ-STD-001` to `REQ-STD-011`, `REQ-PHYS-001`, `REQ-TRAIT-001`, `REQ-TRAIT-002`
-- Applicable ADRs: [`ADR-0011`](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md), [`ADR-0013`](../decisions/0013-world-coordinates-and-angles.md), [`ADR-0014`](../decisions/0014-meters-to-pixels-numeric-type-and-rotation.md), [`ADR-0021`](../decisions/0021-scene-world-viewport-and-object-model.md), [`ADR-0028`](../decisions/0028-tile-map-collision-json-definitions-and-storage.md), [`ADR-0030`](../decisions/0030-ecs-details-ids-flush-scheduling-collision-and-traits.md), [`ADR-0034`](../decisions/0034-camera-and-ecs-defaults-noise-clamp-slots-capacities-events-shapes.md), [`ADR-0038`](../decisions/0038-network-model-server-authority-snapshots-prediction.md)
-- Open questions involved: none
+- Applicable ADRs: [`ADR-0080`](../decisions/0080-standard-traits-transformable-movable-capture-and-movement.md) (batch 1), [`ADR-0011`](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md), [`ADR-0013`](../decisions/0013-world-coordinates-and-angles.md), [`ADR-0014`](../decisions/0014-meters-to-pixels-numeric-type-and-rotation.md), [`ADR-0021`](../decisions/0021-scene-world-viewport-and-object-model.md), [`ADR-0028`](../decisions/0028-tile-map-collision-json-definitions-and-storage.md), [`ADR-0030`](../decisions/0030-ecs-details-ids-flush-scheduling-collision-and-traits.md), [`ADR-0034`](../decisions/0034-camera-and-ecs-defaults-noise-clamp-slots-capacities-events-shapes.md), [`ADR-0038`](../decisions/0038-network-model-server-authority-snapshots-prediction.md)
+- Open questions involved: `OQ-178` (the batch of the object definition files)
 
 ## Objective
 
@@ -41,13 +41,25 @@ Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.m
 
 ## Batches (order)
 
-1. `Transformable`, `Movable`, `Movement` (`REQ-STD-001`, `REQ-STD-002`).
+1. `Transformable`, `Movable`, `Movement` (`REQ-STD-001`, `REQ-STD-002`); done on 2026-11-28 with the previous-position capture and `REQ-STD-011` for its two systems (ADR-0080).
 2. `Gravity` (`REQ-STD-003`) and `Lifetime` (`REQ-STD-006`).
 3. `physics` box, overlap and broad phase; `Collidable` and `Collision` for objects (`REQ-PHYS-001`, `REQ-STD-005`).
 4. Tile push-out and `grounded` through the `physics` shape query (`REQ-STD-010`, `REQ-MAP-008`).
 5. `Jumpable` and `Jump` (`REQ-STD-004`).
 6. Pipeline documentation, example and extension guide (`REQ-STD-007`, `REQ-STD-008`).
-7. Extra excluded trait types at system creation (`REQ-STD-011`); may be done with any earlier batch.
+7. Extra excluded trait types at system creation (`REQ-STD-011`); may be done with any earlier batch (done for `TransformCaptureSystem` and `MovementSystem` by batch 1).
+
+## State (2026-11-28)
+
+Batch 1 (2026-11-28), `Transformable`, `Movable`, the previous-position capture and the `Movement` system, with the example `MovementExample` and its API-index row. The signatures and details this page leaves to the batch follow [ADR-0080](../decisions/0080-standard-traits-transformable-movable-capture-and-movement.md) (owner answers and delegation of the batch):
+
+- `Transformable` (center position, full size, previous position, m) and `Movable` (velocity, maximum speed, m/s), data only, private `double` fields with accessors; each class has a public `TraitType` constant `TYPE`, registered by the game in each world (`world.register(Transformable.TYPE)`). Reset state: every field `0`, and no speed limit (`Double.POSITIVE_INFINITY`); a negative or `NaN` maximum speed is an `IllegalArgumentException`. A game placing or teleporting an object sets its previous position too.
+- `TransformCaptureSystem` at slot `Integer.MIN_VALUE`, before every other system: copies the position into the previous position of every `Transformable`, with or without `Movable`, so the previous position is the one of the step start; registered first among the systems of its slot.
+- `MovementSystem` at slot 3000: clamps the velocity on its magnitude, direction kept, then adds `velocity * stepSeconds` to the position (explicit Euler, constant step).
+- Both systems are created with the world and the storages of `register`, and optionally an array of excluded trait types (`REQ-STD-011`, done for these two); each has one query, exposed by `getQuery()`, and allocates nothing per step (`MovementAllocationTest`, 1 KiB tolerance over 1,000 steps of 1,000 objects).
+- Bytes per instance on the desktop JVM, in the Javadoc: 64 per `Transformable`, 40 per `Movable` (`TraitMemoryTest`, the allocation-counter method of `StepBenchmarkTest`). The `ecs` benchmark is measured again with batch 2, once `Gravity` and `Lifetime` exist (ADR-0079).
+- No factory for `lionengine:transformable` and `lionengine:movable` yet: the object definition files get a separate batch (`OQ-178`).
+- Tests: `TransformableTest`, `MovableTest`, `TransformCaptureSystemTest`, `MovementSystemTest` (steps of 1/30, 1/60 and 1/120 s), `MovementAllocationTest`, `TraitMemoryTest`, `MovementExampleTest`; the device test `TraitsTest`.
 
 ## Lifecycle and concurrency
 
@@ -70,6 +82,6 @@ Meters, m/s, m/s², seconds, constant step (REQ-TECH-003 to REQ-TECH-005); `doub
 
 ## Acceptance criteria
 
-- [ ] Requirements `REQ-STD-001` to `REQ-STD-010` verified.
-- [ ] Automated tests added and passing; complete Javadoc for every trait and system, with units, slot and bytes per instance.
-- [ ] Example and `api-index.md` entry; no forbidden coupling; Android/DEX compatibility verified.
+- [ ] Requirements `REQ-STD-001` to `REQ-STD-010` verified (`REQ-STD-001` and `REQ-STD-002` by batch 1).
+- [ ] Automated tests added and passing; complete Javadoc for every trait and system, with units, slot and bytes per instance (done for `Transformable`, `Movable`, `TransformCaptureSystem` and `MovementSystem`).
+- [ ] Example and `api-index.md` entry; no forbidden coupling; Android/DEX compatibility verified (batch 1: `MovementExample`, its row, device test `TraitsTest`).

@@ -16,6 +16,26 @@
  */
 
 /**
- * Standard traits and systems: transformable, movable, gravity, jumpable, collidable and lifetime.
+ * Standard traits and systems (REQ-STD-001 to REQ-STD-011, ADR-0011, ADR-0034, ADR-0080).
+ *
+ * <p>
+ * Traits are data only, in world units ({@code double} meters, meters per second, seconds; Y up); systems implement
+ * {@link com.b3dgs.lionengine.ecs.GameSystem} and declare their slot. A game registers each trait type it uses in its
+ * world with the {@code TYPE} constant of the trait, creates the systems with the storages the registration returned,
+ * and adds each system with its {@code SLOT}:
+ * </p>
+ * <ul>
+ * <li>{@link com.b3dgs.lionengine.traits.Transformable} (center position, full size, previous position) and
+ * {@link com.b3dgs.lionengine.traits.TransformCaptureSystem}, which captures the previous position at the start of the
+ * step;</li>
+ * <li>{@link com.b3dgs.lionengine.traits.Movable} (velocity, maximum speed) and
+ * {@link com.b3dgs.lionengine.traits.MovementSystem} (slot 3000), which clamps the speed and integrates the
+ * velocity.</li>
+ * </ul>
+ *
+ * <p>
+ * Gravity, jump, collision and lifetime come with the next batches of {@code features/standard-traits.md}. Runtime
+ * thread only.
+ * </p>
  */
 package com.b3dgs.lionengine.traits;
