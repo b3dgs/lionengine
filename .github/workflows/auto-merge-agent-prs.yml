@@ -10,8 +10,10 @@
 #   documentation: Maven build and tests, then the module, API index and provenance checks. After the
 #   merge, the "merge" job starts build.yml on the target branch by workflow_dispatch, the one event the
 #   workflow token may trigger: rewrite/v11 is then built and analyzed by Sonar after every merge.
-# - The merge deletes the head branch (--delete-branch): the repository setting "Automatically delete head
-#   branches" does not apply to a merge made with the workflow token.
+# - After the merge, the "merge" job deletes the head branch through the API: the repository setting
+#   "Automatically delete head branches" does not apply to a merge made with the workflow token, and
+#   "gh pr merge --delete-branch" relies on that setting when it is on, so it deletes nothing. A failed deletion
+#   (a ruleset protecting the branch) is a warning in the run log, never a failed merge.
 # - A pull request merged by hand (by an agent or the owner) while this workflow waits for its checks is no
 #   longer open when the "merge" job reads its state: the job then skips the merge and the dispatch of build.yml,
 #   the push of that merge having already started the build of rewrite/v11 (a second build would cancel it).
@@ -154,6 +156,7 @@ jobs:
       URL: ${{ github.event.pull_request.html_url }}
       SHA: ${{ github.event.pull_request.head.sha }}
       BASE: ${{ github.event.pull_request.base.ref }}
+      HEAD_REF: ${{ github.event.pull_request.head.ref }}
     steps:
       - name: Flag pull requests that validate a decision
         run: |
@@ -200,10 +203,20 @@ jobs:
             echo "::notice::The pull request is $state, merged or closed by hand: no merge and no build dispatch."
           fi
 
-      # The head branch is deleted here: "Automatically delete head branches" ignores merges of the workflow token.
       - name: Squash-merge
         if: steps.state.outputs.open == 'true'
-        run: gh pr merge "$URL" --squash --delete-branch --match-head-commit "$SHA"
+        run: gh pr merge "$URL" --squash --match-head-commit "$SHA"
+
+      # "Automatically delete head branches" ignores merges of the workflow token, and gh pr merge --delete-branch
+      # leaves the deletion to that setting when it is on: the branch is deleted here, through the API.
+      - name: Delete the head branch
+        if: steps.state.outputs.open == 'true'
+        run: |
+          if gh api -X DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$HEAD_REF"; then
+            echo "Head branch $HEAD_REF deleted."
+          else
+            echo "::warning::The head branch $HEAD_REF was not deleted; delete it by hand."
+          fi
 
       # Build and Sonar analysis of the merged branch; every commit of rewrite/v11 gets one complete build (the
       # concurrency of build.yml cancels in-progress runs of pull requests only).
