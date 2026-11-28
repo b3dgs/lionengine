@@ -75,8 +75,9 @@ Run in this order; each step must pass before the next. Push once, when everythi
 
 1. `mvn -B verify` on the whole reactor.
 2. `python3 -I scripts/check-modules.py`, `check-api-index.py`, `check-provenance.py`, `check-docs.py`.
-3. Coverage of the new classes (at least 80 %): `mvn -B -q org.jacoco:jacoco-maven-plugin:report -pl
-   lionengine-<module>` after the tests ran, then read `lionengine-<module>/target/site/jacoco/jacoco.csv`.
+3. Coverage of the new classes (at least 80 %): the build writes only `jacoco.xml`; for the CSV run
+   `mvn -B -q org.jacoco:jacoco-maven-plugin:report -pl lionengine-<module>` after the tests ran, then read
+   `lionengine-<module>/target/site/jacoco/jacoco.csv`.
 4. `python3 -I scripts/check-sonar.py`: it takes several minutes, so run it in the background and keep working.
    Stage the changes first (`git add -A`). It may report issues in files the batch did not touch: fix them too,
    then run it again until it reports `No issue beyond those of rewrite/v11`.
@@ -96,8 +97,10 @@ row of `docs/api-index.md`. Run `python3 -I scripts/check-docs.py` after the las
 
 - Branch from `origin/rewrite/v11`, open the pull request against `rewrite/v11`, ready for review, with the
   headings of `PULL_REQUEST_TEMPLATE.md`; then subscribe to its activity.
-- The auto-merge workflow merges it once its checks, the Sonar quality gate and the `android` job pass
-  (`.github/workflows/auto-merge-agent-prs.yml`); merge by hand only if it cannot.
+- The auto-merge workflow merges it once its checks, the `linux` job (build, tests and Sonar quality gate) and
+  the `android` job pass (`.github/workflows/auto-merge-agent-prs.yml`); merge by hand only if it cannot. A
+  pull request of documentation only (`docs/`, root Markdown files) runs no `build.yml`.
 - After the merge, check that the head branch is gone and that the `build` run of `rewrite/v11` for the merge
-  commit is green with no cancelled job. A branch ruleset can refuse the deletion (HTTP 422 "Cannot delete this
+  commit is green with no cancelled job (it runs `linux` and `benchmark` only; `desktop` and `android` ran on the
+  pull request). A Maven Central 429 in a setup step is not a code failure: re-run the failed jobs once. A branch ruleset can refuse the deletion (HTTP 422 "Cannot delete this
   branch" in the merge job log, a warning only): report it, do not work around it.

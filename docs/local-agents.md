@@ -87,7 +87,7 @@ The worker records a gap in its report and stops that part of the work; Claude C
 
 1. Claude Code with a cloud model (or the owner), not the worker, reviews the diff against the task file, the batch page and [`local-agent-entry.md`](local-agent-entry.md).
 2. It posts its review as a comment and, if it approves, adds the label `cloud-reviewed` from an allow-listed account (`claude[bot]`, `DjThunder`, `b3dgs`).
-3. The label starts `.github/workflows/auto-merge-agent-prs.yml`, which runs the same checks as for the other agent pull requests (documentation, build and tests on the merge result, the `sonar` and `android` checks of the head commit) and squash-merges.
+3. The label starts `.github/workflows/auto-merge-agent-prs.yml`, which runs the same checks as for the other agent pull requests (documentation, build and tests on the merge result, the `linux` check, with its Sonar quality gate, and the `android` check of the head commit) and squash-merges.
 4. Any push to the pull request removes the label: a new review is needed. Local work is never re-pushed under `claude/` or `packet/`, which would bypass the review.
 
 ## 8. Benchmark (`OQ-170`)

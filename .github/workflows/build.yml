@@ -1,7 +1,9 @@
 # Build and structural checks of the engine (features/build-skeleton.md, ADR-0012, ADR-0042, ADR-0044, ADR-0045).
-# The Linux jobs also run the platform tests (tag "platform", profile platform-tests, docs/testing.md) on the virtual
-# display of xvfb-run; the desktop jobs run the default build without them.
-# The documentation check runs in docs-check.yml. The android job runs the Android/DEX verification of the
+# The linux job also runs the platform tests (tag "platform", profile platform-tests, docs/testing.md) on the virtual
+# display of xvfb-run, and the SonarCloud analysis in the same build when the token is available; the desktop jobs run
+# the default build without them.
+# The documentation check runs in docs-check.yml; a change of documentation only (docs/ and root Markdown files)
+# starts no build. The android job runs the Android/DEX verification of the
 # android/ Gradle build (ADR-0012, ADR-0044, docs/android-compatibility.md). The benchmark job is the non-blocking trend
 # job of the benchmarks (tag "benchmark", profile benchmark, ADR-0030, ADR-0034, ADR-0079).
 # Actions are pinned to the commits used by the master workflow ci-cd.yml.
@@ -11,12 +13,25 @@ on:
   push:
     branches:
       - rewrite/v11
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
   pull_request:
     branches:
       - rewrite/v11
-  # Started by auto-merge-agent-prs.yml after each merge (a merge made with the workflow token starts no
-  # push build), and by hand on any branch.
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+  # Started by auto-merge-agent-prs.yml after each merge that changes more than documentation (a merge made with the
+  # workflow token starts no push build), with after_merge true; by hand on any branch, every job.
   workflow_dispatch:
+    inputs:
+      after_merge:
+        description: >-
+          Build after an auto-merge: linux (with Sonar) and benchmark only; desktop and android already ran on the
+          merge result of the pull request
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -31,13 +46,18 @@ concurrency:
 
 jobs:
   linux:
-    # Blocking reference job (REQ-SUPPORT-001).
+    # Blocking reference job (REQ-SUPPORT-001), with the SonarCloud analysis of the master project settings when the
+    # token is available (not for pull requests from forks): the scanner of the sonar profile runs in the verify phase
+    # of the same build, and a failed quality gate fails this job.
     runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
-          fetch-depth: 1
+          # The whole history, for the new-code detection of Sonar.
+          fetch-depth: 0
 
       - name: Cache
         uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7
@@ -89,8 +109,16 @@ jobs:
         with:
           maven-version: 3.9.14
 
-      - name: Build, checkstyle, package rule, tests including the platform tests (Xvfb display), Javadoc
-        run: xvfb-run -a mvn -B -ntp verify -Pplatform-tests
+      - name: Build, checkstyle, package rule, tests including the platform tests (Xvfb display), Javadoc, Sonar
+        run: |
+          profiles=platform-tests
+          sonar=()
+          if [ -n "$SONAR_TOKEN" ]; then
+            profiles=platform-tests,sonar
+            sonar=(-Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=b3dgs
+                   -Dsonar.projectKey=b3dgs_lionengine -Dsonar.qualitygate.wait=true -Dsonar.token="$SONAR_TOKEN")
+          fi
+          xvfb-run -a mvn -B -ntp verify -P"$profiles" "${sonar[@]}"
 
       - name: Module dependencies (REQ-CORE-005, ADR-0045)
         run: python3 -I scripts/check-modules.py
@@ -111,6 +139,7 @@ jobs:
           - macos-latest
     runs-on: ${{ matrix.os }}
     continue-on-error: true
+    if: ${{ !inputs.after_merge }}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -174,6 +203,7 @@ jobs:
     # emulator by the instrumentation tests of android/verification. Commands: docs/android-compatibility.md.
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    if: ${{ !inputs.after_merge }}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -231,8 +261,9 @@ jobs:
         with:
           maven-version: 3.9.14
 
+      # The tests run in the linux job: this build only installs the modules (main and test JARs) for Gradle.
       - name: Install the engine modules in the local Maven repository
-        run: mvn -B -ntp install
+        run: mvn -B -ntp install -DskipTests
 
       - name: Lint NewApi on the shared sources, D8 and R8 builds, DEX content, test APK
         working-directory: android
@@ -350,81 +381,3 @@ jobs:
           name: benchmark-reports
           path: lionengine-traits/target/benchmark-reports/
           if-no-files-found: ignore
-
-  sonar:
-    # SonarCloud analysis with the master project settings; skipped when the token is not available
-    # (pull requests from forks, repositories without the secret). Fails when the quality gate fails.
-    needs: linux
-    runs-on: ubuntu-latest
-    env:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    steps:
-      - name: Checkout
-        if: env.SONAR_TOKEN != ''
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-        with:
-          fetch-depth: 0
-
-      - name: Cache
-        if: env.SONAR_TOKEN != ''
-        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7
-        with:
-          path: ~/.m2/repository
-          key: maven-${{ github.job }}-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            maven-${{ github.job }}-
-            maven-
-
-      - name: Java
-        if: env.SONAR_TOKEN != ''
-        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654
-        with:
-          distribution: temurin
-          java-version: 25
-
-      - name: Maven distribution cache (no download from Maven Central on a hit)
-        if: env.SONAR_TOKEN != ''
-        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7
-        with:
-          path: ${{ runner.tool_cache }}/maven/3.9.14
-          key: maven-dist-3.9.14-${{ runner.os }}-${{ runner.arch }}
-
-      - name: Maven
-        id: maven
-        if: env.SONAR_TOKEN != ''
-        continue-on-error: true
-        uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
-        with:
-          maven-version: 3.9.14
-
-      - name: Wait before retrying the Maven download (rate limit of Maven Central)
-        if: env.SONAR_TOKEN != '' && steps.maven.outcome == 'failure'
-        run: sleep 60
-
-      - name: Maven (retry)
-        id: maven-retry
-        if: env.SONAR_TOKEN != '' && steps.maven.outcome == 'failure'
-        continue-on-error: true
-        uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
-        with:
-          maven-version: 3.9.14
-
-      - name: Wait longer before the last Maven download attempt
-        if: env.SONAR_TOKEN != '' && steps.maven-retry.outcome == 'failure'
-        run: sleep 180
-
-      - name: Maven (last retry)
-        if: env.SONAR_TOKEN != '' && steps.maven-retry.outcome == 'failure'
-        uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
-        with:
-          maven-version: 3.9.14
-
-      - name: Sonar
-        if: env.SONAR_TOKEN != ''
-        run: >
-          xvfb-run -a mvn -B -ntp verify -Psonar,platform-tests
-          -Dsonar.host.url=https://sonarcloud.io
-          -Dsonar.organization=b3dgs
-          -Dsonar.projectKey=b3dgs_lionengine
-          -Dsonar.qualitygate.wait=true
-          -Dsonar.token=${{ env.SONAR_TOKEN }}
