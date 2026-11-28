@@ -1,18 +1,27 @@
 # Documentation consistency check (links, identifiers, traceability).
-# The code build and its structural checks are in build.yml (ADR-0012, ADR-0042).
+# The code build and its structural checks are in build.yml (ADR-0012, ADR-0042). Runs once per pull request push
+# (on the merge result) and on the pushes of rewrite/v11; a push to a pull request branch is checked by its pull request.
+# The runner image has Python 3, the script needs the standard library only.
+# Actions are pinned to the commits used by the master workflow ci-cd.yml.
 name: docs-check
 
 on:
   push:
+    branches:
+      - rewrite/v11
   pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   docs-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
-          python-version: "3.x"
+          fetch-depth: 1
+
       - name: Check documentation consistency
         run: python3 -I scripts/check-docs.py

@@ -114,7 +114,7 @@ Nothing here is verified yet, so every item is **not compatible yet** until it i
 
 ## Android verification job (ADR-0012, ADR-0044)
 
-Where: the Gradle build in `android/` and the `android` job of `.github/workflows/build.yml`, blocking, on every pull request and push of `rewrite/v11`. It consumes the modules installed in the local Maven repository by `mvn -B install`.
+Where: the Gradle build in `android/` and the `android` job of `.github/workflows/build.yml`, blocking, on every pull request that changes more than documentation and every direct push of `rewrite/v11`; the build that the auto-merge workflow starts after a merge skips it, since it ran on the merge result of the pull request. It consumes the modules installed in the local Maven repository by `mvn -B install -DskipTests` (the tests run in the `linux` job).
 
 **Shared modules** are read from the aggregator `pom.xml` by `android/settings.gradle.kts`: every module that does not override `jdk.version` (the desktop-only modules and `examples` set 25), except `lionengine-test-support`, a test-scope kit never shipped (ADR-0045). A new module is covered as soon as the aggregator declares it.
 
