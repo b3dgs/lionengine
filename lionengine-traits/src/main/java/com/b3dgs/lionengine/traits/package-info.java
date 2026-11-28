@@ -16,7 +16,7 @@
  */
 
 /**
- * Standard traits and systems (REQ-STD-001 to REQ-STD-011, ADR-0011, ADR-0034, ADR-0080, ADR-0081).
+ * Standard traits and systems (REQ-STD-001 to REQ-STD-011, ADR-0011, ADR-0034, ADR-0080 to ADR-0084).
  *
  * <p>
  * Traits are data only, in world units ({@code double} meters, meters per second, seconds; Y up); systems implement
@@ -36,12 +36,19 @@
  * {@link com.b3dgs.lionengine.traits.Movable};</li>
  * <li>{@link com.b3dgs.lionengine.traits.Lifetime} (remaining duration) and
  * {@link com.b3dgs.lionengine.traits.LifetimeSystem} (slot 5000), which removes the object when it expires, at the
- * flush.</li>
+ * flush;</li>
+ * <li>{@link com.b3dgs.lionengine.traits.Collidable} (box, layer, mask, trigger flag) and
+ * {@link com.b3dgs.lionengine.traits.CollisionSystem} (slot 4000), which detects the overlapping pairs, reports their
+ * enter and exit events and pushes objects out of the solid tiles of a
+ * {@link com.b3dgs.lionengine.physics.ShapeQuery}, writing the grounded flag of their
+ * {@link com.b3dgs.lionengine.traits.Jumpable};</li>
+ * <li>{@link com.b3dgs.lionengine.traits.Jumpable} (impulse, grounded flag, jump held flag, coyote time, jump buffer,
+ * cut factor) and {@link com.b3dgs.lionengine.traits.JumpSystem} (slot 1000), which applies the impulse with the
+ * coyote time and the jump buffer and cuts an early-released jump.</li>
  * </ul>
  *
  * <p>
- * Jump and collision come with the next batches of {@code features/standard-traits.md}. Runtime
- * thread only.
+ * Runtime thread only.
  * </p>
  */
 package com.b3dgs.lionengine.traits;

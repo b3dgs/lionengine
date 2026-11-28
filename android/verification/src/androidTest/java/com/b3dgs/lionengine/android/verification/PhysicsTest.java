@@ -41,6 +41,7 @@ import com.b3dgs.lionengine.traits.CollisionListener;
 import com.b3dgs.lionengine.traits.CollisionSystem;
 import com.b3dgs.lionengine.traits.Gravity;
 import com.b3dgs.lionengine.traits.GravitySystem;
+import com.b3dgs.lionengine.traits.JumpSystem;
 import com.b3dgs.lionengine.traits.Jumpable;
 import com.b3dgs.lionengine.traits.Movable;
 import com.b3dgs.lionengine.traits.MovementSystem;
@@ -53,9 +54,11 @@ import com.b3dgs.lionengine.traits.Transformable;
  * layer and mask rule both ways, and the enter and exit events of two objects meeting at steps of 1/30, 1/60 and
  * 1/120 s, exits before enters, with an exit when an object is removed; the tile push-out on a floor, a wall and a
  * ceiling with the grounded flag of {@code Jumpable} at the same step durations, and the reset state of
- * {@code Jumpable}. Expected values are the ones of the JVM tests of {@code lionengine-physics} and
- * {@code lionengine-traits} (BoxTest, BroadPhaseTest, CollidableTest, CollisionSystemTest, TileCollisionTest,
- * JumpableTest).
+ * {@code Jumpable}; the {@code Jump} system on a tile floor (the jump, the cut on an early release) and with the
+ * grounded flag set by the game (the coyote window and the jump buffer, accepted just inside and refused just
+ * outside, no double jump) at the same step durations. Expected values are the ones of the JVM tests of
+ * {@code lionengine-physics} and {@code lionengine-traits} (BoxTest, BroadPhaseTest, CollidableTest,
+ * CollisionSystemTest, TileCollisionTest, JumpableTest, JumpSystemTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class PhysicsTest
@@ -388,5 +391,163 @@ public final class PhysicsTest
             assertEquals(0.0, movables.get(walker).getVelocityX(), 0.0);
             assertTrue(jumpables.get(walker).isGrounded());
         }
+    }
+
+    /**
+     * At every step duration, an object resting on a tile floor jumps on a press, its vertical velocity replaced by
+     * the impulse then accelerated by the gravity of the step, and no longer grounded; with the variable height on, an
+     * early release while ascending halves the upward velocity (JumpSystemTest).
+     */
+    @Test
+    public void testJumpAndCut()
+    {
+        final Box floor = new Box(8.0, 0.5, 16.0, 1.0);
+        final ShapeQuery ground = new ShapeQuery()
+        {
+            @Override
+            public int query(Box area, Box[] results)
+            {
+                if (floor.overlaps(area))
+                {
+                    if (results.length > 0)
+                    {
+                        results[0].set(floor);
+                    }
+                    return 1;
+                }
+                return 0;
+            }
+        };
+        final int[] rates = {30, 60, 120};
+        for (final int rate : rates)
+        {
+            final double step = 1.0 / rate;
+            final World world = new World();
+            final TraitStorage<Transformable> transformables = world.register(Transformable.TYPE);
+            final TraitStorage<Movable> movables = world.register(Movable.TYPE);
+            final TraitStorage<Gravity> gravities = world.register(Gravity.TYPE);
+            final TraitStorage<Collidable> collidables = world.register(Collidable.TYPE);
+            final TraitStorage<Jumpable> jumpables = world.register(Jumpable.TYPE);
+            world.addSystem(new TransformCaptureSystem(world, transformables), TransformCaptureSystem.SLOT);
+            world.addSystem(new JumpSystem(world, movables, jumpables), JumpSystem.SLOT);
+            world.addSystem(new GravitySystem(world, movables, gravities), GravitySystem.SLOT);
+            world.addSystem(new MovementSystem(world, transformables, movables), MovementSystem.SLOT);
+            world.addSystem(new CollisionSystem(world, transformables, collidables, movables, jumpables, ground),
+                            CollisionSystem.SLOT);
+            final long id = world.create();
+            final Transformable transformable = transformables.add(id);
+            transformable.setPosition(2.5, 1.25);
+            transformable.setPreviousPosition(2.5, 1.25);
+            transformable.setSize(0.5, 0.5);
+            movables.add(id);
+            gravities.add(id).setAcceleration(-9.81);
+            collidables.add(id).setSize(0.5, 0.5);
+            final Jumpable jumpable = jumpables.add(id);
+            jumpable.setImpulse(8.0);
+            jumpable.setVariableHeight(true);
+            world.flush();
+            world.update(step);
+            world.update(step);
+            assertTrue(jumpable.isGrounded());
+
+            jumpable.setJumpHeld(true);
+            world.update(step);
+            assertEquals(8.0 + -9.81 * step, movables.get(id).getVelocityY(), 0.0);
+            assertFalse(jumpable.isGrounded());
+            world.update(step);
+            world.update(step);
+            final double ascending = movables.get(id).getVelocityY();
+            jumpable.setJumpHeld(false);
+            world.update(step);
+            assertEquals(ascending * 0.5 + -9.81 * step, movables.get(id).getVelocityY(), 0.0);
+
+            while (!jumpable.isGrounded())
+            {
+                world.update(step);
+            }
+            assertEquals(1.25, transformable.getY(), 0.0);
+            world.update(step);
+            assertEquals(0.0, movables.get(id).getVelocityY(), 0.0);
+        }
+    }
+
+    /**
+     * At every step duration, with the grounded flag set by the game: a press at the third step in the air jumps with
+     * a coyote time of three steps and a half, a press at the fourth does not; a press three steps before the ground
+     * jumps on it with a jump buffer of three steps and a half, a press four steps before does not; a press in the air
+     * after a jump does not jump again (JumpSystemTest).
+     */
+    @Test
+    public void testCoyoteAndBuffer()
+    {
+        final int[] rates = {30, 60, 120};
+        for (final int rate : rates)
+        {
+            final double step = 1.0 / rate;
+            for (int air = 3; air <= 4; air++)
+            {
+                assertEquals(air == 3, jumpCase(step, 3.5 * step, 0.0, true, air));
+                assertEquals(air == 3, jumpCase(step, 0.0, 3.5 * step, false, air));
+            }
+        }
+    }
+
+    /**
+     * Plays one coyote or buffer case with {@code JumpSystem} alone and tells whether it jumped.
+     *
+     * @param step The step, in seconds.
+     * @param coyoteTime The coyote time, in seconds.
+     * @param jumpBuffer The jump buffer, in seconds.
+     * @param coyote {@code true} for the coyote case: grounded, then in the air and pressing; {@code false} for the
+     *            buffer case: pressing in the air, then grounded.
+     * @param steps The steps in the air before the press (coyote), or from the press to the ground (buffer).
+     * @return {@code true} if the case jumped.
+     */
+    private static boolean jumpCase(double step, double coyoteTime, double jumpBuffer, boolean coyote, int steps)
+    {
+        final World world = new World();
+        final TraitStorage<Movable> movables = world.register(Movable.TYPE);
+        final TraitStorage<Jumpable> jumpables = world.register(Jumpable.TYPE);
+        world.addSystem(new JumpSystem(world, movables, jumpables), JumpSystem.SLOT);
+        final long id = world.create();
+        movables.add(id);
+        final Jumpable jumpable = jumpables.add(id);
+        jumpable.setImpulse(8.0);
+        jumpable.setCoyoteTime(coyoteTime);
+        jumpable.setJumpBuffer(jumpBuffer);
+        world.flush();
+        jumpable.setGrounded(coyote);
+        world.update(step);
+        jumpable.setGrounded(false);
+        if (coyote)
+        {
+            for (int i = 1; i < steps; i++)
+            {
+                world.update(step);
+            }
+            jumpable.setJumpHeld(true);
+            world.update(step);
+        }
+        else
+        {
+            jumpable.setJumpHeld(true);
+            world.update(step);
+            for (int i = 1; i < steps; i++)
+            {
+                world.update(step);
+            }
+            jumpable.setGrounded(true);
+            world.update(step);
+        }
+        final boolean jumped = Double.compare(movables.get(id).getVelocityY(), 8.0) == 0;
+        assertFalse(jumpable.isGrounded() && jumped);
+        jumpable.setGrounded(false);
+        movables.get(id).setVelocity(0.0, 1.0);
+        jumpable.setJumpHeld(false);
+        world.update(step);
+        jumpable.setJumpHeld(true);
+        world.update(step);
+        assertEquals("No double jump in the air", 1.0, movables.get(id).getVelocityY(), 0.0);
+        return jumped;
     }
 }

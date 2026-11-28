@@ -43,9 +43,9 @@ import com.b3dgs.lionengine.ecs.World;
  * </p>
  *
  * <p>
- * Slot: {@value #SLOT} (ADR-0034), after {@code Jump} (1000) and the game decisions that set velocities (between 1000
- * and 2000), before {@link MovementSystem} ({@value MovementSystem#SLOT}), which then clamps the whole speed to the
- * maximum speed of the {@link Movable} and integrates it.
+ * Slot: {@value #SLOT} (ADR-0034), after {@link JumpSystem} ({@value JumpSystem#SLOT}) and the game decisions that
+ * set velocities (between 1000 and 2000), before {@link MovementSystem} ({@value MovementSystem#SLOT}), which then
+ * clamps the whole speed to the maximum speed of the {@link Movable} and integrates it.
  * </p>
  *
  * <p>

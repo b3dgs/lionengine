@@ -30,7 +30,7 @@ import com.sun.management.ThreadMXBean;
 
 /**
  * Bytes per instance of the standard traits, documented in their Javadoc (REQ-STD-007, ADR-0034, ADR-0079,
- * ADR-0080, ADR-0081, ADR-0082).
+ * ADR-0080 to ADR-0084).
  *
  * <p>
  * Measured as the benchmark measures the traits ({@code StepBenchmarkTest}): the bytes allocated on this
@@ -53,7 +53,7 @@ final class TraitMemoryTest
     /** Bytes per {@link Collidable}, as documented. */
     private static final double COLLIDABLE_BYTES = 56.0;
     /** Bytes per {@link Jumpable}, as documented. */
-    private static final double JUMPABLE_BYTES = 48.0;
+    private static final double JUMPABLE_BYTES = 72.0;
     /** Instances created per measure. */
     private static final int INSTANCES = 10_000;
 
