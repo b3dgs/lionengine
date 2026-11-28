@@ -50,7 +50,7 @@
 | Interpolation | Presentation-only blend between the last two simulation states with `alpha`; the default presentation (ADR-0017). |
 | Interpolation delay | How far in the past a client shows proxies (default two snapshot intervals, 0.1 s), so that it can blend between two received snapshots (ADR-0038). |
 | Lag cap | Maximum real time added to the accumulator in one iteration (default 0.25 s); the excess is dropped and reported (ADR-0017, ADR-0031). |
-| Layer and mask (collision) | Two objects collide only if each one's mask includes the other's layer (ADR-0030). |
+| Layer and mask (collision) | Two objects collide only if each one's mask includes the other's layer (ADR-0030); both are `int` bit sets, one bit per layer, 32 layers (ADR-0082). |
 | Logical resolution | Resolution in pixels of the frame the game renders, independent of the output display mode. |
 | Long sound | Music or ambient sound, streamed by default, released when no longer needed (ADR-0004, ADR-0027). |
 | Network id | `int` identifying a replicated object in a session, assigned by the server from 1 and never reused; clients map it to their local object ID (ADR-0038). |
@@ -99,6 +99,7 @@
 | Time scale | Multiplier of elapsed time before it enters the accumulator, in `[0.1, 4.0]`, for slow or fast motion; the step never changes (ADR-0017, ADR-0031). |
 | Trait | Composable data attached to an ECS object; its logic lives in systems (ADR-0011). |
 | Transition (scene) | A link of the scene flow from a scene (or any scene) to a target, selected by a trigger and a condition and applied at the next frame boundary (ADR-0036). |
+| Trigger (collision) | A `Collidable` with its trigger flag set: an area that reports the objects entering and leaving it and never blocks (ADR-0030, ADR-0082). |
 | Trigger (scene) | Name (for example `finished`, `pause`) passed to the scene flow to request a transition (ADR-0036). |
 | Update and render callbacks | `UpdateCallback` (one fixed step, in seconds) and `RenderCallback` (one frame, with `alpha` and the unscaled delta) of `runtime`, wired to the game loop by the application or `composition` (ADR-0040). |
 | Variant set | Group of short-sound files; playing it selects one variant or plays several at once (composed sound) (ADR-0027). |

@@ -30,7 +30,7 @@ import com.sun.management.ThreadMXBean;
 
 /**
  * Bytes per instance of the standard traits, documented in their Javadoc (REQ-STD-007, ADR-0034, ADR-0079,
- * ADR-0080, ADR-0081).
+ * ADR-0080, ADR-0081, ADR-0082).
  *
  * <p>
  * Measured as the benchmark measures the traits ({@code StepBenchmarkTest}): the bytes allocated on this
@@ -50,6 +50,8 @@ final class TraitMemoryTest
     private static final double GRAVITY_BYTES = 32.0;
     /** Bytes per {@link Lifetime}, as documented. */
     private static final double LIFETIME_BYTES = 24.0;
+    /** Bytes per {@link Collidable}, as documented. */
+    private static final double COLLIDABLE_BYTES = 56.0;
     /** Instances created per measure. */
     private static final int INSTANCES = 10_000;
 
@@ -63,21 +65,25 @@ final class TraitMemoryTest
         bytesPerInstance(Movable.TYPE);
         bytesPerInstance(Gravity.TYPE);
         bytesPerInstance(Lifetime.TYPE);
+        bytesPerInstance(Collidable.TYPE);
         final double transformable = bytesPerInstance(Transformable.TYPE);
         final double movable = bytesPerInstance(Movable.TYPE);
         final double gravity = bytesPerInstance(Gravity.TYPE);
         final double lifetime = bytesPerInstance(Lifetime.TYPE);
+        final double collidable = bytesPerInstance(Collidable.TYPE);
         final Log log = new Log();
         log.setLevel(LogLevel.INFO);
         log.log(LogLevel.INFO, "Transformable bytes per instance:", transformable);
         log.log(LogLevel.INFO, "Movable bytes per instance:", movable);
         log.log(LogLevel.INFO, "Gravity bytes per instance:", gravity);
         log.log(LogLevel.INFO, "Lifetime bytes per instance:", lifetime);
+        log.log(LogLevel.INFO, "Collidable bytes per instance:", collidable);
 
         assertTrue(Math.round(transformable) <= TRANSFORMABLE_BYTES, () -> "Transformable: " + transformable);
         assertTrue(Math.round(movable) <= MOVABLE_BYTES, () -> "Movable: " + movable);
         assertTrue(Math.round(gravity) <= GRAVITY_BYTES, () -> "Gravity: " + gravity);
         assertTrue(Math.round(lifetime) <= LIFETIME_BYTES, () -> "Lifetime: " + lifetime);
+        assertTrue(Math.round(collidable) <= COLLIDABLE_BYTES, () -> "Collidable: " + collidable);
     }
 
     /**
