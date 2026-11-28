@@ -32,6 +32,7 @@ Claude Code can delegate token-heavy, well-specified work to local models and re
 - Point the agent to [`how-the-engine-works.md`](how-the-engine-works.md), the batch's feature file, [`api-index.md`](api-index.md) and one example rather than the whole code base.
 - Every default value an implementation needs is in an ADR and in the feature file; an agent that cannot find one stops and asks instead of choosing.
 - Keep `AGENTS.md` short and link to the details.
+- Claude Code agents load the project skill `.claude/skills/engine-batch/SKILL.md` for a batch: the order of the work, the fast build loop with measured times, the pre-push sequence and the pitfalls met in earlier batches. It links to the documents instead of restating them; when they change, update it in the same pull request.
 - Require the compile/test loop after every change; the compiler catches invented APIs cheaply.
 
 ## Rules that never depend on the agent
