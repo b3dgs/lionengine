@@ -17,13 +17,20 @@
 package com.b3dgs.lionengine.ecs;
 
 /**
- * A trait type counting its pool creations and resets, for the benchmark scene (ADR-0079): the scaling check compares
- * these counts between two population sizes, and a steady step creates no instance.
+ * A trait type counting the pool creations and resets of another type, for the benchmark scene (ADR-0079, ADR-0081):
+ * the scaling check compares these counts between two population sizes, and a steady step creates no instance.
+ *
+ * <p>
+ * Public in the {@code ecs} test JAR (the fixture placement of ADR-0045, ADR-0079 decision 2) for the benchmark of the
+ * standard traits, which wraps their {@code TYPE} constants. Runtime thread only.
+ * </p>
  *
  * @param <T> The trait class.
  */
-abstract class CountingType<T> implements TraitType<T>
+public final class CountingType<T> implements TraitType<T>
 {
+    /** The counted type. */
+    private final TraitType<T> type;
     /** Instances created. */
     private long created;
     /** Resets. */
@@ -31,38 +38,37 @@ abstract class CountingType<T> implements TraitType<T>
 
     /**
      * Creates the type.
+     *
+     * @param type The counted type, which creates and resets the instances.
      */
-    CountingType()
+    public CountingType(TraitType<T> type)
     {
         super();
+        this.type = type;
     }
 
-    /**
-     * Creates an instance in its reset state.
-     *
-     * @return The new instance.
-     */
-    abstract T newInstance();
-
-    /**
-     * Resets an instance.
-     *
-     * @param trait The instance.
-     */
-    abstract void clear(T trait);
-
     @Override
-    public final T create()
+    public T create()
     {
         created++;
-        return newInstance();
+        return type.create();
     }
 
     @Override
-    public final void reset(T trait)
+    public void reset(T trait)
     {
         resets++;
-        clear(trait);
+        type.reset(trait);
+    }
+
+    /**
+     * Returns the counted type.
+     *
+     * @return The type creating and resetting the instances.
+     */
+    public TraitType<T> getType()
+    {
+        return type;
     }
 
     /**
@@ -70,7 +76,7 @@ abstract class CountingType<T> implements TraitType<T>
      *
      * @return The number of {@link #create()} calls.
      */
-    final long getCreated()
+    public long getCreated()
     {
         return created;
     }
@@ -80,7 +86,7 @@ abstract class CountingType<T> implements TraitType<T>
      *
      * @return The number of {@link #reset(Object)} calls.
      */
-    final long getResets()
+    public long getResets()
     {
         return resets;
     }

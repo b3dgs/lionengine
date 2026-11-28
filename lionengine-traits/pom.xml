@@ -31,5 +31,13 @@
             <artifactId>lionengine-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- Benchmark harness (StepHarness, CountingType) of the ecs test JAR (ADR-0045, ADR-0079, ADR-0081). -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lionengine-ecs</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

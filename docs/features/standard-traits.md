@@ -7,7 +7,7 @@
 - Flow: B of [`change-process.md`](../change-process.md) (new modules `traits` and `physics`); ADRs written and accepted
 - Affected modules: `traits`, `physics`, `ecs`, `core`, `test-support`, `examples`
 - Requirements: `REQ-STD-001` to `REQ-STD-011`, `REQ-PHYS-001`, `REQ-TRAIT-001`, `REQ-TRAIT-002`
-- Applicable ADRs: [`ADR-0080`](../decisions/0080-standard-traits-transformable-movable-capture-and-movement.md) (batch 1), [`ADR-0011`](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md), [`ADR-0013`](../decisions/0013-world-coordinates-and-angles.md), [`ADR-0014`](../decisions/0014-meters-to-pixels-numeric-type-and-rotation.md), [`ADR-0021`](../decisions/0021-scene-world-viewport-and-object-model.md), [`ADR-0028`](../decisions/0028-tile-map-collision-json-definitions-and-storage.md), [`ADR-0030`](../decisions/0030-ecs-details-ids-flush-scheduling-collision-and-traits.md), [`ADR-0034`](../decisions/0034-camera-and-ecs-defaults-noise-clamp-slots-capacities-events-shapes.md), [`ADR-0038`](../decisions/0038-network-model-server-authority-snapshots-prediction.md)
+- Applicable ADRs: [`ADR-0080`](../decisions/0080-standard-traits-transformable-movable-capture-and-movement.md) (batch 1), [`ADR-0081`](../decisions/0081-standard-traits-gravity-lifetime-and-benchmark-on-standard-traits.md) (batch 2), [`ADR-0011`](../decisions/0011-ecs-dynamic-objects-traits-and-standard-traits.md), [`ADR-0013`](../decisions/0013-world-coordinates-and-angles.md), [`ADR-0014`](../decisions/0014-meters-to-pixels-numeric-type-and-rotation.md), [`ADR-0021`](../decisions/0021-scene-world-viewport-and-object-model.md), [`ADR-0028`](../decisions/0028-tile-map-collision-json-definitions-and-storage.md), [`ADR-0030`](../decisions/0030-ecs-details-ids-flush-scheduling-collision-and-traits.md), [`ADR-0034`](../decisions/0034-camera-and-ecs-defaults-noise-clamp-slots-capacities-events-shapes.md), [`ADR-0038`](../decisions/0038-network-model-server-authority-snapshots-prediction.md)
 - Open questions involved: `OQ-178` (the batch of the object definition files)
 
 ## Objective
@@ -42,12 +42,12 @@ Responsibilities in [`../architecture/contracts.md`](../architecture/contracts.m
 ## Batches (order)
 
 1. `Transformable`, `Movable`, `Movement` (`REQ-STD-001`, `REQ-STD-002`); done on 2026-11-28 with the previous-position capture and `REQ-STD-011` for its two systems (ADR-0080).
-2. `Gravity` (`REQ-STD-003`) and `Lifetime` (`REQ-STD-006`).
+2. `Gravity` (`REQ-STD-003`) and `Lifetime` (`REQ-STD-006`); done on 2026-11-28 with `REQ-STD-011` for their two systems and the benchmark measured again on the standard traits (ADR-0081).
 3. `physics` box, overlap and broad phase; `Collidable` and `Collision` for objects (`REQ-PHYS-001`, `REQ-STD-005`).
 4. Tile push-out and `grounded` through the `physics` shape query (`REQ-STD-010`, `REQ-MAP-008`).
 5. `Jumpable` and `Jump` (`REQ-STD-004`).
 6. Pipeline documentation, example and extension guide (`REQ-STD-007`, `REQ-STD-008`).
-7. Extra excluded trait types at system creation (`REQ-STD-011`); may be done with any earlier batch (done for `TransformCaptureSystem` and `MovementSystem` by batch 1).
+7. Extra excluded trait types at system creation (`REQ-STD-011`); may be done with any earlier batch (done for `TransformCaptureSystem` and `MovementSystem` by batch 1, for `GravitySystem` and `LifetimeSystem` by batch 2).
 
 ## State (2026-11-28)
 
@@ -60,6 +60,17 @@ Batch 1 (2026-11-28), `Transformable`, `Movable`, the previous-position capture 
 - Bytes per instance on the desktop JVM, in the Javadoc: 64 per `Transformable`, 40 per `Movable` (`TraitMemoryTest`, the allocation-counter method of `StepBenchmarkTest`). The `ecs` benchmark is measured again with batch 2, once `Gravity` and `Lifetime` exist (ADR-0079).
 - No factory for `lionengine:transformable` and `lionengine:movable` yet: the object definition files get a separate batch (`OQ-178`).
 - Tests: `TransformableTest`, `MovableTest`, `TransformCaptureSystemTest`, `MovementSystemTest` (steps of 1/30, 1/60 and 1/120 s), `MovementAllocationTest`, `TraitMemoryTest`, `MovementExampleTest`; the device test `TraitsTest`.
+
+Batch 2 (2026-11-28), `Gravity` and `Lifetime` with their systems, the example `FallExample` and its API-index row, and the `REQ-ECS-009` benchmark on the standard traits. The details this page leaves to the batch follow [ADR-0081](../decisions/0081-standard-traits-gravity-lifetime-and-benchmark-on-standard-traits.md) (owner answers and delegation of the batch):
+
+- `Gravity` (acceleration, m/s², and terminal velocity, m/s) and `Lifetime` (duration, s), data only, private `double` fields with accessors (`getAcceleration`, `setAcceleration`, `getTerminalVelocity`, `setTerminalVelocity`, `getDuration`, `setDuration`) and a public `TYPE` constant each. The acceleration is vertical only, negative pulls down. Reset state: no acceleration and no terminal velocity (`Double.POSITIVE_INFINITY`); a lifetime that never expires (`Double.POSITIVE_INFINITY`). A negative or `NaN` terminal velocity or duration is an `IllegalArgumentException`.
+- `GravitySystem` at slot 2000, on the objects having `Movable` and `Gravity` (no `Transformable` needed; an object without `Movable` is skipped): adds `acceleration * stepSeconds` to the vertical velocity, never past the terminal velocity in the direction of the acceleration (`-terminalVelocity` for a pull down); a vertical velocity already beyond it is kept, neither cut nor increased; the horizontal velocity is unchanged; `MovementSystem` then clamps the whole speed to `maxSpeed`.
+- `LifetimeSystem` at slot 5000, on the objects having `Lifetime`: the duration is the remaining one, counted down in place by the step; at or under `0` the system requests `World.remove(id)`, applied by the flush ending the step (systems after 5000 still see the object in that step), so the removal is requested once. An object of duration `d` expires after about `ceil(d / dt)` steps, one more when the `double` subtraction leaves a remainder.
+- Both systems take the world, the storages and optionally an array of excluded trait types (`REQ-STD-011`), have one query exposed by `getQuery()`, and allocate nothing per step (`GravityLifetimeAllocationTest`, 1 KiB tolerance over 1,000 steps of 1,000 objects with one expiry and one creation per step).
+- Bytes per instance on the desktop JVM, in the Javadoc: 32 per `Gravity`, 24 per `Lifetime` (`TraitMemoryTest`).
+- Benchmark (ADR-0079): the stand-ins are replaced in place by the standard traits. The scene (`BenchmarkWorld`) and `StepBenchmarkTest`, `BenchmarkAllocationTest` and `BenchmarkScalingTest` are in the `traits` test sources, with five systems (`TransformCaptureSystem`, `GravitySystem`, `MovementSystem`, `LifetimeSystem` and the spawner at 6000); `StepHarness` and `CountingType` are public in the `ecs` test JAR. Command `mvn -B -pl lionengine-traits -am verify -Pbenchmark`, report `lionengine-traits/target/benchmark-reports/step.md`. Values in `testing.md`, "Measured budgets".
+- No factory for `lionengine:gravity` and `lionengine:lifetime` yet (`OQ-178`).
+- Tests: `GravityTest`, `LifetimeTest`, `GravitySystemTest` and `LifetimeSystemTest` (steps of 1/30, 1/60 and 1/120 s), `GravityLifetimeAllocationTest`, `TraitMemoryTest`, `BenchmarkAllocationTest`, `BenchmarkScalingTest`, `StepBenchmarkTest` (tag `benchmark`), `FallExampleTest`; the device test `TraitsTest`.
 
 ## Lifecycle and concurrency
 
@@ -78,10 +89,10 @@ Meters, m/s, m/s², seconds, constant step (REQ-TECH-003 to REQ-TECH-005); `doub
 - Unit tests: each system at several step durations (movement and clamp, terminal velocity, jump windows and cut, expiry); overlap, layer/mask pairs, enter and exit events, push-out and grounded on a tile floor.
 - Contract tests: trait and system conventions shared with `ecs`; shape-query contract suite run by `tilemap`.
 - Integration tests: headless pipeline with a controllable clock (falling, landing, jumping and colliding object).
-- Performance tests: broad phase against a brute-force reference; part of the 1,000 objects × 4 traits budget (`REQ-ECS-009`). The `ecs` benchmark runs on stand-ins of `Transformable`, `Movable`, `Gravity` and `Lifetime` until these exist ([ADR-0079](../decisions/0079-ecs-benchmark-harness-stand-in-scene-and-trend-job.md)): the batch that delivers the last of the four replaces the stand-ins with them, measures again with the `ecs` harness (`StepHarness`, tag `benchmark`) and records the values in `testing.md`; each standard trait records its bytes per instance in its Javadoc, measured the same way (ADR-0034).
+- Performance tests: broad phase against a brute-force reference; part of the 1,000 objects × 4 traits budget (`REQ-ECS-009`). The benchmark ran on stand-ins of `Transformable`, `Movable`, `Gravity` and `Lifetime` until these existed ([ADR-0079](../decisions/0079-ecs-benchmark-harness-stand-in-scene-and-trend-job.md)); batch 2 replaced the stand-ins with them, measured again with the `ecs` harness (`StepHarness`, tag `benchmark`) from the `traits` tests and recorded the values in `testing.md` ([ADR-0081](../decisions/0081-standard-traits-gravity-lifetime-and-benchmark-on-standard-traits.md)); each standard trait records its bytes per instance in its Javadoc, measured the same way (ADR-0034).
 
 ## Acceptance criteria
 
-- [ ] Requirements `REQ-STD-001` to `REQ-STD-010` verified (`REQ-STD-001` and `REQ-STD-002` by batch 1).
-- [ ] Automated tests added and passing; complete Javadoc for every trait and system, with units, slot and bytes per instance (done for `Transformable`, `Movable`, `TransformCaptureSystem` and `MovementSystem`).
-- [ ] Example and `api-index.md` entry; no forbidden coupling; Android/DEX compatibility verified (batch 1: `MovementExample`, its row, device test `TraitsTest`).
+- [ ] Requirements `REQ-STD-001` to `REQ-STD-010` verified (`REQ-STD-001` and `REQ-STD-002` by batch 1, `REQ-STD-003` and `REQ-STD-006` by batch 2).
+- [ ] Automated tests added and passing; complete Javadoc for every trait and system, with units, slot and bytes per instance (done for `Transformable`, `Movable`, `Gravity`, `Lifetime`, `TransformCaptureSystem`, `MovementSystem`, `GravitySystem` and `LifetimeSystem`).
+- [ ] Example and `api-index.md` entry; no forbidden coupling; Android/DEX compatibility verified (batch 1: `MovementExample`, its row, device test `TraitsTest`; batch 2: `FallExample`, its row, `TraitsTest` extended).

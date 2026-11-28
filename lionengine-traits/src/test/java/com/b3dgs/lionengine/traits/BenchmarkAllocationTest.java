@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.lionengine.ecs;
+package com.b3dgs.lionengine.traits;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,12 +23,15 @@ import java.lang.management.ManagementFactory;
 
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.ecs.CountingType;
+import com.b3dgs.lionengine.ecs.Query;
+import com.b3dgs.lionengine.ecs.World;
 import com.sun.management.ThreadMXBean;
 
 /**
- * Allocation measure of the benchmark step of REQ-ECS-009: with 1,000 objects and 4 traits, the full step (three
- * queries iterated by the stand-in systems, removals and creations, one flush) allocates nothing in steady state
- * (ADR-0030, decision 3; ADR-0079).
+ * Allocation measure of the benchmark step of REQ-ECS-009: with 1,000 objects and the 4 standard traits, the full step
+ * (the five systems of the scene, their four queries, removals and creations, one flush) allocates nothing in steady
+ * state (ADR-0030, decision 3; ADR-0079; ADR-0081).
  *
  * <p>
  * Measured with the per-thread allocation counter of the JVM, after a warm-up, with the 1 KiB tolerance of the other

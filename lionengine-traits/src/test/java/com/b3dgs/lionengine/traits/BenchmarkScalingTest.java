@@ -14,22 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.lionengine.ecs;
+package com.b3dgs.lionengine.traits;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.ecs.CountingType;
+import com.b3dgs.lionengine.ecs.ObjectListener;
+import com.b3dgs.lionengine.ecs.Query;
+import com.b3dgs.lionengine.ecs.TraitListener;
+import com.b3dgs.lionengine.ecs.World;
+
 /**
- * Linear scaling of the benchmark step (REQ-ECS-009, ADR-0030, decision 3; ADR-0079): from 1,000 to 10,000 objects,
- * every operation count of the step grows exactly ten times. Counts, not time, so the check cannot flake.
+ * Linear scaling of the benchmark step (REQ-ECS-009, ADR-0030, decision 3; ADR-0079; ADR-0081): from 1,000 to 10,000
+ * objects, every operation count of the step grows exactly ten times. Counts, not time, so the check cannot flake.
  *
  * <p>
- * The counts are those the world produces for the scene: the objects visited through the three queries, the creations
- * and removals requested, the events delivered by the flush to an object listener and a trait listener (one per
- * effective change, so each command is applied once), and the creations and resets of the trait pools (a steady step
- * creates no instance and resets one instance per removed trait).
+ * The counts are those the world produces for the scene: the objects visited through the four queries of the standard
+ * systems, the creations and removals requested, the events delivered by the flush to an object listener and a trait
+ * listener (one per effective change, so each command is applied once), and the creations and resets of the trait
+ * pools (a steady step creates no instance and resets one instance per removed trait).
  * </p>
  */
 final class BenchmarkScalingTest

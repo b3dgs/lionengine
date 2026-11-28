@@ -24,9 +24,11 @@ import java.util.Arrays;
  *
  * <p>
  * Its results are reported, never asserted by the blocking build: wall-clock time depends on the machine and its load.
+ * Public in the {@code ecs} test JAR (the fixture placement of ADR-0045, ADR-0079 decision 2) for the benchmark of the
+ * standard traits, which runs from the {@code traits} tests (ADR-0081).
  * </p>
  */
-final class StepHarness
+public final class StepHarness
 {
     /** Percent. */
     private static final int PERCENT = 100;
@@ -36,21 +38,26 @@ final class StepHarness
     private static final int P99 = 99;
 
     /**
-     * Measures the steps of a populated scene.
+     * Measures the steps of a populated world: each measured step is one {@link World#update(double)}, its systems,
+     * their queries and the flush.
      *
-     * @param scene The scene, already populated.
+     * @param world The world, already populated, with its systems.
+     * @param stepSeconds The constant step, in seconds.
      * @param warmup The steps run first and not measured, so that the code is compiled and the capacities fit.
      * @param steps The measured steps, at least one.
      * @return The statistics of the measured steps.
      */
-    static StepStatistics measure(BenchmarkWorld scene, int warmup, int steps)
+    public static StepStatistics measure(World world, double stepSeconds, int warmup, int steps)
     {
-        scene.run(warmup);
+        for (int i = 0; i < warmup; i++)
+        {
+            world.update(stepSeconds);
+        }
         final long[] durations = new long[steps];
         for (int i = 0; i < steps; i++)
         {
             final long start = System.nanoTime();
-            scene.step();
+            world.update(stepSeconds);
             durations[i] = System.nanoTime() - start;
         }
         return summarize(durations);
@@ -120,7 +127,7 @@ final class StepHarness
      * @param max The longest step.
      * @param mean The mean duration.
      */
-    record StepStatistics(int steps, double median, long p90, long p99, long max, double mean)
+    public record StepStatistics(int steps, double median, long p90, long p99, long max, double mean)
     {
     }
 }

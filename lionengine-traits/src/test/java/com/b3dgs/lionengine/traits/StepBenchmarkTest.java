@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.lionengine.ecs;
+package com.b3dgs.lionengine.traits;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,13 +32,15 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Log;
 import com.b3dgs.lionengine.LogLevel;
+import com.b3dgs.lionengine.ecs.CountingType;
+import com.b3dgs.lionengine.ecs.StepHarness;
 import com.b3dgs.lionengine.ecs.StepHarness.StepStatistics;
 import com.sun.management.ThreadMXBean;
 
 /**
  * The wall-clock benchmark of REQ-ECS-009 (ADR-0030, decision 3; ADR-0034; ADR-0079): the median and percentiles of
- * the step of 1,000 objects with 4 traits, and of 10,000 objects for the scaling, with the bytes per stand-in trait
- * instance and the bytes allocated to build the world (REQ-PERF-001).
+ * the step of 1,000 objects with the 4 standard traits and their five systems, and of 10,000 objects for the scaling,
+ * with the bytes per standard trait instance and the bytes allocated to build the world (REQ-PERF-001, ADR-0081).
  *
  * <p>
  * Tagged {@value #TAG}: the blocking build leaves it out; the {@code benchmark} profile runs it, in the non-blocking
@@ -55,7 +57,7 @@ final class StepBenchmarkTest
     /** The system property enabling the budget assertion. */
     static final String BUDGET_PROPERTY = "lionengine.benchmark.budget";
     /** The report file, relative to the module directory. */
-    static final String REPORT = "target/benchmark-reports/ecs-step.md";
+    static final String REPORT = "target/benchmark-reports/step.md";
     /** The budget of a median step at 1,000 objects, in nanoseconds (1 ms, REQ-ECS-009). */
     private static final double BUDGET = 1_000_000.0;
     /** The benchmark population. */
@@ -83,10 +85,10 @@ final class StepBenchmarkTest
         final BenchmarkWorld scene = new BenchmarkWorld(OBJECTS);
         scene.populate();
         final long worldBytes = worldBytes();
-        final StepStatistics benchmark = StepHarness.measure(scene, WARMUP, STEPS);
+        final StepStatistics benchmark = StepHarness.measure(scene.getWorld(), BenchmarkWorld.STEP, WARMUP, STEPS);
         final BenchmarkWorld large = new BenchmarkWorld(SCALING_OBJECTS);
         large.populate();
-        final StepStatistics scaling = StepHarness.measure(large, WARMUP, STEPS);
+        final StepStatistics scaling = StepHarness.measure(large.getWorld(), BenchmarkWorld.STEP, WARMUP, STEPS);
 
         final StringBuilder report = new StringBuilder(1024);
         report.append("## ECS step benchmark (REQ-ECS-009)\n\n")
@@ -102,7 +104,8 @@ final class StepBenchmarkTest
               .append(WARMUP)
               .append(" warm-up steps, ")
               .append(STEPS)
-              .append(" measured steps; stand-in traits and systems (ADR-0079).\n\n")
+              .append(" measured steps; standard traits with the capture, Gravity, Movement and Lifetime systems")
+              .append(" (ADR-0079, ADR-0081).\n\n")
               .append("| Objects × traits | Median (µs) | p90 (µs) | p99 (µs) | Max (µs) | Mean (µs) |\n")
               .append("|---|---|---|---|---|---|\n");
         row(report, OBJECTS, benchmark);
@@ -120,11 +123,13 @@ final class StepBenchmarkTest
         {
             report.append("| ")
                   .append(names[i])
-                  .append(" stand-in, per instance | ")
+                  .append(", per instance | ")
                   .append(format(bytesPerInstance(types[i])))
                   .append(" |\n");
         }
-        report.append("| World of 1,000 objects × 4 traits, allocated to build and populate it | ").append(worldBytes).append(" |\n");
+        report.append("| World of 1,000 objects × 4 traits, allocated to build and populate it | ")
+              .append(worldBytes)
+              .append(" |\n");
         final String text = report.toString();
         final Path path = Path.of(REPORT);
         Files.createDirectories(path.getParent());
@@ -208,7 +213,7 @@ final class StepBenchmarkTest
         final long before = bean.getCurrentThreadAllocatedBytes();
         for (int i = 0; i < INSTANCES; i++)
         {
-            instances[i] = type.newInstance();
+            instances[i] = type.getType().create();
         }
         final long allocated = bean.getCurrentThreadAllocatedBytes() - before;
         assertNotNull(instances[INSTANCES - 1]);
