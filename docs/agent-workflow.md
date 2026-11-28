@@ -41,6 +41,8 @@ Claude Code can delegate token-heavy, well-specified work to local models and re
 - CI results (build, tests, dependency rules, Android/DEX, compiled examples) decide whether a batch is accepted, not the agent's own report.
 - Every pull request is reviewed by a person or by an independent agent that did not write it.
 - Every branch starts from `origin/rewrite/v11` and every pull request targets `rewrite/v11`, the default branch; never `master`, the previous engine line ([`../AGENTS.md`](../AGENTS.md) section 6).
+- Before the first push of a pull request, the agent runs `mvn -B verify`, the structural checks and `python3 -I scripts/check-sonar.py` (a SonarCloud branch analysis of the working tree compared with the open issues of `rewrite/v11`, [`implementation-guide.md`](implementation-guide.md) section 5) and fixes what they report, so that Sonar findings never need a second push; every push starts the full CI. In a cloud session the SonarCloud token is a network secret of the environment, injected by the proxy (the script sends a placeholder).
+- The auto-merge workflow merges agent pull requests and deletes their head branch ([`change-process.md`](change-process.md)); an agent asked to let it merge does not merge by hand. A pull request merged by hand while the workflow waits is detected: the workflow then neither merges nor starts a second build of `rewrite/v11`.
 
 ## Handoff (2026-11-25)
 
