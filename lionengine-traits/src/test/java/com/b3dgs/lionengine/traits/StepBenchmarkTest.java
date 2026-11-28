@@ -41,7 +41,8 @@ import com.sun.management.ThreadMXBean;
  * The wall-clock benchmark of REQ-ECS-009 (ADR-0030, decision 3; ADR-0034; ADR-0079): the median and percentiles of
  * the step of 1,000 objects with the 4 standard traits and their five systems, and of 10,000 objects for the scaling,
  * with the bytes per standard trait instance and the bytes allocated to build the world (REQ-PERF-001, ADR-0081),
- * and the collision step of {@link CollisionBenchmarkWorld} at both populations, reported only (ADR-0082).
+ * the collision step of {@link CollisionBenchmarkWorld} and the tile push-out step of {@link TileBenchmarkWorld} at
+ * both populations, reported only (ADR-0082, ADR-0083).
  *
  * <p>
  * Tagged {@value #TAG}: the blocking build leaves it out; the {@code benchmark} profile runs it, in the non-blocking
@@ -102,6 +103,15 @@ final class StepBenchmarkTest
                                                                     CollisionBenchmarkWorld.STEP,
                                                                     WARMUP,
                                                                     STEPS);
+        final TileBenchmarkWorld tiled = new TileBenchmarkWorld(OBJECTS);
+        tiled.populate();
+        final StepStatistics tiles = StepHarness.measure(tiled.getWorld(), TileBenchmarkWorld.STEP, WARMUP, STEPS);
+        final TileBenchmarkWorld largeTiled = new TileBenchmarkWorld(SCALING_OBJECTS);
+        largeTiled.populate();
+        final StepStatistics tilesScaling = StepHarness.measure(largeTiled.getWorld(),
+                                                                TileBenchmarkWorld.STEP,
+                                                                WARMUP,
+                                                                STEPS);
 
         final StringBuilder report = new StringBuilder(1024);
         report.append("## ECS step benchmark (REQ-ECS-009)\n\n")
@@ -145,6 +155,8 @@ final class StepBenchmarkTest
               .append(" |\n")
               .append("| Collidable, per instance | ")
               .append(format(bytesPerInstance(new CountingType<>(Collidable.TYPE))))
+              .append(" |\n| Jumpable, per instance | ")
+              .append(format(bytesPerInstance(new CountingType<>(Jumpable.TYPE))))
               .append(" |\n\n## Collision step (REQ-STD-005, ADR-0082)\n\n")
               .append("Moving squares of 0.5 m bouncing in an area of 4 m² per object, with the capture, Movement, a")
               .append(" bounce and Collision systems (default cell of 2 m); reported, not asserted.\n\n")
@@ -154,6 +166,17 @@ final class StepBenchmarkTest
         collisionRow(report, SCALING_OBJECTS, collisionScaling, largeColliding.getCollision().getPairCount());
         report.append("\nMedian ratio 10,000 / 1,000: ")
               .append(format(collisionScaling.median() / collision.median()))
+              .append(".\n\n### Tile push-out step (REQ-STD-010, ADR-0083)\n\n")
+              .append("Squares of 0.5 m walking at 2 m/s and hopping at 5 m/s when grounded, under a gravity of")
+              .append(" -9.81 m/s², in a tile arena of 1 m tiles (floor, walls, full platforms every four rows) of 4 m² per")
+              .append(" object, with the capture, a hop, Gravity, Movement and Collision systems, the push-out on the")
+              .append(" tiles then the object detection; reported, not asserted. The last column counts the pairs.\n\n")
+              .append("| Objects | Median (µs) | p90 (µs) | p99 (µs) | Max (µs) | Mean (µs) | Pairs |\n")
+              .append("|---|---|---|---|---|---|---|\n");
+        collisionRow(report, OBJECTS, tiles, tiled.getCollision().getPairCount());
+        collisionRow(report, SCALING_OBJECTS, tilesScaling, largeTiled.getCollision().getPairCount());
+        report.append("\nMedian ratio 10,000 / 1,000: ")
+              .append(format(tilesScaling.median() / tiles.median()))
               .append(".\n");
         final String text = report.toString();
         final Path path = Path.of(REPORT);
@@ -164,6 +187,7 @@ final class StepBenchmarkTest
         log.log(LogLevel.INFO, text);
 
         assertTrue(Double.isFinite(scene.getChecksum() + large.getChecksum()));
+        assertTrue(tiled.getGrounded() > 0 && largeTiled.getGrounded() > 0, "No landing in the tile scene");
         if (Boolean.getBoolean(BUDGET_PROPERTY))
         {
             assertTrue(benchmark.median() <= BUDGET, () -> "Median step: " + benchmark.median() + " ns");

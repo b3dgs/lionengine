@@ -10,6 +10,11 @@
 #   documentation: Maven build and tests, then the module, API index and provenance checks. After the
 #   merge, the "merge" job starts build.yml on the target branch by workflow_dispatch, the one event the
 #   workflow token may trigger: rewrite/v11 is then built and analyzed by Sonar after every merge.
+# - The merge deletes the head branch (--delete-branch): the repository setting "Automatically delete head
+#   branches" does not apply to a merge made with the workflow token.
+# - A pull request merged by hand (by an agent or the owner) while this workflow waits for its checks is no
+#   longer open when the "merge" job reads its state: the job then skips the merge and the dispatch of build.yml,
+#   the push of that merge having already started the build of rewrite/v11 (a second build would cancel it).
 # - Before merging, the "merge" job waits for the "sonar" and "android" checks of build.yml on the head commit
 #   of the pull request and merges only when both succeed: "sonar" fails when the Sonar quality gate fails,
 #   "android" when the shared modules fail lint NewApi, D8, R8 or the API 21 emulator tests (ADR-0044). A
@@ -184,10 +189,24 @@ jobs:
             done
           done
 
-      - name: Squash-merge
-        run: gh pr merge "$URL" --squash --match-head-commit "$SHA"
+      # A pull request merged by hand meanwhile: its push already started the build of the branch.
+      - name: Read the state of the pull request
+        id: state
+        run: |
+          state=$(gh pr view "$URL" --json state -q .state)
+          if [ "$state" = "OPEN" ]; then
+            echo "open=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::The pull request is $state, merged or closed by hand: no merge and no build dispatch."
+          fi
 
-      # Build and Sonar analysis of the merged branch; a later merge cancels a build still running
-      # (concurrency of build.yml), so the branch head is always the one analyzed.
+      # The head branch is deleted here: "Automatically delete head branches" ignores merges of the workflow token.
+      - name: Squash-merge
+        if: steps.state.outputs.open == 'true'
+        run: gh pr merge "$URL" --squash --delete-branch --match-head-commit "$SHA"
+
+      # Build and Sonar analysis of the merged branch; every commit of rewrite/v11 gets one complete build (the
+      # concurrency of build.yml cancels in-progress runs of pull requests only).
       - name: Start the build of the merged branch
+        if: steps.state.outputs.open == 'true'
         run: gh api -X POST "repos/$GITHUB_REPOSITORY/actions/workflows/build.yml/dispatches" -f ref="$BASE"

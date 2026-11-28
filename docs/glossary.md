@@ -42,6 +42,7 @@
 | Frameskipping | Dropping a presentation (render) when the machine cannot keep up, without dropping simulation computations. |
 | Frontend | Adapter to a runtime environment (AWT, OpenGL, Android...). On desktop, `platform-awt` implements `platform-api` (ADR-0008). |
 | Game loop | Mechanism that paces updates and rendering: fixed step, accumulator, catch-up, lag cap (ADR-0017). |
+| Grounded | The `Jumpable` flag telling that an object stands on solid ground: set by the tile push-out of `CollisionSystem` when a step pushed the object up out of a floor, cleared when it did not; the game may set it too (ADR-0030, ADR-0083). |
 | Headless | Execution without a window or real graphics device. |
 | Host | A process running the server and one ordinary client (its own player) connected in memory; no dedicated machine needed (ADR-0038). |
 | Inbox | Thread-safe bounded FIFO through which platform threads and workers hand events to the runtime thread, delivered at the start of an iteration; a `core` contract, so producers never depend on `runtime` (ADR-0018, ADR-0031, ADR-0040). |
@@ -61,6 +62,7 @@
 | Playlist | Predefined sequence of long sounds; the next starts when the current terminates (ADR-0004). |
 | Prediction | A client simulating its own player's objects immediately, before the server confirms; checked against the server's state and corrected by replay (ADR-0038). |
 | Presentation geometry | `PresentationGeometry` of `platform-api`: rectangle of the output surface, in device pixels, where the logical frame is presented, with the scale on each axis; computed by the platform from the effective scaling policy at a frame boundary, used by render backends and inverted by input adapters (ADR-0046). |
+| Push-out (tile) | The blocking response of objects to solid tiles: each step, `CollisionSystem` moves a non-trigger object with `Movable` out of the overlapping solid boxes of its `ShapeQuery`, X then Y, against its displacement, leaving it exactly touching (ADR-0030, ADR-0083). |
 | Provider | A resource source implementation (filesystem, archive, memory, Android assets, stream), searched in a configured order (ADR-0032). |
 | Proxy | On a client, a replicated object whose state comes only from snapshots; carries `NetProxy` and is never simulated locally (ADR-0038). |
 | Query | Cached view of the objects having all of a set of trait types and none of an exclusion set (ADR-0011). |

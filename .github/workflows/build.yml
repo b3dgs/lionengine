@@ -21,9 +21,13 @@ on:
 permissions:
   contents: read
 
+# A new push to a pull request cancels its build still running. The builds of a branch (push, or dispatch after a
+# merge) are never cancelled and have one group per commit: a group holds one running and one pending run, and a
+# third run cancels the pending one, so a shared group would still cancel a commit's build after three quick merges.
+# Every commit of rewrite/v11 thus gets one complete build.
 concurrency:
-  group: build-${{ github.ref }}
-  cancel-in-progress: true
+  group: build-${{ github.ref }}-${{ github.event_name == 'pull_request' && 'pull-request' || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   linux:
