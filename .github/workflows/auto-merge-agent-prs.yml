@@ -104,8 +104,10 @@ jobs:
         uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7
         with:
           path: ~/.m2/repository
-          key: maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: maven-
+          key: maven-${{ github.job }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            maven-${{ github.job }}-
+            maven-
 
       - name: Java
         if: steps.changes.outputs.build == 'true'
@@ -113,6 +115,13 @@ jobs:
         with:
           distribution: temurin
           java-version: 25
+
+      - name: Maven distribution cache (no download from Maven Central on a hit)
+        if: steps.changes.outputs.build == 'true'
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7
+        with:
+          path: ${{ runner.tool_cache }}/maven/3.9.14
+          key: maven-dist-3.9.14-${{ runner.os }}-${{ runner.arch }}
 
       - name: Maven
         id: maven
@@ -127,7 +136,19 @@ jobs:
         run: sleep 60
 
       - name: Maven (retry)
+        id: maven-retry
         if: steps.changes.outputs.build == 'true' && steps.maven.outcome == 'failure'
+        continue-on-error: true
+        uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
+        with:
+          maven-version: 3.9.14
+
+      - name: Wait longer before the last Maven download attempt
+        if: steps.changes.outputs.build == 'true' && steps.maven-retry.outcome == 'failure'
+        run: sleep 180
+
+      - name: Maven (last retry)
+        if: steps.changes.outputs.build == 'true' && steps.maven-retry.outcome == 'failure'
         uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
         with:
           maven-version: 3.9.14
