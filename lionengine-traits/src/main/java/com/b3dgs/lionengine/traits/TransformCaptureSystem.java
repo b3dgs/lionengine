@@ -85,11 +85,12 @@ public final class TransformCaptureSystem implements GameSystem
                                   TraitStorage<?>[] excluded)
     {
         MovementSystem.check(world, transformables, "Transformable");
+        MovementSystem.checkExcluded(excluded);
         this.transformables = transformables;
         captured = world.createQuery(new TraitStorage<?>[]
         {
             transformables
-        }, MovementSystem.checkExcluded(excluded));
+        }, excluded);
     }
 
     /**

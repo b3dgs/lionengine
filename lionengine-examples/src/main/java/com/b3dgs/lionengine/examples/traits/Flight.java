@@ -69,7 +69,7 @@ public final class Flight
     /** The rocket. */
     private final long rocket = world.create();
     /** The thrust system, kept to be removed or disabled by the game. */
-    private final GameSystem thrust = this::thrust;
+    private final GameSystem thrustSystem = this::thrust;
 
     /**
      * Creates the world, the two objects at the origin and the systems, and flushes.
@@ -83,7 +83,7 @@ public final class Flight
         place(rocket);
         movables.add(rocket).setMaxSpeed(ROCKET_MAX_SPEED);
         world.addSystem(new TransformCaptureSystem(world, transformables), TransformCaptureSystem.SLOT);
-        world.addSystem(thrust, THRUST_SLOT);
+        world.addSystem(thrustSystem, THRUST_SLOT);
         world.addSystem(new MovementSystem(world, transformables, movables), MovementSystem.SLOT);
         world.flush();
     }

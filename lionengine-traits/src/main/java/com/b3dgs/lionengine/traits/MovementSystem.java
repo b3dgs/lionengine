@@ -103,12 +103,13 @@ public final class MovementSystem implements GameSystem
     {
         check(world, transformables, "Transformable");
         check(world, movables, "Movable");
+        checkExcluded(excluded);
         this.transformables = transformables;
         this.movables = movables;
         moved = world.createQuery(new TraitStorage<?>[]
         {
             transformables, movables
-        }, checkExcluded(excluded));
+        }, excluded);
     }
 
     /**
@@ -135,16 +136,14 @@ public final class MovementSystem implements GameSystem
      * Checks the excluded set.
      *
      * @param excluded The excluded set.
-     * @return The excluded set.
      * @throws IllegalArgumentException If the excluded set is {@code null}.
      */
-    static TraitStorage<?>[] checkExcluded(TraitStorage<?>[] excluded)
+    static void checkExcluded(TraitStorage<?>[] excluded)
     {
         if (excluded == null)
         {
             throw new IllegalArgumentException("Excluded trait types are null");
         }
-        return excluded;
     }
 
     /**
