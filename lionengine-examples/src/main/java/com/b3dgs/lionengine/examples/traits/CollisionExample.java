@@ -74,10 +74,10 @@ public final class CollisionExample
                 log.log(LogLevel.INFO, "Exit, higher ID:", objectB);
             }
         });
-        for (int step = 0; step < STEPS; step++)
+        for (int step = 1; step <= STEPS; step++)
         {
             arena.step();
-            log.log(LogLevel.INFO, "Step:", step + 1);
+            log.log(LogLevel.INFO, "Step:", step);
         }
         return arena;
     }

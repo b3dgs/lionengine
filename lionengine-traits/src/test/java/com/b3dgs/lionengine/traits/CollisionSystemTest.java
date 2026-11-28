@@ -549,7 +549,7 @@ final class CollisionSystemTest
                 }
             }
         }
-        pairs.sort((p, q) -> p[0] != q[0] ? Long.compare(p[0], q[0]) : Long.compare(p[1], q[1]));
+        pairs.sort((p, q) -> p[0] == q[0] ? Long.compare(p[1], q[1]) : Long.compare(p[0], q[0]));
         final List<String> texts = new ArrayList<>();
         for (final long[] pair : pairs)
         {
