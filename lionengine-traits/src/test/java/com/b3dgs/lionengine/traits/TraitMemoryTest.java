@@ -30,10 +30,10 @@ import com.sun.management.ThreadMXBean;
 
 /**
  * Bytes per instance of the standard traits, documented in their Javadoc (REQ-STD-007, ADR-0034, ADR-0079,
- * ADR-0080).
+ * ADR-0080, ADR-0081).
  *
  * <p>
- * Measured as the {@code ecs} benchmark measures its stand-ins ({@code StepBenchmarkTest}): the bytes allocated on this
+ * Measured as the benchmark measures the traits ({@code StepBenchmarkTest}): the bytes allocated on this
  * thread by creating many instances with the trait type, divided by their number (the object header and the fields,
  * as laid out by this JVM). The documented value is the one of the desktop JVM with its default layout; a JVM with a
  * smaller layout (compact object headers) measures less, so the test asserts the documented value as an upper bound
@@ -46,26 +46,38 @@ final class TraitMemoryTest
     private static final double TRANSFORMABLE_BYTES = 64.0;
     /** Bytes per {@link Movable}, as documented. */
     private static final double MOVABLE_BYTES = 40.0;
+    /** Bytes per {@link Gravity}, as documented. */
+    private static final double GRAVITY_BYTES = 32.0;
+    /** Bytes per {@link Lifetime}, as documented. */
+    private static final double LIFETIME_BYTES = 24.0;
     /** Instances created per measure. */
     private static final int INSTANCES = 10_000;
 
     /**
-     * Each standard trait of the batch takes at most its documented bytes per instance.
+     * Each standard trait takes at most its documented bytes per instance.
      */
     @Test
     void testBytesPerInstance()
     {
         bytesPerInstance(Transformable.TYPE);
         bytesPerInstance(Movable.TYPE);
+        bytesPerInstance(Gravity.TYPE);
+        bytesPerInstance(Lifetime.TYPE);
         final double transformable = bytesPerInstance(Transformable.TYPE);
         final double movable = bytesPerInstance(Movable.TYPE);
+        final double gravity = bytesPerInstance(Gravity.TYPE);
+        final double lifetime = bytesPerInstance(Lifetime.TYPE);
         final Log log = new Log();
         log.setLevel(LogLevel.INFO);
         log.log(LogLevel.INFO, "Transformable bytes per instance:", transformable);
         log.log(LogLevel.INFO, "Movable bytes per instance:", movable);
+        log.log(LogLevel.INFO, "Gravity bytes per instance:", gravity);
+        log.log(LogLevel.INFO, "Lifetime bytes per instance:", lifetime);
 
         assertTrue(Math.round(transformable) <= TRANSFORMABLE_BYTES, () -> "Transformable: " + transformable);
         assertTrue(Math.round(movable) <= MOVABLE_BYTES, () -> "Movable: " + movable);
+        assertTrue(Math.round(gravity) <= GRAVITY_BYTES, () -> "Gravity: " + gravity);
+        assertTrue(Math.round(lifetime) <= LIFETIME_BYTES, () -> "Lifetime: " + lifetime);
     }
 
     /**

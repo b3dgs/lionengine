@@ -197,7 +197,7 @@
             </properties>
         </profile>
         <!-- Runs only the benchmarks (tag "benchmark", docs/testing.md, ADR-0079) and asserts their time budgets: the
-             non-blocking trend job of the CI, or a desktop (mvn -B -pl lionengine-ecs -am verify -Pbenchmark). -->
+             non-blocking trend job of the CI, or a desktop (mvn -B -pl lionengine-traits -am verify -Pbenchmark). -->
         <profile>
             <id>benchmark</id>
             <properties>

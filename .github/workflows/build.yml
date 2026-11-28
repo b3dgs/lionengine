@@ -257,18 +257,18 @@ jobs:
           maven-version: 3.9.14
 
       - name: Benchmarks with their time budgets
-        run: mvn -B -ntp -pl lionengine-ecs -am verify -Pbenchmark
+        run: mvn -B -ntp -pl lionengine-traits -am verify -Pbenchmark
 
       - name: Report in the job summary
         if: always()
-        run: cat lionengine-ecs/target/benchmark-reports/*.md >> "$GITHUB_STEP_SUMMARY" || true
+        run: cat lionengine-traits/target/benchmark-reports/*.md >> "$GITHUB_STEP_SUMMARY" || true
 
       - name: Upload the benchmark reports
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
         with:
           name: benchmark-reports
-          path: lionengine-ecs/target/benchmark-reports/
+          path: lionengine-traits/target/benchmark-reports/
           if-no-files-found: ignore
 
   sonar:

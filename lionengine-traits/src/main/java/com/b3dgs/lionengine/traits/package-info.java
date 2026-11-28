@@ -16,7 +16,7 @@
  */
 
 /**
- * Standard traits and systems (REQ-STD-001 to REQ-STD-011, ADR-0011, ADR-0034, ADR-0080).
+ * Standard traits and systems (REQ-STD-001 to REQ-STD-011, ADR-0011, ADR-0034, ADR-0080, ADR-0081).
  *
  * <p>
  * Traits are data only, in world units ({@code double} meters, meters per second, seconds; Y up); systems implement
@@ -30,11 +30,17 @@
  * step;</li>
  * <li>{@link com.b3dgs.lionengine.traits.Movable} (velocity, maximum speed) and
  * {@link com.b3dgs.lionengine.traits.MovementSystem} (slot 3000), which clamps the speed and integrates the
- * velocity.</li>
+ * velocity;</li>
+ * <li>{@link com.b3dgs.lionengine.traits.Gravity} (vertical acceleration, terminal velocity) and
+ * {@link com.b3dgs.lionengine.traits.GravitySystem} (slot 2000), which accelerates the velocity of a
+ * {@link com.b3dgs.lionengine.traits.Movable};</li>
+ * <li>{@link com.b3dgs.lionengine.traits.Lifetime} (remaining duration) and
+ * {@link com.b3dgs.lionengine.traits.LifetimeSystem} (slot 5000), which removes the object when it expires, at the
+ * flush.</li>
  * </ul>
  *
  * <p>
- * Gravity, jump, collision and lifetime come with the next batches of {@code features/standard-traits.md}. Runtime
+ * Jump and collision come with the next batches of {@code features/standard-traits.md}. Runtime
  * thread only.
  * </p>
  */
