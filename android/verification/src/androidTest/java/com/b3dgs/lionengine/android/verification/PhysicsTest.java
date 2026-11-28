@@ -35,20 +35,27 @@ import com.b3dgs.lionengine.ecs.TraitStorage;
 import com.b3dgs.lionengine.ecs.World;
 import com.b3dgs.lionengine.physics.Box;
 import com.b3dgs.lionengine.physics.BroadPhase;
+import com.b3dgs.lionengine.physics.ShapeQuery;
 import com.b3dgs.lionengine.traits.Collidable;
 import com.b3dgs.lionengine.traits.CollisionListener;
 import com.b3dgs.lionengine.traits.CollisionSystem;
+import com.b3dgs.lionengine.traits.Gravity;
+import com.b3dgs.lionengine.traits.GravitySystem;
+import com.b3dgs.lionengine.traits.Jumpable;
 import com.b3dgs.lionengine.traits.Movable;
 import com.b3dgs.lionengine.traits.MovementSystem;
+import com.b3dgs.lionengine.traits.TransformCaptureSystem;
 import com.b3dgs.lionengine.traits.Transformable;
 
 /**
  * Runs {@code physics} and the collision of {@code traits} on Android API 21 (ADR-0044): the strict box overlap, the
  * broad phase against a brute-force comparison on seeded random boxes, the reset state of {@code Collidable}, the
  * layer and mask rule both ways, and the enter and exit events of two objects meeting at steps of 1/30, 1/60 and
- * 1/120 s, exits before enters, with an exit when an object is removed. Expected values are the ones of the JVM tests
- * of {@code lionengine-physics} and {@code lionengine-traits} (BoxTest, BroadPhaseTest, CollidableTest,
- * CollisionSystemTest).
+ * 1/120 s, exits before enters, with an exit when an object is removed; the tile push-out on a floor, a wall and a
+ * ceiling with the grounded flag of {@code Jumpable} at the same step durations, and the reset state of
+ * {@code Jumpable}. Expected values are the ones of the JVM tests of {@code lionengine-physics} and
+ * {@code lionengine-traits} (BoxTest, BroadPhaseTest, CollidableTest, CollisionSystemTest, TileCollisionTest,
+ * JumpableTest).
  */
 @RunWith(AndroidJUnit4.class)
 public final class PhysicsTest
@@ -262,6 +269,124 @@ public final class PhysicsTest
             assertTrue(events.get(2).startsWith("enter"));
             assertTrue(events.get(3).startsWith("exit"));
             assertEquals(0, collision.getPairCount());
+        }
+    }
+
+    /**
+     * A new or reset jumpable has no impulse, is not grounded, has a coyote time and a jump buffer of 0.1 s, a cut
+     * factor of 0.5 and no variable height; invalid values are refused (JumpableTest).
+     */
+    @Test
+    public void testJumpableResetState()
+    {
+        final Jumpable jumpable = Jumpable.TYPE.create();
+        jumpable.setImpulse(7.5);
+        jumpable.setGrounded(true);
+        jumpable.setCoyoteTime(0.2);
+        jumpable.setCutFactor(1.0);
+        jumpable.setVariableHeight(true);
+        Jumpable.TYPE.reset(jumpable);
+
+        assertEquals(0.0, jumpable.getImpulse(), 0.0);
+        assertFalse(jumpable.isGrounded());
+        assertEquals(0.1, jumpable.getCoyoteTime(), 0.0);
+        assertEquals(0.1, jumpable.getJumpBuffer(), 0.0);
+        assertEquals(0.5, jumpable.getCutFactor(), 0.0);
+        assertFalse(jumpable.isVariableHeight());
+        assertThrows(IllegalArgumentException.class, () -> jumpable.setImpulse(-1.0));
+        assertThrows(IllegalArgumentException.class, () -> jumpable.setCutFactor(1.5));
+    }
+
+    /**
+     * At every step duration, an object falling under gravity lands exactly on a tile floor, grounded, its vertical
+     * velocity zeroed; walking right it is stopped exactly by a wall, its horizontal velocity zeroed; moving up it is
+     * stopped exactly under a ceiling, not grounded (TileCollisionTest).
+     */
+    @Test
+    public void testTilePushOut()
+    {
+        final Box[] tiles = new Box[19];
+        for (int i = 0; i < 16; i++)
+        {
+            tiles[i] = new Box(i + 0.5, 0.5, 1.0, 1.0);
+        }
+        tiles[16] = new Box(10.5, 1.5, 1.0, 1.0);
+        tiles[17] = new Box(10.5, 2.5, 1.0, 1.0);
+        tiles[18] = new Box(4.5, 6.5, 4.0, 1.0);
+        final ShapeQuery ground = new ShapeQuery()
+        {
+            @Override
+            public int query(Box area, Box[] results)
+            {
+                int count = 0;
+                for (final Box tile : tiles)
+                {
+                    if (tile.overlaps(area))
+                    {
+                        if (count < results.length)
+                        {
+                            results[count].set(tile);
+                        }
+                        count++;
+                    }
+                }
+                return count;
+            }
+        };
+        final int[] rates = {30, 60, 120};
+        for (final int rate : rates)
+        {
+            final double step = 1.0 / rate;
+            final World world = new World();
+            final TraitStorage<Transformable> transformables = world.register(Transformable.TYPE);
+            final TraitStorage<Movable> movables = world.register(Movable.TYPE);
+            final TraitStorage<Gravity> gravities = world.register(Gravity.TYPE);
+            final TraitStorage<Collidable> collidables = world.register(Collidable.TYPE);
+            final TraitStorage<Jumpable> jumpables = world.register(Jumpable.TYPE);
+            world.addSystem(new TransformCaptureSystem(world, transformables), TransformCaptureSystem.SLOT);
+            world.addSystem(new GravitySystem(world, movables, gravities), GravitySystem.SLOT);
+            world.addSystem(new MovementSystem(world, transformables, movables), MovementSystem.SLOT);
+            world.addSystem(new CollisionSystem(world, transformables, collidables, movables, jumpables, ground),
+                            CollisionSystem.SLOT);
+            final long walker = world.create();
+            final Transformable transformable = transformables.add(walker);
+            transformable.setPosition(2.5, 3.0);
+            transformable.setPreviousPosition(2.5, 3.0);
+            movables.add(walker);
+            gravities.add(walker).setAcceleration(-9.81);
+            collidables.add(walker).setSize(0.5, 0.5);
+            jumpables.add(walker);
+            final long climber = world.create();
+            final Transformable climbing = transformables.add(climber);
+            climbing.setPosition(4.5, 5.0);
+            climbing.setPreviousPosition(4.5, 5.0);
+            movables.add(climber).setVelocity(0.0, 6.0);
+            collidables.add(climber).setSize(0.5, 0.5);
+            jumpables.add(climber).setGrounded(true);
+            world.flush();
+
+            for (int i = 0; i < rate * 2; i++)
+            {
+                world.update(step);
+            }
+
+            assertEquals(1.25, transformable.getY(), 0.0);
+            assertEquals(0.0, movables.get(walker).getVelocityY(), 0.0);
+            assertTrue(jumpables.get(walker).isGrounded());
+            assertEquals(5.75, climbing.getY(), 0.0);
+            assertEquals(0.0, movables.get(climber).getVelocityY(), 0.0);
+            assertFalse(jumpables.get(climber).isGrounded());
+
+            movables.get(walker).setVelocity(2.0, 0.0);
+            for (int i = 0; i < rate * 5; i++)
+            {
+                world.update(step);
+            }
+
+            assertEquals(9.75, transformable.getX(), 0.0);
+            assertEquals(1.25, transformable.getY(), 0.0);
+            assertEquals(0.0, movables.get(walker).getVelocityX(), 0.0);
+            assertTrue(jumpables.get(walker).isGrounded());
         }
     }
 }

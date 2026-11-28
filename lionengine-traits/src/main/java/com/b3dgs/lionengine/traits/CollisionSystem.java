@@ -23,15 +23,47 @@ import com.b3dgs.lionengine.ecs.TraitStorage;
 import com.b3dgs.lionengine.ecs.World;
 import com.b3dgs.lionengine.physics.Box;
 import com.b3dgs.lionengine.physics.BroadPhase;
+import com.b3dgs.lionengine.physics.ShapeQuery;
 
 /**
- * Standard system {@code Collision}: finds the objects whose boxes overlap and reports the pairs that start and stop
- * overlapping (REQ-STD-005, REQ-STD-008, REQ-STD-010, REQ-STD-011, ADR-0011, ADR-0021, ADR-0030, ADR-0034,
- * ADR-0082).
+ * Standard system {@code Collision}: pushes the objects out of the solid tiles, then finds the objects whose boxes
+ * overlap and reports the pairs that start and stop overlapping (REQ-STD-005, REQ-STD-008, REQ-STD-010, REQ-STD-011,
+ * REQ-MAP-008, ADR-0011, ADR-0021, ADR-0028, ADR-0030, ADR-0034, ADR-0082, ADR-0083).
  *
  * <p>
- * At each step, for the objects having a {@link Transformable} and a {@link Collidable} and none of the excluded trait
- * types:
+ * Tiles (ADR-0083): a system created with the storages of {@link Movable} and {@link Jumpable} pushes objects out of
+ * the solid shapes of its {@link ShapeQuery} (the solid tiles of a map, given at construction or by
+ * {@link #setShapeQuery(ShapeQuery)}; none by default), first at each step, before the object detection, so the pairs
+ * are those of the pushed positions. The pushed objects are the non-trigger ones having a {@link Transformable}, a
+ * {@link Collidable} and a {@link Movable} and none of the excluded trait types ({@link #getTileQuery()}): triggers are
+ * never pushed out, and an object without {@link Movable} is not pushed. Every pushed object collides with the tiles,
+ * whatever its layer and mask. For each one, its displacement of the step being measured from its previous position
+ * (captured by {@link TransformCaptureSystem} at the step start):
+ * </p>
+ * <ol>
+ * <li>X pass: its box at {@code (x, previousY)}; moving right, it is put at the left of the leftmost overlapping shape,
+ * moving left at the right of the rightmost one;</li>
+ * <li>Y pass: its box at the resolved X and {@code y}; moving down, it is put on the highest overlapping shape, moving
+ * up under the lowest one;</li>
+ * <li>an axis without displacement has no pass; a velocity component pointing into a shape that stopped the object is
+ * set to {@code 0};</li>
+ * <li>the {@link Jumpable} of the object, if it has one, is grounded if and only if the Y pass pushed it up (a contact
+ * below); with no shape query, the flags are not written.</li>
+ * </ol>
+ *
+ * <p>
+ * A pushed box ends exactly touching the shape, never overlapping it. Since boxes that only touch do not overlap, a
+ * resting object is grounded at each step only while something moves it down into the floor, such as a {@link Gravity};
+ * an object resting without displacement is not grounded. The X pass at the previous Y keeps an object walking on a
+ * floor of several tiles from catching on their seams, and a falling object reaching the corner of a wall lands on it.
+ * No event reports a tile contact. No swept detection: the displacement per step must stay under half of the smallest
+ * box, the object's and the tile's (for a tile of 1 m, 0.5 m per step, 30 m/s at a step of 1/60 s), or the object can
+ * pass through a tile or be pushed out on the wrong side.
+ * </p>
+ *
+ * <p>
+ * Objects: for the objects having a {@link Transformable} and a {@link Collidable} and none of the excluded trait
+ * types, after the push-out:
  * </p>
  * <ol>
  * <li>builds the box of each object, centered on {@code (x + offsetX, y + offsetY)} with the size of its
@@ -49,16 +81,18 @@ import com.b3dgs.lionengine.physics.BroadPhase;
  * </ol>
  *
  * <p>
- * Object versus object is detection only (ADR-0030): no object is moved or stopped, trigger or not, and every
- * accepted pair is reported, triggers included; the game reacts in its listeners or in systems between 4000 and 5000.
+ * Object versus object is detection only (ADR-0030): no object is moved or stopped by another, trigger or not, and
+ * every accepted pair is reported, triggers included; the game reacts in its listeners or in systems between 4000 and
+ * 5000.
  * No swept detection: an object moving more than half of the smallest box per step can pass through another one
  * unseen; the {@link Movable} speed clamp keeps the displacement bounded (ADR-0030, decision 6).
  * </p>
  *
  * <p>
- * Units: meters. Determinism: the pairs and the events depend only on the boxes, layers, masks and IDs, never on the
- * iteration order of the query, rendering or a frontend; they are the same on every platform (exact {@code double}
- * comparisons, sort by ID).
+ * Units: meters. Determinism: the pushed positions depend only on each object and the shapes (each object is pushed
+ * alone), the pairs and the events only on the boxes, layers, masks and IDs, never on the iteration order of the
+ * query, rendering or a frontend; they are the same on every platform (exact {@code double} comparisons, sort by
+ * ID).
  * </p>
  *
  * <p>
@@ -69,9 +103,11 @@ import com.b3dgs.lionengine.physics.BroadPhase;
  * <p>
  * Preconditions: the storages are the ones {@link World#register(com.b3dgs.lionengine.ecs.TraitType)} returned in the
  * given world; the system is added to that world only, once, with {@link World#addSystem(GameSystem, int)} and
- * {@link #SLOT}; the positions, sizes and offsets are finite. It creates one query and one broad phase at construction
- * and allocates nothing per step once its capacities fit the busiest step: they start at the trait capacity of the
- * world for the objects and the pairs and double when a step needs more, a warm-up cost. Runtime thread only.
+ * {@link #SLOT}; the positions, sizes and offsets are finite. It creates one query (two with the tiles) and one broad
+ * phase at construction and allocates nothing per step once its capacities fit the busiest step: they start at the
+ * trait capacity of the world for the objects and the pairs and double when a step needs more, and the tile buffer
+ * starts empty and grows to {@code max(count, 2 * length)} boxes when a query finds more shapes, a warm-up cost.
+ * Runtime thread only.
  * </p>
  *
  * @since 11.0.0
@@ -100,6 +136,8 @@ public final class CollisionSystem implements GameSystem
     private PairList pairs;
     /** The pairs being found. */
     private PairList found;
+    /** The tile push-out, {@code null} without the tile storages. */
+    private final TilePushOut pushOut;
     /** The listeners, in registration order, replaced on each change. */
     private CollisionListener[] listeners = NO_LISTENERS;
 
@@ -160,7 +198,95 @@ public final class CollisionSystem implements GameSystem
                            double cellSize,
                            TraitStorage<?>[] excluded)
     {
+        this(world, transformables, collidables, null, null, cellSize, excluded, false);
+    }
+
+    /**
+     * Creates the system pushing the objects out of the solid shapes of a query, with the default cell size and without
+     * excluded trait type (ADR-0083).
+     *
+     * @param world The world the system is added to.
+     * @param transformables The storage of {@link Transformable#TYPE} in the world.
+     * @param collidables The storage of {@link Collidable#TYPE} in the world.
+     * @param movables The storage of {@link Movable#TYPE} in the world.
+     * @param jumpables The storage of {@link Jumpable#TYPE} in the world, whose grounded flags the push-out writes.
+     * @param tiles The solid shapes, for example the solid tiles of a map; {@code null} for none until
+     *            {@link #setShapeQuery(ShapeQuery)}.
+     * @throws IllegalArgumentException If a storage or the world is {@code null}, or a storage belongs to another
+     *             world.
+     * @throws IllegalStateException If called during a flush, or if the world failed.
+     */
+    public CollisionSystem(World world,
+                           TraitStorage<Transformable> transformables,
+                           TraitStorage<Collidable> collidables,
+                           TraitStorage<Movable> movables,
+                           TraitStorage<Jumpable> jumpables,
+                           ShapeQuery tiles)
+    {
+        this(world, transformables, collidables, movables, jumpables, BroadPhase.DEFAULT_CELL_SIZE,
+             MovementSystem.NO_EXCLUDED);
+        pushOut.setShapeQuery(tiles);
+    }
+
+    /**
+     * Creates the system pushing the objects out of solid shapes, with the cell size of its world, skipping the
+     * objects that carry any of the excluded trait types (REQ-STD-011, ADR-0083); the shapes are set by
+     * {@link #setShapeQuery(ShapeQuery)}, none until then.
+     *
+     * @param world The world the system is added to.
+     * @param transformables The storage of {@link Transformable#TYPE} in the world.
+     * @param collidables The storage of {@link Collidable#TYPE} in the world.
+     * @param movables The storage of {@link Movable#TYPE} in the world.
+     * @param jumpables The storage of {@link Jumpable#TYPE} in the world, whose grounded flags the push-out writes.
+     * @param cellSize The cell size of the broad phase, in meters, positive and finite
+     *            ({@link BroadPhase#DEFAULT_CELL_SIZE} by default).
+     * @param excluded The storages of the excluded trait types in the world, possibly none, applied to the object
+     *            detection and to the push-out; the array is not kept.
+     * @throws IllegalArgumentException If an argument is {@code null}, the cell size is not positive and finite, the
+     *             excluded set contains {@code null}, {@code transformables}, {@code collidables} or {@code movables},
+     *             or a storage belongs to another world.
+     * @throws IllegalStateException If called during a flush, or if the world failed.
+     */
+    public CollisionSystem(World world,
+                           TraitStorage<Transformable> transformables,
+                           TraitStorage<Collidable> collidables,
+                           TraitStorage<Movable> movables,
+                           TraitStorage<Jumpable> jumpables,
+                           double cellSize,
+                           TraitStorage<?>[] excluded)
+    {
+        this(world, transformables, collidables, movables, jumpables, cellSize, excluded, true);
+    }
+
+    /**
+     * Creates the system.
+     *
+     * @param world The world the system is added to.
+     * @param transformables The storage of {@link Transformable#TYPE} in the world.
+     * @param collidables The storage of {@link Collidable#TYPE} in the world.
+     * @param movables The storage of {@link Movable#TYPE} in the world, used with the tiles only.
+     * @param jumpables The storage of {@link Jumpable#TYPE} in the world, used with the tiles only.
+     * @param cellSize The cell size of the broad phase, in meters, positive and finite.
+     * @param excluded The storages of the excluded trait types in the world, possibly none; the array is not kept.
+     * @param withTiles {@code true} to push the objects out of the solid shapes.
+     * @throws IllegalArgumentException If an argument is invalid.
+     * @throws IllegalStateException If called during a flush, or if the world failed.
+     */
+    private CollisionSystem(World world,
+                            TraitStorage<Transformable> transformables,
+                            TraitStorage<Collidable> collidables,
+                            TraitStorage<Movable> movables,
+                            TraitStorage<Jumpable> jumpables,
+                            double cellSize,
+                            TraitStorage<?>[] excluded,
+                            boolean withTiles)
+    {
         MovementSystem.check(world, transformables, "Transformable");
+        if (withTiles)
+        {
+            MovementSystem.check(world, movables, "Movable");
+            MovementSystem.check(world, jumpables, "Jumpable");
+        }
         MovementSystem.check(world, collidables, "Collidable");
         MovementSystem.checkExcluded(excluded);
         final int capacity = Math.max(collidables.getCapacity(), 1);
@@ -174,6 +300,14 @@ public final class CollisionSystem implements GameSystem
         ids = new long[capacity];
         pairs = new PairList(capacity);
         found = new PairList(capacity);
+        if (withTiles)
+        {
+            pushOut = new TilePushOut(world, transformables, collidables, movables, jumpables, excluded);
+        }
+        else
+        {
+            pushOut = null;
+        }
     }
 
     /**
@@ -184,6 +318,43 @@ public final class CollisionSystem implements GameSystem
     public Query getQuery()
     {
         return colliding;
+    }
+
+    /**
+     * Returns the objects pushed out of the solid shapes.
+     *
+     * @return The query of the objects having a {@link Transformable}, a {@link Collidable}, a {@link Movable} and no
+     *         excluded trait; the triggers among them are not pushed.
+     * @throws IllegalStateException If the system was created without the tile storages.
+     */
+    public Query getTileQuery()
+    {
+        return checkTiles().getQuery();
+    }
+
+    /**
+     * Returns the solid shapes the objects are pushed out of.
+     *
+     * @return The shape query, {@code null} for none.
+     * @throws IllegalStateException If the system was created without the tile storages.
+     */
+    public ShapeQuery getShapeQuery()
+    {
+        return checkTiles().getShapeQuery();
+    }
+
+    /**
+     * Sets the solid shapes the objects are pushed out of, for example the solid tiles of the map of a new level; used
+     * from the next step of the system. One query per world: a game with several maps gives a query of its own that
+     * queries each of them.
+     *
+     * @param tiles The shape query, kept; {@code null} for none (the objects are not pushed and their grounded flags
+     *            not written).
+     * @throws IllegalStateException If the system was created without the tile storages.
+     */
+    public void setShapeQuery(ShapeQuery tiles)
+    {
+        checkTiles().setShapeQuery(tiles);
     }
 
     /**
@@ -271,15 +442,20 @@ public final class CollisionSystem implements GameSystem
     }
 
     /**
-     * Finds the overlapping pairs and reports the exits, then the enters, to the listeners.
+     * Pushes the objects out of the solid shapes, if any, then finds the overlapping pairs and reports the exits, then
+     * the enters, to the listeners.
      *
-     * @param stepSeconds The constant step, in seconds, positive and finite (ADR-0017); not used, the boxes being those
-     *            of the positions moved before.
+     * @param stepSeconds The constant step, in seconds, positive and finite (ADR-0017); not used, the displacements and
+     *            boxes being those of the positions moved before.
      * @throws IllegalArgumentException If the position of a colliding object is not finite.
      */
     @Override
     public void update(double stepSeconds)
     {
+        if (pushOut != null)
+        {
+            pushOut.update();
+        }
         addBoxes();
         final int candidates = broadPhase.findPairs();
         found.clear();
@@ -366,6 +542,21 @@ public final class CollisionSystem implements GameSystem
                 listener.onExit(objectA, objectB);
             }
         }
+    }
+
+    /**
+     * Returns the tile push-out.
+     *
+     * @return The push-out.
+     * @throws IllegalStateException If the system was created without the tile storages.
+     */
+    private TilePushOut checkTiles()
+    {
+        if (pushOut == null)
+        {
+            throw new IllegalStateException("Collision system created without the tile storages");
+        }
+        return pushOut;
     }
 
     /**

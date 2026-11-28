@@ -52,6 +52,8 @@ final class TraitMemoryTest
     private static final double LIFETIME_BYTES = 24.0;
     /** Bytes per {@link Collidable}, as documented. */
     private static final double COLLIDABLE_BYTES = 56.0;
+    /** Bytes per {@link Jumpable}, as documented. */
+    private static final double JUMPABLE_BYTES = 48.0;
     /** Instances created per measure. */
     private static final int INSTANCES = 10_000;
 
@@ -66,11 +68,13 @@ final class TraitMemoryTest
         bytesPerInstance(Gravity.TYPE);
         bytesPerInstance(Lifetime.TYPE);
         bytesPerInstance(Collidable.TYPE);
+        bytesPerInstance(Jumpable.TYPE);
         final double transformable = bytesPerInstance(Transformable.TYPE);
         final double movable = bytesPerInstance(Movable.TYPE);
         final double gravity = bytesPerInstance(Gravity.TYPE);
         final double lifetime = bytesPerInstance(Lifetime.TYPE);
         final double collidable = bytesPerInstance(Collidable.TYPE);
+        final double jumpable = bytesPerInstance(Jumpable.TYPE);
         final Log log = new Log();
         log.setLevel(LogLevel.INFO);
         log.log(LogLevel.INFO, "Transformable bytes per instance:", transformable);
@@ -78,12 +82,14 @@ final class TraitMemoryTest
         log.log(LogLevel.INFO, "Gravity bytes per instance:", gravity);
         log.log(LogLevel.INFO, "Lifetime bytes per instance:", lifetime);
         log.log(LogLevel.INFO, "Collidable bytes per instance:", collidable);
+        log.log(LogLevel.INFO, "Jumpable bytes per instance:", jumpable);
 
         assertTrue(Math.round(transformable) <= TRANSFORMABLE_BYTES, () -> "Transformable: " + transformable);
         assertTrue(Math.round(movable) <= MOVABLE_BYTES, () -> "Movable: " + movable);
         assertTrue(Math.round(gravity) <= GRAVITY_BYTES, () -> "Gravity: " + gravity);
         assertTrue(Math.round(lifetime) <= LIFETIME_BYTES, () -> "Lifetime: " + lifetime);
         assertTrue(Math.round(collidable) <= COLLIDABLE_BYTES, () -> "Collidable: " + collidable);
+        assertTrue(Math.round(jumpable) <= JUMPABLE_BYTES, () -> "Jumpable: " + jumpable);
     }
 
     /**
