@@ -40,7 +40,8 @@ import com.sun.management.ThreadMXBean;
 /**
  * The wall-clock benchmark of REQ-ECS-009 (ADR-0030, decision 3; ADR-0034; ADR-0079): the median and percentiles of
  * the step of 1,000 objects with the 4 standard traits and their five systems, and of 10,000 objects for the scaling,
- * with the bytes per standard trait instance and the bytes allocated to build the world (REQ-PERF-001, ADR-0081).
+ * with the bytes per standard trait instance and the bytes allocated to build the world (REQ-PERF-001, ADR-0081),
+ * and the collision step of {@link CollisionBenchmarkWorld} at both populations, reported only (ADR-0082).
  *
  * <p>
  * Tagged {@value #TAG}: the blocking build leaves it out; the {@code benchmark} profile runs it, in the non-blocking
@@ -89,6 +90,18 @@ final class StepBenchmarkTest
         final BenchmarkWorld large = new BenchmarkWorld(SCALING_OBJECTS);
         large.populate();
         final StepStatistics scaling = StepHarness.measure(large.getWorld(), BenchmarkWorld.STEP, WARMUP, STEPS);
+        final CollisionBenchmarkWorld colliding = new CollisionBenchmarkWorld(OBJECTS);
+        colliding.populate();
+        final StepStatistics collision = StepHarness.measure(colliding.getWorld(),
+                                                             CollisionBenchmarkWorld.STEP,
+                                                             WARMUP,
+                                                             STEPS);
+        final CollisionBenchmarkWorld largeColliding = new CollisionBenchmarkWorld(SCALING_OBJECTS);
+        largeColliding.populate();
+        final StepStatistics collisionScaling = StepHarness.measure(largeColliding.getWorld(),
+                                                                    CollisionBenchmarkWorld.STEP,
+                                                                    WARMUP,
+                                                                    STEPS);
 
         final StringBuilder report = new StringBuilder(1024);
         report.append("## ECS step benchmark (REQ-ECS-009)\n\n")
@@ -129,7 +142,19 @@ final class StepBenchmarkTest
         }
         report.append("| World of 1,000 objects × 4 traits, allocated to build and populate it | ")
               .append(worldBytes)
-              .append(" |\n");
+              .append(" |\n")
+              .append("| Collidable, per instance | ")
+              .append(format(bytesPerInstance(new CountingType<>(Collidable.TYPE))))
+              .append(" |\n\n## Collision step (REQ-STD-005, ADR-0082)\n\n")
+              .append("Moving squares of 0.5 m bouncing in an area of 4 m² per object, with the capture, Movement, a")
+              .append(" bounce and Collision systems (default cell of 2 m); reported, not asserted.\n\n")
+              .append("| Objects | Median (µs) | p90 (µs) | p99 (µs) | Max (µs) | Mean (µs) | Pairs |\n")
+              .append("|---|---|---|---|---|---|---|\n");
+        collisionRow(report, OBJECTS, collision, colliding.getCollision().getPairCount());
+        collisionRow(report, SCALING_OBJECTS, collisionScaling, largeColliding.getCollision().getPairCount());
+        report.append("\nMedian ratio 10,000 / 1,000: ")
+              .append(format(collisionScaling.median() / collision.median()))
+              .append(".\n");
         final String text = report.toString();
         final Path path = Path.of(REPORT);
         Files.createDirectories(path.getParent());
@@ -168,6 +193,33 @@ final class StepBenchmarkTest
               .append(format(statistics.max() / MICROS))
               .append(" | ")
               .append(format(statistics.mean() / MICROS))
+              .append(" |\n");
+    }
+
+    /**
+     * Appends a result row of the collision scene.
+     *
+     * @param report The report.
+     * @param objects The population.
+     * @param statistics The statistics.
+     * @param pairs The overlapping pairs at the last step.
+     */
+    private static void collisionRow(StringBuilder report, int objects, StepStatistics statistics, int pairs)
+    {
+        report.append("| ")
+              .append(String.format(Locale.ROOT, "%,d", objects))
+              .append(" | ")
+              .append(format(statistics.median() / MICROS))
+              .append(" | ")
+              .append(format(statistics.p90() / MICROS))
+              .append(" | ")
+              .append(format(statistics.p99() / MICROS))
+              .append(" | ")
+              .append(format(statistics.max() / MICROS))
+              .append(" | ")
+              .append(format(statistics.mean() / MICROS))
+              .append(" | ")
+              .append(pairs)
               .append(" |\n");
     }
 

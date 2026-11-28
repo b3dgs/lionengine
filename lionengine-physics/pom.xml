@@ -14,9 +14,6 @@
     <description>Headless collision contracts</description>
     <properties>
         <radial.base-package>com.b3dgs.lionengine.physics</radial.base-package>
-        <!-- No public type yet: javadoc refuses an empty module. The batch that adds the first public type
-             removes this property (REQ-CORE-003). -->
-        <maven.javadoc.skip>true</maven.javadoc.skip>
     </properties>
     <dependencies>
         <dependency>
