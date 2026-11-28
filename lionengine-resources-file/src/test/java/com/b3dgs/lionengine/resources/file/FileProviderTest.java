@@ -98,11 +98,9 @@ final class FileProviderTest extends ResourceProviderContract
 
     /**
      * A file that resolves outside the root through a symbolic link is present but refused.
-     *
-     * @throws IOException If the link cannot be created.
      */
     @Test
-    void testLinkOutsideRootRefused() throws IOException
+    void testLinkOutsideRootRefused()
     {
         final File outside = new File(folder, "secret.bin");
         write(outside, new byte[]
@@ -122,11 +120,9 @@ final class FileProviderTest extends ResourceProviderContract
 
     /**
      * A link that stays under the root is followed.
-     *
-     * @throws IOException If the link cannot be created.
      */
     @Test
-    void testLinkInsideRootFollowed() throws IOException
+    void testLinkInsideRootFollowed()
     {
         final ResourceProvider provider = createProvider(content());
         final File root = ((FileProvider) provider).getRoot();

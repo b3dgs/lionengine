@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests of {@link Jumpable} and {@link Jumpable#TYPE} (REQ-STD-004, ADR-0083).
+ * Tests of {@link Jumpable} and {@link Jumpable#TYPE} (REQ-STD-004, ADR-0083, ADR-0084).
  */
 final class JumpableTest
 {
@@ -45,6 +45,9 @@ final class JumpableTest
         assertEquals(Jumpable.DEFAULT_JUMP_BUFFER, jumpable.getJumpBuffer());
         assertEquals(Jumpable.DEFAULT_CUT_FACTOR, jumpable.getCutFactor());
         assertFalse(jumpable.isVariableHeight());
+        assertFalse(jumpable.isJumpHeld());
+        assertEquals(0.0, jumpable.getCoyoteRemaining());
+        assertEquals(0.0, jumpable.getBufferRemaining());
     }
 
     /**
@@ -60,7 +63,9 @@ final class JumpableTest
         jumpable.setJumpBuffer(0.0);
         jumpable.setCutFactor(1.0);
         jumpable.setVariableHeight(true);
+        jumpable.setJumpHeld(true);
 
+        assertTrue(jumpable.isJumpHeld());
         assertEquals(7.5, jumpable.getImpulse());
         assertTrue(jumpable.isGrounded());
         assertEquals(0.2, jumpable.getCoyoteTime());
@@ -69,14 +74,26 @@ final class JumpableTest
         assertTrue(jumpable.isVariableHeight());
         jumpable.setCutFactor(0.0);
         assertEquals(0.0, jumpable.getCutFactor());
+        jumpable.setJumpBuffer(0.3);
+        jumpable.setGrounded(false);
+        assertEquals(-1.0, jumpable.update(-1.0, 0.05));
+        assertEquals(0.3, jumpable.getBufferRemaining());
 
         Jumpable.TYPE.reset(jumpable);
+        assertFalse(jumpable.isJumpHeld());
+        assertEquals(0.0, jumpable.getCoyoteRemaining());
+        assertEquals(0.0, jumpable.getBufferRemaining());
         assertEquals(0.0, jumpable.getImpulse());
         assertFalse(jumpable.isGrounded());
         assertEquals(Jumpable.DEFAULT_COYOTE_TIME, jumpable.getCoyoteTime());
         assertEquals(Jumpable.DEFAULT_JUMP_BUFFER, jumpable.getJumpBuffer());
         assertEquals(Jumpable.DEFAULT_CUT_FACTOR, jumpable.getCutFactor());
         assertFalse(jumpable.isVariableHeight());
+
+        jumpable.setImpulse(4.0);
+        jumpable.setGrounded(true);
+        jumpable.setJumpHeld(true);
+        assertEquals(4.0, jumpable.update(0.0, 0.05), "The press is seen after the reset");
     }
 
     /**

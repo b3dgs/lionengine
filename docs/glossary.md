@@ -26,6 +26,7 @@
 | Content hash | 32-bit hash of the replication schema and message registrations, compared when a client joins so that incompatible builds cannot play together (ADR-0038). |
 | Contract skeleton | Phase 0 batch after the build skeleton that declares, with complete Javadoc and no behavior beyond value types, the cross-module contracts listed in `architecture/interfaces.md` (ADR-0049). |
 | Core library desugaring | Android build feature that makes some newer Java library APIs available on older Android versions. |
+| Coyote time | The short time, default 0.1 s, during which `JumpSystem` still accepts a jump after the last step an object was seen grounded, for example just after walking off a ledge; counted down by the step in `Jumpable.getCoyoteRemaining()` and consumed by the jump (ADR-0030, ADR-0084). |
 | Custom filter | An output filter supplied by a game: `CustomFilter` of `render-api`, with its `OutputFilter` id and `FilterKind` (scaling or post), a fragment shader `ResourceKey` and/or a `CpuFilter`, registered explicitly on the render backend (ADR-0033, ADR-0047). |
 | D8 / R8 | Android tools that convert Java bytecode to DEX (D8) and shrink/optimize it (R8). |
 | Definition file | A JSON data file declaring `"format"` and `"version"` (sprite sheet, tileset, object definition), read by the strict reader of `core` (ADR-0028, ADR-0032). |
@@ -42,7 +43,7 @@
 | Frameskipping | Dropping a presentation (render) when the machine cannot keep up, without dropping simulation computations. |
 | Frontend | Adapter to a runtime environment (AWT, OpenGL, Android...). On desktop, `platform-awt` implements `platform-api` (ADR-0008). |
 | Game loop | Mechanism that paces updates and rendering: fixed step, accumulator, catch-up, lag cap (ADR-0017). |
-| Grounded | The `Jumpable` flag telling that an object stands on solid ground: set by the tile push-out of `CollisionSystem` when a step pushed the object up out of a floor, cleared when it did not; the game may set it too (ADR-0030, ADR-0083). |
+| Grounded | The `Jumpable` flag telling that an object stands on solid ground: set by the tile push-out of `CollisionSystem` when a step pushed the object up out of a floor, cleared when it did not and by a jump of `JumpSystem`, which reads it at the next step; the game may set it too (ADR-0030, ADR-0083, ADR-0084). |
 | Headless | Execution without a window or real graphics device. |
 | Host | A process running the server and one ordinary client (its own player) connected in memory; no dedicated machine needed (ADR-0038). |
 | Inbox | Thread-safe bounded FIFO through which platform threads and workers hand events to the runtime thread, delivered at the start of an iteration; a `core` contract, so producers never depend on `runtime` (ADR-0018, ADR-0031, ADR-0040). |
@@ -50,6 +51,7 @@
 | Input lead | How many ticks before its use a client's input frame reaches the server; the client keeps it near 2 ticks (ADR-0038). |
 | Interpolation | Presentation-only blend between the last two simulation states with `alpha`; the default presentation (ADR-0017). |
 | Interpolation delay | How far in the past a client shows proxies (default two snapshot intervals, 0.1 s), so that it can blend between two received snapshots (ADR-0038). |
+| Jump buffer | The short time, default 0.1 s, during which `JumpSystem` keeps a jump pressed in the air, so that the object jumps at the first step it is seen grounded if that comes in time; counted down by the step in `Jumpable.getBufferRemaining()` and consumed by the jump (ADR-0030, ADR-0084). |
 | Lag cap | Maximum real time added to the accumulator in one iteration (default 0.25 s); the excess is dropped and reported (ADR-0017, ADR-0031). |
 | Layer and mask (collision) | Two objects collide only if each one's mask includes the other's layer (ADR-0030); both are `int` bit sets, one bit per layer, 32 layers (ADR-0082). |
 | Logical resolution | Resolution in pixels of the frame the game renders, independent of the output display mode. |

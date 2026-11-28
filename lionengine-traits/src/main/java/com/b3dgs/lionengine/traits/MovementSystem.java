@@ -43,8 +43,9 @@ import com.b3dgs.lionengine.ecs.World;
  * </p>
  *
  * <p>
- * Slot: {@value #SLOT} (ADR-0034), after {@code Jump} (1000) and {@code Gravity} (2000), which change velocities, and
- * before {@code Collision} (4000). The previous position is captured before, by {@link TransformCaptureSystem}.
+ * Slot: {@value #SLOT} (ADR-0034), after {@link JumpSystem} ({@value JumpSystem#SLOT}) and {@link GravitySystem}
+ * ({@value GravitySystem#SLOT}), which change velocities, and before {@link CollisionSystem}
+ * ({@value CollisionSystem#SLOT}). The previous position is captured before, by {@link TransformCaptureSystem}.
  * </p>
  *
  * <p>
