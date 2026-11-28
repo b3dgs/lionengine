@@ -236,7 +236,8 @@ public final class CollisionSystem implements GameSystem
     /**
      * Returns the number of overlapping pairs.
      *
-     * @return The pairs found by the last step of the system, {@code 0} before the first one.
+     * @return The pairs found by the last step of the system, {@code 0} before the first one; during the delivery of
+     *         its events, the pairs of that step.
      */
     public int getPairCount()
     {
@@ -292,11 +293,11 @@ public final class CollisionSystem implements GameSystem
             }
         }
         found.sort();
-        report(pairs, found, false);
-        report(found, pairs, true);
         final PairList last = pairs;
         pairs = found;
         found = last;
+        report(found, pairs, false);
+        report(pairs, found, true);
     }
 
     /**

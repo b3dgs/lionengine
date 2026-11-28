@@ -399,8 +399,8 @@ final class CollisionSystemTest
     }
 
     /**
-     * A listener may record structural changes, applied at the flush; a listener added or removed during a delivery
-     * takes effect from the next event.
+     * A listener may record structural changes, applied at the flush, and reads the pairs of the step being
+     * delivered; a listener added or removed during a delivery takes effect from the next event.
      */
     @Test
     void testListenersDuringDelivery()
@@ -415,6 +415,7 @@ final class CollisionSystemTest
             @Override
             public void onEnter(long objectA, long objectB)
             {
+                assertEquals(3, collision.getPairCount());
                 if (objectB == b)
                 {
                     collision.addListener(late);
